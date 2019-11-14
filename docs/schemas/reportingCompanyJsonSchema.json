@@ -28,96 +28,45 @@
   "properties": {
     "agentDetails": {
       "type": "object",
-      "anyOf": [
-        {
-          "properties": {
-            "agentActingOnBehalfOfCompany": {
-              "type": "boolean",
-              "const": true
-            },
-            "agentName": {
-              "$ref": "#/definitions/agentName"
-            }
-          },
-          "required": [
-            "agentActingOnBehalfOfCompany",
-            "agentName"
-          ],
-          "additionalProperties": false
+      "properties": {
+        "agentActingOnBehalfOfCompany": {
+          "type": "boolean"
         },
-        {
-          "properties": {
-            "agentActingOnBehalfOfCompany": {
-              "type": "boolean",
-              "const": false
-            }
-          },
-          "required": [
-            "agentActingOnBehalfOfCompany"
-          ],
-          "additionalProperties": false
+        "agentName": {
+          "$ref": "#/definitions/agentName"
         }
-      ]
+      },
+      "required": [
+        "agentActingOnBehalfOfCompany"
+      ],
+      "additionalProperties": false
     },
     "reportingCompany": {
       "type": "object",
-      "anyOf": [
-        {
-          "properties": {
-            "companyName": {
-              "$ref": "#/definitions/companyName"
-            },
-            "utr": {
-              "$ref": "#/definitions/utr"
-            },
-            "crn": {
-              "$ref": "#/definitions/crn"
-            },
-            "sameAsUltimateParent": {
-              "type": "boolean"
-            },
-            "reportingCompanyDeemed": {
-              "type": "boolean",
-              "const": false
-            }
-          },
-          "required": [
-            "companyName",
-            "utr",
-            "crn",
-            "sameAsUltimateParent",
-            "reportingCompanyDeemed"
-          ],
-          "additionalProperties": false
+      "properties": {
+        "companyName": {
+          "$ref": "#/definitions/companyName"
         },
-        {
-          "properties": {
-            "companyName": {
-              "$ref": "#/definitions/companyName"
-            },
-            "utr": {
-              "$ref": "#/definitions/utr"
-            },
-            "crn": {
-              "$ref": "#/definitions/crn"
-            },
-            "sameAsUltimateParent": {
-              "type": "boolean"
-            },
-            "reportingCompanyDeemed": {
-              "type": "boolean",
-              "const": true
-            }
-          },
-          "required": [
-            "companyName",
-            "utr",
-            "sameAsUltimateParent",
-            "reportingCompanyDeemed"
-          ],
-          "additionalProperties": false
+        "utr": {
+          "$ref": "#/definitions/utr"
+        },
+        "crn": {
+          "$ref": "#/definitions/crn"
+        },
+        "sameAsUltimateParent": {
+          "type": "boolean"
+        },
+        "reportingCompanyDeemed": {
+          "type": "boolean"
         }
-      ]
+      },
+      "required": [
+        "companyName",
+        "utr",
+        "sameAsUltimateParent",
+        "reportingCompanyDeemed"
+      ],
+      "additionalProperties": false
     },
     "authorisingCompanies": {
       "type": "array",
@@ -140,8 +89,7 @@
       }
     },
     "declaration": {
-      "type": "boolean",
-      "const": true
+      "type": "boolean"
     }
   },
   "required": [
