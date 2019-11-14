@@ -1,0 +1,102 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "utr": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 10,
+      "pattern": "[0-9]{10}"
+    },
+    "companyName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "agentName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "crn": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 8,
+      "pattern": "[0-9]{8}|[A-z]{2}[0-9]{6}"
+    }
+  },
+  "type": "object",
+  "properties": {
+    "agentDetails": {
+      "type": "object",
+      "properties": {
+        "agentActingOnBehalfOfCompany": {
+          "type": "boolean"
+        },
+        "agentName": {
+          "$ref": "#/definitions/agentName"
+        }
+      },
+      "required": [
+        "agentActingOnBehalfOfCompany"
+      ],
+      "additionalProperties": false
+    },
+    "reportingCompany": {
+      "type": "object",
+      "properties": {
+        "companyName": {
+          "$ref": "#/definitions/companyName"
+        },
+        "utr": {
+          "$ref": "#/definitions/utr"
+        },
+        "crn": {
+          "$ref": "#/definitions/crn"
+        },
+        "sameAsUltimateParent": {
+          "type": "boolean"
+        },
+        "reportingCompanyDeemed": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "companyName",
+        "utr",
+        "sameAsUltimateParent",
+        "reportingCompanyDeemed"
+      ],
+      "additionalProperties": false
+    },
+    "authorisingCompanies": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "companyName": {
+            "$ref": "#/definitions/companyName"
+          },
+          "utr": {
+            "$ref": "#/definitions/utr"
+          }
+        },
+        "required": [
+          "companyName",
+          "utr"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "declaration": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "agentDetails",
+    "authorisingCompanies",
+    "reportingCompany",
+    "declaration"
+  ],
+  "additionalProperties": false
+}
