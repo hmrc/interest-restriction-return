@@ -12,6 +12,11 @@
       "minLength": 1,
       "maxLength": 160
     },
+    "agentName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
     "crn": {
       "type": "string",
       "minLength": 8,
@@ -21,20 +26,98 @@
   },
   "type": "object",
   "properties": {
-    "agentActingOnBehalfOfCompany": {
-      "type": "boolean"
+    "agentDetails": {
+      "type": "object",
+      "anyOf": [
+        {
+          "properties": {
+            "agentActingOnBehalfOfCompany": {
+              "type": "boolean",
+              "const": true
+            },
+            "agentName": {
+              "$ref": "#/definitions/agentName"
+            }
+          },
+          "required": [
+            "agentActingOnBehalfOfCompany",
+            "agentName"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "properties": {
+            "agentActingOnBehalfOfCompany": {
+              "type": "boolean",
+              "const": false
+            }
+          },
+          "required": [
+            "agentActingOnBehalfOfCompany"
+          ],
+          "additionalProperties": false
+        }
+      ]
     },
-    "agentName": {
-      "$ref": "#/definitions/companyName"
-    },
-    "reportingCompanyName": {
-      "$ref": "#/definitions/companyName"
-    },
-    "utr": {
-      "$ref": "#/definitions/utr"
-    },
-    "crn": {
-      "$ref": "#/definitions/crn"
+    "reportingCompany": {
+      "type": "object",
+      "anyOf": [
+        {
+          "properties": {
+            "companyName": {
+              "$ref": "#/definitions/companyName"
+            },
+            "utr": {
+              "$ref": "#/definitions/utr"
+            },
+            "crn": {
+              "$ref": "#/definitions/crn"
+            },
+            "sameAsUltimateParent": {
+              "type": "boolean"
+            },
+            "reportingCompanyDeemed": {
+              "type": "boolean",
+              "const": false
+            }
+          },
+          "required": [
+            "companyName",
+            "utr",
+            "crn",
+            "sameAsUltimateParent",
+            "reportingCompanyDeemed"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "properties": {
+            "companyName": {
+              "$ref": "#/definitions/companyName"
+            },
+            "utr": {
+              "$ref": "#/definitions/utr"
+            },
+            "crn": {
+              "$ref": "#/definitions/crn"
+            },
+            "sameAsUltimateParent": {
+              "type": "boolean"
+            },
+            "reportingCompanyDeemed": {
+              "type": "boolean",
+              "const": true
+            }
+          },
+          "required": [
+            "companyName",
+            "utr",
+            "sameAsUltimateParent",
+            "reportingCompanyDeemed"
+          ],
+          "additionalProperties": false
+        }
+      ]
     },
     "authorisingCompanies": {
       "type": "array",
@@ -52,59 +135,20 @@
         "required": [
           "companyName",
           "utr"
-        ]
+        ],
+        "additionalProperties": false
       }
     },
-    "sameAsUltimateParent": {
-      "type": "boolean"
-    },
-    "reportingCompanyDeemed": {
-      "type": "boolean"
+    "declaration": {
+      "type": "boolean",
+      "const": true
     }
-  },
-  "if": {
-    "properties": {
-      "agentActingOnBehalfOfCompany": {
-        "const": true
-      }
-    }
-  },
-  "then": {
-    "required": [
-      "agentName"
-    ]
-  },
-  "if": {
-    "properties": {
-      "reportingCompanyDeemed": {
-        "const": true
-      }
-    }
-  },
-  "then": {
-    "required": [
-      "crn"
-    ]
-  },
-  "confirmTrue": {
-    "type": "boolean"
   },
   "required": [
-    "agentActingOnBehalfOfCompany",
+    "agentDetails",
     "authorisingCompanies",
-    "reportingCompanyName",
-    "utr",
-    "sameAsUltimateParent",
-    "reportingCompanyDeemed",
-    "confirmTrue"
+    "reportingCompany",
+    "declaration"
   ],
-  "dependencies": {
-    "agentName": {
-      "properties": {
-        "agentActingOnBehalfOfCompany": {
-          "const": true
-        }
-      }
-    }
-  }
+  "additionalProperties": false
 }

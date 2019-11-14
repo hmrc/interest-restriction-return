@@ -33,6 +33,22 @@ class ReportingCompanyJsonSchema extends WordSpec with Matchers with GuiceOneApp
   val utrLength = 10
   val crnLength = 8
 
+  case class AgentDetails(agentActingOnBehalfOfCompany: Option[Boolean] = Some(true),
+                          agentName: Option[String] = Some("Agent K"))
+
+  object AgentDetails {
+    implicit val writes = Json.writes[AgentDetails]
+  }
+
+  case class ReportingCompany(companyName: Option[String] = Some("MIB Ltd"),
+                              utr: Option[String] = Some("1234567890"),
+                              crn: Option[String] = Some("12345678"),
+                              sameAsUltimateParent: Option[Boolean] = Some(false),
+                              reportingCompanyDeemed: Option[Boolean] = Some(true))
+
+  object ReportingCompany {
+    implicit val writes = Json.writes[ReportingCompany]
+  }
 
   case class AuthorisingCompanyModel(companyName: Option[String] = Some("cde ltd"),
                                      utr: Option[String] = Some("1234567890"))
@@ -41,19 +57,13 @@ class ReportingCompanyJsonSchema extends WordSpec with Matchers with GuiceOneApp
     implicit val writes = Json.writes[AuthorisingCompanyModel]
   }
 
-  case class ReportingCompanyModel(agentActingOnBehalfOfCompany: Boolean = true,
-                                   agentName: Option[String] = Some("abc"),
-                                   reportingCompanyName: Option[String] = Some("abc"),
-                                   utr: Option[String] = Some("1234567890"),
-                                   crn: String = "12345678",
-                                   authorisingCompanies: Option[Seq[AuthorisingCompanyModel]] = Some(Seq(AuthorisingCompanyModel())),
-                                   sameAsUltimateParent: Option[Boolean] = Some(false),
-                                   reportingCompanyDeemed: Option[Boolean] = Some(true),
-                                   confirmTrue: Boolean = true
-                                  )
+  case class AppointReportingCompanyModel(agentDetails: Option[AgentDetails] = Some(AgentDetails()),
+                                          reportingCompany: Option[ReportingCompany] = Some(ReportingCompany()),
+                                          authorisingCompanies: Option[Seq[AuthorisingCompanyModel]] = Some(Seq(AuthorisingCompanyModel())),
+                                          declaration: Boolean = true)
 
-  object ReportingCompanyModel {
-    implicit val writes = Json.writes[ReportingCompanyModel]
+  object AppointReportingCompanyModel {
+    implicit val writes = Json.writes[AppointReportingCompanyModel]
   }
 
   "ReportingCompany Json Schema" should {
@@ -62,134 +72,131 @@ class ReportingCompanyJsonSchema extends WordSpec with Matchers with GuiceOneApp
 
       "Validated a successful JSON payload" in {
 
-        val json = Json.toJson(ReportingCompanyModel())
-        println(json)
-
+        val json = Json.toJson(AppointReportingCompanyModel())
         validate(json) shouldBe true
       }
 
       " crn is two characters and six numbers" in {
 
-        val json = Json.toJson(ReportingCompanyModel(
-          crn = "aA111111"
+        val json = Json.toJson(AppointReportingCompanyModel(
+          reportingCompany = Some(ReportingCompany(crn = Some("aA111111")))
         ))
 
         validate(json) shouldBe true
       }
     }
 
-    "agentName" when {
+    "Return Invalid" when {
 
-      "agentName is empty" in {
+      "agentName" when {
 
-        val json = Json.toJson(ReportingCompanyModel(agentName = Some("")))
+        "agentName is empty" in {
 
-        validate(json) shouldBe false
-      }
-//TODO add when validation library is updated to v7
-//      "agentName is not applied" in {
-//
-//        val json = Json.toJson(ReportingCompanyModel(agentName = None))
-//
-//        validate(json) shouldBe false
-//      }
-//
-//      "agentName is applied and agentActOnBehalf is false" in {
-//
-//        val json = Json.toJson(ReportingCompanyModel(
-//          agentActingOnBehalfOfCompany = false
-//        ))
-//        validate(json) shouldBe false
-//      }
+          val json = Json.toJson(AppointReportingCompanyModel(agentDetails = Some(AgentDetails(agentName = Some("")))))
 
-      "agentName exceeds 160 characters" in {
+          validate(json) shouldBe false
+        }
+        //TODO add when validation library is updated to v7
+        //      "agentName is not applied" in {
+        //
+        //        val json = Json.toJson(AppointReportingCompanyModel(agentDetails =  = Some(AgentDetails(agentName = None))))
+        //
+        //        validate(json) shouldBe false
+        //      }
+        //
+        //      "agentName is applied and agentActOnBehalf is false" in {
+        //
+        //        val json = Json.toJson(AppointReportingCompanyModel(
+        //          agentActingOnBehalfOfCompany = false
+        //        ))
+        //        validate(json) shouldBe false
+        //      }
 
-        val json = Json.toJson(ReportingCompanyModel(agentName = Some("A" * (maxCompanyNameLength + 1))))
+        "agentName exceeds 160 characters" in {
 
-        validate(json) shouldBe false
-      }
-    }
+          val json = Json.toJson(AppointReportingCompanyModel(agentDetails = Some(AgentDetails(agentName = Some("A" * (maxCompanyNameLength + 1))))))
 
-    "reportingCompanyName" when {
-
-      "reportingCompanyName is empty" in {
-
-        val json = Json.toJson(ReportingCompanyModel(reportingCompanyName = Some("")))
-
-        validate(json) shouldBe false
+          validate(json) shouldBe false
+        }
       }
 
-      "reportingCompanyName is not applied" in {
+      "reportingCompanyName" when {
 
-        val json = Json.toJson(ReportingCompanyModel(reportingCompanyName = None))
+        "reportingCompanyName is empty" in {
 
-        validate(json) shouldBe false
+          val json = Json.toJson(AppointReportingCompanyModel(reportingCompany = Some(ReportingCompany(companyName = Some("")))))
+
+          validate(json) shouldBe false
+        }
+
+        "reportingCompanyName is not applied" in {
+
+          val json = Json.toJson(AppointReportingCompanyModel(reportingCompany = Some(ReportingCompany(companyName = None))))
+
+          validate(json) shouldBe false
+        }
+
+        "reportingCompanyName exceeds 160 characters" in {
+
+          val json = Json.toJson(AppointReportingCompanyModel(reportingCompany = Some(ReportingCompany(companyName = Some("A" * (maxCompanyNameLength + 1))))))
+
+          validate(json) shouldBe false
+        }
       }
 
-      "reportingCompanyName exceeds 160 characters" in {
+      "utr" when {
 
-        val json = Json.toJson(ReportingCompanyModel(reportingCompanyName = Some("A" * (maxCompanyNameLength + 1))))
+        s"below $utrLength" in {
 
-        validate(json) shouldBe false
+          val json = Json.toJson(AppointReportingCompanyModel(
+            reportingCompany = Some(ReportingCompany(utr = Some("1" * (utrLength - 1))))
+          ))
+
+          validate(json) shouldBe false
+        }
+
+        s"above $utrLength" in {
+
+          val json = Json.toJson(AppointReportingCompanyModel(
+            reportingCompany = Some(ReportingCompany(utr = Some("1" * (utrLength + 1))))
+          ))
+
+          validate(json) shouldBe false
+        }
+
+        "is non numeric" in {
+
+          val json = Json.toJson(AppointReportingCompanyModel(
+            reportingCompany = Some(ReportingCompany(utr = Some("a" * (utrLength))))
+          ))
+
+          validate(json) shouldBe false
+        }
+
+        "is a symbol" in {
+
+          val json = Json.toJson(AppointReportingCompanyModel(
+            reportingCompany = Some(ReportingCompany(utr = Some("@")))
+          ))
+
+          validate(json) shouldBe false
+        }
+
+        "is not applied" in {
+
+          val json = Json.toJson(AppointReportingCompanyModel(
+            reportingCompany = Some(ReportingCompany(utr = None))
+          ))
+
+          validate(json) shouldBe false
+        }
       }
-    }
-
-    "utr" when {
-
-      s"below $utrLength" in {
-
-        val json = Json.toJson(ReportingCompanyModel(
-          utr = Some("1" * (utrLength - 1))
-        ))
-
-        validate(json) shouldBe false
-      }
-
-      s"above $utrLength" in {
-
-        val json = Json.toJson(ReportingCompanyModel(
-          utr = Some("1" * (utrLength + 1))
-        ))
-
-        validate(json) shouldBe false
-      }
-
-      "is non numeric" in {
-
-        val json = Json.toJson(ReportingCompanyModel(
-          utr = Some("a" * (utrLength))
-        ))
-
-        validate(json) shouldBe false
-      }
-
-      "is a symbol" in {
-
-        val json = Json.toJson(ReportingCompanyModel(
-          utr = Some("@")
-        ))
-
-        validate(json) shouldBe false
-      }
-
-      "is not applied" in {
-
-        val json = Json.toJson(ReportingCompanyModel(
-          utr = None
-        ))
-
-        validate(json) shouldBe false
-      }
-    }
-
-    "agentName" when {
-
 
       "authorisingCompanies" when {
 
         "empty sequence" in {
 
-          val json = Json.toJson(ReportingCompanyModel(
+          val json = Json.toJson(AppointReportingCompanyModel(
             authorisingCompanies = Some(Seq())
           ))
 
@@ -198,7 +205,7 @@ class ReportingCompanyJsonSchema extends WordSpec with Matchers with GuiceOneApp
 
         "not supplied" in {
 
-          val json = Json.toJson(ReportingCompanyModel(
+          val json = Json.toJson(AppointReportingCompanyModel(
             authorisingCompanies = None
           ))
 
@@ -209,7 +216,7 @@ class ReportingCompanyJsonSchema extends WordSpec with Matchers with GuiceOneApp
 
           "exceeds 160" in {
 
-            val json = Json.toJson(ReportingCompanyModel(
+            val json = Json.toJson(AppointReportingCompanyModel(
               authorisingCompanies = Some(Seq(AuthorisingCompanyModel(
                 companyName = Some("A" * (maxCompanyNameLength + 1))
               )))
@@ -220,7 +227,7 @@ class ReportingCompanyJsonSchema extends WordSpec with Matchers with GuiceOneApp
 
           "is empty" in {
 
-            val json = Json.toJson(ReportingCompanyModel(
+            val json = Json.toJson(AppointReportingCompanyModel(
               authorisingCompanies = Some(Seq(AuthorisingCompanyModel(
                 companyName = Some("")
               )))
@@ -231,7 +238,7 @@ class ReportingCompanyJsonSchema extends WordSpec with Matchers with GuiceOneApp
 
           "is not applied" in {
 
-            val json = Json.toJson(ReportingCompanyModel(
+            val json = Json.toJson(AppointReportingCompanyModel(
               authorisingCompanies = Some(Seq(AuthorisingCompanyModel(
                 companyName = None
               )))
@@ -245,7 +252,7 @@ class ReportingCompanyJsonSchema extends WordSpec with Matchers with GuiceOneApp
 
           s"below $utrLength" in {
 
-            val json = Json.toJson(ReportingCompanyModel(
+            val json = Json.toJson(AppointReportingCompanyModel(
               authorisingCompanies = Some(Seq(AuthorisingCompanyModel(
                 utr = Some("1" * (utrLength - 1))
               )))
@@ -256,7 +263,7 @@ class ReportingCompanyJsonSchema extends WordSpec with Matchers with GuiceOneApp
 
           s"above $utrLength" in {
 
-            val json = Json.toJson(ReportingCompanyModel(
+            val json = Json.toJson(AppointReportingCompanyModel(
               authorisingCompanies = Some(Seq(AuthorisingCompanyModel(
                 utr = Some("1" * (utrLength + 1))
               )))
@@ -267,7 +274,7 @@ class ReportingCompanyJsonSchema extends WordSpec with Matchers with GuiceOneApp
 
           "is non numeric" in {
 
-            val json = Json.toJson(ReportingCompanyModel(
+            val json = Json.toJson(AppointReportingCompanyModel(
               authorisingCompanies = Some(Seq(AuthorisingCompanyModel(
                 utr = Some("a" * (utrLength))
               )))
@@ -278,7 +285,7 @@ class ReportingCompanyJsonSchema extends WordSpec with Matchers with GuiceOneApp
 
           "is a symbol" in {
 
-            val json = Json.toJson(ReportingCompanyModel(
+            val json = Json.toJson(AppointReportingCompanyModel(
               authorisingCompanies = Some(Seq(AuthorisingCompanyModel(
                 utr = Some("@")
               )))
@@ -289,7 +296,7 @@ class ReportingCompanyJsonSchema extends WordSpec with Matchers with GuiceOneApp
 
           "is not applied" in {
 
-            val json = Json.toJson(ReportingCompanyModel(
+            val json = Json.toJson(AppointReportingCompanyModel(
               authorisingCompanies = Some(Seq(AuthorisingCompanyModel(
                 utr = None
               )))
@@ -304,8 +311,8 @@ class ReportingCompanyJsonSchema extends WordSpec with Matchers with GuiceOneApp
 
         s"below $crnLength" in {
 
-          val json = Json.toJson(ReportingCompanyModel(
-            crn = "1" * (crnLength - 1)
+          val json = Json.toJson(AppointReportingCompanyModel(
+            reportingCompany = Some(ReportingCompany(crn = Some("1" * (crnLength - 1))))
           ))
 
           validate(json) shouldBe false
@@ -313,8 +320,8 @@ class ReportingCompanyJsonSchema extends WordSpec with Matchers with GuiceOneApp
 
         s"above $crnLength" in {
 
-          val json = Json.toJson(ReportingCompanyModel(
-            crn = "1" * (crnLength + 1)
+          val json = Json.toJson(AppointReportingCompanyModel(
+            reportingCompany = Some(ReportingCompany(crn = Some("1" * (crnLength + 1))))
           ))
 
           validate(json) shouldBe false
@@ -322,8 +329,8 @@ class ReportingCompanyJsonSchema extends WordSpec with Matchers with GuiceOneApp
 
         "is non numeric" in {
 
-          val json = Json.toJson(ReportingCompanyModel(
-            crn = "a" * crnLength
+          val json = Json.toJson(AppointReportingCompanyModel(
+            reportingCompany = Some(ReportingCompany(crn = Some("a" * crnLength)))
           ))
 
           validate(json) shouldBe false
@@ -331,8 +338,8 @@ class ReportingCompanyJsonSchema extends WordSpec with Matchers with GuiceOneApp
 
         "is a symbol" in {
 
-          val json = Json.toJson(ReportingCompanyModel(
-            crn = "@"
+          val json = Json.toJson(AppointReportingCompanyModel(
+            reportingCompany = Some(ReportingCompany(crn = Some("@")))
           ))
 
           validate(json) shouldBe false
@@ -343,8 +350,8 @@ class ReportingCompanyJsonSchema extends WordSpec with Matchers with GuiceOneApp
 
         "is not applied" in {
 
-          val json = Json.toJson(ReportingCompanyModel(
-            sameAsUltimateParent = None
+          val json = Json.toJson(AppointReportingCompanyModel(
+            reportingCompany = Some(ReportingCompany(sameAsUltimateParent = None))
           ))
 
           validate(json) shouldBe false
@@ -355,8 +362,8 @@ class ReportingCompanyJsonSchema extends WordSpec with Matchers with GuiceOneApp
 
         "is not applied" in {
 
-          val json = Json.toJson(ReportingCompanyModel(
-            reportingCompanyDeemed = None
+          val json = Json.toJson(AppointReportingCompanyModel(
+            reportingCompany = Some(ReportingCompany(reportingCompanyDeemed = None))
           ))
 
           validate(json) shouldBe false
