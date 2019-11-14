@@ -20,11 +20,9 @@ import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import com.github.fge.jsonschema.core.report.ProcessingReport
 import com.github.fge.jsonschema.main.{JsonSchema, JsonSchemaFactory}
-import javax.inject.Singleton
 import play.api.libs.json.JsValue
 
-@Singleton
-class SchemaValidation {
+trait SchemaValidation {
 
   private[utils] final lazy val jsonMapper = new ObjectMapper()
   private[utils] final lazy val jsonFactory = jsonMapper.getFactory

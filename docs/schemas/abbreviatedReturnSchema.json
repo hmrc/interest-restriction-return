@@ -1,0 +1,108 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "utr": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 10,
+      "pattern": "[0-9]{10}"
+    },
+    "companyName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "crn": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 8,
+      "pattern": "[0-9]{8}|[A-z]{2}[0-9]{6}"
+    }
+  },
+  "type": "object",
+  "properties": {
+    "agentDetails": {
+      "type": "object",
+      "properties": {
+        "agentActingOnBehalf": {
+          "type": "boolean"
+        },
+        "agentName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        }
+      },
+      "if": {
+        "properties": {
+          "agentActingOnBehalf": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "agentName"
+        ]
+      }
+    },
+    "isReportingCompanyUltimateParent": {
+      "type": "boolean"
+    },
+    "ultimateParent": {
+      "type": "object",
+      "oneOf": [
+        {
+          "properties": {
+            "registeredCompanyName": {
+              "$ref": "#/definitions/companyName"
+            },
+            "nameByWhichKnown": {
+              "$ref": "#/definitions/companyName"
+            },
+            "utr": {
+              "$ref": "#/definitions/utr"
+            },
+            "crn": {
+              "$ref": "#/definitions/crn"
+            },
+            "otherUkTaxReference": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "registeredCompanyName",
+            "utr",
+            "crn"
+          ]
+        },
+        {
+          "properties": {
+            "registeredCompanyName": {
+              "$ref": "#/definitions/companyName"
+            },
+            "nameByWhichKnown": {
+              "$ref": "#/definitions/companyName"
+            },
+            "countryOfIncorporation": {
+              "$ref": "#/definitions/utr"
+            },
+            "crn": {
+              "$ref": "#/definitions/crn"
+            }
+          },
+          "required": [
+            "registeredCompanyName",
+            "crn",
+            "countryOfIncorporation"
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "agentDetails",
+    "isReportingCompanyUltimateParent",
+    "ultimateParent"
+  ]
+}
