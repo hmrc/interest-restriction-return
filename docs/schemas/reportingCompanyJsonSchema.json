@@ -21,6 +21,12 @@
   },
   "type": "object",
   "properties": {
+    "agentActingOnBehalfOfCompany": {
+      "type": "boolean"
+    },
+    "agentName": {
+      "$ref": "#/definitions/companyName"
+    },
     "reportingCompanyName": {
       "$ref": "#/definitions/companyName"
     },
@@ -41,9 +47,6 @@
           },
           "utr": {
             "$ref": "#/definitions/utr"
-          },
-          "consenting": {
-            "type": "boolean"
           }
         },
         "required": [
@@ -61,6 +64,18 @@
   },
   "if": {
     "properties": {
+      "agentActingOnBehalfOfCompany": {
+        "const": true
+      }
+    }
+  },
+  "then": {
+    "required": [
+      "agentName"
+    ]
+  },
+  "if": {
+    "properties": {
       "reportingCompanyDeemed": {
         "const": true
       }
@@ -71,11 +86,25 @@
       "crn"
     ]
   },
+  "confirmTrue": {
+    "type": "boolean"
+  },
   "required": [
+    "agentActingOnBehalfOfCompany",
     "authorisingCompanies",
     "reportingCompanyName",
     "utr",
     "sameAsUltimateParent",
-    "reportingCompanyDeemed"
-  ]
+    "reportingCompanyDeemed",
+    "confirmTrue"
+  ],
+  "dependencies": {
+    "agentName": {
+      "properties": {
+        "agentActingOnBehalfOfCompany": {
+          "const": true
+        }
+      }
+    }
+  }
 }
