@@ -1,96 +1,183 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "definitions": {
-    "utr": {
-      "type": "string",
-      "minLength": 10,
-      "maxLength": 10,
-      "pattern": "[0-9]{10}"
-    },
-    "companyName": {
-      "type": "string",
-      "minLength": 1,
-      "maxLength": 160
-    },
-    "crn": {
-      "type": "string",
-      "minLength": 8,
-      "maxLength": 8,
-      "pattern": "[0-9]{8}|[A-z]{2}[0-9]{6}"
-    }
-  },
   "type": "object",
   "properties": {
     "agentDetails": {
       "type": "object",
       "properties": {
-        "agentActingOnBehalf": {
+        "agentActingOnBehalfOfCompany": {
           "type": "boolean"
         },
         "agentName": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 160
+          "$ref": "definitions.json#/definitions/agentName"
         }
-      }
+      },
+      "required": [
+        "agentActingOnBehalfOfCompany"
+      ],
+      "additionalProperties": false
     },
     "isReportingCompanyUltimateParent": {
       "type": "boolean"
     },
-    "ultimateParent": {
+    "parentCompany": {
       "type": "object",
       "oneOf": [
         {
+          "type": "object",
           "properties": {
-            "registeredCompanyName": {
-              "$ref": "#/definitions/companyName"
-            },
-            "nameByWhichKnown": {
-              "$ref": "#/definitions/companyName"
-            },
-            "utr": {
-              "$ref": "#/definitions/utr"
-            },
-            "crn": {
-              "$ref": "#/definitions/crn"
-            },
-            "otherUkTaxReference": {
-              "type": "string"
+            "ultimateParent": {
+              "type": "object",
+              "oneOf": [
+                {
+                  "properties": {
+                    "registeredCompanyName": {
+                      "$ref": "definitions.json#/definitions/companyName"
+                    },
+                    "knownAs": {
+                      "$ref": "definitions.json#/definitions/companyName"
+                    },
+                    "utr": {
+                      "$ref": "definitions.json#/definitions/utr"
+                    },
+                    "crn": {
+                      "$ref": "definitions.json#/definitions/crn"
+                    },
+                    "otherUkTaxReference": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "registeredCompanyName",
+                    "utr",
+                    "crn"
+                  ]
+                },
+                {
+                  "properties": {
+                    "registeredCompanyName": {
+                      "$ref": "definitions.json#/definitions/companyNameNonUk"
+                    },
+                    "knownAs": {
+                      "$ref": "definitions.json#/definitions/companyNameNonUk"
+                    },
+                    "countryOfIncorporation": {
+                      "$ref": "countrycodes.json#/definitions/countryCode"
+                    },
+                    "crn": {
+                      "$ref": "definitions.json#/definitions/crnNonUk"
+                    }
+                  },
+                  "required": [
+                    "registeredCompanyName",
+                    "crn",
+                    "countryOfIncorporation"
+                  ]
+                }
+              ]
             }
           },
           "required": [
-            "registeredCompanyName",
-            "utr",
-            "crn"
-          ]
+            "ultimateParent"
+          ],
+          "additionalProperties": false
         },
         {
+          "type": "object",
           "properties": {
-            "registeredCompanyName": {
-              "$ref": "#/definitions/companyName"
-            },
-            "nameByWhichKnown": {
-              "$ref": "#/definitions/companyName"
-            },
-            "countryOfIncorporation": {
-              "$ref": "#/definitions/utr"
-            },
-            "crn": {
-              "$ref": "#/definitions/crn"
+            "deemedCompany": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 3,
+              "items": {
+                "type": "object",
+                "properties": {
+                  "companyName": {
+                    "$ref": "definitions.json#/definitions/companyNameNonUk"
+                  },
+                  "utr": {
+                    "$ref": "definitions.json#/definitions/utr"
+                  }
+                },
+                "required": [
+                  "companyName"
+                ],
+                "additionalProperties": false
+              }
             }
           },
           "required": [
-            "registeredCompanyName",
-            "crn",
-            "countryOfIncorporation"
-          ]
+            "ultimateParent"
+          ],
+          "additionalProperties": false
         }
       ]
+    },
+    "groupCompanyDetails": {
+      "properties": {
+        "totalCompanies": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "inclusionOfNonConsentingCompanies": {
+          "type": "boolean"
+        },
+        "accountingPeriod": {
+          "properties": {
+            "startDate": {
+              "type": "string",
+              "format": "date"
+            },
+            "endDate": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          "required": [
+            "startDate",
+            "endDate"
+          ]
+        }
+      },
+      "required": [
+        "totalCompanies",
+        "inclusionOfNonConsentingCompanies",
+        "accountingPeriod"
+      ],
+      "additionalProperties": false
+    },
+    "submissionType": {
+      "type": "string",
+      "enum": [
+        "original",
+        "revised"
+      ]
+    },
+    "revisedReturnDetails": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ukCompanies": {
+      "properties": {
+        "companyName": {
+          "$ref": "definitions.json#/definitions/companyName"
+        },
+        "utr": {
+          "$ref": "definitions.json#/definitions/utr"
+        }
+      },
+      "required": [
+        "companyName",
+        "utr"
+      ],
+      "additionalProperties": false
     }
   },
   "required": [
     "agentDetails",
     "isReportingCompanyUltimateParent",
-    "ultimateParent"
-  ]
+    "parentCompany",
+    "submissionType"
+  ],
+  "additionalProperties": false
 }

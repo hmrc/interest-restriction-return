@@ -21,12 +21,10 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.libs.json.{JsValue, Json}
 import utils.SchemaValidation
 
-class ReportingCompanyJsonSchema extends WordSpec with Matchers with GuiceOneAppPerSuite {
-
-  val schemaValidation = new SchemaValidation
+class ReportingCompanyJsonSchema extends WordSpec with Matchers with GuiceOneAppPerSuite with SchemaValidation {
 
   def validate(json: JsValue): Boolean = {
-    schemaValidation.validateJson("reportingCompanyJsonSchema.json", json)
+    validateJson("reportingCompanyJsonSchema.json", json)
   }
 
   val maxCompanyNameLength = 160

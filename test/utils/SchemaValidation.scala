@@ -16,10 +16,13 @@
 
 package utils
 
+import java.io.File
+
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import com.github.fge.jsonschema.core.report.ProcessingReport
 import com.github.fge.jsonschema.main.{JsonSchema, JsonSchemaFactory}
+import play.api.Logger
 import play.api.libs.json.JsValue
 
 trait SchemaValidation {
@@ -28,20 +31,16 @@ trait SchemaValidation {
   private[utils] final lazy val jsonFactory = jsonMapper.getFactory
 
   private[utils] def loadRequestSchema(schemaName: String): JsonSchema = {
-    val jsonSchema = scala.io.Source.fromFile(s"docs/schemas/$schemaName")
-    val schema: String = jsonSchema.mkString
-    val schemaMapper = new ObjectMapper()
-    val factory = schemaMapper.getFactory
-    val schemaParser: JsonParser = factory.createParser(schema)
-    val schemaJson: JsonNode = schemaMapper.readTree(schemaParser)
-    jsonSchema.close()
-    JsonSchemaFactory.byDefault().getJsonSchema(schemaJson)
+    val file = new File(s"docs/schemas/$schemaName")
+    val uri = file.toURI
+    JsonSchemaFactory.byDefault().getJsonSchema(uri.toString)
   }
 
   def validateJson(schemaName: String, json: JsValue): Boolean = {
     val jsonParser = jsonFactory.createParser(json.toString)
     val jsonNode: JsonNode = jsonMapper.readTree(jsonParser)
     val result: ProcessingReport = loadRequestSchema(schemaName).validate(jsonNode)
+    if(!result.isSuccess) Logger.error(result.toString)
     result.isSuccess
   }
 }

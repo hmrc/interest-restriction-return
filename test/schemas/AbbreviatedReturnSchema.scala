@@ -14,23 +14,27 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.interestrestrictionreturn.schemas
+package schemas
 
 import org.scalatest.{Matchers, WordSpec}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api.Logger
 import play.api.libs.json.{JsValue, Json, Writes}
 import utils.SchemaValidation
 
 class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPerSuite with SchemaValidation {
 
-  def validate(json: JsValue): Boolean = validateJson("abbreviatedReturnSchema.json", json)
+  def validate(json: JsValue): Boolean = {
+    Logger.debug(s"Json to validate: $json")
+    validateJson("abbreviatedReturnSchema.json", json)
+  }
 
   val maxAgentNameLength = 160
   val maxCompanyNameLength = 160
   val utrLength = 10
   val crnLength = 8
 
-  case class AgentDetailsModel(agentActingOnBehalf: Boolean = true,
+  case class AgentDetailsModel(agentActingOnBehalfOfCompany: Boolean = true,
                                agentName: Option[String] = Some("Agent Name"))
 
   object AgentDetailsModel {
@@ -62,10 +66,26 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
     }
   }
 
+  case class DeemedParent(companyName: Option[String] = Some("name"), utr: Option[String] = Some("1111111111"))
+  object DeemedParent {
+    implicit val writes = Json.writes[DeemedParent]
+  }
+
+  case class ParentCompany(ultimateParent: Option[UltimateParent] = Some(UkCompany()), deemedParent: Option[Seq[DeemedParent]] = None)
+  object ParentCompany {
+    implicit val writes = Json.writes[ParentCompany]
+  }
+
+  case class UKCompanies(companyName: Option[String] = Some("name"), utr: Option[String] = Some("1111111111"))
+  object UKCompanies {
+    implicit val writes = Json.writes[UKCompanies]
+  }
+  
   case class AbbreviatedReturnModel(agentDetails: Option[AgentDetailsModel] = Some(AgentDetailsModel()),
                                     isReportingCompanyUltimateParent: Option[Boolean] = Some(true),
-                                    ultimateParent: Option[UltimateParent] = Some(UkCompany()))
-
+                                    parentCompany: ParentCompany = ParentCompany(),
+                                    submissionType: Option[String] = Some("original"),
+                                    ukCompanies: Option[Seq[UKCompanies]] = Some(Seq(UKCompanies())))
   object AbbreviatedReturnModel {
     implicit val writes = Json.writes[AbbreviatedReturnModel]
   }
@@ -77,6 +97,7 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
       "Validated a successful JSON payload" in {
 
         val json = Json.toJson(AbbreviatedReturnModel())
+
         validate(json) shouldBe true
       }
     }
