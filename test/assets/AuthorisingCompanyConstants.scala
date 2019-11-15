@@ -14,30 +14,22 @@
  * limitations under the License.
  */
 
-package models.appointReportingCompany
+package assets
 
-import org.scalatest.{Matchers, WordSpec}
+import models.appointReportingCompany.AuthorisingCompanyModel
 import play.api.libs.json.Json
-import assets.AgentDetailsConstants._
 
-class AgentDetailsModelSpec extends WordSpec with Matchers {
+object AuthorisingCompanyConstants extends BaseConstants {
 
-  "AgentDetailsModel" must {
+  val companyName = "some authorising company"
 
-    "correctly write to json" in {
+  val authorisingCompanyJson = Json.obj(
+    "companyName" -> companyName,
+    "utr" -> utr
+  )
 
-      val expectedValue = agentDetailsJson
-      val actualValue = Json.toJson(agentDetailsModel)
-
-      actualValue shouldBe expectedValue
-    }
-
-    "correctly read from Json" in {
-
-      val expectedValue = agentDetailsModel
-      val actualValue = agentDetailsJson.as[AgentDetailsModel]
-
-      actualValue shouldBe expectedValue
-    }
-  }
+  val authorisingCompanyModel = AuthorisingCompanyModel(
+    companyName = companyName,
+    utr = utr
+  )
 }

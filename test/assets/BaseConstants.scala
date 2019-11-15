@@ -14,15 +14,10 @@
  * limitations under the License.
  */
 
-package models.appointReportingCompany
+package assets
 
-import play.api.libs.json.Json
+trait BaseConstants {
 
-case class AppointReportingCompanyModel(agentDetails: AgentDetailsModel,
-                                        reportingCompany: ReportingCompanyModel,
-                                        authorisingCompanies: Seq[AuthorisingCompanyModel],
-                                        declaration: Boolean)
-
-object AppointReportingCompanyModel {
-  implicit val format = Json.format[AppointReportingCompanyModel]
+  val utr = "1234567890"
+  val crn = "12345678"
 }

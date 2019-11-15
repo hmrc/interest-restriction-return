@@ -18,24 +18,24 @@ package models.appointReportingCompany
 
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
-import assets.AgentDetailsConstants._
+import assets.AuthorisingCompanyConstants._
 
-class AgentDetailsModelSpec extends WordSpec with Matchers {
+class AuthorisingCompanyModelSpec extends WordSpec with Matchers {
 
-  "AgentDetailsModel" must {
+  "AuthorisingCompanyModel" must {
 
     "correctly write to json" in {
 
-      val expectedValue = agentDetailsJson
-      val actualValue = Json.toJson(agentDetailsModel)
+      val expectedValue = authorisingCompanyJson
+      val actualValue = Json.toJson(authorisingCompanyModel)
 
       actualValue shouldBe expectedValue
     }
 
     "correctly read from Json" in {
 
-      val expectedValue = agentDetailsModel
-      val actualValue = agentDetailsJson.as[AgentDetailsModel]
+      val expectedValue = authorisingCompanyModel
+      val actualValue = authorisingCompanyJson.as[AuthorisingCompanyModel]
 
       actualValue shouldBe expectedValue
     }
