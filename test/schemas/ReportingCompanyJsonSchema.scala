@@ -24,7 +24,7 @@ import utils.SchemaValidation
 class ReportingCompanyJsonSchema extends WordSpec with Matchers with GuiceOneAppPerSuite with SchemaValidation {
 
   def validate(json: JsValue): Boolean = {
-    validateJson("reportingCompanyJsonSchema.json", json)
+    validateJson("reportingCompanySchema.json", json)
   }
 
   val maxCompanyNameLength = 160

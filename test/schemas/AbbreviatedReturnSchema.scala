@@ -43,7 +43,7 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
 
   sealed trait UltimateParent
   case class UkCompany(registeredCompanyName: Option[String] = Some("cde ltd"),
-                       nameByWhichKnown: Option[String] = Some("efg"),
+                       knownAs: Option[String] = Some("efg"),
                        utr: Option[String] = Some("1234567890"),
                        crn: Option[String] = Some("AB123456"),
                        otherUkTaxReference: Option[String] = Some("1234567890")
@@ -52,8 +52,8 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
     implicit val writes = Json.writes[UkCompany]
   }
   case class NonUkCompany(registeredCompanyName: Option[String] = Some("cde ltd"),
-                          nameByWhichKnown: Option[String] = Some("efg"),
-                          countryOfIncorporation: Option[String] = Some("gb"),
+                          knownAs: Option[String] = Some("efg"),
+                          countryOfIncorporation: Option[String] = Some("US"),
                           crn: Option[String] = Some("AB123456")
                          ) extends UltimateParent
   object NonUkCompany {
@@ -80,11 +80,26 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
   object UKCompanies {
     implicit val writes = Json.writes[UKCompanies]
   }
-  
+
+  case class AccountingPeriod(startDate: Option[String] = Some("1111-11-11"),
+                              endDate: Option[String] = Some("1111-11-11"))
+  object AccountingPeriod {
+    implicit val writes = Json.writes[AccountingPeriod]
+  }
+
+  case class GroupCompanyDetails(totalCompanies: Option[Int] = Some(1),
+                                 inclusionOfNonConsentingCompanies: Option[Boolean] = Some(true),
+                                 accountingPeriod: Option[AccountingPeriod] = Some(AccountingPeriod()))
+  object GroupCompanyDetails {
+    implicit val writes = Json.writes[GroupCompanyDetails]
+  }
+
   case class AbbreviatedReturnModel(agentDetails: Option[AgentDetailsModel] = Some(AgentDetailsModel()),
                                     isReportingCompanyUltimateParent: Option[Boolean] = Some(true),
                                     parentCompany: ParentCompany = ParentCompany(),
+                                    groupCompanyDetails: Option[GroupCompanyDetails] = Some(GroupCompanyDetails()),
                                     submissionType: Option[String] = Some("original"),
+                                    revisedReturnDetails: Option[String] = Some("asdfghj"),
                                     ukCompanies: Option[Seq[UKCompanies]] = Some(Seq(UKCompanies())))
   object AbbreviatedReturnModel {
     implicit val writes = Json.writes[AbbreviatedReturnModel]
@@ -94,9 +109,57 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
 
     "Return valid" when {
 
-      "Validated a successful JSON payload" in {
+      "Validated a successful JSON payload with UK Parent company" in {
 
         val json = Json.toJson(AbbreviatedReturnModel())
+
+        validate(json) shouldBe true
+      }
+
+      "Validated a successful JSON payload with NonUK Parent company" in {
+
+        val json = Json.toJson(AbbreviatedReturnModel(
+          parentCompany = ParentCompany(Some(NonUkCompany()))
+        ))
+
+        validate(json) shouldBe true
+      }
+
+      "Validated a successful JSON payload with Deemed Parent company" in {
+
+        val json = Json.toJson(AbbreviatedReturnModel(
+          parentCompany = ParentCompany(ultimateParent = None, deemedParent = Some(Seq(DeemedParent())))
+        ))
+
+        validate(json) shouldBe true
+      }
+
+      "Validated a successful JSON payload with 3 Deemed Parent companies" in {
+
+        val json = Json.toJson(AbbreviatedReturnModel(
+          parentCompany = ParentCompany(ultimateParent = None, deemedParent = Some(Seq(
+            DeemedParent(), DeemedParent(), DeemedParent()
+          )))
+        ))
+
+        validate(json) shouldBe true
+      }
+
+      "Validated a successful JSON payload with no optional fields" in {
+
+        val json = Json.toJson(AbbreviatedReturnModel(
+          agentDetails = Some(AgentDetailsModel(
+            agentActingOnBehalfOfCompany = false,
+            agentName = None
+          )),
+          parentCompany = ParentCompany(Some(
+            UkCompany(
+              knownAs = None,
+              otherUkTaxReference = None
+            )
+          )),
+          revisedReturnDetails = None
+        ))
 
         validate(json) shouldBe true
       }

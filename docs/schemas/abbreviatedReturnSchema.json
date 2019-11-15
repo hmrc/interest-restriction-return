@@ -85,7 +85,7 @@
         {
           "type": "object",
           "properties": {
-            "deemedCompany": {
+            "deemedParent": {
               "type": "array",
               "minItems": 1,
               "maxItems": 3,
@@ -107,7 +107,7 @@
             }
           },
           "required": [
-            "ultimateParent"
+            "deemedParent"
           ],
           "additionalProperties": false
         }
