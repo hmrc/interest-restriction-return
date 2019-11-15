@@ -32,18 +32,6 @@
           "minLength": 1,
           "maxLength": 160
         }
-      },
-      "if": {
-        "properties": {
-          "agentActingOnBehalf": {
-            "const": true
-          }
-        }
-      },
-      "then": {
-        "required": [
-          "agentName"
-        ]
       }
     },
     "isReportingCompanyUltimateParent": {
