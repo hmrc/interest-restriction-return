@@ -186,6 +186,7 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
 
         validate(json) shouldBe true
       }
+
       "Validated a successful JSON payload when otherUkTaxReference is none" in {
 
         val json = Json.toJson(AbbreviatedReturnModel(
@@ -225,6 +226,23 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
         validate(json) shouldBe true
       }
 
+      "Validated a successful JSON payload submissionType is revised" in {
+
+        val json = Json.toJson(AbbreviatedReturnModel(
+          submissionType = Some("revised")
+        ))
+
+        validate(json) shouldBe true
+      }
+
+      "Validated a successful JSON payload revisedReturnDetails is None" in {
+
+        val json = Json.toJson(AbbreviatedReturnModel(
+          revisedReturnDetails = None
+        ))
+
+        validate(json) shouldBe true
+      }
     }
 
     "Return invalid" when {
@@ -819,6 +837,152 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
 
           val json = Json.toJson(AbbreviatedReturnModel(
             groupCompanyDetails = None
+          ))
+
+          validate(json) shouldBe false
+        }
+      }
+
+      "submissionType" when {
+
+        "is not a valid type" in {
+
+          val json = Json.toJson(AbbreviatedReturnModel(
+            submissionType = Some("invalid")
+          ))
+
+          validate(json) shouldBe false
+        }
+
+        "is empty" in {
+
+          val json = Json.toJson(AbbreviatedReturnModel(
+            submissionType = Some("")
+          ))
+
+          validate(json) shouldBe false
+        }
+
+        "is None" in {
+
+          val json = Json.toJson(AbbreviatedReturnModel(
+            submissionType = None
+          ))
+
+          validate(json) shouldBe false
+        }
+      }
+
+      "revisedReturnDetails" when {
+
+        "is empty" in {
+
+          val json = Json.toJson(AbbreviatedReturnModel(
+            revisedReturnDetails = Some("")
+          ))
+
+          validate(json) shouldBe false
+        }
+      }
+
+      "ukCompanies" when {
+
+        "companyName" when {
+
+          "is empty" in {
+
+            val json = Json.toJson(AbbreviatedReturnModel(
+              ukCompanies = Some(Seq(
+                UKCompanies(companyName = Some(""))
+              ))
+            ))
+
+            validate(json) shouldBe false
+          }
+
+          s"is over $maxCompanyNameLength" in {
+
+            val json = Json.toJson(AbbreviatedReturnModel(
+              ukCompanies = Some(Seq(
+                UKCompanies(companyName = Some("A" * (maxCompanyNameLength + 1)))
+              ))
+            ))
+
+            validate(json) shouldBe false
+          }
+
+          "is None" in {
+
+            val json = Json.toJson(AbbreviatedReturnModel(
+              ukCompanies = Some(Seq(
+                UKCompanies(companyName = None)
+              ))
+            ))
+
+            validate(json) shouldBe false
+          }
+        }
+
+        "utr" when {
+
+          s"below $utrLength" in {
+
+            val json = Json.toJson(AbbreviatedReturnModel(
+              ukCompanies = Some(Seq(
+                UKCompanies(utr = Some("1" * (utrLength - 1)))
+              ))
+            ))
+
+            validate(json) shouldBe false
+          }
+
+          s"above $utrLength" in {
+
+            val json = Json.toJson(AbbreviatedReturnModel(
+              ukCompanies = Some(Seq(
+                UKCompanies(utr = Some("1" * (utrLength + 1)))
+               ))
+            ))
+
+            validate(json) shouldBe false
+          }
+
+          "is non numeric" in {
+
+            val json = Json.toJson(AbbreviatedReturnModel(
+              ukCompanies = Some(Seq(
+                UKCompanies(utr = Some("a" * utrLength))
+              ))
+            ))
+
+            validate(json) shouldBe false
+          }
+
+          "is a symbol" in {
+
+           val json = Json.toJson(AbbreviatedReturnModel(
+             ukCompanies = Some(Seq(
+               UKCompanies(utr = Some("@"))
+             ))
+           ))
+
+            validate(json) shouldBe false
+          }
+        }
+
+        "is empty Sequence" in {
+
+          val json = Json.toJson(AbbreviatedReturnModel(
+            ukCompanies = Some(Seq.empty)
+          ))
+
+          validate(json) shouldBe false
+        }
+
+        "is None" in {
+
+          val json = Json.toJson(AbbreviatedReturnModel(
+            ukCompanies = None
           ))
 
           validate(json) shouldBe false
