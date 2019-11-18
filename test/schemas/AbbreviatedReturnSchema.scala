@@ -20,8 +20,10 @@ import org.scalatest.{Matchers, WordSpec}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Logger
 import play.api.libs.json.{JsValue, Json, Writes}
+
 import utils.SchemaValidation
 
+//noinspection ScalaStyle
 class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPerSuite with SchemaValidation {
 
   def validate(json: JsValue): Boolean = {
@@ -105,18 +107,52 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
   }
 
   case class InvestorGroup(groupName: Option[String] = Some("Group"))
+
   object InvestorGroup {
     implicit val writes = Json.writes[InvestorGroup]
   }
 
   case class GroupRatioBlended(election: Option[String] = Some("elect"),
                                investorGroups: Option[Seq[InvestorGroup]] = Some(Seq(InvestorGroup())))
+
   object GroupRatioBlended {
     implicit val writes = Json.writes[GroupRatioBlended]
   }
 
+  case class Investment(investmentName: Option[String] = Some("Name"))
+
+  object Investment {
+    implicit val writes = Json.writes[Investment]
+  }
+
+  case class InterestAllowanceNonConsolidatedInvestment(election: Option[String] = Some("elect"),
+                                                        nonConsolidatedInvestments: Option[Seq[Investment]] = Some(Seq(Investment())))
+
+  object InterestAllowanceNonConsolidatedInvestment {
+    implicit val writes = Json.writes[InterestAllowanceNonConsolidatedInvestment]
+  }
+
+  case class Partnership(partnershipName: Option[String] = Some("Name"))
+
+  object Partnership {
+    implicit val writes = Json.writes[Partnership]
+  }
+
+  case class InterestAllowanceConsolidatedPartnership(election: Option[String] = Some("elect"),
+                                                      consolidatedPartnerships: Option[Seq[Partnership]] = Some(Seq(Partnership())))
+
+  object InterestAllowanceConsolidatedPartnership {
+    implicit val writes = Json.writes[InterestAllowanceConsolidatedPartnership]
+  }
+
   case class GroupLevelElections(groupRatioElection: Option[String] = Some("elect"),
-                                 groupRatioBlended: Option[GroupRatioBlended] = Some(GroupRatioBlended()))
+                                 groupRatioBlended: Option[GroupRatioBlended] = Some(GroupRatioBlended()),
+                                 groupEBITDAChargeableGains: Option[Boolean] = Some(true),
+                                 interestAllowanceAlternativeCalculation: Option[Boolean] = Some(true),
+                                 interestAllowanceNonConsolidatedInvestment: Option[InterestAllowanceNonConsolidatedInvestment] = Some(InterestAllowanceNonConsolidatedInvestment()),
+                                 interestAllowanceConsolidatedPartnership: Option[InterestAllowanceConsolidatedPartnership] = Some(InterestAllowanceConsolidatedPartnership())
+                                )
+
   object GroupLevelElections {
     implicit val writes = Json.writes[GroupLevelElections]
   }
@@ -261,6 +297,54 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
 
         validate(json) shouldBe true
       }
+
+      "Validated a successful JSON payload groupEBITDAChargeableGains is None" in {
+
+        val json = Json.toJson(AbbreviatedReturnModel(
+          groupLevelElections = Some(GroupLevelElections(
+            groupEBITDAChargeableGains = None
+          ))))
+
+        validate(json) shouldBe true
+      }
+
+      "Validated a successful JSON payload interestAllowanceAlternativeCalculation is None" in {
+
+        val json = Json.toJson(AbbreviatedReturnModel(
+          groupLevelElections = Some(GroupLevelElections(
+            interestAllowanceAlternativeCalculation = None
+          ))))
+
+        validate(json) shouldBe true
+      }
+
+
+      "Validated a successful JSON payload nonConsolidatedInvestments election is revoke" in {
+
+        val json = Json.toJson(AbbreviatedReturnModel(
+          groupLevelElections = Some(GroupLevelElections(
+            interestAllowanceNonConsolidatedInvestment = Some(InterestAllowanceNonConsolidatedInvestment(
+            election = Some("revoke")
+          ))
+          ))
+        ))
+
+        validate(json) shouldBe true
+      }
+
+      "Validated a successful JSON payload interestAllowanceConsolidatedPartnership election is None" in {
+
+        val json = Json.toJson(AbbreviatedReturnModel(
+          groupLevelElections = Some(GroupLevelElections(
+            interestAllowanceConsolidatedPartnership = Some(InterestAllowanceConsolidatedPartnership(
+              election = None
+            ))
+          ))
+        ))
+
+        validate(json) shouldBe true
+      }
+
     }
 
     "Return invalid" when {
@@ -1124,6 +1208,149 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
 
               validate(json) shouldBe false
 
+            }
+          }
+        }
+
+        "interestAllowanceNonConsolidatedInvestment" when {
+
+          "election" when {
+
+            "is Empty" in {
+
+              val json = Json.toJson(AbbreviatedReturnModel(
+                groupLevelElections = Some(GroupLevelElections(
+                  interestAllowanceNonConsolidatedInvestment = Some(InterestAllowanceNonConsolidatedInvestment(
+                    election = Some("")
+                  ))
+                ))
+              ))
+
+              validate(json) shouldBe false
+            }
+
+            "supplied wihin an invalid enum value" in {
+
+              val json = Json.toJson(AbbreviatedReturnModel(
+                groupLevelElections = Some(GroupLevelElections(
+                  interestAllowanceNonConsolidatedInvestment = Some(InterestAllowanceNonConsolidatedInvestment(
+                    election = Some("invalid")
+                  ))
+                ))
+              ))
+              validate(json) shouldBe false
+            }
+          }
+
+          "interestAllowanceNonConsolidatedInvestment" when {
+
+            "investmentName" when {
+
+              "contains a seq which includes an empty string" in {
+
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  groupLevelElections = Some(GroupLevelElections(
+                    interestAllowanceNonConsolidatedInvestment = Some(InterestAllowanceNonConsolidatedInvestment(
+                      nonConsolidatedInvestments = Some(Seq(
+                        Investment(
+                          investmentName = Some("")
+                        )
+                      ))
+                    ))
+                  ))
+                ))
+
+                validate(json) shouldBe false
+
+              }
+
+              "is None" in {
+
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  groupLevelElections = Some(GroupLevelElections(
+                    interestAllowanceNonConsolidatedInvestment = Some(InterestAllowanceNonConsolidatedInvestment(
+                      nonConsolidatedInvestments = Some(Seq(
+                        Investment(
+                          investmentName = None
+                        )
+                      ))
+                    ))
+                  ))
+                ))
+
+                validate(json) shouldBe false
+
+              }
+            }
+
+            "contains an empty seq" in {
+
+              val json = Json.toJson(AbbreviatedReturnModel(
+                groupLevelElections = Some(GroupLevelElections(
+                  interestAllowanceNonConsolidatedInvestment = Some(InterestAllowanceNonConsolidatedInvestment(
+                    nonConsolidatedInvestments = Some(Seq())
+                  ))
+                ))
+              ))
+
+              validate(json) shouldBe false
+
+            }
+          }
+
+          "InterestAllowanceConsolidatedPartnership" when {
+
+            "partnership" when {
+
+              "contains a seq which includes an empty string" in {
+
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  groupLevelElections = Some(GroupLevelElections(
+                    interestAllowanceConsolidatedPartnership = Some(InterestAllowanceConsolidatedPartnership(
+                      consolidatedPartnerships = Some(Seq(
+                        Partnership(
+                          partnershipName = Some("")
+                        )
+                      ))
+                    ))
+                  ))
+                ))
+
+                validate(json) shouldBe false
+
+              }
+
+              "is None" in {
+
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  groupLevelElections = Some(GroupLevelElections(
+                    interestAllowanceConsolidatedPartnership = Some(InterestAllowanceConsolidatedPartnership(
+                      consolidatedPartnerships = Some(Seq(
+                        Partnership(
+                          partnershipName = None
+                        )
+                      ))
+                    ))
+                  ))
+                ))
+
+                validate(json) shouldBe false
+
+              }
+
+              "contains an empty seq" in {
+
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  groupLevelElections = Some(GroupLevelElections(
+                    interestAllowanceConsolidatedPartnership = Some(InterestAllowanceConsolidatedPartnership(
+                      consolidatedPartnerships = Some(Seq())
+                    )
+                    ))
+                  ))
+                )
+                validate(json) shouldBe false
+
+              }
             }
           }
         }
