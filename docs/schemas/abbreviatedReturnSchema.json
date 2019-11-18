@@ -177,7 +177,9 @@
     "agentDetails",
     "isReportingCompanyUltimateParent",
     "parentCompany",
-    "submissionType"
+    "groupCompanyDetails",
+    "submissionType",
+    "ukCompanies"
   ],
   "additionalProperties": false
 }

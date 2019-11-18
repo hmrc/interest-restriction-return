@@ -22,8 +22,6 @@ import play.api.Logger
 import play.api.libs.json.{JsValue, Json, Writes}
 import utils.SchemaValidation
 
-import scala.reflect.internal.SomePhase
-
 class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPerSuite with SchemaValidation {
 
   def validate(json: JsValue): Boolean = {
@@ -736,6 +734,94 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
 
             validate(json) shouldBe false
           }
+        }
+      }
+
+      "groupCompanyDetails" when {
+
+        "totalCompanies" when {
+
+          "is None" in {
+
+            val json = Json.toJson(AbbreviatedReturnModel(
+              groupCompanyDetails = Some(GroupCompanyDetails(
+                totalCompanies = None
+              ))
+            ))
+
+            validate(json) shouldBe false
+          }
+
+          "is 0" in {
+
+            val json = Json.toJson(AbbreviatedReturnModel(
+              groupCompanyDetails = Some(GroupCompanyDetails(
+                totalCompanies = Some(0)
+              ))
+            ))
+
+            validate(json) shouldBe false
+          }
+        }
+
+        "inclusionOfNonConsentingCompanies" when {
+
+          "is None" in {
+
+            val json = Json.toJson(AbbreviatedReturnModel(
+              groupCompanyDetails = Some(GroupCompanyDetails(
+                inclusionOfNonConsentingCompanies = None
+              ))
+            ))
+
+            validate(json) shouldBe false
+          }
+        }
+
+        "accountingPeriod" when {
+
+          "startDate is None" in {
+
+            val json = Json.toJson(AbbreviatedReturnModel(
+              groupCompanyDetails = Some(GroupCompanyDetails(
+                accountingPeriod = Some(AccountingPeriod(startDate = None))
+              ))
+            ))
+
+            validate(json) shouldBe false
+          }
+
+          "endDate is None" in {
+
+            val json = Json.toJson(AbbreviatedReturnModel(
+              groupCompanyDetails = Some(GroupCompanyDetails(
+                accountingPeriod = Some(AccountingPeriod(endDate = None))
+              ))
+            ))
+
+            validate(json) shouldBe false
+          }
+
+
+          "is None" in {
+
+            val json = Json.toJson(AbbreviatedReturnModel(
+              groupCompanyDetails = Some(GroupCompanyDetails(
+                accountingPeriod = None
+              ))
+            ))
+
+            validate(json) shouldBe false
+          }
+        }
+
+        "is None" in {
+
+          val json = Json.toJson(AbbreviatedReturnModel(
+            groupCompanyDetails = None
+          ))
+
+          validate(json) shouldBe false
         }
       }
     }
