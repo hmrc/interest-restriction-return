@@ -104,12 +104,30 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
     implicit val writes = Json.writes[GroupCompanyDetails]
   }
 
+  case class InvestorGroup(groupName: Option[String] = Some("Group"))
+  object InvestorGroup {
+    implicit val writes = Json.writes[InvestorGroup]
+  }
+
+  case class GroupRatioBlended(election: Option[String] = Some("elect"),
+                               investorGroups: Option[Seq[InvestorGroup]] = Some(Seq(InvestorGroup())))
+  object GroupRatioBlended {
+    implicit val writes = Json.writes[GroupRatioBlended]
+  }
+
+  case class GroupLevelElections(groupRatioElection: Option[String] = Some("elect"),
+                                 groupRatioBlended: Option[GroupRatioBlended] = Some(GroupRatioBlended()))
+  object GroupLevelElections {
+    implicit val writes = Json.writes[GroupLevelElections]
+  }
+
   case class AbbreviatedReturnModel(agentDetails: Option[AgentDetailsModel] = Some(AgentDetailsModel()),
                                     isReportingCompanyUltimateParent: Option[Boolean] = Some(true),
                                     parentCompany: Option[ParentCompany] = Some(ParentCompany()),
                                     groupCompanyDetails: Option[GroupCompanyDetails] = Some(GroupCompanyDetails()),
                                     submissionType: Option[String] = Some("original"),
                                     revisedReturnDetails: Option[String] = Some("asdfghj"),
+                                    groupLevelElections: Option[GroupLevelElections] = Some(GroupLevelElections()),
                                     ukCompanies: Option[Seq[UKCompanies]] = Some(Seq(UKCompanies())))
 
   object AbbreviatedReturnModel {
@@ -941,7 +959,7 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
             val json = Json.toJson(AbbreviatedReturnModel(
               ukCompanies = Some(Seq(
                 UKCompanies(utr = Some("1" * (utrLength + 1)))
-               ))
+              ))
             ))
 
             validate(json) shouldBe false
@@ -960,11 +978,11 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
 
           "is a symbol" in {
 
-           val json = Json.toJson(AbbreviatedReturnModel(
-             ukCompanies = Some(Seq(
-               UKCompanies(utr = Some("@"))
-             ))
-           ))
+            val json = Json.toJson(AbbreviatedReturnModel(
+              ukCompanies = Some(Seq(
+                UKCompanies(utr = Some("@"))
+              ))
+            ))
 
             validate(json) shouldBe false
           }
@@ -986,6 +1004,128 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
           ))
 
           validate(json) shouldBe false
+        }
+      }
+
+      "groupLevelElections" when {
+
+        "groupRatio" when {
+
+          "is Empty" in {
+
+            val json = Json.toJson(AbbreviatedReturnModel(
+              groupLevelElections = Some(GroupLevelElections(
+                groupRatioElection = Some("")
+              ))
+            ))
+
+            validate(json) shouldBe false
+          }
+
+          "supplied wihin an invalid enum value" in {
+
+            val json = Json.toJson(AbbreviatedReturnModel(
+              groupLevelElections = Some(GroupLevelElections(
+                groupRatioElection = Some("invalid")
+              ))
+            ))
+
+            validate(json) shouldBe false
+
+          }
+        }
+
+        "groupRatioBlended" when {
+
+          "election" when {
+
+            "is Empty" in {
+
+              val json = Json.toJson(AbbreviatedReturnModel(
+                groupLevelElections = Some(GroupLevelElections(
+                  groupRatioBlended = Some(GroupRatioBlended(
+                    election = Some("")
+                  ))
+                ))
+              ))
+
+              validate(json) shouldBe false
+            }
+
+            "supplied wihin an invalid enum value" in {
+
+              val json = Json.toJson(AbbreviatedReturnModel(
+                groupLevelElections = Some(GroupLevelElections(
+                  groupRatioBlended = Some(GroupRatioBlended(
+                    election = Some("invalid")
+                  ))
+                ))
+              ))
+
+              validate(json) shouldBe false
+
+            }
+
+          }
+
+          "investorGroups" when {
+
+            "groupName" when {
+
+              "contains a seq which includes an empty string" in {
+
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  groupLevelElections = Some(GroupLevelElections(
+                    groupRatioBlended = Some(GroupRatioBlended(
+                      investorGroups = Some(Seq(
+                        InvestorGroup(
+                          groupName = Some("Group A")
+                        ),
+                        InvestorGroup(
+                          groupName = Some("")
+                        )
+                      ))
+                    ))
+                  ))
+                ))
+
+                validate(json) shouldBe false
+
+              }
+
+              "is None" in {
+
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  groupLevelElections = Some(GroupLevelElections(
+                    groupRatioBlended = Some(GroupRatioBlended(
+                      investorGroups = Some(Seq(
+                        InvestorGroup(
+                          groupName = None
+                        )
+                      ))
+                    ))
+                  ))
+                ))
+
+                validate(json) shouldBe false
+
+              }
+            }
+
+            "contains an empty seq" in {
+
+              val json = Json.toJson(AbbreviatedReturnModel(
+                groupLevelElections = Some(GroupLevelElections(
+                  groupRatioBlended = Some(GroupRatioBlended(
+                    investorGroups = Some(Seq())
+                  ))
+                ))
+              ))
+
+              validate(json) shouldBe false
+
+            }
+          }
         }
       }
     }

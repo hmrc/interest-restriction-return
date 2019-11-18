@@ -176,6 +176,40 @@
         ],
         "additionalProperties": false
       }
+    },
+    "groupLevelElections": {
+      "type": "object",
+      "properties": {
+        "groupRatioElection": {
+          "$ref": "definitions.json#/definitions/election"
+        },
+        "groupRatioBlended": {
+          "type": "object",
+          "properties": {
+            "election": {
+              "$ref": "definitions.json#/definitions/election"
+            },
+            "investorGroups": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "properties": {
+                  "groupName": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "groupName"
+                ]
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
     }
   },
   "required": [
