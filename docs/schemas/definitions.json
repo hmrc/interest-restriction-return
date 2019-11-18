@@ -30,9 +30,7 @@
     },
     "crnNonUk": {
       "type": "string",
-      "minLength": 8,
-      "maxLength": 8,
-      "pattern": "[0-9]{8}|[A-z]{2}[0-9]{6}"
+      "minLength": 1
     }
   }
 }

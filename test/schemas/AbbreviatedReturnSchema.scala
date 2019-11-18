@@ -22,6 +22,8 @@ import play.api.Logger
 import play.api.libs.json.{JsValue, Json, Writes}
 import utils.SchemaValidation
 
+import scala.reflect.internal.SomePhase
+
 class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPerSuite with SchemaValidation {
 
   def validate(json: JsValue): Boolean = {
@@ -42,23 +44,28 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
   }
 
   sealed trait UltimateParent
+
   case class UkCompany(registeredCompanyName: Option[String] = Some("cde ltd"),
                        knownAs: Option[String] = Some("efg"),
                        utr: Option[String] = Some("1234567890"),
                        crn: Option[String] = Some("AB123456"),
                        otherUkTaxReference: Option[String] = Some("1234567890")
                       ) extends UltimateParent
+
   object UkCompany {
     implicit val writes = Json.writes[UkCompany]
   }
+
   case class NonUkCompany(registeredCompanyName: Option[String] = Some("cde ltd"),
                           knownAs: Option[String] = Some("efg"),
                           countryOfIncorporation: Option[String] = Some("US"),
                           crn: Option[String] = Some("AB123456")
                          ) extends UltimateParent
+
   object NonUkCompany {
     implicit val writes = Json.writes[NonUkCompany]
   }
+
   object UltimateParent {
     implicit def writes: Writes[UltimateParent] = Writes {
       case x: UkCompany => Json.toJson(x)(UkCompany.writes)
@@ -67,22 +74,26 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
   }
 
   case class DeemedParent(companyName: Option[String] = Some("name"), utr: Option[String] = Some("1111111111"))
+
   object DeemedParent {
     implicit val writes = Json.writes[DeemedParent]
   }
 
   case class ParentCompany(ultimateParent: Option[UltimateParent] = Some(UkCompany()), deemedParent: Option[Seq[DeemedParent]] = None)
+
   object ParentCompany {
     implicit val writes = Json.writes[ParentCompany]
   }
 
   case class UKCompanies(companyName: Option[String] = Some("name"), utr: Option[String] = Some("1111111111"))
+
   object UKCompanies {
     implicit val writes = Json.writes[UKCompanies]
   }
 
   case class AccountingPeriod(startDate: Option[String] = Some("1111-11-11"),
                               endDate: Option[String] = Some("1111-11-11"))
+
   object AccountingPeriod {
     implicit val writes = Json.writes[AccountingPeriod]
   }
@@ -90,6 +101,7 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
   case class GroupCompanyDetails(totalCompanies: Option[Int] = Some(1),
                                  inclusionOfNonConsentingCompanies: Option[Boolean] = Some(true),
                                  accountingPeriod: Option[AccountingPeriod] = Some(AccountingPeriod()))
+
   object GroupCompanyDetails {
     implicit val writes = Json.writes[GroupCompanyDetails]
   }
@@ -101,6 +113,7 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
                                     submissionType: Option[String] = Some("original"),
                                     revisedReturnDetails: Option[String] = Some("asdfghj"),
                                     ukCompanies: Option[Seq[UKCompanies]] = Some(Seq(UKCompanies())))
+
   object AbbreviatedReturnModel {
     implicit val writes = Json.writes[AbbreviatedReturnModel]
   }
@@ -175,6 +188,45 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
 
         validate(json) shouldBe true
       }
+      "Validated a successful JSON payload when otherUkTaxReference is none" in {
+
+        val json = Json.toJson(AbbreviatedReturnModel(
+          parentCompany = Some(ParentCompany(
+            ultimateParent = Some(UkCompany(
+              otherUkTaxReference = None
+            ))
+          ))
+        ))
+
+        validate(json) shouldBe true
+      }
+
+      "Validated a successful JSON payload when otherUkTaxReference is empty" in {
+
+        val json = Json.toJson(AbbreviatedReturnModel(
+          parentCompany = Some(ParentCompany(
+            ultimateParent = Some(UkCompany(
+              otherUkTaxReference = Some("")
+            ))
+          ))
+        ))
+
+        validate(json) shouldBe true
+      }
+
+      "Validated a successful JSON payload when knownAs is none" in {
+
+        val json = Json.toJson(AbbreviatedReturnModel(
+          parentCompany = Some(ParentCompany(
+            ultimateParent = Some(UkCompany(
+              knownAs = None
+            ))
+          ))
+        ))
+
+        validate(json) shouldBe true
+      }
+
     }
 
     "Return invalid" when {
@@ -264,7 +316,7 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
                 val json = Json.toJson(AbbreviatedReturnModel(
                   parentCompany = Some(ParentCompany(
                     ultimateParent = Some(UkCompany(
-                      registeredCompanyName = Some("A" * (maxCompanyNameLength+1))
+                      registeredCompanyName = Some("A" * (maxCompanyNameLength + 1))
                     ))
                   ))
                 ))
@@ -272,140 +324,418 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
                 validate(json) shouldBe false
               }
             }
-          }
-        }
 
-        "deemedParent" when {
+            "utr" when {
 
-          "company name" when {
+              s"below $utrLength" in {
 
-            "is None" in {
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  parentCompany = Some(ParentCompany(ultimateParent = Some(
+                    UkCompany(utr = Some("1" * (utrLength - 1)))
+                  ))
+                  ))
+                )
+                validate(json) shouldBe false
+              }
 
-              val json = Json.toJson(AbbreviatedReturnModel(
-                parentCompany = Some(ParentCompany(ultimateParent = None, Some(Seq(
-                  DeemedParent(
-                    companyName = None
-                  )
-                )))))
-              )
+              s"above $utrLength" in {
 
-              validate(json) shouldBe false
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  parentCompany = Some(ParentCompany(ultimateParent = Some(
+                    UkCompany(utr = Some("1" * (utrLength + 1)))
+                  ))
+                  ))
+                )
+
+                validate(json) shouldBe false
+              }
+
+              "is non numeric" in {
+
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  parentCompany = Some(ParentCompany(ultimateParent = Some(
+                    UkCompany(utr = Some("a" * utrLength))
+                  ))
+                  ))
+                )
+
+                validate(json) shouldBe false
+              }
+
+              "is a symbol" in {
+
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  parentCompany = Some(ParentCompany(ultimateParent = Some(
+                    UkCompany(utr = Some("@"))
+                  ))))
+                )
+                validate(json) shouldBe false
+              }
             }
 
-            s"is empty" in {
+            "crn" when {
 
-              val json = Json.toJson(AbbreviatedReturnModel(
-                parentCompany = Some(ParentCompany(ultimateParent = None, Some(Seq(
-                  DeemedParent(
-                    companyName = Some("")
-                  )
-                ))))
-              ))
+              s"below $crnLength" in {
 
-              validate(json) shouldBe false
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  parentCompany = Some(ParentCompany(ultimateParent = Some(
+                    UkCompany(crn = Some("1" * (crnLength - 1)))
+                  ))
+                  ))
+                )
+                validate(json) shouldBe false
+              }
+
+              s"above $crnLength" in {
+
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  parentCompany = Some(ParentCompany(ultimateParent = Some(
+                    UkCompany(crn = Some("1" * (crnLength + 1)))
+                  ))
+                  ))
+                )
+
+                validate(json) shouldBe false
+              }
+
+              "starts with 1 letter" in {
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  parentCompany = Some(ParentCompany(ultimateParent = Some(
+                    UkCompany(crn = Some("A" + ("1" * (crnLength - 1))))
+                  ))
+                  ))
+                )
+                validate(json) shouldBe false
+              }
+
+              "starts with 3 letters" in {
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  parentCompany = Some(ParentCompany(ultimateParent = Some(
+                    UkCompany(crn = Some("AAA" + ("1" * (crnLength - 3))))
+                  ))
+                  ))
+                )
+                validate(json) shouldBe false
+
+              }
+            }
+
+            "knownAs" when {
+
+              "knownAs is empty" in {
+
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  parentCompany = Some(ParentCompany(
+                    ultimateParent = Some(UkCompany(
+                      knownAs = Some("")
+                    ))
+                  ))
+                ))
+
+                validate(json) shouldBe false
+              }
             }
 
             s"is longer than $maxCompanyNameLength characters" in {
 
               val json = Json.toJson(AbbreviatedReturnModel(
-                parentCompany = Some(ParentCompany(ultimateParent = None, Some(Seq(
-                  DeemedParent(
-                    companyName = Some("A" * (maxCompanyNameLength+1))
-                  )
-                ))))
+                parentCompany = Some(ParentCompany(
+                  ultimateParent = Some(UkCompany(
+                    knownAs = Some("A" * (maxCompanyNameLength + 1))
+                  ))
+                ))
               ))
 
               validate(json) shouldBe false
             }
           }
+          "non-uk compnany" when {
 
+            "company name" when {
 
-          "utr" when {
+              "is None" in {
 
-            s"below $utrLength" in {
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  parentCompany = Some(ParentCompany(
+                    ultimateParent = Some(NonUkCompany(
+                      registeredCompanyName = None
+                    ))
+                  ))
+                ))
 
-              val json = Json.toJson(AbbreviatedReturnModel(
-                parentCompany = Some(ParentCompany(ultimateParent = None, Some(Seq(
-                  DeemedParent(utr = Some("1" * (utrLength - 1)))
-                ))))
-              ))
+                validate(json) shouldBe false
+              }
 
-              validate(json) shouldBe false
+              s"is empty" in {
+
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  parentCompany = Some(ParentCompany(
+                    ultimateParent = Some(NonUkCompany(
+                      registeredCompanyName = Some("")
+                    ))
+                  ))
+                ))
+
+                validate(json) shouldBe false
+              }
+
+              s"is longer than $maxCompanyNameLength characters" in {
+
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  parentCompany = Some(ParentCompany(
+                    ultimateParent = Some(NonUkCompany(
+                      registeredCompanyName = Some("A" * (maxCompanyNameLength + 1))
+                    ))
+                  ))
+                ))
+
+                validate(json) shouldBe false
+              }
             }
 
-            s"above $utrLength" in {
+            "countryOfIncorporation" when {
 
-              val json = Json.toJson(AbbreviatedReturnModel(
-                parentCompany = Some(ParentCompany(ultimateParent = None, Some(Seq(
-                  DeemedParent(utr = Some("1" * (utrLength + 1)))
-                ))))
-              ))
+              "is only one letter" in {
 
-              validate(json) shouldBe false
-            }
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  parentCompany = Some(ParentCompany(
+                    ultimateParent = Some(NonUkCompany(
+                      countryOfIncorporation = Some("A")
+                    ))
+                  ))
+                ))
+                validate(json) shouldBe false
+              }
 
-            "is non numeric" in {
+              "is three letters" in {
 
-              val json = Json.toJson(AbbreviatedReturnModel(
-                parentCompany = Some(ParentCompany(ultimateParent = None, Some(Seq(
-                  DeemedParent(utr = Some("a" * utrLength))
-                ))))
-              ))
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  parentCompany = Some(ParentCompany(
+                    ultimateParent = Some(NonUkCompany(
+                      countryOfIncorporation = Some("AAA")
+                    ))
+                  ))
+                ))
+                validate(json) shouldBe false
+              }
 
-              validate(json) shouldBe false
-            }
+              "contains a number" in {
 
-            "is a symbol" in {
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  parentCompany = Some(ParentCompany(
+                    ultimateParent = Some(NonUkCompany(
+                      countryOfIncorporation = Some("A1")
+                    ))
+                  ))
+                ))
+                validate(json) shouldBe false
+              }
 
-              val json = Json.toJson(AbbreviatedReturnModel(
-                parentCompany = Some(ParentCompany(ultimateParent = None, Some(Seq(
-                  DeemedParent(utr = Some("@"))
-                ))))
-              ))
+              "contains a symbol" in {
 
-              validate(json) shouldBe false
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  parentCompany = Some(ParentCompany(
+                    ultimateParent = Some(NonUkCompany(
+                      countryOfIncorporation = Some("A@")
+                    ))
+                  ))
+                ))
+                validate(json) shouldBe false
+              }
+
+              "non-uk crn" when {
+
+                "is None" in {
+
+                  val json = Json.toJson(AbbreviatedReturnModel(
+                    parentCompany = Some(ParentCompany(
+                      ultimateParent = Some(NonUkCompany(
+                        crn = None
+                      ))
+                    ))
+                  ))
+
+                  validate(json) shouldBe false
+                }
+
+                s"is empty" in {
+
+                  val json = Json.toJson(AbbreviatedReturnModel(
+                    parentCompany = Some(ParentCompany(
+                      ultimateParent = Some(NonUkCompany(
+                        crn = Some("")
+                      ))
+                    ))
+                  ))
+
+                  validate(json) shouldBe false
+                }
+              }
+
+              "knownAs" when {
+
+                "knownAs is empty" in {
+
+                  val json = Json.toJson(AbbreviatedReturnModel(
+                    parentCompany = Some(ParentCompany(
+                      ultimateParent = Some(NonUkCompany(
+                        knownAs = Some("")
+                      ))
+                    ))
+                  ))
+
+                  validate(json) shouldBe false
+                }
+              }
+
+              s"is longer than $maxCompanyNameLength characters" in {
+
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  parentCompany = Some(ParentCompany(
+                    ultimateParent = Some(NonUkCompany(
+                      knownAs = Some("A" * (maxCompanyNameLength + 1))
+                    ))
+                  ))
+                ))
+
+                validate(json) shouldBe false
+              }
+
             }
           }
-        }
 
-        "deemed parents and ultimate parent is None" in {
+          "deemedParent" when {
 
-          val json = Json.toJson(AbbreviatedReturnModel(
-            parentCompany = Some(ParentCompany(None, None))
-          ))
+            "company name" when {
 
-          validate(json) shouldBe false
-        }
+              "is None" in {
 
-        "deemed parents is an empty list and ultimate parent is None" in {
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  parentCompany = Some(ParentCompany(ultimateParent = None, Some(Seq(
+                    DeemedParent(
+                      companyName = None
+                    )
+                  )))))
+                )
 
-          val json = Json.toJson(AbbreviatedReturnModel(
-            parentCompany = Some(ParentCompany(ultimateParent = None,
-              Some(Seq.empty))
+                validate(json) shouldBe false
+              }
+
+              s"is empty" in {
+
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  parentCompany = Some(ParentCompany(ultimateParent = None, Some(Seq(
+                    DeemedParent(
+                      companyName = Some("")
+                    )
+                  ))))
+                ))
+
+                validate(json) shouldBe false
+              }
+
+              s"is longer than $maxCompanyNameLength characters" in {
+
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  parentCompany = Some(ParentCompany(ultimateParent = None, Some(Seq(
+                    DeemedParent(
+                      companyName = Some("A" * (maxCompanyNameLength + 1))
+                    )
+                  ))))
+                ))
+
+                validate(json) shouldBe false
+              }
+            }
+
+
+            "utr" when {
+
+              s"below $utrLength" in {
+
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  parentCompany = Some(ParentCompany(ultimateParent = None, Some(Seq(
+                    DeemedParent(utr = Some("1" * (utrLength - 1)))
+                  ))))
+                ))
+
+                validate(json) shouldBe false
+              }
+
+              s"above $utrLength" in {
+
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  parentCompany = Some(ParentCompany(ultimateParent = None, Some(Seq(
+                    DeemedParent(utr = Some("1" * (utrLength + 1)))
+                  ))))
+                ))
+
+                validate(json) shouldBe false
+              }
+
+              "is non numeric" in {
+
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  parentCompany = Some(ParentCompany(ultimateParent = None, Some(Seq(
+                    DeemedParent(utr = Some("a" * utrLength))
+                  ))))
+                ))
+
+                validate(json) shouldBe false
+              }
+
+              "is a symbol" in {
+
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  parentCompany = Some(ParentCompany(ultimateParent = None, Some(Seq(
+                    DeemedParent(utr = Some("@"))
+                  ))))
+                ))
+
+                validate(json) shouldBe false
+              }
+            }
+          }
+
+          "deemed parents and ultimate parent is None" in {
+
+            val json = Json.toJson(AbbreviatedReturnModel(
+              parentCompany = Some(ParentCompany(None, None))
             ))
-          )
 
-          validate(json) shouldBe false
-        }
+            validate(json) shouldBe false
+          }
 
-        "more than 3 deemed parents and ultimate parent is None" in {
+          "deemed parents is an empty list and ultimate parent is None" in {
 
-          val json = Json.toJson(AbbreviatedReturnModel(
-            parentCompany = Some(ParentCompany(ultimateParent = None,
-              Some(Seq(DeemedParent(), DeemedParent(), DeemedParent(), DeemedParent())))
+            val json = Json.toJson(AbbreviatedReturnModel(
+              parentCompany = Some(ParentCompany(ultimateParent = None,
+                Some(Seq.empty))
+              ))
+            )
+
+            validate(json) shouldBe false
+          }
+
+          "more than 3 deemed parents and ultimate parent is None" in {
+
+            val json = Json.toJson(AbbreviatedReturnModel(
+              parentCompany = Some(ParentCompany(ultimateParent = None,
+                Some(Seq(DeemedParent(), DeemedParent(), DeemedParent(), DeemedParent())))
+              ))
+            )
+
+            validate(json) shouldBe false
+          }
+
+          "is None" in {
+
+            val json = Json.toJson(AbbreviatedReturnModel(
+              parentCompany = None
             ))
-          )
 
-          validate(json) shouldBe false
-        }
-
-        "is None" in {
-
-          val json = Json.toJson(AbbreviatedReturnModel(
-            parentCompany = None
-          ))
-
-          validate(json) shouldBe false
+            validate(json) shouldBe false
+          }
         }
       }
     }
