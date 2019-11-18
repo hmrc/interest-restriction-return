@@ -138,7 +138,7 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
     implicit val writes = Json.writes[Partnership]
   }
 
-  case class InterestAllowanceConsolidatedPartnership(election: Option[String] = Some("elect"),
+  case class InterestAllowanceConsolidatedPartnership(election: Option[Boolean] = Some(true),
                                                       consolidatedPartnerships: Option[Seq[Partnership]] = Some(Seq(Partnership())))
 
   object InterestAllowanceConsolidatedPartnership {
@@ -313,31 +313,18 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
         val json = Json.toJson(AbbreviatedReturnModel(
           groupLevelElections = Some(GroupLevelElections(
             interestAllowanceAlternativeCalculation = None
-          ))))
-
-        validate(json) shouldBe true
-      }
-
-
-      "Validated a successful JSON payload nonConsolidatedInvestments election is revoke" in {
-
-        val json = Json.toJson(AbbreviatedReturnModel(
-          groupLevelElections = Some(GroupLevelElections(
-            interestAllowanceNonConsolidatedInvestment = Some(InterestAllowanceNonConsolidatedInvestment(
-            election = Some("revoke")
-          ))
           ))
         ))
 
         validate(json) shouldBe true
       }
 
-      "Validated a successful JSON payload interestAllowanceConsolidatedPartnership election is None" in {
+      "Validated a successful JSON payload groupRatioBlended election is revoke" in {
 
         val json = Json.toJson(AbbreviatedReturnModel(
           groupLevelElections = Some(GroupLevelElections(
-            interestAllowanceConsolidatedPartnership = Some(InterestAllowanceConsolidatedPartnership(
-              election = None
+            groupRatioBlended = Some(GroupRatioBlended(
+              election = Some("revoke")
             ))
           ))
         ))
@@ -345,6 +332,31 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
         validate(json) shouldBe true
       }
 
+      "Validated a successful JSON payload nonConsolidatedInvestments election is revoke" in {
+
+        val json = Json.toJson(AbbreviatedReturnModel(
+          groupLevelElections = Some(GroupLevelElections(
+            interestAllowanceNonConsolidatedInvestment = Some(InterestAllowanceNonConsolidatedInvestment(
+              election = Some("revoke")
+            ))
+          ))
+        ))
+
+        validate(json) shouldBe true
+      }
+
+      "Validated a successful JSON payload interestAllowanceConsolidatedPartnership election is false" in {
+
+        val json = Json.toJson(AbbreviatedReturnModel(
+          groupLevelElections = Some(GroupLevelElections(
+            interestAllowanceConsolidatedPartnership = Some(InterestAllowanceConsolidatedPartnership(
+              election = Some(false)
+            ))
+          ))
+        ))
+
+        validate(json) shouldBe true
+      }
     }
 
     "Return invalid" when {
@@ -1123,6 +1135,19 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
 
           "election" when {
 
+            "is None" in {
+
+              val json = Json.toJson(AbbreviatedReturnModel(
+                groupLevelElections = Some(GroupLevelElections(
+                  groupRatioBlended = Some(GroupRatioBlended(
+                    election = None
+                  ))
+                ))
+              ))
+
+              validate(json) shouldBe false
+            }
+
             "is Empty" in {
 
               val json = Json.toJson(AbbreviatedReturnModel(
@@ -1216,6 +1241,19 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
 
           "election" when {
 
+            "is None" in {
+
+              val json = Json.toJson(AbbreviatedReturnModel(
+                groupLevelElections = Some(GroupLevelElections(
+                  interestAllowanceNonConsolidatedInvestment = Some(InterestAllowanceNonConsolidatedInvestment(
+                    election = None
+                  ))
+                ))
+              ))
+
+              validate(json) shouldBe false
+            }
+
             "is Empty" in {
 
               val json = Json.toJson(AbbreviatedReturnModel(
@@ -1299,6 +1337,19 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
           }
 
           "InterestAllowanceConsolidatedPartnership" when {
+
+            "election is None" in {
+
+              val json = Json.toJson(AbbreviatedReturnModel(
+                groupLevelElections = Some(GroupLevelElections(
+                  interestAllowanceConsolidatedPartnership = Some(InterestAllowanceConsolidatedPartnership(
+                    election = None
+                  ))
+                ))
+              ))
+
+              validate(json) shouldBe false
+            }
 
             "partnership" when {
 
