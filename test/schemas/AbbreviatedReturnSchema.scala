@@ -145,6 +145,7 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
         validate(json) shouldBe true
       }
 
+      //TODO undecided
       "Validated a successful JSON with a Deemed Parent company with no UTR" in {
 
         val json = Json.toJson(AbbreviatedReturnModel(
@@ -226,6 +227,54 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
 
       "parent Company" when {
 
+        "ultimateParent" when {
+
+          "Uk Company" when {
+
+            "company name" when {
+
+              "is None" in {
+
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  parentCompany = Some(ParentCompany(
+                    ultimateParent = Some(UkCompany(
+                      registeredCompanyName = None
+                    ))
+                  ))
+                ))
+
+                validate(json) shouldBe false
+              }
+
+              s"is empty" in {
+
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  parentCompany = Some(ParentCompany(
+                    ultimateParent = Some(UkCompany(
+                      registeredCompanyName = Some("")
+                    ))
+                  ))
+                ))
+
+                validate(json) shouldBe false
+              }
+
+              s"is longer than $maxCompanyNameLength characters" in {
+
+                val json = Json.toJson(AbbreviatedReturnModel(
+                  parentCompany = Some(ParentCompany(
+                    ultimateParent = Some(UkCompany(
+                      registeredCompanyName = Some("A" * (maxCompanyNameLength+1))
+                    ))
+                  ))
+                ))
+
+                validate(json) shouldBe false
+              }
+            }
+          }
+        }
+
         "deemedParent" when {
 
           "company name" when {
@@ -269,6 +318,7 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
               validate(json) shouldBe false
             }
           }
+
 
           "utr" when {
 
