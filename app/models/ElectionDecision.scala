@@ -18,28 +18,28 @@ package models
 
 import play.api.libs.json._
 
-sealed trait SubmissionType
+sealed trait ElectionDecision
 
-case object Original extends SubmissionType {
+case object Elect extends ElectionDecision {
 
-  override val toString = "original"
+  override val toString = "elect"
 }
 
-case object Revised extends SubmissionType {
+case object Revoke extends ElectionDecision {
 
-  override val toString = "revised"
+  override val toString = "revoke"
 }
 
-object SubmissionType {
+object ElectionDecision {
 
-  implicit val writes: Writes[SubmissionType] = Writes {
-    case Original => JsString(Original.toString)
-    case Revised => JsString(Revised.toString)
+  implicit val writes: Writes[ElectionDecision] = Writes {
+    case Elect => JsString(Elect.toString)
+    case Revoke => JsString(Revoke.toString)
   }
 
-  implicit val reads: Reads[SubmissionType] = Reads {
-    case JsString(Original.toString) => JsSuccess(Original)
-    case JsString(Revised.toString) => JsSuccess(Revised)
-    case _ => JsError("Unknown UserType")
+  implicit val reads: Reads[ElectionDecision] = Reads {
+    case JsString(Elect.toString) => JsSuccess(Elect)
+    case JsString(Revoke.toString) => JsSuccess(Revoke)
+    case _ => JsError("Unknown ElectionDecision")
   }
 }

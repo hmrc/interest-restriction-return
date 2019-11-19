@@ -16,6 +16,7 @@
 
 package assets
 
+import models.Elect
 import models.abbreviatedReturn.GroupRatioBlendedModel
 import play.api.libs.json.Json
 
@@ -24,12 +25,12 @@ object GroupRatioBlendedConstants {
   val investorGroups = Seq("investment1", "investment2", "investment3")
 
   val groupRatioBlendedModel = GroupRatioBlendedModel(
-    election = "elect",
+    election = Elect,
     investorGroups = investorGroups
   )
 
   val groupRatioBlendedJson = Json.obj(
-    "election" -> "elect",
+    "election" -> Elect,
     "investorGroups" -> investorGroups
   )
 }

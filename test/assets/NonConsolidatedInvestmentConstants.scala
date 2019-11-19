@@ -16,6 +16,7 @@
 
 package assets
 
+import models.Elect
 import models.abbreviatedReturn.NonConsolidatedInvestmentModel
 import play.api.libs.json.Json
 
@@ -24,12 +25,12 @@ object NonConsolidatedInvestmentConstants {
   val consolidatedInvestments = Seq("investment1", "investment2", "investment3")
 
   val nonConsolidatedInvestmentModel = NonConsolidatedInvestmentModel(
-    election = "elect",
+    election = Elect,
     nonConsolidatedInvestments = consolidatedInvestments
   )
 
   val nonConsolidatedInvestmentJson = Json.obj(
-    "election" -> "elect",
+    "election" -> Elect,
     "nonConsolidatedInvestments" -> consolidatedInvestments
   )
 }

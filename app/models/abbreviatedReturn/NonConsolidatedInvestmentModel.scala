@@ -16,9 +16,10 @@
 
 package models.abbreviatedReturn
 
+import models.ElectionDecision
 import play.api.libs.json.Json
 
-case class NonConsolidatedInvestmentModel(election: String,
+case class NonConsolidatedInvestmentModel(election: ElectionDecision,
                                           nonConsolidatedInvestments: Seq[String])
 
 object NonConsolidatedInvestmentModel {

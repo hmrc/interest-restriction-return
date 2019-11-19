@@ -16,9 +16,10 @@
 
 package models.abbreviatedReturn
 
+import models.ElectionDecision
 import play.api.libs.json.Json
 
-case class GroupLevelElectionsModel(groupRatioElection: String,
+case class GroupLevelElectionsModel(groupRatioElection: ElectionDecision,
                                     groupRatioBlended: Option[GroupRatioBlendedModel],
                                     groupEBITDAChargeableGains: Option[Boolean],
                                     interestAllowanceAlternativeCalculation: Option[Boolean],

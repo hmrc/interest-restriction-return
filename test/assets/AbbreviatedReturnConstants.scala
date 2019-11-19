@@ -32,12 +32,12 @@ object AbbreviatedReturnConstants {
     "isReportingCompanyUltimateParent" -> true,
     "parentCompany" -> parentCompanyJson,
     "groupCompanyDetails" -> groupCompanyDetailsJson,
-    "submissionType" -> Original.toString,
+    "submissionType" -> Original,
     "revisedReturnDetails" -> "revised details",
     "groupLevelElections" -> groupLevelElectionsJson,
     "ukCompanies" -> Seq(ukCompanyJson)
   )
-S
+
   val abbreviatedReturnModel = AbbreviatedReturnModel(
     agentDetails = agentDetailsModel,
     isReportingCompanyUltimateParent = true,

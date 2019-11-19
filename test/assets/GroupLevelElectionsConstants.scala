@@ -20,12 +20,13 @@ import models.abbreviatedReturn.GroupLevelElectionsModel
 import assets.GroupRatioBlendedConstants._
 import assets.NonConsolidatedInvestmentConstants._
 import assets.ConsolidatedPartnershipConstants._
+import models.Elect
 import play.api.libs.json.Json
 
 object GroupLevelElectionsConstants {
 
   val groupLevelElectionsJson = Json.obj(
-    "groupRatioElection" -> "elect",
+    "groupRatioElection" -> Elect,
     "groupRatioBlended" -> groupRatioBlendedModel,
     "groupEBITDAChargeableGains" -> true,
     "interestAllowanceAlternativeCalculation" -> true,
@@ -34,7 +35,7 @@ object GroupLevelElectionsConstants {
   )
 
   val groupLevelElectionsModel = GroupLevelElectionsModel(
-    groupRatioElection = "elect",
+    groupRatioElection = Elect,
     groupRatioBlended = Some(groupRatioBlendedModel),
     groupEBITDAChargeableGains = Some(true),
     interestAllowanceAlternativeCalculation = Some(true),
