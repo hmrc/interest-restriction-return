@@ -35,6 +35,8 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
   val maxCompanyNameLength = 160
   val utrLength = 10
   val crnLength = 8
+  val electString = "elect"
+  val revokeString = "revoke"
 
   case class AgentDetailsModel(agentActingOnBehalfOfCompany: Boolean = true,
                                agentName: Option[String] = Some("Agent Name"))
@@ -112,7 +114,7 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
     implicit val writes = Json.writes[InvestorGroup]
   }
 
-  case class GroupRatioBlended(election: Option[String] = Some("elect"),
+  case class GroupRatioBlended(election: Option[String] = Some(electString),
                                investorGroups: Option[Seq[InvestorGroup]] = Some(Seq(InvestorGroup())))
 
   object GroupRatioBlended {
@@ -125,7 +127,7 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
     implicit val writes = Json.writes[Investment]
   }
 
-  case class InterestAllowanceNonConsolidatedInvestment(election: Option[String] = Some("elect"),
+  case class InterestAllowanceNonConsolidatedInvestment(election: Option[String] = Some(electString),
                                                         nonConsolidatedInvestments: Option[Seq[Investment]] = Some(Seq(Investment())))
 
   object InterestAllowanceNonConsolidatedInvestment {
@@ -145,7 +147,7 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
     implicit val writes = Json.writes[InterestAllowanceConsolidatedPartnership]
   }
 
-  case class GroupLevelElections(groupRatioElection: Option[String] = Some("elect"),
+  case class GroupLevelElections(groupRatioElection: Option[String] = Some(electString),
                                  groupRatioBlended: Option[GroupRatioBlended] = Some(GroupRatioBlended()),
                                  groupEBITDAChargeableGains: Option[Boolean] = Some(true),
                                  interestAllowanceAlternativeCalculation: Option[Boolean] = Some(true),
@@ -319,12 +321,23 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
         validate(json) shouldBe true
       }
 
+      "Validated a successful JSON payload groupRatioElection election is revoke" in {
+
+        val json = Json.toJson(AbbreviatedReturnModel(
+          groupLevelElections = Some(GroupLevelElections(
+            groupRatioElection = Some(revokeString)
+          ))
+        ))
+
+        validate(json) shouldBe true
+      }
+
       "Validated a successful JSON payload groupRatioBlended election is revoke" in {
 
         val json = Json.toJson(AbbreviatedReturnModel(
           groupLevelElections = Some(GroupLevelElections(
             groupRatioBlended = Some(GroupRatioBlended(
-              election = Some("revoke")
+              election = Some(revokeString)
             ))
           ))
         ))
@@ -337,7 +350,7 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
         val json = Json.toJson(AbbreviatedReturnModel(
           groupLevelElections = Some(GroupLevelElections(
             interestAllowanceNonConsolidatedInvestment = Some(InterestAllowanceNonConsolidatedInvestment(
-              election = Some("revoke")
+              election = Some(revokeString)
             ))
           ))
         ))
@@ -1127,7 +1140,17 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
             ))
 
             validate(json) shouldBe false
+          }
 
+          "is None" in {
+
+            val json = Json.toJson(AbbreviatedReturnModel(
+              groupLevelElections = Some(GroupLevelElections(
+                groupRatioElection = None
+              ))
+            ))
+
+            validate(json) shouldBe false
           }
         }
 

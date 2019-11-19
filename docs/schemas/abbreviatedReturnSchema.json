@@ -274,6 +274,9 @@
           "additionalProperties": false
         }
       },
+      "required": [
+        "groupRatioElection"
+      ],
       "additionalProperties": false
     }
   },
