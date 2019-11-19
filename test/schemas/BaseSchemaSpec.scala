@@ -21,6 +21,7 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.libs.json.{Json, Writes}
 import utils.SchemaValidation
 
+//noinspection ScalaStyle
 trait BaseSchemaSpec extends WordSpec with Matchers with GuiceOneAppPerSuite with SchemaValidation {
 
   val maxAgentNameLength = 160
