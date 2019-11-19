@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "utr": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 10,
+      "pattern": "[0-9]{10}"
+    },
+    "companyName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "companyNameNonUk": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "crn": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 8,
+      "pattern": "[0-9]{8}|[A-z]{2}[0-9]{6}"
+    },
+    "crnNonUk": {
+      "type": "string",
+      "minLength": 1
+    },
+    "election": {
+      "type": "string",
+      "enum": [
+        "elect",
+        "revoke"
+      ]
+    }
+  }
+}
+
+

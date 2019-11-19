@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "agentDetails": {
+      "$ref": "subSchemas/agentDetails.json"
+    },
+    "isReportingCompanyUltimateParent": {
+      "type": "boolean"
+    },
+    "parentCompany": {
+      "$ref": "subSchemas/parentCompany.json"
+    },
+    "groupCompanyDetails": {
+      "$ref": "subSchemas/groupCompanyDetails.json"
+    },
+    "submissionType": {
+      "type": "string",
+      "enum": [
+        "original",
+        "revised"
+      ]
+    },
+    "revisedReturnDetails": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ukCompanies": {
+      "$ref": "subSchemas/ukCompanies.json"
+    },
+    "groupLevelElections": {
+      "$ref": "subSchemas/groupLevelElections.json"
+    }
+  },
+  "required": [
+    "agentDetails",
+    "isReportingCompanyUltimateParent",
+    "parentCompany",
+    "groupCompanyDetails",
+    "submissionType",
+    "ukCompanies"
+  ],
+  "additionalProperties": false
+}

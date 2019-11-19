@@ -1,0 +1,27 @@
+{
+  "type": "object",
+  "properties": {
+    "companyName": {
+      "$ref": "definitions.json#/definitions/companyName"
+    },
+    "utr": {
+      "$ref": "definitions.json#/definitions/utr"
+    },
+    "crn": {
+      "$ref": "definitions.json#/definitions/crn"
+    },
+    "sameAsUltimateParent": {
+      "type": "boolean"
+    },
+    "reportingCompanyDeemed": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "companyName",
+    "utr",
+    "sameAsUltimateParent",
+    "reportingCompanyDeemed"
+  ],
+  "additionalProperties": false
+}

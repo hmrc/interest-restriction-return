@@ -16,55 +16,12 @@
 
 package schemas
 
-import org.scalatest.{Matchers, WordSpec}
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.libs.json.{JsValue, Json}
-import utils.SchemaValidation
 
-class ReportingCompanyJsonSchema extends WordSpec with Matchers with GuiceOneAppPerSuite {
+class ReportingCompanySchemaSpec extends BaseSchemaSpec {
 
-  val schemaValidation = new SchemaValidation
-
-  def validate(json: JsValue): Boolean = {
-    schemaValidation.validateJson("reportingCompanyJsonSchema.json", json)
-  }
-
-  val maxCompanyNameLength = 160
-  val utrLength = 10
-  val crnLength = 8
-
-  case class AgentDetails(agentActingOnBehalfOfCompany: Option[Boolean] = Some(true),
-                          agentName: Option[String] = Some("Agent K"))
-
-  object AgentDetails {
-    implicit val writes = Json.writes[AgentDetails]
-  }
-
-  case class ReportingCompany(companyName: Option[String] = Some("MIB Ltd"),
-                              utr: Option[String] = Some("1234567890"),
-                              crn: Option[String] = Some("12345678"),
-                              sameAsUltimateParent: Option[Boolean] = Some(false),
-                              reportingCompanyDeemed: Option[Boolean] = Some(true))
-
-  object ReportingCompany {
-    implicit val writes = Json.writes[ReportingCompany]
-  }
-
-  case class AuthorisingCompanyModel(companyName: Option[String] = Some("cde ltd"),
-                                     utr: Option[String] = Some("1234567890"))
-
-  object AuthorisingCompanyModel {
-    implicit val writes = Json.writes[AuthorisingCompanyModel]
-  }
-
-  case class AppointReportingCompanyModel(agentDetails: Option[AgentDetails] = Some(AgentDetails()),
-                                          reportingCompany: Option[ReportingCompany] = Some(ReportingCompany()),
-                                          authorisingCompanies: Option[Seq[AuthorisingCompanyModel]] = Some(Seq(AuthorisingCompanyModel())),
-                                          declaration: Boolean = true)
-
-  object AppointReportingCompanyModel {
-    implicit val writes = Json.writes[AppointReportingCompanyModel]
-  }
+  def validate(json: JsValue): Boolean =
+    validateJson("reportingCompanySchema.json", json)
 
   "ReportingCompany Json Schema" should {
 
