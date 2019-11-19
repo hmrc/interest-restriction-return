@@ -15,7 +15,7 @@
           "$ref": "definitions.json#/definitions/crn"
         },
         "otherUkTaxReference": {
-          "type": "string"
+          "$ref": "definitions.json#/definitions/utr"
         }
       },
       "required": [
