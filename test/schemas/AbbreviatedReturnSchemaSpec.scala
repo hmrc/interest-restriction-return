@@ -16,161 +16,13 @@
 
 package schemas
 
-import org.scalatest.{Matchers, WordSpec}
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.Logger
-import play.api.libs.json.{JsValue, Json, Writes}
-
-import utils.SchemaValidation
+import play.api.libs.json.{JsValue, Json}
 
 //noinspection ScalaStyle
-class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPerSuite with SchemaValidation {
+class AbbreviatedReturnSchemaSpec extends BaseSchemaSpec {
 
-  def validate(json: JsValue): Boolean = {
-    Logger.debug(s"Json to validate: $json")
+  def validate(json: JsValue): Boolean =
     validateJson("abbreviatedReturnSchema.json", json)
-  }
-
-  val maxAgentNameLength = 160
-  val maxCompanyNameLength = 160
-  val utrLength = 10
-  val crnLength = 8
-  val electString = "elect"
-  val revokeString = "revoke"
-
-  case class AgentDetailsModel(agentActingOnBehalfOfCompany: Boolean = true,
-                               agentName: Option[String] = Some("Agent Name"))
-
-  object AgentDetailsModel {
-    implicit val writes = Json.writes[AgentDetailsModel]
-  }
-
-  sealed trait UltimateParent
-
-  case class UkCompany(registeredCompanyName: Option[String] = Some("cde ltd"),
-                       knownAs: Option[String] = Some("efg"),
-                       utr: Option[String] = Some("1234567890"),
-                       crn: Option[String] = Some("AB123456"),
-                       otherUkTaxReference: Option[String] = Some("1234567890")
-                      ) extends UltimateParent
-
-  object UkCompany {
-    implicit val writes = Json.writes[UkCompany]
-  }
-
-  case class NonUkCompany(registeredCompanyName: Option[String] = Some("cde ltd"),
-                          knownAs: Option[String] = Some("efg"),
-                          countryOfIncorporation: Option[String] = Some("US"),
-                          crn: Option[String] = Some("AB123456")
-                         ) extends UltimateParent
-
-  object NonUkCompany {
-    implicit val writes = Json.writes[NonUkCompany]
-  }
-
-  object UltimateParent {
-    implicit def writes: Writes[UltimateParent] = Writes {
-      case x: UkCompany => Json.toJson(x)(UkCompany.writes)
-      case x: NonUkCompany => Json.toJson(x)(NonUkCompany.writes)
-    }
-  }
-
-  case class DeemedParent(companyName: Option[String] = Some("name"), utr: Option[String] = Some("1111111111"))
-
-  object DeemedParent {
-    implicit val writes = Json.writes[DeemedParent]
-  }
-
-  case class ParentCompany(ultimateParent: Option[UltimateParent] = Some(UkCompany()), deemedParent: Option[Seq[DeemedParent]] = None)
-
-  object ParentCompany {
-    implicit val writes = Json.writes[ParentCompany]
-  }
-
-  case class UKCompanies(companyName: Option[String] = Some("name"), utr: Option[String] = Some("1111111111"))
-
-  object UKCompanies {
-    implicit val writes = Json.writes[UKCompanies]
-  }
-
-  case class AccountingPeriod(startDate: Option[String] = Some("1111-11-11"),
-                              endDate: Option[String] = Some("1111-11-11"))
-
-  object AccountingPeriod {
-    implicit val writes = Json.writes[AccountingPeriod]
-  }
-
-  case class GroupCompanyDetails(totalCompanies: Option[Int] = Some(1),
-                                 inclusionOfNonConsentingCompanies: Option[Boolean] = Some(true),
-                                 accountingPeriod: Option[AccountingPeriod] = Some(AccountingPeriod()))
-
-  object GroupCompanyDetails {
-    implicit val writes = Json.writes[GroupCompanyDetails]
-  }
-
-  case class InvestorGroup(groupName: Option[String] = Some("Group"))
-
-  object InvestorGroup {
-    implicit val writes = Json.writes[InvestorGroup]
-  }
-
-  case class GroupRatioBlended(election: Option[String] = Some(electString),
-                               investorGroups: Option[Seq[InvestorGroup]] = Some(Seq(InvestorGroup())))
-
-  object GroupRatioBlended {
-    implicit val writes = Json.writes[GroupRatioBlended]
-  }
-
-  case class Investment(investmentName: Option[String] = Some("Name"))
-
-  object Investment {
-    implicit val writes = Json.writes[Investment]
-  }
-
-  case class InterestAllowanceNonConsolidatedInvestment(election: Option[String] = Some(electString),
-                                                        nonConsolidatedInvestments: Option[Seq[Investment]] = Some(Seq(Investment())))
-
-  object InterestAllowanceNonConsolidatedInvestment {
-    implicit val writes = Json.writes[InterestAllowanceNonConsolidatedInvestment]
-  }
-
-  case class Partnership(partnershipName: Option[String] = Some("Name"))
-
-  object Partnership {
-    implicit val writes = Json.writes[Partnership]
-  }
-
-  case class InterestAllowanceConsolidatedPartnership(election: Option[Boolean] = Some(true),
-                                                      consolidatedPartnerships: Option[Seq[Partnership]] = Some(Seq(Partnership())))
-
-  object InterestAllowanceConsolidatedPartnership {
-    implicit val writes = Json.writes[InterestAllowanceConsolidatedPartnership]
-  }
-
-  case class GroupLevelElections(groupRatioElection: Option[String] = Some(electString),
-                                 groupRatioBlended: Option[GroupRatioBlended] = Some(GroupRatioBlended()),
-                                 groupEBITDAChargeableGains: Option[Boolean] = Some(true),
-                                 interestAllowanceAlternativeCalculation: Option[Boolean] = Some(true),
-                                 interestAllowanceNonConsolidatedInvestment: Option[InterestAllowanceNonConsolidatedInvestment] = Some(InterestAllowanceNonConsolidatedInvestment()),
-                                 interestAllowanceConsolidatedPartnership: Option[InterestAllowanceConsolidatedPartnership] = Some(InterestAllowanceConsolidatedPartnership())
-                                )
-
-  object GroupLevelElections {
-    implicit val writes = Json.writes[GroupLevelElections]
-  }
-
-  case class AbbreviatedReturnModel(agentDetails: Option[AgentDetailsModel] = Some(AgentDetailsModel()),
-                                    isReportingCompanyUltimateParent: Option[Boolean] = Some(true),
-                                    parentCompany: Option[ParentCompany] = Some(ParentCompany()),
-                                    groupCompanyDetails: Option[GroupCompanyDetails] = Some(GroupCompanyDetails()),
-                                    submissionType: Option[String] = Some("original"),
-                                    revisedReturnDetails: Option[String] = Some("asdfghj"),
-                                    groupLevelElections: Option[GroupLevelElections] = Some(GroupLevelElections()),
-                                    ukCompanies: Option[Seq[UKCompanies]] = Some(Seq(UKCompanies())))
-
-  object AbbreviatedReturnModel {
-    implicit val writes = Json.writes[AbbreviatedReturnModel]
-  }
 
   "AbbreviatedReturn Json Schema" should {
 
@@ -227,8 +79,8 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
       "Validated a successful JSON payload with no optional fields" in {
 
         val json = Json.toJson(AbbreviatedReturnModel(
-          agentDetails = Some(AgentDetailsModel(
-            agentActingOnBehalfOfCompany = false,
+          agentDetails = Some(AgentDetails(
+            agentActingOnBehalfOfCompany = Some(false),
             agentName = None
           )),
           parentCompany = Some(ParentCompany(Some(
@@ -383,31 +235,6 @@ class AbbreviatedReturnSchema extends WordSpec with Matchers with GuiceOneAppPer
           ))
 
           validate(json) shouldBe false
-        }
-
-        "agentName" when {
-
-          s"is supplied but blank" in {
-
-            val json = Json.toJson(AbbreviatedReturnModel(
-              agentDetails = Some(AgentDetailsModel(
-                agentName = Some("")
-              ))
-            ))
-
-            validate(json) shouldBe false
-          }
-
-          s"is supplied but exceeds $maxAgentNameLength" in {
-
-            val json = Json.toJson(AbbreviatedReturnModel(
-              agentDetails = Some(AgentDetailsModel(
-                agentName = Some("A" * (maxAgentNameLength + 1))
-              ))
-            ))
-
-            validate(json) shouldBe false
-          }
         }
       }
 

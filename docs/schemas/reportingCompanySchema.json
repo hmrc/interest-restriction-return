@@ -3,46 +3,10 @@
   "type": "object",
   "properties": {
     "agentDetails": {
-      "type": "object",
-      "properties": {
-        "agentActingOnBehalfOfCompany": {
-          "type": "boolean"
-        },
-        "agentName": {
-          "$ref": "definitions.json#/definitions/agentName"
-        }
-      },
-      "required": [
-        "agentActingOnBehalfOfCompany"
-      ],
-      "additionalProperties": false
+      "$ref": "subSchemas/agentDetails.json"
     },
     "reportingCompany": {
-      "type": "object",
-      "properties": {
-        "companyName": {
-          "$ref": "definitions.json#/definitions/companyName"
-        },
-        "utr": {
-          "$ref": "definitions.json#/definitions/utr"
-        },
-        "crn": {
-          "$ref": "definitions.json#/definitions/crn"
-        },
-        "sameAsUltimateParent": {
-          "type": "boolean"
-        },
-        "reportingCompanyDeemed": {
-          "type": "boolean"
-        }
-      },
-      "required": [
-        "companyName",
-        "utr",
-        "sameAsUltimateParent",
-        "reportingCompanyDeemed"
-      ],
-      "additionalProperties": false
+      "$ref": "subSchemas/reportingCompany.json"
     },
     "authorisingCompanies": {
       "type": "array",
@@ -51,10 +15,10 @@
         "type": "object",
         "properties": {
           "companyName": {
-            "$ref": "definitions.json#/definitions/companyName"
+            "$ref": "subSchemas/definitions.json#/definitions/companyName"
           },
           "utr": {
-            "$ref": "definitions.json#/definitions/utr"
+            "$ref": "subSchemas/definitions.json#/definitions/utr"
           }
         },
         "required": [

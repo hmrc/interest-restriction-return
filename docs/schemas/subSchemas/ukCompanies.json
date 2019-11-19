@@ -1,0 +1,20 @@
+{
+  "type": "array",
+  "minItems": 1,
+  "items": {
+    "type": "object",
+    "properties": {
+      "companyName": {
+        "$ref": "definitions.json#/definitions/companyName"
+      },
+      "utr": {
+        "$ref": "definitions.json#/definitions/utr"
+      }
+    },
+    "required": [
+      "companyName",
+      "utr"
+    ],
+    "additionalProperties": false
+  }
+}

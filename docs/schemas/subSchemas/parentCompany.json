@@ -1,0 +1,28 @@
+{
+  "type": "object",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "ultimateParent": {
+          "type": "object",
+          "oneOf": [
+            {
+              "$ref": "ultimateParent.json#/definitions/uk"
+            },
+            {
+              "$ref": "ultimateParent.json#/definitions/nonUk"
+            }
+          ]
+        }
+      },
+      "required": [
+        "ultimateParent"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "$ref": "deemedParent.json#/definitions/deemedParent"
+    }
+  ]
+}

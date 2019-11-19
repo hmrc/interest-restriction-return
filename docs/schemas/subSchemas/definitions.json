@@ -17,11 +17,6 @@
       "minLength": 1,
       "maxLength": 160
     },
-    "agentName": {
-      "type": "string",
-      "minLength": 1,
-      "maxLength": 160
-    },
     "crn": {
       "type": "string",
       "minLength": 8,

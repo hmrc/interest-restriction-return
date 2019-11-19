@@ -37,6 +37,7 @@ trait SchemaValidation {
   }
 
   def validateJson(schemaName: String, json: JsValue): Boolean = {
+    Logger.debug(s"Json to validate: $json")
     val jsonParser = jsonFactory.createParser(json.toString)
     val jsonNode: JsonNode = jsonMapper.readTree(jsonParser)
     val result: ProcessingReport = loadRequestSchema(schemaName).validate(jsonNode)
