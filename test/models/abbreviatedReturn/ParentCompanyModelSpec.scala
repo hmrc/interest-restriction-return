@@ -14,22 +14,31 @@
  * limitations under the License.
  */
 
-package assets
+package models.abbreviatedReturn
 
-import models.AgentDetailsModel
+import assets.ParentCompanyConstants._
+import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 
-object AgentDetailsConstants {
+class ParentCompanyModelSpec extends WordSpec with Matchers {
 
-  val agentName = "some agent"
+  "ParentCompanyModel" must {
 
-  val agentDetailsJson = Json.obj(
-    "agentActingOnBehalfOfCompany" -> true,
-    "agentName" -> agentName
-  )
+    "correctly write to json" in {
 
-  val agentDetailsModel = AgentDetailsModel(
-    agentActingOnBehalfOfCompany = true,
-    agentName = Some(agentName)
-  )
+      val expectedValue = parentCompanyJson
+      val actualValue = Json.toJson(parentCompanyModel)
+
+      actualValue shouldBe expectedValue
+    }
+
+    "correctly read from Json" in {
+
+      val expectedValue = parentCompanyModel
+      val actualValue = parentCompanyJson.as[ParentCompanyModel]
+
+      actualValue shouldBe expectedValue
+    }
+  }
+
 }

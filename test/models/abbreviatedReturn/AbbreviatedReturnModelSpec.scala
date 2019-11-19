@@ -14,22 +14,31 @@
  * limitations under the License.
  */
 
-package assets
+package models.abbreviatedReturn
 
-import models.AgentDetailsModel
+import assets.AbbreviatedReturnConstants._
+import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 
-object AgentDetailsConstants {
+class AbbreviatedReturnModelSpec extends WordSpec with Matchers {
 
-  val agentName = "some agent"
+  "AbbreviatedReturnModel" must {
 
-  val agentDetailsJson = Json.obj(
-    "agentActingOnBehalfOfCompany" -> true,
-    "agentName" -> agentName
-  )
+    "correctly write to json" in {
 
-  val agentDetailsModel = AgentDetailsModel(
-    agentActingOnBehalfOfCompany = true,
-    agentName = Some(agentName)
-  )
+      val expectedValue = abbreviatedReturnJson
+      val actualValue = Json.toJson(abbreviatedReturnModel)
+
+      actualValue shouldBe expectedValue
+    }
+
+    "correctly read from Json" in {
+
+      val expectedValue = abbreviatedReturnModel
+      val actualValue = abbreviatedReturnJson.as[AbbreviatedReturnModel]
+
+      actualValue shouldBe expectedValue
+    }
+  }
+
 }

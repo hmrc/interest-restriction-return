@@ -14,13 +14,22 @@
  * limitations under the License.
  */
 
-package models.appointReportingCompany
+package assets
 
+import models.abbreviatedReturn.NonConsolidatedInvestmentModel
 import play.api.libs.json.Json
 
-case class AgentDetailsModel(agentActingOnBehalfOfCompany: Boolean,
-                             agentName: Option[String])
+object NonConsolidatedInvestmentConstants {
 
-object AgentDetailsModel {
-  implicit val format = Json.format[AgentDetailsModel]
+  val consolidatedInvestments = Seq("investment1", "investment2", "investment3")
+
+  val nonConsolidatedInvestmentModel = NonConsolidatedInvestmentModel(
+    election = "elect",
+    nonConsolidatedInvestments = consolidatedInvestments
+  )
+
+  val nonConsolidatedInvestmentJson = Json.obj(
+    "election" -> "elect",
+    "nonConsolidatedInvestments" -> consolidatedInvestments
+  )
 }

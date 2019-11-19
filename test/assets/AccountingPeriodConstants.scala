@@ -16,20 +16,21 @@
 
 package assets
 
-import models.AgentDetailsModel
+import models.abbreviatedReturn.AccountingPeriodModel
 import play.api.libs.json.Json
 
-object AgentDetailsConstants {
+object AccountingPeriodConstants {
 
-  val agentName = "some agent"
+  val startDate = "11-11-1111"
+  val endDate = "11-11-1111"
 
-  val agentDetailsJson = Json.obj(
-    "agentActingOnBehalfOfCompany" -> true,
-    "agentName" -> agentName
+  val accountingPeriodModel = AccountingPeriodModel(
+    startDate = startDate,
+    endDate = endDate
   )
 
-  val agentDetailsModel = AgentDetailsModel(
-    agentActingOnBehalfOfCompany = true,
-    agentName = Some(agentName)
+  val accountingPeriodJson = Json.obj(
+    "startDate" -> startDate,
+    "endDate" -> endDate
   )
 }

@@ -16,20 +16,20 @@
 
 package assets
 
-import models.AgentDetailsModel
+import models.abbreviatedReturn.ConsolidatedPartnershipModel
 import play.api.libs.json.Json
 
-object AgentDetailsConstants {
+object ConsolidatedPartnershipConstants {
 
-  val agentName = "some agent"
+  val consolidatedPartnerships = Seq("investment1", "investment2", "investment3")
 
-  val agentDetailsJson = Json.obj(
-    "agentActingOnBehalfOfCompany" -> true,
-    "agentName" -> agentName
+  val consolidatedPartnershipsModel = ConsolidatedPartnershipModel(
+    election = true,
+    consolidatedPartnerships = consolidatedPartnerships
   )
 
-  val agentDetailsModel = AgentDetailsModel(
-    agentActingOnBehalfOfCompany = true,
-    agentName = Some(agentName)
+  val consolidatedPartnershipsJson = Json.obj(
+    "election" -> true,
+    "consolidatedPartnerships" -> consolidatedPartnerships
   )
 }

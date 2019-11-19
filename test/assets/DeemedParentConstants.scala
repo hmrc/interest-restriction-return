@@ -16,20 +16,20 @@
 
 package assets
 
-import models.AgentDetailsModel
+import models.abbreviatedReturn.DeemedParentModel
 import play.api.libs.json.Json
 
-object AgentDetailsConstants {
+object DeemedParentConstants extends BaseConstants {
 
-  val agentName = "some agent"
+  val companyName = "some company"
 
-  val agentDetailsJson = Json.obj(
-    "agentActingOnBehalfOfCompany" -> true,
-    "agentName" -> agentName
+  val deemedParentModel = DeemedParentModel(
+    companyName = companyName,
+    utr = Some(utr)
   )
 
-  val agentDetailsModel = AgentDetailsModel(
-    agentActingOnBehalfOfCompany = true,
-    agentName = Some(agentName)
+  val deemedParentJson = Json.obj(
+    "companyName" -> companyName,
+    "utr" -> utr
   )
 }

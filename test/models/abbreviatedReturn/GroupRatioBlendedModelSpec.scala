@@ -14,30 +14,31 @@
  * limitations under the License.
  */
 
-package models.appointReportingCompany
+package models.abbreviatedReturn
 
+import assets.GroupRatioBlendedConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
-import assets.AgentDetailsConstants._
 
-class AgentDetailsModelSpec extends WordSpec with Matchers {
+class GroupRatioBlendedModelSpec extends WordSpec with Matchers {
 
-  "AgentDetailsModel" must {
+  "GroupRatioBlendedModel" must {
 
     "correctly write to json" in {
 
-      val expectedValue = agentDetailsJson
-      val actualValue = Json.toJson(agentDetailsModel)
+      val expectedValue = groupRatioBlendedJson
+      val actualValue = Json.toJson(groupRatioBlendedModel)
 
       actualValue shouldBe expectedValue
     }
 
     "correctly read from Json" in {
 
-      val expectedValue = agentDetailsModel
-      val actualValue = agentDetailsJson.as[AgentDetailsModel]
+      val expectedValue = groupRatioBlendedModel
+      val actualValue = groupRatioBlendedJson.as[GroupRatioBlendedModel]
 
       actualValue shouldBe expectedValue
     }
   }
 }
+

@@ -14,22 +14,13 @@
  * limitations under the License.
  */
 
-package assets
+package models
 
-import models.AgentDetailsModel
 import play.api.libs.json.Json
 
-object AgentDetailsConstants {
+case class AgentDetailsModel(agentActingOnBehalfOfCompany: Boolean,
+                             agentName: Option[String])
 
-  val agentName = "some agent"
-
-  val agentDetailsJson = Json.obj(
-    "agentActingOnBehalfOfCompany" -> true,
-    "agentName" -> agentName
-  )
-
-  val agentDetailsModel = AgentDetailsModel(
-    agentActingOnBehalfOfCompany = true,
-    agentName = Some(agentName)
-  )
+object AgentDetailsModel {
+  implicit val format = Json.format[AgentDetailsModel]
 }
