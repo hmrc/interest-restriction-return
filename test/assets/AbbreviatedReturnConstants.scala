@@ -16,14 +16,14 @@
 
 package assets
 
-import models.AgentDetailsModel
-import models.abbreviatedReturn.AbbreviatedReturnModel
-import play.api.libs.json.Json
 import assets.AgentDetailsConstants._
-import assets.ParentCompanyConstants._
 import assets.GroupCompanyDetailsConstants._
 import assets.GroupLevelElectionsConstants._
+import assets.ParentCompanyConstants._
 import assets.UkCompanyConstants._
+import models.Original
+import models.abbreviatedReturn.AbbreviatedReturnModel
+import play.api.libs.json.Json
 
 object AbbreviatedReturnConstants {
 
@@ -32,18 +32,18 @@ object AbbreviatedReturnConstants {
     "isReportingCompanyUltimateParent" -> true,
     "parentCompany" -> parentCompanyJson,
     "groupCompanyDetails" -> groupCompanyDetailsJson,
-    "submissionType" -> "submission type",
+    "submissionType" -> Original.toString,
     "revisedReturnDetails" -> "revised details",
     "groupLevelElections" -> groupLevelElectionsJson,
     "ukCompanies" -> Seq(ukCompanyJson)
   )
-
+S
   val abbreviatedReturnModel = AbbreviatedReturnModel(
     agentDetails = agentDetailsModel,
     isReportingCompanyUltimateParent = true,
     parentCompany = parentCompanyModel,
     groupCompanyDetails = groupCompanyDetailsModel,
-    submissionType = "submission type",
+    submissionType = Original,
     revisedReturnDetails = Some("revised details"),
     groupLevelElections = Some(groupLevelElectionsModel),
     ukCompanies = Seq(ukCompanyModel)

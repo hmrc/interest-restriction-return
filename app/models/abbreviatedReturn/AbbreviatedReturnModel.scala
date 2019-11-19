@@ -16,7 +16,7 @@
 
 package models.abbreviatedReturn
 
-import models.AgentDetailsModel
+import models.{AgentDetailsModel, SubmissionType}
 import play.api.libs.json.Json
 
 
@@ -24,7 +24,7 @@ case class AbbreviatedReturnModel(agentDetails: AgentDetailsModel,
                                   isReportingCompanyUltimateParent: Boolean,
                                   parentCompany: ParentCompanyModel,
                                   groupCompanyDetails: GroupCompanyDetailsModel,
-                                  submissionType: String,
+                                  submissionType: SubmissionType,
                                   revisedReturnDetails: Option[String],
                                   groupLevelElections: Option[GroupLevelElectionsModel],
                                   ukCompanies: Seq[UkCompanyModel])
