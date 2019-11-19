@@ -18,19 +18,28 @@ package assets
 
 import assets.UltimateParentConstants._
 import assets.DeemedParentConstants._
-import models.abbreviatedReturn.ParentCompanyModel
+import models.abbreviatedReturn.{DeemedParentModel, ParentCompanyModel}
 import play.api.libs.json.Json
 
 object ParentCompanyConstants {
 
-  val parentCompanyJson = Json.obj(
-    "ultimateParent" -> ukParentJson,
-    "deemedParent" -> Seq(deemedParentModel)
+  val parentCompanyJsonMax = Json.obj(
+    "ultimateParent" -> ukParentJsonMax,
+    "deemedParent" -> Seq(deemedParentModelMax)
   )
 
-  val parentCompanyModel = ParentCompanyModel(
-    ultimateParent = Some(ukParentModel),
-    deemedParent = Seq(deemedParentModel)
+  val parentCompanyModelMax = ParentCompanyModel(
+    ultimateParent = Some(ukParentModelMax),
+    deemedParent = Seq(deemedParentModelMax)
+  )
+
+  val parentCompanyJsonMin = Json.obj(
+    "deemedParent" -> Seq.empty[DeemedParentModel]
+  )
+
+  val parentCompanyModelMin = ParentCompanyModel(
+    ultimateParent = None,
+    deemedParent = Seq()
   )
 }
 

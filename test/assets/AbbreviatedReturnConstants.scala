@@ -27,26 +27,45 @@ import play.api.libs.json.Json
 
 object AbbreviatedReturnConstants {
 
-  val abbreviatedReturnJson = Json.obj(
-    "agentDetails" -> agentDetailsJson,
+  val abbreviatedReturnJsonMax = Json.obj(
+    "agentDetails" -> agentDetailsJsonMax,
     "isReportingCompanyUltimateParent" -> true,
-    "parentCompany" -> parentCompanyJson,
+    "parentCompany" -> parentCompanyJsonMax,
     "groupCompanyDetails" -> groupCompanyDetailsJson,
     "submissionType" -> Original,
     "revisedReturnDetails" -> "revised details",
-    "groupLevelElections" -> groupLevelElectionsJson,
+    "groupLevelElections" -> groupLevelElectionsJsonMax,
     "ukCompanies" -> Seq(ukCompanyJson)
   )
 
-  val abbreviatedReturnModel = AbbreviatedReturnModel(
-    agentDetails = agentDetailsModel,
+  val abbreviatedReturnModelMax = AbbreviatedReturnModel(
+    agentDetails = agentDetailsModelMax,
     isReportingCompanyUltimateParent = true,
-    parentCompany = parentCompanyModel,
+    parentCompany = parentCompanyModelMax,
     groupCompanyDetails = groupCompanyDetailsModel,
     submissionType = Original,
     revisedReturnDetails = Some("revised details"),
-    groupLevelElections = Some(groupLevelElectionsModel),
+    groupLevelElections = Some(groupLevelElectionsModelMax),
     ukCompanies = Seq(ukCompanyModel)
   )
 
+  val abbreviatedReturnJsonMin = Json.obj(
+    "agentDetails" -> agentDetailsJsonMin,
+    "isReportingCompanyUltimateParent" -> true,
+    "parentCompany" -> parentCompanyJsonMin,
+    "groupCompanyDetails" -> groupCompanyDetailsJson,
+    "submissionType" -> Original,
+    "ukCompanies" -> Seq(ukCompanyJson)
+  )
+
+  val abbreviatedReturnModelMin = AbbreviatedReturnModel(
+    agentDetails = agentDetailsModelMin,
+    isReportingCompanyUltimateParent = true,
+    parentCompany = parentCompanyModelMin,
+    groupCompanyDetails = groupCompanyDetailsModel,
+    submissionType = Original,
+    revisedReturnDetails = None,
+    groupLevelElections = None,
+    ukCompanies = Seq(ukCompanyModel)
+  )
 }

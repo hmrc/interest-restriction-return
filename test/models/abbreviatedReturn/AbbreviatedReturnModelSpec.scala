@@ -24,21 +24,42 @@ class AbbreviatedReturnModelSpec extends WordSpec with Matchers {
 
   "AbbreviatedReturnModel" must {
 
-    "correctly write to json" in {
+    "correctly write to json" when {
 
-      val expectedValue = abbreviatedReturnJson
-      val actualValue = Json.toJson(abbreviatedReturnModel)
+      "max values given" in {
 
-      actualValue shouldBe expectedValue
+        val expectedValue = abbreviatedReturnJsonMax
+        val actualValue = Json.toJson(abbreviatedReturnModelMax)
+
+        actualValue shouldBe expectedValue
+      }
+
+      "min values given" in {
+
+        val expectedValue = abbreviatedReturnJsonMin
+        val actualValue = Json.toJson(abbreviatedReturnModelMin)
+
+        actualValue shouldBe expectedValue
+      }
     }
 
-    "correctly read from Json" in {
+    "correctly read from Json" when {
 
-      val expectedValue = abbreviatedReturnModel
-      val actualValue = abbreviatedReturnJson.as[AbbreviatedReturnModel]
+      "max values given" in {
 
-      actualValue shouldBe expectedValue
+        val expectedValue = abbreviatedReturnModelMax
+        val actualValue = abbreviatedReturnJsonMax.as[AbbreviatedReturnModel]
+
+        actualValue shouldBe expectedValue
+      }
+
+      "min values given" in {
+
+        val expectedValue = abbreviatedReturnModelMin
+        val actualValue = abbreviatedReturnJsonMin.as[AbbreviatedReturnModel]
+
+        actualValue shouldBe expectedValue
+      }
     }
   }
-
 }

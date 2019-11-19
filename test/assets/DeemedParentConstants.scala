@@ -23,13 +23,21 @@ object DeemedParentConstants extends BaseConstants {
 
   val companyName = "some company"
 
-  val deemedParentModel = DeemedParentModel(
+  val deemedParentModelMax = DeemedParentModel(
     companyName = companyName,
     utr = Some(utr)
   )
 
-  val deemedParentJson = Json.obj(
+  val deemedParentJsonMax = Json.obj(
     "companyName" -> companyName,
     "utr" -> utr
   )
+
+  val deemedParentModelMin = DeemedParentModel(
+    companyName = companyName,
+    utr = None
+  )
+
+  val deemedParentJsonMin = Json.obj(
+    "companyName" -> companyName)
 }

@@ -25,7 +25,7 @@ object UltimateParentConstants extends BaseConstants {
   val knownAs = "something"
   val otherUkTaxReference = "other reference"
 
-  val ukParentModel = UkParentModel(
+  val ukParentModelMax = UkParentModel(
     registeredCompanyName = registeredCompanyName,
     utr = utr,
     crn = crn,
@@ -33,7 +33,7 @@ object UltimateParentConstants extends BaseConstants {
     otherUkTaxReference = Some(otherUkTaxReference)
   )
 
-  val ukParentJson = Json.obj(
+  val ukParentJsonMax = Json.obj(
     "registeredCompanyName" -> registeredCompanyName,
     "utr" -> utr,
     "crn" -> crn,
@@ -41,16 +41,43 @@ object UltimateParentConstants extends BaseConstants {
     "otherUkTaxReference" -> otherUkTaxReference
   )
 
-  val nonUkParentModel = NonUkParentModel(
+  val nonUkParentModelMax = NonUkParentModel(
     registeredCompanyName = registeredCompanyName,
     knownAs = Some(knownAs),
     countryOfIncorporation = "US",
     crn = crn
   )
 
-  val nonUkParentJson = Json.obj(
+  val nonUkParentJsonMax = Json.obj(
     "registeredCompanyName" -> registeredCompanyName,
     "knownAs" -> knownAs,
+    "countryOfIncorporation" -> "US",
+    "crn" -> crn
+  )
+
+  val ukParentModelMin = UkParentModel(
+    registeredCompanyName = registeredCompanyName,
+    utr = utr,
+    crn = crn,
+    knownAs = None,
+    otherUkTaxReference = None
+  )
+
+  val ukParentJsonMin = Json.obj(
+    "registeredCompanyName" -> registeredCompanyName,
+    "utr" -> utr,
+    "crn" -> crn
+  )
+
+  val nonUkParentModelMin = NonUkParentModel(
+    registeredCompanyName = registeredCompanyName,
+    knownAs = None,
+    countryOfIncorporation = "US",
+    crn = crn
+  )
+
+  val nonUkParentJsonMin = Json.obj(
+    "registeredCompanyName" -> registeredCompanyName,
     "countryOfIncorporation" -> "US",
     "crn" -> crn
   )

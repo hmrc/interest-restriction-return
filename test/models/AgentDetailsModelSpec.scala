@@ -24,20 +24,42 @@ class AgentDetailsModelSpec extends WordSpec with Matchers {
 
   "AgentDetailsModel" must {
 
-    "correctly write to json" in {
+    "correctly write to json" when {
 
-      val expectedValue = agentDetailsJson
-      val actualValue = Json.toJson(agentDetailsModel)
+      "max values given" in {
 
-      actualValue shouldBe expectedValue
+        val expectedValue = agentDetailsJsonMax
+        val actualValue = Json.toJson(agentDetailsModelMax)
+
+        actualValue shouldBe expectedValue
+      }
+
+      "min values given" in {
+
+        val expectedValue = agentDetailsJsonMin
+        val actualValue = Json.toJson(agentDetailsModelMin)
+
+        actualValue shouldBe expectedValue
+      }
     }
 
-    "correctly read from Json" in {
+    "correctly read from Json" when {
 
-      val expectedValue = agentDetailsModel
-      val actualValue = agentDetailsJson.as[AgentDetailsModel]
+      "max values given" in {
 
-      actualValue shouldBe expectedValue
+        val expectedValue = agentDetailsModelMax
+        val actualValue = agentDetailsJsonMax.as[AgentDetailsModel]
+
+        actualValue shouldBe expectedValue
+      }
+
+      "min values given" in {
+
+        val expectedValue = agentDetailsModelMin
+        val actualValue = agentDetailsJsonMin.as[AgentDetailsModel]
+
+        actualValue shouldBe expectedValue
+      }
     }
   }
 }

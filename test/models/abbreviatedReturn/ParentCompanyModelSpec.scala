@@ -24,21 +24,42 @@ class ParentCompanyModelSpec extends WordSpec with Matchers {
 
   "ParentCompanyModel" must {
 
-    "correctly write to json" in {
+    "correctly write to json" when {
 
-      val expectedValue = parentCompanyJson
-      val actualValue = Json.toJson(parentCompanyModel)
+      "max values given" in {
 
-      actualValue shouldBe expectedValue
+        val expectedValue = parentCompanyJsonMax
+        val actualValue = Json.toJson(parentCompanyModelMax)
+
+        actualValue shouldBe expectedValue
+      }
+
+      "min values given" in {
+
+        val expectedValue = parentCompanyJsonMin
+        val actualValue = Json.toJson(parentCompanyModelMin)
+
+        actualValue shouldBe expectedValue
+      }
     }
 
-    "correctly read from Json" in {
+    "correctly read from Json" when {
 
-      val expectedValue = parentCompanyModel
-      val actualValue = parentCompanyJson.as[ParentCompanyModel]
+      "max values given" in {
 
-      actualValue shouldBe expectedValue
+        val expectedValue = parentCompanyModelMax
+        val actualValue = parentCompanyJsonMax.as[ParentCompanyModel]
+
+        actualValue shouldBe expectedValue
+      }
+
+      "min values given" in {
+
+        val expectedValue = parentCompanyModelMin
+        val actualValue = parentCompanyJsonMin.as[ParentCompanyModel]
+
+        actualValue shouldBe expectedValue
+      }
     }
   }
-
 }

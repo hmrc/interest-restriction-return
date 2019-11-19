@@ -24,20 +24,42 @@ class DeemedParentModelSpec extends WordSpec with Matchers {
 
   "DeemedParentModel" must {
 
-    "correctly write to json" in {
+    "correctly write to json" when {
 
-      val expectedValue = deemedParentJson
-      val actualValue = Json.toJson(deemedParentModel)
+      "max values given" in {
 
-      actualValue shouldBe expectedValue
+        val expectedValue = deemedParentJsonMax
+        val actualValue = Json.toJson(deemedParentModelMax)
+
+        actualValue shouldBe expectedValue
+      }
+
+      "min values given" in {
+
+        val expectedValue = deemedParentJsonMin
+        val actualValue = Json.toJson(deemedParentModelMin)
+
+        actualValue shouldBe expectedValue
+      }
     }
 
-    "correctly read from Json" in {
+    "correctly read from Json" when {
 
-      val expectedValue = deemedParentModel
-      val actualValue = deemedParentJson.as[DeemedParentModel]
+      "max values given" in {
 
-      actualValue shouldBe expectedValue
+        val expectedValue = deemedParentModelMax
+        val actualValue = deemedParentJsonMax.as[DeemedParentModel]
+
+        actualValue shouldBe expectedValue
+      }
+
+      "min values given" in {
+
+        val expectedValue = deemedParentModelMin
+        val actualValue = deemedParentJsonMin.as[DeemedParentModel]
+
+        actualValue shouldBe expectedValue
+      }
     }
   }
 }
