@@ -19,25 +19,48 @@ package models.appointReportingCompany
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 import assets.ReportingCompanyConstants._
+import models.ReportingCompanyModel
 
 class ReportingCompanyModelSpec extends WordSpec with Matchers {
 
   "AgentDetailsModel" must {
 
-    "correctly write to json" in {
+    "correctly write to json" when {
 
-      val expectedValue = reportingCompanyJson
-      val actualValue = Json.toJson(reportingCompanyModel)
+      "max values given" in {
 
-      actualValue shouldBe expectedValue
+        val expectedValue = reportingCompanyJsonMax
+        val actualValue = Json.toJson(reportingCompanyModelMax)
+
+        actualValue shouldBe expectedValue
+      }
+
+      "min values given" in {
+
+        val expectedValue = reportingCompanyJsonMin
+        val actualValue = Json.toJson(reportingCompanyModelMin)
+
+        actualValue shouldBe expectedValue
+      }
     }
 
-    "correctly read from Json" in {
+    "correctly read from Json" when {
 
-      val expectedValue = reportingCompanyModel
-      val actualValue = reportingCompanyJson.as[ReportingCompanyModel]
+      "max values given" in {
 
-      actualValue shouldBe expectedValue
+        val expectedValue = reportingCompanyModelMax
+        val actualValue = reportingCompanyJsonMax.as[ReportingCompanyModel]
+
+        actualValue shouldBe expectedValue
+      }
+
+      "min values given" in {
+
+        val expectedValue = reportingCompanyModelMin
+        val actualValue = reportingCompanyJsonMin.as[ReportingCompanyModel]
+
+        actualValue shouldBe expectedValue
+      }
     }
   }
 }

@@ -16,9 +16,11 @@
 
 package models.abbreviatedReturn
 
+import java.time.LocalDate
+
 import play.api.libs.json.Json
 
-case class AccountingPeriodModel(startDate: String, endDate: String)
+case class AccountingPeriodModel(startDate: LocalDate, endDate: LocalDate)
 
 object AccountingPeriodModel {
   implicit val format = Json.format[AccountingPeriodModel]

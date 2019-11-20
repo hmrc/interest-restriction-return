@@ -26,7 +26,7 @@ object AppointReportingCompanyConstants {
 
   val appointReportingCompanyJson = Json.obj(
     "agentDetails" -> agentDetailsJsonMax,
-    "reportingCompany" -> reportingCompanyJson,
+    "reportingCompany" -> reportingCompanyJsonMax,
     "authorisingCompanies" -> Json.arr(
       authorisingCompanyJson
     ),
@@ -35,7 +35,7 @@ object AppointReportingCompanyConstants {
 
   val appointReportingCompanyModel = AppointReportingCompanyModel(
     agentDetails = agentDetailsModelMax,
-    reportingCompany = reportingCompanyModel,
+    reportingCompany = reportingCompanyModelMax,
     authorisingCompanies = Seq(authorisingCompanyModel),
     declaration = true
   )

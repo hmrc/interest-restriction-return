@@ -21,6 +21,7 @@ import assets.GroupCompanyDetailsConstants._
 import assets.GroupLevelElectionsConstants._
 import assets.ParentCompanyConstants._
 import assets.UkCompanyConstants._
+import assets.ReportingCompanyConstants._
 import models.Original
 import models.abbreviatedReturn.AbbreviatedReturnModel
 import play.api.libs.json.Json
@@ -29,7 +30,8 @@ object AbbreviatedReturnConstants {
 
   val abbreviatedReturnJsonMax = Json.obj(
     "agentDetails" -> agentDetailsJsonMax,
-    "isReportingCompanyUltimateParent" -> true,
+    "reportingCompany" -> reportingCompanyJsonMax,
+    "publicInfrastructure" -> true,
     "parentCompany" -> parentCompanyJsonMax,
     "groupCompanyDetails" -> groupCompanyDetailsJson,
     "submissionType" -> Original,
@@ -40,7 +42,8 @@ object AbbreviatedReturnConstants {
 
   val abbreviatedReturnModelMax = AbbreviatedReturnModel(
     agentDetails = agentDetailsModelMax,
-    isReportingCompanyUltimateParent = true,
+    reportingCompany = reportingCompanyModelMax,
+    publicInfrastructure = true,
     parentCompany = parentCompanyModelMax,
     groupCompanyDetails = groupCompanyDetailsModel,
     submissionType = Original,
@@ -51,7 +54,8 @@ object AbbreviatedReturnConstants {
 
   val abbreviatedReturnJsonMin = Json.obj(
     "agentDetails" -> agentDetailsJsonMin,
-    "isReportingCompanyUltimateParent" -> true,
+    "reportingCompany" -> reportingCompanyJsonMin,
+    "publicInfrastructure" -> true,
     "parentCompany" -> parentCompanyJsonMin,
     "groupCompanyDetails" -> groupCompanyDetailsJson,
     "submissionType" -> Original,
@@ -60,7 +64,8 @@ object AbbreviatedReturnConstants {
 
   val abbreviatedReturnModelMin = AbbreviatedReturnModel(
     agentDetails = agentDetailsModelMin,
-    isReportingCompanyUltimateParent = true,
+    reportingCompany = reportingCompanyModelMin,
+    publicInfrastructure = true,
     parentCompany = parentCompanyModelMin,
     groupCompanyDetails = groupCompanyDetailsModel,
     submissionType = Original,

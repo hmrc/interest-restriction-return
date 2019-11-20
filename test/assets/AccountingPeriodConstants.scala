@@ -16,13 +16,15 @@
 
 package assets
 
+import java.time.LocalDate
+
 import models.abbreviatedReturn.AccountingPeriodModel
 import play.api.libs.json.Json
 
 object AccountingPeriodConstants {
 
-  val startDate = "1111-11-11"
-  val endDate = "1111-11-11"
+  val startDate: LocalDate = LocalDate.of(2000,1,1)
+  val endDate: LocalDate = LocalDate.of(2010,1,1)
 
   val accountingPeriodModel = AccountingPeriodModel(
     startDate = startDate,
