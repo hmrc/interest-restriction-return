@@ -39,7 +39,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
       "Validated a successful JSON payload with NonUK Parent company" in {
 
         val json = Json.toJson(ParentCompany(
-          ultimateParent = Some(NonUkCompany())
+          ultimateParent = Some(NonUkUltimateParent())
         ))
 
         validate(json) shouldBe true
@@ -80,7 +80,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
       "Validated a successful JSON payload when otherUkTaxReference is none" in {
 
         val json = Json.toJson(ParentCompany(
-          ultimateParent = Some(UkCompany(
+          ultimateParent = Some(UkUltimateParent(
             otherUkTaxReference = None
           ))
         ))
@@ -92,7 +92,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
       "Validated a successful JSON payload when knownAs is none" in {
 
         val json = Json.toJson(ParentCompany(
-          ultimateParent = Some(UkCompany(
+          ultimateParent = Some(UkUltimateParent(
             knownAs = None
           ))
         ))
@@ -112,7 +112,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
             "is None" in {
 
               val json = Json.toJson(ParentCompany(
-                ultimateParent = Some(UkCompany(
+                ultimateParent = Some(UkUltimateParent(
                   registeredCompanyName = None
                 ))
               ))
@@ -123,7 +123,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
             s"is empty" in {
 
               val json = Json.toJson(ParentCompany(
-                ultimateParent = Some(UkCompany(
+                ultimateParent = Some(UkUltimateParent(
                   registeredCompanyName = Some("")
                 ))
               ))
@@ -134,7 +134,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
             s"is longer than $maxCompanyNameLength characters" in {
 
               val json = Json.toJson(ParentCompany(
-                ultimateParent = Some(UkCompany(
+                ultimateParent = Some(UkUltimateParent(
                   registeredCompanyName = Some("A" * (maxCompanyNameLength + 1))
                 ))
               ))
@@ -149,7 +149,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
 
               val json = Json.toJson(ParentCompany(
                 ultimateParent = Some(
-                  UkCompany(utr = Some("1" * (utrLength - 1)))
+                  UkUltimateParent(utr = Some("1" * (utrLength - 1)))
                 ))
               )
               validate(json) shouldBe false
@@ -159,7 +159,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
 
               val json = Json.toJson(ParentCompany(
                 ultimateParent = Some(
-                  UkCompany(utr = Some("1" * (utrLength + 1)))
+                  UkUltimateParent(utr = Some("1" * (utrLength + 1)))
                 ))
               )
 
@@ -170,7 +170,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
 
               val json = Json.toJson(ParentCompany(
                 ultimateParent = Some(
-                  UkCompany(utr = Some("a" * utrLength))
+                  UkUltimateParent(utr = Some("a" * utrLength))
                 ))
               )
 
@@ -181,7 +181,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
 
               val json = Json.toJson(ParentCompany(
                 ultimateParent = Some(
-                  UkCompany(utr = Some("@"))
+                  UkUltimateParent(utr = Some("@"))
                 ))
               )
               validate(json) shouldBe false
@@ -194,7 +194,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
 
               val json = Json.toJson(ParentCompany(
                 ultimateParent = Some(
-                  UkCompany(crn = Some("1" * (crnLength - 1))
+                  UkUltimateParent(crn = Some("1" * (crnLength - 1))
                   )
                 ))
               )
@@ -205,7 +205,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
 
               val json = Json.toJson(ParentCompany(
                 ultimateParent = Some(
-                  UkCompany(crn = Some("1" * (crnLength + 1)))
+                  UkUltimateParent(crn = Some("1" * (crnLength + 1)))
                 ))
               )
 
@@ -215,7 +215,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
             "starts with 1 letter" in {
               val json = Json.toJson(ParentCompany(
                 ultimateParent = Some(
-                  UkCompany(crn = Some("A" + ("1" * (crnLength - 1))))
+                  UkUltimateParent(crn = Some("A" + ("1" * (crnLength - 1))))
                 ))
               )
               validate(json) shouldBe false
@@ -224,7 +224,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
             "starts with 3 letters" in {
               val json = Json.toJson(ParentCompany(
                 ultimateParent = Some(
-                  UkCompany(crn = Some("AAA" + ("1" * (crnLength - 3))))
+                  UkUltimateParent(crn = Some("AAA" + ("1" * (crnLength - 3))))
                 ))
               )
               validate(json) shouldBe false
@@ -238,7 +238,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
 
               val json = Json.toJson(ParentCompany(
                 ultimateParent = Some(
-                  UkCompany(otherUkTaxReference = Some("1" * (utrLength - 1)))
+                  UkUltimateParent(otherUkTaxReference = Some("1" * (utrLength - 1)))
                 ))
               )
               validate(json) shouldBe false
@@ -248,7 +248,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
 
               val json = Json.toJson(ParentCompany(
                 ultimateParent = Some(
-                  UkCompany(otherUkTaxReference = Some("1" * (utrLength + 1)))
+                  UkUltimateParent(otherUkTaxReference = Some("1" * (utrLength + 1)))
                 ))
               )
               validate(json) shouldBe false
@@ -258,7 +258,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
 
               val json = Json.toJson(ParentCompany(
                 ultimateParent = Some(
-                  UkCompany(otherUkTaxReference = Some("a" * utrLength))
+                  UkUltimateParent(otherUkTaxReference = Some("a" * utrLength))
                 )
               ))
 
@@ -269,7 +269,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
 
               val json = Json.toJson(ParentCompany(
                 ultimateParent = Some(
-                  UkCompany(otherUkTaxReference = Some("@"))
+                  UkUltimateParent(otherUkTaxReference = Some("@"))
 
                 ))
               )
@@ -283,7 +283,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
             "knownAs is empty" in {
 
               val json = Json.toJson(ParentCompany(
-                ultimateParent = Some(UkCompany(
+                ultimateParent = Some(UkUltimateParent(
                   knownAs = Some("")
                 ))
               ))
@@ -294,7 +294,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
             s"is longer than $maxCompanyNameLength characters" in {
 
               val json = Json.toJson(ParentCompany(
-                ultimateParent = Some(UkCompany(
+                ultimateParent = Some(UkUltimateParent(
                   knownAs = Some("A" * (maxCompanyNameLength + 1))
                 ))
               ))
@@ -309,7 +309,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
               "is None" in {
 
                 val json = Json.toJson(ParentCompany(
-                  ultimateParent = Some(NonUkCompany(
+                  ultimateParent = Some(NonUkUltimateParent(
                     registeredCompanyName = None
                   ))
                 ))
@@ -320,7 +320,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
               s"is empty" in {
 
                 val json = Json.toJson(ParentCompany(
-                  ultimateParent = Some(NonUkCompany(
+                  ultimateParent = Some(NonUkUltimateParent(
                     registeredCompanyName = Some("")
                   ))
                 ))
@@ -331,7 +331,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
               s"is longer than $maxCompanyNameLength characters" in {
 
                 val json = Json.toJson(ParentCompany(
-                  ultimateParent = Some(NonUkCompany(
+                  ultimateParent = Some(NonUkUltimateParent(
                     registeredCompanyName = Some("A" * (maxCompanyNameLength + 1))
                   ))
                 ))
@@ -345,7 +345,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
               "is only one letter" in {
 
                 val json = Json.toJson(ParentCompany(
-                  ultimateParent = Some(NonUkCompany(
+                  ultimateParent = Some(NonUkUltimateParent(
                     countryOfIncorporation = Some("A")
                   ))
                 ))
@@ -355,7 +355,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
               "is three letters" in {
 
                 val json = Json.toJson(ParentCompany(
-                  ultimateParent = Some(NonUkCompany(
+                  ultimateParent = Some(NonUkUltimateParent(
                     countryOfIncorporation = Some("AAA")
                   ))
                 ))
@@ -365,7 +365,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
               "contains a number" in {
 
                 val json = Json.toJson(ParentCompany(
-                  ultimateParent = Some(NonUkCompany(
+                  ultimateParent = Some(NonUkUltimateParent(
                     countryOfIncorporation = Some("A1")
                   ))
                 ))
@@ -375,7 +375,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
               "contains a symbol" in {
 
                 val json = Json.toJson(ParentCompany(
-                  ultimateParent = Some(NonUkCompany(
+                  ultimateParent = Some(NonUkUltimateParent(
                     countryOfIncorporation = Some("A@")
                   ))
                 ))
@@ -388,7 +388,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
               "is None" in {
 
                 val json = Json.toJson(ParentCompany(
-                  ultimateParent = Some(NonUkCompany(
+                  ultimateParent = Some(NonUkUltimateParent(
                     crn = None
                   ))
                 ))
@@ -399,7 +399,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
               s"is empty" in {
 
                 val json = Json.toJson(ParentCompany(
-                  ultimateParent = Some(NonUkCompany(
+                  ultimateParent = Some(NonUkUltimateParent(
                     crn = Some("")
                   ))
                 ))
@@ -413,7 +413,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
               "knownAs is empty" in {
 
                 val json = Json.toJson(ParentCompany(
-                  ultimateParent = Some(NonUkCompany(
+                  ultimateParent = Some(NonUkUltimateParent(
                     knownAs = Some("")
                   ))
                 ))
@@ -425,7 +425,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
             s"is longer than $maxCompanyNameLength characters" in {
 
               val json = Json.toJson(ParentCompany(
-                ultimateParent = Some(NonUkCompany(
+                ultimateParent = Some(NonUkUltimateParent(
                   knownAs = Some("A" * (maxCompanyNameLength + 1))
                 ))
               ))

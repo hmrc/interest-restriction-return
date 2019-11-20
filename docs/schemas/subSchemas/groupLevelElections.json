@@ -2,13 +2,13 @@
     "type": "object",
     "properties": {
         "groupRatioElection": {
-            "$ref": "definitions.json#/definitions/election"
+            "$ref": "../definitions/definitions.json#/definitions/election"
         },
         "groupRatioBlended": {
             "type": "object",
             "properties": {
                 "election": {
-                    "$ref": "definitions.json#/definitions/election"
+                    "$ref": "../definitions/definitions.json#/definitions/election"
                 },
                 "investorGroups": {
                     "type": "array",
@@ -43,7 +43,7 @@
             "type": "object",
             "properties": {
                 "election": {
-                    "$ref": "definitions.json#/definitions/election"
+                    "$ref": "../definitions/definitions.json#/definitions/election"
                 },
                 "nonConsolidatedInvestments": {
                     "type": "array",

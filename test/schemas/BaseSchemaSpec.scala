@@ -40,31 +40,31 @@ trait BaseSchemaSpec extends WordSpec with Matchers with GuiceOneAppPerSuite wit
 
   sealed trait UltimateParent
 
-  case class UkCompany(registeredCompanyName: Option[String] = Some("cde ltd"),
-                       knownAs: Option[String] = Some("efg"),
-                       utr: Option[String] = Some("1234567890"),
-                       crn: Option[String] = Some("AB123456"),
-                       otherUkTaxReference: Option[String] = Some("1234567890")
+  case class UkUltimateParent(registeredCompanyName: Option[String] = Some("cde ltd"),
+                              knownAs: Option[String] = Some("efg"),
+                              utr: Option[String] = Some("1234567890"),
+                              crn: Option[String] = Some("AB123456"),
+                              otherUkTaxReference: Option[String] = Some("1234567890")
                       ) extends UltimateParent
 
-  object UkCompany {
-    implicit val writes = Json.writes[UkCompany]
+  object UkUltimateParent {
+    implicit val writes = Json.writes[UkUltimateParent]
   }
 
-  case class NonUkCompany(registeredCompanyName: Option[String] = Some("cde ltd"),
-                          knownAs: Option[String] = Some("efg"),
-                          countryOfIncorporation: Option[String] = Some("US"),
-                          crn: Option[String] = Some("AB123456")
+  case class NonUkUltimateParent(registeredCompanyName: Option[String] = Some("cde ltd"),
+                                 knownAs: Option[String] = Some("efg"),
+                                 countryOfIncorporation: Option[String] = Some("US"),
+                                 crn: Option[String] = Some("AB123456")
                          ) extends UltimateParent
 
-  object NonUkCompany {
-    implicit val writes = Json.writes[NonUkCompany]
+  object NonUkUltimateParent {
+    implicit val writes = Json.writes[NonUkUltimateParent]
   }
 
   object UltimateParent {
     implicit def writes: Writes[UltimateParent] = Writes {
-      case x: UkCompany => Json.toJson(x)(UkCompany.writes)
-      case x: NonUkCompany => Json.toJson(x)(NonUkCompany.writes)
+      case x: UkUltimateParent => Json.toJson(x)(UkUltimateParent.writes)
+      case x: NonUkUltimateParent => Json.toJson(x)(NonUkUltimateParent.writes)
     }
   }
 
@@ -74,7 +74,7 @@ trait BaseSchemaSpec extends WordSpec with Matchers with GuiceOneAppPerSuite wit
     implicit val writes = Json.writes[DeemedParent]
   }
 
-  case class ParentCompany(ultimateParent: Option[UltimateParent] = Some(UkCompany()), deemedParent: Option[Seq[DeemedParent]] = None)
+  case class ParentCompany(ultimateParent: Option[UltimateParent] = Some(UkUltimateParent()), deemedParent: Option[Seq[DeemedParent]] = None)
 
   object ParentCompany {
     implicit val writes = Json.writes[ParentCompany]
