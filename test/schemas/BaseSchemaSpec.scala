@@ -152,19 +152,6 @@ trait BaseSchemaSpec extends WordSpec with Matchers with GuiceOneAppPerSuite wit
     implicit val writes = Json.writes[GroupLevelElections]
   }
 
-  case class AbbreviatedReturnModel(agentDetails: Option[AgentDetails] = Some(AgentDetails()),
-                                    isReportingCompanyUltimateParent: Option[Boolean] = Some(true),
-                                    parentCompany: Option[ParentCompany] = Some(ParentCompany()),
-                                    groupCompanyDetails: Option[GroupCompanyDetails] = Some(GroupCompanyDetails()),
-                                    submissionType: Option[String] = Some("original"),
-                                    revisedReturnDetails: Option[String] = Some("asdfghj"),
-                                    groupLevelElections: Option[GroupLevelElections] = Some(GroupLevelElections()),
-                                    ukCompanies: Option[Seq[UKCompanies]] = Some(Seq(UKCompanies())))
-
-  object AbbreviatedReturnModel {
-    implicit val writes = Json.writes[AbbreviatedReturnModel]
-  }
-
   case class ReportingCompany(companyName: Option[String] = Some("MIB Ltd"),
                               utr: Option[String] = Some("1234567890"),
                               crn: Option[String] = Some("12345678"),
@@ -185,9 +172,23 @@ trait BaseSchemaSpec extends WordSpec with Matchers with GuiceOneAppPerSuite wit
   case class AppointReportingCompanyModel(agentDetails: Option[AgentDetails] = Some(AgentDetails()),
                                           reportingCompany: Option[ReportingCompany] = Some(ReportingCompany()),
                                           authorisingCompanies: Option[Seq[AuthorisingCompanyModel]] = Some(Seq(AuthorisingCompanyModel())),
-                                          declaration: Boolean = true)
+                                          declaration: Option[Boolean] = Some(true))
 
   object AppointReportingCompanyModel {
     implicit val writes = Json.writes[AppointReportingCompanyModel]
+  }
+
+  case class AbbreviatedReturnModel(agentDetails: Option[AgentDetails] = Some(AgentDetails()),
+                                    reportingCompany: Option[ReportingCompany] = Some(ReportingCompany()),
+                                    parentCompany: Option[ParentCompany] = Some(ParentCompany()),
+                                    publicInfrastructure: Option[Boolean] = Some(false),
+                                    groupCompanyDetails: Option[GroupCompanyDetails] = Some(GroupCompanyDetails()),
+                                    submissionType: Option[String] = Some("original"),
+                                    revisedReturnDetails: Option[String] = Some("asdfghj"),
+                                    groupLevelElections: Option[GroupLevelElections] = Some(GroupLevelElections()),
+                                    ukCompanies: Option[Seq[UKCompanies]] = Some(Seq(UKCompanies())))
+
+  object AbbreviatedReturnModel {
+    implicit val writes = Json.writes[AbbreviatedReturnModel]
   }
 }

@@ -5,11 +5,14 @@
     "agentDetails": {
       "$ref": "subSchemas/agentDetails.json"
     },
-    "isReportingCompanyUltimateParent": {
-      "type": "boolean"
+    "reportingCompany": {
+      "$ref": "subSchemas/reportingCompany.json"
     },
     "parentCompany": {
       "$ref": "subSchemas/parentCompany.json"
+    },
+    "publicInfrastructure": {
+      "type": "boolean"
     },
     "groupCompanyDetails": {
       "$ref": "subSchemas/groupCompanyDetails.json"
@@ -34,8 +37,9 @@
   },
   "required": [
     "agentDetails",
-    "isReportingCompanyUltimateParent",
+    "reportingCompany",
     "parentCompany",
+    "publicInfrastructure",
     "groupCompanyDetails",
     "submissionType",
     "ukCompanies"

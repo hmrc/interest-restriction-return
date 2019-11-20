@@ -47,103 +47,19 @@ class ReportingCompanySchemaSpec extends BaseSchemaSpec {
 
       "agentName" when {
 
-        "agentName is empty" in {
+        "is not supplied" in {
 
-          val json = Json.toJson(AppointReportingCompanyModel(agentDetails = Some(AgentDetails(agentName = Some("")))))
-
-          validate(json) shouldBe false
-        }
-        //TODO add when validation library is updated to v7
-        //      "agentName is not applied" in {
-        //
-        //        val json = Json.toJson(AppointReportingCompanyModel(agentDetails =  = Some(AgentDetails(agentName = None))))
-        //
-        //        validate(json) shouldBe false
-        //      }
-        //
-        //      "agentName is applied and agentActOnBehalf is false" in {
-        //
-        //        val json = Json.toJson(AppointReportingCompanyModel(
-        //          agentActingOnBehalfOfCompany = false
-        //        ))
-        //        validate(json) shouldBe false
-        //      }
-
-        "agentName exceeds 160 characters" in {
-
-          val json = Json.toJson(AppointReportingCompanyModel(agentDetails = Some(AgentDetails(agentName = Some("A" * (maxCompanyNameLength + 1))))))
+          val json = Json.toJson(AppointReportingCompanyModel(agentDetails = None))
 
           validate(json) shouldBe false
         }
       }
 
-      "reportingCompanyName" when {
+      "reportingCompany" when {
 
-        "reportingCompanyName is empty" in {
+        "is not supplied" in {
 
-          val json = Json.toJson(AppointReportingCompanyModel(reportingCompany = Some(ReportingCompany(companyName = Some("")))))
-
-          validate(json) shouldBe false
-        }
-
-        "reportingCompanyName is not applied" in {
-
-          val json = Json.toJson(AppointReportingCompanyModel(reportingCompany = Some(ReportingCompany(companyName = None))))
-
-          validate(json) shouldBe false
-        }
-
-        "reportingCompanyName exceeds 160 characters" in {
-
-          val json = Json.toJson(AppointReportingCompanyModel(reportingCompany = Some(ReportingCompany(companyName = Some("A" * (maxCompanyNameLength + 1))))))
-
-          validate(json) shouldBe false
-        }
-      }
-
-      "utr" when {
-
-        s"below $utrLength" in {
-
-          val json = Json.toJson(AppointReportingCompanyModel(
-            reportingCompany = Some(ReportingCompany(utr = Some("1" * (utrLength - 1))))
-          ))
-
-          validate(json) shouldBe false
-        }
-
-        s"above $utrLength" in {
-
-          val json = Json.toJson(AppointReportingCompanyModel(
-            reportingCompany = Some(ReportingCompany(utr = Some("1" * (utrLength + 1))))
-          ))
-
-          validate(json) shouldBe false
-        }
-
-        "is non numeric" in {
-
-          val json = Json.toJson(AppointReportingCompanyModel(
-            reportingCompany = Some(ReportingCompany(utr = Some("a" * (utrLength))))
-          ))
-
-          validate(json) shouldBe false
-        }
-
-        "is a symbol" in {
-
-          val json = Json.toJson(AppointReportingCompanyModel(
-            reportingCompany = Some(ReportingCompany(utr = Some("@")))
-          ))
-
-          validate(json) shouldBe false
-        }
-
-        "is not applied" in {
-
-          val json = Json.toJson(AppointReportingCompanyModel(
-            reportingCompany = Some(ReportingCompany(utr = None))
-          ))
+          val json = Json.toJson(AppointReportingCompanyModel(reportingCompany = None))
 
           validate(json) shouldBe false
         }
@@ -153,18 +69,14 @@ class ReportingCompanySchemaSpec extends BaseSchemaSpec {
 
         "empty sequence" in {
 
-          val json = Json.toJson(AppointReportingCompanyModel(
-            authorisingCompanies = Some(Seq())
-          ))
+          val json = Json.toJson(AppointReportingCompanyModel(authorisingCompanies = Some(Seq())))
 
           validate(json) shouldBe false
         }
 
         "not supplied" in {
 
-          val json = Json.toJson(AppointReportingCompanyModel(
-            authorisingCompanies = None
-          ))
+          val json = Json.toJson(AppointReportingCompanyModel(authorisingCompanies = None))
 
           validate(json) shouldBe false
         }
@@ -264,64 +176,11 @@ class ReportingCompanySchemaSpec extends BaseSchemaSpec {
         }
       }
 
-      "crn" when {
+      "declaration" when {
 
-        s"below $crnLength" in {
+        "not supplied" in {
 
-          val json = Json.toJson(AppointReportingCompanyModel(
-            reportingCompany = Some(ReportingCompany(crn = Some("1" * (crnLength - 1))))
-          ))
-
-          validate(json) shouldBe false
-        }
-
-        s"above $crnLength" in {
-
-          val json = Json.toJson(AppointReportingCompanyModel(
-            reportingCompany = Some(ReportingCompany(crn = Some("1" * (crnLength + 1))))
-          ))
-
-          validate(json) shouldBe false
-        }
-
-        "is non numeric" in {
-
-          val json = Json.toJson(AppointReportingCompanyModel(
-            reportingCompany = Some(ReportingCompany(crn = Some("a" * crnLength)))
-          ))
-
-          validate(json) shouldBe false
-        }
-
-        "is a symbol" in {
-
-          val json = Json.toJson(AppointReportingCompanyModel(
-            reportingCompany = Some(ReportingCompany(crn = Some("@")))
-          ))
-
-          validate(json) shouldBe false
-        }
-      }
-
-      "sameAsUltimateParent" when {
-
-        "is not applied" in {
-
-          val json = Json.toJson(AppointReportingCompanyModel(
-            reportingCompany = Some(ReportingCompany(sameAsUltimateParent = None))
-          ))
-
-          validate(json) shouldBe false
-        }
-      }
-
-      "reportingCompanyDeemed" when {
-
-        "is not applied" in {
-
-          val json = Json.toJson(AppointReportingCompanyModel(
-            reportingCompany = Some(ReportingCompany(reportingCompanyDeemed = None))
-          ))
+          val json = Json.toJson(AppointReportingCompanyModel(declaration = None))
 
           validate(json) shouldBe false
         }
