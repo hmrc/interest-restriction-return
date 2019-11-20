@@ -8,10 +8,10 @@
           "type": "object",
           "oneOf": [
             {
-              "$ref": "ultimateParent.json#/definitions/uk"
+              "$ref": "../definitions/ultimateParent.json#/definitions/uk"
             },
             {
-              "$ref": "ultimateParent.json#/definitions/nonUk"
+              "$ref": "../definitions/ultimateParent.json#/definitions/nonUk"
             }
           ]
         }
@@ -22,7 +22,7 @@
       "additionalProperties": false
     },
     {
-      "$ref": "deemedParent.json#/definitions/deemedParent"
+      "$ref": "../definitions/deemedParent.json#/definitions/deemedParent"
     }
   ]
 }

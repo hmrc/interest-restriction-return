@@ -40,31 +40,31 @@ trait BaseSchemaSpec extends WordSpec with Matchers with GuiceOneAppPerSuite wit
 
   sealed trait UltimateParent
 
-  case class UkCompany(registeredCompanyName: Option[String] = Some("cde ltd"),
-                       knownAs: Option[String] = Some("efg"),
-                       utr: Option[String] = Some("1234567890"),
-                       crn: Option[String] = Some("AB123456"),
-                       otherUkTaxReference: Option[String] = Some("1234567890")
+  case class UkUltimateParent(registeredCompanyName: Option[String] = Some("cde ltd"),
+                              knownAs: Option[String] = Some("efg"),
+                              utr: Option[String] = Some("1234567890"),
+                              crn: Option[String] = Some("AB123456"),
+                              otherUkTaxReference: Option[String] = Some("1234567890")
                       ) extends UltimateParent
 
-  object UkCompany {
-    implicit val writes = Json.writes[UkCompany]
+  object UkUltimateParent {
+    implicit val writes = Json.writes[UkUltimateParent]
   }
 
-  case class NonUkCompany(registeredCompanyName: Option[String] = Some("cde ltd"),
-                          knownAs: Option[String] = Some("efg"),
-                          countryOfIncorporation: Option[String] = Some("US"),
-                          crn: Option[String] = Some("AB123456")
+  case class NonUkUltimateParent(registeredCompanyName: Option[String] = Some("cde ltd"),
+                                 knownAs: Option[String] = Some("efg"),
+                                 countryOfIncorporation: Option[String] = Some("US"),
+                                 crn: Option[String] = Some("AB123456")
                          ) extends UltimateParent
 
-  object NonUkCompany {
-    implicit val writes = Json.writes[NonUkCompany]
+  object NonUkUltimateParent {
+    implicit val writes = Json.writes[NonUkUltimateParent]
   }
 
   object UltimateParent {
     implicit def writes: Writes[UltimateParent] = Writes {
-      case x: UkCompany => Json.toJson(x)(UkCompany.writes)
-      case x: NonUkCompany => Json.toJson(x)(NonUkCompany.writes)
+      case x: UkUltimateParent => Json.toJson(x)(UkUltimateParent.writes)
+      case x: NonUkUltimateParent => Json.toJson(x)(NonUkUltimateParent.writes)
     }
   }
 
@@ -74,7 +74,7 @@ trait BaseSchemaSpec extends WordSpec with Matchers with GuiceOneAppPerSuite wit
     implicit val writes = Json.writes[DeemedParent]
   }
 
-  case class ParentCompany(ultimateParent: Option[UltimateParent] = Some(UkCompany()), deemedParent: Option[Seq[DeemedParent]] = None)
+  case class ParentCompany(ultimateParent: Option[UltimateParent] = Some(UkUltimateParent()), deemedParent: Option[Seq[DeemedParent]] = None)
 
   object ParentCompany {
     implicit val writes = Json.writes[ParentCompany]
@@ -152,19 +152,6 @@ trait BaseSchemaSpec extends WordSpec with Matchers with GuiceOneAppPerSuite wit
     implicit val writes = Json.writes[GroupLevelElections]
   }
 
-  case class AbbreviatedReturnModel(agentDetails: Option[AgentDetails] = Some(AgentDetails()),
-                                    isReportingCompanyUltimateParent: Option[Boolean] = Some(true),
-                                    parentCompany: Option[ParentCompany] = Some(ParentCompany()),
-                                    groupCompanyDetails: Option[GroupCompanyDetails] = Some(GroupCompanyDetails()),
-                                    submissionType: Option[String] = Some("original"),
-                                    revisedReturnDetails: Option[String] = Some("asdfghj"),
-                                    groupLevelElections: Option[GroupLevelElections] = Some(GroupLevelElections()),
-                                    ukCompanies: Option[Seq[UKCompanies]] = Some(Seq(UKCompanies())))
-
-  object AbbreviatedReturnModel {
-    implicit val writes = Json.writes[AbbreviatedReturnModel]
-  }
-
   case class ReportingCompany(companyName: Option[String] = Some("MIB Ltd"),
                               utr: Option[String] = Some("1234567890"),
                               crn: Option[String] = Some("12345678"),
@@ -185,9 +172,23 @@ trait BaseSchemaSpec extends WordSpec with Matchers with GuiceOneAppPerSuite wit
   case class AppointReportingCompanyModel(agentDetails: Option[AgentDetails] = Some(AgentDetails()),
                                           reportingCompany: Option[ReportingCompany] = Some(ReportingCompany()),
                                           authorisingCompanies: Option[Seq[AuthorisingCompanyModel]] = Some(Seq(AuthorisingCompanyModel())),
-                                          declaration: Boolean = true)
+                                          declaration: Option[Boolean] = Some(true))
 
   object AppointReportingCompanyModel {
     implicit val writes = Json.writes[AppointReportingCompanyModel]
+  }
+
+  case class AbbreviatedReturnModel(agentDetails: Option[AgentDetails] = Some(AgentDetails()),
+                                    reportingCompany: Option[ReportingCompany] = Some(ReportingCompany()),
+                                    parentCompany: Option[ParentCompany] = Some(ParentCompany()),
+                                    publicInfrastructure: Option[Boolean] = Some(false),
+                                    groupCompanyDetails: Option[GroupCompanyDetails] = Some(GroupCompanyDetails()),
+                                    submissionType: Option[String] = Some("original"),
+                                    revisedReturnDetails: Option[String] = Some("asdfghj"),
+                                    groupLevelElections: Option[GroupLevelElections] = Some(GroupLevelElections()),
+                                    ukCompanies: Option[Seq[UKCompanies]] = Some(Seq(UKCompanies())))
+
+  object AbbreviatedReturnModel {
+    implicit val writes = Json.writes[AbbreviatedReturnModel]
   }
 }

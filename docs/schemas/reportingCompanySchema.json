@@ -15,10 +15,10 @@
         "type": "object",
         "properties": {
           "companyName": {
-            "$ref": "subSchemas/definitions.json#/definitions/companyName"
+            "$ref": "definitions/definitions.json#/definitions/companyName"
           },
           "utr": {
-            "$ref": "subSchemas/definitions.json#/definitions/utr"
+            "$ref": "definitions/definitions.json#/definitions/utr"
           }
         },
         "required": [

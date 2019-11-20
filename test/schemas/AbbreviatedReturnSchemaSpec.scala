@@ -21,8 +21,7 @@ import play.api.libs.json.{JsValue, Json}
 //noinspection ScalaStyle
 class AbbreviatedReturnSchemaSpec extends BaseSchemaSpec {
 
-  def validate(json: JsValue): Boolean =
-    validateJson("abbreviatedReturnSchema.json", json)
+  def validate(json: JsValue): Boolean = validateJson("abbreviatedReturnSchema.json", json)
 
   "AbbreviatedReturn Json Schema" should {
 
@@ -38,7 +37,7 @@ class AbbreviatedReturnSchemaSpec extends BaseSchemaSpec {
       "Validated a successful JSON payload with NonUK Parent company" in {
 
         val json = Json.toJson(AbbreviatedReturnModel(
-          parentCompany = Some(ParentCompany(Some(NonUkCompany())))
+          parentCompany = Some(ParentCompany(Some(NonUkUltimateParent())))
         ))
 
         validate(json) shouldBe true
@@ -159,19 +158,28 @@ class AbbreviatedReturnSchemaSpec extends BaseSchemaSpec {
         }
       }
 
-      "parent company is none" in {
+      "reporting company is none" in {
 
         val json = Json.toJson(AbbreviatedReturnModel(
-          parentCompany = None
+          reportingCompany = None
         ))
 
         validate(json) shouldBe false
       }
 
-      "reporting company ultimate parent is empty" in {
+      "public infrastructure is none" in {
 
         val json = Json.toJson(AbbreviatedReturnModel(
-          isReportingCompanyUltimateParent = None
+          publicInfrastructure = None
+        ))
+
+        validate(json) shouldBe false
+      }
+
+      "parent company is none" in {
+
+        val json = Json.toJson(AbbreviatedReturnModel(
+          parentCompany = None
         ))
 
         validate(json) shouldBe false

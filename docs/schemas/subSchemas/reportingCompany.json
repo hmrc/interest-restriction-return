@@ -2,13 +2,13 @@
   "type": "object",
   "properties": {
     "companyName": {
-      "$ref": "definitions.json#/definitions/companyName"
+      "$ref": "../definitions/definitions.json#/definitions/companyName"
     },
     "utr": {
-      "$ref": "definitions.json#/definitions/utr"
+      "$ref": "../definitions/definitions.json#/definitions/utr"
     },
     "crn": {
-      "$ref": "definitions.json#/definitions/crn"
+      "$ref": "../definitions/definitions.json#/definitions/crn"
     },
     "sameAsUltimateParent": {
       "type": "boolean"
