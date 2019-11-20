@@ -14,30 +14,14 @@
  * limitations under the License.
  */
 
-package models.appointReportingCompany
+package models.abbreviatedReturn
 
-import org.scalatest.{Matchers, WordSpec}
+import models.ElectionDecision
 import play.api.libs.json.Json
-import assets.AgentDetailsConstants._
 
-class AgentDetailsModelSpec extends WordSpec with Matchers {
+case class NonConsolidatedInvestmentModel(election: ElectionDecision,
+                                          nonConsolidatedInvestments: Option[Seq[String]])
 
-  "AgentDetailsModel" must {
-
-    "correctly write to json" in {
-
-      val expectedValue = agentDetailsJson
-      val actualValue = Json.toJson(agentDetailsModel)
-
-      actualValue shouldBe expectedValue
-    }
-
-    "correctly read from Json" in {
-
-      val expectedValue = agentDetailsModel
-      val actualValue = agentDetailsJson.as[AgentDetailsModel]
-
-      actualValue shouldBe expectedValue
-    }
-  }
+object NonConsolidatedInvestmentModel {
+  implicit val format = Json.format[NonConsolidatedInvestmentModel]
 }

@@ -16,6 +16,7 @@
 
 package models.appointReportingCompany
 
+import models.{AgentDetailsModel, ReportingCompanyModel}
 import play.api.libs.json.Json
 
 case class AppointReportingCompanyModel(agentDetails: AgentDetailsModel,

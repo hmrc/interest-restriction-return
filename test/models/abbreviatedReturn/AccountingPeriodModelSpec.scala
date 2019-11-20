@@ -14,13 +14,31 @@
  * limitations under the License.
  */
 
-package models.appointReportingCompany
+package models.abbreviatedReturn
 
+import assets.AccountingPeriodConstants._
+import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 
-case class AgentDetailsModel(agentActingOnBehalfOfCompany: Boolean,
-                             agentName: Option[String])
+class AccountingPeriodModelSpec extends WordSpec with Matchers {
 
-object AgentDetailsModel {
-  implicit val format = Json.format[AgentDetailsModel]
+  "AccountingPeriodModel" must {
+
+    "correctly write to json" in {
+
+      val expectedValue = accountingPeriodJson
+      val actualValue = Json.toJson(accountingPeriodModel)
+
+      actualValue shouldBe expectedValue
+    }
+
+    "correctly read from Json" in {
+
+      val expectedValue = accountingPeriodModel
+      val actualValue = accountingPeriodJson.as[AccountingPeriodModel]
+
+      actualValue shouldBe expectedValue
+    }
+  }
 }
+

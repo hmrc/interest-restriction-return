@@ -16,29 +16,30 @@
 
 package assets
 
-import models.AgentDetailsModel
+import models.Elect
+import models.abbreviatedReturn.GroupRatioBlendedModel
 import play.api.libs.json.Json
 
-object AgentDetailsConstants {
+object GroupRatioBlendedConstants {
 
-  val agentName = "some agent"
+  val investorGroups = Seq("investment1", "investment2", "investment3")
 
-  val agentDetailsJsonMax = Json.obj(
-    "agentActingOnBehalfOfCompany" -> true,
-    "agentName" -> agentName
+  val groupRatioBlendedModelMax = GroupRatioBlendedModel(
+    election = Elect,
+    investorGroups = Some(investorGroups)
   )
 
-  val agentDetailsModelMax = AgentDetailsModel(
-    agentActingOnBehalfOfCompany = true,
-    agentName = Some(agentName)
+  val groupRatioBlendedJsonMax = Json.obj(
+    "election" -> Elect,
+    "investorGroups" -> investorGroups
   )
 
-  val agentDetailsJsonMin = Json.obj(
-    "agentActingOnBehalfOfCompany" -> true
+  val groupRatioBlendedModelMin = GroupRatioBlendedModel(
+    election = Elect,
+    investorGroups = None
   )
 
-  val agentDetailsModelMin = AgentDetailsModel(
-    agentActingOnBehalfOfCompany = true,
-    agentName = None
+  val groupRatioBlendedJsonMin = Json.obj(
+    "election" -> Elect
   )
 }

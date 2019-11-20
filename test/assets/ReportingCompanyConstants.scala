@@ -16,14 +16,14 @@
 
 package assets
 
-import models.appointReportingCompany.ReportingCompanyModel
+import models.ReportingCompanyModel
 import play.api.libs.json.Json
 
 object ReportingCompanyConstants extends BaseConstants {
 
   val reportingCompanyName = "some reporting company"
 
-  val reportingCompanyJson = Json.obj(
+  val reportingCompanyJsonMax = Json.obj(
     "companyName" -> reportingCompanyName,
     "utr" -> utr,
     "crn" -> crn,
@@ -31,10 +31,25 @@ object ReportingCompanyConstants extends BaseConstants {
     "reportingCompanyDeemed" -> true
   )
 
-  val reportingCompanyModel = ReportingCompanyModel(
+  val reportingCompanyModelMax = ReportingCompanyModel(
     companyName = reportingCompanyName,
     utr = utr,
     crn = Some(crn),
+    sameAsUltimateParent = true,
+    reportingCompanyDeemed = true
+  )
+
+  val reportingCompanyJsonMin = Json.obj(
+    "companyName" -> reportingCompanyName,
+    "utr" -> utr,
+    "sameAsUltimateParent" -> true,
+    "reportingCompanyDeemed" -> true
+  )
+
+  val reportingCompanyModelMin = ReportingCompanyModel(
+    companyName = reportingCompanyName,
+    utr = utr,
+    crn = None,
     sameAsUltimateParent = true,
     reportingCompanyDeemed = true
   )

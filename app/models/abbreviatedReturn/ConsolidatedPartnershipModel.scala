@@ -14,31 +14,13 @@
  * limitations under the License.
  */
 
-package assets
+package models.abbreviatedReturn
 
-import models.AgentDetailsModel
 import play.api.libs.json.Json
 
-object AgentDetailsConstants {
+case class ConsolidatedPartnershipModel(election: Boolean,
+                                        consolidatedPartnerships: Option[Seq[String]])
 
-  val agentName = "some agent"
-
-  val agentDetailsJsonMax = Json.obj(
-    "agentActingOnBehalfOfCompany" -> true,
-    "agentName" -> agentName
-  )
-
-  val agentDetailsModelMax = AgentDetailsModel(
-    agentActingOnBehalfOfCompany = true,
-    agentName = Some(agentName)
-  )
-
-  val agentDetailsJsonMin = Json.obj(
-    "agentActingOnBehalfOfCompany" -> true
-  )
-
-  val agentDetailsModelMin = AgentDetailsModel(
-    agentActingOnBehalfOfCompany = true,
-    agentName = None
-  )
+object ConsolidatedPartnershipModel {
+  implicit val format = Json.format[ConsolidatedPartnershipModel]
 }

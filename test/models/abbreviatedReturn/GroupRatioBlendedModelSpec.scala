@@ -14,31 +14,30 @@
  * limitations under the License.
  */
 
-package models.appointReportingCompany
+package models.abbreviatedReturn
 
+import assets.GroupRatioBlendedConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
-import assets.ReportingCompanyConstants._
-import models.ReportingCompanyModel
 
-class ReportingCompanyModelSpec extends WordSpec with Matchers {
+class GroupRatioBlendedModelSpec extends WordSpec with Matchers {
 
-  "AgentDetailsModel" must {
+  "GroupRatioBlendedModel" must {
 
     "correctly write to json" when {
 
       "max values given" in {
 
-        val expectedValue = reportingCompanyJsonMax
-        val actualValue = Json.toJson(reportingCompanyModelMax)
+        val expectedValue = groupRatioBlendedJsonMax
+        val actualValue = Json.toJson(groupRatioBlendedModelMax)
 
         actualValue shouldBe expectedValue
       }
 
       "min values given" in {
 
-        val expectedValue = reportingCompanyJsonMin
-        val actualValue = Json.toJson(reportingCompanyModelMin)
+        val expectedValue = groupRatioBlendedJsonMin
+        val actualValue = Json.toJson(groupRatioBlendedModelMin)
 
         actualValue shouldBe expectedValue
       }
@@ -48,19 +47,20 @@ class ReportingCompanyModelSpec extends WordSpec with Matchers {
 
       "max values given" in {
 
-        val expectedValue = reportingCompanyModelMax
-        val actualValue = reportingCompanyJsonMax.as[ReportingCompanyModel]
+        val expectedValue = groupRatioBlendedModelMax
+        val actualValue = groupRatioBlendedJsonMax.as[GroupRatioBlendedModel]
 
         actualValue shouldBe expectedValue
       }
 
       "min values given" in {
 
-        val expectedValue = reportingCompanyModelMin
-        val actualValue = reportingCompanyJsonMin.as[ReportingCompanyModel]
+        val expectedValue = groupRatioBlendedModelMin
+        val actualValue = groupRatioBlendedJsonMin.as[GroupRatioBlendedModel]
 
         actualValue shouldBe expectedValue
       }
     }
   }
 }
+

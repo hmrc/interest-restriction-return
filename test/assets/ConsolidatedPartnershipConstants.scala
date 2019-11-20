@@ -16,29 +16,29 @@
 
 package assets
 
-import models.AgentDetailsModel
+import models.abbreviatedReturn.ConsolidatedPartnershipModel
 import play.api.libs.json.Json
 
-object AgentDetailsConstants {
+object ConsolidatedPartnershipConstants {
 
-  val agentName = "some agent"
+  val consolidatedPartnerships = Seq("investment1", "investment2", "investment3")
 
-  val agentDetailsJsonMax = Json.obj(
-    "agentActingOnBehalfOfCompany" -> true,
-    "agentName" -> agentName
+  val consolidatedPartnershipsModelMax = ConsolidatedPartnershipModel(
+    election = true,
+    consolidatedPartnerships = Some(consolidatedPartnerships)
   )
 
-  val agentDetailsModelMax = AgentDetailsModel(
-    agentActingOnBehalfOfCompany = true,
-    agentName = Some(agentName)
+  val consolidatedPartnershipsJsonMax = Json.obj(
+    "election" -> true,
+    "consolidatedPartnerships" -> consolidatedPartnerships
   )
 
-  val agentDetailsJsonMin = Json.obj(
-    "agentActingOnBehalfOfCompany" -> true
+  val consolidatedPartnershipsModelMin = ConsolidatedPartnershipModel(
+    election = true,
+    consolidatedPartnerships = None
   )
 
-  val agentDetailsModelMin = AgentDetailsModel(
-    agentActingOnBehalfOfCompany = true,
-    agentName = None
+  val consolidatedPartnershipsJsonMin = Json.obj(
+    "election" -> true
   )
 }

@@ -25,8 +25,8 @@ import play.api.libs.json.Json
 object AppointReportingCompanyConstants {
 
   val appointReportingCompanyJson = Json.obj(
-    "agentDetails" -> agentDetailsJson,
-    "reportingCompany" -> reportingCompanyJson,
+    "agentDetails" -> agentDetailsJsonMax,
+    "reportingCompany" -> reportingCompanyJsonMax,
     "authorisingCompanies" -> Json.arr(
       authorisingCompanyJson
     ),
@@ -34,8 +34,8 @@ object AppointReportingCompanyConstants {
   )
 
   val appointReportingCompanyModel = AppointReportingCompanyModel(
-    agentDetails = agentDetailsModel,
-    reportingCompany = reportingCompanyModel,
+    agentDetails = agentDetailsModelMax,
+    reportingCompany = reportingCompanyModelMax,
     authorisingCompanies = Seq(authorisingCompanyModel),
     declaration = true
   )

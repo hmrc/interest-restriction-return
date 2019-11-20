@@ -14,31 +14,30 @@
  * limitations under the License.
  */
 
-package models.appointReportingCompany
+package models.abbreviatedReturn
 
+import assets.AbbreviatedReturnConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
-import assets.ReportingCompanyConstants._
-import models.ReportingCompanyModel
 
-class ReportingCompanyModelSpec extends WordSpec with Matchers {
+class AbbreviatedReturnModelSpec extends WordSpec with Matchers {
 
-  "AgentDetailsModel" must {
+  "AbbreviatedReturnModel" must {
 
     "correctly write to json" when {
 
       "max values given" in {
 
-        val expectedValue = reportingCompanyJsonMax
-        val actualValue = Json.toJson(reportingCompanyModelMax)
+        val expectedValue = abbreviatedReturnJsonMax
+        val actualValue = Json.toJson(abbreviatedReturnModelMax)
 
         actualValue shouldBe expectedValue
       }
 
       "min values given" in {
 
-        val expectedValue = reportingCompanyJsonMin
-        val actualValue = Json.toJson(reportingCompanyModelMin)
+        val expectedValue = abbreviatedReturnJsonMin
+        val actualValue = Json.toJson(abbreviatedReturnModelMin)
 
         actualValue shouldBe expectedValue
       }
@@ -48,16 +47,16 @@ class ReportingCompanyModelSpec extends WordSpec with Matchers {
 
       "max values given" in {
 
-        val expectedValue = reportingCompanyModelMax
-        val actualValue = reportingCompanyJsonMax.as[ReportingCompanyModel]
+        val expectedValue = abbreviatedReturnModelMax
+        val actualValue = abbreviatedReturnJsonMax.as[AbbreviatedReturnModel]
 
         actualValue shouldBe expectedValue
       }
 
       "min values given" in {
 
-        val expectedValue = reportingCompanyModelMin
-        val actualValue = reportingCompanyJsonMin.as[ReportingCompanyModel]
+        val expectedValue = abbreviatedReturnModelMin
+        val actualValue = abbreviatedReturnJsonMin.as[AbbreviatedReturnModel]
 
         actualValue shouldBe expectedValue
       }

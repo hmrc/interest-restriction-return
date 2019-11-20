@@ -16,29 +16,24 @@
 
 package assets
 
-import models.AgentDetailsModel
+import models.abbreviatedReturn.GroupCompanyDetailsModel
 import play.api.libs.json.Json
+import AccountingPeriodConstants.{accountingPeriodModel, accountingPeriodJson}
 
-object AgentDetailsConstants {
+object GroupCompanyDetailsConstants {
 
-  val agentName = "some agent"
+  val totalCompanies = 1
 
-  val agentDetailsJsonMax = Json.obj(
-    "agentActingOnBehalfOfCompany" -> true,
-    "agentName" -> agentName
+  val groupCompanyDetailsJson = Json.obj(
+    "totalCompanies" -> totalCompanies,
+    "inclusionOfNonConsentingCompanies" -> true,
+    "accountingPeriod" -> accountingPeriodJson
   )
 
-  val agentDetailsModelMax = AgentDetailsModel(
-    agentActingOnBehalfOfCompany = true,
-    agentName = Some(agentName)
+  val groupCompanyDetailsModel = GroupCompanyDetailsModel(
+    totalCompanies = totalCompanies,
+    inclusionOfNonConsentingCompanies = true,
+    accountingPeriod = accountingPeriodModel
   )
 
-  val agentDetailsJsonMin = Json.obj(
-    "agentActingOnBehalfOfCompany" -> true
-  )
-
-  val agentDetailsModelMin = AgentDetailsModel(
-    agentActingOnBehalfOfCompany = true,
-    agentName = None
-  )
 }

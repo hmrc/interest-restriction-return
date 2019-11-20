@@ -14,53 +14,54 @@
  * limitations under the License.
  */
 
-package models.appointReportingCompany
+package models.abbreviatedReturn
 
+import assets.ConsolidatedPartnershipConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
-import assets.ReportingCompanyConstants._
-import models.ReportingCompanyModel
 
-class ReportingCompanyModelSpec extends WordSpec with Matchers {
+class ConsolidatedPartnershipModelSpec extends WordSpec with Matchers {
 
-  "AgentDetailsModel" must {
+  "ConsolidatedPartnershipModel" must {
 
     "correctly write to json" when {
 
       "max values given" in {
 
-        val expectedValue = reportingCompanyJsonMax
-        val actualValue = Json.toJson(reportingCompanyModelMax)
+        val expectedValue = consolidatedPartnershipsJsonMax
+        val actualValue = Json.toJson(consolidatedPartnershipsModelMax)
 
         actualValue shouldBe expectedValue
       }
 
       "min values given" in {
 
-        val expectedValue = reportingCompanyJsonMin
-        val actualValue = Json.toJson(reportingCompanyModelMin)
+        val expectedValue = consolidatedPartnershipsModelMin
+        val actualValue = consolidatedPartnershipsJsonMin.as[ConsolidatedPartnershipModel]
 
         actualValue shouldBe expectedValue
       }
+
     }
 
     "correctly read from Json" when {
 
       "max values given" in {
 
-        val expectedValue = reportingCompanyModelMax
-        val actualValue = reportingCompanyJsonMax.as[ReportingCompanyModel]
+        val expectedValue = consolidatedPartnershipsJsonMax
+        val actualValue = Json.toJson(consolidatedPartnershipsModelMax)
 
         actualValue shouldBe expectedValue
       }
 
       "min values given" in {
 
-        val expectedValue = reportingCompanyModelMin
-        val actualValue = reportingCompanyJsonMin.as[ReportingCompanyModel]
+        val expectedValue = consolidatedPartnershipsModelMin
+        val actualValue = consolidatedPartnershipsJsonMin.as[ConsolidatedPartnershipModel]
 
         actualValue shouldBe expectedValue
       }
     }
   }
 }
+

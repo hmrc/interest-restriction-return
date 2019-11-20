@@ -14,31 +14,12 @@
  * limitations under the License.
  */
 
-package assets
+package models.abbreviatedReturn
 
-import models.AgentDetailsModel
 import play.api.libs.json.Json
 
-object AgentDetailsConstants {
+case class DeemedParentModel(companyName: String, utr: Option[String])
 
-  val agentName = "some agent"
-
-  val agentDetailsJsonMax = Json.obj(
-    "agentActingOnBehalfOfCompany" -> true,
-    "agentName" -> agentName
-  )
-
-  val agentDetailsModelMax = AgentDetailsModel(
-    agentActingOnBehalfOfCompany = true,
-    agentName = Some(agentName)
-  )
-
-  val agentDetailsJsonMin = Json.obj(
-    "agentActingOnBehalfOfCompany" -> true
-  )
-
-  val agentDetailsModelMin = AgentDetailsModel(
-    agentActingOnBehalfOfCompany = true,
-    agentName = None
-  )
+object DeemedParentModel {
+  implicit val format = Json.format[DeemedParentModel]
 }

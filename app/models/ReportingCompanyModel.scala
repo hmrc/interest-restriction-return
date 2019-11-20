@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package models.appointReportingCompany
+package models
 
 import play.api.libs.json.Json
 

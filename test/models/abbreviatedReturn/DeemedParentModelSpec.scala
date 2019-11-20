@@ -14,31 +14,30 @@
  * limitations under the License.
  */
 
-package models.appointReportingCompany
+package models.abbreviatedReturn
 
+import assets.DeemedParentConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
-import assets.ReportingCompanyConstants._
-import models.ReportingCompanyModel
 
-class ReportingCompanyModelSpec extends WordSpec with Matchers {
+class DeemedParentModelSpec extends WordSpec with Matchers {
 
-  "AgentDetailsModel" must {
+  "DeemedParentModel" must {
 
     "correctly write to json" when {
 
       "max values given" in {
 
-        val expectedValue = reportingCompanyJsonMax
-        val actualValue = Json.toJson(reportingCompanyModelMax)
+        val expectedValue = deemedParentJsonMax
+        val actualValue = Json.toJson(deemedParentModelMax)
 
         actualValue shouldBe expectedValue
       }
 
       "min values given" in {
 
-        val expectedValue = reportingCompanyJsonMin
-        val actualValue = Json.toJson(reportingCompanyModelMin)
+        val expectedValue = deemedParentJsonMin
+        val actualValue = Json.toJson(deemedParentModelMin)
 
         actualValue shouldBe expectedValue
       }
@@ -48,19 +47,20 @@ class ReportingCompanyModelSpec extends WordSpec with Matchers {
 
       "max values given" in {
 
-        val expectedValue = reportingCompanyModelMax
-        val actualValue = reportingCompanyJsonMax.as[ReportingCompanyModel]
+        val expectedValue = deemedParentModelMax
+        val actualValue = deemedParentJsonMax.as[DeemedParentModel]
 
         actualValue shouldBe expectedValue
       }
 
       "min values given" in {
 
-        val expectedValue = reportingCompanyModelMin
-        val actualValue = reportingCompanyJsonMin.as[ReportingCompanyModel]
+        val expectedValue = deemedParentModelMin
+        val actualValue = deemedParentJsonMin.as[DeemedParentModel]
 
         actualValue shouldBe expectedValue
       }
     }
   }
 }
+

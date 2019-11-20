@@ -16,29 +16,30 @@
 
 package assets
 
-import models.AgentDetailsModel
+import assets.UltimateParentConstants._
+import assets.DeemedParentConstants._
+import models.abbreviatedReturn.{DeemedParentModel, ParentCompanyModel}
 import play.api.libs.json.Json
 
-object AgentDetailsConstants {
+object ParentCompanyConstants {
 
-  val agentName = "some agent"
-
-  val agentDetailsJsonMax = Json.obj(
-    "agentActingOnBehalfOfCompany" -> true,
-    "agentName" -> agentName
+  val parentCompanyJsonMax = Json.obj(
+    "ultimateParent" -> ukParentJsonMax,
+    "deemedParent" -> Seq(deemedParentModelMax)
   )
 
-  val agentDetailsModelMax = AgentDetailsModel(
-    agentActingOnBehalfOfCompany = true,
-    agentName = Some(agentName)
+  val parentCompanyModelMax = ParentCompanyModel(
+    ultimateParent = Some(ukParentModelMax),
+    deemedParent = Some(Seq(deemedParentModelMax))
   )
 
-  val agentDetailsJsonMin = Json.obj(
-    "agentActingOnBehalfOfCompany" -> true
+  val parentCompanyJsonMin = Json.obj(
   )
 
-  val agentDetailsModelMin = AgentDetailsModel(
-    agentActingOnBehalfOfCompany = true,
-    agentName = None
+  val parentCompanyModelMin = ParentCompanyModel(
+    ultimateParent = None,
+    deemedParent = None
   )
 }
+
+

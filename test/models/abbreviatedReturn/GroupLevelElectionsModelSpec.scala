@@ -14,31 +14,30 @@
  * limitations under the License.
  */
 
-package models.appointReportingCompany
+package models.abbreviatedReturn
 
+import assets.GroupLevelElectionsConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
-import assets.ReportingCompanyConstants._
-import models.ReportingCompanyModel
 
-class ReportingCompanyModelSpec extends WordSpec with Matchers {
+class GroupLevelElectionsModelSpec extends WordSpec with Matchers {
 
-  "AgentDetailsModel" must {
+  "GroupLevelElectionsModel" must {
 
     "correctly write to json" when {
 
       "max values given" in {
 
-        val expectedValue = reportingCompanyJsonMax
-        val actualValue = Json.toJson(reportingCompanyModelMax)
+        val expectedValue = groupLevelElectionsJsonMax
+        val actualValue = Json.toJson(groupLevelElectionsModelMax)
 
         actualValue shouldBe expectedValue
       }
 
       "min values given" in {
 
-        val expectedValue = reportingCompanyJsonMin
-        val actualValue = Json.toJson(reportingCompanyModelMin)
+        val expectedValue = groupLevelElectionsJsonMin
+        val actualValue = Json.toJson(groupLevelElectionsModelMin)
 
         actualValue shouldBe expectedValue
       }
@@ -48,16 +47,16 @@ class ReportingCompanyModelSpec extends WordSpec with Matchers {
 
       "max values given" in {
 
-        val expectedValue = reportingCompanyModelMax
-        val actualValue = reportingCompanyJsonMax.as[ReportingCompanyModel]
+        val expectedValue = groupLevelElectionsModelMax
+        val actualValue = groupLevelElectionsJsonMax.as[GroupLevelElectionsModel]
 
         actualValue shouldBe expectedValue
       }
 
       "min values given" in {
 
-        val expectedValue = reportingCompanyModelMin
-        val actualValue = reportingCompanyJsonMin.as[ReportingCompanyModel]
+        val expectedValue = groupLevelElectionsModelMin
+        val actualValue = groupLevelElectionsJsonMin.as[GroupLevelElectionsModel]
 
         actualValue shouldBe expectedValue
       }

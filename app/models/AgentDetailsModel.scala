@@ -14,31 +14,13 @@
  * limitations under the License.
  */
 
-package assets
+package models
 
-import models.AgentDetailsModel
 import play.api.libs.json.Json
 
-object AgentDetailsConstants {
+case class AgentDetailsModel(agentActingOnBehalfOfCompany: Boolean,
+                             agentName: Option[String])
 
-  val agentName = "some agent"
-
-  val agentDetailsJsonMax = Json.obj(
-    "agentActingOnBehalfOfCompany" -> true,
-    "agentName" -> agentName
-  )
-
-  val agentDetailsModelMax = AgentDetailsModel(
-    agentActingOnBehalfOfCompany = true,
-    agentName = Some(agentName)
-  )
-
-  val agentDetailsJsonMin = Json.obj(
-    "agentActingOnBehalfOfCompany" -> true
-  )
-
-  val agentDetailsModelMin = AgentDetailsModel(
-    agentActingOnBehalfOfCompany = true,
-    agentName = None
-  )
+object AgentDetailsModel {
+  implicit val format = Json.format[AgentDetailsModel]
 }
