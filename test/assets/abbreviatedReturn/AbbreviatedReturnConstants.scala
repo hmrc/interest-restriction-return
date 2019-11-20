@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package assets
+package assets.abbreviatedReturn
 
 import assets.AgentDetailsConstants._
 import assets.GroupCompanyDetailsConstants._
 import assets.GroupLevelElectionsConstants._
 import assets.ParentCompanyConstants._
-import assets.UkCompanyConstants._
 import assets.ReportingCompanyConstants._
+import assets.abbreviatedReturn.UkCompanyConstants._
 import models.Original
 import models.abbreviatedReturn.AbbreviatedReturnModel
 import play.api.libs.json.Json

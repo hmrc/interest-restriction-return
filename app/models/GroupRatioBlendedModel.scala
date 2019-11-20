@@ -14,31 +14,13 @@
  * limitations under the License.
  */
 
-package models.abbreviatedReturn
+package models
 
-import assets.AccountingPeriodConstants._
-import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 
-class AccountingPeriodModelSpec extends WordSpec with Matchers {
+case class GroupRatioBlendedModel(election: ElectionDecision,
+                                  investorGroups: Option[Seq[String]])
 
-  "AccountingPeriodModel" must {
-
-    "correctly write to json" in {
-
-      val expectedValue = accountingPeriodJson
-      val actualValue = Json.toJson(accountingPeriodModel)
-
-      actualValue shouldBe expectedValue
-    }
-
-    "correctly read from Json" in {
-
-      val expectedValue = accountingPeriodModel
-      val actualValue = accountingPeriodJson.as[AccountingPeriodModel]
-
-      actualValue shouldBe expectedValue
-    }
-  }
+object GroupRatioBlendedModel {
+  implicit val format = Json.format[GroupRatioBlendedModel]
 }
-

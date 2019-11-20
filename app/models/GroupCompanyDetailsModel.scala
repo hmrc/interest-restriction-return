@@ -16,7 +16,6 @@
 
 package models
 
-import models.abbreviatedReturn.AccountingPeriodModel
 import play.api.libs.json.Json
 
 case class GroupCompanyDetailsModel(totalCompanies: Int,

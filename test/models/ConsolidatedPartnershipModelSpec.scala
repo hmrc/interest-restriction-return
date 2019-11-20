@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package models.abbreviatedReturn
+package models
 
 import assets.ConsolidatedPartnershipConstants._
 import org.scalatest.{Matchers, WordSpec}

@@ -14,14 +14,20 @@
  * limitations under the License.
  */
 
-package models.abbreviatedReturn
+package models.fullReturn
 
-import models.ElectionDecision
+import java.time.LocalDate
+
 import play.api.libs.json.Json
 
-case class NonConsolidatedInvestmentModel(election: ElectionDecision,
-                                          nonConsolidatedInvestments: Option[Seq[String]])
+case class AllocatedRestrictionsModel(ap1End: Option[LocalDate],
+                                      ap2End: Option[LocalDate],
+                                      ap3End: Option[LocalDate],
+                                      disallowanceAp1: Option[BigDecimal],
+                                      disallowanceAp2: Option[BigDecimal],
+                                      disallowanceAp3: Option[BigDecimal])
 
-object NonConsolidatedInvestmentModel {
-  implicit val format = Json.format[NonConsolidatedInvestmentModel]
+object AllocatedRestrictionsModel {
+  implicit val format = Json.format[AllocatedRestrictionsModel]
 }
+

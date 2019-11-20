@@ -14,14 +14,23 @@
  * limitations under the License.
  */
 
-package models.abbreviatedReturn
+package assets.abbreviatedReturn
 
-import models.ElectionDecision
+import assets.BaseConstants
+import models.abbreviatedReturn.UkCompanyModel
 import play.api.libs.json.Json
 
-case class GroupRatioBlendedModel(election: ElectionDecision,
-                                  investorGroups: Option[Seq[String]])
+object UkCompanyConstants extends BaseConstants {
 
-object GroupRatioBlendedModel {
-  implicit val format = Json.format[GroupRatioBlendedModel]
+  val companyName = "some company"
+
+  val ukCompanyModel = UkCompanyModel(
+    companyName = companyName,
+    utr = utr
+  )
+
+  val ukCompanyJson = Json.obj(
+    "companyName" -> companyName,
+    "utr" -> utr
+  )
 }

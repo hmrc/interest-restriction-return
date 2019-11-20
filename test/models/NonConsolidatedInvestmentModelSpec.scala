@@ -14,31 +14,30 @@
  * limitations under the License.
  */
 
-package models.appointReportingCompany
+package models
 
+import assets.NonConsolidatedInvestmentConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
-import assets.ReportingCompanyConstants._
-import models.ReportingCompanyModel
 
-class ReportingCompanyModelSpec extends WordSpec with Matchers {
+class NonConsolidatedInvestmentModelSpec extends WordSpec with Matchers {
 
-  "AgentDetailsModel" must {
+  "NonConsolidatedInvestmentModel" must {
 
     "correctly write to json" when {
 
       "max values given" in {
 
-        val expectedValue = reportingCompanyJsonMax
-        val actualValue = Json.toJson(reportingCompanyModelMax)
+        val expectedValue = nonConsolidatedInvestmentJsonMax
+        val actualValue = Json.toJson(nonConsolidatedInvestmentModelMax)
 
         actualValue shouldBe expectedValue
       }
 
       "min values given" in {
 
-        val expectedValue = reportingCompanyJsonMin
-        val actualValue = Json.toJson(reportingCompanyModelMin)
+        val expectedValue = nonConsolidatedInvestmentJsonMin
+        val actualValue = Json.toJson(nonConsolidatedInvestmentModelMin)
 
         actualValue shouldBe expectedValue
       }
@@ -47,20 +46,19 @@ class ReportingCompanyModelSpec extends WordSpec with Matchers {
     "correctly read from Json" when {
 
       "max values given" in {
-
-        val expectedValue = reportingCompanyModelMax
-        val actualValue = reportingCompanyJsonMax.as[ReportingCompanyModel]
+        val expectedValue = nonConsolidatedInvestmentModelMax
+        val actualValue = nonConsolidatedInvestmentJsonMax.as[NonConsolidatedInvestmentModel]
 
         actualValue shouldBe expectedValue
       }
 
       "min values given" in {
-
-        val expectedValue = reportingCompanyModelMin
-        val actualValue = reportingCompanyJsonMin.as[ReportingCompanyModel]
+        val expectedValue = nonConsolidatedInvestmentModelMin
+        val actualValue = nonConsolidatedInvestmentJsonMin.as[NonConsolidatedInvestmentModel]
 
         actualValue shouldBe expectedValue
       }
     }
   }
 }
+

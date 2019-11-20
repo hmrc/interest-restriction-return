@@ -18,8 +18,7 @@ package assets
 
 import assets.UltimateParentConstants._
 import assets.DeemedParentConstants._
-import models.ParentCompanyModel
-import models.abbreviatedReturn.DeemedParentModel
+import models.{DeemedParentModel, ParentCompanyModel}
 import play.api.libs.json.Json
 
 object ParentCompanyConstants {

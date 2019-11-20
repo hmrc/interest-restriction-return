@@ -14,30 +14,30 @@
  * limitations under the License.
  */
 
-package models.abbreviatedReturn
+package models
 
-import assets.GroupRatioBlendedConstants._
+import assets.DeemedParentConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 
-class GroupRatioBlendedModelSpec extends WordSpec with Matchers {
+class DeemedParentModelSpec extends WordSpec with Matchers {
 
-  "GroupRatioBlendedModel" must {
+  "DeemedParentModel" must {
 
     "correctly write to json" when {
 
       "max values given" in {
 
-        val expectedValue = groupRatioBlendedJsonMax
-        val actualValue = Json.toJson(groupRatioBlendedModelMax)
+        val expectedValue = deemedParentJsonMax
+        val actualValue = Json.toJson(deemedParentModelMax)
 
         actualValue shouldBe expectedValue
       }
 
       "min values given" in {
 
-        val expectedValue = groupRatioBlendedJsonMin
-        val actualValue = Json.toJson(groupRatioBlendedModelMin)
+        val expectedValue = deemedParentJsonMin
+        val actualValue = Json.toJson(deemedParentModelMin)
 
         actualValue shouldBe expectedValue
       }
@@ -47,16 +47,16 @@ class GroupRatioBlendedModelSpec extends WordSpec with Matchers {
 
       "max values given" in {
 
-        val expectedValue = groupRatioBlendedModelMax
-        val actualValue = groupRatioBlendedJsonMax.as[GroupRatioBlendedModel]
+        val expectedValue = deemedParentModelMax
+        val actualValue = deemedParentJsonMax.as[DeemedParentModel]
 
         actualValue shouldBe expectedValue
       }
 
       "min values given" in {
 
-        val expectedValue = groupRatioBlendedModelMin
-        val actualValue = groupRatioBlendedJsonMin.as[GroupRatioBlendedModel]
+        val expectedValue = deemedParentModelMin
+        val actualValue = deemedParentJsonMin.as[DeemedParentModel]
 
         actualValue shouldBe expectedValue
       }

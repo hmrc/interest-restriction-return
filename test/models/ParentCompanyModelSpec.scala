@@ -14,30 +14,30 @@
  * limitations under the License.
  */
 
-package models.abbreviatedReturn
+package models
 
-import assets.NonConsolidatedInvestmentConstants._
+import assets.ParentCompanyConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 
-class NonConsolidatedInvestmentModelSpec extends WordSpec with Matchers {
+class ParentCompanyModelSpec extends WordSpec with Matchers {
 
-  "NonConsolidatedInvestmentModel" must {
+  "ParentCompanyModel" must {
 
     "correctly write to json" when {
 
       "max values given" in {
 
-        val expectedValue = nonConsolidatedInvestmentJsonMax
-        val actualValue = Json.toJson(nonConsolidatedInvestmentModelMax)
+        val expectedValue = parentCompanyJsonMax
+        val actualValue = Json.toJson(parentCompanyModelMax)
 
         actualValue shouldBe expectedValue
       }
 
       "min values given" in {
 
-        val expectedValue = nonConsolidatedInvestmentJsonMin
-        val actualValue = Json.toJson(nonConsolidatedInvestmentModelMin)
+        val expectedValue = Json.obj()
+        val actualValue = Json.toJson(parentCompanyModelMin)
 
         actualValue shouldBe expectedValue
       }
@@ -46,19 +46,20 @@ class NonConsolidatedInvestmentModelSpec extends WordSpec with Matchers {
     "correctly read from Json" when {
 
       "max values given" in {
-        val expectedValue = nonConsolidatedInvestmentModelMax
-        val actualValue = nonConsolidatedInvestmentJsonMax.as[NonConsolidatedInvestmentModel]
+
+        val expectedValue = parentCompanyModelMax
+        val actualValue = parentCompanyJsonMax.as[ParentCompanyModel]
 
         actualValue shouldBe expectedValue
       }
 
       "min values given" in {
-        val expectedValue = nonConsolidatedInvestmentModelMin
-        val actualValue = nonConsolidatedInvestmentJsonMin.as[NonConsolidatedInvestmentModel]
+
+        val expectedValue = parentCompanyModelMin
+        val actualValue = Json.obj().as[ParentCompanyModel]
 
         actualValue shouldBe expectedValue
       }
     }
   }
 }
-

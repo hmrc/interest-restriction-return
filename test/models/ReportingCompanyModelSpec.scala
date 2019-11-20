@@ -14,31 +14,30 @@
  * limitations under the License.
  */
 
-package models.abbreviatedReturn
+package models
 
-import assets.GroupLevelElectionsConstants._
-import models.GroupLevelElectionsModel
+import assets.ReportingCompanyConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 
-class GroupLevelElectionsModelSpec extends WordSpec with Matchers {
+class ReportingCompanyModelSpec extends WordSpec with Matchers {
 
-  "GroupLevelElectionsModel" must {
+  "AgentDetailsModel" must {
 
     "correctly write to json" when {
 
       "max values given" in {
 
-        val expectedValue = groupLevelElectionsJsonMax
-        val actualValue = Json.toJson(groupLevelElectionsModelMax)
+        val expectedValue = reportingCompanyJsonMax
+        val actualValue = Json.toJson(reportingCompanyModelMax)
 
         actualValue shouldBe expectedValue
       }
 
       "min values given" in {
 
-        val expectedValue = groupLevelElectionsJsonMin
-        val actualValue = Json.toJson(groupLevelElectionsModelMin)
+        val expectedValue = reportingCompanyJsonMin
+        val actualValue = Json.toJson(reportingCompanyModelMin)
 
         actualValue shouldBe expectedValue
       }
@@ -48,16 +47,16 @@ class GroupLevelElectionsModelSpec extends WordSpec with Matchers {
 
       "max values given" in {
 
-        val expectedValue = groupLevelElectionsModelMax
-        val actualValue = groupLevelElectionsJsonMax.as[GroupLevelElectionsModel]
+        val expectedValue = reportingCompanyModelMax
+        val actualValue = reportingCompanyJsonMax.as[ReportingCompanyModel]
 
         actualValue shouldBe expectedValue
       }
 
       "min values given" in {
 
-        val expectedValue = groupLevelElectionsModelMin
-        val actualValue = groupLevelElectionsJsonMin.as[GroupLevelElectionsModel]
+        val expectedValue = reportingCompanyModelMin
+        val actualValue = reportingCompanyJsonMin.as[ReportingCompanyModel]
 
         actualValue shouldBe expectedValue
       }

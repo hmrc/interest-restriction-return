@@ -14,30 +14,30 @@
  * limitations under the License.
  */
 
-package models.abbreviatedReturn
+package models
 
-import assets.DeemedParentConstants._
+import assets.GroupLevelElectionsConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 
-class DeemedParentModelSpec extends WordSpec with Matchers {
+class GroupLevelElectionsModelSpec extends WordSpec with Matchers {
 
-  "DeemedParentModel" must {
+  "GroupLevelElectionsModel" must {
 
     "correctly write to json" when {
 
       "max values given" in {
 
-        val expectedValue = deemedParentJsonMax
-        val actualValue = Json.toJson(deemedParentModelMax)
+        val expectedValue = groupLevelElectionsJsonMax
+        val actualValue = Json.toJson(groupLevelElectionsModelMax)
 
         actualValue shouldBe expectedValue
       }
 
       "min values given" in {
 
-        val expectedValue = deemedParentJsonMin
-        val actualValue = Json.toJson(deemedParentModelMin)
+        val expectedValue = groupLevelElectionsJsonMin
+        val actualValue = Json.toJson(groupLevelElectionsModelMin)
 
         actualValue shouldBe expectedValue
       }
@@ -47,20 +47,19 @@ class DeemedParentModelSpec extends WordSpec with Matchers {
 
       "max values given" in {
 
-        val expectedValue = deemedParentModelMax
-        val actualValue = deemedParentJsonMax.as[DeemedParentModel]
+        val expectedValue = groupLevelElectionsModelMax
+        val actualValue = groupLevelElectionsJsonMax.as[GroupLevelElectionsModel]
 
         actualValue shouldBe expectedValue
       }
 
       "min values given" in {
 
-        val expectedValue = deemedParentModelMin
-        val actualValue = deemedParentJsonMin.as[DeemedParentModel]
+        val expectedValue = groupLevelElectionsModelMin
+        val actualValue = groupLevelElectionsJsonMin.as[GroupLevelElectionsModel]
 
         actualValue shouldBe expectedValue
       }
     }
   }
 }
-

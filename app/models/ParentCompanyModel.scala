@@ -16,7 +16,6 @@
 
 package models
 
-import models.abbreviatedReturn.{DeemedParentModel, UltimateParentModel}
 import play.api.libs.json.Json
 
 case class ParentCompanyModel(ultimateParent: Option[UltimateParentModel], deemedParent: Option[Seq[DeemedParentModel]])

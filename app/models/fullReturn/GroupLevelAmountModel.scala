@@ -18,10 +18,13 @@ package models.fullReturn
 
 import play.api.libs.json.Json
 
-case class AdjustedGroupInterest(qngie: BigDecimal,
-                                 groupEBITDA: BigDecimal,
-                                 groupRatio: Int)
+case class GroupLevelAmountModel(totalDisallowedAmount: BigDecimal,
+                                 interestReactivationCap: BigDecimal,
+                                 interestAllowanceForward: BigDecimal,
+                                 interestAllowanceForPeriod: BigDecimal,
+                                 interestCapacityForPeriod: BigDecimal)
 
-object AdjustedGroupInterest {
-  implicit val format = Json.format[AdjustedGroupInterest]
+object GroupLevelAmountModel {
+  implicit val format = Json.format[GroupLevelAmountModel]
 }
+

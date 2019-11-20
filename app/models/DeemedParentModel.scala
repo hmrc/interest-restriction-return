@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package models.abbreviatedReturn
-
-import java.time.LocalDate
+package models
 
 import play.api.libs.json.Json
 
-case class AccountingPeriodModel(startDate: LocalDate, endDate: LocalDate)
+case class DeemedParentModel(companyName: String, utr: Option[String])
 
-object AccountingPeriodModel {
-  implicit val format = Json.format[AccountingPeriodModel]
+object DeemedParentModel {
+  implicit val format = Json.format[DeemedParentModel]
 }

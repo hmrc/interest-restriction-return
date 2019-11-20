@@ -14,16 +14,8 @@
  * limitations under the License.
  */
 
-package models.fullReturn
+package assets.fullReturn
 
-import play.api.libs.json.Json
+object GroupLevelAmountConstants {
 
-case class AllocatedReactivations(ap1NetDisallowances: Int,
-                                  currentPeriodReactivation: Int,
-                                  totalReactivation: Int,
-                                  reactivationCap: Int)
-
-object AllocatedReactivations {
-  implicit val format = Json.format[AllocatedReactivations]
 }
-

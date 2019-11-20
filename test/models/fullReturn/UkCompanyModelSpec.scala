@@ -14,13 +14,8 @@
  * limitations under the License.
  */
 
-package models.abbreviatedReturn
+package models.fullReturn
 
-import play.api.libs.json.Json
+class UkCompanyModelSpec {
 
-case class ConsolidatedPartnershipModel(election: Boolean,
-                                        consolidatedPartnerships: Option[Seq[String]])
-
-object ConsolidatedPartnershipModel {
-  implicit val format = Json.format[ConsolidatedPartnershipModel]
 }

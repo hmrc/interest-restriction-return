@@ -14,12 +14,30 @@
  * limitations under the License.
  */
 
-package models.abbreviatedReturn
+package models
 
+import assets.GroupCompanyDetailsConstants._
+import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 
-case class DeemedParentModel(companyName: String, utr: Option[String])
+class GroupCompanyDetailsModelSpec extends WordSpec with Matchers {
 
-object DeemedParentModel {
-  implicit val format = Json.format[DeemedParentModel]
+  "GroupCompanyDetailsModel" must {
+
+    "correctly write to json" in {
+
+      val expectedValue = groupCompanyDetailsJson
+      val actualValue = Json.toJson(groupCompanyDetailsModel)
+
+      actualValue shouldBe expectedValue
+    }
+
+    "correctly read from Json" in {
+
+      val expectedValue = groupCompanyDetailsModel
+      val actualValue = groupCompanyDetailsJson.as[GroupCompanyDetailsModel]
+
+      actualValue shouldBe expectedValue
+    }
+  }
 }

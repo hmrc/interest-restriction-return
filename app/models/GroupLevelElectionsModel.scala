@@ -16,7 +16,6 @@
 
 package models
 
-import models.abbreviatedReturn.{ConsolidatedPartnershipModel, GroupRatioBlendedModel, NonConsolidatedInvestmentModel}
 import play.api.libs.json.Json
 
 case class GroupLevelElectionsModel(groupRatioElection: ElectionDecision,

@@ -18,13 +18,12 @@ package models.fullReturn
 
 import play.api.libs.json.Json
 
-case class GroupLevelAmount(totalDisallowedAmount: BigDecimal,
-                            interestReactivationCap: BigDecimal,
-                            interestAllowanceForward: BigDecimal,
-                            interestAllowanceForPeriod: BigDecimal,
-                            interestCapacityForPeriod: BigDecimal)
+case class AllocatedReactivationsModel(ap1NetDisallowances: Int,
+                                       currentPeriodReactivation: Int,
+                                       totalReactivation: Int,
+                                       reactivationCap: Int)
 
-object GroupLevelAmount {
-  implicit val format = Json.format[GroupLevelAmount]
+object AllocatedReactivationsModel {
+  implicit val format = Json.format[AllocatedReactivationsModel]
 }
 

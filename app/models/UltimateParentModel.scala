@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package models.abbreviatedReturn
+package models
 
 import play.api.libs.json.{Format, Json, Reads, Writes, _}
 

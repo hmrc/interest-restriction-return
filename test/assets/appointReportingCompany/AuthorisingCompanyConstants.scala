@@ -14,20 +14,23 @@
  * limitations under the License.
  */
 
-package models.fullReturn
+package assets.appointReportingCompany
 
-import java.time.LocalDate
-
+import assets.BaseConstants
+import models.appointReportingCompany.AuthorisingCompanyModel
 import play.api.libs.json.Json
 
-case class AllocatedRestrictions(ap1End: Option[LocalDate],
-                                 ap2End: Option[LocalDate],
-                                 ap3End: Option[LocalDate],
-                                 disallowanceAp1: Option[BigDecimal],
-                                 disallowanceAp2: Option[BigDecimal],
-                                 disallowanceAp3: Option[BigDecimal])
+object AuthorisingCompanyConstants extends BaseConstants {
 
-object AllocatedRestrictions {
-  implicit val format = Json.format[AllocatedRestrictions]
+  val companyName = "some authorising company"
+
+  val authorisingCompanyJson = Json.obj(
+    "companyName" -> companyName,
+    "utr" -> utr
+  )
+
+  val authorisingCompanyModel = AuthorisingCompanyModel(
+    companyName = companyName,
+    utr = utr
+  )
 }
-

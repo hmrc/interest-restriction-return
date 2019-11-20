@@ -14,19 +14,8 @@
  * limitations under the License.
  */
 
-package models.fullReturn
+package assets.fullReturn
 
-import play.api.libs.json.Json
+object AllocatedReactivationsConstants {
 
-case class UkCompanyModel(companyName: String,
-                          utr: String,
-                          consenting: Boolean,
-                          netTaxInterestExpense: Int,
-                          netTaxInterestIncome: Int,
-                          taxEBITDA: Int,
-                          allocatedRestrictions: AllocatedRestrictionsModel,
-                          allocatedReactivations: AllocatedReactivationsModel)
-
-object UkCompanyModel {
-  implicit val format = Json.format[UkCompanyModel]
 }

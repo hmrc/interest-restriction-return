@@ -14,22 +14,8 @@
  * limitations under the License.
  */
 
-package assets
+package models.fullReturn
 
-import models.abbreviatedReturn.UkCompanyModel
-import play.api.libs.json.Json
+class AdjustedGroupInterestModelSpec {
 
-object UkCompanyConstants extends BaseConstants {
-
-  val companyName = "some company"
-
-  val ukCompanyModel = UkCompanyModel(
-    companyName = companyName,
-    utr = utr
-  )
-
-  val ukCompanyJson = Json.obj(
-    "companyName" -> companyName,
-    "utr" -> utr
-  )
 }

@@ -14,22 +14,14 @@
  * limitations under the License.
  */
 
-package assets
+package models
 
-import models.appointReportingCompany.AuthorisingCompanyModel
+import java.time.LocalDate
+
 import play.api.libs.json.Json
 
-object AuthorisingCompanyConstants extends BaseConstants {
+case class AccountingPeriodModel(startDate: LocalDate, endDate: LocalDate)
 
-  val companyName = "some authorising company"
-
-  val authorisingCompanyJson = Json.obj(
-    "companyName" -> companyName,
-    "utr" -> utr
-  )
-
-  val authorisingCompanyModel = AuthorisingCompanyModel(
-    companyName = companyName,
-    utr = utr
-  )
+object AccountingPeriodModel {
+  implicit val format = Json.format[AccountingPeriodModel]
 }

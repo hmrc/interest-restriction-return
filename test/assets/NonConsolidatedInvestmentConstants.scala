@@ -16,8 +16,7 @@
 
 package assets
 
-import models.Elect
-import models.abbreviatedReturn.NonConsolidatedInvestmentModel
+import models.{Elect, NonConsolidatedInvestmentModel}
 import play.api.libs.json.Json
 
 object NonConsolidatedInvestmentConstants {
