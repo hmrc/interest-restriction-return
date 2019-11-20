@@ -20,9 +20,9 @@ import java.time.LocalDate
 
 import play.api.libs.json.Json
 
-case class AllocatedRestrictions(ap1End: Option[LocalDate] = Some(LocalDate.parse("2019-11-11")),
-                                 ap2End: Option[LocalDate] = Some(LocalDate.parse("2019-12-11")),
-                                 ap3End: Option[LocalDate] = Some(LocalDate.parse("2020-03-01")),
+case class AllocatedRestrictions(ap1EndDate: Option[LocalDate] = Some(LocalDate.parse("2019-11-11")),
+                                 ap2EndDate: Option[LocalDate] = Some(LocalDate.parse("2019-12-11")),
+                                 ap3EndDate: Option[LocalDate] = Some(LocalDate.parse("2020-03-01")),
                                  disallowanceAp1: Option[BigDecimal] = Some(3000),
                                  disallowanceAp2: Option[BigDecimal] = Some(4000),
                                  disallowanceAp3: Option[BigDecimal] = Some(5000))

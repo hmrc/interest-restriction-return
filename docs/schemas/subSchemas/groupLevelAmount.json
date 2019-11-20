@@ -4,7 +4,7 @@
       "type": "number",
       "minimum": 0
     },
-    "interestReactivationsCap": {
+    "interestReactivationCap": {
       "type": "number",
       "minimum": 0
     },
@@ -23,6 +23,7 @@
   },
   "required": [
     "totalDisallowedAmount",
+    "interestReactivationCap",
     "interestAllowanceForward",
     "interestAllowanceForPeriod",
     "interestCapacityForPeriod"

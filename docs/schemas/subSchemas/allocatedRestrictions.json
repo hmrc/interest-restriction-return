@@ -1,15 +1,15 @@
 {
   "type": "object",
   "properties": {
-    "ap1Ends": {
+    "ap1EndDate": {
       "type": "string",
       "format": "date"
     },
-    "ap2Ends": {
+    "ap2EndDate": {
       "type": "string",
       "format": "date"
     },
-    "ap3Ends": {
+    "ap3EndDate": {
       "type": "string",
       "format": "date"
     },

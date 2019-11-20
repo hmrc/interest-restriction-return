@@ -1,6 +1,7 @@
 {
+  "type": "object",
   "properties": {
-    "QNGIE": {
+    "qngie": {
       "type": "number",
       "minimum": 0
     },
@@ -12,12 +13,12 @@
       "type": "number",
       "minimum": 0,
       "maximum": 100
-    },
-    "required": [
-      "QNGIE",
-      "groupEBITDA",
-      "groupRatio"
-    ]
+    }
   },
+  "required": [
+    "qngie",
+    "groupEBITDA",
+    "groupRatio"
+  ],
   "additionalProperties": false
 }

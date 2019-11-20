@@ -35,30 +35,35 @@ class AllocatedRestrictions extends BaseSchemaSpec {
 
     "Return invalid" when {
 
-      "ap1End" when {
-
-      }
-
-      "ap2End" when {
-
-      }
-
-      "ap3End" when {
-
-      }
-
       "disallowanceAp1" when {
 
+        "is a negative number" in {
+          val json = Json.toJson(AllocatedRestrictions(
+            disallowanceAp1 = Some(-1)
+          ))
+          validate(json) shouldBe false
+        }
       }
 
       "disallowanceAp2" when {
 
+        "is a negative number" in {
+          val json = Json.toJson(AllocatedRestrictions(
+            disallowanceAp2 = Some(-1)
+          ))
+          validate(json) shouldBe false
+        }
       }
 
       "disallowanceAp3" when {
 
+        "is a negative number" in {
+          val json = Json.toJson(AllocatedRestrictions(
+            disallowanceAp3 = Some(-1)
+          ))
+          validate(json) shouldBe false
+        }
       }
-
     }
   }
 }

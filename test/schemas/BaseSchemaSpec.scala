@@ -18,7 +18,6 @@ package schemas
 
 import org.scalatest.{Matchers, WordSpec}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.libs.json.{Json, Writes}
 import utils.SchemaValidation
 
 //noinspection ScalaStyle
