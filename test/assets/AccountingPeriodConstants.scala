@@ -21,8 +21,8 @@ import play.api.libs.json.Json
 
 object AccountingPeriodConstants {
 
-  val startDate = "11-11-1111"
-  val endDate = "11-11-1111"
+  val startDate = "1111-11-11"
+  val endDate = "1111-11-11"
 
   val accountingPeriodModel = AccountingPeriodModel(
     startDate = startDate,

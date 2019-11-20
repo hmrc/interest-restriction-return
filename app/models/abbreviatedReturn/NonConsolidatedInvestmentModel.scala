@@ -20,7 +20,7 @@ import models.ElectionDecision
 import play.api.libs.json.Json
 
 case class NonConsolidatedInvestmentModel(election: ElectionDecision,
-                                          nonConsolidatedInvestments: Seq[String])
+                                          nonConsolidatedInvestments: Option[Seq[String]])
 
 object NonConsolidatedInvestmentModel {
   implicit val format = Json.format[NonConsolidatedInvestmentModel]

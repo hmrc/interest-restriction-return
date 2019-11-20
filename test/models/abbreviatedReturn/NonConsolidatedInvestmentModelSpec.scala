@@ -24,20 +24,40 @@ class NonConsolidatedInvestmentModelSpec extends WordSpec with Matchers {
 
   "NonConsolidatedInvestmentModel" must {
 
-    "correctly write to json" in {
+    "correctly write to json" when {
 
-      val expectedValue = nonConsolidatedInvestmentJson
-      val actualValue = Json.toJson(nonConsolidatedInvestmentModel)
+      "max values given" in {
 
-      actualValue shouldBe expectedValue
+        val expectedValue = nonConsolidatedInvestmentJsonMax
+        val actualValue = Json.toJson(nonConsolidatedInvestmentModelMax)
+
+        actualValue shouldBe expectedValue
+      }
+
+      "min values given" in {
+
+        val expectedValue = nonConsolidatedInvestmentJsonMin
+        val actualValue = Json.toJson(nonConsolidatedInvestmentModelMin)
+
+        actualValue shouldBe expectedValue
+      }
     }
 
-    "correctly read from Json" in {
+    "correctly read from Json" when {
 
-      val expectedValue = nonConsolidatedInvestmentModel
-      val actualValue = nonConsolidatedInvestmentJson.as[NonConsolidatedInvestmentModel]
+      "max values given" in {
+        val expectedValue = nonConsolidatedInvestmentModelMax
+        val actualValue = nonConsolidatedInvestmentJsonMax.as[NonConsolidatedInvestmentModel]
 
-      actualValue shouldBe expectedValue
+        actualValue shouldBe expectedValue
+      }
+
+      "min values given" in {
+        val expectedValue = nonConsolidatedInvestmentModelMin
+        val actualValue = nonConsolidatedInvestmentJsonMin.as[NonConsolidatedInvestmentModel]
+
+        actualValue shouldBe expectedValue
+      }
     }
   }
 }

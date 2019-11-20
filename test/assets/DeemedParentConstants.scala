@@ -39,5 +39,6 @@ object DeemedParentConstants extends BaseConstants {
   )
 
   val deemedParentJsonMin = Json.obj(
-    "companyName" -> companyName)
+    "companyName" -> companyName
+  )
 }

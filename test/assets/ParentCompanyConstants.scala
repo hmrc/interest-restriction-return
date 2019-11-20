@@ -30,16 +30,15 @@ object ParentCompanyConstants {
 
   val parentCompanyModelMax = ParentCompanyModel(
     ultimateParent = Some(ukParentModelMax),
-    deemedParent = Seq(deemedParentModelMax)
+    deemedParent = Some(Seq(deemedParentModelMax))
   )
 
   val parentCompanyJsonMin = Json.obj(
-    "deemedParent" -> Seq.empty[DeemedParentModel]
   )
 
   val parentCompanyModelMin = ParentCompanyModel(
     ultimateParent = None,
-    deemedParent = Seq()
+    deemedParent = None
   )
 }
 

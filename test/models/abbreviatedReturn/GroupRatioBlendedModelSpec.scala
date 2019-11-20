@@ -24,20 +24,42 @@ class GroupRatioBlendedModelSpec extends WordSpec with Matchers {
 
   "GroupRatioBlendedModel" must {
 
-    "correctly write to json" in {
+    "correctly write to json" when {
 
-      val expectedValue = groupRatioBlendedJson
-      val actualValue = Json.toJson(groupRatioBlendedModel)
+      "max values given" in {
 
-      actualValue shouldBe expectedValue
+        val expectedValue = groupRatioBlendedJsonMax
+        val actualValue = Json.toJson(groupRatioBlendedModelMax)
+
+        actualValue shouldBe expectedValue
+      }
+
+      "min values given" in {
+
+        val expectedValue = groupRatioBlendedJsonMin
+        val actualValue = Json.toJson(groupRatioBlendedModelMin)
+
+        actualValue shouldBe expectedValue
+      }
     }
 
-    "correctly read from Json" in {
+    "correctly read from Json" when {
 
-      val expectedValue = groupRatioBlendedModel
-      val actualValue = groupRatioBlendedJson.as[GroupRatioBlendedModel]
+      "max values given" in {
 
-      actualValue shouldBe expectedValue
+        val expectedValue = groupRatioBlendedModelMax
+        val actualValue = groupRatioBlendedJsonMax.as[GroupRatioBlendedModel]
+
+        actualValue shouldBe expectedValue
+      }
+
+      "min values given" in {
+
+        val expectedValue = groupRatioBlendedModelMin
+        val actualValue = groupRatioBlendedJsonMin.as[GroupRatioBlendedModel]
+
+        actualValue shouldBe expectedValue
+      }
     }
   }
 }

@@ -27,30 +27,30 @@ object GroupLevelElectionsConstants {
 
   val groupLevelElectionsJsonMax = Json.obj(
     "groupRatioElection" -> Elect,
-    "groupRatioBlended" -> groupRatioBlendedModel,
+    "groupRatioBlended" -> groupRatioBlendedModelMax,
     "groupEBITDAChargeableGains" -> true,
     "interestAllowanceAlternativeCalculation" -> true,
-    "interestAllowanceNonConsolidatedInvestment" -> nonConsolidatedInvestmentModel,
-    "interestAllowanceConsolidatedPartnership" -> consolidatedPartnershipsModel
+    "interestAllowanceNonConsolidatedInvestment" -> nonConsolidatedInvestmentModelMax,
+    "interestAllowanceConsolidatedPartnership" -> consolidatedPartnershipsModelMax
   )
 
   val groupLevelElectionsModelMax = GroupLevelElectionsModel(
     groupRatioElection = Elect,
-    groupRatioBlended = Some(groupRatioBlendedModel),
+    groupRatioBlended = Some(groupRatioBlendedModelMax),
     groupEBITDAChargeableGains = Some(true),
     interestAllowanceAlternativeCalculation = Some(true),
-    interestAllowanceNonConsolidatedInvestment = Some(nonConsolidatedInvestmentModel),
-    interestAllowanceConsolidatedPartnership = Some(consolidatedPartnershipsModel)
+    interestAllowanceNonConsolidatedInvestment = Some(nonConsolidatedInvestmentModelMax),
+    interestAllowanceConsolidatedPartnership = Some(consolidatedPartnershipsModelMax)
   )
 
   val groupLevelElectionsJsonMin = Json.obj(
     "groupRatioElection" -> Elect,
-    "groupRatioBlended" -> groupRatioBlendedModel
+    "groupRatioBlended" -> groupRatioBlendedModelMax
   )
 
   val groupLevelElectionsModelMin = GroupLevelElectionsModel(
     groupRatioElection = Elect,
-    groupRatioBlended = Some(groupRatioBlendedModel),
+    groupRatioBlended = Some(groupRatioBlendedModelMax),
     groupEBITDAChargeableGains = None,
     interestAllowanceAlternativeCalculation = None,
     interestAllowanceNonConsolidatedInvestment = None,

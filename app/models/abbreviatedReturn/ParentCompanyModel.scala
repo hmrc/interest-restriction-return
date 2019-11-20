@@ -18,7 +18,7 @@ package models.abbreviatedReturn
 
 import play.api.libs.json.Json
 
-case class ParentCompanyModel(ultimateParent: Option[UltimateParentModel], deemedParent: Seq[DeemedParentModel])
+case class ParentCompanyModel(ultimateParent: Option[UltimateParentModel], deemedParent: Option[Seq[DeemedParentModel]])
 
 object ParentCompanyModel {
 

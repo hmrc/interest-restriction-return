@@ -36,7 +36,7 @@ class ParentCompanyModelSpec extends WordSpec with Matchers {
 
       "min values given" in {
 
-        val expectedValue = parentCompanyJsonMin
+        val expectedValue = Json.obj()
         val actualValue = Json.toJson(parentCompanyModelMin)
 
         actualValue shouldBe expectedValue
@@ -56,7 +56,7 @@ class ParentCompanyModelSpec extends WordSpec with Matchers {
       "min values given" in {
 
         val expectedValue = parentCompanyModelMin
-        val actualValue = parentCompanyJsonMin.as[ParentCompanyModel]
+        val actualValue = Json.obj().as[ParentCompanyModel]
 
         actualValue shouldBe expectedValue
       }

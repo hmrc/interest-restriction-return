@@ -24,13 +24,22 @@ object GroupRatioBlendedConstants {
 
   val investorGroups = Seq("investment1", "investment2", "investment3")
 
-  val groupRatioBlendedModel = GroupRatioBlendedModel(
+  val groupRatioBlendedModelMax = GroupRatioBlendedModel(
     election = Elect,
-    investorGroups = investorGroups
+    investorGroups = Some(investorGroups)
   )
 
-  val groupRatioBlendedJson = Json.obj(
+  val groupRatioBlendedJsonMax = Json.obj(
     "election" -> Elect,
     "investorGroups" -> investorGroups
+  )
+
+  val groupRatioBlendedModelMin = GroupRatioBlendedModel(
+    election = Elect,
+    investorGroups = None
+  )
+
+  val groupRatioBlendedJsonMin = Json.obj(
+    "election" -> Elect
   )
 }

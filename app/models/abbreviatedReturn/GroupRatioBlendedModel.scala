@@ -20,7 +20,7 @@ import models.ElectionDecision
 import play.api.libs.json.Json
 
 case class GroupRatioBlendedModel(election: ElectionDecision,
-                                  investorGroups: Seq[String])
+                                  investorGroups: Option[Seq[String]])
 
 object GroupRatioBlendedModel {
   implicit val format = Json.format[GroupRatioBlendedModel]

@@ -19,7 +19,7 @@ package models.abbreviatedReturn
 import play.api.libs.json.Json
 
 case class ConsolidatedPartnershipModel(election: Boolean,
-                                        consolidatedPartnerships: Seq[String])
+                                        consolidatedPartnerships: Option[Seq[String]])
 
 object ConsolidatedPartnershipModel {
   implicit val format = Json.format[ConsolidatedPartnershipModel]

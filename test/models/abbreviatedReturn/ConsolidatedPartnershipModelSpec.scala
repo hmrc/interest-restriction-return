@@ -24,20 +24,43 @@ class ConsolidatedPartnershipModelSpec extends WordSpec with Matchers {
 
   "ConsolidatedPartnershipModel" must {
 
-    "correctly write to json" in {
+    "correctly write to json" when {
 
-      val expectedValue = consolidatedPartnershipsJson
-      val actualValue = Json.toJson(consolidatedPartnershipsModel)
+      "max values given" in {
 
-      actualValue shouldBe expectedValue
+        val expectedValue = consolidatedPartnershipsJsonMax
+        val actualValue = Json.toJson(consolidatedPartnershipsModelMax)
+
+        actualValue shouldBe expectedValue
+      }
+
+      "min values given" in {
+
+        val expectedValue = consolidatedPartnershipsModelMin
+        val actualValue = consolidatedPartnershipsJsonMin.as[ConsolidatedPartnershipModel]
+
+        actualValue shouldBe expectedValue
+      }
+
     }
 
-    "correctly read from Json" in {
+    "correctly read from Json" when {
 
-      val expectedValue = consolidatedPartnershipsModel
-      val actualValue = consolidatedPartnershipsJson.as[ConsolidatedPartnershipModel]
+      "max values given" in {
 
-      actualValue shouldBe expectedValue
+        val expectedValue = consolidatedPartnershipsJsonMax
+        val actualValue = Json.toJson(consolidatedPartnershipsModelMax)
+
+        actualValue shouldBe expectedValue
+      }
+
+      "min values given" in {
+
+        val expectedValue = consolidatedPartnershipsModelMin
+        val actualValue = consolidatedPartnershipsJsonMin.as[ConsolidatedPartnershipModel]
+
+        actualValue shouldBe expectedValue
+      }
     }
   }
 }
