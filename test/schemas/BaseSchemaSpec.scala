@@ -80,12 +80,6 @@ trait BaseSchemaSpec extends WordSpec with Matchers with GuiceOneAppPerSuite wit
     implicit val writes = Json.writes[ParentCompany]
   }
 
-  case class UKCompanies(companyName: Option[String] = Some("name"), utr: Option[String] = Some("1111111111"))
-
-  object UKCompanies {
-    implicit val writes = Json.writes[UKCompanies]
-  }
-
   case class AccountingPeriod(startDate: Option[String] = Some("1111-11-11"),
                               endDate: Option[String] = Some("1111-11-11"))
 
@@ -160,35 +154,5 @@ trait BaseSchemaSpec extends WordSpec with Matchers with GuiceOneAppPerSuite wit
 
   object ReportingCompany {
     implicit val writes = Json.writes[ReportingCompany]
-  }
-
-  case class AuthorisingCompanyModel(companyName: Option[String] = Some("cde ltd"),
-                                     utr: Option[String] = Some("1234567890"))
-
-  object AuthorisingCompanyModel {
-    implicit val writes = Json.writes[AuthorisingCompanyModel]
-  }
-
-  case class AppointReportingCompanyModel(agentDetails: Option[AgentDetails] = Some(AgentDetails()),
-                                          reportingCompany: Option[ReportingCompany] = Some(ReportingCompany()),
-                                          authorisingCompanies: Option[Seq[AuthorisingCompanyModel]] = Some(Seq(AuthorisingCompanyModel())),
-                                          declaration: Option[Boolean] = Some(true))
-
-  object AppointReportingCompanyModel {
-    implicit val writes = Json.writes[AppointReportingCompanyModel]
-  }
-
-  case class AbbreviatedReturnModel(agentDetails: Option[AgentDetails] = Some(AgentDetails()),
-                                    reportingCompany: Option[ReportingCompany] = Some(ReportingCompany()),
-                                    parentCompany: Option[ParentCompany] = Some(ParentCompany()),
-                                    publicInfrastructure: Option[Boolean] = Some(false),
-                                    groupCompanyDetails: Option[GroupCompanyDetails] = Some(GroupCompanyDetails()),
-                                    submissionType: Option[String] = Some("original"),
-                                    revisedReturnDetails: Option[String] = Some("asdfghj"),
-                                    groupLevelElections: Option[GroupLevelElections] = Some(GroupLevelElections()),
-                                    ukCompanies: Option[Seq[UKCompanies]] = Some(Seq(UKCompanies())))
-
-  object AbbreviatedReturnModel {
-    implicit val writes = Json.writes[AbbreviatedReturnModel]
   }
 }

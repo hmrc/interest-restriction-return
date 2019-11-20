@@ -1,42 +1,25 @@
-/*
- * Copyright 2019 HM Revenue & Customs
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package schemas
 
 import play.api.libs.json.{JsValue, Json}
 
-//noinspection ScalaStyle
-class AbbreviatedReturnSchemaSpec extends AbbreviatedBaseSchemaSpec {
+class FullSchemaSpec extends FullSchemaBaseSpec {
 
-  def validate(json: JsValue): Boolean = validateJson("abbreviatedReturnSchema.json", json)
+  def validate(json: JsValue): Boolean = validateJson("fullReturnSchema.json", json)
 
-  "AbbreviatedReturn Json Schema" should {
+  "FullReturn Json Schema" should {
 
     "Return valid" when {
 
       "Validated a successful JSON payload with UK Parent company" in {
 
-        val json = Json.toJson(AbbreviatedReturnModel())
+        val json = Json.toJson(FullReturnModel())
 
         validate(json) shouldBe true
       }
 
       "Validated a successful JSON payload with NonUK Parent company" in {
 
-        val json = Json.toJson(AbbreviatedReturnModel(
+        val json = Json.toJson(FullReturnModel(
           parentCompany = Some(ParentCompany(Some(NonUkUltimateParent())))
         ))
 
@@ -45,7 +28,7 @@ class AbbreviatedReturnSchemaSpec extends AbbreviatedBaseSchemaSpec {
 
       "Validated a successful JSON payload with 3 Deemed Parent companies" in {
 
-        val json = Json.toJson(AbbreviatedReturnModel(
+        val json = Json.toJson(FullReturnModel(
           parentCompany = Some(ParentCompany(ultimateParent = None, deemedParent = Some(Seq(
             DeemedParent(), DeemedParent(), DeemedParent()
           ))))
@@ -56,7 +39,7 @@ class AbbreviatedReturnSchemaSpec extends AbbreviatedBaseSchemaSpec {
 
       "Validated a successful JSON payload submissionType is revised" in {
 
-        val json = Json.toJson(AbbreviatedReturnModel(
+        val json = Json.toJson(FullReturnModel(
           submissionType = Some("revised")
         ))
 
@@ -65,7 +48,7 @@ class AbbreviatedReturnSchemaSpec extends AbbreviatedBaseSchemaSpec {
 
       "Validated a successful JSON payload revisedReturnDetails is None" in {
 
-        val json = Json.toJson(AbbreviatedReturnModel(
+        val json = Json.toJson(FullReturnModel(
           revisedReturnDetails = None
         ))
 
@@ -74,7 +57,7 @@ class AbbreviatedReturnSchemaSpec extends AbbreviatedBaseSchemaSpec {
 
       "Validated a successful JSON payload groupEBITDAChargeableGains is None" in {
 
-        val json = Json.toJson(AbbreviatedReturnModel(
+        val json = Json.toJson(FullReturnModel(
           groupLevelElections = Some(GroupLevelElections(
             groupEBITDAChargeableGains = None
           ))))
@@ -84,7 +67,7 @@ class AbbreviatedReturnSchemaSpec extends AbbreviatedBaseSchemaSpec {
 
       "Validated a successful JSON payload interestAllowanceAlternativeCalculation is None" in {
 
-        val json = Json.toJson(AbbreviatedReturnModel(
+        val json = Json.toJson(FullReturnModel(
           groupLevelElections = Some(GroupLevelElections(
             interestAllowanceAlternativeCalculation = None
           ))
@@ -95,7 +78,7 @@ class AbbreviatedReturnSchemaSpec extends AbbreviatedBaseSchemaSpec {
 
       "Validated a successful JSON payload groupRatioElection election is revoke" in {
 
-        val json = Json.toJson(AbbreviatedReturnModel(
+        val json = Json.toJson(FullReturnModel(
           groupLevelElections = Some(GroupLevelElections(
             groupRatioElection = Some(revokeString)
           ))
@@ -106,7 +89,7 @@ class AbbreviatedReturnSchemaSpec extends AbbreviatedBaseSchemaSpec {
 
       "Validated a successful JSON payload groupRatioBlended election is revoke" in {
 
-        val json = Json.toJson(AbbreviatedReturnModel(
+        val json = Json.toJson(FullReturnModel(
           groupLevelElections = Some(GroupLevelElections(
             groupRatioBlended = Some(GroupRatioBlended(
               election = Some(revokeString)
@@ -119,7 +102,7 @@ class AbbreviatedReturnSchemaSpec extends AbbreviatedBaseSchemaSpec {
 
       "Validated a successful JSON payload nonConsolidatedInvestments election is revoke" in {
 
-        val json = Json.toJson(AbbreviatedReturnModel(
+        val json = Json.toJson(FullReturnModel(
           groupLevelElections = Some(GroupLevelElections(
             interestAllowanceNonConsolidatedInvestment = Some(InterestAllowanceNonConsolidatedInvestment(
               election = Some(revokeString)
@@ -132,7 +115,7 @@ class AbbreviatedReturnSchemaSpec extends AbbreviatedBaseSchemaSpec {
 
       "Validated a successful JSON payload interestAllowanceConsolidatedPartnership election is false" in {
 
-        val json = Json.toJson(AbbreviatedReturnModel(
+        val json = Json.toJson(FullReturnModel(
           groupLevelElections = Some(GroupLevelElections(
             interestAllowanceConsolidatedPartnership = Some(InterestAllowanceConsolidatedPartnership(
               election = Some(false)
@@ -150,7 +133,7 @@ class AbbreviatedReturnSchemaSpec extends AbbreviatedBaseSchemaSpec {
 
         "is empty" in {
 
-          val json = Json.toJson(AbbreviatedReturnModel(
+          val json = Json.toJson(FullReturnModel(
             agentDetails = None
           ))
 
@@ -160,7 +143,7 @@ class AbbreviatedReturnSchemaSpec extends AbbreviatedBaseSchemaSpec {
 
       "reporting company is none" in {
 
-        val json = Json.toJson(AbbreviatedReturnModel(
+        val json = Json.toJson(FullReturnModel(
           reportingCompany = None
         ))
 
@@ -169,7 +152,7 @@ class AbbreviatedReturnSchemaSpec extends AbbreviatedBaseSchemaSpec {
 
       "public infrastructure is none" in {
 
-        val json = Json.toJson(AbbreviatedReturnModel(
+        val json = Json.toJson(FullReturnModel(
           publicInfrastructure = None
         ))
 
@@ -178,7 +161,7 @@ class AbbreviatedReturnSchemaSpec extends AbbreviatedBaseSchemaSpec {
 
       "parent company is none" in {
 
-        val json = Json.toJson(AbbreviatedReturnModel(
+        val json = Json.toJson(FullReturnModel(
           parentCompany = None
         ))
 
@@ -189,7 +172,7 @@ class AbbreviatedReturnSchemaSpec extends AbbreviatedBaseSchemaSpec {
 
         "is None" in {
 
-          val json = Json.toJson(AbbreviatedReturnModel(
+          val json = Json.toJson(FullReturnModel(
             groupCompanyDetails = None
           ))
 
@@ -201,7 +184,7 @@ class AbbreviatedReturnSchemaSpec extends AbbreviatedBaseSchemaSpec {
 
         "is not a valid type" in {
 
-          val json = Json.toJson(AbbreviatedReturnModel(
+          val json = Json.toJson(FullReturnModel(
             submissionType = Some("invalid")
           ))
 
@@ -210,7 +193,7 @@ class AbbreviatedReturnSchemaSpec extends AbbreviatedBaseSchemaSpec {
 
         "is empty" in {
 
-          val json = Json.toJson(AbbreviatedReturnModel(
+          val json = Json.toJson(FullReturnModel(
             submissionType = Some("")
           ))
 
@@ -219,7 +202,7 @@ class AbbreviatedReturnSchemaSpec extends AbbreviatedBaseSchemaSpec {
 
         "is None" in {
 
-          val json = Json.toJson(AbbreviatedReturnModel(
+          val json = Json.toJson(FullReturnModel(
             submissionType = None
           ))
 
@@ -231,7 +214,7 @@ class AbbreviatedReturnSchemaSpec extends AbbreviatedBaseSchemaSpec {
 
         "is empty" in {
 
-          val json = Json.toJson(AbbreviatedReturnModel(
+          val json = Json.toJson(FullReturnModel(
             revisedReturnDetails = Some("")
           ))
 
@@ -243,7 +226,7 @@ class AbbreviatedReturnSchemaSpec extends AbbreviatedBaseSchemaSpec {
 
         "is empty Sequence" in {
 
-          val json = Json.toJson(AbbreviatedReturnModel(
+          val json = Json.toJson(FullReturnModel(
             ukCompanies = Some(Seq.empty)
           ))
 
@@ -252,7 +235,7 @@ class AbbreviatedReturnSchemaSpec extends AbbreviatedBaseSchemaSpec {
 
         "is None" in {
 
-          val json = Json.toJson(AbbreviatedReturnModel(
+          val json = Json.toJson(FullReturnModel(
             ukCompanies = None
           ))
 
@@ -261,4 +244,10 @@ class AbbreviatedReturnSchemaSpec extends AbbreviatedBaseSchemaSpec {
       }
     }
   }
+
+
+
+
+
+
 }
