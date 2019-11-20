@@ -17,59 +17,98 @@
 package schemas.subSchemas
 
 import play.api.libs.json.{JsValue, Json}
-import schemas.{BaseSchemaSpec, FullSchemaBaseSpec}
+import schemas.BaseSchemaSpec
+import schemas.helpers._
+import schemas.helpers.fullReturn.AllocatedReactivations
 
-class AllocatedReactivations extends FullSchemaBaseSpec{
+class AllocatedReactivations extends BaseSchemaSpec {
 
   def validate(json: JsValue): Boolean = validateJson("subSchemas/allocatedReactivations.json", json)
 
-  "allocatedReactivations" when {
+  "allocatedReactivations" should {
 
-    "ap1NetDisallowances" when {
+    "Return valid" when {
 
-      "is None" in {
-
-        val json = Json.toJson(GroupCompanyDetails(
-            totalCompanies = Some(0)
-        ))
-
-        validate(json) shouldBe false
+      "valid JSON is received" in {
+        validate(Json.toJson(AllocatedReactivations())) shouldBe true
       }
     }
 
-    "currentPeriodReactivation" when {
+    "Return invalid" when {
 
-      "is 0" in {
+      "ap1NetDisallowances" when {
 
-        val json = Json.toJson(GroupCompanyDetails(
-          totalCompanies = Some(0)
-        ))
+        "is None" in {
 
-        validate(json) shouldBe false
+          val json = Json.toJson(AllocatedReactivations(
+            ap1NetDisallowances = None
+          ))
+
+          validate(json) shouldBe false
+        }
       }
-    }
 
-    "totalReactivation" when {
+      "currentPeriodReactivation" when {
 
-      "is 0" in {
+        "is None" in {
 
-        val json = Json.toJson(GroupCompanyDetails(
-          totalCompanies = Some(0)
-        ))
+          val json = Json.toJson(AllocatedReactivations(
+            currentPeriodReactivation = None
+          ))
 
-        validate(json) shouldBe false
+          validate(json) shouldBe false
+        }
+
+        "is less than 0" in {
+
+          val json = Json.toJson(AllocatedReactivations(
+            currentPeriodReactivation = Some(-0.01)
+          ))
+
+          validate(json) shouldBe false
+        }
       }
-    }
 
-    "reactivationCap" when {
+      "totalReactivation" when {
 
-      "is 0" in {
+        "is None" in {
 
-        val json = Json.toJson(GroupCompanyDetails(
-          totalCompanies = Some(0)
-        ))
+          val json = Json.toJson(AllocatedReactivations(
+            totalReactivation = None
+          ))
 
-        validate(json) shouldBe false
+          validate(json) shouldBe false
+        }
+
+        "is less than 0" in {
+
+          val json = Json.toJson(AllocatedReactivations(
+            totalReactivation = Some(-0.01)
+          ))
+
+          validate(json) shouldBe false
+        }
+      }
+
+      "reactivationCap" when {
+
+        "is None" in {
+
+          val json = Json.toJson(AllocatedReactivations(
+            reactivationCap = None
+          ))
+
+          validate(json) shouldBe false
+        }
+
+        "is less than 0" in {
+
+          val json = Json.toJson(AllocatedReactivations(
+            reactivationCap = Some(-0.01)
+          ))
+
+          validate(json) shouldBe false
+        }
       }
     }
   }

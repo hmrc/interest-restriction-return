@@ -2,19 +2,19 @@
   "type": "object",
   "properties": {
     "ap1NetDisallowances": {
-      "type": "numeric",
+      "type": "number",
       "minimum": 0
     },
     "currentPeriodReactivation": {
-      "type": "numeric",
+      "type": "number",
       "minimum": 0
     },
     "totalReactivation": {
-      "type": "numeric",
+      "type": "number",
       "minimum": 0
     },
     "reactivationCap": {
-      "type": "numeric",
+      "type": "number",
       "minimum": 0
     }
   },

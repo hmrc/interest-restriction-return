@@ -14,21 +14,15 @@
  * limitations under the License.
  */
 
-package schemas
+package schemas.helpers.fullReturn
 
-import org.scalatest.{Matchers, WordSpec}
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.libs.json.{Json, Writes}
-import utils.SchemaValidation
+import play.api.libs.json.Json
 
-//noinspection ScalaStyle
-trait BaseSchemaSpec extends WordSpec with Matchers with GuiceOneAppPerSuite with SchemaValidation {
+case class AllocatedReactivations(ap1NetDisallowances: Option[BigDecimal] = Some(12000),
+                                  currentPeriodReactivation: Option[BigDecimal] = Some(15000),
+                                  totalReactivation: Option[BigDecimal] = Some(27000),
+                                  reactivationCap: Option[BigDecimal] = Some(75000))
 
-  val maxAgentNameLength = 160
-  val maxCompanyNameLength = 160
-  val utrLength = 10
-  val crnLength = 8
-  val electString = "elect"
-  val revokeString = "revoke"
-
+object AllocatedReactivations {
+  implicit val format = Json.format[AllocatedReactivations]
 }

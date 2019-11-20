@@ -14,15 +14,15 @@
       "format": "date"
     },
     "disallowanceAp1": {
-      "type": "numeric",
+      "type": "number",
       "minimum": 0
     },
     "disallowanceAp2": {
-      "type": "numeric",
+      "type": "number",
       "minimum": 0
     },
     "disallowanceAp3": {
-      "type": "numeric",
+      "type": "number",
       "minimum": 0
     }
   },

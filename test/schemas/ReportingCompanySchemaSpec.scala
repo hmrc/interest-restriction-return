@@ -16,12 +16,13 @@
 
 package schemas
 
+import helpers._
 import play.api.libs.json.{JsValue, Json}
+import schemas.helpers.appointReportingCompany.{AppointReportingCompanyModel, AuthorisingCompanyModel}
 
 class ReportingCompanySchemaSpec extends BaseSchemaSpec {
 
-  def validate(json: JsValue): Boolean =
-    validateJson("reportingCompanySchema.json", json)
+  def validate(json: JsValue): Boolean = validateJson("reportingCompanySchema.json", json)
 
   "ReportingCompany Json Schema" should {
 

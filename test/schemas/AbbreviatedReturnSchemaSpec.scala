@@ -16,10 +16,12 @@
 
 package schemas
 
+import helpers._
 import play.api.libs.json.{JsValue, Json}
+import schemas.helpers.abbreviatedReturn.AbbreviatedReturnModel
 
 //noinspection ScalaStyle
-class AbbreviatedReturnSchemaSpec extends AbbreviatedBaseSchemaSpec {
+class AbbreviatedReturnSchemaSpec extends BaseSchemaSpec {
 
   def validate(json: JsValue): Boolean = validateJson("abbreviatedReturnSchema.json", json)
 
