@@ -14,26 +14,20 @@
  * limitations under the License.
  */
 
-package assets
+package models.fullReturn
+
+import java.time.LocalDate
 
 import play.api.libs.json.Json
-import AccountingPeriodConstants.{accountingPeriodJson, accountingPeriodModel}
-import models.GroupCompanyDetailsModel
 
-object GroupCompanyDetailsConstants {
+case class AllocatedRestrictions(ap1End: Option[LocalDate],
+                                 ap2End: Option[LocalDate],
+                                 ap3End: Option[LocalDate],
+                                 disallowanceAp1: Option[BigDecimal],
+                                 disallowanceAp2: Option[BigDecimal],
+                                 disallowanceAp3: Option[BigDecimal])
 
-  val totalCompanies = 1
-
-  val groupCompanyDetailsJson = Json.obj(
-    "totalCompanies" -> totalCompanies,
-    "inclusionOfNonConsentingCompanies" -> true,
-    "accountingPeriod" -> accountingPeriodJson
-  )
-
-  val groupCompanyDetailsModel = models.GroupCompanyDetailsModel(
-    totalCompanies = totalCompanies,
-    inclusionOfNonConsentingCompanies = true,
-    accountingPeriod = accountingPeriodModel
-  )
-
+object AllocatedRestrictions {
+  implicit val format = Json.format[AllocatedRestrictions]
 }
+

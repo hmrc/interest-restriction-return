@@ -14,33 +14,16 @@
  * limitations under the License.
  */
 
-package assets
+package models.fullReturn
 
-import assets.UltimateParentConstants._
-import assets.DeemedParentConstants._
-import models.ParentCompanyModel
-import models.abbreviatedReturn.DeemedParentModel
 import play.api.libs.json.Json
 
-object ParentCompanyConstants {
+case class AllocatedReactivations(ap1NetDisallowances: Int,
+                                  currentPeriodReactivation: Int,
+                                  totalReactivation: Int,
+                                  reactivationCap: Int)
 
-  val parentCompanyJsonMax = Json.obj(
-    "ultimateParent" -> ukParentJsonMax,
-    "deemedParent" -> Seq(deemedParentModelMax)
-  )
-
-  val parentCompanyModelMax = ParentCompanyModel(
-    ultimateParent = Some(ukParentModelMax),
-    deemedParent = Some(Seq(deemedParentModelMax))
-  )
-
-  val parentCompanyJsonMin = Json.obj(
-  )
-
-  val parentCompanyModelMin = ParentCompanyModel(
-    ultimateParent = None,
-    deemedParent = None
-  )
+object AllocatedReactivations {
+  implicit val format = Json.format[AllocatedReactivations]
 }
-
 

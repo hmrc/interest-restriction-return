@@ -17,6 +17,7 @@
 package models.abbreviatedReturn
 
 import assets.GroupLevelElectionsConstants._
+import models.GroupLevelElectionsModel
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 

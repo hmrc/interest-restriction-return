@@ -17,6 +17,7 @@
 package models.abbreviatedReturn
 
 import assets.ParentCompanyConstants._
+import models.ParentCompanyModel
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 

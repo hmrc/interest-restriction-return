@@ -14,26 +14,19 @@
  * limitations under the License.
  */
 
-package assets
+package models.fullReturn
 
 import play.api.libs.json.Json
-import AccountingPeriodConstants.{accountingPeriodJson, accountingPeriodModel}
-import models.GroupCompanyDetailsModel
 
-object GroupCompanyDetailsConstants {
+case class UkCompanyModel(companyName: String,
+                          utr: String,
+                          consenting: Boolean,
+                          netTaxInterestExpense: Int,
+                          netTaxInterestIncome: Int,
+                          taxEBITDA: Int,
+                          allocatedRestrictions: AllocatedRestrictions,
+                          allocatedReactivations: AllocatedReactivations)
 
-  val totalCompanies = 1
-
-  val groupCompanyDetailsJson = Json.obj(
-    "totalCompanies" -> totalCompanies,
-    "inclusionOfNonConsentingCompanies" -> true,
-    "accountingPeriod" -> accountingPeriodJson
-  )
-
-  val groupCompanyDetailsModel = models.GroupCompanyDetailsModel(
-    totalCompanies = totalCompanies,
-    inclusionOfNonConsentingCompanies = true,
-    accountingPeriod = accountingPeriodModel
-  )
-
+object UkCompanyModel {
+  implicit val format = Json.format[UkCompanyModel]
 }

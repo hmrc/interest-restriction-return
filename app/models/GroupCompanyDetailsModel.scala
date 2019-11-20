@@ -14,33 +14,16 @@
  * limitations under the License.
  */
 
-package assets
+package models
 
-import assets.UltimateParentConstants._
-import assets.DeemedParentConstants._
-import models.ParentCompanyModel
-import models.abbreviatedReturn.DeemedParentModel
+import models.abbreviatedReturn.AccountingPeriodModel
 import play.api.libs.json.Json
 
-object ParentCompanyConstants {
+case class GroupCompanyDetailsModel(totalCompanies: Int,
+                                    inclusionOfNonConsentingCompanies: Boolean,
+                                    accountingPeriod: AccountingPeriodModel)
 
-  val parentCompanyJsonMax = Json.obj(
-    "ultimateParent" -> ukParentJsonMax,
-    "deemedParent" -> Seq(deemedParentModelMax)
-  )
-
-  val parentCompanyModelMax = ParentCompanyModel(
-    ultimateParent = Some(ukParentModelMax),
-    deemedParent = Some(Seq(deemedParentModelMax))
-  )
-
-  val parentCompanyJsonMin = Json.obj(
-  )
-
-  val parentCompanyModelMin = ParentCompanyModel(
-    ultimateParent = None,
-    deemedParent = None
-  )
+object GroupCompanyDetailsModel {
+  implicit val format = Json.format[GroupCompanyDetailsModel]
 }
-
 

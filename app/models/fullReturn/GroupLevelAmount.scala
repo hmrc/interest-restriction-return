@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
-package models.abbreviatedReturn
+package models.fullReturn
 
 import play.api.libs.json.Json
 
-case class ParentCompanyModel(ultimateParent: Option[UltimateParentModel], deemedParent: Option[Seq[DeemedParentModel]])
+case class GroupLevelAmount(totalDisallowedAmount: BigDecimal,
+                            interestReactivationCap: BigDecimal,
+                            interestAllowanceForward: BigDecimal,
+                            interestAllowanceForPeriod: BigDecimal,
+                            interestCapacityForPeriod: BigDecimal)
 
-object ParentCompanyModel {
-
-  implicit val format = Json.format[ParentCompanyModel]
+object GroupLevelAmount {
+  implicit val format = Json.format[GroupLevelAmount]
 }
+

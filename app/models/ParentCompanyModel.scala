@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package models.abbreviatedReturn
+package models
 
+import models.abbreviatedReturn.{DeemedParentModel, UltimateParentModel}
 import play.api.libs.json.Json
 
-case class GroupCompanyDetailsModel(totalCompanies: Int,
-                                    inclusionOfNonConsentingCompanies: Boolean,
-                                    accountingPeriod: AccountingPeriodModel)
+case class ParentCompanyModel(ultimateParent: Option[UltimateParentModel], deemedParent: Option[Seq[DeemedParentModel]])
 
-object GroupCompanyDetailsModel {
-  implicit val format = Json.format[GroupCompanyDetailsModel]
+object ParentCompanyModel {
+
+  implicit val format = Json.format[ParentCompanyModel]
 }
-

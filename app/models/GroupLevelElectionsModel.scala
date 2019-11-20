@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package models.abbreviatedReturn
+package models
 
-import models.ElectionDecision
+import models.abbreviatedReturn.{ConsolidatedPartnershipModel, GroupRatioBlendedModel, NonConsolidatedInvestmentModel}
 import play.api.libs.json.Json
 
 case class GroupLevelElectionsModel(groupRatioElection: ElectionDecision,
