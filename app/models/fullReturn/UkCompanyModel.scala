@@ -21,11 +21,11 @@ import play.api.libs.json.Json
 case class UkCompanyModel(companyName: String,
                           utr: String,
                           consenting: Boolean,
-                          netTaxInterestExpense: Int,
-                          netTaxInterestIncome: Int,
-                          taxEBITDA: Int,
-                          allocatedRestrictions: AllocatedRestrictionsModel,
-                          allocatedReactivations: AllocatedReactivationsModel)
+                          netTaxInterestExpense: BigDecimal,
+                          netTaxInterestIncome: BigDecimal,
+                          taxEBITDA: BigDecimal,
+                          allocatedRestrictions: Option[AllocatedRestrictionsModel],
+                          allocatedReactivations: Option[AllocatedReactivationsModel])
 
 object UkCompanyModel {
   implicit val format = Json.format[UkCompanyModel]

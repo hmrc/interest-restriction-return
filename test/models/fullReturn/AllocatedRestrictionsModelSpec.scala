@@ -16,6 +16,28 @@
 
 package models.fullReturn
 
-class AllocatedRestrictionsModelSpec {
+import assets.fullReturn.AllocatedRestrictionsConstants._
+import org.scalatest.{Matchers, WordSpec}
+import play.api.libs.json.Json
 
+class AllocatedRestrictionsModelSpec extends WordSpec with Matchers {
+
+  "AllocatedRestrictionsModel" must {
+
+    "correctly write to json" in {
+
+      val expectedValue = allocatedRestrictionsJson
+      val actualValue = Json.toJson(allocatedRestrictionsModel)
+
+      actualValue shouldBe expectedValue
+    }
+
+    "correctly read from Json" in {
+
+      val expectedValue = allocatedRestrictionsModel
+      val actualValue = allocatedRestrictionsJson.as[AllocatedRestrictionsModel]
+
+      actualValue shouldBe expectedValue
+    }
+  }
 }

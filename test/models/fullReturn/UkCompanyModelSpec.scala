@@ -16,6 +16,50 @@
 
 package models.fullReturn
 
-class UkCompanyModelSpec {
+import assets.fullReturn.UkCompanyConstants._
+import org.scalatest.{Matchers, WordSpec}
+import play.api.libs.json.Json
 
+class UkCompanyModelSpec extends WordSpec with Matchers {
+
+  "UkCompanyModel" must {
+
+    "correctly write to json" when {
+
+      "max values given" in {
+
+        val expectedValue = ukCompanyJsonMax
+        val actualValue = Json.toJson(ukCompanyModelMax)
+
+        actualValue shouldBe expectedValue
+      }
+
+      "min values given" in {
+
+        val expectedValue = ukCompanyJsonMin
+        val actualValue = Json.toJson(ukCompanyModelMin)
+
+        actualValue shouldBe expectedValue
+      }
+    }
+
+    "correctly read from Json" when {
+
+      "max values given" in {
+
+        val expectedValue = ukCompanyModelMax
+        val actualValue = ukCompanyJsonMax.as[UkCompanyModel]
+
+        actualValue shouldBe expectedValue
+      }
+
+      "min values given" in {
+
+        val expectedValue = ukCompanyModelMin
+        val actualValue = ukCompanyJsonMin.as[UkCompanyModel]
+
+        actualValue shouldBe expectedValue
+      }
+    }
+  }
 }

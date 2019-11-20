@@ -16,6 +16,36 @@
 
 package assets.fullReturn
 
+import java.time.LocalDate
+
+import models.fullReturn.AllocatedRestrictionsModel
+import play.api.libs.json.Json
+
 object AllocatedRestrictionsConstants {
 
+  val ap1End = LocalDate.of(2000,1,1)
+  val ap2End = LocalDate.of(2000,2,1)
+  val ap3End = LocalDate.of(2000,3,1)
+
+  val disallowanceAp1: BigDecimal = 1.11
+  val disallowanceAp2: BigDecimal = 2.22
+  val disallowanceAp3: BigDecimal = 3.33
+
+  val allocatedRestrictionsModel = AllocatedRestrictionsModel(
+    ap1End = Some(ap1End),
+    ap2End = Some(ap2End),
+    ap3End = Some(ap3End),
+    disallowanceAp1 = Some(disallowanceAp1),
+    disallowanceAp2 = Some(disallowanceAp2),
+    disallowanceAp3 = Some(disallowanceAp3)
+  )
+
+  val allocatedRestrictionsJson = Json.obj(
+    "ap1End" -> ap1End,
+    "ap2End" -> ap2End,
+    "ap3End" -> ap3End,
+    "disallowanceAp1" -> disallowanceAp1,
+    "disallowanceAp2" -> disallowanceAp2,
+    "disallowanceAp3" -> disallowanceAp3
+  )
 }

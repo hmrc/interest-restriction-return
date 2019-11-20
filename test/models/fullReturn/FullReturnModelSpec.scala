@@ -16,6 +16,50 @@
 
 package models.fullReturn
 
-class FullReturnModelSpec {
+import assets.fullReturn.FullReturnConstants._
+import org.scalatest.{Matchers, WordSpec}
+import play.api.libs.json.Json
 
+class FullReturnModelSpec extends WordSpec with Matchers {
+
+  "FullReturnModel" must {
+
+    "correctly write to json" when {
+
+      "max values given" in {
+
+        val expectedValue = fullReturnJsonMax
+        val actualValue = Json.toJson(fullReturnModelMax)
+
+        actualValue shouldBe expectedValue
+      }
+
+      "min values given" in {
+
+        val expectedValue = fullReturnJsonMin
+        val actualValue = Json.toJson(fullReturnModelMin)
+
+        actualValue shouldBe expectedValue
+      }
+    }
+
+    "correctly read from Json" when {
+
+      "max values given" in {
+
+        val expectedValue = fullReturnModelMax
+        val actualValue = fullReturnJsonMax.as[FullReturnModel]
+
+        actualValue shouldBe expectedValue
+      }
+
+      "min values given" in {
+
+        val expectedValue = fullReturnModelMin
+        val actualValue = fullReturnJsonMin.as[FullReturnModel]
+
+        actualValue shouldBe expectedValue
+      }
+    }
+  }
 }

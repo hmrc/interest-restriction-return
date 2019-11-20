@@ -16,6 +16,26 @@
 
 package assets.fullReturn
 
-object AdjustedGroupInterestConstants {
+import assets.BaseConstants
+import models.fullReturn.AdjustedGroupInterestModel
+import play.api.libs.json.Json
+
+object AdjustedGroupInterestConstants extends BaseConstants {
+
+  val qngie: BigDecimal = 1.11
+  val groupEBITDA: BigDecimal = 2.22
+  val groupRatio: BigDecimal = 3.33
+
+  val adjustedGroupInterestModel = AdjustedGroupInterestModel(
+    qngie = qngie,
+    groupEBITDA = groupEBITDA,
+    groupRatio = groupRatio
+  )
+
+  val adjustedGroupInterestJson = Json.obj(
+    "qngie" -> qngie,
+    "groupEBITDA" -> groupEBITDA,
+    "groupRatio" -> groupRatio
+  )
 
 }

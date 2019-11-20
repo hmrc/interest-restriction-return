@@ -16,6 +16,57 @@
 
 package assets.fullReturn
 
-object UkCompanyConstants {
+import assets.BaseConstants
+import models.fullReturn.UkCompanyModel
+import AllocatedReactivationsConstants._
+import AllocatedRestrictionsConstants._
+import play.api.libs.json.Json
+object UkCompanyConstants extends BaseConstants {
 
+  val companyName = "some company"
+  val netTaxInterestExpense: BigDecimal = 1.11
+  val netTaxInterestIncome: BigDecimal = 2.22
+  val taxEBITDA: BigDecimal = 3.33
+
+  val ukCompanyModelMax = UkCompanyModel(
+    companyName = companyName,
+    utr = utr,
+    consenting = true,
+    netTaxInterestExpense = netTaxInterestExpense,
+    netTaxInterestIncome = netTaxInterestIncome,
+    taxEBITDA = taxEBITDA,
+    allocatedRestrictions = Some(allocatedRestrictionsModel),
+    allocatedReactivations = Some(allocatedReactivationsModel)
+  )
+
+  val ukCompanyJsonMax = Json.obj(
+    "companyName" -> companyName,
+    "utr" -> utr,
+    "consenting" -> true,
+    "netTaxInterestExpense" -> netTaxInterestExpense,
+    "netTaxInterestIncome" -> netTaxInterestIncome,
+    "taxEBITDA" -> taxEBITDA,
+    "allocatedRestrictions" -> allocatedRestrictionsJson,
+    "allocatedReactivations" -> allocatedReactivationsJson
+  )
+
+  val ukCompanyModelMin = UkCompanyModel(
+    companyName = companyName,
+    utr = utr,
+    consenting = true,
+    netTaxInterestExpense = netTaxInterestExpense,
+    netTaxInterestIncome = netTaxInterestIncome,
+    taxEBITDA = taxEBITDA,
+    allocatedRestrictions = None,
+    allocatedReactivations = None
+  )
+
+  val ukCompanyJsonMin = Json.obj(
+    "companyName" -> companyName,
+    "utr" -> utr,
+    "consenting" -> true,
+    "netTaxInterestExpense" -> netTaxInterestExpense,
+    "netTaxInterestIncome" -> netTaxInterestIncome,
+    "taxEBITDA" -> taxEBITDA
+  )
 }

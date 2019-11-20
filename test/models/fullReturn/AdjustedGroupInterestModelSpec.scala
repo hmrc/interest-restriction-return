@@ -16,6 +16,28 @@
 
 package models.fullReturn
 
-class AdjustedGroupInterestModelSpec {
+import org.scalatest.{Matchers, WordSpec}
+import play.api.libs.json.Json
+import assets.fullReturn.AdjustedGroupInterestConstants._
 
+class AdjustedGroupInterestModelSpec extends WordSpec with Matchers {
+
+  "AdjustedGroupInterestModel" must {
+
+    "correctly write to json" in {
+
+      val expectedValue = adjustedGroupInterestJson
+      val actualValue = Json.toJson(adjustedGroupInterestModel)
+
+      actualValue shouldBe expectedValue
+    }
+
+    "correctly read from Json" in {
+
+      val expectedValue = adjustedGroupInterestModel
+      val actualValue = adjustedGroupInterestJson.as[AdjustedGroupInterestModel]
+
+      actualValue shouldBe expectedValue
+    }
+  }
 }

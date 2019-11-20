@@ -16,6 +16,28 @@
 
 package models.fullReturn
 
-class GroupLevelAmountModelSpec {
+import org.scalatest.{Matchers, WordSpec}
+import assets.fullReturn.GroupLevelAmountConstants._
+import play.api.libs.json.Json
 
+class GroupLevelAmountModelSpec extends WordSpec with Matchers {
+
+  "GroupLevelAmountModel" must {
+
+    "correctly write to json" in {
+
+      val expectedValue = groupLevelAmountJson
+      val actualValue = Json.toJson(groupLevelAmountModel)
+
+      actualValue shouldBe expectedValue
+    }
+
+    "correctly read from Json" in {
+
+      val expectedValue = groupLevelAmountModel
+      val actualValue = groupLevelAmountJson.as[GroupLevelAmountModel]
+
+      actualValue shouldBe expectedValue
+    }
+  }
 }
