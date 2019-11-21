@@ -16,11 +16,10 @@
 
 package assets
 
-import models.abbreviatedReturn.GroupLevelElectionsModel
 import assets.GroupRatioBlendedConstants._
 import assets.NonConsolidatedInvestmentConstants._
 import assets.ConsolidatedPartnershipConstants._
-import models.Elect
+import models.{Elect, GroupLevelElectionsModel}
 import play.api.libs.json.Json
 
 object GroupLevelElectionsConstants {

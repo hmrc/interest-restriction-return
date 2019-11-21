@@ -14,30 +14,30 @@
  * limitations under the License.
  */
 
-package models.abbreviatedReturn
+package models
 
-import assets.abbreviatedReturn.AbbreviatedReturnConstants._
+import assets.GroupLevelElectionsConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 
-class AbbreviatedReturnModelSpec extends WordSpec with Matchers {
+class GroupLevelElectionsModelSpec extends WordSpec with Matchers {
 
-  "AbbreviatedReturnModel" must {
+  "GroupLevelElectionsModel" must {
 
     "correctly write to json" when {
 
       "max values given" in {
 
-        val expectedValue = abbreviatedReturnJsonMax
-        val actualValue = Json.toJson(abbreviatedReturnModelMax)
+        val expectedValue = groupLevelElectionsJsonMax
+        val actualValue = Json.toJson(groupLevelElectionsModelMax)
 
         actualValue shouldBe expectedValue
       }
 
       "min values given" in {
 
-        val expectedValue = abbreviatedReturnJsonMin
-        val actualValue = Json.toJson(abbreviatedReturnModelMin)
+        val expectedValue = groupLevelElectionsJsonMin
+        val actualValue = Json.toJson(groupLevelElectionsModelMin)
 
         actualValue shouldBe expectedValue
       }
@@ -47,16 +47,16 @@ class AbbreviatedReturnModelSpec extends WordSpec with Matchers {
 
       "max values given" in {
 
-        val expectedValue = abbreviatedReturnModelMax
-        val actualValue = abbreviatedReturnJsonMax.as[AbbreviatedReturnModel]
+        val expectedValue = groupLevelElectionsModelMax
+        val actualValue = groupLevelElectionsJsonMax.as[GroupLevelElectionsModel]
 
         actualValue shouldBe expectedValue
       }
 
       "min values given" in {
 
-        val expectedValue = abbreviatedReturnModelMin
-        val actualValue = abbreviatedReturnJsonMin.as[AbbreviatedReturnModel]
+        val expectedValue = groupLevelElectionsModelMin
+        val actualValue = groupLevelElectionsJsonMin.as[GroupLevelElectionsModel]
 
         actualValue shouldBe expectedValue
       }

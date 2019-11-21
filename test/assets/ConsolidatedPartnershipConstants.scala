@@ -16,7 +16,7 @@
 
 package assets
 
-import models.abbreviatedReturn.ConsolidatedPartnershipModel
+import models.ConsolidatedPartnershipModel
 import play.api.libs.json.Json
 
 object ConsolidatedPartnershipConstants {

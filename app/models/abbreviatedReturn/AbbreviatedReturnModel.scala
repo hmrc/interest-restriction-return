@@ -16,7 +16,7 @@
 
 package models.abbreviatedReturn
 
-import models.{AgentDetailsModel, ReportingCompanyModel, SubmissionType}
+import models.{AgentDetailsModel, GroupCompanyDetailsModel, GroupLevelElectionsModel, ParentCompanyModel, ReportingCompanyModel, SubmissionType}
 import play.api.libs.json.Json
 
 

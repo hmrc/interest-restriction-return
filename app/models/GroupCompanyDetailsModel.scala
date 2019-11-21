@@ -14,31 +14,15 @@
  * limitations under the License.
  */
 
-package models.abbreviatedReturn
+package models
 
-import assets.abbreviatedReturn.UkCompanyConstants._
-import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 
-class UkCompanyModelSpec extends WordSpec with Matchers {
+case class GroupCompanyDetailsModel(totalCompanies: Int,
+                                    inclusionOfNonConsentingCompanies: Boolean,
+                                    accountingPeriod: AccountingPeriodModel)
 
-  "UkCompanyModel" must {
-
-    "correctly write to json" in {
-
-      val expectedValue = ukCompanyJson
-      val actualValue = Json.toJson(ukCompanyModel)
-
-      actualValue shouldBe expectedValue
-    }
-
-    "correctly read from Json" in {
-
-      val expectedValue = ukCompanyModel
-      val actualValue = ukCompanyJson.as[UkCompanyModel]
-
-      actualValue shouldBe expectedValue
-    }
-  }
+object GroupCompanyDetailsModel {
+  implicit val format = Json.format[GroupCompanyDetailsModel]
 }
 

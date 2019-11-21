@@ -14,52 +14,54 @@
  * limitations under the License.
  */
 
-package models.abbreviatedReturn
+package models
 
-import assets.abbreviatedReturn.AbbreviatedReturnConstants._
+import assets.ConsolidatedPartnershipConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 
-class AbbreviatedReturnModelSpec extends WordSpec with Matchers {
+class ConsolidatedPartnershipModelSpec extends WordSpec with Matchers {
 
-  "AbbreviatedReturnModel" must {
+  "ConsolidatedPartnershipModel" must {
 
     "correctly write to json" when {
 
       "max values given" in {
 
-        val expectedValue = abbreviatedReturnJsonMax
-        val actualValue = Json.toJson(abbreviatedReturnModelMax)
+        val expectedValue = consolidatedPartnershipsJsonMax
+        val actualValue = Json.toJson(consolidatedPartnershipsModelMax)
 
         actualValue shouldBe expectedValue
       }
 
       "min values given" in {
 
-        val expectedValue = abbreviatedReturnJsonMin
-        val actualValue = Json.toJson(abbreviatedReturnModelMin)
+        val expectedValue = consolidatedPartnershipsModelMin
+        val actualValue = consolidatedPartnershipsJsonMin.as[ConsolidatedPartnershipModel]
 
         actualValue shouldBe expectedValue
       }
+
     }
 
     "correctly read from Json" when {
 
       "max values given" in {
 
-        val expectedValue = abbreviatedReturnModelMax
-        val actualValue = abbreviatedReturnJsonMax.as[AbbreviatedReturnModel]
+        val expectedValue = consolidatedPartnershipsJsonMax
+        val actualValue = Json.toJson(consolidatedPartnershipsModelMax)
 
         actualValue shouldBe expectedValue
       }
 
       "min values given" in {
 
-        val expectedValue = abbreviatedReturnModelMin
-        val actualValue = abbreviatedReturnJsonMin.as[AbbreviatedReturnModel]
+        val expectedValue = consolidatedPartnershipsModelMin
+        val actualValue = consolidatedPartnershipsJsonMin.as[ConsolidatedPartnershipModel]
 
         actualValue shouldBe expectedValue
       }
     }
   }
 }
+

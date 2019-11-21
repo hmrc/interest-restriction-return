@@ -16,7 +16,7 @@
 
 package assets
 
-import models.abbreviatedReturn.{NonUkParentModel, UkParentModel}
+import models.{NonUkParentModel, UkParentModel}
 import play.api.libs.json.Json
 
 object UltimateParentConstants extends BaseConstants {

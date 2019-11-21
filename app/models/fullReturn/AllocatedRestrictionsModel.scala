@@ -14,31 +14,20 @@
  * limitations under the License.
  */
 
-package models.abbreviatedReturn
+package models.fullReturn
 
-import assets.abbreviatedReturn.UkCompanyConstants._
-import org.scalatest.{Matchers, WordSpec}
+import java.time.LocalDate
+
 import play.api.libs.json.Json
 
-class UkCompanyModelSpec extends WordSpec with Matchers {
+case class AllocatedRestrictionsModel(ap1End: Option[LocalDate],
+                                      ap2End: Option[LocalDate],
+                                      ap3End: Option[LocalDate],
+                                      disallowanceAp1: Option[BigDecimal],
+                                      disallowanceAp2: Option[BigDecimal],
+                                      disallowanceAp3: Option[BigDecimal])
 
-  "UkCompanyModel" must {
-
-    "correctly write to json" in {
-
-      val expectedValue = ukCompanyJson
-      val actualValue = Json.toJson(ukCompanyModel)
-
-      actualValue shouldBe expectedValue
-    }
-
-    "correctly read from Json" in {
-
-      val expectedValue = ukCompanyModel
-      val actualValue = ukCompanyJson.as[UkCompanyModel]
-
-      actualValue shouldBe expectedValue
-    }
-  }
+object AllocatedRestrictionsModel {
+  implicit val format = Json.format[AllocatedRestrictionsModel]
 }
 

@@ -16,9 +16,9 @@
 
 package assets
 
-import models.abbreviatedReturn.GroupCompanyDetailsModel
 import play.api.libs.json.Json
-import AccountingPeriodConstants.{accountingPeriodModel, accountingPeriodJson}
+import AccountingPeriodConstants.{accountingPeriodJson, accountingPeriodModel}
+import models.GroupCompanyDetailsModel
 
 object GroupCompanyDetailsConstants {
 
@@ -30,7 +30,7 @@ object GroupCompanyDetailsConstants {
     "accountingPeriod" -> accountingPeriodJson
   )
 
-  val groupCompanyDetailsModel = GroupCompanyDetailsModel(
+  val groupCompanyDetailsModel = models.GroupCompanyDetailsModel(
     totalCompanies = totalCompanies,
     inclusionOfNonConsentingCompanies = true,
     accountingPeriod = accountingPeriodModel

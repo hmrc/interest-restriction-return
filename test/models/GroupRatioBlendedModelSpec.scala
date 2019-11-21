@@ -14,30 +14,30 @@
  * limitations under the License.
  */
 
-package models.abbreviatedReturn
+package models
 
-import assets.abbreviatedReturn.AbbreviatedReturnConstants._
+import assets.GroupRatioBlendedConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 
-class AbbreviatedReturnModelSpec extends WordSpec with Matchers {
+class GroupRatioBlendedModelSpec extends WordSpec with Matchers {
 
-  "AbbreviatedReturnModel" must {
+  "GroupRatioBlendedModel" must {
 
     "correctly write to json" when {
 
       "max values given" in {
 
-        val expectedValue = abbreviatedReturnJsonMax
-        val actualValue = Json.toJson(abbreviatedReturnModelMax)
+        val expectedValue = groupRatioBlendedJsonMax
+        val actualValue = Json.toJson(groupRatioBlendedModelMax)
 
         actualValue shouldBe expectedValue
       }
 
       "min values given" in {
 
-        val expectedValue = abbreviatedReturnJsonMin
-        val actualValue = Json.toJson(abbreviatedReturnModelMin)
+        val expectedValue = groupRatioBlendedJsonMin
+        val actualValue = Json.toJson(groupRatioBlendedModelMin)
 
         actualValue shouldBe expectedValue
       }
@@ -47,19 +47,20 @@ class AbbreviatedReturnModelSpec extends WordSpec with Matchers {
 
       "max values given" in {
 
-        val expectedValue = abbreviatedReturnModelMax
-        val actualValue = abbreviatedReturnJsonMax.as[AbbreviatedReturnModel]
+        val expectedValue = groupRatioBlendedModelMax
+        val actualValue = groupRatioBlendedJsonMax.as[GroupRatioBlendedModel]
 
         actualValue shouldBe expectedValue
       }
 
       "min values given" in {
 
-        val expectedValue = abbreviatedReturnModelMin
-        val actualValue = abbreviatedReturnJsonMin.as[AbbreviatedReturnModel]
+        val expectedValue = groupRatioBlendedModelMin
+        val actualValue = groupRatioBlendedJsonMin.as[GroupRatioBlendedModel]
 
         actualValue shouldBe expectedValue
       }
     }
   }
 }
+

@@ -16,8 +16,7 @@
 
 package assets
 
-import models.Elect
-import models.abbreviatedReturn.GroupRatioBlendedModel
+import models.{Elect, GroupRatioBlendedModel}
 import play.api.libs.json.Json
 
 object GroupRatioBlendedConstants {

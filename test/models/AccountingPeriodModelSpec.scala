@@ -14,30 +14,31 @@
  * limitations under the License.
  */
 
-package models.appointReportingCompany
+package models
 
+import assets.AccountingPeriodConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
-import assets.appointReportingCompany.AuthorisingCompanyConstants._
 
-class AuthorisingCompanyModelSpec extends WordSpec with Matchers {
+class AccountingPeriodModelSpec extends WordSpec with Matchers {
 
-  "AuthorisingCompanyModel" must {
+  "AccountingPeriodModel" must {
 
     "correctly write to json" in {
 
-      val expectedValue = authorisingCompanyJson
-      val actualValue = Json.toJson(authorisingCompanyModel)
+      val expectedValue = accountingPeriodJson
+      val actualValue = Json.toJson(accountingPeriodModel)
 
       actualValue shouldBe expectedValue
     }
 
     "correctly read from Json" in {
 
-      val expectedValue = authorisingCompanyModel
-      val actualValue = authorisingCompanyJson.as[AuthorisingCompanyModel]
+      val expectedValue = accountingPeriodModel
+      val actualValue = accountingPeriodJson.as[AccountingPeriodModel]
 
       actualValue shouldBe expectedValue
     }
   }
 }
+

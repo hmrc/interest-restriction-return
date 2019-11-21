@@ -14,31 +14,28 @@
  * limitations under the License.
  */
 
-package models.abbreviatedReturn
+package assets.fullReturn
 
-import assets.abbreviatedReturn.UkCompanyConstants._
-import org.scalatest.{Matchers, WordSpec}
+import assets.BaseConstants
+import models.fullReturn.AdjustedGroupInterestModel
 import play.api.libs.json.Json
 
-class UkCompanyModelSpec extends WordSpec with Matchers {
+object AdjustedGroupInterestConstants extends BaseConstants {
 
-  "UkCompanyModel" must {
+  val qngie: BigDecimal = 1.11
+  val groupEBITDA: BigDecimal = 2.22
+  val groupRatio: BigDecimal = 3.33
 
-    "correctly write to json" in {
+  val adjustedGroupInterestModel = AdjustedGroupInterestModel(
+    qngie = qngie,
+    groupEBITDA = groupEBITDA,
+    groupRatio = groupRatio
+  )
 
-      val expectedValue = ukCompanyJson
-      val actualValue = Json.toJson(ukCompanyModel)
+  val adjustedGroupInterestJson = Json.obj(
+    "qngie" -> qngie,
+    "groupEBITDA" -> groupEBITDA,
+    "groupRatio" -> groupRatio
+  )
 
-      actualValue shouldBe expectedValue
-    }
-
-    "correctly read from Json" in {
-
-      val expectedValue = ukCompanyModel
-      val actualValue = ukCompanyJson.as[UkCompanyModel]
-
-      actualValue shouldBe expectedValue
-    }
-  }
 }
-

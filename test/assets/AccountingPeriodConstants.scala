@@ -18,7 +18,7 @@ package assets
 
 import java.time.LocalDate
 
-import models.abbreviatedReturn.AccountingPeriodModel
+import models.AccountingPeriodModel
 import play.api.libs.json.Json
 
 object AccountingPeriodConstants {

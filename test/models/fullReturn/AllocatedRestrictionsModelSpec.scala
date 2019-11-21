@@ -14,28 +14,28 @@
  * limitations under the License.
  */
 
-package models.appointReportingCompany
+package models.fullReturn
 
+import assets.fullReturn.AllocatedRestrictionsConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
-import assets.appointReportingCompany.AuthorisingCompanyConstants._
 
-class AuthorisingCompanyModelSpec extends WordSpec with Matchers {
+class AllocatedRestrictionsModelSpec extends WordSpec with Matchers {
 
-  "AuthorisingCompanyModel" must {
+  "AllocatedRestrictionsModel" must {
 
     "correctly write to json" in {
 
-      val expectedValue = authorisingCompanyJson
-      val actualValue = Json.toJson(authorisingCompanyModel)
+      val expectedValue = allocatedRestrictionsJson
+      val actualValue = Json.toJson(allocatedRestrictionsModel)
 
       actualValue shouldBe expectedValue
     }
 
     "correctly read from Json" in {
 
-      val expectedValue = authorisingCompanyModel
-      val actualValue = authorisingCompanyJson.as[AuthorisingCompanyModel]
+      val expectedValue = allocatedRestrictionsModel
+      val actualValue = allocatedRestrictionsJson.as[AllocatedRestrictionsModel]
 
       actualValue shouldBe expectedValue
     }

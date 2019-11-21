@@ -14,28 +14,28 @@
  * limitations under the License.
  */
 
-package models.appointReportingCompany
+package models.fullReturn
 
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
-import assets.appointReportingCompany.AuthorisingCompanyConstants._
+import assets.fullReturn.AdjustedGroupInterestConstants._
 
-class AuthorisingCompanyModelSpec extends WordSpec with Matchers {
+class AdjustedGroupInterestModelSpec extends WordSpec with Matchers {
 
-  "AuthorisingCompanyModel" must {
+  "AdjustedGroupInterestModel" must {
 
     "correctly write to json" in {
 
-      val expectedValue = authorisingCompanyJson
-      val actualValue = Json.toJson(authorisingCompanyModel)
+      val expectedValue = adjustedGroupInterestJson
+      val actualValue = Json.toJson(adjustedGroupInterestModel)
 
       actualValue shouldBe expectedValue
     }
 
     "correctly read from Json" in {
 
-      val expectedValue = authorisingCompanyModel
-      val actualValue = authorisingCompanyJson.as[AuthorisingCompanyModel]
+      val expectedValue = adjustedGroupInterestModel
+      val actualValue = adjustedGroupInterestJson.as[AdjustedGroupInterestModel]
 
       actualValue shouldBe expectedValue
     }
