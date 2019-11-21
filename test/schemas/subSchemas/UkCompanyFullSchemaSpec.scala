@@ -23,7 +23,7 @@ import schemas.helpers.fullReturn.UkCompanyFull
 class UkCompanyFullSchemaSpec extends BaseSchemaSpec {
 
   def validate(json: JsValue): Boolean =
-    validateJson("subSchemas/UkCompanyFull.json", json)
+    validateJson("subSchemas/ukCompanyFull.json", json)
 
   "UkCompanyFull JSON schema" should {
 
@@ -34,6 +34,28 @@ class UkCompanyFullSchemaSpec extends BaseSchemaSpec {
         val json = Json.toJson(Seq(UkCompanyFull()))
 
         validate(json) shouldBe true
+      }
+
+      "allocated restrictions" when {
+
+        "is None" in {
+
+          val json = Json.toJson(Seq(UkCompanyFull(allocatedRestrictions = None)))
+
+          validate(json) shouldBe true
+        }
+      }
+
+      "allocated reactivations" when {
+
+        "is None" in {
+
+          val json = Json.toJson(Seq(UkCompanyFull(allocatedReactivations = None)))
+
+          validate(json) shouldBe true
+        }
+
+
       }
     }
 
@@ -103,7 +125,51 @@ class UkCompanyFullSchemaSpec extends BaseSchemaSpec {
           validate(json) shouldBe false
         }
       }
+
+      "netTaxInterestExpense" when {
+
+        "is None" in {
+
+          val json = Json.toJson(Seq(UkCompanyFull(netTaxInterestExpense = None)))
+
+          validate(json) shouldBe false
+        }
+
+        "is negative" in {
+
+          val json = Json.toJson(Seq(UkCompanyFull(netTaxInterestExpense = Some(-1))))
+
+          validate(json) shouldBe false
+        }
+      }
+
+      "netTaxInterestIncome" when {
+
+        "is None" in {
+
+          val json = Json.toJson(Seq(UkCompanyFull(netTaxInterestIncome = None)))
+
+          validate(json) shouldBe false
+
+        }
+
+        "is negative" in {
+
+          val json = Json.toJson(Seq(UkCompanyFull(netTaxInterestIncome = Some(-1))))
+
+          validate(json) shouldBe false
+        }
+      }
+
+      "taxEBITDA" when {
+
+        "is None" in {
+
+          val json = Json.toJson(Seq(UkCompanyFull(taxEBITDA = None)))
+
+          validate(json) shouldBe false
+        }
+      }
     }
   }
-
 }

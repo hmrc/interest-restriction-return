@@ -28,7 +28,7 @@
         "$ref": "allocatedRestrictions.json"
       },
       "allocatedReactivations": {
-        "$ref": "allocateReactivations.json"
+        "$ref": "allocatedReactivations.json"
       }
     },
     "required": [

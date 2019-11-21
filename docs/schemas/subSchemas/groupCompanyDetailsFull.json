@@ -22,20 +22,12 @@
         "startDate",
         "endDate"
       ]
-    },
-    "numberOfUkCompanies": {
-      "type": "int",
-      "minimum": 1,
-      "maximum": 32767
     }
   },
   "required": [
     "totalCompanies",
     "inclusionOfNonConsentingCompanies",
-    "accountingPeriod",
-    "numberOfUkCompanies"
-    Delete this
-
+    "accountingPeriod"
   ],
   "additionalProperties": false
 }

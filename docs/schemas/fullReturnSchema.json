@@ -28,7 +28,7 @@
       "type": "string",
       "minLength": 1
     },
-    "ANGIE": {
+    "angie": {
       "type": "number",
       "minimum": 0
     },
@@ -45,7 +45,7 @@
       "$ref": "subSchemas/groupLevelElections.json"
     },
     "ukCompanies": {
-      "$ref": "subSchemas/ukCompaniesFull.json"
+      "$ref": "subSchemas/ukCompanyFull.json"
     },
     "groupLevelAmount": {
       "$ref": "subSchemas/groupLevelAmount.json"
@@ -61,7 +61,11 @@
     "publicInfrastructure",
     "groupCompanyDetails",
     "submissionType",
-    "ukCompanies"
+    "ukCompanies",
+    "groupLevelAmount",
+    "returnContainsEstimate",
+    "groupSubjectToInterestRestrictions",
+    "groupSubjectToInterestReactivation"
   ],
   "additionalProperties": false
 }

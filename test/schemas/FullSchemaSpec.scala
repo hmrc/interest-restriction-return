@@ -18,6 +18,7 @@ package schemas
 
 import helpers._
 import play.api.libs.json.{JsValue, Json}
+import schemas.helpers.fullReturn.FullReturnModel
 
 class FullSchemaSpec extends BaseSchemaSpec {
 
@@ -27,19 +28,188 @@ class FullSchemaSpec extends BaseSchemaSpec {
 
     "Return valid" when {
 
-//      TODO: Add Valid Tests for Full Return
-//      "Validated a successful JSON payload with UK Parent company" in {
-//
-//        val json = Json.toJson(FullReturnModel())
-//
-//        validate(json) shouldBe true
-//      }
+      "Validated a successful JSON received" in {
+
+        val json = Json.toJson(FullReturnModel())
+
+        validate(json) shouldBe true
+      }
+
+      "groupLevelElections is empty" in {
+
+        val json = Json.toJson(FullReturnModel(groupLevelElections = None)
+        )
+
+        validate(json) shouldBe true
+      }
+
+      "ANGIE is None" in {
+
+          val json = Json.toJson(FullReturnModel(angie = None
+          ))
+
+          validate(json) shouldBe true
+        }
+
+
+      "Revised Return Details is None" in {
+
+        val json = Json.toJson(FullReturnModel(revisedReturnDetails = None)
+        )
+
+        validate(json) shouldBe true
+      }
+
+      "adjustedGroupInterest is None" in {
+
+        val json = Json.toJson(FullReturnModel(adjustedGroupInterest = None
+        ))
+
+        validate(json) shouldBe true
+      }
+
     }
 
     "Return invalid" when {
 
-//      TODO: Add Invalid Tests for Full Return
+      "agentDetails is empty" in {
 
+        val json = Json.toJson(FullReturnModel(agentDetails = None)
+        )
+
+        validate(json) shouldBe false
+      }
+
+      "reportingCompany is empty" in {
+
+        val json = Json.toJson(FullReturnModel(reportingCompany = None)
+        )
+
+        validate(json) shouldBe false
+      }
+
+      "parentCompany is empty" in {
+
+        val json = Json.toJson(FullReturnModel(parentCompany = None)
+        )
+
+        validate(json) shouldBe false
+      }
+
+      "publicInfrastructure is empty" in {
+
+        val json = Json.toJson(FullReturnModel(publicInfrastructure = None)
+        )
+
+        validate(json) shouldBe false
+      }
+
+      "groupCompanyDetails is empty" in {
+
+        val json = Json.toJson(FullReturnModel(groupCompanyDetails = None)
+        )
+
+        validate(json) shouldBe false
+      }
+
+      "SubmissionType" when {
+
+        "is None" in {
+
+          val json = Json.toJson(FullReturnModel(submissionType = None)
+          )
+
+          validate(json) shouldBe false
+        }
+
+        "is supplied but empty" in {
+
+          val json = Json.toJson(FullReturnModel(submissionType = Some(""))
+          )
+
+          validate(json) shouldBe false
+        }
+      }
+
+      "Revised Return Details" when {
+
+        "is supplied but empty" in {
+
+          val json = Json.toJson(FullReturnModel(revisedReturnDetails = Some(""))
+          )
+
+          validate(json) shouldBe false
+        }
+      }
+
+      "UK Companies" when {
+
+        "is None" in {
+
+          val json = Json.toJson(FullReturnModel(ukCompanies = None)
+          )
+
+          validate(json) shouldBe false
+        }
+
+        "is supplied but empty" in {
+
+          val json = Json.toJson(FullReturnModel(ukCompanies = Some(Seq.empty)
+          ))
+
+          validate(json) shouldBe false
+        }
+      }
+
+      "ANGIE" when {
+
+        "is negative" in {
+
+          val json = Json.toJson(FullReturnModel(angie = Some(-0.11)
+          ))
+
+          validate(json) shouldBe false
+        }
+      }
+
+      "Return Contains Estimate" in{
+
+        val json = Json.toJson(FullReturnModel(returnContainsEstimate = None
+        ))
+
+        validate(json) shouldBe false
+
+      }
+
+      "Group Subject To Interest Restrictions" when {
+
+        "groupSubjectToInterestRestrictions is None" in {
+
+          val json = Json.toJson(FullReturnModel(groupSubjectToInterestRestrictions = None
+          ))
+
+          validate(json) shouldBe false
+        }
+      }
+
+      "Group Subject To Interest Reactivations" when {
+
+        "groupSubjectToInterestReactivation is None" in {
+
+          val json = Json.toJson(FullReturnModel(groupSubjectToInterestReactivation = None
+          ))
+
+          validate(json) shouldBe false
+        }
+      }
+
+      "groupLevelAmount is None" in {
+
+        val json = Json.toJson(FullReturnModel(groupLevelAmount = None
+        ))
+
+        validate(json) shouldBe false
+      }
     }
   }
 }

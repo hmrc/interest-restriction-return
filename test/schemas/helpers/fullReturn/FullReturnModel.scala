@@ -15,26 +15,25 @@
  */
 
 package schemas.helpers.fullReturn
-
-import models.SubmissionType
 import play.api.libs.json.Json
 import schemas.helpers._
 
-case class FullReturnModel(agentDetails: AgentDetails,
-                           reportingCompany: ReportingCompany,
-                           parentCompany: ParentCompany,
-                           publicInfrastructure: Boolean,
-                           groupCompanyDetails: GroupCompanyDetails,
-                           submissionType: SubmissionType,
-                           revisedReturnDetails: Option[String],
-                           groupLevelElections: Option[GroupLevelElections],
-                           ukCompanies: Seq[UkCompanyFull],
-                           angie: Option[BigDecimal],
-                           groupSubjectToInterestRestrictions: Boolean,
-                           groupSubjectToInterestReactivation: Boolean,
-                           groupLevelAmount: GroupLevelAmount,
-                           adjustedGroupInterest: AdjustedGroupInterest)
+case class FullReturnModel(agentDetails: Option[AgentDetails] = Some(AgentDetails()),
+                           reportingCompany: Option[ReportingCompany] = Some(ReportingCompany()),
+                           parentCompany: Option[ParentCompany] = Some(ParentCompany()),
+                           publicInfrastructure: Option[Boolean] = Some(true),
+                           groupCompanyDetails: Option[GroupCompanyDetails] = Some(GroupCompanyDetails()),
+                           submissionType: Option[String] = Some("original"),
+                           revisedReturnDetails: Option[String] = Some("Example details of a Revised Return"),
+                           groupLevelElections: Option[GroupLevelElections] = Some(GroupLevelElections()),
+                           ukCompanies: Option[Seq[UkCompanyFull]] = Some(Seq(UkCompanyFull())),
+                           angie: Option[BigDecimal] = Some(10000000000.87),
+                           returnContainsEstimate: Option[Boolean] = Some(true),
+                           groupSubjectToInterestRestrictions: Option[Boolean] = Some(true),
+                           groupSubjectToInterestReactivation: Option[Boolean] = Some(true),
+                           groupLevelAmount: Option[GroupLevelAmount] = Some(GroupLevelAmount()),
+                           adjustedGroupInterest: Option[AdjustedGroupInterest] = Some(AdjustedGroupInterest()))
 
   object FullReturnModel {
-    implicit val writes = Json.writes[FullReturnModel]
+    implicit val format = Json.writes[FullReturnModel]
   }
