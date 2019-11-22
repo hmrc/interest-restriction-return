@@ -71,18 +71,29 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
 
         val json = Json.toJson(ParentCompany(
           ultimateParent = None, Some(Seq(
-            DeemedParent(utr = None)
+            DeemedParent(ctutr = None)
           ))
         ))
 
         validate(json) shouldBe true
       }
 
-      "Validated a successful JSON payload when otherUkTaxReference is none" in {
+      "Validated a successful JSON payload when sautr is none" in {
 
         val json = Json.toJson(ParentCompany(
           ultimateParent = Some(UkUltimateParent(
-            otherUkTaxReference = None
+            sautr = None
+          ))
+        ))
+
+        validate(json) shouldBe true
+      }
+
+      "Validated a successful JSON payload when ctutr is none" in {
+
+        val json = Json.toJson(ParentCompany(
+          ultimateParent = Some(UkUltimateParent(
+            ctutr = None
           ))
         ))
 
@@ -144,13 +155,13 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
             }
           }
 
-          "utr" when {
+          "ctutr" when {
 
             s"below $utrLength" in {
 
               val json = Json.toJson(ParentCompany(
                 ultimateParent = Some(
-                  UkUltimateParent(utr = Some("1" * (utrLength - 1)))
+                  UkUltimateParent(ctutr = Some("1" * (utrLength - 1)))
                 ))
               )
               validate(json) shouldBe false
@@ -160,7 +171,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
 
               val json = Json.toJson(ParentCompany(
                 ultimateParent = Some(
-                  UkUltimateParent(utr = Some("1" * (utrLength + 1)))
+                  UkUltimateParent(ctutr = Some("1" * (utrLength + 1)))
                 ))
               )
 
@@ -171,7 +182,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
 
               val json = Json.toJson(ParentCompany(
                 ultimateParent = Some(
-                  UkUltimateParent(utr = Some("a" * utrLength))
+                  UkUltimateParent(ctutr = Some("a" * utrLength))
                 ))
               )
 
@@ -182,7 +193,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
 
               val json = Json.toJson(ParentCompany(
                 ultimateParent = Some(
-                  UkUltimateParent(utr = Some("@"))
+                  UkUltimateParent(ctutr = Some("@"))
                 ))
               )
               validate(json) shouldBe false
@@ -233,13 +244,13 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
             }
           }
 
-          "otherUkTaxReference" when {
+          "sautr" when {
 
             s"below $utrLength" in {
 
               val json = Json.toJson(ParentCompany(
                 ultimateParent = Some(
-                  UkUltimateParent(otherUkTaxReference = Some("1" * (utrLength - 1)))
+                  UkUltimateParent(sautr = Some("1" * (utrLength - 1)))
                 ))
               )
               validate(json) shouldBe false
@@ -249,7 +260,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
 
               val json = Json.toJson(ParentCompany(
                 ultimateParent = Some(
-                  UkUltimateParent(otherUkTaxReference = Some("1" * (utrLength + 1)))
+                  UkUltimateParent(sautr = Some("1" * (utrLength + 1)))
                 ))
               )
               validate(json) shouldBe false
@@ -259,7 +270,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
 
               val json = Json.toJson(ParentCompany(
                 ultimateParent = Some(
-                  UkUltimateParent(otherUkTaxReference = Some("a" * utrLength))
+                  UkUltimateParent(sautr = Some("a" * utrLength))
                 )
               ))
 
@@ -270,7 +281,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
 
               val json = Json.toJson(ParentCompany(
                 ultimateParent = Some(
-                  UkUltimateParent(otherUkTaxReference = Some("@"))
+                  UkUltimateParent(sautr = Some("@"))
 
                 ))
               )
@@ -477,13 +488,13 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
               }
             }
 
-            "utr" when {
+            "ctutr" when {
 
               s"below $utrLength" in {
 
                 val json = Json.toJson(ParentCompany(
                   ultimateParent = None, Some(Seq(
-                    DeemedParent(utr = Some("1" * (utrLength - 1)))
+                    DeemedParent(ctutr = Some("1" * (utrLength - 1)))
                   ))
                 ))
                 validate(json) shouldBe false
@@ -493,7 +504,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
 
                 val json = Json.toJson(ParentCompany(
                   ultimateParent = None, Some(Seq(
-                    DeemedParent(utr = Some("1" * (utrLength + 1)))
+                    DeemedParent(ctutr = Some("1" * (utrLength + 1)))
                   ))
                 ))
 
@@ -504,7 +515,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
 
                 val json = Json.toJson(ParentCompany(
                   ultimateParent = None, Some(Seq(
-                    DeemedParent(utr = Some("a" * utrLength))
+                    DeemedParent(ctutr = Some("a" * utrLength))
                   ))
                 ))
 
@@ -515,7 +526,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
 
                 val json = Json.toJson(ParentCompany(
                   ultimateParent = None, Some(Seq(
-                    DeemedParent(utr = Some("@"))
+                    DeemedParent(ctutr = Some("@"))
                   ))
                 ))
 

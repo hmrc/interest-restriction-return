@@ -25,17 +25,17 @@ object DeemedParentConstants extends BaseConstants {
 
   val deemedParentModelMax = DeemedParentModel(
     companyName = companyName,
-    utr = Some(utr)
+    ctutr = Some(utr)
   )
 
   val deemedParentJsonMax = Json.obj(
     "companyName" -> companyName,
-    "utr" -> utr
+    "ctutr" -> utr
   )
 
   val deemedParentModelMin = DeemedParentModel(
     companyName = companyName,
-    utr = None
+    ctutr = None
   )
 
   val deemedParentJsonMin = Json.obj(

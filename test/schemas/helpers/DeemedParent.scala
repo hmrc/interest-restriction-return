@@ -18,7 +18,7 @@ package schemas.helpers
 
 import play.api.libs.json.Json
 
-case class DeemedParent(companyName: Option[String] = Some("name"), utr: Option[String] = Some("1111111111"))
+case class DeemedParent(companyName: Option[String] = Some("name"), ctutr: Option[String] = Some("1111111111"))
 
 object DeemedParent {
   implicit val writes = Json.writes[DeemedParent]

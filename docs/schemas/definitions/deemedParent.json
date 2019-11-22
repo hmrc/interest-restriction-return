@@ -13,7 +13,7 @@
               "companyName": {
                 "$ref": "definitions.json#/definitions/companyName"
               },
-              "utr": {
+              "ctutr": {
                 "$ref": "definitions.json#/definitions/utr"
               }
             },

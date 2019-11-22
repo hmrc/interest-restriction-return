@@ -18,7 +18,7 @@ package models
 
 import play.api.libs.json.Json
 
-case class DeemedParentModel(companyName: String, utr: Option[String])
+case class DeemedParentModel(companyName: String, ctutr: Option[String])
 
 object DeemedParentModel {
   implicit val format = Json.format[DeemedParentModel]
