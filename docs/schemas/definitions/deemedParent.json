@@ -11,7 +11,7 @@
             "type": "object",
             "properties": {
               "companyName": {
-                "$ref": "definitions.json#/definitions/companyNameNonUk"
+                "$ref": "definitions.json#/definitions/companyName"
               },
               "utr": {
                 "$ref": "definitions.json#/definitions/utr"

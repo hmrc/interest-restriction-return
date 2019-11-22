@@ -12,16 +12,11 @@
       "minLength": 1,
       "maxLength": 160
     },
-    "companyNameNonUk": {
-      "type": "string",
-      "minLength": 1,
-      "maxLength": 160
-    },
     "crn": {
       "type": "string",
       "minLength": 8,
       "maxLength": 8,
-      "pattern": "[0-9]{8}|[A-z]{2}[0-9]{6}"
+      "pattern": "[0-9]{8}|[A-Z]{2}[0-9]{6}"
     },
     "crnNonUk": {
       "type": "string",
