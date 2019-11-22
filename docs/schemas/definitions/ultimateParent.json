@@ -28,10 +28,10 @@
     "nonUk": {
       "properties": {
         "registeredCompanyName": {
-          "$ref": "definitions.json#/definitions/companyNameNonUk"
+          "$ref": "definitions.json#/definitions/companyName"
         },
         "knownAs": {
-          "$ref": "definitions.json#/definitions/companyNameNonUk"
+          "$ref": "definitions.json#/definitions/companyName"
         },
         "countryOfIncorporation": {
           "$ref": "countrycodes.json#/definitions/countryCode"

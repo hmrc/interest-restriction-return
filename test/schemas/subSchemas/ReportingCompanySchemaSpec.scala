@@ -124,6 +124,13 @@ class ReportingCompanySchemaSpec extends BaseSchemaSpec {
           validate(json) shouldBe false
         }
 
+        "crn contains at least one lowercase character and six numbers" in {
+
+          val json = Json.toJson(ReportingCompany(crn = Some("aA111111")))
+
+          validate(json) shouldBe false
+        }
+
         "is a symbol" in {
 
           val json = Json.toJson(ReportingCompany(crn = Some("@")))

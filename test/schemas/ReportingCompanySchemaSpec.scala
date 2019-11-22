@@ -37,7 +37,7 @@ class ReportingCompanySchemaSpec extends BaseSchemaSpec {
       " crn is two characters and six numbers" in {
 
         val json = Json.toJson(AppointReportingCompanyModel(
-          reportingCompany = Some(ReportingCompany(crn = Some("aA111111")))
+          reportingCompany = Some(ReportingCompany(crn = Some("AA111111")))
         ))
 
         validate(json) shouldBe true
