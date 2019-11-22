@@ -1,0 +1,24 @@
+{
+  "type": "object",
+  "properties": {
+    "qngie": {
+      "type": "number",
+      "minimum": 0
+    },
+    "groupEBITDA": {
+      "type": "number",
+      "minimum": 0
+    },
+    "groupRatio": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    }
+  },
+  "required": [
+    "qngie",
+    "groupEBITDA",
+    "groupRatio"
+  ],
+  "additionalProperties": false
+}

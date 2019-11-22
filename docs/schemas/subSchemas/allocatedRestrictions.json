@@ -1,0 +1,30 @@
+{
+  "type": "object",
+  "properties": {
+    "ap1EndDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "ap2EndDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "ap3EndDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "disallowanceAp1": {
+      "type": "number",
+      "minimum": 0
+    },
+    "disallowanceAp2": {
+      "type": "number",
+      "minimum": 0
+    },
+    "disallowanceAp3": {
+      "type": "number",
+      "minimum": 0
+    }
+  },
+  "additionalProperties": false
+}

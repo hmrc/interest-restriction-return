@@ -18,8 +18,9 @@ package schemas.subSchemas
 
 import play.api.libs.json.{JsValue, Json}
 import schemas.BaseSchemaSpec
+import schemas.helpers._
 
-class GroupCompanyDetailsSpec extends BaseSchemaSpec{
+class GroupCompanyDetailsSpec extends BaseSchemaSpec {
 
   def validate(json: JsValue): Boolean =
     validateJson("subSchemas/groupCompanyDetails.json", json)

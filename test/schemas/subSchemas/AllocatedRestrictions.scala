@@ -18,53 +18,49 @@ package schemas.subSchemas
 
 import play.api.libs.json.{JsValue, Json}
 import schemas.BaseSchemaSpec
-import schemas.helpers._
+import schemas.helpers.fullReturn.AllocatedRestrictions
 
-class AgentDetailsSchemaSpec extends BaseSchemaSpec {
+class AllocatedRestrictions extends BaseSchemaSpec {
 
-  def validate(json: JsValue): Boolean =
-    validateJson("subSchemas/agentDetails.json", json)
+  def validate(json: JsValue): Boolean = validateJson("subSchemas/allocatedRestrictions.json", json)
 
-  "AgentDetails Json Schema" should {
+  "allocatedRestrictions" should {
 
     "Return valid" when {
 
-      "Validated a successful JSON payload" in {
-        validate(Json.toJson(AgentDetails())) shouldBe true
+      "valid JSON is received" in {
+        validate(Json.toJson(AllocatedRestrictions())) shouldBe true
       }
     }
 
     "Return invalid" when {
 
-      "agentActingOnBehalfOfCompany" when {
+      "disallowanceAp1" when {
 
-        s"is None" in {
-
-          val json = Json.toJson(AgentDetails(
-            agentActingOnBehalfOfCompany = None
+        "is a negative number" in {
+          val json = Json.toJson(AllocatedRestrictions(
+            disallowanceAp1 = Some(-1)
           ))
-
           validate(json) shouldBe false
         }
       }
 
-      "agentName" when {
+      "disallowanceAp2" when {
 
-        s"is supplied but blank" in {
-
-          val json = Json.toJson(AgentDetails(
-            agentName = Some("")
+        "is a negative number" in {
+          val json = Json.toJson(AllocatedRestrictions(
+            disallowanceAp2 = Some(-1)
           ))
-
           validate(json) shouldBe false
         }
+      }
 
-        s"is supplied but exceeds $maxAgentNameLength" in {
+      "disallowanceAp3" when {
 
-          val json = Json.toJson(AgentDetails(
-            agentName = Some("A" * (maxAgentNameLength + 1))
+        "is a negative number" in {
+          val json = Json.toJson(AllocatedRestrictions(
+            disallowanceAp3 = Some(-1)
           ))
-
           validate(json) shouldBe false
         }
       }

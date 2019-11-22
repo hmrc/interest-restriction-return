@@ -14,20 +14,13 @@
  * limitations under the License.
  */
 
-package schemas
+package schemas.helpers
 
-import org.scalatest.{Matchers, WordSpec}
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import utils.SchemaValidation
+import play.api.libs.json.Json
 
-//noinspection ScalaStyle
-trait BaseSchemaSpec extends WordSpec with Matchers with GuiceOneAppPerSuite with SchemaValidation {
+case class InterestAllowanceConsolidatedPartnership(election: Option[Boolean] = Some(true),
+                                                    consolidatedPartnerships: Option[Seq[Partnership]] = Some(Seq(Partnership())))
 
-  val maxAgentNameLength = 160
-  val maxCompanyNameLength = 160
-  val utrLength = 10
-  val crnLength = 8
-  val electString = "elect"
-  val revokeString = "revoke"
-
+object InterestAllowanceConsolidatedPartnership {
+  implicit val writes = Json.writes[InterestAllowanceConsolidatedPartnership]
 }

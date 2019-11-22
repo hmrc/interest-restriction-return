@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "agentDetails": {
+      "$ref": "subSchemas/agentDetails.json"
+    },
+    "reportingCompany": {
+      "$ref": "subSchemas/reportingCompany.json"
+    },
+    "parentCompany": {
+      "$ref": "subSchemas/parentCompany.json"
+    },
+    "publicInfrastructure": {
+      "type": "boolean"
+    },
+    "groupCompanyDetails": {
+      "$ref": "subSchemas/groupCompanyDetailsFull.json"
+    },
+    "submissionType": {
+      "type": "string",
+      "enum": [
+        "original",
+        "revised"
+      ]
+    },
+    "revisedReturnDetails": {
+      "type": "string",
+      "minLength": 1
+    },
+    "angie": {
+      "type": "number",
+      "minimum": 0
+    },
+    "returnContainsEstimate": {
+      "type": "boolean"
+    },
+    "groupSubjectToInterestRestrictions": {
+      "type": "boolean"
+    },
+    "groupSubjectToInterestReactivation": {
+      "type": "boolean"
+    },
+    "groupLevelElections": {
+      "$ref": "subSchemas/groupLevelElections.json"
+    },
+    "ukCompanies": {
+      "$ref": "subSchemas/ukCompanyFull.json"
+    },
+    "groupLevelAmount": {
+      "$ref": "subSchemas/groupLevelAmount.json"
+    },
+    "adjustedGroupInterest": {
+      "$ref": "subSchemas/adjustedGroupInterest.json"
+    }
+  },
+  "required": [
+    "agentDetails",
+    "reportingCompany",
+    "parentCompany",
+    "publicInfrastructure",
+    "groupCompanyDetails",
+    "submissionType",
+    "ukCompanies",
+    "groupLevelAmount",
+    "returnContainsEstimate",
+    "groupSubjectToInterestRestrictions",
+    "groupSubjectToInterestReactivation"
+  ],
+  "additionalProperties": false
+}

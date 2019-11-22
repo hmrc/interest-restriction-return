@@ -18,6 +18,7 @@ package schemas.subSchemas
 
 import play.api.libs.json.{JsValue, Json}
 import schemas.BaseSchemaSpec
+import schemas.helpers._
 
 class ReportingCompanySchemaSpec extends BaseSchemaSpec {
 

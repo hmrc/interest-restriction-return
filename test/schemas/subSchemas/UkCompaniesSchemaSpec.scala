@@ -18,6 +18,8 @@ package schemas.subSchemas
 
 import play.api.libs.json.{JsValue, Json}
 import schemas.BaseSchemaSpec
+import schemas.helpers._
+import schemas.helpers.abbreviatedReturn.UKCompanies
 
 class UkCompaniesSchemaSpec extends BaseSchemaSpec {
 

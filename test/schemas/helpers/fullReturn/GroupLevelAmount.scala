@@ -14,20 +14,16 @@
  * limitations under the License.
  */
 
-package schemas
+package schemas.helpers.fullReturn
 
-import org.scalatest.{Matchers, WordSpec}
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import utils.SchemaValidation
+import play.api.libs.json.Json
 
-//noinspection ScalaStyle
-trait BaseSchemaSpec extends WordSpec with Matchers with GuiceOneAppPerSuite with SchemaValidation {
+case class GroupLevelAmount(totalDisallowedAmount: Option[BigDecimal] = Some(120000),
+                            interestReactivationCap: Option[BigDecimal]= Some(125000),
+                            interestAllowanceForward: Option[BigDecimal] =Some(130000),
+                            interestAllowanceForPeriod: Option[BigDecimal] = Some(140000),
+                            interestCapacityForPeriod: Option[BigDecimal] = Some(150000))
 
-  val maxAgentNameLength = 160
-  val maxCompanyNameLength = 160
-  val utrLength = 10
-  val crnLength = 8
-  val electString = "elect"
-  val revokeString = "revoke"
-
+object GroupLevelAmount {
+  implicit val format = Json.format[GroupLevelAmount]
 }

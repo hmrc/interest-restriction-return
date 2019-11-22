@@ -1,0 +1,44 @@
+{
+  "type": "array",
+  "minItems": 1,
+  "items": {
+    "type": "object",
+    "properties": {
+      "companyName": {
+        "$ref": "../definitions/definitions.json#/definitions/companyName"
+      },
+      "utr": {
+        "$ref": "../definitions/definitions.json#/definitions/utr"
+      },
+      "consenting": {
+        "type": "boolean"
+      },
+      "netTaxInterestExpense": {
+        "type": "number",
+        "minimum": 0
+      },
+      "netTaxInterestIncome": {
+        "type": "number",
+        "minimum": 0
+      },
+      "taxEBITDA": {
+        "type": "number"
+      },
+      "allocatedRestrictions": {
+        "$ref": "allocatedRestrictions.json"
+      },
+      "allocatedReactivations": {
+        "$ref": "allocatedReactivations.json"
+      }
+    },
+    "required": [
+      "companyName",
+      "utr",
+      "consenting",
+      "netTaxInterestExpense",
+      "netTaxInterestIncome",
+      "taxEBITDA"
+    ],
+    "additionalProperties": false
+  }
+}

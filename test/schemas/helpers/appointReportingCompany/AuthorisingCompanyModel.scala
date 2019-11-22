@@ -14,20 +14,13 @@
  * limitations under the License.
  */
 
-package schemas
+package schemas.helpers.appointReportingCompany
 
-import org.scalatest.{Matchers, WordSpec}
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import utils.SchemaValidation
+import play.api.libs.json.Json
 
-//noinspection ScalaStyle
-trait BaseSchemaSpec extends WordSpec with Matchers with GuiceOneAppPerSuite with SchemaValidation {
+case class AuthorisingCompanyModel(companyName: Option[String] = Some("cde ltd"),
+                                   utr: Option[String] = Some("1234567890"))
 
-  val maxAgentNameLength = 160
-  val maxCompanyNameLength = 160
-  val utrLength = 10
-  val crnLength = 8
-  val electString = "elect"
-  val revokeString = "revoke"
-
+object AuthorisingCompanyModel {
+  implicit val writes = Json.writes[AuthorisingCompanyModel]
 }

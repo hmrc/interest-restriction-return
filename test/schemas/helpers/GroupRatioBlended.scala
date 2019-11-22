@@ -14,20 +14,14 @@
  * limitations under the License.
  */
 
-package schemas
+package schemas.helpers
 
-import org.scalatest.{Matchers, WordSpec}
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import utils.SchemaValidation
+import models.Elect
+import play.api.libs.json.Json
 
-//noinspection ScalaStyle
-trait BaseSchemaSpec extends WordSpec with Matchers with GuiceOneAppPerSuite with SchemaValidation {
+case class GroupRatioBlended(election: Option[String] = Some(Elect.toString),
+                             investorGroups: Option[Seq[InvestorGroup]] = Some(Seq(InvestorGroup())))
 
-  val maxAgentNameLength = 160
-  val maxCompanyNameLength = 160
-  val utrLength = 10
-  val crnLength = 8
-  val electString = "elect"
-  val revokeString = "revoke"
-
+object GroupRatioBlended {
+  implicit val writes = Json.writes[GroupRatioBlended]
 }
