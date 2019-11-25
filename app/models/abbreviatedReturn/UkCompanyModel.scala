@@ -18,7 +18,9 @@ package models.abbreviatedReturn
 
 import play.api.libs.json.Json
 
-case class UkCompanyModel(companyName: String, utr: String)
+case class UkCompanyModel(companyName: String,
+                          ctutr: String,
+                          consenting: Boolean)
 
 object UkCompanyModel {
   implicit val format = Json.format[UkCompanyModel]
