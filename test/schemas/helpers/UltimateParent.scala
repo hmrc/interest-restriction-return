@@ -22,9 +22,9 @@ sealed trait UltimateParent
 
 case class UkUltimateParent(registeredCompanyName: Option[String] = Some("cde ltd"),
                             knownAs: Option[String] = Some("efg"),
-                            utr: Option[String] = Some("1234567890"),
+                            ctutr: Option[String] = Some("1234567890"),
                             crn: Option[String] = Some("AB123456"),
-                            otherUkTaxReference: Option[String] = Some("1234567890")
+                            sautr: Option[String] = Some("1234567890")
                            ) extends UltimateParent
 
 object UkUltimateParent {

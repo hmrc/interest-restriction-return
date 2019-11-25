@@ -26,11 +26,13 @@ object UkCompanyConstants extends BaseConstants {
 
   val ukCompanyModel = UkCompanyModel(
     companyName = companyName,
-    utr = utr
+    ctutr = ctutr,
+    consenting = true
   )
 
   val ukCompanyJson = Json.obj(
     "companyName" -> companyName,
-    "utr" -> utr
+    "ctutr" -> ctutr,
+    "consenting" -> true
   )
 }

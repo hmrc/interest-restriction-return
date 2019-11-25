@@ -18,7 +18,9 @@ package schemas.helpers.abbreviatedReturn
 
 import play.api.libs.json.Json
 
-case class UKCompanies(companyName: Option[String] = Some("name"), utr: Option[String] = Some("1111111111"))
+case class UKCompanies(companyName: Option[String] = Some("name"),
+                       ctutr: Option[String] = Some("1111111111"),
+                       consenting: Option[Boolean] = Some(true))
 
 object UKCompanies {
   implicit val writes = Json.writes[UKCompanies]

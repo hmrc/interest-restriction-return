@@ -8,19 +8,18 @@
         "knownAs": {
           "$ref": "definitions.json#/definitions/companyName"
         },
-        "utr": {
+        "ctutr": {
           "$ref": "definitions.json#/definitions/utr"
         },
         "crn": {
           "$ref": "definitions.json#/definitions/crn"
         },
-        "otherUkTaxReference": {
+        "sautr": {
           "$ref": "definitions.json#/definitions/utr"
         }
       },
       "required": [
         "registeredCompanyName",
-        "utr",
         "crn"
       ],
       "additionalProperties": false

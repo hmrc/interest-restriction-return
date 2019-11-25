@@ -18,7 +18,8 @@ package schemas.helpers
 
 import play.api.libs.json.Json
 
-case class ParentCompany(ultimateParent: Option[UltimateParent] = Some(UkUltimateParent()), deemedParent: Option[Seq[DeemedParent]] = None)
+case class ParentCompany(ultimateParent: Option[UltimateParent] = Some(UkUltimateParent()),
+                         deemedParent: Option[Seq[DeemedParent]] = None)
 
 object ParentCompany {
   implicit val writes = Json.writes[ParentCompany]

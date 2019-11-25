@@ -25,7 +25,7 @@ import play.api.libs.json.Json
 object GroupLevelElectionsConstants {
 
   val groupLevelElectionsJsonMax = Json.obj(
-    "groupRatioElection" -> Elect,
+    "isElected" -> true,
     "groupRatioBlended" -> groupRatioBlendedModelMax,
     "groupEBITDAChargeableGains" -> true,
     "interestAllowanceAlternativeCalculation" -> true,
@@ -34,7 +34,7 @@ object GroupLevelElectionsConstants {
   )
 
   val groupLevelElectionsModelMax = GroupLevelElectionsModel(
-    groupRatioElection = Elect,
+    isElected = true,
     groupRatioBlended = Some(groupRatioBlendedModelMax),
     groupEBITDAChargeableGains = Some(true),
     interestAllowanceAlternativeCalculation = Some(true),
@@ -43,12 +43,12 @@ object GroupLevelElectionsConstants {
   )
 
   val groupLevelElectionsJsonMin = Json.obj(
-    "groupRatioElection" -> Elect,
+    "isElected" -> true,
     "groupRatioBlended" -> groupRatioBlendedModelMax
   )
 
   val groupLevelElectionsModelMin = GroupLevelElectionsModel(
-    groupRatioElection = Elect,
+    isElected = true,
     groupRatioBlended = Some(groupRatioBlendedModelMax),
     groupEBITDAChargeableGains = None,
     interestAllowanceAlternativeCalculation = None,

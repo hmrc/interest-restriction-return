@@ -18,7 +18,7 @@ package models
 
 import play.api.libs.json.Json
 
-case class ConsolidatedPartnershipModel(election: Boolean,
+case class ConsolidatedPartnershipModel(isElected: Boolean,
                                         consolidatedPartnerships: Option[Seq[String]])
 
 object ConsolidatedPartnershipModel {

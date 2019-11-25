@@ -16,10 +16,9 @@
 
 package schemas.helpers
 
-import models.Elect
 import play.api.libs.json.Json
 
-case class InterestAllowanceNonConsolidatedInvestment(election: Option[String] = Some(Elect.toString),
+case class InterestAllowanceNonConsolidatedInvestment(election: Option[Boolean] = Some(true),
                                                       nonConsolidatedInvestments: Option[Seq[Investment]] = Some(Seq(Investment())))
 
 object InterestAllowanceNonConsolidatedInvestment {

@@ -22,7 +22,21 @@
       "additionalProperties": false
     },
     {
-      "$ref": "../definitions/deemedParent.json#/definitions/deemedParent"
+      "type": "object",
+      "properties": {
+        "deemedParent": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 3,
+          "items": {
+            "$ref": "../definitions/deemedParent.json#/definitions/deemedParent"
+          }
+        }
+      },
+      "required": [
+        "deemedParent"
+      ],
+      "additionalProperties": false
     }
   ]
 }

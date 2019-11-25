@@ -41,24 +41,6 @@ class GroupLevelElectionsSpec extends BaseSchemaSpec {
 
       "groupRatio" when {
 
-        "is Empty" in {
-
-          val json = Json.toJson(GroupLevelElections(
-            groupRatioElection = Some("")
-          ))
-
-          validate(json) shouldBe false
-        }
-
-        "supplied wihin an invalid enum value" in {
-
-          val json = Json.toJson(GroupLevelElections(
-            groupRatioElection = Some("invalid")
-          ))
-
-          validate(json) shouldBe false
-        }
-
         "is None" in {
 
           val json = Json.toJson(GroupLevelElections(
@@ -78,28 +60,6 @@ class GroupLevelElectionsSpec extends BaseSchemaSpec {
             val json = Json.toJson(GroupLevelElections(
               groupRatioBlended = Some(GroupRatioBlended(
                 election = None
-              ))
-            ))
-
-            validate(json) shouldBe false
-          }
-
-          "is Empty" in {
-
-            val json = Json.toJson(GroupLevelElections(
-              groupRatioBlended = Some(GroupRatioBlended(
-                election = Some("")
-              ))
-            ))
-
-            validate(json) shouldBe false
-          }
-
-          "supplied wihin an invalid enum value" in {
-
-            val json = Json.toJson(GroupLevelElections(
-              groupRatioBlended = Some(GroupRatioBlended(
-                election = Some("invalid")
               ))
             ))
 
@@ -169,29 +129,6 @@ class GroupLevelElectionsSpec extends BaseSchemaSpec {
             val json = Json.toJson(GroupLevelElections(
               interestAllowanceNonConsolidatedInvestment = Some(InterestAllowanceNonConsolidatedInvestment(
                 election = None
-              ))
-            ))
-
-            validate(json) shouldBe false
-          }
-
-          "is Empty" in {
-
-            val json = Json.toJson(GroupLevelElections(
-              interestAllowanceNonConsolidatedInvestment = Some(InterestAllowanceNonConsolidatedInvestment(
-                election = Some("")
-              ))
-            ))
-
-
-            validate(json) shouldBe false
-          }
-
-          "supplied wihin an invalid enum value" in {
-
-            val json = Json.toJson(GroupLevelElections(
-              interestAllowanceNonConsolidatedInvestment = Some(InterestAllowanceNonConsolidatedInvestment(
-                election = Some("invalid")
               ))
             ))
 

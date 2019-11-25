@@ -32,10 +32,10 @@ case class NonUkParentModel(registeredCompanyName: String,
 
 
 case class UkParentModel(registeredCompanyName: String,
-                         utr: String,
+                         ctutr: Option[String],
                          crn: String,
                          knownAs: Option[String],
-                         otherUkTaxReference: Option[String]) extends UltimateParentModel
+                         sautr: Option[String]) extends UltimateParentModel
 
 object UltimateParentModel {
 

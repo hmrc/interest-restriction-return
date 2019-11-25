@@ -18,7 +18,7 @@ package models
 
 import play.api.libs.json.Json
 
-case class NonConsolidatedInvestmentModel(election: ElectionDecision,
+case class NonConsolidatedInvestmentModel(isElected: Boolean,
                                           nonConsolidatedInvestments: Option[Seq[String]])
 
 object NonConsolidatedInvestmentModel {

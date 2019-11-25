@@ -21,21 +21,35 @@ import play.api.libs.json.Json
 
 object DeemedParentConstants extends BaseConstants {
 
-  val companyName = "some company"
+  val companyName = "some company ltd"
+  val knownAs = "some company"
+  val nonUkCountryCode = "US"
 
   val deemedParentModelMax = DeemedParentModel(
     companyName = companyName,
-    utr = Some(utr)
+    ctutr = Some(ctutr),
+    crn = Some(crn),
+    knownAs = Some(knownAs),
+    sautr = Some(sautr),
+    countryOfIncorporation = Some(nonUkCountryCode)
   )
 
   val deemedParentJsonMax = Json.obj(
     "companyName" -> companyName,
-    "utr" -> utr
+    "ctutr" -> ctutr,
+    "crn" -> crn,
+    "knownAs" -> knownAs,
+    "sautr" -> sautr,
+    "countryOfIncorporation" -> nonUkCountryCode
   )
 
   val deemedParentModelMin = DeemedParentModel(
     companyName = companyName,
-    utr = None
+    ctutr = None,
+    crn = None,
+    knownAs = None,
+    sautr = None,
+    countryOfIncorporation = None
   )
 
   val deemedParentJsonMin = Json.obj(
