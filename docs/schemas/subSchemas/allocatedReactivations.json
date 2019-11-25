@@ -2,8 +2,7 @@
   "type": "object",
   "properties": {
     "ap1NetDisallowances": {
-      "type": "number",
-      "minimum": 0
+      "type": "number"
     },
     "currentPeriodReactivation": {
       "type": "number",

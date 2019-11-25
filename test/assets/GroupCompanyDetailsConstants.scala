@@ -26,13 +26,11 @@ object GroupCompanyDetailsConstants {
 
   val groupCompanyDetailsJson = Json.obj(
     "totalCompanies" -> totalCompanies,
-    "inclusionOfNonConsentingCompanies" -> true,
     "accountingPeriod" -> accountingPeriodJson
   )
 
   val groupCompanyDetailsModel = models.GroupCompanyDetailsModel(
     totalCompanies = totalCompanies,
-    inclusionOfNonConsentingCompanies = true,
     accountingPeriod = accountingPeriodModel
   )
 

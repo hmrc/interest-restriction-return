@@ -99,7 +99,7 @@ class AbbreviatedReturnSchemaSpec extends BaseSchemaSpec {
 
         val json = Json.toJson(AbbreviatedReturnModel(
           groupLevelElections = Some(GroupLevelElections(
-            groupRatioElection = Some(false)
+            isElected = Some(false)
           ))
         ))
 
@@ -111,7 +111,7 @@ class AbbreviatedReturnSchemaSpec extends BaseSchemaSpec {
         val json = Json.toJson(AbbreviatedReturnModel(
           groupLevelElections = Some(GroupLevelElections(
             groupRatioBlended = Some(GroupRatioBlended(
-              election = Some(false)
+              isElected = Some(false)
             ))
           ))
         ))
@@ -124,7 +124,7 @@ class AbbreviatedReturnSchemaSpec extends BaseSchemaSpec {
         val json = Json.toJson(AbbreviatedReturnModel(
           groupLevelElections = Some(GroupLevelElections(
             interestAllowanceNonConsolidatedInvestment = Some(InterestAllowanceNonConsolidatedInvestment(
-              election = Some(false)
+              isElected = Some(false)
             ))
           ))
         ))
@@ -137,7 +137,7 @@ class AbbreviatedReturnSchemaSpec extends BaseSchemaSpec {
         val json = Json.toJson(AbbreviatedReturnModel(
           groupLevelElections = Some(GroupLevelElections(
             interestAllowanceConsolidatedPartnership = Some(InterestAllowanceConsolidatedPartnership(
-              election = Some(false)
+              isElected = Some(false)
             ))
           ))
         ))

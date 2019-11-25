@@ -19,7 +19,6 @@ package schemas.helpers
 import play.api.libs.json.Json
 
 case class GroupCompanyDetails(totalCompanies: Option[Int] = Some(1),
-                               inclusionOfNonConsentingCompanies: Option[Boolean] = Some(true),
                                accountingPeriod: Option[AccountingPeriod] = Some(AccountingPeriod()))
 
 object GroupCompanyDetails {

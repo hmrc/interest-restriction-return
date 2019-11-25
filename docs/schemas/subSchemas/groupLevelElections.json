@@ -1,13 +1,13 @@
 {
     "type": "object",
     "properties": {
-        "groupRatioElection": {
+        "isElected": {
             "type": "boolean"
         },
         "groupRatioBlended": {
             "type": "object",
             "properties": {
-                "election": {
+                "isElected": {
                     "type": "boolean"
                 },
                 "investorGroups": {
@@ -29,7 +29,7 @@
                 }
             },
             "required": [
-                "election"
+                "isElected"
             ],
             "additionalProperties": false
         },
@@ -42,7 +42,7 @@
         "interestAllowanceNonConsolidatedInvestment": {
             "type": "object",
             "properties": {
-                "election": {
+                "isElected": {
                     "type": "boolean"
                 },
                 "nonConsolidatedInvestments": {
@@ -64,14 +64,14 @@
                 }
             },
             "required": [
-                "election"
+                "isElected"
             ],
             "additionalProperties": false
         },
         "interestAllowanceConsolidatedPartnership": {
             "type": "object",
             "properties": {
-                "election": {
+                "isElected": {
                     "type": "boolean"
                 },
                 "consolidatedPartnerships": {
@@ -93,13 +93,13 @@
                 }
             },
             "required": [
-                "election"
+                "isElected"
             ],
             "additionalProperties": false
         }
     },
     "required": [
-        "groupRatioElection"
+        "isElected"
     ],
     "additionalProperties": false
 }

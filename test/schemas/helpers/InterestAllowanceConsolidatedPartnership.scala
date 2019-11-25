@@ -18,7 +18,7 @@ package schemas.helpers
 
 import play.api.libs.json.Json
 
-case class InterestAllowanceConsolidatedPartnership(election: Option[Boolean] = Some(true),
+case class InterestAllowanceConsolidatedPartnership(isElected: Option[Boolean] = Some(true),
                                                     consolidatedPartnerships: Option[Seq[Partnership]] = Some(Seq(Partnership())))
 
 object InterestAllowanceConsolidatedPartnership {

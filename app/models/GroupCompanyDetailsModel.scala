@@ -19,7 +19,6 @@ package models
 import play.api.libs.json.Json
 
 case class GroupCompanyDetailsModel(totalCompanies: Int,
-                                    inclusionOfNonConsentingCompanies: Boolean,
                                     accountingPeriod: AccountingPeriodModel)
 
 object GroupCompanyDetailsModel {
