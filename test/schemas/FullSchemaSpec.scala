@@ -16,9 +16,7 @@
 
 package schemas
 
-import helpers._
 import play.api.libs.json.{JsValue, Json}
-import schemas.helpers.abbreviatedReturn.AbbreviatedReturnModel
 import schemas.helpers.fullReturn.FullReturnModel
 
 class FullSchemaSpec extends BaseSchemaSpec {
