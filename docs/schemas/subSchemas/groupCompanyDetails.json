@@ -4,9 +4,6 @@
       "type": "integer",
       "minimum": 1
     },
-    "inclusionOfNonConsentingCompanies": {
-      "type": "boolean"
-    },
     "accountingPeriod": {
       "properties": {
         "startDate": {
@@ -26,7 +23,6 @@
   },
   "required": [
     "totalCompanies",
-    "inclusionOfNonConsentingCompanies",
     "accountingPeriod"
   ],
   "additionalProperties": false

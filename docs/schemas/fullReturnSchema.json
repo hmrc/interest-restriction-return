@@ -15,7 +15,7 @@
       "type": "boolean"
     },
     "groupCompanyDetails": {
-      "$ref": "subSchemas/groupCompanyDetailsFull.json"
+      "$ref": "subSchemas/groupCompanyDetails.json"
     },
     "submissionType": {
       "type": "string",

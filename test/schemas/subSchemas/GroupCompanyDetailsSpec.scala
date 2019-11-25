@@ -48,18 +48,6 @@ class GroupCompanyDetailsSpec extends BaseSchemaSpec {
       }
     }
 
-    "inclusionOfNonConsentingCompanies" when {
-
-      "is None" in {
-
-        val json = Json.toJson(GroupCompanyDetails(
-            inclusionOfNonConsentingCompanies = None
-        ))
-
-        validate(json) shouldBe false
-      }
-    }
-
     "accountingPeriod" when {
 
       "startDate is None" in {
