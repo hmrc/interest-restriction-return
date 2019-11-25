@@ -24,6 +24,7 @@ import utils.SchemaValidation
 trait BaseSchemaSpec extends WordSpec with Matchers with GuiceOneAppPerSuite with SchemaValidation {
 
   val maxAgentNameLength = 160
+  val maxDescriptionLength = 2000
   val maxCompanyNameLength = 160
   val utrLength = 10
   val crnLength = 8

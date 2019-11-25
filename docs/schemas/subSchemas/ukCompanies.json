@@ -7,13 +7,17 @@
       "companyName": {
         "$ref": "../definitions/definitions.json#/definitions/companyName"
       },
-      "utr": {
+      "ctutr": {
         "$ref": "../definitions/definitions.json#/definitions/utr"
+      },
+      "consenting": {
+        "type": "boolean"
       }
     },
     "required": [
       "companyName",
-      "utr"
+      "ctutr",
+      "consenting"
     ],
     "additionalProperties": false
   }

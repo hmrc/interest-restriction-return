@@ -239,6 +239,15 @@ class AbbreviatedReturnSchemaSpec extends BaseSchemaSpec {
 
           validate(json) shouldBe false
         }
+
+        s"exceeds the maximum description length of ${maxDescriptionLength}" in {
+
+          val json = Json.toJson(AbbreviatedReturnModel(
+            revisedReturnDetails = Some("A" * (maxDescriptionLength + 1))
+          ))
+
+          validate(json) shouldBe false
+        }
       }
 
       "ukCompanies" when {
