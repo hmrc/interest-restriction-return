@@ -18,6 +18,7 @@ package schemas
 
 import helpers._
 import play.api.libs.json.{JsValue, Json}
+import schemas.helpers.abbreviatedReturn.AbbreviatedReturnModel
 import schemas.helpers.fullReturn.FullReturnModel
 
 class FullSchemaSpec extends BaseSchemaSpec {
@@ -137,6 +138,15 @@ class FullSchemaSpec extends BaseSchemaSpec {
 
           val json = Json.toJson(FullReturnModel(revisedReturnDetails = Some(""))
           )
+
+          validate(json) shouldBe false
+        }
+
+        s"exceeds the maximum description length of ${maxDescriptionLength}" in {
+
+          val json = Json.toJson(FullReturnModel(
+            revisedReturnDetails = Some("A" * (maxDescriptionLength + 1))
+          ))
 
           validate(json) shouldBe false
         }

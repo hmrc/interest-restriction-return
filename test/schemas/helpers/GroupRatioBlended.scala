@@ -18,7 +18,7 @@ package schemas.helpers
 
 import play.api.libs.json.Json
 
-case class GroupRatioBlended(election: Option[Boolean] = Some(true),
+case class GroupRatioBlended(isElected: Option[Boolean] = Some(true),
                              investorGroups: Option[Seq[InvestorGroup]] = Some(Seq(InvestorGroup())))
 
 object GroupRatioBlended {

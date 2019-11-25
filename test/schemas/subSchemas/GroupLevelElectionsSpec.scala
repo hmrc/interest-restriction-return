@@ -44,7 +44,7 @@ class GroupLevelElectionsSpec extends BaseSchemaSpec {
         "is None" in {
 
           val json = Json.toJson(GroupLevelElections(
-            groupRatioElection = None
+            isElected = None
           ))
 
           validate(json) shouldBe false
@@ -59,7 +59,7 @@ class GroupLevelElectionsSpec extends BaseSchemaSpec {
 
             val json = Json.toJson(GroupLevelElections(
               groupRatioBlended = Some(GroupRatioBlended(
-                election = None
+                isElected = None
               ))
             ))
 
@@ -128,7 +128,7 @@ class GroupLevelElectionsSpec extends BaseSchemaSpec {
 
             val json = Json.toJson(GroupLevelElections(
               interestAllowanceNonConsolidatedInvestment = Some(InterestAllowanceNonConsolidatedInvestment(
-                election = None
+                isElected = None
               ))
             ))
 
@@ -193,7 +193,7 @@ class GroupLevelElectionsSpec extends BaseSchemaSpec {
 
             val json = Json.toJson(GroupLevelElections(
               interestAllowanceConsolidatedPartnership = Some(InterestAllowanceConsolidatedPartnership(
-                election = None
+                isElected = None
               ))
             ))
 
