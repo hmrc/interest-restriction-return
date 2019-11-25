@@ -21,13 +21,6 @@
     "crnNonUk": {
       "type": "string",
       "minLength": 1
-    },
-    "election": {
-      "type": "string",
-      "enum": [
-        "elect",
-        "revoke"
-      ]
     }
   }
 }
