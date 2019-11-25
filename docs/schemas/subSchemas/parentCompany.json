@@ -29,15 +29,7 @@
           "minItems": 1,
           "maxItems": 3,
           "items": {
-            "type": "object",
-            "anyOf": [
-              {
-                "$ref": "../definitions/deemedParent.json#/definitions/uk"
-              },
-              {
-                "$ref": "../definitions/deemedParent.json#/definitions/nonUk"
-              }
-            ]
+            "$ref": "../definitions/deemedParent.json#/definitions/deemedParent"
           }
         }
       },

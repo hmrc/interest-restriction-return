@@ -25,7 +25,7 @@ object ReportingCompanyConstants extends BaseConstants {
 
   val reportingCompanyJsonMax = Json.obj(
     "companyName" -> reportingCompanyName,
-    "utr" -> utr,
+    "utr" -> ctutr,
     "crn" -> crn,
     "sameAsUltimateParent" -> true,
     "reportingCompanyDeemed" -> true
@@ -33,7 +33,7 @@ object ReportingCompanyConstants extends BaseConstants {
 
   val reportingCompanyModelMax = ReportingCompanyModel(
     companyName = reportingCompanyName,
-    utr = utr,
+    utr = ctutr,
     crn = Some(crn),
     sameAsUltimateParent = true,
     reportingCompanyDeemed = true
@@ -41,14 +41,14 @@ object ReportingCompanyConstants extends BaseConstants {
 
   val reportingCompanyJsonMin = Json.obj(
     "companyName" -> reportingCompanyName,
-    "utr" -> utr,
+    "utr" -> ctutr,
     "sameAsUltimateParent" -> true,
     "reportingCompanyDeemed" -> true
   )
 
   val reportingCompanyModelMin = ReportingCompanyModel(
     companyName = reportingCompanyName,
-    utr = utr,
+    utr = ctutr,
     crn = None,
     sameAsUltimateParent = true,
     reportingCompanyDeemed = true

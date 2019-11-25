@@ -16,34 +16,15 @@
 
 package schemas.helpers
 
-import play.api.libs.json.{Json, Writes}
+import play.api.libs.json.Json
 
-sealed trait DeemedParent
-
-case class UkDeemedParent(companyName: Option[String] = Some("name"),
-                          knownAs: Option[String] = Some("efg"),
-                          ctutr: Option[String] = Some("1111111111"),
-                          crn: Option[String] = Some("AB123456"),
-                          sautr: Option[String] = Some("1111111111")
-                         ) extends DeemedParent
-
-object UkDeemedParent {
-  implicit val writes = Json.writes[UkDeemedParent]
-}
-
-case class NonUkDeemedParent(companyName: Option[String] = Some("name"),
-                             knownAs: Option[String] = Some("efg"),
-                             countryOfIncorporation: Option[String] = Some("US"),
-                             crn: Option[String] = Some("AB123456")
-                            ) extends DeemedParent
-
-object NonUkDeemedParent {
-  implicit val writes = Json.writes[NonUkDeemedParent]
-}
+case class DeemedParent(companyName: Option[String] = Some("name"),
+                        knownAs: Option[String] = Some("efg"),
+                        ctutr: Option[String] = Some("1111111111"),
+                        crn: Option[String] = Some("AB123456"),
+                        sautr: Option[String] = Some("1111111111"),
+                        countryOfIncorporation: Option[String] = Some("US"))
 
 object DeemedParent {
-  implicit def writes: Writes[DeemedParent] = Writes {
-    case x: UkDeemedParent => Json.toJson(x)(UkDeemedParent.writes)
-    case x: NonUkDeemedParent => Json.toJson(x)(NonUkDeemedParent.writes)
-  }
+  implicit val writes = Json.writes[DeemedParent]
 }

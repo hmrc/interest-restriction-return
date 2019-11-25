@@ -1,6 +1,6 @@
 {
   "definitions": {
-    "uk": {
+    "deemedParent": {
       "properties": {
         "companyName": {
           "$ref": "definitions.json#/definitions/companyName"
@@ -16,26 +16,9 @@
         },
         "sautr": {
           "$ref": "definitions.json#/definitions/utr"
-        }
-      },
-      "required": [
-        "companyName"
-      ],
-      "additionalProperties": false
-    },
-    "nonUk": {
-      "properties": {
-        "companyName": {
-          "$ref": "definitions.json#/definitions/companyName"
-        },
-        "knownAs": {
-          "$ref": "definitions.json#/definitions/companyName"
         },
         "countryOfIncorporation": {
           "$ref": "countrycodes.json#/definitions/countryCode"
-        },
-        "crn": {
-          "$ref": "definitions.json#/definitions/crnNonUk"
         }
       },
       "required": [

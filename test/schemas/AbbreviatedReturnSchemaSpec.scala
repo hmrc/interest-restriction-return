@@ -49,7 +49,7 @@ class AbbreviatedReturnSchemaSpec extends BaseSchemaSpec {
 
         val json = Json.toJson(AbbreviatedReturnModel(
           parentCompany = Some(ParentCompany(ultimateParent = None, deemedParent = Some(Seq(
-            UkDeemedParent(), UkDeemedParent(), UkDeemedParent()
+            DeemedParent(), DeemedParent(), DeemedParent()
           ))))
         ))
 

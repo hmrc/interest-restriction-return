@@ -27,7 +27,7 @@ object UltimateParentConstants extends BaseConstants {
 
   val ukParentModelMax = UkParentModel(
     registeredCompanyName = registeredCompanyName,
-    ctutr = Some(utr),
+    ctutr = Some(ctutr),
     crn = crn,
     knownAs = Some(knownAs),
     sautr = Some(otherUkTaxReference)
@@ -35,7 +35,7 @@ object UltimateParentConstants extends BaseConstants {
 
   val ukParentJsonMax = Json.obj(
     "registeredCompanyName" -> registeredCompanyName,
-    "ctutr" -> utr,
+    "ctutr" -> ctutr,
     "crn" -> crn,
     "knownAs" -> knownAs,
     "sautr" -> otherUkTaxReference
