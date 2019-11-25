@@ -24,21 +24,21 @@ object ConsolidatedPartnershipConstants {
   val consolidatedPartnerships = Seq("investment1", "investment2", "investment3")
 
   val consolidatedPartnershipsModelMax = ConsolidatedPartnershipModel(
-    election = true,
+    isElected = true,
     consolidatedPartnerships = Some(consolidatedPartnerships)
   )
 
   val consolidatedPartnershipsJsonMax = Json.obj(
-    "election" -> true,
+    "isElected" -> true,
     "consolidatedPartnerships" -> consolidatedPartnerships
   )
 
   val consolidatedPartnershipsModelMin = ConsolidatedPartnershipModel(
-    election = true,
+    isElected = true,
     consolidatedPartnerships = None
   )
 
   val consolidatedPartnershipsJsonMin = Json.obj(
-    "election" -> true
+    "isElected" -> true
   )
 }

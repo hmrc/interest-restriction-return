@@ -18,7 +18,7 @@ package models
 
 import play.api.libs.json.Json
 
-case class GroupRatioBlendedModel(election: ElectionDecision,
+case class GroupRatioBlendedModel(isElected: Boolean,
                                   investorGroups: Option[Seq[String]])
 
 object GroupRatioBlendedModel {
