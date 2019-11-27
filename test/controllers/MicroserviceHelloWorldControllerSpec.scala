@@ -16,31 +16,34 @@
 
 package controllers
 
-import config.AppConfig
-import org.scalatest.{Matchers, WordSpec}
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import controllers.actions.AuthAction
 import play.api.http.Status
+import play.api.test.Helpers
 import play.api.test.Helpers._
-import play.api.test.{FakeRequest, Helpers}
-import play.api.{Configuration, Environment, Mode}
-import uk.gov.hmrc.play.bootstrap.config.{RunMode, ServicesConfig}
+import utils.BaseSpec
 
-class MicroserviceHelloWorldControllerSpec extends WordSpec with Matchers with GuiceOneAppPerSuite {
+class MicroserviceHelloWorldControllerSpec extends BaseSpec {
 
-  private val fakeRequest = FakeRequest("GET", "/")
+  def controller(authAction: AuthAction) = new MicroserviceHelloWorldController(authAction, appConfig, Helpers.stubControllerComponents())
 
-  private val env           = Environment.simple()
-  private val configuration = Configuration.load(env)
+  "GET /" when {
 
-  private val serviceConfig = new ServicesConfig(configuration, new RunMode(configuration, Mode.Dev))
-  private val appConfig     = new AppConfig(configuration, serviceConfig)
+    "the user is authenticated" should {
 
-  private val controller = new MicroserviceHelloWorldController(appConfig, Helpers.stubControllerComponents())
+      "return 200 (OK)" in {
 
-  "GET /" should {
-    "return 200" in {
-      val result = controller.hello()(fakeRequest)
-      status(result) shouldBe Status.OK
+        val result = controller(authorisedAction).hello()(fakeRequest)
+        status(result) shouldBe Status.OK
+      }
+    }
+
+    "the user is unauthenticated" should {
+
+      "return 401 (Unauthorised)" in {
+
+        val result = controller(unauthorisedAction).hello()(fakeRequest)
+        status(result) shouldBe Status.UNAUTHORIZED
+      }
     }
   }
 }
