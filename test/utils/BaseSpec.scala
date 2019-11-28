@@ -23,10 +23,12 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.mvc.BodyParsers
 import play.api.test.FakeRequest
 import uk.gov.hmrc.auth.core.MissingBearerToken
+import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.ExecutionContext
 
-trait BaseSpec extends WordSpec with Matchers with GuiceOneAppPerSuite {
+trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite {
 
   lazy val fakeRequest = FakeRequest("GET", "/")
 
@@ -35,6 +37,7 @@ trait BaseSpec extends WordSpec with Matchers with GuiceOneAppPerSuite {
   lazy val bodyParsers = injector.instanceOf[BodyParsers.Default]
   lazy val appConfig = injector.instanceOf[AppConfig]
   lazy implicit val ec = injector.instanceOf[ExecutionContext]
+  lazy implicit val headerCarrier: HeaderCarrier = HeaderCarrier()
 
   lazy val authorisedAction = new Authorised[Option[String]](Some("id"), bodyParsers)
   lazy val unauthorisedAction = new Unauthorised(new MissingBearerToken, bodyParsers)
