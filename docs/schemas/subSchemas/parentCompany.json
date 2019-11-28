@@ -2,41 +2,10 @@
   "type": "object",
   "oneOf": [
     {
-      "type": "object",
-      "properties": {
-        "ultimateParent": {
-          "type": "object",
-          "oneOf": [
-            {
-              "$ref": "../definitions/ultimateParent.json#/definitions/uk"
-            },
-            {
-              "$ref": "../definitions/ultimateParent.json#/definitions/nonUk"
-            }
-          ]
-        }
-      },
-      "required": [
-        "ultimateParent"
-      ],
-      "additionalProperties": false
+      "$ref": "ultimateParent.json"
     },
     {
-      "type": "object",
-      "properties": {
-        "deemedParent": {
-          "type": "array",
-          "minItems": 1,
-          "maxItems": 3,
-          "items": {
-            "$ref": "../definitions/deemedParent.json#/definitions/deemedParent"
-          }
-        }
-      },
-      "required": [
-        "deemedParent"
-      ],
-      "additionalProperties": false
+      "$ref": "deemedParent.json"
     }
   ]
 }
