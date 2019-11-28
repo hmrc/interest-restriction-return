@@ -41,7 +41,8 @@
     "agentDetails",
     "reportingCompany",
     "isReportingCompanyRevokingItself",
-    "declaration"
+    "declaration",
+    "accountingPeriod"
   ],
   "additionalProperties": false
 }

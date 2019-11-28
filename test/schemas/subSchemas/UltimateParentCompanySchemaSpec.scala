@@ -22,11 +22,6 @@ import schemas.helpers._
 
 class UltimateParentCompanySchemaSpec extends BaseSchemaSpec {
 
-  case class Parent(ultimateParent: UltimateParent)
-  object Parent {
-    implicit val writes = Json.writes[Parent]
-  }
-
   def validate(json: JsValue): Boolean = validateJson("subSchemas/ultimateParent.json", json)
 
   "UltimateParent Json Schema" should {
@@ -35,14 +30,14 @@ class UltimateParentCompanySchemaSpec extends BaseSchemaSpec {
 
       "Validated a successful JSON payload with UK Ultimate company" in {
 
-        val json = Json.toJson(Parent(UkUltimateParent()))
+        val json = Json.toJson(UkUltimateParent())
 
         validate(json) shouldBe true
       }
 
       "Validated a successful JSON payload with NonUK Ultimate company" in {
 
-        val json = Json.toJson(Parent(NonUkUltimateParent()))
+        val json = Json.toJson(NonUkUltimateParent())
 
         validate(json) shouldBe true
       }
@@ -56,21 +51,21 @@ class UltimateParentCompanySchemaSpec extends BaseSchemaSpec {
 
           "is None" in {
 
-            val json = Json.toJson(Parent(UkUltimateParent(registeredCompanyName = None)))
+            val json = Json.toJson(UkUltimateParent(registeredCompanyName = None))
 
             validate(json) shouldBe false
           }
 
           s"is empty" in {
 
-            val json = Json.toJson(Parent(UkUltimateParent(registeredCompanyName = Some(""))))
+            val json = Json.toJson(UkUltimateParent(registeredCompanyName = Some("")))
 
             validate(json) shouldBe false
           }
 
           s"is longer than $maxCompanyNameLength characters" in {
 
-            val json = Json.toJson(Parent(UkUltimateParent(registeredCompanyName = Some("A" * (maxCompanyNameLength + 1)))))
+            val json = Json.toJson(UkUltimateParent(registeredCompanyName = Some("A" * (maxCompanyNameLength + 1))))
 
             validate(json) shouldBe false
           }
@@ -80,28 +75,28 @@ class UltimateParentCompanySchemaSpec extends BaseSchemaSpec {
 
           s"below $utrLength" in {
 
-            val json = Json.toJson(Parent(UkUltimateParent(ctutr = Some("1" * (utrLength - 1)))))
+            val json = Json.toJson(UkUltimateParent(ctutr = Some("1" * (utrLength - 1))))
 
             validate(json) shouldBe false
           }
 
           s"above $utrLength" in {
 
-            val json = Json.toJson(Parent(UkUltimateParent(ctutr = Some("1" * (utrLength + 1)))))
+            val json = Json.toJson(UkUltimateParent(ctutr = Some("1" * (utrLength + 1))))
 
             validate(json) shouldBe false
           }
 
           "is non numeric" in {
 
-            val json = Json.toJson(Parent(UkUltimateParent(ctutr = Some("a" * utrLength))))
+            val json = Json.toJson(UkUltimateParent(ctutr = Some("a" * utrLength)))
 
             validate(json) shouldBe false
           }
 
           "is a symbol" in {
 
-            val json = Json.toJson(Parent(UkUltimateParent(ctutr = Some("@"))))
+            val json = Json.toJson(UkUltimateParent(ctutr = Some("@")))
 
             validate(json) shouldBe false
           }
@@ -111,26 +106,26 @@ class UltimateParentCompanySchemaSpec extends BaseSchemaSpec {
 
           s"below $crnLength" in {
 
-            val json = Json.toJson(Parent(UkUltimateParent(crn = Some("1" * (crnLength - 1)))))
+            val json = Json.toJson(UkUltimateParent(crn = Some("1" * (crnLength - 1))))
 
             validate(json) shouldBe false
           }
 
           s"above $crnLength" in {
 
-            val json = Json.toJson(Parent(UkUltimateParent(crn = Some("1" * (crnLength + 1)))))
+            val json = Json.toJson(UkUltimateParent(crn = Some("1" * (crnLength + 1))))
 
             validate(json) shouldBe false
           }
 
           "starts with 1 letter" in {
-            val json = Json.toJson(Parent(UkUltimateParent(crn = Some("A" + ("1" * (crnLength - 1))))))
+            val json = Json.toJson(UkUltimateParent(crn = Some("A" + ("1" * (crnLength - 1)))))
 
             validate(json) shouldBe false
           }
 
           "starts with 3 letters" in {
-            val json = Json.toJson(Parent(UkUltimateParent(crn = Some("AAA" + ("1" * (crnLength - 3))))))
+            val json = Json.toJson(UkUltimateParent(crn = Some("AAA" + ("1" * (crnLength - 3)))))
 
             validate(json) shouldBe false
 
@@ -141,28 +136,28 @@ class UltimateParentCompanySchemaSpec extends BaseSchemaSpec {
 
           s"below $utrLength" in {
 
-            val json = Json.toJson(Parent(UkUltimateParent(sautr = Some("1" * (utrLength - 1)))))
+            val json = Json.toJson(UkUltimateParent(sautr = Some("1" * (utrLength - 1))))
 
             validate(json) shouldBe false
           }
 
           s"above $utrLength" in {
 
-            val json = Json.toJson(Parent(UkUltimateParent(sautr = Some("1" * (utrLength + 1)))))
+            val json = Json.toJson(UkUltimateParent(sautr = Some("1" * (utrLength + 1))))
 
             validate(json) shouldBe false
           }
 
           "is non numeric" in {
 
-            val json = Json.toJson(Parent(UkUltimateParent(sautr = Some("a" * utrLength))))
+            val json = Json.toJson(UkUltimateParent(sautr = Some("a" * utrLength)))
 
             validate(json) shouldBe false
           }
 
           "is a symbol" in {
 
-            val json = Json.toJson(Parent(UkUltimateParent(sautr = Some("@"))))
+            val json = Json.toJson(UkUltimateParent(sautr = Some("@")))
 
             validate(json) shouldBe false
           }
@@ -172,14 +167,14 @@ class UltimateParentCompanySchemaSpec extends BaseSchemaSpec {
 
           "knownAs is empty" in {
 
-            val json = Json.toJson(Parent(UkUltimateParent(knownAs = Some(""))))
+            val json = Json.toJson(UkUltimateParent(knownAs = Some("")))
 
             validate(json) shouldBe false
           }
 
           s"is longer than $maxCompanyNameLength characters" in {
 
-            val json = Json.toJson(Parent(UkUltimateParent(knownAs = Some("A" * (maxCompanyNameLength + 1)))))
+            val json = Json.toJson(UkUltimateParent(knownAs = Some("A" * (maxCompanyNameLength + 1))))
 
             validate(json) shouldBe false
           }
@@ -192,21 +187,21 @@ class UltimateParentCompanySchemaSpec extends BaseSchemaSpec {
 
           "is None" in {
 
-            val json = Json.toJson(Parent(NonUkUltimateParent(registeredCompanyName = None)))
+            val json = Json.toJson(NonUkUltimateParent(registeredCompanyName = None))
 
             validate(json) shouldBe false
           }
 
           s"is empty" in {
 
-            val json = Json.toJson(Parent(NonUkUltimateParent(registeredCompanyName = Some(""))))
+            val json = Json.toJson(NonUkUltimateParent(registeredCompanyName = Some("")))
 
             validate(json) shouldBe false
           }
 
           s"is longer than $maxCompanyNameLength characters" in {
 
-            val json = Json.toJson(Parent(NonUkUltimateParent(registeredCompanyName = Some("A" * (maxCompanyNameLength + 1)))))
+            val json = Json.toJson(NonUkUltimateParent(registeredCompanyName = Some("A" * (maxCompanyNameLength + 1))))
 
             validate(json) shouldBe false
           }
@@ -216,25 +211,25 @@ class UltimateParentCompanySchemaSpec extends BaseSchemaSpec {
 
           "is only one letter" in {
 
-            val json = Json.toJson(Parent(NonUkUltimateParent(countryOfIncorporation = Some("A"))))
+            val json = Json.toJson(NonUkUltimateParent(countryOfIncorporation = Some("A")))
             validate(json) shouldBe false
           }
 
           "is three letters" in {
 
-            val json = Json.toJson(Parent(NonUkUltimateParent(countryOfIncorporation = Some("AAA"))))
+            val json = Json.toJson(NonUkUltimateParent(countryOfIncorporation = Some("AAA")))
             validate(json) shouldBe false
           }
 
           "contains a number" in {
 
-            val json = Json.toJson(Parent(NonUkUltimateParent(countryOfIncorporation = Some("A1"))))
+            val json = Json.toJson(NonUkUltimateParent(countryOfIncorporation = Some("A1")))
             validate(json) shouldBe false
           }
 
           "contains a symbol" in {
 
-            val json = Json.toJson(Parent(NonUkUltimateParent(countryOfIncorporation = Some("A@"))))
+            val json = Json.toJson(NonUkUltimateParent(countryOfIncorporation = Some("A@")))
             validate(json) shouldBe false
           }
         }
@@ -243,14 +238,14 @@ class UltimateParentCompanySchemaSpec extends BaseSchemaSpec {
 
           "is None" in {
 
-            val json = Json.toJson(Parent(NonUkUltimateParent(crn = None)))
+            val json = Json.toJson(NonUkUltimateParent(crn = None))
 
             validate(json) shouldBe false
           }
 
           s"is empty" in {
 
-            val json = Json.toJson(Parent(NonUkUltimateParent(crn = Some(""))))
+            val json = Json.toJson(NonUkUltimateParent(crn = Some("")))
 
             validate(json) shouldBe false
           }
@@ -260,7 +255,7 @@ class UltimateParentCompanySchemaSpec extends BaseSchemaSpec {
 
           "knownAs is empty" in {
 
-            val json = Json.toJson(Parent(NonUkUltimateParent(knownAs = Some(""))))
+            val json = Json.toJson(NonUkUltimateParent(knownAs = Some("")))
 
             validate(json) shouldBe false
           }
@@ -268,7 +263,7 @@ class UltimateParentCompanySchemaSpec extends BaseSchemaSpec {
 
         s"is longer than $maxCompanyNameLength characters" in {
 
-          val json = Json.toJson(Parent(NonUkUltimateParent(knownAs = Some("A" * (maxCompanyNameLength + 1)))))
+          val json = Json.toJson(NonUkUltimateParent(knownAs = Some("A" * (maxCompanyNameLength + 1))))
           validate(json) shouldBe false
         }
       }

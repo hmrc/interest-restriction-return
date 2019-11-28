@@ -2,10 +2,28 @@
   "type": "object",
   "oneOf": [
     {
-      "$ref": "ultimateParent.json"
+      "type": "object",
+      "properties": {
+        "ultimateParent": {
+          "$ref": "ultimateParent.json"
+        }
+      },
+      "required": [
+        "ultimateParent"
+      ],
+      "additionalProperties": false
     },
     {
-      "$ref": "deemedParent.json"
+      "type": "object",
+      "properties": {
+        "deemedParent": {
+          "$ref": "deemedParent.json"
+        }
+      },
+      "required": [
+        "deemedParent"
+      ],
+      "additionalProperties": false
     }
   ]
 }

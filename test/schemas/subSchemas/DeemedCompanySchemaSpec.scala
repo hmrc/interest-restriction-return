@@ -22,11 +22,6 @@ import schemas.helpers._
 
 class DeemedCompanySchemaSpec extends BaseSchemaSpec {
 
-  case class Parent(deemedParent: Seq[DeemedParent])
-  object Parent {
-    implicit val writes = Json.writes[Parent]
-  }
-
   def validate(json: JsValue): Boolean = validateJson("subSchemas/deemedParent.json", json)
 
   "DeemedCompany Json Schema" should {
@@ -35,21 +30,21 @@ class DeemedCompanySchemaSpec extends BaseSchemaSpec {
 
       "Validated a successful JSON payload with one deemed parent" in {
 
-        val json = Json.toJson(Parent(Seq(DeemedParent())))
+        val json = Json.toJson(Seq(DeemedParent()))
 
         validate(json) shouldBe true
       }
 
       "Validated a successful JSON payload with two deemed parents" in {
 
-        val json = Json.toJson(Parent(Seq(DeemedParent(), DeemedParent())))
+        val json = Json.toJson(Seq(DeemedParent(), DeemedParent()))
 
         validate(json) shouldBe true
       }
 
       "Validated a successful JSON payload with three deemed parents" in {
 
-        val json = Json.toJson(Parent(Seq(DeemedParent(), DeemedParent(), DeemedParent())))
+        val json = Json.toJson(Seq(DeemedParent(), DeemedParent(), DeemedParent()))
 
         validate(json) shouldBe true
       }
@@ -61,33 +56,30 @@ class DeemedCompanySchemaSpec extends BaseSchemaSpec {
 
         "is None" in {
 
-          val json = Json.toJson(Parent(
-            deemedParent = Seq(DeemedParent(
-              companyName = None
-            ))
-          ))
+          val json = Json.toJson(Seq(DeemedParent(
+            companyName = None
+          )))
+
 
           validate(json) shouldBe false
         }
 
         s"is empty" in {
 
-          val json = Json.toJson(Parent(
-            deemedParent = Seq(DeemedParent(
-              companyName = Some("")
-            ))
-          ))
+          val json = Json.toJson(Seq(DeemedParent(
+            companyName = Some("")
+          )))
+
 
           validate(json) shouldBe false
         }
 
         s"is longer than $maxCompanyNameLength characters" in {
 
-          val json = Json.toJson(Parent(
-            deemedParent = Seq(DeemedParent(
-              companyName = Some("A" * (maxCompanyNameLength + 1))
-            ))
-          ))
+          val json = Json.toJson(Seq(DeemedParent(
+            companyName = Some("A" * (maxCompanyNameLength + 1))
+          )))
+
 
           validate(json) shouldBe false
         }
@@ -97,43 +89,39 @@ class DeemedCompanySchemaSpec extends BaseSchemaSpec {
 
         s"below $utrLength" in {
 
-          val json = Json.toJson(Parent(
-            deemedParent = Seq(DeemedParent(
-              ctutr = Some("1" * (utrLength - 1))
-            ))
-          ))
+          val json = Json.toJson(Seq(DeemedParent(
+            ctutr = Some("1" * (utrLength - 1))
+          )))
+
           validate(json) shouldBe false
         }
 
         s"above $utrLength" in {
 
-          val json = Json.toJson(Parent(
-            deemedParent = Seq(DeemedParent(
-              ctutr = Some("1" * (utrLength + 1))
-            ))
-          ))
+          val json = Json.toJson(Seq(DeemedParent(
+            ctutr = Some("1" * (utrLength + 1))
+          )))
+
 
           validate(json) shouldBe false
         }
 
         "is non numeric" in {
 
-          val json = Json.toJson(Parent(
-            deemedParent = Seq(DeemedParent(
-              ctutr = Some("a" * utrLength)
-            ))
-          ))
+          val json = Json.toJson(Seq(DeemedParent(
+            ctutr = Some("a" * utrLength)
+          )))
+
 
           validate(json) shouldBe false
         }
 
         "is a symbol" in {
 
-          val json = Json.toJson(Parent(
-            deemedParent = Seq(DeemedParent(
-              ctutr = Some("@")
-            ))
-          ))
+          val json = Json.toJson(Seq(DeemedParent(
+            ctutr = Some("@")
+          )))
+
           validate(json) shouldBe false
         }
       }
@@ -142,21 +130,19 @@ class DeemedCompanySchemaSpec extends BaseSchemaSpec {
 
         s"below $crnLength" in {
 
-          val json = Json.toJson(Parent(
-            deemedParent = Seq(DeemedParent(
-              crn = Some("1" * (crnLength - 1))
-            ))
-          ))
+          val json = Json.toJson(Seq(DeemedParent(
+            crn = Some("1" * (crnLength - 1))
+          )))
+
           validate(json) shouldBe false
         }
 
         s"above $crnLength" in {
 
-          val json = Json.toJson(Parent(
-            deemedParent = Seq(DeemedParent(
-              crn = Some("1" * (crnLength + 1))
-            ))
-          ))
+          val json = Json.toJson(Seq(DeemedParent(
+            crn = Some("1" * (crnLength + 1))
+          )))
+
 
           validate(json) shouldBe false
         }
@@ -166,42 +152,38 @@ class DeemedCompanySchemaSpec extends BaseSchemaSpec {
 
         s"below $utrLength" in {
 
-          val json = Json.toJson(Parent(
-            deemedParent = Seq(DeemedParent(
-              sautr = Some("1" * (utrLength - 1))
-            ))
-          ))
+          val json = Json.toJson(Seq(DeemedParent(
+            sautr = Some("1" * (utrLength - 1))
+          )))
+
           validate(json) shouldBe false
         }
 
         s"above $utrLength" in {
 
-          val json = Json.toJson(Parent(
-            deemedParent = Seq(DeemedParent(
-              sautr = Some("1" * (utrLength + 1))
-            ))
-          ))
+          val json = Json.toJson(Seq(DeemedParent(
+            sautr = Some("1" * (utrLength + 1))
+          )))
+
           validate(json) shouldBe false
         }
 
         "is non numeric" in {
 
-          val json = Json.toJson(Parent(
-            deemedParent = Seq(DeemedParent(
-              sautr = Some("a" * utrLength)
-            ))
-          ))
+          val json = Json.toJson(Seq(DeemedParent(
+            sautr = Some("a" * utrLength)
+          )))
+
 
           validate(json) shouldBe false
         }
 
         "is a symbol" in {
 
-          val json = Json.toJson(Parent(
-            deemedParent = Seq(DeemedParent(
-              sautr = Some("@")
-            ))
-          ))
+          val json = Json.toJson(Seq(DeemedParent(
+            sautr = Some("@")
+          )))
+
 
           validate(json) shouldBe false
         }
@@ -211,22 +193,20 @@ class DeemedCompanySchemaSpec extends BaseSchemaSpec {
 
         "knownAs is empty" in {
 
-          val json = Json.toJson(Parent(
-            deemedParent = Seq(DeemedParent(
-              knownAs = Some("")
-            ))
-          ))
+          val json = Json.toJson(Seq(DeemedParent(
+            knownAs = Some("")
+          )))
+
 
           validate(json) shouldBe false
         }
 
         s"is longer than $maxCompanyNameLength characters" in {
 
-          val json = Json.toJson(Parent(
-            deemedParent = Seq(DeemedParent(
-              knownAs = Some("A" * (maxCompanyNameLength + 1))
-            ))
-          ))
+          val json = Json.toJson(Seq(DeemedParent(
+            knownAs = Some("A" * (maxCompanyNameLength + 1))
+          )))
+
 
           validate(json) shouldBe false
         }
@@ -236,41 +216,37 @@ class DeemedCompanySchemaSpec extends BaseSchemaSpec {
 
         "is only one letter" in {
 
-          val json = Json.toJson(Parent(
-            deemedParent = Seq(DeemedParent(
-              countryOfIncorporation = Some("A")
-            ))
-          ))
+          val json = Json.toJson(Seq(DeemedParent(
+            countryOfIncorporation = Some("A")
+          )))
+
           validate(json) shouldBe false
         }
 
         "is three letters" in {
 
-          val json = Json.toJson(Parent(
-            deemedParent = Seq(DeemedParent(
-              countryOfIncorporation = Some("AAA")
-            ))
-          ))
+          val json = Json.toJson(Seq(DeemedParent(
+            countryOfIncorporation = Some("AAA")
+          )))
+
           validate(json) shouldBe false
         }
 
         "contains a number" in {
 
-          val json = Json.toJson(Parent(
-            deemedParent = Seq(DeemedParent(
-              countryOfIncorporation = Some("A1")
-            ))
-          ))
+          val json = Json.toJson(Seq(DeemedParent(
+            countryOfIncorporation = Some("A1")
+          )))
+
           validate(json) shouldBe false
         }
 
         "contains a symbol" in {
 
-          val json = Json.toJson(Parent(
-            deemedParent = Seq(DeemedParent(
-              countryOfIncorporation = Some("A@")
-            ))
-          ))
+          val json = Json.toJson(Seq(DeemedParent(
+            countryOfIncorporation = Some("A@")
+          )))
+
           validate(json) shouldBe false
         }
       }

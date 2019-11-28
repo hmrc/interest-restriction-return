@@ -1,41 +1,32 @@
 {
-  "type": "object",
-  "properties": {
-    "deemedParent": {
-      "type": "array",
-      "minItems": 1,
-      "maxItems": 3,
-      "items": {
-        "type": "object",
-        "properties": {
-          "companyName": {
-            "$ref": "../definitions/definitions.json#/definitions/companyName"
-          },
-          "knownAs": {
-            "$ref": "../definitions/definitions.json#/definitions/companyName"
-          },
-          "ctutr": {
-            "$ref": "../definitions/definitions.json#/definitions/utr"
-          },
-          "crn": {
-            "$ref": "../definitions/definitions.json#/definitions/crn"
-          },
-          "sautr": {
-            "$ref": "../definitions/definitions.json#/definitions/utr"
-          },
-          "countryOfIncorporation": {
-            "$ref": "../definitions/countrycodes.json#/definitions/countryCode"
-          }
-        },
-        "required": [
-          "companyName"
-        ],
-        "additionalProperties": false
+  "type": "array",
+  "minItems": 1,
+  "maxItems": 3,
+  "items": {
+    "type": "object",
+    "properties": {
+      "companyName": {
+        "$ref": "../definitions/definitions.json#/definitions/companyName"
+      },
+      "knownAs": {
+        "$ref": "../definitions/definitions.json#/definitions/companyName"
+      },
+      "ctutr": {
+        "$ref": "../definitions/definitions.json#/definitions/utr"
+      },
+      "crn": {
+        "$ref": "../definitions/definitions.json#/definitions/crn"
+      },
+      "sautr": {
+        "$ref": "../definitions/definitions.json#/definitions/utr"
+      },
+      "countryOfIncorporation": {
+        "$ref": "../definitions/countrycodes.json#/definitions/countryCode"
       }
-    }
-  },
-  "required": [
-    "deemedParent"
-  ],
-  "additionalProperties": false
+    },
+    "required": [
+      "companyName"
+    ],
+    "additionalProperties": false
+  }
 }
