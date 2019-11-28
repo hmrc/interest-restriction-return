@@ -17,7 +17,7 @@
 package schemas.helpers.revokeReportingCompany
 
 import play.api.libs.json.Json
-import schemas.helpers.{AccountingPeriod, AgentDetails, ReportingCompany, UkUltimateParent, UltimateParent}
+import schemas.helpers.{AccountingPeriod, AgentDetails, AuthorisingCompanies, ReportingCompany, UkUltimateParent, UltimateParent}
 
 case class RevokeReportingCompanyModel(agentDetails: Option[AgentDetails] = Some(AgentDetails()),
                                        reportingCompany: Option[ReportingCompany] = Some(ReportingCompany()),
@@ -25,6 +25,7 @@ case class RevokeReportingCompanyModel(agentDetails: Option[AgentDetails] = Some
                                        companyMakingRevocation: Option[CompanyMakingRevocation] = Some(CompanyMakingRevocation()),
                                        ultimateParent: Option[UltimateParent] = Some(UkUltimateParent()),
                                        accountingPeriod: Option[AccountingPeriod] = Some(AccountingPeriod()),
+                                       authorisingCompanies: Option[Seq[AuthorisingCompanies]] = Some(Seq(AuthorisingCompanies())),
                                        declaration: Option[Boolean] = Some(true))
 
 object RevokeReportingCompanyModel {

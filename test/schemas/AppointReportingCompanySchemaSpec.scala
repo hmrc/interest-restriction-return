@@ -18,7 +18,7 @@ package schemas
 
 import helpers._
 import play.api.libs.json.{JsValue, Json}
-import schemas.helpers.appointReportingCompany.{AppointReportingCompanyModel, AuthorisingCompanyModel}
+import schemas.helpers.appointReportingCompany.AppointReportingCompanyModel
 
 class AppointReportingCompanySchemaSpec extends BaseSchemaSpec {
 
@@ -87,7 +87,7 @@ class AppointReportingCompanySchemaSpec extends BaseSchemaSpec {
           "exceeds 160" in {
 
             val json = Json.toJson(AppointReportingCompanyModel(
-              authorisingCompanies = Some(Seq(AuthorisingCompanyModel(
+              authorisingCompanies = Some(Seq(AuthorisingCompanies(
                 companyName = Some("A" * (maxCompanyNameLength + 1))
               )))
             ))
@@ -98,7 +98,7 @@ class AppointReportingCompanySchemaSpec extends BaseSchemaSpec {
           "is empty" in {
 
             val json = Json.toJson(AppointReportingCompanyModel(
-              authorisingCompanies = Some(Seq(AuthorisingCompanyModel(
+              authorisingCompanies = Some(Seq(AuthorisingCompanies(
                 companyName = Some("")
               )))
             ))
@@ -109,7 +109,7 @@ class AppointReportingCompanySchemaSpec extends BaseSchemaSpec {
           "is not applied" in {
 
             val json = Json.toJson(AppointReportingCompanyModel(
-              authorisingCompanies = Some(Seq(AuthorisingCompanyModel(
+              authorisingCompanies = Some(Seq(AuthorisingCompanies(
                 companyName = None
               )))
             ))
@@ -123,7 +123,7 @@ class AppointReportingCompanySchemaSpec extends BaseSchemaSpec {
           s"below $utrLength" in {
 
             val json = Json.toJson(AppointReportingCompanyModel(
-              authorisingCompanies = Some(Seq(AuthorisingCompanyModel(
+              authorisingCompanies = Some(Seq(AuthorisingCompanies(
                 utr = Some("1" * (utrLength - 1))
               )))
             ))
@@ -134,7 +134,7 @@ class AppointReportingCompanySchemaSpec extends BaseSchemaSpec {
           s"above $utrLength" in {
 
             val json = Json.toJson(AppointReportingCompanyModel(
-              authorisingCompanies = Some(Seq(AuthorisingCompanyModel(
+              authorisingCompanies = Some(Seq(AuthorisingCompanies(
                 utr = Some("1" * (utrLength + 1))
               )))
             ))
@@ -145,7 +145,7 @@ class AppointReportingCompanySchemaSpec extends BaseSchemaSpec {
           "is non numeric" in {
 
             val json = Json.toJson(AppointReportingCompanyModel(
-              authorisingCompanies = Some(Seq(AuthorisingCompanyModel(
+              authorisingCompanies = Some(Seq(AuthorisingCompanies(
                 utr = Some("a" * (utrLength))
               )))
             ))
@@ -156,7 +156,7 @@ class AppointReportingCompanySchemaSpec extends BaseSchemaSpec {
           "is a symbol" in {
 
             val json = Json.toJson(AppointReportingCompanyModel(
-              authorisingCompanies = Some(Seq(AuthorisingCompanyModel(
+              authorisingCompanies = Some(Seq(AuthorisingCompanies(
                 utr = Some("@")
               )))
             ))
@@ -167,7 +167,7 @@ class AppointReportingCompanySchemaSpec extends BaseSchemaSpec {
           "is not applied" in {
 
             val json = Json.toJson(AppointReportingCompanyModel(
-              authorisingCompanies = Some(Seq(AuthorisingCompanyModel(
+              authorisingCompanies = Some(Seq(AuthorisingCompanies(
                 utr = None
               )))
             ))

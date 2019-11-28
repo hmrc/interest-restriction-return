@@ -5,20 +5,7 @@
       "minimum": 1
     },
     "accountingPeriod": {
-      "properties": {
-        "startDate": {
-          "type": "string",
-          "format": "date"
-        },
-        "endDate": {
-          "type": "string",
-          "format": "date"
-        }
-      },
-      "required": [
-        "startDate",
-        "endDate"
-      ]
+      "$ref": "accountingPeriod.json"
     }
   },
   "required": [

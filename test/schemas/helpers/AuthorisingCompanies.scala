@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package schemas.helpers.appointReportingCompany
+package schemas.helpers
 
 import play.api.libs.json.Json
 
-case class AuthorisingCompanyModel(companyName: Option[String] = Some("cde ltd"),
-                                   utr: Option[String] = Some("1234567890"))
+case class AuthorisingCompanies(companyName: Option[String] = Some("cde ltd"),
+                                utr: Option[String] = Some("1234567890"))
 
-object AuthorisingCompanyModel {
-  implicit val writes = Json.writes[AuthorisingCompanyModel]
+object AuthorisingCompanies {
+  implicit val writes = Json.writes[AuthorisingCompanies]
 }

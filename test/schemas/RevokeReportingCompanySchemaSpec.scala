@@ -106,6 +106,23 @@ class RevokeReportingCompanySchemaSpec extends BaseSchemaSpec {
         }
       }
 
+      "authorisingCompanies" when {
+
+        "empty sequence" in {
+
+          val json = Json.toJson(RevokeReportingCompanyModel(authorisingCompanies = Some(Seq())))
+
+          validate(json) shouldBe false
+        }
+
+        "not supplied" in {
+
+          val json = Json.toJson(RevokeReportingCompanyModel(authorisingCompanies = None))
+
+          validate(json) shouldBe false
+        }
+      }
+
       "declaration" when {
 
         "not supplied" in {

@@ -18,20 +18,10 @@
       "$ref": "subSchemas/ultimateParent.json"
     },
     "accountingPeriod": {
-      "properties": {
-        "startDate": {
-          "type": "string",
-          "format": "date"
-        },
-        "endDate": {
-          "type": "string",
-          "format": "date"
-        }
-      },
-      "required": [
-        "startDate",
-        "endDate"
-      ]
+      "$ref": "subSchemas/accountingPeriod.json"
+    },
+    "authorisingCompanies": {
+      "$ref": "subSchemas/authorisingCompanies.json"
     },
     "declaration": {
       "type": "boolean"
@@ -41,8 +31,9 @@
     "agentDetails",
     "reportingCompany",
     "isReportingCompanyRevokingItself",
-    "declaration",
-    "accountingPeriod"
+    "accountingPeriod",
+    "authorisingCompanies",
+    "declaration"
   ],
   "additionalProperties": false
 }
