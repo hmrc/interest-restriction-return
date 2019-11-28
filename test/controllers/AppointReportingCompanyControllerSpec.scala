@@ -33,7 +33,7 @@ class AppointReportingCompanyControllerSpec extends MockAppointReportingCompanyS
     "the user is authenticated" when {
 
       object AuthorisedController extends AppointReportingCompanyController(
-        authorisedAction,
+        AuthorisedAction,
         mockAppointReportingCompanyService,
         Helpers.stubControllerComponents()
       )
@@ -84,7 +84,7 @@ class AppointReportingCompanyControllerSpec extends MockAppointReportingCompanyS
       "return 401 (Unauthorised)" in {
 
         object UnauthorisedController extends AppointReportingCompanyController(
-          authAction = unauthorisedAction,
+          authAction = UnauthorisedAction,
           appointReportingCompanyService = mockAppointReportingCompanyService,
           controllerComponents = Helpers.stubControllerComponents()
         )
