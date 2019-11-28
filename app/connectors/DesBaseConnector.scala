@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package config
+package connectors
 
-import javax.inject.{Inject, Singleton}
-import play.api.Configuration
-import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
+import config.AppConfig
+import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.logging.Authorization
 
-@Singleton
-class AppConfig @Inject()(val servicesConfig: ServicesConfig) {
+trait DesBaseConnector {
 
-  lazy val desUrl: String = servicesConfig.getString("microservice.services.des.url")
-  lazy val desAuthorisationToken: String = s"Bearer ${servicesConfig.getString("microservice.services.des.authorisation-token")}"
-  lazy val desEnvironmentHeader: (String, String) = "Environment" -> servicesConfig.getString("microservice.services.des.environment")
+  def desHc(implicit hc: HeaderCarrier, appConfig: AppConfig): HeaderCarrier =
+    hc.withExtraHeaders(appConfig.desEnvironmentHeader)
+      .copy(authorization = Some(Authorization(appConfig.desAuthorisationToken)))
+
 }
