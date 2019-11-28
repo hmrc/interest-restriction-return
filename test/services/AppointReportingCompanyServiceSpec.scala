@@ -14,31 +14,29 @@
  * limitations under the License.
  */
 
-package connectors
+package services
 
 import assets.appointReportingCompany.AppointReportingCompanyConstants._
-import connectors.httpParsers.AppointReportingCompanyHttpParser.{AppointReportingCompanyResponse, ErrorResponse, SuccessResponse, UnexpectedFailure}
-import connectors.mocks.MockHttpClient
-import models.appointReportingCompany.AppointReportingCompanyModel
+import connectors.httpParsers.AppointReportingCompanyHttpParser.{AppointReportingCompanyResponse, SuccessResponse, UnexpectedFailure}
+import connectors.mocks.MockAppointReportingCompanyConnector
 import play.api.http.Status._
 import utils.BaseSpec
 
-class AppointReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec {
+class AppointReportingCompanyServiceSpec extends MockAppointReportingCompanyConnector with BaseSpec {
 
-  "AppointReportingCompanyConnector.appoint" when {
+  "AppointReportingCompanyService.appoint" when {
 
-    def setup(response: AppointReportingCompanyResponse): AppointReportingCompanyConnector = {
-      val desUrl = "http://localhost:9262/interest-restriction/reporting-company/appoint"
-      mockHttpPost[AppointReportingCompanyModel, Either[ErrorResponse, SuccessResponse]](desUrl, appointReportingCompanyModel)(response)
-      new AppointReportingCompanyConnector(mockHttpClient, appConfig)
+    def setup(response: AppointReportingCompanyResponse): AppointReportingCompanyService = {
+      mockAppointReportingCompany(appointReportingCompanyModel)(response)
+      new AppointReportingCompanyService(mockAppointReportingCompanyConnector)
     }
 
     "appointment is successful" should {
 
       "return a Right(SuccessResponse)" in {
 
-        val connector = setup(Right(SuccessResponse("ackRef")))
-        val result = connector.appoint(appointReportingCompanyModel)
+        val service = setup(Right(SuccessResponse("ackRef")))
+        val result = service.appoint(appointReportingCompanyModel)
 
         await(result) shouldBe Right(SuccessResponse("ackRef"))
       }
@@ -48,8 +46,8 @@ class AppointReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec 
 
       "return a Left(UnexpectedFailure)" in {
 
-        val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-        val result = connector.appoint(appointReportingCompanyModel)
+        val service = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
+        val result = service.appoint(appointReportingCompanyModel)
 
         await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
       }

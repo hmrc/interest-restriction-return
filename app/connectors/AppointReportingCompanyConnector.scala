@@ -30,7 +30,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class AppointReportingCompanyConnector @Inject()(httpClient: HttpClient,
                                                  implicit val appConfig: AppConfig) extends DesBaseConnector {
 
-  private[connectors] val appointUrl = s"${appConfig.desUrl}/interest-restriction/reporting-company/appoint"
+  private[connectors] lazy val appointUrl = s"${appConfig.desUrl}/interest-restriction/reporting-company/appoint"
 
   def appoint(appointReportingCompanyModel: AppointReportingCompanyModel)
              (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[AppointReportingCompanyResponse] = {
