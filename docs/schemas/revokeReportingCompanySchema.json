@@ -14,6 +14,25 @@
     "companyMakingRevocation" : {
       "$ref": "subSchemas/companyMakingRevocation.json"
     },
+    "ultimateParent": {
+      "$ref": "subSchemas/ultimateParent.json"
+    },
+    "accountingPeriod": {
+      "properties": {
+        "startDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "endDate": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "required": [
+        "startDate",
+        "endDate"
+      ]
+    },
     "declaration": {
       "type": "boolean"
     }
