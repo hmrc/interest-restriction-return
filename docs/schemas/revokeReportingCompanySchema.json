@@ -8,8 +8,11 @@
     "reportingCompany": {
       "$ref": "subSchemas/reportingCompany.json"
     },
-    "isReportingCompanySubmitting": {
+    "isReportingCompanyRevokingItself": {
       "type": "boolean"
+    },
+    "companyMakingRevocation" : {
+      "$ref": "subSchemas/companyMakingRevocation.json"
     },
     "declaration": {
       "type": "boolean"
@@ -18,6 +21,7 @@
   "required": [
     "agentDetails",
     "reportingCompany",
+    "isReportingCompanyRevokingItself",
     "declaration"
   ],
   "additionalProperties": false

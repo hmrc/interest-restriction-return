@@ -17,15 +17,12 @@
 package schemas.helpers.revokeReportingCompany
 
 import play.api.libs.json.Json
-import schemas.helpers.{AgentDetails, ReportingCompany}
 
-case class RevokeReportingCompanyModel(agentDetails: Option[AgentDetails] = Some(AgentDetails()),
-                                       reportingCompany: Option[ReportingCompany] = Some(ReportingCompany()),
-                                       isReportingCompanyRevokingItself: Option[Boolean] = Some(true),
-                                       companyMakingRevocation: Option[CompanyMakingRevocation] = Some(CompanyMakingRevocation()),
-                                       declaration: Option[Boolean] = Some(true))
+case class CompanyMakingRevocation(companyName: Option[String] = Some("MIB Ltd"),
+                                   utr: Option[String] = Some("1234567890"),
+                                   crn: Option[String] = Some("12345678"),
+                                   countryOfIncorporation: Option[String] = Some("US"))
 
-object RevokeReportingCompanyModel {
-  implicit val writes = Json.writes[RevokeReportingCompanyModel]
+object CompanyMakingRevocation {
+  implicit val writes = Json.writes[CompanyMakingRevocation]
 }
-
