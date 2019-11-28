@@ -39,7 +39,7 @@ trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite {
   lazy implicit val ec = injector.instanceOf[ExecutionContext]
   lazy implicit val headerCarrier: HeaderCarrier = HeaderCarrier()
 
-  lazy val authorisedAction = new Authorised[Option[String]](Some("id"), bodyParsers)
-  lazy val unauthorisedAction = new Unauthorised(new MissingBearerToken, bodyParsers)
+  object AuthorisedAction extends Authorised[Option[String]](Some("id"), bodyParsers)
+  object UnauthorisedAction extends Unauthorised(new MissingBearerToken, bodyParsers)
 
 }

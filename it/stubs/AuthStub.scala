@@ -14,19 +14,21 @@
  * limitations under the License.
  */
 
-package controllers
+package stubs
 
-import controllers.actions.AuthAction
-import javax.inject.{Inject, Singleton}
-import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import com.github.tomakehurst.wiremock.stubbing.StubMapping
+import play.api.http.Status.{OK, UNAUTHORIZED}
+import play.api.libs.json.Json
+import utils.WireMockMethods
 
-import scala.concurrent.Future
+object AuthStub extends WireMockMethods {
 
-@Singleton()
-class MicroserviceHelloWorldController @Inject()(authAction: AuthAction,
-                                                 override val controllerComponents: ControllerComponents) extends BaseController {
+  private val authoriseUri = "/auth/authorise"
 
-  def hello(): Action[AnyContent] = authAction.async { implicit request =>
-    Future.successful(Ok("Hello world"))
-  }
+  def authorised(): StubMapping =
+    when(method = POST, uri = authoriseUri)
+      .thenReturn(status = OK, body = Json.obj("internalId" -> "dummyId"))
+
+  def unauthorised(): StubMapping =
+    when(method = POST, uri = authoriseUri).thenReturn(status = UNAUTHORIZED)
 }

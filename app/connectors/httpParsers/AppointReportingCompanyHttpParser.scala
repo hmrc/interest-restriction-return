@@ -33,7 +33,7 @@ object AppointReportingCompanyHttpParser {
         case OK =>
           Logger.debug("[AppointReportingCompanyHttpParser][read]: Status OK")
           Logger.debug(s"[AppointReportingCompanyHttpParser][read]: Json Response: ${response.json}")
-          response.json.validate[SuccessResponse](SuccessResponse.reads).fold(
+          response.json.validate[SuccessResponse](SuccessResponse.fmt).fold(
             invalid => {
               Logger.warn(s"[AppointReportingCompanyHttpParser][read]: Invalid Success Response Json - $invalid")
               Left(InvalidSuccessResponse)
@@ -49,7 +49,7 @@ object AppointReportingCompanyHttpParser {
 
   case class SuccessResponse(acknowledgementReference: String)
   object SuccessResponse {
-    implicit val reads = Json.reads[SuccessResponse]
+    implicit val fmt = Json.format[SuccessResponse]
   }
 
   sealed trait ErrorResponse {

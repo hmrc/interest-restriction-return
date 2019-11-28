@@ -14,19 +14,27 @@
  * limitations under the License.
  */
 
-package controllers
+package assets
 
-import controllers.actions.AuthAction
-import javax.inject.{Inject, Singleton}
-import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import assets.AgentDetailsConstants._
+import assets.ReportingCompanyConstants._
+import assets.AuthorisingCompanyConstants._
+import play.api.libs.json.Json
 
-import scala.concurrent.Future
+object AppointReportingCompanyTestConstants {
 
-@Singleton()
-class MicroserviceHelloWorldController @Inject()(authAction: AuthAction,
-                                                 override val controllerComponents: ControllerComponents) extends BaseController {
+  val ackRef = "ackRef"
 
-  def hello(): Action[AnyContent] = authAction.async { implicit request =>
-    Future.successful(Ok("Hello world"))
-  }
+  val appointReportingCompanyJson = Json.obj(
+    "agentDetails" -> agentDetailsJsonMax,
+    "reportingCompany" -> reportingCompanyJsonMax,
+    "authorisingCompanies" -> Json.arr(
+      authorisingCompanyJson
+    ),
+    "declaration" -> true
+  )
+
+  val appointReportingCompanyDesSuccessJson = Json.obj(
+    "acknowledgementReference" -> ackRef
+  )
 }

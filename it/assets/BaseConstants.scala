@@ -14,19 +14,11 @@
  * limitations under the License.
  */
 
-package controllers
+package assets
 
-import controllers.actions.AuthAction
-import javax.inject.{Inject, Singleton}
-import play.api.mvc.{Action, AnyContent, ControllerComponents}
+trait BaseConstants {
 
-import scala.concurrent.Future
-
-@Singleton()
-class MicroserviceHelloWorldController @Inject()(authAction: AuthAction,
-                                                 override val controllerComponents: ControllerComponents) extends BaseController {
-
-  def hello(): Action[AnyContent] = authAction.async { implicit request =>
-    Future.successful(Ok("Hello world"))
-  }
+  val ctutr = "1234567890"
+  val sautr = "9876543210"
+  val crn = "12345678"
 }

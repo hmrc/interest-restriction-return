@@ -24,7 +24,7 @@ import utils.BaseSpec
 
 class MicroserviceHelloWorldControllerSpec extends BaseSpec {
 
-  def controller(authAction: AuthAction) = new MicroserviceHelloWorldController(authAction, appConfig, Helpers.stubControllerComponents())
+  def controller(authAction: AuthAction) = new MicroserviceHelloWorldController(authAction, Helpers.stubControllerComponents())
 
   "GET /" when {
 
@@ -32,7 +32,7 @@ class MicroserviceHelloWorldControllerSpec extends BaseSpec {
 
       "return 200 (OK)" in {
 
-        val result = controller(authorisedAction).hello()(fakeRequest)
+        val result = controller(AuthorisedAction).hello()(fakeRequest)
         status(result) shouldBe Status.OK
       }
     }
@@ -41,7 +41,7 @@ class MicroserviceHelloWorldControllerSpec extends BaseSpec {
 
       "return 401 (Unauthorised)" in {
 
-        val result = controller(unauthorisedAction).hello()(fakeRequest)
+        val result = controller(UnauthorisedAction).hello()(fakeRequest)
         status(result) shouldBe Status.UNAUTHORIZED
       }
     }
