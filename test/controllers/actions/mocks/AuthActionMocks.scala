@@ -14,22 +14,16 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.actions.mocks
 
-import config.AppConfig
+import connectors.mocks.{FakeFailingAuthConnector, FakeSuccessAuthConnector}
 import controllers.actions.AuthAction
-import javax.inject.{Inject, Singleton}
-import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import uk.gov.hmrc.play.bootstrap.controller.BackendController
+import play.api.mvc.BodyParsers
 
-import scala.concurrent.Future
+import scala.concurrent.ExecutionContext
 
-@Singleton()
-class MicroserviceHelloWorldController @Inject()(authAction: AuthAction,
-                                                 appConfig: AppConfig,
-                                                 cc: ControllerComponents) extends BackendController(cc) {
+class Authorised[B](response: B, bodyParser: BodyParsers.Default)(implicit ec: ExecutionContext) extends
+  AuthAction(new FakeSuccessAuthConnector[B](response), bodyParser)
 
-  def hello(): Action[AnyContent] = authAction.async { implicit request =>
-    Future.successful(Ok("Hello world"))
-  }
-}
+class Unauthorised(exceptionToReturn: Throwable, bodyParser: BodyParsers.Default)(implicit ec: ExecutionContext) extends
+  AuthAction(new FakeFailingAuthConnector(exceptionToReturn), bodyParser)
