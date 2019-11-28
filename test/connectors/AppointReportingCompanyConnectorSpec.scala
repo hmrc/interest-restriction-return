@@ -37,10 +37,10 @@ class AppointReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec 
 
       "return a Right(SuccessResponse)" in {
 
-        val connector = setup(Right(SuccessResponse("ackRef")))
+        val connector = setup(Right(SuccessResponse(ackRef)))
         val result = connector.appoint(appointReportingCompanyModel)
 
-        await(result) shouldBe Right(SuccessResponse("ackRef"))
+        await(result) shouldBe Right(SuccessResponse(ackRef))
       }
     }
 

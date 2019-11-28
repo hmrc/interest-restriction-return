@@ -16,17 +16,12 @@
 
 package controllers
 
-import controllers.actions.AuthAction
-import javax.inject.{Inject, Singleton}
-import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import uk.gov.hmrc.play.bootstrap.controller.BackendBaseController
 
-import scala.concurrent.Future
+import scala.concurrent.ExecutionContext
 
-@Singleton()
-class MicroserviceHelloWorldController @Inject()(authAction: AuthAction,
-                                                 override val controllerComponents: ControllerComponents) extends BaseController {
+trait BaseController extends BackendBaseController {
 
-  def hello(): Action[AnyContent] = authAction.async { implicit request =>
-    Future.successful(Ok("Hello world"))
-  }
+  implicit val ec: ExecutionContext = controllerComponents.executionContext
+
 }

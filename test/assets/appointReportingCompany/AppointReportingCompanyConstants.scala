@@ -24,6 +24,8 @@ import play.api.libs.json.Json
 
 object AppointReportingCompanyConstants {
 
+  val ackRef = "ackRef"
+
   val appointReportingCompanyJson = Json.obj(
     "agentDetails" -> agentDetailsJsonMax,
     "reportingCompany" -> reportingCompanyJsonMax,

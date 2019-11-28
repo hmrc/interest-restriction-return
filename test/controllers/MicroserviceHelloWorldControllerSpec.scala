@@ -24,7 +24,7 @@ import utils.BaseSpec
 
 class MicroserviceHelloWorldControllerSpec extends BaseSpec {
 
-  def controller(authAction: AuthAction) = new MicroserviceHelloWorldController(authAction, appConfig, Helpers.stubControllerComponents())
+  def controller(authAction: AuthAction) = new MicroserviceHelloWorldController(authAction, Helpers.stubControllerComponents())
 
   "GET /" when {
 

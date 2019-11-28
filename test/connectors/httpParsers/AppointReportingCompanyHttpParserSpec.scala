@@ -22,10 +22,10 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.http.Status
 import play.api.libs.json.Json
 import uk.gov.hmrc.http.HttpResponse
+import assets.appointReportingCompany.AppointReportingCompanyConstants._
 
 class AppointReportingCompanyHttpParserSpec extends WordSpec with Matchers with GuiceOneAppPerSuite  {
 
-  val ackRef = "ackRef"
   val ackRefResponse = Json.obj("acknowledgementReference" -> ackRef)
 
   "AppointReportingCompanyHttpParser.AppointReportingCompanyReads" when {
