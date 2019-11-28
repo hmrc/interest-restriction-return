@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers .journeyJson
+package controllers
 import assets.AppointReportingCompanyTestConstants._
 import play.api.http.Status._
 import stubs.{AuthStub, DESStub}
