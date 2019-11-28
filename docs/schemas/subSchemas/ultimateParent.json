@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "oneOf": [
+    {
+      "$ref": "../definitions/ultimateParent.json#/definitions/uk"
+    },
+    {
+      "$ref": "../definitions/ultimateParent.json#/definitions/nonUk"
+    }
+  ]
+}

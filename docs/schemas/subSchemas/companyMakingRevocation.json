@@ -1,0 +1,22 @@
+{
+  "properties": {
+    "companyName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "countryOfIncorporation": {
+      "$ref": "../definitions/countrycodes.json#/definitions/countryCode"
+    },
+    "crn": {
+      "$ref": "../definitions/definitions.json#/definitions/crnNonUk"
+    },
+    "utr": {
+      "$ref": "../definitions/definitions.json#/definitions/utr"
+    }
+  },
+  "required": [
+    "companyName"
+  ],
+  "additionalProperties": false
+}

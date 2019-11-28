@@ -1,0 +1,17 @@
+{
+  "properties": {
+    "startDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "endDate": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "required": [
+    "startDate",
+    "endDate"
+  ],
+  "additionalProperties": false
+}

@@ -9,24 +9,7 @@
       "$ref": "subSchemas/reportingCompany.json"
     },
     "authorisingCompanies": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "type": "object",
-        "properties": {
-          "companyName": {
-            "$ref": "definitions/definitions.json#/definitions/companyName"
-          },
-          "utr": {
-            "$ref": "definitions/definitions.json#/definitions/utr"
-          }
-        },
-        "required": [
-          "companyName",
-          "utr"
-        ],
-        "additionalProperties": false
-      }
+      "$ref": "subSchemas/authorisingCompanies.json"
     },
     "declaration": {
       "type": "boolean"

@@ -5,15 +5,7 @@
       "type": "object",
       "properties": {
         "ultimateParent": {
-          "type": "object",
-          "oneOf": [
-            {
-              "$ref": "../definitions/ultimateParent.json#/definitions/uk"
-            },
-            {
-              "$ref": "../definitions/ultimateParent.json#/definitions/nonUk"
-            }
-          ]
+          "$ref": "ultimateParent.json"
         }
       },
       "required": [
@@ -25,12 +17,7 @@
       "type": "object",
       "properties": {
         "deemedParent": {
-          "type": "array",
-          "minItems": 1,
-          "maxItems": 3,
-          "items": {
-            "$ref": "../definitions/deemedParent.json#/definitions/deemedParent"
-          }
+          "$ref": "deemedParent.json"
         }
       },
       "required": [

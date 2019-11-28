@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package schemas.helpers.appointReportingCompany
+package schemas.helpers.revokeReportingCompany
 
 import play.api.libs.json.Json
 
-case class AuthorisingCompanyModel(companyName: Option[String] = Some("cde ltd"),
-                                   utr: Option[String] = Some("1234567890"))
+case class CompanyMakingRevocation(companyName: Option[String] = Some("MIB Ltd"),
+                                   utr: Option[String] = Some("1234567890"),
+                                   crn: Option[String] = Some("12345678"),
+                                   countryOfIncorporation: Option[String] = Some("US"))
 
-object AuthorisingCompanyModel {
-  implicit val writes = Json.writes[AuthorisingCompanyModel]
+object CompanyMakingRevocation {
+  implicit val writes = Json.writes[CompanyMakingRevocation]
 }
