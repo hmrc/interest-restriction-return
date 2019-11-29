@@ -17,6 +17,7 @@
 package models.fullReturn
 
 import assets.fullReturn.FullReturnConstants._
+import models.JsonFormatters._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 

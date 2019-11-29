@@ -23,7 +23,3 @@ case class AppointReportingCompanyModel(agentDetails: AgentDetailsModel,
                                         reportingCompany: ReportingCompanyModel,
                                         authorisingCompanies: Seq[AuthorisingCompanyModel],
                                         declaration: Boolean)
-
-object AppointReportingCompanyModel {
-  implicit val format = Json.format[AppointReportingCompanyModel]
-}

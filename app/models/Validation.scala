@@ -14,21 +14,12 @@
  * limitations under the License.
  */
 
-package assets
+package models
 
-import models.JsonFormatters
-import play.api.libs.json.Json
+import cats.data.ValidatedNec
 
-object AgentDetailsConstants {
+trait Validation[B] {
 
-  val agentName = "some agent"
+  type ValidationResult[A] = ValidatedNec[B, A]
 
-  val agentDetailsJsonMax = Json.obj(
-    "agentActingOnBehalfOfCompany" -> true,
-    "agentName" -> agentName
-  )
-
-  val agentDetailsJsonMin = Json.obj(
-    "agentActingOnBehalfOfCompany" -> true
-  )
 }
