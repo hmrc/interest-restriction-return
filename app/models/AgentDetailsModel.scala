@@ -16,26 +16,25 @@
 
 package models
 
+import models.Validation.ValidationResult
+
+
 case class AgentDetailsModel(agentActingOnBehalfOfCompany: Boolean,
                              agentName: Option[String])
 
-sealed trait AgentDetailsValidation {
-  def errorMessages: String
-}
-
-case object AgentNameLengthError extends AgentDetailsValidation {
+case object AgentNameLengthError extends Validation {
   def errorMessages: String = "Agent name must be between 1-160 characters if supplied"
 }
 
-case object AgentNameNotSuppliedError extends AgentDetailsValidation {
+case object AgentNameNotSuppliedError extends Validation {
   def errorMessages: String = "Agent name must be supplied if agent is acting on behalf of company"
 }
 
-case object AgentNameSuppliedError extends AgentDetailsValidation {
+case object AgentNameSuppliedError extends Validation {
   def errorMessages: String = "Agent name must not be supplied if agent is not acting on behalf of company"
 }
 
-sealed trait AgentDetailsValidator extends Validation[AgentDetailsValidation]{
+sealed trait AgentDetailsValidator {
   import cats.implicits._
 
   private def validateAgentActingOnBehalfOfCompany(agentActingOnBehalfOfCompany: Boolean): ValidationResult[Boolean] = {

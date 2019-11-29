@@ -18,8 +18,10 @@ package models
 
 import cats.data.ValidatedNec
 
-trait Validation[B] {
+trait Validation {
+  def errorMessages: String
+}
 
-  type ValidationResult[A] = ValidatedNec[B, A]
-
+object Validation {
+  type ValidationResult[A] = ValidatedNec[Validation, A]
 }
