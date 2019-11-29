@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package assets
+package models
 
-import models.JsonFormatters
+import models.abbreviatedReturn.AbbreviatedReturnModel
+import models.appointReportingCompany.AppointReportingCompanyModel
+import models.fullReturn.FullReturnModel
 import play.api.libs.json.Json
 
-object AgentDetailsITConstants {
+object JsonFormatters {
 
-  val agentName = "some agent"
+  implicit val agentDetailsFormat = Json.format[AgentDetailsModel]
+  implicit val abbreviatedFormat = Json.format[AbbreviatedReturnModel]
+  implicit val fullFormat = Json.format[FullReturnModel]
+  implicit val appointFormat = Json.format[AppointReportingCompanyModel]
 
-  val agentDetailsJson = Json.obj(
-    "agentActingOnBehalfOfCompany" -> true,
-    "agentName" -> agentName
-  )
 }

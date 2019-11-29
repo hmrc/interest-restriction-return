@@ -25,7 +25,7 @@ import play.api.Logger
 import play.api.libs.json.Json
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
-
+import models.JsonFormatters._
 import scala.concurrent.{ExecutionContext, Future}
 
 class AppointReportingCompanyConnector @Inject()(httpClient: HttpClient,
@@ -40,7 +40,7 @@ class AppointReportingCompanyConnector @Inject()(httpClient: HttpClient,
     Logger.debug(s"[AppointReportingCompanyConnector][appoint] Headers: ${desHc.headers}")
     Logger.debug(s"[AppointReportingCompanyConnector][appoint] Body: \n\n ${Json.toJson(appointReportingCompanyModel)}")
 
-    httpClient.POST(appointUrl, appointReportingCompanyModel)(AppointReportingCompanyModel.format, AppointReportingCompanyReads, desHc, ec)
+    httpClient.POST(appointUrl, appointReportingCompanyModel)(appointFormat, AppointReportingCompanyReads, desHc, ec)
   }
 
 }
