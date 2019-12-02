@@ -17,6 +17,7 @@
 package services
 
 import assets.fullReturn.FullReturnConstants._
+import connectors.httpParsers.FullReturnHttpParser.{FullReturnResponse, SuccessResponse, UnexpectedFailure}
 import connectors.mocks.MockFullReturnConnector
 import play.api.http.Status._
 import utils.BaseSpec

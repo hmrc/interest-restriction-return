@@ -28,6 +28,6 @@ class FullReturnService @Inject()(fullReturnConnector: FullReturnConnector) {
 
   def submit(fullReturn: FullReturnModel)
              (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[FullReturnResponse] =
-    fullReturnConnector.appoint(fullReturn)
+    fullReturnConnector.submit(fullReturn)
 
 }
