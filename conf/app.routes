@@ -4,3 +4,5 @@ GET        /hello-world                                 controllers.Microservice
 
 POST       /reporting-company/appoint                   controllers.AppointReportingCompanyController.appoint
 POST       /abbreviated-return/submit                   controllers.AbbreviatedReturnController.submitAbbreviatedReturn
+
+POST       /full-return/submit              controllers.FullReturnController.submit
