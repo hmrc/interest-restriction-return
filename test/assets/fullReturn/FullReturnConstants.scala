@@ -51,20 +51,20 @@ object FullReturnConstants {
   )
 
   val fullReturnJsonMax = Json.obj(
-    "agentDetails" -> agentDetailsModelMax,
-    "reportingCompany" -> reportingCompanyModelMax,
-    "parentCompany" -> parentCompanyModelMax,
+    "agentDetails" -> agentDetailsJsonMax,
+    "reportingCompany" -> reportingCompanyJsonMax,
+    "parentCompany" -> parentCompanyJsonMax,
     "publicInfrastructure" -> true,
-    "groupCompanyDetails" -> groupCompanyDetailsModel,
+    "groupCompanyDetails" -> groupCompanyDetailsJson,
     "submissionType" -> Original,
     "revisedReturnDetails" -> revisedReturnDetails,
-    "groupLevelElections" -> groupLevelElectionsModelMax,
-    "ukCompanies" -> Seq(ukCompanyModelMax),
+    "groupLevelElections" -> groupLevelElectionsJsonMax,
+    "ukCompanies" -> Seq(ukCompanyJsonMax),
     "angie" -> angie,
     "groupSubjectToInterestRestrictions" -> true,
     "groupSubjectToInterestReactivation" -> true,
-    "groupLevelAmount" -> groupLevelAmountModel,
-    "adjustedGroupInterest" -> adjustedGroupInterestModel
+    "groupLevelAmount" -> groupLevelAmountJson,
+    "adjustedGroupInterest" -> adjustedGroupInterestJson
   )
 
   val fullReturnModelMin = FullReturnModel(
@@ -85,16 +85,16 @@ object FullReturnConstants {
   )
 
   val fullReturnJsonMin = Json.obj(
-    "agentDetails" -> agentDetailsModelMin,
-    "reportingCompany" -> reportingCompanyModelMin,
-    "parentCompany" -> parentCompanyModelMin,
+    "agentDetails" -> agentDetailsJsonMin,
+    "reportingCompany" -> reportingCompanyJsonMin,
+    "parentCompany" -> parentCompanyJsonMin,
     "publicInfrastructure" -> true,
-    "groupCompanyDetails" -> groupCompanyDetailsModel,
+    "groupCompanyDetails" -> groupCompanyDetailsJson,
     "submissionType" -> Original,
-    "ukCompanies" -> Seq(ukCompanyModelMin),
+    "ukCompanies" -> Seq(ukCompanyJsonMin),
     "groupSubjectToInterestRestrictions" -> true,
     "groupSubjectToInterestReactivation" -> true,
-    "groupLevelAmount" -> groupLevelAmountModel,
-    "adjustedGroupInterest" -> adjustedGroupInterestModel
+    "groupLevelAmount" -> groupLevelAmountJson,
+    "adjustedGroupInterest" -> adjustedGroupInterestJson
   )
 }
