@@ -24,7 +24,7 @@ import utils.{CreateRequestHelper, CustomMatchers, IntegrationSpecBase}
 
 class AbbreviatedReturnControllerISpec extends IntegrationSpecBase with CreateRequestHelper with CustomMatchers {
 
-  "POST /reporting-company/appoint" when {
+  "POST /abbreviated-return/submit" when {
 
     "user is authenticated" when {
 
@@ -35,7 +35,7 @@ class AbbreviatedReturnControllerISpec extends IntegrationSpecBase with CreateRe
           AuthStub.authorised()
           DESStub.abbreviatedReturnSuccess(abbreviatedReturnDesSuccessJson)
 
-          val res = postRequest("/reporting-company/abbreviated-return", abbreviatedReturnJsonMax)
+          val res = postRequest("/abbreviated-return/submit", abbreviatedReturnJson)
 
           whenReady(res) { result =>
             result should have(
@@ -53,7 +53,7 @@ class AbbreviatedReturnControllerISpec extends IntegrationSpecBase with CreateRe
           AuthStub.authorised()
           DESStub.abbreviatedReturnError
 
-          val res = postRequest("/reporting-company/abbreviated-return", abbreviatedReturnJsonMax)
+          val res = postRequest("/abbreviated-return/submit", abbreviatedReturnJson)
 
           whenReady(res) { result =>
             result should have(
@@ -70,7 +70,7 @@ class AbbreviatedReturnControllerISpec extends IntegrationSpecBase with CreateRe
 
         AuthStub.unauthorised()
 
-        val res = postRequest("/reporting-company/abbreviated-return", abbreviatedReturnJsonMax)
+        val res = postRequest("/abbreviated-return/submit", abbreviatedReturnJson)
 
         whenReady(res) { result =>
           result should have(

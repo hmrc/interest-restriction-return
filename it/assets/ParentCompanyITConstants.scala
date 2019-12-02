@@ -8,7 +8,7 @@ import play.api.libs.json.Json
 object ParentCompanyITConstants {
 
 
-  val parentCompanyJsonMax = Json.obj(
+  val parentCompanyJson = Json.obj(
     "ultimateParent" -> ukParentJson,
     "deemedParent" -> Seq(deemedParentJson)
   )

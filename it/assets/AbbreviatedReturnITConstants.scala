@@ -19,7 +19,7 @@ package assets
 import assets.AgentDetailsITConstants._
 import assets.GroupCompanyDetailsITConstants.groupCompanyDetailsJson
 import assets.GroupLevelElectionsITConstants.groupLevelElectionsJson
-import assets.ParentCompanyITConstants.parentCompanyJsonMax
+import assets.ParentCompanyITConstants.parentCompanyJson
 import assets.ReportingCompanyITConstants._
 import assets.UkCompanyITConstants.ukCompanyJson
 import models.Original
@@ -33,11 +33,11 @@ object AbbreviatedReturnITConstants {
     "acknowledgementReference" -> ackRef
   )
 
-  val abbreviatedReturnJsonMax = Json.obj(
-    "agentDetails" -> agentDetailsJsonMax,
-    "reportingCompany" -> reportingCompanyJsonMax,
+  val abbreviatedReturnJson = Json.obj(
+    "agentDetails" -> agentDetailsJson,
+    "reportingCompany" -> reportingCompanyJson,
     "publicInfrastructure" -> true,
-    "parentCompany" -> parentCompanyJsonMax,
+    "parentCompany" -> parentCompanyJson,
     "groupCompanyDetails" -> groupCompanyDetailsJson,
     "submissionType" -> Original,
     "revisedReturnDetails" -> "revised details",
