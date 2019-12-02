@@ -27,6 +27,8 @@ import play.api.libs.json.Json
 
 object RevokeReportingCompanyConstants {
 
+  val ackRef = "ackRef"
+
   val revokeReportingCompanyModelMax = RevokeReportingCompanyModel(
     agentDetails = agentDetailsModelMax,
     reportingCompany = reportingCompanyModelMax,
