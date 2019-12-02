@@ -14,13 +14,22 @@
  * limitations under the License.
  */
 
-package models.appointReportingCompany
+package assets
 
+import models.AuthorisingCompanyModel
 import play.api.libs.json.Json
 
-case class AuthorisingCompanyModel(companyName: String,
-                                   utr: String)
+object AuthorisingCompanyConstants extends BaseConstants {
 
-object AuthorisingCompanyModel {
-  implicit val format = Json.format[AuthorisingCompanyModel]
+  val companyName = "some authorising company"
+
+  val authorisingCompanyJson = Json.obj(
+    "companyName" -> companyName,
+    "utr" -> ctutr
+  )
+
+  val authorisingCompanyModel = AuthorisingCompanyModel(
+    companyName = companyName,
+    utr = ctutr
+  )
 }
