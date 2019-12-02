@@ -24,6 +24,7 @@ import utils.WireMockMethods
 object DESStub extends WireMockMethods {
 
   private val appointReportingCompanyDesUrl = s"/interest-restriction/reporting-company/appoint"
+  private val revokeReportingCompanyDesUrl = s"/interest-restriction/reporting-company/revoke"
   private val abbreviatedReturnDesUrl = s"/interest-restriction/reporting-company/abbreviated-return"
 
 
@@ -32,6 +33,12 @@ object DESStub extends WireMockMethods {
 
   def appointReportingCompanyError: StubMapping =
     when(method = POST, uri = appointReportingCompanyDesUrl).thenReturn(status = INTERNAL_SERVER_ERROR)
+
+  def revokeReportingCompanySuccess(response: JsValue): StubMapping =
+    when(method = POST, uri = revokeReportingCompanyDesUrl).thenReturn(status = OK, body = response)
+
+  def revokeReportingCompanyError: StubMapping =
+    when(method = POST, uri = revokeReportingCompanyDesUrl).thenReturn(status = INTERNAL_SERVER_ERROR)
 
   def abbreviatedReturnSuccess(response: JsValue): StubMapping =
     when(method = POST, uri = abbreviatedReturnDesUrl).thenReturn(status = OK, body = response)
