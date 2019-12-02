@@ -16,7 +16,7 @@
 
 package assets
 
-trait BaseConstants {
+trait BaseITConstants {
 
   val ctutr = "1234567890"
   val sautr = "9876543210"

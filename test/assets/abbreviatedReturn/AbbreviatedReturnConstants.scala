@@ -28,6 +28,8 @@ import play.api.libs.json.Json
 
 object AbbreviatedReturnConstants {
 
+  val ackRef = "ackRef"
+
   val abbreviatedReturnJsonMax = Json.obj(
     "agentDetails" -> agentDetailsJsonMax,
     "reportingCompany" -> reportingCompanyJsonMax,

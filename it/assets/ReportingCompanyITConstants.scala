@@ -18,16 +18,22 @@ package assets
 
 import play.api.libs.json.Json
 
-object AgentDetailsConstants {
+object ReportingCompanyITConstants extends BaseITConstants {
 
-  val agentName = "some agent"
+  val reportingCompanyName = "some reporting company"
 
-  val agentDetailsJsonMax = Json.obj(
-    "agentActingOnBehalfOfCompany" -> true,
-    "agentName" -> agentName
+  val reportingCompanyJsonMax = Json.obj(
+    "companyName" -> reportingCompanyName,
+    "utr" -> ctutr,
+    "crn" -> crn,
+    "sameAsUltimateParent" -> true,
+    "reportingCompanyDeemed" -> true
   )
 
-  val agentDetailsJsonMin = Json.obj(
-    "agentActingOnBehalfOfCompany" -> true
+  val reportingCompanyJsonMin = Json.obj(
+    "companyName" -> reportingCompanyName,
+    "utr" -> ctutr,
+    "sameAsUltimateParent" -> true,
+    "reportingCompanyDeemed" -> true
   )
 }

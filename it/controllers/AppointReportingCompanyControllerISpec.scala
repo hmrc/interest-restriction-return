@@ -15,7 +15,7 @@
  */
 
 package controllers
-import assets.AppointReportingCompanyTestConstants._
+import assets.AppointReportingCompanyITConstants._
 import play.api.http.Status._
 import stubs.{AuthStub, DESStub}
 import utils.{CreateRequestHelper, CustomMatchers, IntegrationSpecBase}
