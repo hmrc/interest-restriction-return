@@ -16,9 +16,8 @@
 
 package assets
 
+import assets.AccountingPeriodConstants.{accountingPeriodJson, accountingPeriodModel}
 import play.api.libs.json.Json
-import AccountingPeriodConstants.{accountingPeriodJson, accountingPeriodModel}
-import models.GroupCompanyDetailsModel
 
 object GroupCompanyDetailsConstants {
 

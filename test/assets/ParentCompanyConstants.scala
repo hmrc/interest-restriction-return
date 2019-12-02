@@ -25,7 +25,7 @@ object ParentCompanyConstants {
 
   val parentCompanyJsonMax = Json.obj(
     "ultimateParent" -> ukParentJsonMax,
-    "deemedParent" -> Seq(deemedParentModelMax)
+    "deemedParent" -> Seq(deemedParentJsonMax)
   )
 
   val parentCompanyModelMax = ParentCompanyModel(
