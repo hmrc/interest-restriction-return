@@ -17,13 +17,14 @@
 package connectors
 
 import config.AppConfig
+import models.requests.IdentifierRequest
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.logging.Authorization
 
 trait DesBaseConnector {
 
-  def desHc(implicit hc: HeaderCarrier, appConfig: AppConfig): HeaderCarrier =
-    hc.withExtraHeaders(appConfig.desEnvironmentHeader)
+  def desHc(implicit hc: HeaderCarrier, appConfig: AppConfig, request: IdentifierRequest[_]): HeaderCarrier =
+    hc.withExtraHeaders(appConfig.desEnvironmentHeader, "providerId" -> request.identifier)
       .copy(authorization = Some(Authorization(appConfig.desAuthorisationToken)))
 
 }

@@ -20,6 +20,7 @@ import connectors.mocks.{FakeFailingAuthConnector, FakeSuccessAuthConnector}
 import play.api.mvc.{Action, AnyContent, Results}
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core._
+import uk.gov.hmrc.auth.core.retrieve.Credentials
 import utils.BaseSpec
 
 class AuthActionSpec extends BaseSpec {
@@ -30,11 +31,11 @@ class AuthActionSpec extends BaseSpec {
 
   "Auth Action" when {
 
-    "the user is logged in with internalId returned" must {
+    "the user is logged in with providerId returned" must {
 
       "successful cary out request" in {
 
-        val authAction = new AuthAction(new FakeSuccessAuthConnector[Option[String]](Some("id")), bodyParsers)
+        val authAction = new AuthAction(new FakeSuccessAuthConnector[Option[Credentials]](Some(Credentials("id","SCP"))), bodyParsers)
         val controller = new Harness(authAction)
         val result = controller.onPageLoad()(fakeRequest)
 
@@ -42,11 +43,11 @@ class AuthActionSpec extends BaseSpec {
       }
     }
 
-    "the user is logged in with NO internalId returned" must {
+    "the user is logged in with NO providerId returned" must {
 
       "redirect to unauthorised" in {
 
-        val authAction = new AuthAction(new FakeSuccessAuthConnector[Option[String]](None), bodyParsers)
+        val authAction = new AuthAction(new FakeSuccessAuthConnector[Option[Credentials]](None), bodyParsers)
         val controller = new Harness(authAction)
         val result = controller.onPageLoad()(fakeRequest)
 

@@ -20,6 +20,7 @@ import config.AppConfig
 import connectors.httpParsers.FullReturnHttpParser.{FullReturnReads, FullReturnResponse}
 import javax.inject.Inject
 import models.fullReturn.FullReturnModel
+import models.requests.IdentifierRequest
 import play.api.Logger
 import play.api.libs.json.Json
 import uk.gov.hmrc.http.HeaderCarrier
@@ -33,7 +34,7 @@ class FullReturnConnector @Inject()(httpClient: HttpClient,
   private[connectors] lazy val fullReturnUrl = s"${appConfig.desUrl}/interest-restriction/full-return/submit"
 
   def submit(fullReturnModel: FullReturnModel)
-             (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[FullReturnResponse] = {
+             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[FullReturnResponse] = {
 
     Logger.debug(s"[FullReturnConnector][submit] URL: $fullReturnUrl")
     Logger.debug(s"[FullReturnConnector][submit] Headers: ${desHc.headers}")

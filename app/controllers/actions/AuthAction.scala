@@ -36,10 +36,10 @@ class AuthAction @Inject()(override val authConnector: AuthConnector,
 
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSessionAndRequest(request.headers, request = Some(request))
 
-    authorised().retrieve(Retrievals.internalId) {
-      _.map {
-        internalId => block(IdentifierRequest(request, internalId))
-      }.getOrElse(throw UnsupportedAuthProvider("Unable to retrieve internal Id"))
+    authorised().retrieve(Retrievals.credentials) {
+      _.map { credential =>
+        block(IdentifierRequest(request, credential.providerId))
+      }.getOrElse(throw UnsupportedAuthProvider("Unable to retrieve providerId"))
     } recover {
       case _ => Unauthorized("No Active Session")
     }

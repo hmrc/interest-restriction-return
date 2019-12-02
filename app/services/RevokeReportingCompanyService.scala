@@ -19,6 +19,7 @@ package services
 import connectors.RevokeReportingCompanyConnector
 import connectors.httpParsers.RevokeReportingCompanyHttpParser.RevokeReportingCompanyResponse
 import javax.inject.Inject
+import models.requests.IdentifierRequest
 import models.revokeReportingCompany.RevokeReportingCompanyModel
 import uk.gov.hmrc.http.HeaderCarrier
 
@@ -27,7 +28,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class RevokeReportingCompanyService @Inject()(revokeReportingCompanyConnector: RevokeReportingCompanyConnector) {
 
   def revoke(revokeReportingCompany: RevokeReportingCompanyModel)
-             (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[RevokeReportingCompanyResponse] =
+             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[RevokeReportingCompanyResponse] =
     revokeReportingCompanyConnector.revoke(revokeReportingCompany)
 
 }

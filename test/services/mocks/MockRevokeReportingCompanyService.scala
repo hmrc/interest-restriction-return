@@ -17,6 +17,7 @@
 package services.mocks
 
 import connectors.httpParsers.RevokeReportingCompanyHttpParser.RevokeReportingCompanyResponse
+import models.requests.IdentifierRequest
 import models.revokeReportingCompany.RevokeReportingCompanyModel
 import org.scalamock.scalatest.MockFactory
 import services.RevokeReportingCompanyService
@@ -29,8 +30,8 @@ trait MockRevokeReportingCompanyService extends MockFactory {
   lazy val mockRevokeReportingCompanyService: RevokeReportingCompanyService = mock[RevokeReportingCompanyService]
 
   def mockRevokeReportingCompany(model: RevokeReportingCompanyModel)(response: RevokeReportingCompanyResponse): Unit = {
-    (mockRevokeReportingCompanyService.revoke(_: RevokeReportingCompanyModel)(_: HeaderCarrier, _: ExecutionContext))
-      .expects(model, *, *)
+    (mockRevokeReportingCompanyService.revoke(_: RevokeReportingCompanyModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
+      .expects(model, *, *, *)
       .returns(Future.successful(response))
   }
 }
