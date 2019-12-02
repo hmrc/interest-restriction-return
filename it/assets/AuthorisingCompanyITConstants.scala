@@ -16,25 +16,20 @@
 
 package assets
 
-import assets.AgentDetailsConstants._
-import assets.ReportingCompanyConstants._
-import assets.AuthorisingCompanyConstants._
+import models.appointReportingCompany.AuthorisingCompanyModel
 import play.api.libs.json.Json
 
-object AppointReportingCompanyTestConstants {
+object AuthorisingCompanyITConstants extends BaseITConstants {
 
-  val ackRef = "ackRef"
+  val companyName = "some authorising company"
 
-  val appointReportingCompanyJson = Json.obj(
-    "agentDetails" -> agentDetailsJsonMax,
-    "reportingCompany" -> reportingCompanyJsonMax,
-    "authorisingCompanies" -> Json.arr(
-      authorisingCompanyJson
-    ),
-    "declaration" -> true
+  val authorisingCompanyJson = Json.obj(
+    "companyName" -> companyName,
+    "utr" -> ctutr
   )
 
-  val appointReportingCompanyDesSuccessJson = Json.obj(
-    "acknowledgementReference" -> ackRef
+  val authorisingCompanyModel = AuthorisingCompanyModel(
+    companyName = companyName,
+    utr = ctutr
   )
 }

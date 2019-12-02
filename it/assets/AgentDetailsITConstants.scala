@@ -16,20 +16,18 @@
 
 package assets
 
-import models.appointReportingCompany.AuthorisingCompanyModel
 import play.api.libs.json.Json
 
-object AuthorisingCompanyConstants extends BaseConstants {
+object AgentDetailsITConstants {
 
-  val companyName = "some authorising company"
+  val agentName = "some agent"
 
-  val authorisingCompanyJson = Json.obj(
-    "companyName" -> companyName,
-    "utr" -> ctutr
+  val agentDetailsJsonMax = Json.obj(
+    "agentActingOnBehalfOfCompany" -> true,
+    "agentName" -> agentName
   )
 
-  val authorisingCompanyModel = AuthorisingCompanyModel(
-    companyName = companyName,
-    utr = ctutr
+  val agentDetailsJsonMin = Json.obj(
+    "agentActingOnBehalfOfCompany" -> true
   )
 }

@@ -16,24 +16,25 @@
 
 package assets
 
+import assets.AgentDetailsITConstants._
+import assets.ReportingCompanyITConstants._
+import assets.AuthorisingCompanyITConstants._
 import play.api.libs.json.Json
 
-object ReportingCompanyConstants extends BaseConstants {
+object AppointReportingCompanyITConstants {
 
-  val reportingCompanyName = "some reporting company"
+  val ackRef = "ackRef"
 
-  val reportingCompanyJsonMax = Json.obj(
-    "companyName" -> reportingCompanyName,
-    "utr" -> ctutr,
-    "crn" -> crn,
-    "sameAsUltimateParent" -> true,
-    "reportingCompanyDeemed" -> true
+  val appointReportingCompanyJson = Json.obj(
+    "agentDetails" -> agentDetailsJsonMax,
+    "reportingCompany" -> reportingCompanyJsonMax,
+    "authorisingCompanies" -> Json.arr(
+      authorisingCompanyJson
+    ),
+    "declaration" -> true
   )
 
-  val reportingCompanyJsonMin = Json.obj(
-    "companyName" -> reportingCompanyName,
-    "utr" -> ctutr,
-    "sameAsUltimateParent" -> true,
-    "reportingCompanyDeemed" -> true
+  val appointReportingCompanyDesSuccessJson = Json.obj(
+    "acknowledgementReference" -> ackRef
   )
 }
