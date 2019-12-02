@@ -14,23 +14,38 @@
  * limitations under the License.
  */
 
-package assets.appointReportingCompany
+package assets.revokeReportingCompany
 
 import assets.BaseConstants
-import models.appointReportingCompany.AuthorisingCompanyModel
+import models.revokeReportingCompany.CompanyMakingRevocationModel
 import play.api.libs.json.Json
 
-object AuthorisingCompanyConstants extends BaseConstants {
+object CompanyMakingRevocationConstants extends BaseConstants {
 
-  val companyName = "some authorising company"
+  val companyName = "some company"
 
-  val authorisingCompanyJson = Json.obj(
-    "companyName" -> companyName,
-    "utr" -> ctutr
+  val companyMakingRevocationModelMax = CompanyMakingRevocationModel(
+    companyName = companyName,
+    utr = Some(ctutr),
+    crn = Some(crn),
+    countryOfIncorporation = Some("US")
   )
 
-  val authorisingCompanyModel = AuthorisingCompanyModel(
+  val companyMakingRevocationJsonMax = Json.obj(
+    "companyName" -> companyName,
+    "utr" -> ctutr,
+    "crn" -> crn,
+    "countryOfIncorporation" -> "US"
+  )
+
+  val companyMakingRevocationModelMin = CompanyMakingRevocationModel(
     companyName = companyName,
-    utr = ctutr
+    utr = None,
+    crn = None,
+    countryOfIncorporation = None
+  )
+
+  val companyMakingRevocationJsonMin = Json.obj(
+    "companyName" -> companyName
   )
 }

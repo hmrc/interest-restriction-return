@@ -18,7 +18,7 @@ package assets.appointReportingCompany
 
 import assets.AgentDetailsConstants._
 import assets.ReportingCompanyConstants._
-import assets.appointReportingCompany.AuthorisingCompanyConstants._
+import assets.AuthorisingCompanyConstants._
 import models.appointReportingCompany.AppointReportingCompanyModel
 import play.api.libs.json.Json
 

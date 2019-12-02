@@ -18,7 +18,8 @@ package models.appointReportingCompany
 
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
-import assets.appointReportingCompany.AuthorisingCompanyConstants._
+import assets.AuthorisingCompanyConstants._
+import models.AuthorisingCompanyModel
 
 class AuthorisingCompanyModelSpec extends WordSpec with Matchers {
 

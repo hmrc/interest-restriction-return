@@ -14,22 +14,15 @@
  * limitations under the License.
  */
 
-package assets
+package models.revokeReportingCompany
 
-import models.AuthorisingCompanyModel
 import play.api.libs.json.Json
 
-object AuthorisingCompanyITConstants extends BaseITConstants {
+case class CompanyMakingRevocationModel(companyName:String,
+                                        utr: Option[String],
+                                        crn: Option[String],
+                                        countryOfIncorporation: Option[String])
 
-  val companyName = "some authorising company"
-
-  val authorisingCompanyJson = Json.obj(
-    "companyName" -> companyName,
-    "utr" -> ctutr
-  )
-
-  val authorisingCompanyModel = AuthorisingCompanyModel(
-    companyName = companyName,
-    utr = ctutr
-  )
+object CompanyMakingRevocationModel {
+  implicit val format = Json.format[CompanyMakingRevocationModel]
 }
