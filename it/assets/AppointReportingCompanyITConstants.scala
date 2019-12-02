@@ -26,8 +26,8 @@ object AppointReportingCompanyITConstants {
   val ackRef = "ackRef"
 
   val appointReportingCompanyJson = Json.obj(
-    "agentDetails" -> agentDetailsJsonMax,
-    "reportingCompany" -> reportingCompanyJsonMax,
+    "agentDetails" -> agentDetailsJson,
+    "reportingCompany" -> reportingCompanyJson,
     "authorisingCompanies" -> Json.arr(
       authorisingCompanyJson
     ),

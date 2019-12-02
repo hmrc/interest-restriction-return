@@ -1,5 +1,6 @@
 # microservice specific routes
 
-GET        /hello-world                     controllers.MicroserviceHelloWorldController.hello
+GET        /hello-world                                 controllers.MicroserviceHelloWorldController.hello
 
-POST       /reporting-company/appoint       controllers.AppointReportingCompanyController.appoint
+POST       /reporting-company/appoint                   controllers.AppointReportingCompanyController.appoint
+POST       /abbreviated-return/submit                   controllers.AbbreviatedReturnController.submitAbbreviatedReturn
