@@ -1,11 +1,11 @@
 # microservice specific routes
 
-GET        /hello-world                                 controllers.MicroserviceHelloWorldController.hello
+GET        /hello-world                                 controllers.MicroserviceHelloWorldController.hello()
 
-POST       /reporting-company/appoint                   controllers.AppointReportingCompanyController.appoint
+POST       /reporting-company/appoint                   controllers.AppointReportingCompanyController.appoint()
 
-POST       /reporting-company/revoke                    controllers.RevokeReportingCompanyController.revoke
+POST       /reporting-company/revoke                    controllers.RevokeReportingCompanyController.revoke()
 
-POST       /abbreviated-return/submit                   controllers.AbbreviatedReturnController.submitAbbreviatedReturn
+POST       /return/abbreviated                          controllers.AbbreviatedReturnController.submitAbbreviatedReturn()
 
-POST       /return/full              controllers.FullReturnController.submit
+POST       /return/full                                 controllers.FullReturnController.submit()
