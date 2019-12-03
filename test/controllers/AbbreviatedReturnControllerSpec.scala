@@ -26,7 +26,7 @@ import utils.BaseSpec
 
 class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with BaseSpec {
 
-  override lazy val fakeRequest = FakeRequest("POST", "/interest-restriction-return/reporting-company/abbreviated-return")
+  override lazy val fakeRequest = FakeRequest("POST", "/interest-restriction-return/return/abbreviated")
 
   "AbbreviatedReturnController.submitAbbreviatedReturn()" when {
 

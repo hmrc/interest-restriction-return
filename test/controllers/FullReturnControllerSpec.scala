@@ -26,7 +26,7 @@ import utils.BaseSpec
 
 class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
 
-  override lazy val fakeRequest = FakeRequest("POST", "/interest-restriction-return/full-return/submit")
+  override lazy val fakeRequest = FakeRequest("POST", "/interest-restriction-return/return/full")
 
   "FullReturnController.submit()" when {
 
