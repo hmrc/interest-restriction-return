@@ -62,7 +62,7 @@ This is a protected backend microservice that is the conduit between Public faci
 {
     "type": "object",
     "properties": {
-        "acknowledgemenetReference": {
+        "acknowledgementReference": {
             "type": "string"
         }   
     }   
@@ -74,7 +74,7 @@ This is a protected backend microservice that is the conduit between Public faci
 Status: `200 (OK)`
 ```json
 {
-    "acknowledgemenetReference": "ABC1234"
+    "acknowledgementReference": "ABC1234"
 }
 ```
 
@@ -182,7 +182,7 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
 {
     "type": "object",
     "properties": {
-        "acknowledgemenetReference": {
+        "acknowledgementReference": {
             "type": "string"
         }   
     }   
@@ -194,7 +194,7 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
 Status: `200 (OK)`
 ```json
 {
-    "acknowledgemenetReference": "ABC1234"
+    "acknowledgementReference": "ABC1234"
 }
 ```
 
@@ -341,7 +341,7 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
 {
     "type": "object",
     "properties": {
-        "acknowledgemenetReference": {
+        "acknowledgementReference": {
             "type": "string"
         }   
     }   
@@ -353,7 +353,7 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
 Status: `200 (OK)`
 ```json
 {
-    "acknowledgemenetReference": "ABC1234"
+    "acknowledgementReference": "ABC1234"
 }
 ```
 
@@ -518,7 +518,7 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
 {
     "type": "object",
     "properties": {
-        "acknowledgemenetReference": {
+        "acknowledgementReference": {
             "type": "string"
         }   
     }   
@@ -530,7 +530,7 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
 Status: `200 (OK)`
 ```json
 {
-    "acknowledgemenetReference": "ABC1234"
+    "acknowledgementReference": "ABC1234"
 }
 ```
 
