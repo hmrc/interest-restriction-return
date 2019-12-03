@@ -27,7 +27,7 @@ object AuthStub extends WireMockMethods {
 
   def authorised(): StubMapping =
     when(method = POST, uri = authoriseUri)
-      .thenReturn(status = OK, body = Json.obj("internalId" -> "dummyId"))
+      .thenReturn(status = OK, body = Json.obj("optionalCredentials" -> Json.obj("providerId" -> "id", "providerType" -> "scp")))
 
   def unauthorised(): StubMapping =
     when(method = POST, uri = authoriseUri).thenReturn(status = UNAUTHORIZED)

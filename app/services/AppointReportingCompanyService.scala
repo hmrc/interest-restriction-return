@@ -20,6 +20,7 @@ import connectors.AppointReportingCompanyConnector
 import connectors.httpParsers.AppointReportingCompanyHttpParser.AppointReportingCompanyResponse
 import javax.inject.Inject
 import models.appointReportingCompany.AppointReportingCompanyModel
+import models.requests.IdentifierRequest
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -27,7 +28,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class AppointReportingCompanyService @Inject()(appointReportingCompanyConnector: AppointReportingCompanyConnector) {
 
   def appoint(appointReportingCompany: AppointReportingCompanyModel)
-             (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[AppointReportingCompanyResponse] =
+             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[AppointReportingCompanyResponse] =
     appointReportingCompanyConnector.appoint(appointReportingCompany)
 
 }

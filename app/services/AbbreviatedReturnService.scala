@@ -20,13 +20,15 @@ import connectors.AbbreviatedReturnConnector
 import connectors.httpParsers.AbbreviatedReturnHttpParser.AbbreviatedReturnResponse
 import javax.inject.Inject
 import models.abbreviatedReturn.AbbreviatedReturnModel
+import models.requests.IdentifierRequest
 import uk.gov.hmrc.http.HeaderCarrier
+
 import scala.concurrent.{ExecutionContext, Future}
 
 class AbbreviatedReturnService @Inject()(abbreviatedReturnConnector: AbbreviatedReturnConnector) {
 
   def submitsAbbreviatedReturn(abbreviatedReturn: AbbreviatedReturnModel)
-             (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[AbbreviatedReturnResponse] =
+             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[AbbreviatedReturnResponse] =
     abbreviatedReturnConnector.submitAbbreviatedReturn(abbreviatedReturn)
 
 }

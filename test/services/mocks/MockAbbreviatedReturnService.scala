@@ -18,6 +18,7 @@ package services.mocks
 
 import connectors.httpParsers.AbbreviatedReturnHttpParser.AbbreviatedReturnResponse
 import models.abbreviatedReturn.AbbreviatedReturnModel
+import models.requests.IdentifierRequest
 import org.scalamock.scalatest.MockFactory
 import services.AbbreviatedReturnService
 import uk.gov.hmrc.http.HeaderCarrier
@@ -29,8 +30,8 @@ trait MockAbbreviatedReturnService extends MockFactory {
   lazy val mockAbbreviatedReturnService: AbbreviatedReturnService = mock[AbbreviatedReturnService]
 
   def mockAbbreviatedReturn(model: AbbreviatedReturnModel)(response: AbbreviatedReturnResponse): Unit = {
-    (mockAbbreviatedReturnService.submitsAbbreviatedReturn(_: AbbreviatedReturnModel)(_: HeaderCarrier, _: ExecutionContext))
-      .expects(model, *, *)
+    (mockAbbreviatedReturnService.submitsAbbreviatedReturn(_: AbbreviatedReturnModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
+      .expects(model, *, *, *)
       .returns(Future.successful(response))
   }
 }
