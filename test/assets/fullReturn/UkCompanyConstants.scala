@@ -17,9 +17,9 @@
 package assets.fullReturn
 
 import assets.BaseConstants
+import assets.fullReturn.AllocatedReactivationsConstants._
+import assets.fullReturn.AllocatedRestrictionsConstants._
 import models.fullReturn.UkCompanyModel
-import AllocatedReactivationsConstants._
-import AllocatedRestrictionsConstants._
 import play.api.libs.json.Json
 object UkCompanyConstants extends BaseConstants {
 

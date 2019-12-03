@@ -21,10 +21,21 @@ import play.api.libs.json.Json
 object UkCompanyITConstants extends BaseITConstants {
 
   val companyName = "some company"
+  val netTaxInterestExpense: BigDecimal = 1.11
+  val netTaxInterestIncome: BigDecimal = 2.22
+  val taxEBITDA: BigDecimal = 3.33
 
   val ukCompanyJson = Json.obj(
     "companyName" -> companyName,
     "ctutr" -> ctutr,
     "consenting" -> true
+  )
+  val ukCompanyFullJson = Json.obj(
+    "companyName" -> companyName,
+    "utr" -> ctutr,
+    "consenting" -> true,
+    "netTaxInterestExpense" -> netTaxInterestExpense,
+    "netTaxInterestIncome" -> netTaxInterestIncome,
+    "taxEBITDA" -> taxEBITDA
   )
 }

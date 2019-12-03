@@ -16,15 +16,14 @@
 
 package assets
 
+import assets.AdjustedGroupInterestITConstants.adjustedGroupInterestJson
 import assets.AgentDetailsITConstants._
 import assets.GroupCompanyDetailsITConstants.groupCompanyDetailsJson
+import assets.GroupLevelAmountITConstants.groupLevelAmountJson
 import assets.GroupLevelElectionsITConstants.groupLevelElectionsJson
 import assets.ParentCompanyITConstants.parentCompanyJson
 import assets.ReportingCompanyITConstants._
-import assets.UkCompanyITConstants.ukCompanyJson
-import assets.AdjustedGroupInterestITConstants.adjustedGroupInterestJson
-import assets.GroupLevelAmountITConstants.groupLevelAmountJson
-
+import assets.UkCompanyITConstants.ukCompanyFullJson
 import models.Original
 import play.api.libs.json.Json
 
@@ -37,9 +36,6 @@ object FullReturnITConstants {
     "acknowledgementReference" -> ackRef
   )
 
-  val revisedReturnDetails = "some details"
-  val angie: BigDecimal = 1.11
-
   val fullReturnJson = Json.obj(
     "agentDetails" -> agentDetailsJson,
     "reportingCompany" -> reportingCompanyJson,
@@ -47,10 +43,10 @@ object FullReturnITConstants {
     "publicInfrastructure" -> true,
     "groupCompanyDetails" -> groupCompanyDetailsJson,
     "submissionType" -> Original,
-    "revisedReturnDetails" -> revisedReturnDetails,
+    "revisedReturnDetails" -> "some details",
     "groupLevelElections" -> groupLevelElectionsJson,
-    "ukCompanies" -> Seq(ukCompanyJson),
-    "angie" -> angie,
+    "ukCompanies" -> Seq(ukCompanyFullJson),
+    "angie" -> 1.1,
     "groupSubjectToInterestRestrictions" -> true,
     "groupSubjectToInterestReactivation" -> true,
     "groupLevelAmount" -> groupLevelAmountJson,
