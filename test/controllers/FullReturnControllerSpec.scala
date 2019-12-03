@@ -26,9 +26,9 @@ import utils.BaseSpec
 
 class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
 
-  override lazy val fakeRequest = FakeRequest("POST", "/interest-restriction-return/reporting-company/appoint")
+  override lazy val fakeRequest = FakeRequest("POST", "/interest-restriction-return/full-return/submit")
 
-  "FullReturnController.appoint()" when {
+  "FullReturnController.submit()" when {
 
     "the user is authenticated" when {
 
@@ -41,15 +41,15 @@ class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
       "a valid payload is submitted" when {
 
         lazy val validJsonFakeRequest = fakeRequest
-          .withBody(fullReturnJson)
+          .withBody(fullReturnJsonMax)
           .withHeaders("Content-Type" -> "application/json")
 
         "a success response is returned from the service" should {
 
           "return 200 (OK)" in {
 
-            mockFullReturn(fullReturnModel)(Right(SuccessResponse(ackRef)))
-            val result = AuthorisedController.appoint()(validJsonFakeRequest)
+            mockFullReturn(fullReturnModelMax)(Right(SuccessResponse(ackRef)))
+            val result = AuthorisedController.submit()(validJsonFakeRequest)
             status(result) shouldBe Status.OK
           }
         }
@@ -58,8 +58,8 @@ class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
 
           "return the Error" in {
 
-            mockFullReturn(fullReturnModel)(Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
-            val result = AuthorisedController.appoint()(validJsonFakeRequest)
+            mockFullReturn(fullReturnModelMax)(Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
+            val result = AuthorisedController.submit()(validJsonFakeRequest)
             status(result) shouldBe Status.INTERNAL_SERVER_ERROR
           }
         }
@@ -73,7 +73,7 @@ class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
 
         "return a BAD_REQUEST JSON validation error" in {
 
-          val result = AuthorisedController.appoint()(invalidJsonFakeRequest)
+          val result = AuthorisedController.submit()(invalidJsonFakeRequest)
           status(result) shouldBe Status.BAD_REQUEST
         }
       }
@@ -89,7 +89,7 @@ class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
           controllerComponents = Helpers.stubControllerComponents()
         )
 
-        val result = UnauthorisedController.appoint()(fakeRequest.withBody(Json.obj()))
+        val result = UnauthorisedController.submit()(fakeRequest.withBody(Json.obj()))
         status(result) shouldBe Status.UNAUTHORIZED
       }
     }

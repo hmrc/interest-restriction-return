@@ -16,6 +16,7 @@
 
 package connectors.httpParsers
 
+import assets.fullReturn.FullReturnConstants._
 import connectors.httpParsers.FullReturnHttpParser.{FullReturnReads, InvalidSuccessResponse, SuccessResponse, UnexpectedFailure}
 import org.scalatest.{Matchers, WordSpec}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
@@ -25,7 +26,6 @@ import uk.gov.hmrc.http.HttpResponse
 
 class FullReturnHttpParserSpec extends WordSpec with Matchers with GuiceOneAppPerSuite  {
 
-  val ackRef = "ackRef"
   val ackRefResponse = Json.obj("acknowledgementReference" -> ackRef)
 
   "FullReturnHttpParser.FullReturnReads" when {
@@ -51,7 +51,6 @@ class FullReturnHttpParserSpec extends WordSpec with Matchers with GuiceOneAppPe
         actualResult shouldBe expectedResult
       }
     }
-
     "given any other status" should {
 
       "return a Left(UnexpectedFailure)" in {

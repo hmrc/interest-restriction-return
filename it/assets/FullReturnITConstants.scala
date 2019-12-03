@@ -16,85 +16,44 @@
 
 package assets
 
-import assets.AgentDetailsConstants.{agentDetailsModelMax, agentDetailsModelMin}
-import assets.GroupCompanyDetailsConstants.groupCompanyDetailsModel
-import assets.GroupLevelElectionsConstants.groupLevelElectionsModelMax
-import assets.ParentCompanyConstants.{parentCompanyModelMax, parentCompanyModelMin}
-import assets.ReportingCompanyConstants.{reportingCompanyModelMax, reportingCompanyModelMin}
-import assets.fullReturn.AdjustedGroupInterestConstants.adjustedGroupInterestModel
-import assets.fullReturn.GroupLevelAmountConstants.groupLevelAmountModel
-import assets.fullReturn.UkCompanyConstants.{ukCompanyModelMax, ukCompanyModelMin}
+import assets.AgentDetailsITConstants._
+import assets.GroupCompanyDetailsITConstants.groupCompanyDetailsJson
+import assets.GroupLevelElectionsITConstants.groupLevelElectionsJson
+import assets.ParentCompanyITConstants.parentCompanyJson
+import assets.ReportingCompanyITConstants._
+import assets.UkCompanyITConstants.ukCompanyJson
+import assets.AdjustedGroupInterestITConstants.adjustedGroupInterestJson
+import assets.GroupLevelAmountITConstants.groupLevelAmountJson
+
 import models.Original
-import models.fullReturn.FullReturnModel
 import play.api.libs.json.Json
 
 object FullReturnITConstants {
 
+
+  val ackRef = "ackRef"
+
+  val fullReturnDesSuccessJson = Json.obj(
+    "acknowledgementReference" -> ackRef
+  )
+
   val revisedReturnDetails = "some details"
   val angie: BigDecimal = 1.11
 
-  val fullReturnModelMax = FullReturnModel(
-    agentDetails = agentDetailsModelMax,
-    reportingCompany = reportingCompanyModelMax,
-    parentCompany = parentCompanyModelMax,
-    publicInfrastructure = true,
-    groupCompanyDetails = groupCompanyDetailsModel,
-    submissionType = Original,
-    revisedReturnDetails = Some(revisedReturnDetails),
-    groupLevelElections = Some(groupLevelElectionsModelMax),
-    ukCompanies = Seq(ukCompanyModelMax),
-    angie = Some(angie),
-    groupSubjectToInterestRestrictions = true,
-    groupSubjectToInterestReactivation = true,
-    groupLevelAmount = groupLevelAmountModel,
-    adjustedGroupInterest = adjustedGroupInterestModel
-  )
-
-  val fullReturnJsonMax = Json.obj(
-    "agentDetails" -> agentDetailsModelMax,
-    "reportingCompany" -> reportingCompanyModelMax,
-    "parentCompany" -> parentCompanyModelMax,
+  val fullReturnJson = Json.obj(
+    "agentDetails" -> agentDetailsJson,
+    "reportingCompany" -> reportingCompanyJson,
+    "parentCompany" -> parentCompanyJson,
     "publicInfrastructure" -> true,
-    "groupCompanyDetails" -> groupCompanyDetailsModel,
+    "groupCompanyDetails" -> groupCompanyDetailsJson,
     "submissionType" -> Original,
     "revisedReturnDetails" -> revisedReturnDetails,
-    "groupLevelElections" -> groupLevelElectionsModelMax,
-    "ukCompanies" -> Seq(ukCompanyModelMax),
+    "groupLevelElections" -> groupLevelElectionsJson,
+    "ukCompanies" -> Seq(ukCompanyJson),
     "angie" -> angie,
     "groupSubjectToInterestRestrictions" -> true,
     "groupSubjectToInterestReactivation" -> true,
-    "groupLevelAmount" -> groupLevelAmountModel,
-    "adjustedGroupInterest" -> adjustedGroupInterestModel
-  )
-
-  val fullReturnModelMin = FullReturnModel(
-    agentDetails = agentDetailsModelMin,
-    reportingCompany = reportingCompanyModelMin,
-    parentCompany = parentCompanyModelMin,
-    publicInfrastructure = true,
-    groupCompanyDetails = groupCompanyDetailsModel,
-    submissionType = Original,
-    revisedReturnDetails = None,
-    groupLevelElections = None,
-    ukCompanies = Seq(ukCompanyModelMin),
-    angie = None,
-    groupSubjectToInterestRestrictions = true,
-    groupSubjectToInterestReactivation = true,
-    groupLevelAmount = groupLevelAmountModel,
-    adjustedGroupInterest = adjustedGroupInterestModel
-  )
-
-  val fullReturnJsonMin = Json.obj(
-    "agentDetails" -> agentDetailsModelMin,
-    "reportingCompany" -> reportingCompanyModelMin,
-    "parentCompany" -> parentCompanyModelMin,
-    "publicInfrastructure" -> true,
-    "groupCompanyDetails" -> groupCompanyDetailsModel,
-    "submissionType" -> Original,
-    "ukCompanies" -> Seq(ukCompanyModelMin),
-    "groupSubjectToInterestRestrictions" -> true,
-    "groupSubjectToInterestReactivation" -> true,
-    "groupLevelAmount" -> groupLevelAmountModel,
-    "adjustedGroupInterest" -> adjustedGroupInterestModel
+    "groupLevelAmount" -> groupLevelAmountJson,
+    "adjustedGroupInterest" -> adjustedGroupInterestJson
   )
 }
