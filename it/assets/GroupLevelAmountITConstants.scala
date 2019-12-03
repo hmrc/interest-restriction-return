@@ -18,24 +18,19 @@ package assets
 
 import play.api.libs.json.Json
 
-object UkCompanyITConstants extends BaseITConstants {
+object GroupLevelAmountITConstants {
 
-  val companyName = "some company"
-  val netTaxInterestExpense: BigDecimal = 1.11
-  val netTaxInterestIncome: BigDecimal = 2.22
-  val taxEBITDA: BigDecimal = 3.33
+  val totalDisallowedAmount = 1.0
+  val interestReactivationCap = 1.0
+  val interestAllowanceForward = 1.0
+  val interestAllowanceForPeriod = 1.0
+  val interestCapacityForPeriod = 1.0
 
-  val ukCompanyJson = Json.obj(
-    "companyName" -> companyName,
-    "ctutr" -> ctutr,
-    "consenting" -> true
-  )
-  val ukCompanyFullJson = Json.obj(
-    "companyName" -> companyName,
-    "utr" -> ctutr,
-    "consenting" -> true,
-    "netTaxInterestExpense" -> netTaxInterestExpense,
-    "netTaxInterestIncome" -> netTaxInterestIncome,
-    "taxEBITDA" -> taxEBITDA
+  val groupLevelAmountJson = Json.obj(
+    "totalDisallowedAmount" -> totalDisallowedAmount,
+    "interestReactivationCap" -> interestReactivationCap,
+    "interestAllowanceForward" -> interestAllowanceForward,
+    "interestAllowanceForPeriod" -> interestAllowanceForPeriod,
+    "interestCapacityForPeriod" -> interestCapacityForPeriod
   )
 }

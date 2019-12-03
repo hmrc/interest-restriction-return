@@ -68,10 +68,10 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
 
       "return a Right(SuccessResponse)" in {
 
-        val connector = setup(Right(SuccessResponse("ackRef")))
+        val connector = setup(Right(SuccessResponse(ackRef)))
         val result = connector.submit(fullReturnModelMin)
 
-        await(result) shouldBe Right(SuccessResponse("ackRef"))
+        await(result) shouldBe Right(SuccessResponse(ackRef))
       }
     }
 

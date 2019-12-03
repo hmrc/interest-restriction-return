@@ -8,3 +8,4 @@ POST       /reporting-company/revoke                    controllers.RevokeReport
 
 POST       /abbreviated-return/submit                   controllers.AbbreviatedReturnController.submitAbbreviatedReturn
 
+POST       /full-return/submit              controllers.FullReturnController.submit

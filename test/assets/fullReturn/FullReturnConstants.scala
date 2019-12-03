@@ -30,6 +30,8 @@ import play.api.libs.json.Json
 
 object FullReturnConstants {
 
+  val ackRef = "ackRef"
+
   val revisedReturnDetails = "some details"
   val angie: BigDecimal = 1.11
 
