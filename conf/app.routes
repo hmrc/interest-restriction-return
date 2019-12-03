@@ -3,6 +3,9 @@
 GET        /hello-world                                 controllers.MicroserviceHelloWorldController.hello
 
 POST       /reporting-company/appoint                   controllers.AppointReportingCompanyController.appoint
+
+POST       /reporting-company/revoke                    controllers.RevokeReportingCompanyController.revoke
+
 POST       /abbreviated-return/submit                   controllers.AbbreviatedReturnController.submitAbbreviatedReturn
 
 POST       /full-return/submit              controllers.FullReturnController.submit
