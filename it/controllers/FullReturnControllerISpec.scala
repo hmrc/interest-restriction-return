@@ -24,7 +24,7 @@ import utils.{CreateRequestHelper, CustomMatchers, IntegrationSpecBase}
 
 class FullReturnControllerISpec extends IntegrationSpecBase with CreateRequestHelper with CustomMatchers {
 
-  "POST /full-return/submit" when {
+  "POST /return/full" when {
 
     "user is authenticated" when {
 
@@ -35,7 +35,7 @@ class FullReturnControllerISpec extends IntegrationSpecBase with CreateRequestHe
           AuthStub.authorised()
           DESStub.fullReturnSuccess(fullReturnDesSuccessJson)
 
-          val res = postRequest("/full-return/submit", fullReturnJson)
+          val res = postRequest("/return/full", fullReturnJson)
 
           whenReady(res) { result =>
             result should have(
@@ -53,7 +53,7 @@ class FullReturnControllerISpec extends IntegrationSpecBase with CreateRequestHe
           AuthStub.authorised()
           DESStub.fullReturnError
 
-          val res = postRequest("/full-return/submit", fullReturnJson)
+          val res = postRequest("/return/full", fullReturnJson)
 
           whenReady(res) { result =>
             result should have(
@@ -70,7 +70,7 @@ class FullReturnControllerISpec extends IntegrationSpecBase with CreateRequestHe
 
         AuthStub.unauthorised()
 
-        val res = postRequest("/full-return/submit", fullReturnJson)
+        val res = postRequest("/return/full", fullReturnJson)
 
         whenReady(res) { result =>
           result should have(

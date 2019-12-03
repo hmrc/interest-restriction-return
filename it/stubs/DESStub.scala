@@ -25,8 +25,8 @@ object DESStub extends WireMockMethods {
 
   private val appointReportingCompanyDesUrl = s"/interest-restriction/reporting-company/appoint"
   private val revokeReportingCompanyDesUrl = s"/interest-restriction/reporting-company/revoke"
-  private val abbreviatedReturnDesUrl = s"/interest-restriction/reporting-company/abbreviated-return"
-  private val fullReturnDesUrl = s"/interest-restriction/full-return/submit"
+  private val abbreviatedReturnDesUrl = s"/interest-restriction/return/abbreviated"
+  private val fullReturnDesUrl = s"/interest-restriction/return/full"
 
 
   def appointReportingCompanySuccess(response: JsValue): StubMapping =

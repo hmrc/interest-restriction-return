@@ -28,7 +28,7 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
   "FullReturnConnector.submit using fullReturnModelMax" when {
 
     def setup(response: FullReturnResponse): FullReturnConnector = {
-      val desUrl = "http://localhost:9262/interest-restriction/full-return/submit"
+      val desUrl = "http://localhost:9262/interest-restriction/return/full"
       mockHttpPost[FullReturnModel, Either[ErrorResponse, SuccessResponse]](desUrl, fullReturnModelMax)(response)
       new FullReturnConnector(mockHttpClient, appConfig)
     }
@@ -59,7 +59,7 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
   "FullReturnConnector.submit using fullReturnModelMin" when {
 
     def setup(response: FullReturnResponse): FullReturnConnector = {
-      val desUrl = "http://localhost:9262/interest-restriction/full-return/submit"
+      val desUrl = "http://localhost:9262/interest-restriction/return/full"
       mockHttpPost[FullReturnModel, Either[ErrorResponse, SuccessResponse]](desUrl, fullReturnModelMin)(response)
       new FullReturnConnector(mockHttpClient, appConfig)
     }

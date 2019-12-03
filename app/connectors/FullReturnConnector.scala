@@ -31,7 +31,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class FullReturnConnector @Inject()(httpClient: HttpClient,
                                     implicit val appConfig: AppConfig) extends DesBaseConnector {
 
-  private[connectors] lazy val fullReturnUrl = s"${appConfig.desUrl}/interest-restriction/full-return/submit"
+  private[connectors] lazy val fullReturnUrl = s"${appConfig.desUrl}/interest-restriction/return/full"
 
   def submit(fullReturnModel: FullReturnModel)
              (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[FullReturnResponse] = {
