@@ -21,6 +21,7 @@ import assets.ReportingCompanyConstants._
 import assets.AuthorisingCompanyConstants._
 import models.appointReportingCompany.AppointReportingCompanyModel
 import play.api.libs.json.Json
+import assets.AccountingPeriodConstants._
 
 object AppointReportingCompanyConstants {
 
@@ -32,6 +33,7 @@ object AppointReportingCompanyConstants {
     "authorisingCompanies" -> Json.arr(
       authorisingCompanyJson
     ),
+    "accountingPeriod" -> accountingPeriodJson,
     "declaration" -> true
   )
 
@@ -39,6 +41,7 @@ object AppointReportingCompanyConstants {
     agentDetails = agentDetailsModelMax,
     reportingCompany = reportingCompanyModelMax,
     authorisingCompanies = Seq(authorisingCompanyModel),
+    accountingPeriod = accountingPeriodModel,
     declaration = true
   )
 }

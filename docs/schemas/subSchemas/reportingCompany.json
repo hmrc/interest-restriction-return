@@ -12,16 +12,12 @@
     },
     "sameAsUltimateParent": {
       "type": "boolean"
-    },
-    "reportingCompanyDeemed": {
-      "type": "boolean"
     }
   },
   "required": [
     "companyName",
     "utr",
-    "sameAsUltimateParent",
-    "reportingCompanyDeemed"
+    "sameAsUltimateParent"
   ],
   "additionalProperties": false
 }

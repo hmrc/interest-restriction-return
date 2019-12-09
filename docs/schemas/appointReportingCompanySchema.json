@@ -13,12 +13,16 @@
     },
     "declaration": {
       "type": "boolean"
+    },
+    "accountingPeriod" : {
+      "$ref": "subSchemas/accountingPeriod.json"
     }
   },
   "required": [
     "agentDetails",
     "authorisingCompanies",
     "reportingCompany",
+    "accountingPeriod",
     "declaration"
   ],
   "additionalProperties": false

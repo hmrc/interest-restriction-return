@@ -148,16 +148,6 @@ class ReportingCompanySchemaSpec extends BaseSchemaSpec {
           validate(json) shouldBe false
         }
       }
-
-      "reportingCompanyDeemed" when {
-
-        "is not applied" in {
-
-          val json = Json.toJson(ReportingCompany(reportingCompanyDeemed = None))
-
-          validate(json) shouldBe false
-        }
-      }
     }
   }
 }

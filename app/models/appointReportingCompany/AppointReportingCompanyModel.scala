@@ -16,12 +16,13 @@
 
 package models.appointReportingCompany
 
-import models.{AgentDetailsModel, AuthorisingCompanyModel, ReportingCompanyModel}
+import models.{AccountingPeriodModel, AgentDetailsModel, AuthorisingCompanyModel, ReportingCompanyModel}
 import play.api.libs.json.Json
 
 case class AppointReportingCompanyModel(agentDetails: AgentDetailsModel,
                                         reportingCompany: ReportingCompanyModel,
                                         authorisingCompanies: Seq[AuthorisingCompanyModel],
+                                        accountingPeriod: AccountingPeriodModel,
                                         declaration: Boolean)
 
 object AppointReportingCompanyModel {

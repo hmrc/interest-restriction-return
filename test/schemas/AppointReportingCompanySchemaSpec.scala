@@ -42,7 +42,26 @@ class AppointReportingCompanySchemaSpec extends BaseSchemaSpec {
 
         validate(json) shouldBe true
       }
+
+      "Start Date is a valid date" in {
+
+        val json = Json.toJson(AppointReportingCompanyModel(
+          accountingPeriod = Some(AccountingPeriod(startDate = Some("2020-09-30")))
+        ))
+
+        validate(json) shouldBe true
+      }
+
+      "End Date is a valid date" in {
+
+        val json = Json.toJson(AppointReportingCompanyModel(
+          accountingPeriod = Some(AccountingPeriod(endDate = Some("2020-09-30")))
+        ))
+
+        validate(json) shouldBe true
+      }
     }
+
 
     "Return Invalid" when {
 
@@ -186,6 +205,46 @@ class AppointReportingCompanySchemaSpec extends BaseSchemaSpec {
           validate(json) shouldBe false
         }
       }
+
+      "Accounting Period" when {
+
+        "Start Date is None" in {
+
+          val json = Json.toJson(AppointReportingCompanyModel(
+            accountingPeriod = Some(AccountingPeriod(startDate = None))
+          ))
+
+          validate(json) shouldBe false
+        }
+
+        "End Date is None" in {
+
+          val json = Json.toJson(AppointReportingCompanyModel(
+            accountingPeriod = Some(AccountingPeriod(endDate = None))
+          ))
+
+          validate(json) shouldBe false
+        }
+
+        "Start Date is supplied but empty" in {
+
+          val json = Json.toJson(AppointReportingCompanyModel(
+            accountingPeriod = Some(AccountingPeriod(startDate = Some("") ,endDate = Some("2020-09-30")))
+          ))
+
+          validate(json) shouldBe true
+        }
+
+        "End Date is supplied but empty" in {
+
+          val json = Json.toJson(AppointReportingCompanyModel(
+            accountingPeriod = Some(AccountingPeriod(startDate = Some("2020-09-30") ,endDate = Some("")))
+          ))
+
+          validate(json) shouldBe true
+        }
+      }
     }
   }
 }
+

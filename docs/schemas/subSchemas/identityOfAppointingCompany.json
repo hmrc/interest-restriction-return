@@ -1,0 +1,28 @@
+{
+  "type": "array",
+  "minItems": 1,
+  "items": {
+    "type": "object",
+    "properties": {
+      "isUltimateParent": {
+        "type": "boolean"
+      },
+      "companyName": {
+        "$ref": "../definitions/definitions.json#/definitions/companyName"
+      },
+      "utr": {
+        "$ref": "../definitions/definitions.json#/definitions/utr"
+      },
+      "crn": {
+        "$ref": "../definitions/definitions.json#/definitions/crn"
+      },
+      "countryOfIncorporation": {
+        "$ref": "../definitions/countrycodes.json#/definitions/countryCode"
+      }
+    },
+    "required": [
+    "companyName"
+    ],
+    "additionalProperties": false
+  }
+}

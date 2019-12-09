@@ -21,8 +21,8 @@ import play.api.libs.json.Json
 case class ReportingCompanyModel(companyName: String,
                                  utr: String,
                                  crn: Option[String],
-                                 sameAsUltimateParent: Boolean,
-                                 reportingCompanyDeemed: Boolean)
+                                 sameAsUltimateParent: Boolean
+                                 )
 
 object ReportingCompanyModel {
   implicit val format = Json.format[ReportingCompanyModel]

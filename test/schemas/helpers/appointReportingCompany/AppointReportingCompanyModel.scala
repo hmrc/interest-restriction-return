@@ -17,11 +17,12 @@
 package schemas.helpers.appointReportingCompany
 
 import play.api.libs.json.Json
-import schemas.helpers.{AgentDetails, AuthorisingCompanies, ReportingCompany}
+import schemas.helpers.{AgentDetails, AuthorisingCompanies, ReportingCompany,AccountingPeriod}
 
 case class AppointReportingCompanyModel(agentDetails: Option[AgentDetails] = Some(AgentDetails()),
                                         reportingCompany: Option[ReportingCompany] = Some(ReportingCompany()),
                                         authorisingCompanies: Option[Seq[AuthorisingCompanies]] = Some(Seq(AuthorisingCompanies())),
+                                        accountingPeriod: Option[AccountingPeriod] = Some(AccountingPeriod()),
                                         declaration: Option[Boolean] = Some(true))
 
 object AppointReportingCompanyModel {
