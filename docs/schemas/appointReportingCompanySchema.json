@@ -11,17 +11,24 @@
     "authorisingCompanies": {
       "$ref": "subSchemas/authorisingCompanies.json"
     },
-    "declaration": {
-      "type": "boolean"
+    "identityOfAppointingCompany":{
+      "$ref": "subSchemas/identityOfAppointingCompany.json"
+    },
+    "ultimateParentCompany": {
+      "$ref": "definitions/ultimateParent.json#/definitions/reportingUltimateParent"
     },
     "accountingPeriod" : {
       "$ref": "subSchemas/accountingPeriod.json"
+    },
+    "declaration": {
+      "type": "boolean"
     }
   },
   "required": [
     "agentDetails",
     "authorisingCompanies",
     "reportingCompany",
+    "identityOfAppointingCompany",
     "accountingPeriod",
     "declaration"
   ],

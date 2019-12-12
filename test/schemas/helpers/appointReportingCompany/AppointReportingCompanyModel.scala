@@ -17,13 +17,16 @@
 package schemas.helpers.appointReportingCompany
 
 import play.api.libs.json.Json
-import schemas.helpers.{AgentDetails, AuthorisingCompanies, ReportingCompany,AccountingPeriod}
+import schemas.helpers._
 
 case class AppointReportingCompanyModel(agentDetails: Option[AgentDetails] = Some(AgentDetails()),
                                         reportingCompany: Option[ReportingCompany] = Some(ReportingCompany()),
                                         authorisingCompanies: Option[Seq[AuthorisingCompanies]] = Some(Seq(AuthorisingCompanies())),
+                                        identityOfAppointingCompany: Option[IdentityOfAppointingCompany] = Some(IdentityOfAppointingCompany()),
+                                        ultimateParentCompany: Option[OptionalUkUltimateParent] = Some(OptionalUkUltimateParent()),
                                         accountingPeriod: Option[AccountingPeriod] = Some(AccountingPeriod()),
-                                        declaration: Option[Boolean] = Some(true))
+                                        declaration: Option[Boolean] = Some(true)
+                                       )
 
 object AppointReportingCompanyModel {
   implicit val writes = Json.writes[AppointReportingCompanyModel]

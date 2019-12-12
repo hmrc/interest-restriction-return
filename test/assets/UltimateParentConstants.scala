@@ -16,7 +16,7 @@
 
 package assets
 
-import models.{NonUkParentModel, UkParentModel}
+import models.{NonUkParentModel, OptionalNonUkParentModel, OptionalUkParentModel, UkParentModel}
 import play.api.libs.json.Json
 
 object UltimateParentConstants extends BaseConstants {
@@ -80,4 +80,40 @@ object UltimateParentConstants extends BaseConstants {
     "countryOfIncorporation" -> "US",
     "crn" -> crn
   )
+  val optionalUkParent = OptionalUkParentModel(
+    registeredCompanyName = Some(registeredCompanyName),
+    ctutr = Some(ctutr),
+    crn = Some(crn)
+  )
+
+  val optionalUkParentJsonMin = Json.obj(
+    "registeredCompanyName" -> registeredCompanyName,
+    "ctutr" -> ctutr,
+    "crn" -> crn
+  )
+
+  val optionalUkParentJsonMax = Json.obj(
+    "registeredCompanyName" -> registeredCompanyName,
+    "ctutr" -> ctutr,
+    "crn" -> crn
+  )
+  val optionalNonUkParentMax = OptionalNonUkParentModel(
+    registeredCompanyName = Some(registeredCompanyName),
+    countryOfIncorporation = Some("US"),
+    localCompanyNumber = Some(true)
+  )
+
+  val optionalNonUkParentJsonMin = Json.obj(
+    "registeredCompanyName" -> registeredCompanyName,
+    "countryOfIncorporation" -> "US",
+    "crn" -> crn
+  )
+
+  val optionalNonUkParentJsonMax = Json.obj(
+    "registeredCompanyName" -> registeredCompanyName,
+    "countryOfIncorporation" -> "US",
+    "localCompanyNumber" -> true
+  )
+
+
 }

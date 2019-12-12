@@ -1,28 +1,24 @@
 {
-  "type": "array",
-  "minItems": 1,
-  "items": {
-    "type": "object",
-    "properties": {
-      "isUltimateParent": {
-        "type": "boolean"
-      },
-      "companyName": {
-        "$ref": "../definitions/definitions.json#/definitions/companyName"
-      },
-      "utr": {
-        "$ref": "../definitions/definitions.json#/definitions/utr"
-      },
-      "crn": {
-        "$ref": "../definitions/definitions.json#/definitions/crn"
-      },
-      "countryOfIncorporation": {
-        "$ref": "../definitions/countrycodes.json#/definitions/countryCode"
-      }
+  "type": "object",
+  "properties": {
+    "companyName": {
+      "$ref": "../definitions/definitions.json#/definitions/companyName"
     },
-    "required": [
+    "ctutr": {
+      "$ref": "../definitions/definitions.json#/definitions/utr"
+    },
+    "crn": {
+      "$ref": "../definitions/definitions.json#/definitions/crn"
+    },
+    "countryOfIncorporation": {
+      "$ref": "../definitions/countrycodes.json#/definitions/countryCode"
+    },
+    "localCompanyNumber": {
+      "type": "boolean"
+    }
+  },
+  "required": [
     "companyName"
-    ],
-    "additionalProperties": false
-  }
+  ],
+  "additionalProperties": false
 }

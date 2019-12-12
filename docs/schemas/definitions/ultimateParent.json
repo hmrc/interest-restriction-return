@@ -45,6 +45,29 @@
         "countryOfIncorporation"
       ],
       "additionalProperties": false
+    },
+    "reportingUltimateParent": {
+      "properties": {
+        "registeredCompanyName": {
+          "$ref": "definitions.json#/definitions/companyName"
+        },
+        "ctutr": {
+          "$ref": "definitions.json#/definitions/utr"
+        },
+        "crn": {
+          "$ref": "definitions.json#/definitions/crnNonUk"
+        },
+        "countryOfIncorporation": {
+          "$ref": "countrycodes.json#/definitions/countryCode"
+        },
+        "hasLocalCompanyNumber": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "registerCompanyName"
+      ],
+      "additionalProperties": false
     }
   }
 }

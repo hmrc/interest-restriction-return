@@ -37,6 +37,12 @@ case class UkParentModel(registeredCompanyName: String,
                          knownAs: Option[String],
                          sautr: Option[String]) extends UltimateParentModel
 
+case class ReportingUltimateParentModel(registeredCompanyName: String,
+                                        ctutr: Option[String],
+                                        crn: Option[String],
+                                        countryOfIncorporation: Option[String],
+                                        hasLocalCompanyNumber: Option[Boolean])
+
 object UltimateParentModel {
 
   implicit def writes: Writes[UltimateParentModel] = Writes {
@@ -46,7 +52,7 @@ object UltimateParentModel {
 
   implicit def reads: Reads[UltimateParentModel] = {
     __.read[UkParentModel](UkParentModel.format).map(x => x: UltimateParentModel) orElse
-      __.read[NonUkParentModel](NonUkParentModel.format).map(x => x:UltimateParentModel)
+      __.read[NonUkParentModel](NonUkParentModel.format).map(x => x: UltimateParentModel)
   }
 }
 
