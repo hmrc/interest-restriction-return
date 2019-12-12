@@ -41,6 +41,7 @@ object NonUkUltimateParent {
   implicit val writes = Json.writes[NonUkUltimateParent]
 }
 
+
 object UltimateParent {
   implicit def writes: Writes[UltimateParent] = Writes {
     case x: UkUltimateParent => Json.toJson(x)(UkUltimateParent.writes)

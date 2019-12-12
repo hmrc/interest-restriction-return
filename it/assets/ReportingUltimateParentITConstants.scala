@@ -14,16 +14,20 @@
  * limitations under the License.
  */
 
-package models
+package assets
 
 import play.api.libs.json.Json
 
-case class ReportingCompanyModel(companyName: String,
-                                 utr: String,
-                                 crn: Option[String],
-                                 sameAsUltimateParent: Boolean
-                                 )
+object ReportingUltimateParentITConstants extends BaseITConstants {
 
-object ReportingCompanyModel {
-  implicit val format = Json.format[ReportingCompanyModel]
+  val registeredCompanyName = "some company"
+  val countryOfIncorporation = "US"
+
+  val reportingUltimateParentJson = Json.obj(
+    "registeredCompanyName" -> registeredCompanyName,
+    "ctutr" -> ctutr,
+    "crn" -> crn,
+    "countryOfIncorporation" -> countryOfIncorporation,
+    "hasLocalCompanyNumber" -> true
+  )
 }

@@ -16,9 +16,12 @@
 
 package assets
 
+import assets.AccountingPeriodITConstants._
 import assets.AgentDetailsITConstants._
-import assets.ReportingCompanyITConstants._
 import assets.AuthorisingCompanyITConstants._
+import assets.IdentityOfAppointingCompanyITConstants._
+import assets.ReportingCompanyITConstants._
+import assets.ReportingUltimateParentITConstants._
 import play.api.libs.json.Json
 
 object AppointReportingCompanyITConstants {
@@ -31,6 +34,9 @@ object AppointReportingCompanyITConstants {
     "authorisingCompanies" -> Json.arr(
       authorisingCompanyJson
     ),
+    "identityOfAppointingCompany" -> identityOfAppointingCompanyJson,
+    "ultimateParentCompany" -> reportingUltimateParentJson,
+    "accountingPeriod" -> accountingPeriodJson,
     "declaration" -> true
   )
 

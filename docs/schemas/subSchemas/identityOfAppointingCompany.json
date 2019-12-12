@@ -4,20 +4,21 @@
     "companyName": {
       "$ref": "../definitions/definitions.json#/definitions/companyName"
     },
-    "utr": {
+    "ctutr": {
       "$ref": "../definitions/definitions.json#/definitions/utr"
     },
     "crn": {
       "$ref": "../definitions/definitions.json#/definitions/crn"
     },
-    "sameAsUltimateParent": {
+    "countryOfIncorporation": {
+      "$ref": "../definitions/countrycodes.json#/definitions/countryCode"
+    },
+    "localCompanyNumber": {
       "type": "boolean"
     }
   },
   "required": [
-    "companyName",
-    "utr",
-    "sameAsUltimateParent"
+    "companyName"
   ],
   "additionalProperties": false
 }

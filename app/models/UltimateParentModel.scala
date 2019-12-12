@@ -46,7 +46,7 @@ object UltimateParentModel {
 
   implicit def reads: Reads[UltimateParentModel] = {
     __.read[UkParentModel](UkParentModel.format).map(x => x: UltimateParentModel) orElse
-      __.read[NonUkParentModel](NonUkParentModel.format).map(x => x:UltimateParentModel)
+      __.read[NonUkParentModel](NonUkParentModel.format).map(x => x: UltimateParentModel)
   }
 }
 

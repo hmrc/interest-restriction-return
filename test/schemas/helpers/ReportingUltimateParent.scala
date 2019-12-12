@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package models
+package schemas.helpers
 
 import play.api.libs.json.Json
 
-case class ReportingCompanyModel(companyName: String,
-                                 utr: String,
-                                 crn: Option[String],
-                                 sameAsUltimateParent: Boolean
-                                 )
+case class ReportingUltimateParent(registeredCompanyName: Option[String] = Some("Ladon Company"),
+                            ctutr: Option[String] = Some("1234567890"),
+                            crn: Option[String] = Some("12345678"),
+                            countryOfIncorporation: Option[String] = Some("US"),
+                            hasLocalCompanyNumber: Option[Boolean] = Some(true))
 
-object ReportingCompanyModel {
-  implicit val format = Json.format[ReportingCompanyModel]
+object ReportingUltimateParent {
+  implicit val writes = Json.writes[ReportingUltimateParent]
 }

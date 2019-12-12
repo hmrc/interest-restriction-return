@@ -27,7 +27,7 @@ class AppointReportingCompanyServiceSpec extends MockAppointReportingCompanyConn
   "AppointReportingCompanyService.appoint" when {
 
     def setup(response: AppointReportingCompanyResponse): AppointReportingCompanyService = {
-      mockAppointReportingCompany(appointReportingCompanyModel)(response)
+      mockAppointReportingCompany(appointReportingCompanyModelMax)(response)
       new AppointReportingCompanyService(mockAppointReportingCompanyConnector)
     }
 
@@ -36,7 +36,7 @@ class AppointReportingCompanyServiceSpec extends MockAppointReportingCompanyConn
       "return a Right(SuccessResponse)" in {
 
         val service = setup(Right(SuccessResponse("ackRef")))
-        val result = service.appoint(appointReportingCompanyModel)
+        val result = service.appoint(appointReportingCompanyModelMax)
 
         await(result) shouldBe Right(SuccessResponse("ackRef"))
       }
@@ -47,7 +47,7 @@ class AppointReportingCompanyServiceSpec extends MockAppointReportingCompanyConn
       "return a Left(UnexpectedFailure)" in {
 
         val service = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-        val result = service.appoint(appointReportingCompanyModel)
+        val result = service.appoint(appointReportingCompanyModelMax)
 
         await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
       }

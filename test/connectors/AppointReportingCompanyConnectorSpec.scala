@@ -29,7 +29,7 @@ class AppointReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec 
 
     def setup(response: AppointReportingCompanyResponse): AppointReportingCompanyConnector = {
       val desUrl = "http://localhost:9262/interest-restriction/reporting-company/appoint"
-      mockHttpPost[AppointReportingCompanyModel, Either[ErrorResponse, SuccessResponse]](desUrl, appointReportingCompanyModel)(response)
+      mockHttpPost[AppointReportingCompanyModel, Either[ErrorResponse, SuccessResponse]](desUrl, appointReportingCompanyModelMax)(response)
       new AppointReportingCompanyConnector(mockHttpClient, appConfig)
     }
 
@@ -38,7 +38,7 @@ class AppointReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec 
       "return a Right(SuccessResponse)" in {
 
         val connector = setup(Right(SuccessResponse(ackRef)))
-        val result = connector.appoint(appointReportingCompanyModel)
+        val result = connector.appoint(appointReportingCompanyModelMax)
 
         await(result) shouldBe Right(SuccessResponse(ackRef))
       }
@@ -49,7 +49,7 @@ class AppointReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec 
       "return a Left(UnexpectedFailure)" in {
 
         val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-        val result = connector.appoint(appointReportingCompanyModel)
+        val result = connector.appoint(appointReportingCompanyModelMax)
 
         await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
       }

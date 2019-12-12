@@ -14,30 +14,30 @@
  * limitations under the License.
  */
 
-package models.appointReportingCompany
+package models
 
+import assets.ReportingUltimateParentConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
-import assets.appointReportingCompany.AppointReportingCompanyConstants._
 
-class AppointReportingCompanyModelSpec extends WordSpec with Matchers {
+class ReportingUltimateParentModelSpec extends WordSpec with Matchers {
 
-  "AppointReportingCompanyModel" must {
+  "ReportingUltimateParentModel" when {
 
     "correctly write to json" when {
 
-      "With Max values" in {
+      "max values given" in {
 
-        val expectedValue = appointReportingCompanyJsonMax
-        val actualValue = Json.toJson(appointReportingCompanyModelMax)
+        val expectedValue = reportingUltimateParentJsonMax
+        val actualValue = Json.toJson(reportingUltimateParentModelMax)
 
         actualValue shouldBe expectedValue
       }
 
-      "With Min values" in {
+      "min values given" in {
 
-        val expectedValue = appointReportingCompanyJsonMin
-        val actualValue = Json.toJson(appointReportingCompanyModelMin)
+        val expectedValue = reportingUltimateParentJsonMin
+        val actualValue = Json.toJson(reportingUltimateParentModelMin)
 
         actualValue shouldBe expectedValue
       }
@@ -45,21 +45,22 @@ class AppointReportingCompanyModelSpec extends WordSpec with Matchers {
 
     "correctly read from Json" when {
 
-      "With Max values" in {
+      "max values given" in {
 
-        val expectedValue = appointReportingCompanyModelMax
-        val actualValue = appointReportingCompanyJsonMax.as[AppointReportingCompanyModel]
+        val expectedValue = reportingUltimateParentModelMax
+        val actualValue = reportingUltimateParentJsonMax.as[ReportingUltimateParentModel]
 
         actualValue shouldBe expectedValue
       }
 
-      "With Min values" in {
+      "min values given" in {
 
-        val expectedValue = appointReportingCompanyModelMin
-        val actualValue = appointReportingCompanyJsonMin.as[AppointReportingCompanyModel]
+        val expectedValue = reportingUltimateParentModelMin
+        val actualValue = reportingUltimateParentJsonMin.as[ReportingUltimateParentModel]
 
         actualValue shouldBe expectedValue
       }
     }
   }
 }
+

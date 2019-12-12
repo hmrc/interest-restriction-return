@@ -18,12 +18,13 @@ package models
 
 import play.api.libs.json.Json
 
-case class ReportingCompanyModel(companyName: String,
-                                 utr: String,
-                                 crn: Option[String],
-                                 sameAsUltimateParent: Boolean
-                                 )
+case class IdentityOfAppointingCompanyModel(companyName: String,
+                                            ctutr: Option[String],
+                                            crn: Option[String],
+                                            countryOfIncorporation: Option[String],
+                                            localCompanyNumber: Option[Boolean])
 
-object ReportingCompanyModel {
-  implicit val format = Json.format[ReportingCompanyModel]
+object IdentityOfAppointingCompanyModel {
+  implicit val format = Json.format[IdentityOfAppointingCompanyModel]
 }
+

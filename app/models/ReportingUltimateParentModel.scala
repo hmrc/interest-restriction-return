@@ -16,14 +16,15 @@
 
 package models
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Format, Json}
 
-case class ReportingCompanyModel(companyName: String,
-                                 utr: String,
-                                 crn: Option[String],
-                                 sameAsUltimateParent: Boolean
-                                 )
+case class ReportingUltimateParentModel(registeredCompanyName: String,
+                                        ctutr: Option[String],
+                                        crn: Option[String],
+                                        countryOfIncorporation: Option[String],
+                                        hasLocalCompanyNumber: Option[Boolean])
 
-object ReportingCompanyModel {
-  implicit val format = Json.format[ReportingCompanyModel]
+object ReportingUltimateParentModel {
+
+  implicit def format: Format[ReportingUltimateParentModel] = Json.format[ReportingUltimateParentModel]
 }
