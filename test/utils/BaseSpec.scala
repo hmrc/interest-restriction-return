@@ -30,7 +30,7 @@ import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.ExecutionContext
 
-trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite {
+trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with MaterializerSupport {
 
   lazy val fakeRequest = FakeRequest("GET", "/")
   lazy implicit val identifierRequest = IdentifierRequest(fakeRequest, "id")

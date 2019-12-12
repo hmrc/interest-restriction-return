@@ -41,17 +41,28 @@ class BaseControllerSpec extends BaseSpec {
 
   "BaseController.withJsonBody" should {
 
+    "if provided with a valid JSON body" should {
+
+      "return an OK" in {
+
+        val actual: Future[Result] = TestBaseController.withJsonBody[DummyModel](
+          _ => Future.successful(Ok("Success"))
+        )(validJsonRequest, implicitly, implicitly)
+
+        await(bodyOf(actual)) shouldBe "Success"
+      }
+    }
+
     "if provided with an invalid JSON body" should {
 
       "return an error" in {
 
-        val expected = Seq(ValidationErrorResponseModel(JsPath \ "y", Seq(JsonValidationError("Missing"))))
-        val actual = TestBaseController.withJsonBody[DummyModel](_ => Future.successful(Ok("Success")))(invalidJsonRequest, implicitly, implicitly)
+        val actual: Future[Result] = TestBaseController.withJsonBody[DummyModel](
+          _ => Future.successful(Ok("Success"))
+        )(invalidJsonRequest, implicitly, implicitly)
 
-        actual shouldBe expected
+        await(jsonBodyOf(actual)) shouldBe Json.arr(Json.obj("field" -> "/y", "errors" -> Json.arr("error.path.missing")))
       }
     }
-
   }
-
 }
