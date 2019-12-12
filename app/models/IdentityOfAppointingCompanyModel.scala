@@ -22,8 +22,7 @@ case class IdentityOfAppointingCompanyModel(companyName: String,
                                             ctutr: Option[String],
                                             crn: Option[String],
                                             countryOfIncorporation: Option[String],
-                                            localCompanyNumber: Option[Boolean]
-                                            )
+                                            localCompanyNumber: Option[Boolean])
 
 object IdentityOfAppointingCompanyModel {
   implicit val format = Json.format[IdentityOfAppointingCompanyModel]

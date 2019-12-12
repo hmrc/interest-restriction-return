@@ -41,29 +41,10 @@ object NonUkUltimateParent {
   implicit val writes = Json.writes[NonUkUltimateParent]
 }
 
-case class OptionalUkUltimateParent(registeredCompanyName: Option[String] = Some("cde ltd"),
-                                    cturt:Option[String] = Some("1234567890"),
-                                    crn: Option[String] = Some("AB123456")
-                                   ) extends UltimateParent
-
-object OptionalUkUltimateParent {
-  implicit val writes = Json.writes[OptionalUkUltimateParent]
-}
-
-case class OptionalNonUkUltimateParent(registeredCompanyName: Option[String] = Some("cde ltd"),
-                                       countryOfIncorporation: Option[String] = Some("US"),
-                                       localCompanyNumber: Option[Boolean] = Some(true)
-                                      ) extends UltimateParent
-
-object OptionalNonUkUltimateParent {
-  implicit val writes = Json.writes[OptionalNonUkUltimateParent]
-}
 
 object UltimateParent {
   implicit def writes: Writes[UltimateParent] = Writes {
     case x: UkUltimateParent => Json.toJson(x)(UkUltimateParent.writes)
     case x: NonUkUltimateParent => Json.toJson(x)(NonUkUltimateParent.writes)
-    case x: OptionalUkUltimateParent => Json.toJson(x)(OptionalUkUltimateParent.writes)
-    case x: OptionalNonUkUltimateParent => Json.toJson(x)(OptionalNonUkUltimateParent.writes)
   }
 }

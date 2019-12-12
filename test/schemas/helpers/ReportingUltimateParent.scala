@@ -18,12 +18,12 @@ package schemas.helpers
 
 import play.api.libs.json.Json
 
-case class IdentityOfAppointingCompany(companyName: Option[String] = Some("identity of an Appointing Company"),
-                                       ctutr: Option[String] = Some("1234567890"),
-                                       crn: Option[String] = Some("AA345678"),
-                                       countryOfIncorporation: Option[String] =  Some("US"),
-                                       localCompanyNumber: Option[Boolean] = Some(true))
+case class ReportingUltimateParent(registeredCompanyName: Option[String] = Some("Ladon Company"),
+                            ctutr: Option[String] = Some("1234567890"),
+                            crn: Option[String] = Some("12345678"),
+                            countryOfIncorporation: Option[String] = Some("US"),
+                            hasLocalCompanyNumber: Option[Boolean] = Some(true))
 
-object IdentityOfAppointingCompany {
-  implicit val writes = Json.writes[IdentityOfAppointingCompany]
+object ReportingUltimateParent {
+  implicit val writes = Json.writes[ReportingUltimateParent]
 }

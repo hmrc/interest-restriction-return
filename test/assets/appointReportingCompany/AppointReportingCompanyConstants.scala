@@ -19,36 +19,56 @@ package assets.appointReportingCompany
 import assets.AgentDetailsConstants._
 import assets.ReportingCompanyConstants._
 import assets.AuthorisingCompanyConstants._
-import assets.UltimateParentConstants._
+import assets.ReportingUltimateParentConstants._
 import assets.IdentityOfAppointingCompanyConstants._
 import play.api.libs.json.Json
 import assets.AccountingPeriodConstants._
-import models.IdentityOfAppointingCompanyModel
 import models.appointReportingCompany.AppointReportingCompanyModel
 
 object AppointReportingCompanyConstants {
 
   val ackRef = "ackRef"
 
-  val appointReportingCompanyJson = Json.obj(
+  val appointReportingCompanyJsonMax = Json.obj(
     "agentDetails" -> agentDetailsJsonMax,
     "reportingCompany" -> reportingCompanyJsonMax,
     "authorisingCompanies" -> Json.arr(
       authorisingCompanyJson
     ),
     "identityOfAppointingCompany" -> identityOfAppointingCompanyJsonMax,
-    "ultimateParentCompany" -> optionalUkParentJsonMax,
+    "ultimateParentCompany" -> reportingUltimateParentJsonMax,
     "accountingPeriod" -> accountingPeriodJson,
     "declaration" -> true
   )
 
-  val appointReportingCompanyModel = AppointReportingCompanyModel(
+  val appointReportingCompanyModelMax = AppointReportingCompanyModel(
     agentDetails = agentDetailsModelMax,
     reportingCompany = reportingCompanyModelMax,
     authorisingCompanies = Seq(authorisingCompanyModel),
     identityOfAppointingCompany = identityOfAppointingCompanyModelMax,
-    ultimateParentCompany = optionalUkParent,
+    ultimateParentCompany = Some(reportingUltimateParentModelMax),
     accountingPeriod = accountingPeriodModel,
     declaration = true
   )
+  val appointReportingCompanyJsonMin = Json.obj(
+    "agentDetails" -> agentDetailsJsonMax,
+    "reportingCompany" -> reportingCompanyJsonMax,
+    "authorisingCompanies" -> Json.arr(
+      authorisingCompanyJson
+    ),
+    "identityOfAppointingCompany" -> identityOfAppointingCompanyJsonMax,
+    "accountingPeriod" -> accountingPeriodJson,
+    "declaration" -> true
+  )
+
+  val appointReportingCompanyModelMin = AppointReportingCompanyModel(
+    agentDetails = agentDetailsModelMax,
+    reportingCompany = reportingCompanyModelMax,
+    authorisingCompanies = Seq(authorisingCompanyModel),
+    identityOfAppointingCompany = identityOfAppointingCompanyModelMax,
+    ultimateParentCompany = None,
+    accountingPeriod = accountingPeriodModel,
+    declaration = true
+  )
+
 }

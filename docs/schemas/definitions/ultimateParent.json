@@ -65,7 +65,7 @@
         }
       },
       "required": [
-        "registerCompanyName"
+        "registeredCompanyName"
       ],
       "additionalProperties": false
     }

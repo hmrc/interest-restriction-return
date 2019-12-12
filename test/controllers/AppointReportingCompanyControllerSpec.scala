@@ -41,14 +41,14 @@ class AppointReportingCompanyControllerSpec extends MockAppointReportingCompanyS
       "a valid payload is submitted" when {
 
         lazy val validJsonFakeRequest = fakeRequest
-          .withBody(appointReportingCompanyJson)
+          .withBody(appointReportingCompanyJsonMax)
           .withHeaders("Content-Type" -> "application/json")
 
         "a success response is returned from the service" should {
 
           "return 200 (OK)" in {
 
-            mockAppointReportingCompany(appointReportingCompanyModel)(Right(SuccessResponse(ackRef)))
+            mockAppointReportingCompany(appointReportingCompanyModelMax)(Right(SuccessResponse(ackRef)))
             val result = AuthorisedController.appoint()(validJsonFakeRequest)
             status(result) shouldBe Status.OK
           }
@@ -58,7 +58,7 @@ class AppointReportingCompanyControllerSpec extends MockAppointReportingCompanyS
 
           "return the Error" in {
 
-            mockAppointReportingCompany(appointReportingCompanyModel)(Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
+            mockAppointReportingCompany(appointReportingCompanyModelMax)(Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
             val result = AuthorisedController.appoint()(validJsonFakeRequest)
             status(result) shouldBe Status.INTERNAL_SERVER_ERROR
           }

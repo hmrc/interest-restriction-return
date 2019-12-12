@@ -37,12 +37,6 @@ case class UkParentModel(registeredCompanyName: String,
                          knownAs: Option[String],
                          sautr: Option[String]) extends UltimateParentModel
 
-case class ReportingUltimateParentModel(registeredCompanyName: String,
-                                        ctutr: Option[String],
-                                        crn: Option[String],
-                                        countryOfIncorporation: Option[String],
-                                        hasLocalCompanyNumber: Option[Boolean])
-
 object UltimateParentModel {
 
   implicit def writes: Writes[UltimateParentModel] = Writes {

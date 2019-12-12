@@ -41,8 +41,7 @@ object IdentityOfAppointingCompanyConstants extends BaseConstants {
   )
 
   val identityOfAppointingCompanyJsonMin = Json.obj(
-    "companyName" -> identityOfAppointingCompanyName,
-    "localCompanyNumber" -> true
+    "companyName" -> identityOfAppointingCompanyName
   )
 
   val identityOfAppointingCompanyModelMin = IdentityOfAppointingCompanyModel(
