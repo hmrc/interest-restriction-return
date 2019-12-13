@@ -22,7 +22,6 @@ case class DeemedParent(companyName: Option[String] = Some("name"),
                         knownAs: Option[String] = Some("efg"),
                         ctutr: Option[String] = Some("1111111111"),
                         crn: Option[String] = Some("AB123456"),
-                        sautr: Option[String] = Some("1111111111"),
                         countryOfIncorporation: Option[String] = Some("US"))
 
 object DeemedParent {

@@ -42,6 +42,11 @@
     "groupSubjectToInterestReactivation": {
       "type": "boolean"
     },
+    "revisedReturnDifferences": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 32767
+    },
     "groupLevelElections": {
       "$ref": "subSchemas/groupLevelElections.json"
     },
@@ -53,6 +58,10 @@
     },
     "adjustedGroupInterest": {
       "$ref": "subSchemas/adjustedGroupInterest.json"
+    },
+    "totalReactivation": {
+      "type": "number",
+      "minimum": 0
     }
   },
   "required": [
@@ -66,7 +75,8 @@
     "groupLevelAmount",
     "returnContainsEstimate",
     "groupSubjectToInterestRestrictions",
-    "groupSubjectToInterestReactivation"
+    "groupSubjectToInterestReactivation",
+    "totalReactivation"
   ],
   "additionalProperties": false
 }

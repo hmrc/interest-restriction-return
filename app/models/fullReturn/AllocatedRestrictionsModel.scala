@@ -25,7 +25,9 @@ case class AllocatedRestrictionsModel(ap1End: Option[LocalDate],
                                       ap3End: Option[LocalDate],
                                       disallowanceAp1: Option[BigDecimal],
                                       disallowanceAp2: Option[BigDecimal],
-                                      disallowanceAp3: Option[BigDecimal])
+                                      disallowanceAp3: Option[BigDecimal],
+                                      totalDisallowances: Option[BigDecimal]
+                                     )
 
 object AllocatedRestrictionsModel {
   implicit val format = Json.format[AllocatedRestrictionsModel]

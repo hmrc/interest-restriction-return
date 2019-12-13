@@ -63,39 +63,39 @@ class ReportingCompanySchemaSpec extends BaseSchemaSpec {
         }
       }
 
-      "utr" when {
+      "ctutr" when {
 
         s"below $utrLength" in {
 
-          val json = Json.toJson(ReportingCompany(utr = Some("1" * (utrLength - 1))))
+          val json = Json.toJson(ReportingCompany(ctutr = Some("1" * (utrLength - 1))))
 
           validate(json) shouldBe false
         }
 
         s"above $utrLength" in {
 
-          val json = Json.toJson(ReportingCompany(utr = Some("1" * (utrLength + 1))))
+          val json = Json.toJson(ReportingCompany(ctutr = Some("1" * (utrLength + 1))))
 
           validate(json) shouldBe false
         }
 
         "is non numeric" in {
 
-          val json = Json.toJson(ReportingCompany(utr = Some("a" * (utrLength))))
+          val json = Json.toJson(ReportingCompany(ctutr = Some("a" * (utrLength))))
 
           validate(json) shouldBe false
         }
 
         "is a symbol" in {
 
-          val json = Json.toJson(ReportingCompany(utr = Some("@")))
+          val json = Json.toJson(ReportingCompany(ctutr = Some("@")))
 
           validate(json) shouldBe false
         }
 
         "is not applied" in {
 
-          val json = Json.toJson(ReportingCompany(utr = None))
+          val json = Json.toJson(ReportingCompany(ctutr = None))
 
           validate(json) shouldBe false
         }

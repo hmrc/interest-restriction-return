@@ -31,6 +31,7 @@ case class FullReturnModel(agentDetails: Option[AgentDetails] = Some(AgentDetail
                            returnContainsEstimate: Option[Boolean] = Some(true),
                            groupSubjectToInterestRestrictions: Option[Boolean] = Some(true),
                            groupSubjectToInterestReactivation: Option[Boolean] = Some(true),
+                           totalReactivation: Option[BigDecimal] = Some(20000000.87),
                            groupLevelAmount: Option[GroupLevelAmount] = Some(GroupLevelAmount()),
                            adjustedGroupInterest: Option[AdjustedGroupInterest] = Some(AdjustedGroupInterest()))
 

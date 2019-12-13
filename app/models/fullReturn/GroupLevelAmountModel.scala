@@ -18,8 +18,7 @@ package models.fullReturn
 
 import play.api.libs.json.Json
 
-case class GroupLevelAmountModel(totalDisallowedAmount: BigDecimal,
-                                 interestReactivationCap: BigDecimal,
+case class GroupLevelAmountModel(interestReactivationCap: BigDecimal,
                                  interestAllowanceForward: BigDecimal,
                                  interestAllowanceForPeriod: BigDecimal,
                                  interestCapacityForPeriod: BigDecimal)

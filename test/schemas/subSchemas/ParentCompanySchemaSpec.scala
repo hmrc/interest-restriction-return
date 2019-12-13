@@ -38,7 +38,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
       "Validated a successful JSON payload with NonUK Parent company" in {
 
         val json = Json.toJson(ParentCompany(
-          ultimateParent = Some(NonUkUltimateParent())
+          ultimateParent = Some(UltimateParent())
         ))
 
         validate(json) shouldBe true
@@ -76,21 +76,10 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
         validate(json) shouldBe true
       }
 
-      "Validated a successful JSON payload when sautr is none" in {
-
-        val json = Json.toJson(ParentCompany(
-          ultimateParent = Some(UkUltimateParent(
-            sautr = None
-          ))
-        ))
-
-        validate(json) shouldBe true
-      }
-
       "Validated a successful JSON payload when ctutr is none" in {
 
         val json = Json.toJson(ParentCompany(
-          ultimateParent = Some(UkUltimateParent(
+          ultimateParent = Some(UltimateParent(
             ctutr = None
           ))
         ))
@@ -102,7 +91,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
       "Validated a successful JSON payload when knownAs is none" in {
 
         val json = Json.toJson(ParentCompany(
-          ultimateParent = Some(UkUltimateParent(
+          ultimateParent = Some(UltimateParent(
             knownAs = None
           ))
         ))

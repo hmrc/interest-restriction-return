@@ -18,8 +18,7 @@ package schemas.helpers.fullReturn
 
 import play.api.libs.json.Json
 
-case class GroupLevelAmount(totalDisallowedAmount: Option[BigDecimal] = Some(120000),
-                            interestReactivationCap: Option[BigDecimal]= Some(125000),
+case class GroupLevelAmount(interestReactivationCap: Option[BigDecimal]= Some(125000),
                             interestAllowanceForward: Option[BigDecimal] =Some(130000),
                             interestAllowanceForPeriod: Option[BigDecimal] = Some(140000),
                             interestCapacityForPeriod: Option[BigDecimal] = Some(150000))

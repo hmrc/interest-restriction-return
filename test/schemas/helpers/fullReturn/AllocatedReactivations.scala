@@ -19,9 +19,7 @@ package schemas.helpers.fullReturn
 import play.api.libs.json.Json
 
 case class AllocatedReactivations(ap1NetDisallowances: Option[BigDecimal] = Some(12000),
-                                  currentPeriodReactivation: Option[BigDecimal] = Some(15000),
-                                  totalReactivation: Option[BigDecimal] = Some(27000),
-                                  reactivationCap: Option[BigDecimal] = Some(75000))
+                                  currentPeriodReactivation: Option[BigDecimal] = Some(15000))
 
 object AllocatedReactivations {
   implicit val format = Json.format[AllocatedReactivations]

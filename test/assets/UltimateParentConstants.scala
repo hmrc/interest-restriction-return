@@ -16,7 +16,7 @@
 
 package assets
 
-import models.{NonUkParentModel, UkParentModel}
+import models.UltimateParentModel
 import play.api.libs.json.Json
 
 object UltimateParentConstants extends BaseConstants {
@@ -24,61 +24,38 @@ object UltimateParentConstants extends BaseConstants {
   val registeredCompanyName = "some company"
   val knownAs = "something"
   val otherUkTaxReference = "other reference"
+  val countryOfIncorporation = "US"
+  val nonUkCrn = "aA1234567890"
 
-  val ukParentModelMax = UkParentModel(
+
+  val ultimateParentModelMax = UltimateParentModel(
     registeredCompanyName = registeredCompanyName,
     ctutr = Some(ctutr),
-    crn = crn,
+    crn = Some(crn),
     knownAs = Some(knownAs),
-    sautr = Some(otherUkTaxReference)
+    countryOfIncorporation = Some(countryOfIncorporation),
+    nonUkCrn = Some(nonUkCrn)
   )
 
-  val ukParentJsonMax = Json.obj(
+  val ultimateParentJsonMax = Json.obj(
     "registeredCompanyName" -> registeredCompanyName,
     "ctutr" -> ctutr,
     "crn" -> crn,
     "knownAs" -> knownAs,
-    "sautr" -> otherUkTaxReference
+    "countryOfIncorporation" -> countryOfIncorporation,
+    "nonUkCrn" -> nonUkCrn
   )
 
-  val nonUkParentModelMax = NonUkParentModel(
-    registeredCompanyName = registeredCompanyName,
-    knownAs = Some(knownAs),
-    countryOfIncorporation = "US",
-    crn = crn
-  )
-
-  val nonUkParentJsonMax = Json.obj(
-    "registeredCompanyName" -> registeredCompanyName,
-    "knownAs" -> knownAs,
-    "countryOfIncorporation" -> "US",
-    "crn" -> crn
-  )
-
-  val ukParentModelMin = UkParentModel(
+  val ultimateParentModelMin = UltimateParentModel(
     registeredCompanyName = registeredCompanyName,
     ctutr = None,
-    crn = crn,
+    crn = None,
     knownAs = None,
-    sautr = None
+    countryOfIncorporation = None,
+    nonUkCrn = None
   )
 
-  val ukParentJsonMin = Json.obj(
-    "registeredCompanyName" -> registeredCompanyName,
-    "crn" -> crn
+  val ultimateParentJsonMin = Json.obj(
+    "registeredCompanyName" -> registeredCompanyName
   )
-
-  val nonUkParentModelMin = NonUkParentModel(
-    registeredCompanyName = registeredCompanyName,
-    knownAs = None,
-    countryOfIncorporation = "US",
-    crn = crn
-  )
-
-  val nonUkParentJsonMin = Json.obj(
-    "registeredCompanyName" -> registeredCompanyName,
-    "countryOfIncorporation" -> "US",
-    "crn" -> crn
-  )
-
 }

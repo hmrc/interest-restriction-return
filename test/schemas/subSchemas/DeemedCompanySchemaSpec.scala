@@ -148,47 +148,6 @@ class DeemedCompanySchemaSpec extends BaseSchemaSpec {
         }
       }
 
-      "sautr" when {
-
-        s"below $utrLength" in {
-
-          val json = Json.toJson(Seq(DeemedParent(
-            sautr = Some("1" * (utrLength - 1))
-          )))
-
-          validate(json) shouldBe false
-        }
-
-        s"above $utrLength" in {
-
-          val json = Json.toJson(Seq(DeemedParent(
-            sautr = Some("1" * (utrLength + 1))
-          )))
-
-          validate(json) shouldBe false
-        }
-
-        "is non numeric" in {
-
-          val json = Json.toJson(Seq(DeemedParent(
-            sautr = Some("a" * utrLength)
-          )))
-
-
-          validate(json) shouldBe false
-        }
-
-        "is a symbol" in {
-
-          val json = Json.toJson(Seq(DeemedParent(
-            sautr = Some("@")
-          )))
-
-
-          validate(json) shouldBe false
-        }
-      }
-
       "knownAs" when {
 
         "knownAs is empty" in {

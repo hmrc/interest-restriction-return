@@ -218,6 +218,28 @@ class FullSchemaSpec extends BaseSchemaSpec {
 
         validate(json) shouldBe false
       }
+
+      "totalReactivation" when {
+
+        "is None" in {
+
+          val json = Json.toJson(FullReturnModel(
+            totalReactivation = None
+          ))
+
+          validate(json) shouldBe false
+        }
+
+        "is less than 0" in {
+
+          val json = Json.toJson(FullReturnModel(
+            totalReactivation = Some(-0.01)
+          ))
+
+          validate(json) shouldBe false
+        }
+      }
+
     }
   }
 }

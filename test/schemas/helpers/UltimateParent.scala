@@ -16,35 +16,19 @@
 
 package schemas.helpers
 
-import play.api.libs.json.{Json, Writes}
+import play.api.libs.json.Json
 
-sealed trait UltimateParent
-
-case class UkUltimateParent(registeredCompanyName: Option[String] = Some("cde ltd"),
-                            knownAs: Option[String] = Some("efg"),
-                            ctutr: Option[String] = Some("1234567890"),
-                            crn: Option[String] = Some("AB123456"),
-                            sautr: Option[String] = Some("1234567890")
-                           ) extends UltimateParent
-
-object UkUltimateParent {
-  implicit val writes = Json.writes[UkUltimateParent]
-}
-
-case class NonUkUltimateParent(registeredCompanyName: Option[String] = Some("cde ltd"),
-                               knownAs: Option[String] = Some("efg"),
-                               countryOfIncorporation: Option[String] = Some("US"),
-                               crn: Option[String] = Some("AB123456")
-                              ) extends UltimateParent
-
-object NonUkUltimateParent {
-  implicit val writes = Json.writes[NonUkUltimateParent]
-}
-
+case class UltimateParent(registeredCompanyName: Option[String] = Some("Ladon ltd"),
+                          ctutr: Option[String] = Some("1234567890"),
+                          crn: Option[String] = Some("AA123456") ,
+                          knownAs: Option[String] = Some("TwixBar"),
+                          countryOfIncorporation: Option[String] = Some("US"),
+                          nonUkCrn: Option[String] = Some("Aa1234567890")
+                         )
 
 object UltimateParent {
-  implicit def writes: Writes[UltimateParent] = Writes {
-    case x: UkUltimateParent => Json.toJson(x)(UkUltimateParent.writes)
-    case x: NonUkUltimateParent => Json.toJson(x)(NonUkUltimateParent.writes)
-  }
+  implicit val writes = Json.writes[UltimateParent]
 }
+
+
+

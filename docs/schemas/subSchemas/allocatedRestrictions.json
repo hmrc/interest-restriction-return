@@ -24,7 +24,15 @@
     "disallowanceAp3": {
       "type": "number",
       "minimum": 0
+    },
+    "totalDisallowances": {
+      "type": "number",
+      "minimum": 0
     }
   },
+  "required": [
+    "ap1EndDate",
+    "totalDisallowances"
+  ],
   "additionalProperties": false
 }

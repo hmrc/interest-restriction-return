@@ -16,46 +16,18 @@
 
 package models
 
-import play.api.libs.json.{Format, Json, Reads, Writes, _}
+import play.api.libs.json.{Format, Json}
 
-sealed trait UltimateParentModel {
-
-  val registeredCompanyName: String
-  val knownAs: Option[String]
-  val crn: String
-}
-
-case class NonUkParentModel(registeredCompanyName: String,
-                            knownAs: Option[String],
-                            countryOfIncorporation: String,
-                            crn: String) extends UltimateParentModel
-
-
-case class UkParentModel(registeredCompanyName: String,
-                         ctutr: Option[String],
-                         crn: String,
-                         knownAs: Option[String],
-                         sautr: Option[String]) extends UltimateParentModel
+case class UltimateParentModel(registeredCompanyName: String,
+                               ctutr: Option[String],
+                               crn: Option[String],
+                               knownAs: Option[String],
+                               countryOfIncorporation: Option[String],
+                               nonUkCrn: Option[String]
+                              )
 
 object UltimateParentModel {
 
-  implicit def writes: Writes[UltimateParentModel] = Writes {
-    case x: UkParentModel => Json.toJson(x)(UkParentModel.format)
-    case x: NonUkParentModel => Json.toJson(x)(NonUkParentModel.format)
-  }
-
-  implicit def reads: Reads[UltimateParentModel] = {
-    __.read[UkParentModel](UkParentModel.format).map(x => x: UltimateParentModel) orElse
-      __.read[NonUkParentModel](NonUkParentModel.format).map(x => x: UltimateParentModel)
-  }
+  implicit def format: Format[UltimateParentModel] = Json.format[UltimateParentModel]
 }
 
-object UkParentModel {
-
-  implicit def format: Format[UkParentModel] = Json.format[UkParentModel]
-}
-
-object NonUkParentModel {
-
-  implicit def format: Format[NonUkParentModel] = Json.format[NonUkParentModel]
-}

@@ -34,6 +34,7 @@ object FullReturnConstants {
 
   val revisedReturnDetails = "some details"
   val angie: BigDecimal = 1.11
+  val totalReactivations = 20000000.00
 
   val fullReturnModelMax = FullReturnModel(
     agentDetails = agentDetailsModelMax,
@@ -48,6 +49,7 @@ object FullReturnConstants {
     angie = Some(angie),
     groupSubjectToInterestRestrictions = true,
     groupSubjectToInterestReactivation = true,
+    totalReactivation = totalReactivations,
     groupLevelAmount = groupLevelAmountModel,
     adjustedGroupInterest = adjustedGroupInterestModel
   )
@@ -65,6 +67,7 @@ object FullReturnConstants {
     "angie" -> angie,
     "groupSubjectToInterestRestrictions" -> true,
     "groupSubjectToInterestReactivation" -> true,
+    "totalReactivation" -> totalReactivations,
     "groupLevelAmount" -> groupLevelAmountJson,
     "adjustedGroupInterest" -> adjustedGroupInterestJson
   )
@@ -82,6 +85,7 @@ object FullReturnConstants {
     angie = None,
     groupSubjectToInterestRestrictions = true,
     groupSubjectToInterestReactivation = true,
+    totalReactivation = totalReactivations,
     groupLevelAmount = groupLevelAmountModel,
     adjustedGroupInterest = adjustedGroupInterestModel
   )
@@ -96,6 +100,7 @@ object FullReturnConstants {
     "ukCompanies" -> Seq(ukCompanyJsonMin),
     "groupSubjectToInterestRestrictions" -> true,
     "groupSubjectToInterestReactivation" -> true,
+    "totalReactivation" -> totalReactivations,
     "groupLevelAmount" -> groupLevelAmountJson,
     "adjustedGroupInterest" -> adjustedGroupInterestJson
   )

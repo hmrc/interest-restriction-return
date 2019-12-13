@@ -32,6 +32,7 @@ case class FullReturnModel(agentDetails: AgentDetailsModel,
                            angie: Option[BigDecimal],
                            groupSubjectToInterestRestrictions: Boolean,
                            groupSubjectToInterestReactivation: Boolean,
+                           totalReactivation: BigDecimal,
                            groupLevelAmount: GroupLevelAmountModel,
                            adjustedGroupInterest: AdjustedGroupInterestModel)
 

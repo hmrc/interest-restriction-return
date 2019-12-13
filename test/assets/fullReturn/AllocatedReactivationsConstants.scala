@@ -23,20 +23,14 @@ object AllocatedReactivationsConstants {
 
   val ap1NetDisallowances = 1.11
   val currentPeriodReactivation = 2.22
-  val totalReactivation = 3.33
-  val reactivationCap = 4.44
 
   val allocatedReactivationsModel = AllocatedReactivationsModel(
     ap1NetDisallowances = ap1NetDisallowances,
-    currentPeriodReactivation = currentPeriodReactivation,
-    totalReactivation = totalReactivation,
-    reactivationCap = reactivationCap
+    currentPeriodReactivation = currentPeriodReactivation
   )
 
   val allocatedReactivationsJson = Json.obj(
     "ap1NetDisallowances" -> ap1NetDisallowances,
-    "currentPeriodReactivation" -> currentPeriodReactivation,
-    "totalReactivation" -> totalReactivation,
-    "reactivationCap" -> reactivationCap
+    "currentPeriodReactivation" -> currentPeriodReactivation
   )
 }

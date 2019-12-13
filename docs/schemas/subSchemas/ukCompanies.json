@@ -8,7 +8,7 @@
         "$ref": "../definitions/definitions.json#/definitions/companyName"
       },
       "ctutr": {
-        "$ref": "../definitions/definitions.json#/definitions/utr"
+        "$ref": "../definitions/definitions.json#/definitions/ctutr"
       },
       "consenting": {
         "type": "boolean"

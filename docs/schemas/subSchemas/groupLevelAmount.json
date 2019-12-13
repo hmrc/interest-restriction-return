@@ -1,9 +1,5 @@
 {
   "properties": {
-    "totalDisallowedAmount": {
-      "type": "number",
-      "minimum": 0
-    },
     "interestReactivationCap": {
       "type": "number",
       "minimum": 0
@@ -22,7 +18,6 @@
     }
   },
   "required": [
-    "totalDisallowedAmount",
     "interestReactivationCap",
     "interestAllowanceForward",
     "interestAllowanceForPeriod",

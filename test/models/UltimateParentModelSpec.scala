@@ -24,85 +24,41 @@ class UltimateParentModelSpec extends WordSpec with Matchers {
 
   "UltimateParentModel" when {
 
-    "UkParent" must {
+    "correctly write to json" when {
 
-      "correctly write to json" when {
+      "max values given" in {
 
-        "max values given" in {
+        val expectedValue = ultimateParentJsonMax
+        val actualValue = Json.toJson(ultimateParentModelMax)
 
-          val expectedValue = ukParentJsonMax
-          val actualValue = Json.toJson(ukParentModelMax)
-
-          actualValue shouldBe expectedValue
-        }
-
-        "min values given" in {
-
-          val expectedValue = ukParentJsonMin
-          val actualValue = Json.toJson(ukParentModelMin)
-
-          actualValue shouldBe expectedValue
-        }
+        actualValue shouldBe expectedValue
       }
 
-      "correctly read from Json" when {
+      "min values given" in {
 
-        "max values given" in {
+        val expectedValue = ultimateParentJsonMin
+        val actualValue = Json.toJson(ultimateParentModelMin)
 
-          val expectedValue = ukParentModelMax
-          val actualValue = ukParentJsonMax.as[UkParentModel]
-
-          actualValue shouldBe expectedValue
-        }
-
-        "min values given" in {
-
-          val expectedValue = ukParentModelMin
-          val actualValue = ukParentJsonMin.as[UkParentModel]
-
-          actualValue shouldBe expectedValue
-        }
+        actualValue shouldBe expectedValue
       }
     }
 
-    "NonUkParent" must {
+    "correctly read from Json" when {
 
-      "correctly write to json" when {
+      "max values given" in {
 
-        "max values given" in {
+        val expectedValue = ultimateParentModelMax
+        val actualValue = ultimateParentJsonMax.as[UltimateParentModel]
 
-          val expectedValue = nonUkParentJsonMax
-          val actualValue = Json.toJson(nonUkParentModelMax)
-
-          actualValue shouldBe expectedValue
-        }
-
-        "min values given" in {
-
-          val expectedValue = nonUkParentJsonMin
-          val actualValue = Json.toJson(nonUkParentModelMin)
-
-          actualValue shouldBe expectedValue
-        }
+        actualValue shouldBe expectedValue
       }
 
-      "correctly read from Json" when {
+      "min values given" in {
 
-        "max values given" in {
+        val expectedValue = ultimateParentModelMin
+        val actualValue = ultimateParentJsonMin.as[UltimateParentModel]
 
-          val expectedValue = nonUkParentModelMax
-          val actualValue = nonUkParentJsonMax.as[NonUkParentModel]
-
-          actualValue shouldBe expectedValue
-        }
-
-        "min values given" in {
-
-          val expectedValue = nonUkParentModelMin
-          val actualValue = nonUkParentJsonMin.as[NonUkParentModel]
-
-          actualValue shouldBe expectedValue
-        }
+        actualValue shouldBe expectedValue
       }
     }
   }
