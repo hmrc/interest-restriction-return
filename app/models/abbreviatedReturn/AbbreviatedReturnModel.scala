@@ -16,9 +16,8 @@
 
 package models.abbreviatedReturn
 
-import models.{AgentDetailsModel, GroupCompanyDetailsModel, GroupLevelElectionsModel, ParentCompanyModel, ReportingCompanyModel, SubmissionType}
+import models._
 import play.api.libs.json.Json
-
 
 case class AbbreviatedReturnModel(agentDetails: AgentDetailsModel,
                                   reportingCompany: ReportingCompanyModel,
@@ -30,7 +29,8 @@ case class AbbreviatedReturnModel(agentDetails: AgentDetailsModel,
                                   groupLevelElections: Option[GroupLevelElectionsModel],
                                   ukCompanies: Seq[UkCompanyModel])
 
-object AbbreviatedReturnModel {
+object AbbreviatedReturnModel{
 
   implicit val format = Json.format[AbbreviatedReturnModel]
+
 }

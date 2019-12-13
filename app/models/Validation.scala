@@ -16,16 +16,12 @@
 
 package models
 
-import play.api.libs.json.Json
-import validation.AgentDetailsValidator
+import cats.data.ValidatedNec
 
-case class AgentDetailsModel(agentActingOnBehalfOfCompany: Boolean,
-                             agentName: Option[String]) extends AgentDetailsValidator {
-  override val agentDetailsModel = this
+trait Validation {
+  def errorMessages: String
 }
 
-object AgentDetailsModel {
-
-  implicit val format = Json.format[AgentDetailsModel]
-
+object Validation {
+  type ValidationResult[A] = ValidatedNec[Validation, A]
 }

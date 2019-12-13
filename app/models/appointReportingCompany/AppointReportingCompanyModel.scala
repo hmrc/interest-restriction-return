@@ -27,6 +27,8 @@ case class AppointReportingCompanyModel(agentDetails: AgentDetailsModel,
                                         accountingPeriod: AccountingPeriodModel,
                                         declaration: Boolean)
 
-object AppointReportingCompanyModel {
+object AppointReportingCompanyModel{
+
   implicit val format = Json.format[AppointReportingCompanyModel]
+
 }

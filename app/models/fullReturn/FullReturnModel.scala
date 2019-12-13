@@ -19,7 +19,6 @@ package models.fullReturn
 import models.{AgentDetailsModel, GroupCompanyDetailsModel, GroupLevelElectionsModel, ParentCompanyModel, ReportingCompanyModel, SubmissionType}
 import play.api.libs.json.Json
 
-
 case class FullReturnModel(agentDetails: AgentDetailsModel,
                            reportingCompany: ReportingCompanyModel,
                            parentCompany: ParentCompanyModel,
@@ -36,7 +35,8 @@ case class FullReturnModel(agentDetails: AgentDetailsModel,
                            groupLevelAmount: GroupLevelAmountModel,
                            adjustedGroupInterest: AdjustedGroupInterestModel)
 
-object FullReturnModel {
+object FullReturnModel{
 
   implicit val format = Json.format[FullReturnModel]
+
 }

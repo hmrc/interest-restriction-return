@@ -14,56 +14,13 @@
  * limitations under the License.
  */
 
-package models
+package validations
 
-import assets.AgentDetailsConstants._
-import cats.data.Validated.{Invalid, Valid}
+import models.AgentDetailsModel
 import org.scalatest.{Matchers, WordSpec}
-import play.api.libs.json.Json
-import validation.{AgentNameLengthError, AgentNameNotSuppliedError, AgentNameSuppliedError}
+import validation._
 
-class AgentDetailsModelSpec extends WordSpec with Matchers {
-
-  "AgentDetailsModel" must {
-
-    "correctly write to json" when {
-
-      "max values given" in {
-
-        val expectedValue = agentDetailsJsonMax
-        val actualValue = Json.toJson(agentDetailsModelMax)
-
-        actualValue shouldBe expectedValue
-      }
-
-      "min values given" in {
-
-        val expectedValue = agentDetailsJsonMin
-        val actualValue = Json.toJson(agentDetailsModelMin)
-
-        actualValue shouldBe expectedValue
-      }
-    }
-
-    "correctly read from Json" when {
-
-      "max values given" in {
-
-        val expectedValue = agentDetailsModelMax
-        val actualValue = agentDetailsJsonMax.as[AgentDetailsModel]
-
-        actualValue shouldBe expectedValue
-      }
-
-      "min values given" in {
-
-        val expectedValue = agentDetailsModelMin
-        val actualValue = agentDetailsJsonMin.as[AgentDetailsModel]
-
-        actualValue shouldBe expectedValue
-      }
-    }
-  }
+class AgentDetailsValidatorSpec extends WordSpec with Matchers {
 
   "Agent Details Validation" when {
     "passed false and No name should succeed" in {
