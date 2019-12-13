@@ -61,7 +61,6 @@ class AppointReportingCompanySchemaSpec extends BaseSchemaSpec {
         validate(json) shouldBe true
       }
 
-
       "Reporting Ultimate Parent crn is None" in {
 
         val json = Json.toJson(AppointReportingCompanyModel(
@@ -70,7 +69,6 @@ class AppointReportingCompanySchemaSpec extends BaseSchemaSpec {
 
         validate(json) shouldBe true
       }
-
 
       "Reporting Ultimate Parent company of Incorporation is None" in {
 
