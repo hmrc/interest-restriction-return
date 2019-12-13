@@ -19,7 +19,7 @@ package schemas.helpers
 import play.api.libs.json.Json
 
 case class ReportingCompany(companyName: Option[String] = Some("MIB Ltd"),
-                            utr: Option[String] = Some("1234567890"),
+                            ctutr: Option[String] = Some("1234567890"),
                             crn: Option[String] = Some("12345678"),
                             sameAsUltimateParent: Option[Boolean] = Some(false)
                            )

@@ -52,39 +52,10 @@ class AppointReportingCompanySchemaSpec extends BaseSchemaSpec {
         validate(json) shouldBe true
       }
 
-      "Reporting Ultimate Parent ctutr is None" in {
+      "Reporting Ultimate Parent is None" in {
 
         val json = Json.toJson(AppointReportingCompanyModel(
-          ultimateParentCompany = Some(ReportingUltimateParent(ctutr = None))
-        ))
-
-        validate(json) shouldBe true
-      }
-
-
-      "Reporting Ultimate Parent crn is None" in {
-
-        val json = Json.toJson(AppointReportingCompanyModel(
-          ultimateParentCompany = Some(ReportingUltimateParent(crn = None))
-        ))
-
-        validate(json) shouldBe true
-      }
-
-
-      "Reporting Ultimate Parent company of Incorporation is None" in {
-
-        val json = Json.toJson(AppointReportingCompanyModel(
-          ultimateParentCompany = Some(ReportingUltimateParent(countryOfIncorporation = None))
-        ))
-
-        validate(json) shouldBe true
-      }
-
-      "Reporting Ultimate Parent has local company Number is None" in {
-
-        val json = Json.toJson(AppointReportingCompanyModel(
-          ultimateParentCompany = Some(ReportingUltimateParent(hasLocalCompanyNumber = None))
+          ultimateParentCompany = None
         ))
 
         validate(json) shouldBe true
@@ -252,77 +223,6 @@ class AppointReportingCompanySchemaSpec extends BaseSchemaSpec {
           ))
 
           validate(json) shouldBe false
-        }
-      }
-
-      "Reporting Ultimate Parent Registered Company Name" when {
-
-        "is None" in {
-          val json = Json.toJson(AppointReportingCompanyModel(
-            ultimateParentCompany = Some(ReportingUltimateParent(registeredCompanyName = None))
-          ))
-
-          validate(json) shouldBe false
-        }
-        "is too long" in {
-          val json = Json.toJson(AppointReportingCompanyModel(
-            ultimateParentCompany = Some(ReportingUltimateParent(registeredCompanyName = Some("a" * (maxCompanyNameLength + 1))))
-          ))
-
-          validate(json) shouldBe false
-        }
-
-        "is empty" in {
-          val json = Json.toJson(AppointReportingCompanyModel(
-            ultimateParentCompany = Some(ReportingUltimateParent(registeredCompanyName = Some("")))
-          ))
-
-          validate(json) shouldBe false
-        }
-      }
-
-      "Reporting Ultimate Parent Company ctutr" when {
-
-        "is too long" in {
-          val json = Json.toJson(AppointReportingCompanyModel(
-            ultimateParentCompany = Some(ReportingUltimateParent(ctutr = Some("1" * 11)))
-          ))
-          validate(json) shouldBe false
-        }
-        "is alphanumeric " in {
-          val json = Json.toJson(AppointReportingCompanyModel(
-            ultimateParentCompany = Some(ReportingUltimateParent(ctutr = Some("sd12871287")))
-          ))
-          validate(json) shouldBe false
-        }
-
-        "Reporting Ultimate Parent Company crnis empty" in {
-
-            val json = Json.toJson(AppointReportingCompanyModel(
-              ultimateParentCompany = Some(ReportingUltimateParent(crn = Some("")))
-            ))
-
-            validate(json) shouldBe false
-          }
-
-
-        "Reporting Ultimate Parent Company country of incorporation" when {
-
-          "is not an ISO country code " in {
-
-            val json = Json.toJson(AppointReportingCompanyModel(
-              ultimateParentCompany = Some(ReportingUltimateParent(countryOfIncorporation = Some("Ladon Island")))
-            ))
-            validate(json) shouldBe false
-          }
-
-          "has numbers and special characters" in {
-            val json = Json.toJson(AppointReportingCompanyModel(
-              ultimateParentCompany = Some(ReportingUltimateParent(countryOfIncorporation = Some("111@!~~~###")))
-            ))
-
-            validate(json) shouldBe false
-          }
         }
       }
     }

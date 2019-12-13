@@ -18,7 +18,7 @@ package schemas.helpers
 
 import play.api.libs.json.Json
 
-case class ParentCompany(ultimateParent: Option[UltimateParent] = Some(UkUltimateParent()),
+case class ParentCompany(ultimateParent: Option[UltimateParent] = Some(UltimateParent()),
                          deemedParent: Option[Seq[DeemedParent]] = None)
 
 object ParentCompany {

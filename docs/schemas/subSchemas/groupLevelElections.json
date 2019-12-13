@@ -1,105 +1,108 @@
 {
-    "type": "object",
-    "properties": {
-        "isElected": {
-            "type": "boolean"
-        },
-        "groupRatioBlended": {
-            "type": "object",
-            "properties": {
-                "isElected": {
-                    "type": "boolean"
-                },
-                "investorGroups": {
-                    "type": "array",
-                    "minItems": 1,
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "groupName": {
-                                "type": "string",
-                                "minLength": 1
-                            }
-                        },
-                        "required": [
-                            "groupName"
-                        ],
-                        "additionalProperties": false
-                    }
-                }
-            },
-            "required": [
-                "isElected"
-            ],
-            "additionalProperties": false
-        },
-        "groupEBITDAChargeableGains": {
-            "type": "boolean"
-        },
-        "interestAllowanceAlternativeCalculation": {
-            "type": "boolean"
-        },
-        "interestAllowanceNonConsolidatedInvestment": {
-            "type": "object",
-            "properties": {
-                "isElected": {
-                    "type": "boolean"
-                },
-                "nonConsolidatedInvestments": {
-                    "type": "array",
-                    "minItems": 1,
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "investmentName": {
-                                "type": "string",
-                                "minLength": 1
-                            }
-                        },
-                        "required": [
-                            "investmentName"
-                        ],
-                        "additionalProperties": false
-                    }
-                }
-            },
-            "required": [
-                "isElected"
-            ],
-            "additionalProperties": false
-        },
-        "interestAllowanceConsolidatedPartnership": {
-            "type": "object",
-            "properties": {
-                "isElected": {
-                    "type": "boolean"
-                },
-                "consolidatedPartnerships": {
-                    "type": "array",
-                    "minItems": 1,
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "partnershipName": {
-                                "type": "string",
-                                "minLength": 1
-                            }
-                        },
-                        "required": [
-                            "partnershipName"
-                        ],
-                        "additionalProperties": false
-                    }
-                }
-            },
-            "required": [
-                "isElected"
-            ],
-            "additionalProperties": false
-        }
+  "type": "object",
+  "properties": {
+    "isElected": {
+      "type": "boolean"
     },
-    "required": [
+    "groupRatioBlended": {
+      "type": "object",
+      "properties": {
+        "isElected": {
+          "type": "boolean"
+        },
+        "investorGroups": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "groupName": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "groupName"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
         "isElected"
-    ],
-    "additionalProperties": false
+      ],
+      "additionalProperties": false
+    },
+    "groupEBITDAChargeableGains": {
+      "type": "boolean"
+    },
+    "interestAllowanceAlternativeCalculation": {
+      "type": "boolean"
+    },
+    "interestAllowanceNonConsolidatedInvestment": {
+      "type": "object",
+      "properties": {
+        "isElected": {
+          "type": "boolean"
+        },
+        "nonConsolidatedInvestments": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "investmentName": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "investmentName"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "isElected"
+      ],
+      "additionalProperties": false
+    },
+    "interestAllowanceConsolidatedPartnership": {
+      "type": "object",
+      "properties": {
+        "isElected": {
+          "type": "boolean"
+        },
+        "consolidatedPartnerships": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "partnershipName": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "sautr":{
+              "type": "string"
+            },
+            "required": [
+              "partnershipName"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "isElected"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "isElected"
+  ],
+  "additionalProperties": false
 }

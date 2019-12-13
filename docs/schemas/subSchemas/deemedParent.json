@@ -12,13 +12,10 @@
         "$ref": "../definitions/definitions.json#/definitions/companyName"
       },
       "ctutr": {
-        "$ref": "../definitions/definitions.json#/definitions/utr"
+        "$ref": "../definitions/definitions.json#/definitions/ctutr"
       },
       "crn": {
         "$ref": "../definitions/definitions.json#/definitions/crn"
-      },
-      "sautr": {
-        "$ref": "../definitions/definitions.json#/definitions/utr"
       },
       "countryOfIncorporation": {
         "$ref": "../definitions/countrycodes.json#/definitions/countryCode"

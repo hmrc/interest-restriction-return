@@ -20,7 +20,7 @@ import play.api.libs.json.{JsValue, Json}
 import schemas.BaseSchemaSpec
 import schemas.helpers.fullReturn.{AdjustedGroupInterest, GroupLevelAmount}
 
-class GroupLevelAmount extends BaseSchemaSpec {
+class GroupLevelAmountSpec extends BaseSchemaSpec {
 
   def validate(json: JsValue): Boolean = validateJson("subSchemas/groupLevelAmount.json", json)
 
@@ -33,23 +33,6 @@ class GroupLevelAmount extends BaseSchemaSpec {
       }
 
       "Return invalid" when {
-
-        "totalDisallowedAmount" when {
-
-          "is blank" in {
-            val json = Json.toJson(GroupLevelAmount(
-              totalDisallowedAmount = None
-            ))
-            validate(json) shouldBe false
-          }
-
-          "is a negative number" in {
-            val json = Json.toJson(GroupLevelAmount(
-              totalDisallowedAmount = Some(-1)
-            ))
-            validate(json) shouldBe false
-          }
-        }
 
         "interestReactivationCap" when {
 

@@ -34,7 +34,7 @@ object RevokeReportingCompanyConstants {
     reportingCompany = reportingCompanyModelMax,
     isReportingCompanyRevokingItself = true,
     companyMakingRevocation = Some(companyMakingRevocationModelMax),
-    ultimateParent = Some(ukParentModelMax),
+    ultimateParent = Some(ultimateParentModelMax),
     accountingPeriod = accountingPeriodModel,
     authorisingCompanies = Seq(authorisingCompanyModel),
     declaration = true
@@ -45,7 +45,7 @@ object RevokeReportingCompanyConstants {
     "reportingCompany" -> reportingCompanyJsonMax,
     "isReportingCompanyRevokingItself" -> true,
     "companyMakingRevocation" -> companyMakingRevocationJsonMax,
-    "ultimateParent" -> ukParentJsonMax,
+    "ultimateParent" -> ultimateParentJsonMax,
     "accountingPeriod" -> accountingPeriodJson,
     "authorisingCompanies" -> Seq(authorisingCompanyJson),
     "declaration" -> true

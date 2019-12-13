@@ -12,7 +12,7 @@
       "$ref": "../definitions/definitions.json#/definitions/crnNonUk"
     },
     "utr": {
-      "$ref": "../definitions/definitions.json#/definitions/utr"
+      "$ref": "../definitions/definitions.json#/definitions/ctutr"
     }
   },
   "required": [

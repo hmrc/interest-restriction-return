@@ -18,7 +18,6 @@ package schemas.subSchemas
 
 import play.api.libs.json.{JsValue, Json}
 import schemas.BaseSchemaSpec
-import schemas.helpers.{NonUkUltimateParent, ParentCompany}
 import schemas.helpers.revokeReportingCompany.CompanyMakingRevocation
 
 class CompanyMakingRevocationSchemaSpec extends BaseSchemaSpec {

@@ -25,7 +25,9 @@ case class AllocatedRestrictions(ap1EndDate: Option[LocalDate] = Some(LocalDate.
                                  ap3EndDate: Option[LocalDate] = Some(LocalDate.parse("2020-03-01")),
                                  disallowanceAp1: Option[BigDecimal] = Some(3000),
                                  disallowanceAp2: Option[BigDecimal] = Some(4000),
-                                 disallowanceAp3: Option[BigDecimal] = Some(5000))
+                                 disallowanceAp3: Option[BigDecimal] = Some(5000),
+                                 totalDisallowances: Option[BigDecimal]= Some(12000)
+                                )
 
 object AllocatedRestrictions {
   implicit val format = Json.format[AllocatedRestrictions]

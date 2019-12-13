@@ -7,21 +7,11 @@
     "currentPeriodReactivation": {
       "type": "number",
       "minimum": 0
-    },
-    "totalReactivation": {
-      "type": "number",
-      "minimum": 0
-    },
-    "reactivationCap": {
-      "type": "number",
-      "minimum": 0
     }
   },
   "required": [
     "ap1NetDisallowances",
-    "currentPeriodReactivation",
-    "totalReactivation",
-    "reactivationCap"
+    "currentPeriodReactivation"
   ],
   "additionalProperties": false
 }

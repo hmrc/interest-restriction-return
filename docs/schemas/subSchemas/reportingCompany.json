@@ -4,8 +4,8 @@
     "companyName": {
       "$ref": "../definitions/definitions.json#/definitions/companyName"
     },
-    "utr": {
-      "$ref": "../definitions/definitions.json#/definitions/utr"
+    "ctutr": {
+      "$ref": "../definitions/definitions.json#/definitions/ctutr"
     },
     "crn": {
       "$ref": "../definitions/definitions.json#/definitions/crn"
@@ -16,7 +16,7 @@
   },
   "required": [
     "companyName",
-    "utr",
+    "ctutr",
     "sameAsUltimateParent"
   ],
   "additionalProperties": false

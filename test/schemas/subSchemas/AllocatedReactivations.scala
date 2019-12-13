@@ -68,48 +68,6 @@ class AllocatedReactivations extends BaseSchemaSpec {
           validate(json) shouldBe false
         }
       }
-
-      "totalReactivation" when {
-
-        "is None" in {
-
-          val json = Json.toJson(AllocatedReactivations(
-            totalReactivation = None
-          ))
-
-          validate(json) shouldBe false
-        }
-
-        "is less than 0" in {
-
-          val json = Json.toJson(AllocatedReactivations(
-            totalReactivation = Some(-0.01)
-          ))
-
-          validate(json) shouldBe false
-        }
-      }
-
-      "reactivationCap" when {
-
-        "is None" in {
-
-          val json = Json.toJson(AllocatedReactivations(
-            reactivationCap = None
-          ))
-
-          validate(json) shouldBe false
-        }
-
-        "is less than 0" in {
-
-          val json = Json.toJson(AllocatedReactivations(
-            reactivationCap = Some(-0.01)
-          ))
-
-          validate(json) shouldBe false
-        }
-      }
     }
   }
 }

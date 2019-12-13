@@ -29,7 +29,9 @@ class AllocatedRestrictions extends BaseSchemaSpec {
     "Return valid" when {
 
       "valid JSON is received" in {
+
         validate(Json.toJson(AllocatedRestrictions())) shouldBe true
+
       }
     }
 
@@ -38,9 +40,11 @@ class AllocatedRestrictions extends BaseSchemaSpec {
       "disallowanceAp1" when {
 
         "is a negative number" in {
+
           val json = Json.toJson(AllocatedRestrictions(
             disallowanceAp1 = Some(-1)
           ))
+
           validate(json) shouldBe false
         }
       }
@@ -48,9 +52,11 @@ class AllocatedRestrictions extends BaseSchemaSpec {
       "disallowanceAp2" when {
 
         "is a negative number" in {
+
           val json = Json.toJson(AllocatedRestrictions(
             disallowanceAp2 = Some(-1)
           ))
+
           validate(json) shouldBe false
         }
       }
@@ -58,11 +64,43 @@ class AllocatedRestrictions extends BaseSchemaSpec {
       "disallowanceAp3" when {
 
         "is a negative number" in {
+
           val json = Json.toJson(AllocatedRestrictions(
             disallowanceAp3 = Some(-1)
           ))
+
           validate(json) shouldBe false
         }
+      }
+
+      "Total Disallowances" when {
+
+        "is a negative number" in {
+
+          val json = Json.toJson(AllocatedRestrictions(
+            totalDisallowances = Some(-1)
+          ))
+
+          validate(json) shouldBe false
+        }
+
+        "is a None" in {
+
+          val json = Json.toJson(AllocatedRestrictions(
+            totalDisallowances = None
+          ))
+
+          validate(json) shouldBe false
+        }
+      }
+
+      "AP1 Date is None" in {
+
+        val json = Json.toJson(AllocatedRestrictions(
+          ap1EndDate = None
+        ))
+
+        validate(json) shouldBe false
       }
     }
   }

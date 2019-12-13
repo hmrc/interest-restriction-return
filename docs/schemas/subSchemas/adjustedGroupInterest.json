@@ -6,8 +6,7 @@
       "minimum": 0
     },
     "groupEBITDA": {
-      "type": "number",
-      "minimum": 0
+      "type": "number"
     },
     "groupRatio": {
       "type": "number",

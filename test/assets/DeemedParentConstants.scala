@@ -30,7 +30,6 @@ object DeemedParentConstants extends BaseConstants {
     ctutr = Some(ctutr),
     crn = Some(crn),
     knownAs = Some(knownAs),
-    sautr = Some(sautr),
     countryOfIncorporation = Some(nonUkCountryCode)
   )
 
@@ -39,7 +38,6 @@ object DeemedParentConstants extends BaseConstants {
     "ctutr" -> ctutr,
     "crn" -> crn,
     "knownAs" -> knownAs,
-    "sautr" -> sautr,
     "countryOfIncorporation" -> nonUkCountryCode
   )
 
@@ -48,7 +46,6 @@ object DeemedParentConstants extends BaseConstants {
     ctutr = None,
     crn = None,
     knownAs = None,
-    sautr = None,
     countryOfIncorporation = None
   )
 
