@@ -16,7 +16,6 @@
 
 package assets
 
-import models.JsonFormatters
 import play.api.libs.json.Json
 
 object AgentDetailsITConstants {

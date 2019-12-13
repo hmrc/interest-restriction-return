@@ -22,7 +22,6 @@ import models.appointReportingCompany.AppointReportingCompanyModel
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, ControllerComponents}
 import services.AppointReportingCompanyService
-import models.JsonFormatters._
 
 @Singleton()
 class AppointReportingCompanyController @Inject()(authAction: AuthAction,

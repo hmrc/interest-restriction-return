@@ -19,7 +19,6 @@ package models.abbreviatedReturn
 import assets.abbreviatedReturn.AbbreviatedReturnConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
-import models.JsonFormatters._
 
 class AbbreviatedReturnModelSpec extends WordSpec with Matchers {
 

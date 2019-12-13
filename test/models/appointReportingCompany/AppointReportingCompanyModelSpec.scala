@@ -19,7 +19,6 @@ package models.appointReportingCompany
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 import assets.appointReportingCompany.AppointReportingCompanyConstants._
-import models.JsonFormatters._
 
 class AppointReportingCompanyModelSpec extends WordSpec with Matchers {
 

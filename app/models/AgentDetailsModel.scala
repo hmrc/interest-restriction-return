@@ -16,6 +16,7 @@
 
 package models
 
+import play.api.libs.json.Json
 import validation.AgentDetailsValidator
 
 case class AgentDetailsModel(agentActingOnBehalfOfCompany: Boolean,
@@ -23,3 +24,8 @@ case class AgentDetailsModel(agentActingOnBehalfOfCompany: Boolean,
   override val agentDetailsModel = this
 }
 
+object AgentDetailsModel {
+
+  implicit val format = Json.format[AgentDetailsModel]
+
+}

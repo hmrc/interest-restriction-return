@@ -27,7 +27,6 @@ import assets.fullReturn.AdjustedGroupInterestConstants._
 import models.Original
 import models.fullReturn.FullReturnModel
 import play.api.libs.json.Json
-import models.JsonFormatters._
 
 object FullReturnConstants {
 
