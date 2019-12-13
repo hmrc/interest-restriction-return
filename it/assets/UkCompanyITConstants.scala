@@ -17,7 +17,8 @@
 package assets
 
 import play.api.libs.json.Json
-
+import assets.AllocatedReactivationsITConstants._
+import assets.AllocatedRestrictionsITConstants._
 object UkCompanyITConstants extends BaseITConstants {
 
   val companyName = "some company"
@@ -30,12 +31,15 @@ object UkCompanyITConstants extends BaseITConstants {
     "ctutr" -> ctutr,
     "consenting" -> true
   )
+
   val ukCompanyFullJson = Json.obj(
     "companyName" -> companyName,
     "utr" -> ctutr,
     "consenting" -> true,
     "netTaxInterestExpense" -> netTaxInterestExpense,
     "netTaxInterestIncome" -> netTaxInterestIncome,
-    "taxEBITDA" -> taxEBITDA
+    "taxEBITDA" -> taxEBITDA,
+    "allocatedRestrictions" -> allocatedRestrictionsJson,
+    "allocatedReactivations" -> allocatedReactivationsJson
   )
 }

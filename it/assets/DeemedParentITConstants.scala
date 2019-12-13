@@ -8,12 +8,11 @@ object DeemedParentITConstants extends BaseITConstants {
   val knownAs = "some company"
   val nonUkCountryCode = "US"
 
-  val deemedParentJson = Json.obj(
+  val deemedParentJson= Json.obj(
     "companyName" -> companyName,
     "ctutr" -> ctutr,
     "crn" -> crn,
     "knownAs" -> knownAs,
-    "sautr" -> sautr,
     "countryOfIncorporation" -> nonUkCountryCode
   )
 }

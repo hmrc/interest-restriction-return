@@ -21,7 +21,7 @@ import assets.AgentDetailsITConstants._
 import assets.AuthorisingCompanyITConstants._
 import assets.IdentityOfAppointingCompanyITConstants._
 import assets.ReportingCompanyITConstants._
-import assets.ReportingUltimateParentITConstants._
+import assets.UltimateParentITConstants._
 import play.api.libs.json.Json
 
 object AppointReportingCompanyITConstants {
@@ -35,7 +35,7 @@ object AppointReportingCompanyITConstants {
       authorisingCompanyJson
     ),
     "identityOfAppointingCompany" -> identityOfAppointingCompanyJson,
-    "ultimateParentCompany" -> reportingUltimateParentJson,
+    "ultimateParentCompany" -> ultimateParentJson,
     "accountingPeriod" -> accountingPeriodJson,
     "declaration" -> true
   )

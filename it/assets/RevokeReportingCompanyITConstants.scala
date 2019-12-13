@@ -33,7 +33,7 @@ object RevokeReportingCompanyITConstants {
     "reportingCompany" -> reportingCompanyJson,
     "isReportingCompanyRevokingItself" -> true,
     "companyMakingRevocation" -> companyMakingRevocationJsonMax,
-    "ultimateParent" -> ukParentJson,
+    "ultimateParent" -> ultimateParentJson,
     "accountingPeriod" -> accountingPeriodJson,
     "authorisingCompanies" -> Seq(authorisingCompanyJson),
     "declaration" -> true

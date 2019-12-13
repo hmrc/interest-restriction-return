@@ -49,6 +49,7 @@ object FullReturnITConstants {
     "angie" -> 1.1,
     "groupSubjectToInterestRestrictions" -> true,
     "groupSubjectToInterestReactivation" -> true,
+    "totalReactivation" -> 20000000.87,
     "groupLevelAmount" -> groupLevelAmountJson,
     "adjustedGroupInterest" -> adjustedGroupInterestJson
   )
