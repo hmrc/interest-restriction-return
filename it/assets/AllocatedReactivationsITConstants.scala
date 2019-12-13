@@ -18,16 +18,13 @@ package assets
 
 import play.api.libs.json.Json
 
-object ReportingUltimateParentITConstants extends BaseITConstants {
+object AllocatedReactivationsITConstants {
 
-  val registeredCompanyName = "some company"
-  val countryOfIncorporation = "US"
+  val ap1NetDisallowances = 1.11
+  val currentPeriodReactivation = 2.22
 
-  val reportingUltimateParentJson = Json.obj(
-    "registeredCompanyName" -> registeredCompanyName,
-    "ctutr" -> ctutr,
-    "crn" -> crn,
-    "countryOfIncorporation" -> countryOfIncorporation,
-    "hasLocalCompanyNumber" -> true
+  val allocatedReactivationsJson = Json.obj(
+    "ap1NetDisallowances" -> ap1NetDisallowances,
+    "currentPeriodReactivation" -> currentPeriodReactivation
   )
 }

@@ -16,16 +16,28 @@
 
 package assets
 
+import java.time.LocalDate
+
 import play.api.libs.json.Json
 
-object ReportingCompanyITConstants extends BaseITConstants {
+object AllocatedRestrictionsITConstants {
 
-  val reportingCompanyName = "some reporting company"
+  val ap1End = LocalDate.of(2000,1,1)
+  val ap2End = LocalDate.of(2000,2,1)
+  val ap3End = LocalDate.of(2000,3,1)
 
-  val reportingCompanyJson = Json.obj(
-    "companyName" -> reportingCompanyName,
-    "ctutr" -> ctutr,
-    "crn" -> crn,
-    "sameAsUltimateParent" -> true
+  val disallowanceAp1: BigDecimal = 1.11
+  val disallowanceAp2: BigDecimal = 2.22
+  val disallowanceAp3: BigDecimal = 3.33
+  val totalDisallowances: BigDecimal = 6.66
+
+  val allocatedRestrictionsJson = Json.obj(
+    "ap1End" -> ap1End,
+    "ap2End" -> ap2End,
+    "ap3End" -> ap3End,
+    "disallowanceAp1" -> disallowanceAp1,
+    "disallowanceAp2" -> disallowanceAp2,
+    "disallowanceAp3" -> disallowanceAp3,
+    "totalDisallowances" -> totalDisallowances
   )
 }
