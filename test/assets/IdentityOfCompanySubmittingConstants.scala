@@ -16,39 +16,39 @@
 
 package assets
 
-import models.IdentityOfAppointingCompanyModel
+import models.IdentityOfCompanySubmittingModel
 import play.api.libs.json.Json
 
-object IdentityOfAppointingCompanyConstants extends BaseConstants {
+object IdentityOfCompanySubmittingConstants extends BaseConstants {
 
-  val identityOfAppointingCompanyName = "some other appointing company"
   val countryCode = "US"
+  val nonUkCrn = "01234567"
 
-  val identityOfAppointingCompanyJsonMax = Json.obj(
-    "companyName" -> identityOfAppointingCompanyName,
+  val identityOfCompanySubmittingJsonMax = Json.obj(
+    "companyName" -> companyName,
     "ctutr" -> ctutr,
     "crn" -> crn,
     "countryOfIncorporation" -> "US",
-    "localCompanyNumber" -> true
+    "nonUkCrn" -> nonUkCrn
   )
 
-  val identityOfAppointingCompanyModelMax = IdentityOfAppointingCompanyModel(
-    companyName = identityOfAppointingCompanyName,
+  val identityOfCompanySubmittingModelMax = IdentityOfCompanySubmittingModel(
+    companyName = companyName,
     ctutr = Some(ctutr),
     crn = Some(crn),
     countryOfIncorporation = Some(countryCode),
-    localCompanyNumber = Some(true)
+    nonUkCrn = Some(nonUkCrn)
   )
 
-  val identityOfAppointingCompanyJsonMin = Json.obj(
-    "companyName" -> identityOfAppointingCompanyName
+  val identityOfCompanySubmittingJsonMin = Json.obj(
+    "companyName" -> companyName
   )
 
-  val identityOfAppointingCompanyModelMin = IdentityOfAppointingCompanyModel(
-    companyName = identityOfAppointingCompanyName,
+  val identityOfCompanySubmittingModelMin = IdentityOfCompanySubmittingModel(
+    companyName = companyName,
     ctutr = None,
     crn = None,
     countryOfIncorporation = None,
-    localCompanyNumber = None
+    nonUkCrn = None
   )
 }

@@ -20,7 +20,7 @@ import assets.AgentDetailsConstants._
 import assets.ReportingCompanyConstants._
 import assets.AuthorisingCompanyConstants._
 import assets.UltimateParentConstants._
-import assets.IdentityOfAppointingCompanyConstants._
+import assets.IdentityOfCompanySubmittingConstants._
 import play.api.libs.json.Json
 import assets.AccountingPeriodConstants._
 import models.appointReportingCompany.AppointReportingCompanyModel
@@ -35,7 +35,8 @@ object AppointReportingCompanyConstants {
     "authorisingCompanies" -> Json.arr(
       authorisingCompanyJson
     ),
-    "identityOfAppointingCompany" -> identityOfAppointingCompanyJsonMax,
+    "isReportingCompanyAppointingItself" -> true,
+    "identityOfAppointingCompany" -> identityOfCompanySubmittingJsonMax,
     "ultimateParentCompany" -> ultimateParentJsonMax,
     "accountingPeriod" -> accountingPeriodJson,
     "declaration" -> true
@@ -45,7 +46,8 @@ object AppointReportingCompanyConstants {
     agentDetails = agentDetailsModelMax,
     reportingCompany = reportingCompanyModelMax,
     authorisingCompanies = Seq(authorisingCompanyModel),
-    identityOfAppointingCompany = identityOfAppointingCompanyModelMax,
+    isReportingCompanyAppointingItself = true,
+    identityOfAppointingCompany = identityOfCompanySubmittingModelMax,
     ultimateParentCompany = Some(ultimateParentModelMax),
     accountingPeriod = accountingPeriodModel,
     declaration = true
@@ -56,7 +58,8 @@ object AppointReportingCompanyConstants {
     "authorisingCompanies" -> Json.arr(
       authorisingCompanyJson
     ),
-    "identityOfAppointingCompany" -> identityOfAppointingCompanyJsonMax,
+    "isReportingCompanyAppointingItself" -> true,
+    "identityOfAppointingCompany" -> identityOfCompanySubmittingJsonMax,
     "accountingPeriod" -> accountingPeriodJson,
     "declaration" -> true
   )
@@ -65,7 +68,8 @@ object AppointReportingCompanyConstants {
     agentDetails = agentDetailsModelMax,
     reportingCompany = reportingCompanyModelMax,
     authorisingCompanies = Seq(authorisingCompanyModel),
-    identityOfAppointingCompany = identityOfAppointingCompanyModelMax,
+    isReportingCompanyAppointingItself = true,
+    identityOfAppointingCompany = identityOfCompanySubmittingModelMax,
     ultimateParentCompany = None,
     accountingPeriod = accountingPeriodModel,
     declaration = true

@@ -14,17 +14,11 @@
  * limitations under the License.
  */
 
-package models
+package validation
 
-import play.api.libs.json.Json
+import models.Validation.ValidationResult
+import models.{IdentityOfCompanySubmittingModel, Validation}
 
-case class IdentityOfAppointingCompanyModel(companyName: String,
-                                            ctutr: Option[UTRModel],
-                                            crn: Option[String],
-                                            countryOfIncorporation: Option[String],
-                                            localCompanyNumber: Option[Boolean])
+class IdentityOfAppointingCompanyValidator {
 
-object IdentityOfAppointingCompanyModel {
-  implicit val format = Json.format[IdentityOfAppointingCompanyModel]
 }
-

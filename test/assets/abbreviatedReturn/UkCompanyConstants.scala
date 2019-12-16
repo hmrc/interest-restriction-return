@@ -22,8 +22,6 @@ import play.api.libs.json.Json
 
 object UkCompanyConstants extends BaseConstants {
 
-  val companyName = "some company"
-
   val ukCompanyModel = UkCompanyModel(
     companyName = companyName,
     ctutr = ctutr,

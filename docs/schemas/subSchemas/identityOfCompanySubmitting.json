@@ -11,9 +11,13 @@
     "crn": {
       "$ref": "../definitions/definitions.json#/definitions/crnNonUk"
     },
-    "utr": {
+    "ctutr": {
       "$ref": "../definitions/definitions.json#/definitions/ctutr"
+    },
+    "nonUkCrn": {
+      "$ref": "../definitions/definitions.json#/definitions/crnNonUk"
     }
+
   },
   "required": [
     "companyName"

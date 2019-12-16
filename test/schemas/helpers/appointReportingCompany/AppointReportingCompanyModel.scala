@@ -22,7 +22,8 @@ import schemas.helpers._
 case class AppointReportingCompanyModel(agentDetails: Option[AgentDetails] = Some(AgentDetails()),
                                         reportingCompany: Option[ReportingCompany] = Some(ReportingCompany()),
                                         authorisingCompanies: Option[Seq[AuthorisingCompanies]] = Some(Seq(AuthorisingCompanies())),
-                                        identityOfAppointingCompany: Option[IdentityOfAppointingCompany] = Some(IdentityOfAppointingCompany()),
+                                        isReportingCompanyAppointingItself: Option[Boolean] = Some(true),
+                                        identityOfAppointingCompany: Option[IdentityOfCompanySubmitting] = Some(IdentityOfCompanySubmitting()),
                                         ultimateParentCompany: Option[UltimateParent] = Some(UltimateParent()),
                                         accountingPeriod: Option[AccountingPeriod] = Some(AccountingPeriod()),
                                         declaration: Option[Boolean] = Some(true)

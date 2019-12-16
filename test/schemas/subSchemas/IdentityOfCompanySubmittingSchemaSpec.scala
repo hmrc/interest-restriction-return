@@ -16,21 +16,22 @@
 
 package schemas.subSchemas
 
+import models.UTRModel
 import play.api.libs.json.{JsValue, Json}
 import schemas.BaseSchemaSpec
-import schemas.helpers.revokeReportingCompany.CompanyMakingRevocation
+import schemas.helpers.{IdentityOfCompanySubmitting, UltimateParent}
 
-class CompanyMakingRevocationSchemaSpec extends BaseSchemaSpec {
+class IdentityOfCompanySubmittingSchemaSpec extends BaseSchemaSpec {
 
-  def validate(json: JsValue): Boolean = validateJson("subSchemas/companyMakingRevocation.json", json)
+  def validate(json: JsValue): Boolean = validateJson("subSchemas/identityOfCompanySubmitting.json", json)
 
-  "CompanyMakingRevocation Json Schema" should {
+  "IdentityOfCompanySubmitting Json Schema" should {
 
     "Return valid" when {
 
       "Validated a successful JSON payload" in {
 
-        val json = Json.toJson(CompanyMakingRevocation())
+        val json = Json.toJson(IdentityOfCompanySubmitting())
 
         validate(json) shouldBe true
       }
@@ -42,52 +43,52 @@ class CompanyMakingRevocationSchemaSpec extends BaseSchemaSpec {
 
         "companyName is empty" in {
 
-          val json = Json.toJson(CompanyMakingRevocation(companyName = Some("")))
+          val json = Json.toJson(IdentityOfCompanySubmitting(companyName = Some("")))
 
           validate(json) shouldBe false
         }
 
         "companyName is not applied" in {
 
-          val json = Json.toJson(CompanyMakingRevocation(companyName = None))
+          val json = Json.toJson(IdentityOfCompanySubmitting(companyName = None))
 
           validate(json) shouldBe false
         }
 
         "companyName exceeds 160 characters" in {
 
-          val json = Json.toJson(CompanyMakingRevocation(companyName = Some("A" * (maxCompanyNameLength + 1))))
+          val json = Json.toJson(IdentityOfCompanySubmitting(companyName = Some("A" * (maxCompanyNameLength + 1))))
 
           validate(json) shouldBe false
         }
       }
 
-      "utr" when {
+      "ctutr" when {
 
         s"below $utrLength" in {
 
-          val json = Json.toJson(CompanyMakingRevocation(utr = Some("1" * (utrLength - 1))))
+          val json = Json.toJson(IdentityOfCompanySubmitting(ctutr = Some(UTRModel("1" * (utrLength - 1)))))
 
           validate(json) shouldBe false
         }
 
         s"above $utrLength" in {
 
-          val json = Json.toJson(CompanyMakingRevocation(utr = Some("1" * (utrLength + 1))))
+          val json = Json.toJson(IdentityOfCompanySubmitting(ctutr = Some(UTRModel("1" * (utrLength + 1)))))
 
           validate(json) shouldBe false
         }
 
         "is non numeric" in {
 
-          val json = Json.toJson(CompanyMakingRevocation(utr = Some("a" * (utrLength))))
+          val json = Json.toJson(IdentityOfCompanySubmitting(ctutr = Some(UTRModel("a" * utrLength))))
 
           validate(json) shouldBe false
         }
 
         "is a symbol" in {
 
-          val json = Json.toJson(CompanyMakingRevocation(utr = Some("@")))
+          val json = Json.toJson(IdentityOfCompanySubmitting(ctutr = Some(UTRModel("@"))))
 
           validate(json) shouldBe false
         }
@@ -97,7 +98,7 @@ class CompanyMakingRevocationSchemaSpec extends BaseSchemaSpec {
 
         s"is empty" in {
 
-          val json = Json.toJson(CompanyMakingRevocation(
+          val json = Json.toJson(IdentityOfCompanySubmitting(
             crn = Some("")
           ))
 
@@ -110,7 +111,7 @@ class CompanyMakingRevocationSchemaSpec extends BaseSchemaSpec {
 
         "is only one letter" in {
 
-          val json = Json.toJson(CompanyMakingRevocation(
+          val json = Json.toJson(IdentityOfCompanySubmitting(
             countryOfIncorporation = Some("A")
           ))
           validate(json) shouldBe false
@@ -118,7 +119,7 @@ class CompanyMakingRevocationSchemaSpec extends BaseSchemaSpec {
 
         "is three letters" in {
 
-          val json = Json.toJson(CompanyMakingRevocation(
+          val json = Json.toJson(IdentityOfCompanySubmitting(
             countryOfIncorporation = Some("AAA")
           ))
           validate(json) shouldBe false
@@ -126,7 +127,7 @@ class CompanyMakingRevocationSchemaSpec extends BaseSchemaSpec {
 
         "contains a number" in {
 
-          val json = Json.toJson(CompanyMakingRevocation(
+          val json = Json.toJson(IdentityOfCompanySubmitting(
             countryOfIncorporation = Some("A1")
           ))
           validate(json) shouldBe false
@@ -134,9 +135,18 @@ class CompanyMakingRevocationSchemaSpec extends BaseSchemaSpec {
 
         "contains a symbol" in {
 
-          val json = Json.toJson(CompanyMakingRevocation(
+          val json = Json.toJson(IdentityOfCompanySubmitting(
             countryOfIncorporation = Some("A@")
           ))
+          validate(json) shouldBe false
+        }
+      }
+      "Non Uk crn" when {
+
+        s"is empty" in {
+
+          val json = Json.toJson(UltimateParent(nonUkCrn = Some("")))
+
           validate(json) shouldBe false
         }
       }

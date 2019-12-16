@@ -15,7 +15,6 @@
  */
 
 package models.revokeReportingCompany
-
 import assets.revokeReportingCompany.RevokeReportingCompanyConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json

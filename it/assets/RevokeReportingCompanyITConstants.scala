@@ -18,7 +18,7 @@ package assets
 
 import assets.AgentDetailsITConstants._
 import assets.ReportingCompanyITConstants._
-import assets.CompanyMakingRevocationITConstants._
+import assets.IdentityOfCompanySubmittingITConstants._
 import assets.UltimateParentITConstants._
 import assets.AccountingPeriodITConstants._
 import assets.AuthorisingCompanyITConstants._
@@ -32,7 +32,7 @@ object RevokeReportingCompanyITConstants {
     "agentDetails" -> agentDetailsJson,
     "reportingCompany" -> reportingCompanyJson,
     "isReportingCompanyRevokingItself" -> true,
-    "companyMakingRevocation" -> companyMakingRevocationJsonMax,
+    "companyMakingRevocation" -> identityOfCompanySubmittingJson,
     "ultimateParent" -> ultimateParentJson,
     "accountingPeriod" -> accountingPeriodJson,
     "authorisingCompanies" -> Seq(authorisingCompanyJson),

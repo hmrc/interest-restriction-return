@@ -22,7 +22,7 @@ import assets.ReportingCompanyConstants._
 import assets.UltimateParentConstants._
 import assets.AccountingPeriodConstants._
 import assets.AuthorisingCompanyConstants._
-import assets.revokeReportingCompany.CompanyMakingRevocationConstants._
+import assets.IdentityOfCompanySubmittingConstants._
 import play.api.libs.json.Json
 
 object RevokeReportingCompanyConstants {
@@ -33,7 +33,7 @@ object RevokeReportingCompanyConstants {
     agentDetails = agentDetailsModelMax,
     reportingCompany = reportingCompanyModelMax,
     isReportingCompanyRevokingItself = true,
-    companyMakingRevocation = Some(companyMakingRevocationModelMax),
+    companyMakingRevocation = Some(identityOfCompanySubmittingModelMax),
     ultimateParent = Some(ultimateParentModelMax),
     accountingPeriod = accountingPeriodModel,
     authorisingCompanies = Seq(authorisingCompanyModel),
@@ -44,7 +44,7 @@ object RevokeReportingCompanyConstants {
     "agentDetails" -> agentDetailsJsonMax,
     "reportingCompany" -> reportingCompanyJsonMax,
     "isReportingCompanyRevokingItself" -> true,
-    "companyMakingRevocation" -> companyMakingRevocationJsonMax,
+    "companyMakingRevocation" -> identityOfCompanySubmittingJsonMax,
     "ultimateParent" -> ultimateParentJsonMax,
     "accountingPeriod" -> accountingPeriodJson,
     "authorisingCompanies" -> Seq(authorisingCompanyJson),

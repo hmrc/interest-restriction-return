@@ -22,7 +22,8 @@ import play.api.libs.json.Json
 case class AppointReportingCompanyModel(agentDetails: AgentDetailsModel,
                                         reportingCompany: ReportingCompanyModel,
                                         authorisingCompanies: Seq[AuthorisingCompanyModel],
-                                        identityOfAppointingCompany: IdentityOfAppointingCompanyModel,
+                                        isReportingCompanyAppointingItself: Boolean,
+                                        identityOfAppointingCompany: IdentityOfCompanySubmittingModel,
                                         ultimateParentCompany: Option[UltimateParentModel],
                                         accountingPeriod: AccountingPeriodModel,
                                         declaration: Boolean)

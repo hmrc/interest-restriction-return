@@ -23,7 +23,7 @@ import models.fullReturn.UkCompanyModel
 import play.api.libs.json.Json
 object UkCompanyConstants extends BaseConstants {
 
-  val companyName = "some company"
+
   val netTaxInterestExpense: BigDecimal = 1.11
   val netTaxInterestIncome: BigDecimal = 2.22
   val taxEBITDA: BigDecimal = 3.33

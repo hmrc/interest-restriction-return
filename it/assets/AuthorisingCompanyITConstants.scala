@@ -21,8 +21,6 @@ import play.api.libs.json.Json
 
 object AuthorisingCompanyITConstants extends BaseITConstants {
 
-  val companyName = "some authorising company"
-
   val authorisingCompanyJson = Json.obj(
     "companyName" -> companyName,
     "utr" -> ctutr

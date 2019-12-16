@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package models.revokeReportingCompany
+package models
 
-import models.UTRModel
 import play.api.libs.json.Json
 
-case class CompanyMakingRevocationModel(companyName:String,
-                                        utr: Option[UTRModel],
-                                        crn: Option[String],
-                                        countryOfIncorporation: Option[String])
+case class IdentityOfCompanySubmittingModel(companyName: String,
+                                            ctutr: Option[UTRModel],
+                                            crn: Option[String],
+                                            countryOfIncorporation: Option[String],
+                                            nonUkCrn: Option[String])
 
-object CompanyMakingRevocationModel {
-  implicit val format = Json.format[CompanyMakingRevocationModel]
+object IdentityOfCompanySubmittingModel {
+  implicit val format = Json.format[IdentityOfCompanySubmittingModel]
 }
+

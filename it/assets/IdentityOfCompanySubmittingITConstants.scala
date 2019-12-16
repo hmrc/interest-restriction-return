@@ -18,14 +18,16 @@ package assets
 
 import play.api.libs.json.Json
 
-object CompanyMakingRevocationITConstants extends BaseITConstants {
+object IdentityOfCompanySubmittingITConstants extends BaseITConstants {
 
-  val companyName = "some company"
+  val countryCode = "US"
+  val nonUkCrn = "01234567"
 
-  val companyMakingRevocationJsonMax = Json.obj(
+  val identityOfCompanySubmittingJson = Json.obj(
     "companyName" -> companyName,
-    "utr" -> ctutr,
+    "ctutr" -> ctutr,
     "crn" -> crn,
-    "countryOfIncorporation" -> "US"
+    "countryOfIncorporation" -> "US",
+    "nonUkCrn" -> nonUkCrn
   )
 }
