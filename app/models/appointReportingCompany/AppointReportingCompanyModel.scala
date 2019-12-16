@@ -18,6 +18,7 @@ package models.appointReportingCompany
 
 import models._
 import play.api.libs.json.Json
+import validation.AppointReportingCompanyValidator
 
 case class AppointReportingCompanyModel(agentDetails: AgentDetailsModel,
                                         reportingCompany: ReportingCompanyModel,
@@ -26,7 +27,9 @@ case class AppointReportingCompanyModel(agentDetails: AgentDetailsModel,
                                         identityOfAppointingCompany: Option[IdentityOfCompanySubmittingModel],
                                         ultimateParentCompany: Option[UltimateParentModel],
                                         accountingPeriod: AccountingPeriodModel,
-                                        declaration: Boolean)
+                                        declaration: Boolean) extends AppointReportingCompanyValidator {
+  override val appointReportingCompanyModel: AppointReportingCompanyModel = this
+}
 
 object AppointReportingCompanyModel{
 

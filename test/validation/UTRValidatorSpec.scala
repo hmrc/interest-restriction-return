@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package validations
+package validation
 
 import models.UTRModel
 import org.scalatest.{Matchers, WordSpec}

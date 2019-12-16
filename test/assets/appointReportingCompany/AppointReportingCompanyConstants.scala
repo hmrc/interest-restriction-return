@@ -35,7 +35,7 @@ object AppointReportingCompanyConstants {
     "authorisingCompanies" -> Json.arr(
       authorisingCompanyJson
     ),
-    "isReportingCompanyAppointingItself" -> true,
+    "isReportingCompanyAppointingItself" -> false,
     "identityOfAppointingCompany" -> identityOfCompanySubmittingJsonMax,
     "ultimateParentCompany" -> ultimateParentJsonMax,
     "accountingPeriod" -> accountingPeriodJson,
@@ -46,7 +46,7 @@ object AppointReportingCompanyConstants {
     agentDetails = agentDetailsModelMax,
     reportingCompany = reportingCompanyModelMax,
     authorisingCompanies = Seq(authorisingCompanyModel),
-    isReportingCompanyAppointingItself = true,
+    isReportingCompanyAppointingItself = false,
     identityOfAppointingCompany = Some(identityOfCompanySubmittingModelMax),
     ultimateParentCompany = Some(ultimateParentModelMax),
     accountingPeriod = accountingPeriodModel,

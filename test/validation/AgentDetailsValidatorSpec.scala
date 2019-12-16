@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package validations
+package validation
 
 import models.AgentDetailsModel
 import org.scalatest.{Matchers, WordSpec}
