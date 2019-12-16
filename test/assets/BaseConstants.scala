@@ -16,9 +16,11 @@
 
 package assets
 
+import models.UTRModel
+
 trait BaseConstants {
 
-  val ctutr = "1234567890"
-  val sautr = "9876543210"
+  val ctutr = UTRModel("1234567890")
+  val sautr = UTRModel("9876543210")
   val crn = "12345678"
 }

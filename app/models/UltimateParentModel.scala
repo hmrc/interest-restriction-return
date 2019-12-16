@@ -19,7 +19,7 @@ package models
 import play.api.libs.json.{Format, Json}
 
 case class UltimateParentModel(registeredCompanyName: String,
-                               ctutr: Option[String],
+                               ctutr: Option[UTRModel],
                                crn: Option[String],
                                knownAs: Option[String],
                                countryOfIncorporation: Option[String],

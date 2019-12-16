@@ -14,17 +14,21 @@
  * limitations under the License.
  */
 
-package assets
+package models
 
-import models.AuthorisingCompanyModel
-import play.api.libs.json.Json
+import play.api.libs.json.{JsPath, JsString, Reads, Writes}
+import validation.UTRValidator
 
-object AuthorisingCompanyITConstants extends BaseITConstants {
+case class UTRModel(utr: String) extends UTRValidator{
+  override val utrModel = this
+}
 
-  val companyName = "some authorising company"
+object UTRModel {
 
-  val authorisingCompanyJson = Json.obj(
-    "companyName" -> companyName,
-    "utr" -> ctutr
-  )
+  implicit val reads: Reads[UTRModel] = JsPath.read[String].map(UTRModel.apply)
+
+  implicit val writes: Writes[UTRModel] = Writes {
+    model => JsString(model.utr)
+  }
+
 }

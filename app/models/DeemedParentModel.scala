@@ -19,7 +19,7 @@ package models
 import play.api.libs.json.{Format, Json}
 
 case class DeemedParentModel(companyName: String,
-                             ctutr: Option[String],
+                             ctutr: Option[UTRModel],
                              knownAs: Option[String],
                              countryOfIncorporation: Option[String],
                              crn: Option[String])

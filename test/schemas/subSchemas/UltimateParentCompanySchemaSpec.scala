@@ -16,6 +16,7 @@
 
 package schemas.subSchemas
 
+import models.UTRModel
 import play.api.libs.json.{JsValue, Json}
 import schemas.BaseSchemaSpec
 import schemas.helpers._
@@ -101,28 +102,28 @@ class UltimateParentCompanySchemaSpec extends BaseSchemaSpec {
 
         s"below $utrLength" in {
 
-          val json = Json.toJson(UltimateParent(ctutr = Some("1" * (utrLength - 1))))
+          val json = Json.toJson(UltimateParent(ctutr = Some(UTRModel("1" * (utrLength - 1)))))
 
           validate(json) shouldBe false
         }
 
         s"above $utrLength" in {
 
-          val json = Json.toJson(UltimateParent(ctutr = Some("1" * (utrLength + 1))))
+          val json = Json.toJson(UltimateParent(ctutr = Some(UTRModel("1" * (utrLength + 1)))))
 
           validate(json) shouldBe false
         }
 
         "is non numeric" in {
 
-          val json = Json.toJson(UltimateParent(ctutr = Some("a" * utrLength)))
+          val json = Json.toJson(UltimateParent(ctutr = Some(UTRModel("a" * utrLength))))
 
           validate(json) shouldBe false
         }
 
         "is a symbol" in {
 
-          val json = Json.toJson(UltimateParent(ctutr = Some("@" * utrLength)))
+          val json = Json.toJson(UltimateParent(ctutr = Some(UTRModel("@" * utrLength))))
 
           validate(json) shouldBe false
         }

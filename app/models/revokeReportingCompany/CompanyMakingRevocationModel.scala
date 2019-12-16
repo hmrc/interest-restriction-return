@@ -16,10 +16,11 @@
 
 package models.revokeReportingCompany
 
+import models.UTRModel
 import play.api.libs.json.Json
 
 case class CompanyMakingRevocationModel(companyName:String,
-                                        utr: Option[String],
+                                        utr: Option[UTRModel],
                                         crn: Option[String],
                                         countryOfIncorporation: Option[String])
 

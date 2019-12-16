@@ -14,17 +14,24 @@
  * limitations under the License.
  */
 
-package assets
+package validations
 
-import models.AuthorisingCompanyModel
-import play.api.libs.json.Json
+import models.UTRModel
+import org.scalatest.{Matchers, WordSpec}
+import validation._
 
-object AuthorisingCompanyITConstants extends BaseITConstants {
+class UTRValidatorSpec extends WordSpec with Matchers{
 
-  val companyName = "some authorising company"
+  "UTR Validation" when {
 
-  val authorisingCompanyJson = Json.obj(
-    "companyName" -> companyName,
-    "utr" -> ctutr
-  )
+    "UTR is supplied and fails Check Sum" in {
+      val model  = UTRModel("1234567890")
+      model.validate.toEither.left.get.head.errorMessages shouldBe UTRError.errorMessages
+    }
+
+    "UTR is supplied and passes Check Sum" in {
+      val model  = UTRModel("9534668155")
+      model.validate.toEither.right.get shouldBe model
+    }
+  }
 }

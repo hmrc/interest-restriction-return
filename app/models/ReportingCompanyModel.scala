@@ -19,7 +19,7 @@ package models
 import play.api.libs.json.Json
 
 case class ReportingCompanyModel(companyName: String,
-                                 ctutr: String,
+                                 ctutr: UTRModel,
                                  crn: Option[String],
                                  sameAsUltimateParent: Boolean
                                  )

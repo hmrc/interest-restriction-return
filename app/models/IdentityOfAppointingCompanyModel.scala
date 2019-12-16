@@ -19,7 +19,7 @@ package models
 import play.api.libs.json.Json
 
 case class IdentityOfAppointingCompanyModel(companyName: String,
-                                            ctutr: Option[String],
+                                            ctutr: Option[UTRModel],
                                             crn: Option[String],
                                             countryOfIncorporation: Option[String],
                                             localCompanyNumber: Option[Boolean])

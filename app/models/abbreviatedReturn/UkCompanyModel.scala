@@ -16,10 +16,11 @@
 
 package models.abbreviatedReturn
 
+import models.UTRModel
 import play.api.libs.json.Json
 
 case class UkCompanyModel(companyName: String,
-                          ctutr: String,
+                          ctutr: UTRModel,
                           consenting: Boolean)
 
 object UkCompanyModel {

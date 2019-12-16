@@ -16,10 +16,11 @@
 
 package schemas.helpers
 
+import models.UTRModel
 import play.api.libs.json.Json
 
 case class IdentityOfAppointingCompany(companyName: Option[String] = Some("identity of an Appointing Company"),
-                                       ctutr: Option[String] = Some("1234567890"),
+                                       ctutr: Option[UTRModel] = Some(UTRModel("1234567890")),
                                        crn: Option[String] = Some("AA345678"),
                                        countryOfIncorporation: Option[String] =  Some("US"),
                                        localCompanyNumber: Option[Boolean] = Some(true))
