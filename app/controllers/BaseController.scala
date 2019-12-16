@@ -16,12 +16,23 @@
 
 package controllers
 
+import models.ValidationErrorResponseModel
+import play.api.libs.json._
+import play.api.mvc.{Request, Result}
 import uk.gov.hmrc.play.bootstrap.controller.BackendBaseController
-
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
+import scala.util.{Failure, Success, Try}
 
 trait BaseController extends BackendBaseController {
 
   implicit val ec: ExecutionContext = controllerComponents.executionContext
 
+  override def withJsonBody[T](
+                                f: (T) => Future[Result])(implicit request: Request[JsValue], m: Manifest[T], reads: Reads[T]): Future[Result] =
+    Try(request.body.validate[T]) match {
+      case Success(JsSuccess(payload, _)) => f(payload)
+      case Success(JsError(errs)) =>
+        Future.successful(BadRequest(Json.toJson(ValidationErrorResponseModel(errs))))
+      case Failure(e) => Future.successful(BadRequest(s"Could not parse body due to ${e.getMessage}"))
+    }
 }
