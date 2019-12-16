@@ -47,7 +47,7 @@ object AppointReportingCompanyConstants {
     reportingCompany = reportingCompanyModelMax,
     authorisingCompanies = Seq(authorisingCompanyModel),
     isReportingCompanyAppointingItself = true,
-    identityOfAppointingCompany = identityOfCompanySubmittingModelMax,
+    identityOfAppointingCompany = Some(identityOfCompanySubmittingModelMax),
     ultimateParentCompany = Some(ultimateParentModelMax),
     accountingPeriod = accountingPeriodModel,
     declaration = true
@@ -59,7 +59,6 @@ object AppointReportingCompanyConstants {
       authorisingCompanyJson
     ),
     "isReportingCompanyAppointingItself" -> true,
-    "identityOfAppointingCompany" -> identityOfCompanySubmittingJsonMax,
     "accountingPeriod" -> accountingPeriodJson,
     "declaration" -> true
   )
@@ -69,7 +68,7 @@ object AppointReportingCompanyConstants {
     reportingCompany = reportingCompanyModelMax,
     authorisingCompanies = Seq(authorisingCompanyModel),
     isReportingCompanyAppointingItself = true,
-    identityOfAppointingCompany = identityOfCompanySubmittingModelMax,
+    identityOfAppointingCompany = None,
     ultimateParentCompany = None,
     accountingPeriod = accountingPeriodModel,
     declaration = true

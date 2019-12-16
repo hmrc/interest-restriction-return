@@ -16,6 +16,7 @@
 
 package validation
 
+import cats.data.{NonEmptyChain, Validated}
 import models.Validation.ValidationResult
 import models.{AgentDetailsModel, Validation}
 
@@ -36,10 +37,6 @@ trait AgentDetailsValidator {
 
   val agentDetailsModel: AgentDetailsModel
 
-  private def validateAgentActingOnBehalfOfCompany(agentActingOnBehalfOfCompany: Boolean): ValidationResult[Boolean] = {
-    agentActingOnBehalfOfCompany.validNec
-  }
-
   private def validateAgentName(agentDetailsModel: AgentDetailsModel): ValidationResult[Option[String]]  = {
     val lengthCheck = if(agentDetailsModel.agentName.fold(true: Boolean){name => name.length >= 1 && name.length <= 160}){
       agentDetailsModel.agentName.validNec
@@ -59,8 +56,6 @@ trait AgentDetailsValidator {
     }
   }
 
-  def validate = {
-    (validateAgentActingOnBehalfOfCompany(agentDetailsModel.agentActingOnBehalfOfCompany),
-      validateAgentName(agentDetailsModel)).mapN(AgentDetailsModel.apply)
-  }
+  def validate: Validated[NonEmptyChain[Validation], AgentDetailsModel] =
+    validateAgentName(agentDetailsModel).map(_ => agentDetailsModel)
 }

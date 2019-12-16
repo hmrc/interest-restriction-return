@@ -23,7 +23,7 @@ case class AppointReportingCompanyModel(agentDetails: AgentDetailsModel,
                                         reportingCompany: ReportingCompanyModel,
                                         authorisingCompanies: Seq[AuthorisingCompanyModel],
                                         isReportingCompanyAppointingItself: Boolean,
-                                        identityOfAppointingCompany: IdentityOfCompanySubmittingModel,
+                                        identityOfAppointingCompany: Option[IdentityOfCompanySubmittingModel],
                                         ultimateParentCompany: Option[UltimateParentModel],
                                         accountingPeriod: AccountingPeriodModel,
                                         declaration: Boolean)

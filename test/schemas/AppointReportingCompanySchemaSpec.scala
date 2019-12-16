@@ -60,6 +60,15 @@ class AppointReportingCompanySchemaSpec extends BaseSchemaSpec {
 
         validate(json) shouldBe true
       }
+
+      "Identity of Appointing Company is None" in {
+
+        val json = Json.toJson(AppointReportingCompanyModel(
+          identityOfAppointingCompany = None
+        ))
+
+        validate(json) shouldBe true
+      }
     }
 
     "Return Invalid" when {
