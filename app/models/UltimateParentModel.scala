@@ -17,6 +17,7 @@
 package models
 
 import play.api.libs.json.{Format, Json}
+import validation.UltimateParentValidator
 
 case class UltimateParentModel(registeredCompanyName: String,
                                ctutr: Option[UTRModel],
@@ -24,7 +25,9 @@ case class UltimateParentModel(registeredCompanyName: String,
                                knownAs: Option[String],
                                countryOfIncorporation: Option[String],
                                nonUkCrn: Option[String]
-                              )
+                              ) extends UltimateParentValidator {
+  override val ultimateParentModel: UltimateParentModel = this
+}
 
 object UltimateParentModel {
 

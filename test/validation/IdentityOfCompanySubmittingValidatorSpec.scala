@@ -29,7 +29,13 @@ class IdentityOfCompanySubmittingValidatorSpec extends WordSpec with Matchers {
     "Uk and NonUK fields are populated" should {
 
       "Return invalid" in {
-        identityOfCompanySubmittingModelMax.validate.toEither.left.get.head.errorMessages shouldBe CannotBeUkAndNonUk.errorMessages
+
+        val model = identityOfCompanySubmittingModelMax.copy(
+          nonUkCrn = Some("1234567"),
+          countryOfIncorporation = Some("US")
+        )
+
+        model.validate.toEither.left.get.head.errorMessages shouldBe CannotBeUkAndNonUk.errorMessages
       }
     }
 

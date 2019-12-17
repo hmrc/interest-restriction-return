@@ -24,26 +24,21 @@ object UltimateParentConstants extends BaseConstants {
   val registeredCompanyName = "some company"
   val knownAs = "something"
   val otherUkTaxReference = "other reference"
-  val countryOfIncorporation = "US"
-  val nonUkCrn = "aA1234567890"
-
 
   val ultimateParentModelMax = UltimateParentModel(
     registeredCompanyName = registeredCompanyName,
     ctutr = Some(ctutr),
     crn = Some(crn),
     knownAs = Some(knownAs),
-    countryOfIncorporation = Some(countryOfIncorporation),
-    nonUkCrn = Some(nonUkCrn)
+    countryOfIncorporation = None,
+    nonUkCrn = None
   )
 
   val ultimateParentJsonMax = Json.obj(
     "registeredCompanyName" -> registeredCompanyName,
     "ctutr" -> ctutr,
     "crn" -> crn,
-    "knownAs" -> knownAs,
-    "countryOfIncorporation" -> countryOfIncorporation,
-    "nonUkCrn" -> nonUkCrn
+    "knownAs" -> knownAs
   )
 
   val ultimateParentModelMin = UltimateParentModel(
