@@ -16,9 +16,9 @@
 
 package validation
 
-import cats.data.{NonEmptyChain, Validated}
 import models.Validation.ValidationResult
 import models.{IdentityOfCompanySubmittingModel, Validation}
+import play.api.libs.json.Json
 
 trait IdentityOfCompanySubmittingValidator {
 
@@ -31,7 +31,7 @@ trait IdentityOfCompanySubmittingValidator {
     val isNonUk = identityOfCompanySubmitting.countryOfIncorporation.isDefined || identityOfCompanySubmitting.nonUkCrn.isDefined
 
     if(isUk && isNonUk) {
-      CannotBeUkAndNonUk.invalidNec
+      CannotBeUkAndNonUk(identityOfCompanySubmitting).invalidNec
     } else {
       identityOfCompanySubmitting.validNec
     }
@@ -41,8 +41,10 @@ trait IdentityOfCompanySubmittingValidator {
     validateIdentityOfCompanySubmitting.map(_ => identityOfCompanySubmitting)
 }
 
-case object CannotBeUkAndNonUk extends Validation {
-  def errorMessages: String = "Identity of company submitting cannot contain data for UK and NonUK fields"
+case class CannotBeUkAndNonUk(companySubmitting: IdentityOfCompanySubmittingModel) extends Validation {
+  val errorMessage: String = "Identity of company submitting cannot contain data for UK and NonUK fields"
+  val field = "identityOfCompanySubmitting"
+  val value = Json.toJson(companySubmitting)
 }
 
 

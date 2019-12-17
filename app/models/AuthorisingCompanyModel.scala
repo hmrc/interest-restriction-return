@@ -16,10 +16,14 @@
 
 package models
 
+import models.Validation.ValidationResult
 import play.api.libs.json.Json
 
 case class AuthorisingCompanyModel(companyName: String,
-                                   utr: UTRModel)
+                                   utr: UTRModel) {
+
+  def validate: ValidationResult[AuthorisingCompanyModel] = utr.validate.map(_ => this)
+}
 
 object AuthorisingCompanyModel {
   implicit val format = Json.format[AuthorisingCompanyModel]

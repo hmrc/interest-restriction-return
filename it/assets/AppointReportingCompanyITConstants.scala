@@ -36,7 +36,6 @@ object AppointReportingCompanyITConstants {
     ),
     "isReportingCompanyAppointingItself" -> false,
     "identityOfAppointingCompany" -> identityOfCompanySubmittingJson,
-    "ultimateParentCompany" -> ultimateParentJson,
     "accountingPeriod" -> accountingPeriodJson,
     "declaration" -> true
   )

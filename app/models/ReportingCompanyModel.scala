@@ -16,13 +16,17 @@
 
 package models
 
+import models.Validation.ValidationResult
 import play.api.libs.json.Json
 
 case class ReportingCompanyModel(companyName: String,
                                  ctutr: UTRModel,
                                  crn: Option[String],
-                                 sameAsUltimateParent: Boolean
-                                 )
+                                 sameAsUltimateParent: Boolean) {
+
+  def validate: ValidationResult[ReportingCompanyModel] =  ctutr.validate.map(_ => this)
+
+}
 
 object ReportingCompanyModel {
   implicit val format = Json.format[ReportingCompanyModel]

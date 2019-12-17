@@ -33,7 +33,7 @@ class AppointReportingCompanyValidatorSpec extends WordSpec with Matchers {
         "Return invalid, as it should not be supplied" in {
 
           val model = appointReportingCompanyModelMin.copy(identityOfAppointingCompany = Some(identityOfCompanySubmittingModelMax))
-          model.validate.toEither.left.get.head.errorMessages shouldBe IdentityOfAppointingCompanyIsSupplied.errorMessages
+          model.validate.toEither.left.get.head.errorMessage shouldBe IdentityOfAppointingCompanyIsSupplied(identityOfCompanySubmittingModelMax).errorMessage
         }
       }
 
@@ -52,7 +52,7 @@ class AppointReportingCompanyValidatorSpec extends WordSpec with Matchers {
         "Return invalid, as it should be supplied" in {
 
           val model = appointReportingCompanyModelMax.copy(identityOfAppointingCompany = None)
-          model.validate.toEither.left.get.head.errorMessages shouldBe IdentityOfAppointingCompanyIsNotSupplied.errorMessages
+          model.validate.toEither.left.get.head.errorMessage shouldBe IdentityOfAppointingCompanyIsNotSupplied.errorMessage
         }
       }
 
@@ -74,7 +74,7 @@ class AppointReportingCompanyValidatorSpec extends WordSpec with Matchers {
             reportingCompany = reportingCompanyModelMax.copy(sameAsUltimateParent = true),
             ultimateParentCompany = Some(ultimateParentModelMax)
           )
-          model.validate.toEither.left.get.head.errorMessages shouldBe UltimateParentCompanyIsSupplied.errorMessages
+          model.validate.toEither.left.get.head.errorMessage shouldBe UltimateParentCompanyIsSupplied(ultimateParentModelMax).errorMessage
         }
       }
 
@@ -101,7 +101,7 @@ class AppointReportingCompanyValidatorSpec extends WordSpec with Matchers {
             reportingCompany = reportingCompanyModelMax.copy(sameAsUltimateParent = false),
             ultimateParentCompany = None
           )
-          model.validate.toEither.left.get.head.errorMessages shouldBe UltimateParentCompanyIsNotSupplied.errorMessages
+          model.validate.toEither.left.get.head.errorMessage shouldBe UltimateParentCompanyIsNotSupplied.errorMessage
         }
       }
 

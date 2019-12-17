@@ -35,7 +35,7 @@ class IdentityOfCompanySubmittingValidatorSpec extends WordSpec with Matchers {
           countryOfIncorporation = Some("US")
         )
 
-        model.validate.toEither.left.get.head.errorMessages shouldBe CannotBeUkAndNonUk.errorMessages
+        model.validate.toEither.left.get.head.errorMessage shouldBe CannotBeUkAndNonUk(model).errorMessage
       }
     }
 

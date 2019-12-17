@@ -19,18 +19,7 @@ package validation
 import cats.data.{NonEmptyChain, Validated}
 import models.Validation.ValidationResult
 import models.{AgentDetailsModel, Validation}
-
-case object AgentNameLengthError extends Validation {
-  def errorMessages: String = "Agent name must be between 1-160 characters if supplied"
-}
-
-case object AgentNameNotSuppliedError extends Validation {
-  def errorMessages: String = "Agent name must be supplied if agent is acting on behalf of company"
-}
-
-case object AgentNameSuppliedError extends Validation {
-  def errorMessages: String = "Agent name must not be supplied if agent is not acting on behalf of company"
-}
+import play.api.libs.json.{JsString, Json}
 
 trait AgentDetailsValidator {
   import cats.implicits._
@@ -41,11 +30,11 @@ trait AgentDetailsValidator {
     val lengthCheck = if(agentDetailsModel.agentName.fold(true: Boolean){name => name.length >= 1 && name.length <= 160}){
       agentDetailsModel.agentName.validNec
     } else {
-      AgentNameLengthError.invalidNec
+      AgentNameLengthError(agentDetailsModel.agentName.get).invalidNec
     }
     val suppliedCheck = (agentDetailsModel.agentActingOnBehalfOfCompany,agentDetailsModel.agentName) match {
       case (true,None) => AgentNameNotSuppliedError.invalidNec
-      case (false,Some(_)) => AgentNameSuppliedError.invalidNec
+      case (false,Some(name)) => AgentNameSuppliedError(name).invalidNec
       case _ => agentDetailsModel.agentName.validNec
     }
 
@@ -57,4 +46,22 @@ trait AgentDetailsValidator {
   }
 
   def validate: ValidationResult[AgentDetailsModel] = validateAgentName.map(_ => agentDetailsModel)
+}
+
+case class AgentNameLengthError(name: String) extends Validation {
+  val errorMessage: String = "Agent name must be between 1-160 characters if supplied"
+  val field: String = "agentName"
+  val value = Json.toJson(name)
+}
+
+case object AgentNameNotSuppliedError extends Validation {
+  val errorMessage: String = "Agent name must be supplied if agent is acting on behalf of company"
+  val field: String = "agentName"
+  val value = Json.obj()
+}
+
+case class AgentNameSuppliedError(name: String) extends Validation {
+  val errorMessage: String = "Agent name must not be supplied if agent is not acting on behalf of company"
+  val field: String = "agentName"
+  val value = Json.toJson(name)
 }

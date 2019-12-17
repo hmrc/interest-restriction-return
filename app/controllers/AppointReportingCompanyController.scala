@@ -16,12 +16,16 @@
 
 package controllers
 
+import cats.data.Validated.{Invalid, Valid}
 import controllers.actions.AuthAction
 import javax.inject.{Inject, Singleton}
+import models.ValidationErrorResponseModel
 import models.appointReportingCompany.AppointReportingCompanyModel
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, ControllerComponents}
 import services.AppointReportingCompanyService
+
+import scala.concurrent.Future
 
 @Singleton()
 class AppointReportingCompanyController @Inject()(authAction: AuthAction,
@@ -30,9 +34,13 @@ class AppointReportingCompanyController @Inject()(authAction: AuthAction,
 
   def appoint(): Action[JsValue] = authAction.async(parse.json) { implicit request =>
     withJsonBody[AppointReportingCompanyModel] { appointReportingCompanyModel =>
-      appointReportingCompanyService.appoint(appointReportingCompanyModel).map {
-        case Left(err) => Status(err.status)(err.body)
-        case Right(response) => Ok(Json.toJson(response))
+      appointReportingCompanyModel.validate match {
+        case Invalid(e) => Future.successful(BadRequest(Json.toJson(ValidationErrorResponseModel(e))))
+        case Valid(model) =>
+          appointReportingCompanyService.appoint(model).map {
+            case Left(err) => Status(err.status)(err.body)
+            case Right(response) => Ok(Json.toJson(response))
+          }
       }
     }
   }

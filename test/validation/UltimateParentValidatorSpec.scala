@@ -32,7 +32,7 @@ class UltimateParentValidatorSpec extends WordSpec with Matchers {
           countryOfIncorporation = Some("US")
         )
 
-        model.validate.toEither.left.get.head.errorMessages shouldBe ParentCannotBeUkAndNonUk.errorMessages
+        model.validate.toEither.left.get.head.errorMessage shouldBe UltimateParentCannotBeUkAndNonUk(model).errorMessage
       }
     }
 

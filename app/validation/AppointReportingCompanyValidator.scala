@@ -16,12 +16,12 @@
 
 package validation
 
-import cats.data.{NonEmptyChain, Validated}
 import models.Validation.ValidationResult
 import models.appointReportingCompany.AppointReportingCompanyModel
 import models.{IdentityOfCompanySubmittingModel, UltimateParentModel, Validation}
+import play.api.libs.json.Json
 
-trait AppointReportingCompanyValidator {
+trait AppointReportingCompanyValidator extends BaseValidation {
 
   import cats.implicits._
 
@@ -29,7 +29,7 @@ trait AppointReportingCompanyValidator {
 
   private def validateIdentityOfAppointingCompany: ValidationResult[Option[IdentityOfCompanySubmittingModel]] = {
     (appointReportingCompanyModel.isReportingCompanyAppointingItself, appointReportingCompanyModel.identityOfAppointingCompany) match {
-      case (true, Some(_)) => IdentityOfAppointingCompanyIsSupplied.invalidNec
+      case (true, Some(appointingCompany)) => IdentityOfAppointingCompanyIsSupplied(appointingCompany).invalidNec
       case (false, None) => IdentityOfAppointingCompanyIsNotSupplied.invalidNec
       case _ => appointReportingCompanyModel.identityOfAppointingCompany.validNec
     }
@@ -37,31 +37,47 @@ trait AppointReportingCompanyValidator {
 
   private def validateUltimateParentCompany: ValidationResult[Option[UltimateParentModel]] = {
     (appointReportingCompanyModel.reportingCompany.sameAsUltimateParent, appointReportingCompanyModel.ultimateParentCompany) match {
-      case (true, Some(_)) => UltimateParentCompanyIsSupplied.invalidNec
+      case (true, Some(parent)) => UltimateParentCompanyIsSupplied(parent).invalidNec
       case (false, None) => UltimateParentCompanyIsNotSupplied.invalidNec
       case _ => appointReportingCompanyModel.ultimateParentCompany.validNec
     }
   }
 
-  def validate: ValidationResult[AppointReportingCompanyModel] =
-    (validateIdentityOfAppointingCompany,
-      validateUltimateParentCompany).mapN((_,_) => appointReportingCompanyModel)
+  def validate: ValidationResult[AppointReportingCompanyModel] = {
+    (
+      appointReportingCompanyModel.agentDetails.validate,
+      appointReportingCompanyModel.reportingCompany.validate,
+      combineValidations(appointReportingCompanyModel.authorisingCompanies.map(_.validate):_*),
+      optionValidations(appointReportingCompanyModel.ultimateParentCompany.map(_.validate)),
+      optionValidations(appointReportingCompanyModel.identityOfAppointingCompany.map(_.validate)),
+      validateIdentityOfAppointingCompany,
+      validateUltimateParentCompany
+    ).mapN((_,_,_,_,_,_,_) => appointReportingCompanyModel)
+  }
 }
 
 case object IdentityOfAppointingCompanyIsNotSupplied extends Validation {
-  def errorMessages: String = "Identity of Appointing Company must be supplied if it is not the same as the reporting company or agent"
+  val errorMessage: String = "Identity of Appointing Company must be supplied if it is not the same as the reporting company or agent"
+  val field: String = "identifyOfAppointingCompany"
+  val value = Json.obj()
 }
 
-case object IdentityOfAppointingCompanyIsSupplied extends Validation {
-  def errorMessages: String = "Identity of Appointing Company must not be supplied if it is the same as the reporting company or agent"
+case class IdentityOfAppointingCompanyIsSupplied(identityOfCompanySubmittingModel: IdentityOfCompanySubmittingModel) extends Validation {
+  val errorMessage: String = "Identity of Appointing Company must not be supplied if it is the same as the reporting company or agent"
+  val field: String = "identifyOfAppointingCompany"
+  val value = Json.toJson(identityOfCompanySubmittingModel)
 }
 
-case object UltimateParentCompanyIsSupplied extends Validation {
-  def errorMessages: String = "Ultimate Parent Company must not be supplied if it is the same as the reporting company"
+case class UltimateParentCompanyIsSupplied(ultimateParentModel: UltimateParentModel) extends Validation {
+  val errorMessage: String = "Ultimate Parent Company must not be supplied if it is the same as the reporting company"
+  val field: String = "ultimateParentCompany"
+  val value = Json.toJson(ultimateParentModel)
 }
 
 case object UltimateParentCompanyIsNotSupplied extends Validation {
-  def errorMessages: String = "Ultimate Parent Company must be supplied if it is not the same as the reporting company"
+  val errorMessage: String = "Ultimate Parent Company must be supplied if it is not the same as the reporting company"
+  val field: String = "ultimateParentCompany"
+  val value = Json.obj()
 }
 
 

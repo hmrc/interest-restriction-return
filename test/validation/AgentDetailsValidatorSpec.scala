@@ -35,29 +35,29 @@ class AgentDetailsValidatorSpec extends WordSpec with Matchers {
 
     "passed true and Some name (with incorrect name length) should not succeed" in {
       val model = AgentDetailsModel(true, Some(""))
-      model.validate.toEither.left.get.head.errorMessages shouldBe AgentNameLengthError.errorMessages
+      model.validate.toEither.left.get.head.errorMessage shouldBe AgentNameLengthError("").errorMessage
     }
 
     "passed false and Some name (with correct name length) should not succeed" in {
       val model = AgentDetailsModel(false, Some("Yangksy"))
-      model.validate.toEither.left.get.head.errorMessages shouldBe AgentNameSuppliedError.errorMessages
+      model.validate.toEither.left.get.head.errorMessage shouldBe AgentNameSuppliedError("Yangksy").errorMessage
 
     }
 
     "passed false and Some name (with incorrect name length) should not succeed with 2 errors" in {
       val model = AgentDetailsModel(false , Some(""))
-      model.validate.toEither.left.get.toChain.get(0).get.errorMessages shouldBe AgentNameLengthError.errorMessages
-      model.validate.toEither.left.get.toChain.get(1).get.errorMessages shouldBe AgentNameSuppliedError.errorMessages
+      model.validate.toEither.left.get.toChain.get(0).get.errorMessage shouldBe AgentNameLengthError("").errorMessage
+      model.validate.toEither.left.get.toChain.get(1).get.errorMessage shouldBe AgentNameSuppliedError("").errorMessage
     }
 
     "passed true and None should not succeed" in {
       val model = AgentDetailsModel(true, None)
-      model.validate.toEither.left.get.head.errorMessages shouldBe AgentNameNotSuppliedError.errorMessages
+      model.validate.toEither.left.get.head.errorMessage shouldBe AgentNameNotSuppliedError.errorMessage
     }
 
     "passed true and Some name (with incorrect name length > maxLength) should not succeed" in {
       val model = AgentDetailsModel(true, Some("a" * 180))
-      model.validate.toEither.left.get.head.errorMessages shouldBe AgentNameLengthError.errorMessages
+      model.validate.toEither.left.get.head.errorMessage shouldBe AgentNameLengthError("a" * 180).errorMessage
     }
 
   }

@@ -16,7 +16,7 @@
 
 package validation
 import cats.data.NonEmptyChain
-import cats.data.Validated.Invalid
+import cats.data.Validated.{Invalid, Valid}
 import models.Validation
 import models.Validation.ValidationResult
 
@@ -33,6 +33,15 @@ trait BaseValidation {
       case errors => Invalid(combineInvalids(errors.tail,errors.head))
     }
   }
+
+  def optionValidations[T](validations: Option[ValidationResult[T]]*): ValidationResult[Option[T]] = {
+    val invalids = validations.collect { case Some(Invalid(invalid)) => invalid}
+    invalids match {
+      case seq if seq.isEmpty => Valid(None)
+      case errors => Invalid(combineInvalids(errors.tail,errors.head))
+    }
+  }
+
   @tailrec
   private def combineInvalids(errors: Seq[NonEmptyChain[Validation]], combined: NonEmptyChain[Validation]): NonEmptyChain[Validation] = {
     if(errors.isEmpty) combined else {

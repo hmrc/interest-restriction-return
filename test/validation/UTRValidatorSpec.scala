@@ -26,7 +26,7 @@ class UTRValidatorSpec extends WordSpec with Matchers{
 
     "UTR is supplied and fails Check Sum" in {
       val model  = UTRModel("1234567890")
-      model.validate.toEither.left.get.head.errorMessages shouldBe UTRError.errorMessages
+      model.validate.toEither.left.get.head.errorMessage shouldBe UTRError(model).errorMessage
     }
 
     "UTR is supplied and passes Check Sum" in {

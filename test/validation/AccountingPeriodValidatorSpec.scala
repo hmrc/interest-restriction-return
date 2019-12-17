@@ -35,34 +35,38 @@ class AccountingPeriodValidatorSpec extends WordSpec with Matchers {
 
       "Start date is in the future" in {
 
+        val startDate = LocalDate.now().plusDays(1)
         val model = accountingPeriodModel.copy(
-          startDate = LocalDate.now().plusDays(1)
+          startDate = startDate
         )
-        model.validate.toEither.left.get.head.errorMessages shouldBe StartDateCannotBeInFuture.errorMessages
+        model.validate.toEither.left.get.head.errorMessage shouldBe StartDateCannotBeInFuture(startDate).errorMessage
       }
 
       "End date is before start date" in {
 
+        val endDate = startDate.minusDays(1)
         val model = accountingPeriodModel.copy(
-          endDate = startDate.minusDays(1)
+          endDate = endDate
         )
-        model.validate.toEither.left.get.head.errorMessages shouldBe EndDateAfterStartDate.errorMessages
+        model.validate.toEither.left.get.head.errorMessage shouldBe EndDateAfterStartDate(endDate).errorMessage
       }
 
       "Accounting period is greater than or equal to 18 months" in {
 
+        val endDate = startDate.plusMonths(18)
         val model = accountingPeriodModel.copy(
-          endDate = startDate.plusMonths(18)
+          endDate = endDate
         )
-        model.validate.toEither.left.get.head.errorMessages shouldBe AccountingPeriod18MonthsMax.errorMessages
+        model.validate.toEither.left.get.head.errorMessage shouldBe AccountingPeriod18MonthsMax(endDate).errorMessage
       }
       "End date is in the future" in {
 
+        val endDate = LocalDate.now().plusDays(1)
         val model = accountingPeriodModel.copy(
           startDate = LocalDate.now().minusMonths(12),
-          endDate = LocalDate.now().plusDays(1)
+          endDate = endDate
         )
-        model.validate.toEither.left.get.head.errorMessages shouldBe EndDateCannotBeInTheFuture.errorMessages
+        model.validate.toEither.left.get.head.errorMessage shouldBe EndDateCannotBeInTheFuture(endDate).errorMessage
       }
     }
   }

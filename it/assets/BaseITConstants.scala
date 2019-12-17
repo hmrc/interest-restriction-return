@@ -18,8 +18,7 @@ package assets
 
 trait BaseITConstants {
 
-  val ctutr = "1234567890"
-  val sautr = "9876543210"
+  val ctutr = "1123456789"
   val crn = "12345678"
   val companyName = "Company Name Ltd"
 }

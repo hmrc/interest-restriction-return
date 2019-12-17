@@ -20,8 +20,7 @@ import models.UTRModel
 
 trait BaseConstants {
 
-  val ctutr = UTRModel("1234567890")
-  val sautr = UTRModel("9876543210")
+  val ctutr = UTRModel("1123456789")
   val crn = "12345678"
   val companyName = "Company Name ltd"
 

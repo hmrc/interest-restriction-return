@@ -20,14 +20,9 @@ import play.api.libs.json.Json
 
 object IdentityOfCompanySubmittingITConstants extends BaseITConstants {
 
-  val countryCode = "US"
-  val nonUkCrn = "01234567"
-
   val identityOfCompanySubmittingJson = Json.obj(
     "companyName" -> companyName,
     "ctutr" -> ctutr,
-    "crn" -> crn,
-    "countryOfIncorporation" -> "US",
-    "nonUkCrn" -> nonUkCrn
+    "crn" -> crn
   )
 }

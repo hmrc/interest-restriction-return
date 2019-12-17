@@ -18,10 +18,7 @@ package validation
 
 import models.Validation.ValidationResult
 import models.{UTRModel, Validation}
-
-case object UTRError extends Validation {
-  def errorMessages: String = "UTR Check Sum does not satisfy the check sum"
-}
+import play.api.libs.json.Json
 
 trait UTRValidator {
 
@@ -29,7 +26,7 @@ trait UTRValidator {
 
   val utrModel: UTRModel
 
-  private def validateUTR(utr: String): ValidationResult[String] = {
+  private def validateUTR(utr: String): ValidationResult[UTRModel] = {
 
     val utrInts = utr.map(_.asDigit)
 
@@ -43,11 +40,17 @@ trait UTRValidator {
     }
 
     if (checkSum == utrInts(0)) {
-      utr.validNec
+      UTRModel(utr).validNec
     } else {
-      UTRError.invalidNec
+      UTRError(UTRModel(utr)).invalidNec
     }
   }
 
-  def validate: ValidationResult[UTRModel] = validateUTR(utrModel.utr).map(UTRModel.apply)
+  def validate: ValidationResult[UTRModel] = validateUTR(utrModel.utr)
+}
+
+case class UTRError(utrValue: UTRModel) extends Validation {
+  val errorMessage: String = "UTR Check Sum does not satisfy the check sum"
+  val field: String = "utr"
+  val value = Json.toJson(utrValue)
 }

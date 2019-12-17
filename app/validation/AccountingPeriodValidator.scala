@@ -21,6 +21,7 @@ import java.time.LocalDate
 import cats.data.{NonEmptyChain, Validated}
 import models.Validation.ValidationResult
 import models.{AccountingPeriodModel, Validation}
+import play.api.libs.json.Json
 
 trait AccountingPeriodValidator {
 
@@ -30,14 +31,14 @@ trait AccountingPeriodValidator {
 
   private def validateStartDateCannotBeInFuture: ValidationResult[LocalDate] =
     if (accountingPeriodModel.startDate.isAfter(LocalDate.now())) {
-      StartDateCannotBeInFuture.invalidNec
+      StartDateCannotBeInFuture(accountingPeriodModel.startDate).invalidNec
     } else {
       accountingPeriodModel.startDate.validNec
     }
 
   private def validateEndDateAfterStartDate: ValidationResult[LocalDate] =
     if (accountingPeriodModel.endDate.isBefore(accountingPeriodModel.startDate)) {
-      EndDateAfterStartDate.invalidNec
+      EndDateAfterStartDate(accountingPeriodModel.endDate).invalidNec
     } else {
       accountingPeriodModel.endDate.validNec
     }
@@ -46,14 +47,14 @@ trait AccountingPeriodValidator {
     if (accountingPeriodModel.endDate.isBefore(accountingPeriodModel.startDate.plusMonths(18))) {
       accountingPeriodModel.endDate.validNec
     } else {
-      AccountingPeriod18MonthsMax.invalidNec
+      AccountingPeriod18MonthsMax(accountingPeriodModel.endDate).invalidNec
     }
 
   private def validateEndDateCannotBeInTheFuture: ValidationResult[LocalDate] =
     if (accountingPeriodModel.endDate.isBefore(LocalDate.now())) {
       accountingPeriodModel.endDate.validNec
     } else {
-      EndDateCannotBeInTheFuture.invalidNec
+      EndDateCannotBeInTheFuture(accountingPeriodModel.endDate).invalidNec
     }
 
   def validate: ValidationResult[AccountingPeriodModel] =
@@ -64,20 +65,28 @@ trait AccountingPeriodValidator {
 
 }
 
-case object StartDateCannotBeInFuture extends Validation {
-  def errorMessages: String = "Start date cannot be in the future"
+case class StartDateCannotBeInFuture(startDate: LocalDate) extends Validation {
+  val errorMessage: String = "Start date cannot be in the future"
+  val field: String = "startDate"
+  val value = Json.toJson(startDate)
 }
 
-case object EndDateAfterStartDate extends Validation {
-  def errorMessages: String = "End Date must be after start date"
+case class EndDateAfterStartDate(endDate: LocalDate) extends Validation {
+  val errorMessage: String = "End Date must be after start date"
+  val field: String = "endDate"
+  val value = Json.toJson(endDate)
 }
 
-case object AccountingPeriod18MonthsMax extends Validation {
-  def errorMessages: String = "The end date must be less than 18 months after the start date"
+case class AccountingPeriod18MonthsMax(endDate: LocalDate) extends Validation {
+  val errorMessage: String = "The end date must be less than 18 months after the start date"
+  val field: String = "endDate"
+  val value = Json.toJson(endDate)
 }
 
-case object EndDateCannotBeInTheFuture extends Validation {
-  def errorMessages: String = "The end date must be in the past"
+case class EndDateCannotBeInTheFuture(endDate: LocalDate) extends Validation {
+  val errorMessage: String = "The end date must be in the past"
+  val field: String = "endDate"
+  val value = Json.toJson(endDate)
 }
 
 
