@@ -20,7 +20,8 @@ import models.Validation.ValidationResult
 import play.api.libs.json.Json
 
 case class AuthorisingCompanyModel(companyName: String,
-                                   utr: UTRModel) {
+                                   utr: UTRModel,
+                                   consenting: Option[Boolean]) {
 
   def validate: ValidationResult[AuthorisingCompanyModel] = utr.validate.map(_ => this)
 }
