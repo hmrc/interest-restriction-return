@@ -28,39 +28,39 @@ trait AccountingPeriodValidator {
 
   val accountingPeriodModel: AccountingPeriodModel
 
-  private def validateStartDateCannotBeInFuture: ValidationResult[LocalDate] = {
-    val date = LocalDate.now()
-
-    if (accountingPeriodModel.startDate.isAfter(date)) {StartDateCannotBeInFuture.invalidNec }
-    else {
+  private def validateStartDateCannotBeInFuture: ValidationResult[LocalDate] =
+    if (accountingPeriodModel.startDate.isAfter(LocalDate.now())) {
+      StartDateCannotBeInFuture.invalidNec
+    } else {
       accountingPeriodModel.startDate.validNec
     }
-  }
 
-  private def validateEndDateAfterStartDate: ValidationResult[LocalDate] = {
-
-    if (accountingPeriodModel.endDate.isBefore(accountingPeriodModel.startDate)) {EndDateAfterStartDate.invalidNec }
-    else {
+  private def validateEndDateAfterStartDate: ValidationResult[LocalDate] =
+    if (accountingPeriodModel.endDate.isBefore(accountingPeriodModel.startDate)) {
+      EndDateAfterStartDate.invalidNec
+    } else {
       accountingPeriodModel.endDate.validNec
     }
-  }
 
-  private def validateAccountingPeriod18MonthsMax: ValidationResult[LocalDate] = {
-    if (accountingPeriodModel.endDate.isBefore(accountingPeriodModel.startDate.plusMonths(18))) {accountingPeriodModel.endDate.validNec }
-    else {
+  private def validateAccountingPeriod18MonthsMax: ValidationResult[LocalDate] =
+    if (accountingPeriodModel.endDate.isBefore(accountingPeriodModel.startDate.plusMonths(18))) {
+      accountingPeriodModel.endDate.validNec
+    } else {
       AccountingPeriod18MonthsMax.invalidNec
     }
-  }
 
-  private def validateEndDateCannotBeInTheFuture: ValidationResult[LocalDate] = {
-    if (accountingPeriodModel.endDate.isBefore(LocalDate.now())) {accountingPeriodModel.endDate.validNec }
-    else {
+  private def validateEndDateCannotBeInTheFuture: ValidationResult[LocalDate] =
+    if (accountingPeriodModel.endDate.isBefore(LocalDate.now())) {
+      accountingPeriodModel.endDate.validNec
+    } else {
       EndDateCannotBeInTheFuture.invalidNec
     }
-  }
 
-  def validate: Validated[NonEmptyChain[Validation], AccountingPeriodModel] =
-    (validateStartDateCannotBeInFuture, validateEndDateAfterStartDate, validateAccountingPeriod18MonthsMax, validateEndDateCannotBeInTheFuture).mapN((_, _, _, _) => accountingPeriodModel)
+  def validate: ValidationResult[AccountingPeriodModel] =
+    (validateStartDateCannotBeInFuture,
+      validateEndDateAfterStartDate,
+      validateAccountingPeriod18MonthsMax,
+      validateEndDateCannotBeInTheFuture).mapN((_, _, _, _) => accountingPeriodModel)
 
 }
 

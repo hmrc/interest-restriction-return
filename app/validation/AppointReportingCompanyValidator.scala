@@ -43,8 +43,9 @@ trait AppointReportingCompanyValidator {
     }
   }
 
-  def validate: Validated[NonEmptyChain[Validation], AppointReportingCompanyModel] =
-    (validateIdentityOfAppointingCompany, validateUltimateParentCompany).mapN((_,_) => appointReportingCompanyModel)
+  def validate: ValidationResult[AppointReportingCompanyModel] =
+    (validateIdentityOfAppointingCompany,
+      validateUltimateParentCompany).mapN((_,_) => appointReportingCompanyModel)
 }
 
 case object IdentityOfAppointingCompanyIsNotSupplied extends Validation {

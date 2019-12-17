@@ -37,7 +37,7 @@ trait AgentDetailsValidator {
 
   val agentDetailsModel: AgentDetailsModel
 
-  private def validateAgentName(agentDetailsModel: AgentDetailsModel): ValidationResult[Option[String]]  = {
+  private def validateAgentName: ValidationResult[Option[String]]  = {
     val lengthCheck = if(agentDetailsModel.agentName.fold(true: Boolean){name => name.length >= 1 && name.length <= 160}){
       agentDetailsModel.agentName.validNec
     } else {
@@ -56,6 +56,5 @@ trait AgentDetailsValidator {
     }
   }
 
-  def validate: Validated[NonEmptyChain[Validation], AgentDetailsModel] =
-    validateAgentName(agentDetailsModel).map(_ => agentDetailsModel)
+  def validate: ValidationResult[AgentDetailsModel] = validateAgentName.map(_ => agentDetailsModel)
 }

@@ -16,7 +16,6 @@
 
 package validation
 
-import cats.data.{NonEmptyChain, Validated}
 import models.Validation.ValidationResult
 import models.{UltimateParentModel, Validation}
 
@@ -37,8 +36,7 @@ trait UltimateParentValidator {
     }
   }
 
-  def validate: Validated[NonEmptyChain[Validation], UltimateParentModel] =
-    validateParentCanNotBeUkAndNonUk.map(_ => ultimateParentModel)
+  def validate: ValidationResult[UltimateParentModel] = validateParentCanNotBeUkAndNonUk
 }
 
 case object ParentCannotBeUkAndNonUk extends Validation {

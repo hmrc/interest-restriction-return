@@ -37,7 +37,7 @@ trait IdentityOfCompanySubmittingValidator {
     }
   }
 
-  def validate: Validated[NonEmptyChain[Validation], IdentityOfCompanySubmittingModel] =
+  def validate: ValidationResult[IdentityOfCompanySubmittingModel] =
     validateIdentityOfCompanySubmitting.map(_ => identityOfCompanySubmitting)
 }
 
