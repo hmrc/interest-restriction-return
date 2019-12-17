@@ -34,6 +34,13 @@ class AuthorisingCompaniesSpec extends BaseSchemaSpec {
 
         validate(json) shouldBe true
       }
+
+      "consent is not supplied" in {
+        val json = Json.toJson(Seq(AuthorisingCompanies(
+          consenting = None
+        )))
+        validate(json) shouldBe true
+      }
     }
 
     "return invalid" when {
@@ -114,6 +121,9 @@ class AuthorisingCompaniesSpec extends BaseSchemaSpec {
 
           validate(json) shouldBe false
         }
+      }
+      "consenting" when {
+
       }
     }
   }
