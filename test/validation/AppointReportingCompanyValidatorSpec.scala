@@ -18,6 +18,8 @@ package validation
 
 import assets.IdentityOfCompanySubmittingConstants._
 import assets.appointReportingCompany.AppointReportingCompanyConstants._
+import assets.ReportingCompanyConstants._
+import assets.UltimateParentConstants._
 import org.scalatest.{Matchers, WordSpec}
 
 class AppointReportingCompanyValidatorSpec extends WordSpec with Matchers {
@@ -58,6 +60,60 @@ class AppointReportingCompanyValidatorSpec extends WordSpec with Matchers {
 
         "Return valid" in {
           appointReportingCompanyModelMax.validate.toEither.right.get shouldBe appointReportingCompanyModelMax
+        }
+      }
+    }
+
+    "Reporting Company is the Same as the Ultimate Parent" when {
+
+      "Ultimate Parent is supplied" should {
+
+        "Return invalid, as it should be NOT be supplied" in {
+
+          val model = appointReportingCompanyModelMax.copy(
+            reportingCompany = reportingCompanyModelMax.copy(sameAsUltimateParent = true),
+            ultimateParentCompany = Some(ultimateParentModelMax)
+          )
+          model.validate.toEither.left.get.head.errorMessages shouldBe UltimateParentCompanyIsSupplied.errorMessages
+        }
+      }
+
+      "Ultimate Parent is not supplied" should {
+
+        "Return valid" in {
+
+          val model = appointReportingCompanyModelMax.copy(
+            reportingCompany = reportingCompanyModelMax.copy(sameAsUltimateParent = true),
+            ultimateParentCompany = None
+          )
+          model.validate.toEither.right.get shouldBe model
+        }
+      }
+    }
+
+    "Reporting Company is NOT the Same as the Ultimate Parent" when {
+
+      "Ultimate Parent is NOT supplied" should {
+
+        "Return invalid, as it should be supplied" in {
+
+          val model = appointReportingCompanyModelMax.copy(
+            reportingCompany = reportingCompanyModelMax.copy(sameAsUltimateParent = false),
+            ultimateParentCompany = None
+          )
+          model.validate.toEither.left.get.head.errorMessages shouldBe UltimateParentCompanyIsNotSupplied.errorMessages
+        }
+      }
+
+      "Ultimate Parent is supplied" should {
+
+        "Return valid" in {
+
+          val model = appointReportingCompanyModelMax.copy(
+            reportingCompany = reportingCompanyModelMax.copy(sameAsUltimateParent = false),
+            ultimateParentCompany = Some(ultimateParentModelMax)
+          )
+          model.validate.toEither.right.get shouldBe model
         }
       }
     }

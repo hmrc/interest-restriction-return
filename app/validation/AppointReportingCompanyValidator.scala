@@ -19,15 +19,7 @@ package validation
 import cats.data.{NonEmptyChain, Validated}
 import models.Validation.ValidationResult
 import models.appointReportingCompany.AppointReportingCompanyModel
-import models.{AgentDetailsModel, IdentityOfCompanySubmittingModel, Validation}
-
-case object IdentityOfAppointingCompanyIsNotSupplied extends Validation {
-  def errorMessages: String = "Identity of Appointing Company name must be supplied if it is not the same as the reporting company or agent"
-}
-
-case object IdentityOfAppointingCompanyIsSupplied extends Validation {
-  def errorMessages: String = "Identity of Appointing Company name must not be supplied if it is the same as the reporting company or agent"
-}
+import models.{IdentityOfCompanySubmittingModel, UltimateParentModel, Validation}
 
 trait AppointReportingCompanyValidator {
 
@@ -43,7 +35,32 @@ trait AppointReportingCompanyValidator {
     }
   }
 
-  def validate: Validated[NonEmptyChain[Validation], AppointReportingCompanyModel] = validateIdentityOfAppointingCompany.map(_ => appointReportingCompanyModel)
+  private def validateUltimateParentCompany: ValidationResult[Option[UltimateParentModel]] = {
+    (appointReportingCompanyModel.reportingCompany.sameAsUltimateParent, appointReportingCompanyModel.ultimateParentCompany) match {
+      case (true, Some(_)) => UltimateParentCompanyIsSupplied.invalidNec
+      case (false, None) => UltimateParentCompanyIsNotSupplied.invalidNec
+      case _ => appointReportingCompanyModel.ultimateParentCompany.validNec
+    }
+  }
+
+  def validate: Validated[NonEmptyChain[Validation], AppointReportingCompanyModel] =
+    (validateIdentityOfAppointingCompany, validateUltimateParentCompany).mapN((_,_) => appointReportingCompanyModel)
+}
+
+case object IdentityOfAppointingCompanyIsNotSupplied extends Validation {
+  def errorMessages: String = "Identity of Appointing Company must be supplied if it is not the same as the reporting company or agent"
+}
+
+case object IdentityOfAppointingCompanyIsSupplied extends Validation {
+  def errorMessages: String = "Identity of Appointing Company must not be supplied if it is the same as the reporting company or agent"
+}
+
+case object UltimateParentCompanyIsSupplied extends Validation {
+  def errorMessages: String = "Ultimate Parent Company must not be supplied if it is the same as the reporting company"
+}
+
+case object UltimateParentCompanyIsNotSupplied extends Validation {
+  def errorMessages: String = "Ultimate Parent Company must be supplied if it is not the same as the reporting company"
 }
 
 
