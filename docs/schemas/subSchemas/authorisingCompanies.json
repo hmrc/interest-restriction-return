@@ -9,6 +9,9 @@
       },
       "utr": {
         "$ref": "../definitions/definitions.json#/definitions/ctutr"
+      },
+      "consenting": {
+        "type": "boolean"
       }
     },
     "required": [

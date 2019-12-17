@@ -19,7 +19,8 @@ package models
 import play.api.libs.json.Json
 
 case class AuthorisingCompanyModel(companyName: String,
-                                   utr: UTRModel)
+                                   utr: UTRModel,
+                                   consenting: Option[Boolean])
 
 object AuthorisingCompanyModel {
   implicit val format = Json.format[AuthorisingCompanyModel]
