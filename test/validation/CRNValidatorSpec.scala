@@ -43,27 +43,27 @@ class CRNValidatorSpec extends WordSpec with Matchers{
 
       "CRN is supplied, made up of only numbers and more than 8 numbers" in {
         val model = CRNModel("12345678999")
-        model.validate.toEither.left.get.head.errorMessage shouldBe crnFormatCheck(model).errorMessage
+        model.validate.toEither.left.get.head.errorMessage shouldBe CRNFormatCheck(model).errorMessage
       }
 
       "CRN is supplied, made up of only numbers and is less 8 numbers" in {
         val model = CRNModel("123456789")
-        model.validate.toEither.left.get.head.errorMessage shouldBe crnFormatCheck(model).errorMessage
+        model.validate.toEither.left.get.head.errorMessage shouldBe CRNFormatCheck(model).errorMessage
       }
 
       "CRN is supplied and contains more than 2 letters and 5 numbers" in {
         val model = CRNModel("AZH23456")
-        model.validate.toEither.left.get.head.errorMessage shouldBe crnFormatCheck(model).errorMessage
+        model.validate.toEither.left.get.head.errorMessage shouldBe CRNFormatCheck(model).errorMessage
       }
 
       "CRN is supplied and contains less than 2 letters and 7 numbers" in {
         val model = CRNModel("A1234567")
-        model.validate.toEither.left.get.head.errorMessage shouldBe crnFormatCheck(model).errorMessage
+        model.validate.toEither.left.get.head.errorMessage shouldBe CRNFormatCheck(model).errorMessage
       }
 
       "CRN is supplied and contains invalid characters" in {
         val model = CRNModel("AA123@?!")
-        model.validate.toEither.left.get.head.errorMessage shouldBe crnFormatCheck(model).errorMessage
+        model.validate.toEither.left.get.head.errorMessage shouldBe CRNFormatCheck(model).errorMessage
       }
     }
   }
