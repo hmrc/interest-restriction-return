@@ -40,8 +40,9 @@ trait IdentityOfCompanySubmittingValidator extends BaseValidation {
   def validate(implicit path: JsPath): ValidationResult[IdentityOfCompanySubmittingModel] =
     (validateIdentityOfCompanySubmitting,
       optionValidations(identityOfCompanySubmitting.ctutr.map(_.validate(path \ "ctutr"))),
+      optionValidations(identityOfCompanySubmitting.crn.map(_.validate(path \ "crn"))),
       optionValidations(identityOfCompanySubmitting.countryOfIncorporation.map(_.validate(path \ "countryOfIncorporation")))
-      ).mapN((_,_,_) => identityOfCompanySubmitting)
+      ).mapN((_,_,_,_) => identityOfCompanySubmitting)
 }
 
 case class CannotBeUkAndNonUk(companySubmitting: IdentityOfCompanySubmittingModel)(implicit val path: JsPath) extends Validation {
