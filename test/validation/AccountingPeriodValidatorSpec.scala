@@ -20,8 +20,11 @@ import java.time.LocalDate
 
 import assets.AccountingPeriodConstants._
 import org.scalatest.{Matchers, WordSpec}
+import play.api.libs.json.JsPath
 
 class AccountingPeriodValidatorSpec extends WordSpec with Matchers {
+
+  implicit val path = JsPath \ "some" \ "path"
 
   "Accounting Period Validation" when {
 

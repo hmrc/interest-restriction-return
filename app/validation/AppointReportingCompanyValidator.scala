@@ -19,7 +19,7 @@ package validation
 import models.Validation.ValidationResult
 import models.appointReportingCompany.AppointReportingCompanyModel
 import models.{IdentityOfCompanySubmittingModel, UltimateParentModel, Validation}
-import play.api.libs.json.Json
+import play.api.libs.json.{JsPath, Json}
 
 trait AppointReportingCompanyValidator extends BaseValidation {
 
@@ -44,39 +44,45 @@ trait AppointReportingCompanyValidator extends BaseValidation {
   }
 
   def validate: ValidationResult[AppointReportingCompanyModel] = {
+
+    val validatedAuthorisingCompanies = appointReportingCompanyModel.authorisingCompanies.zipWithIndex.map {
+      case (a, i) => a.validate(JsPath \ s"authorisingCompanies[$i]")
+    }
+
     (
-      appointReportingCompanyModel.agentDetails.validate,
-      appointReportingCompanyModel.reportingCompany.validate,
-      combineValidations(appointReportingCompanyModel.authorisingCompanies.map(_.validate):_*),
-      optionValidations(appointReportingCompanyModel.ultimateParentCompany.map(_.validate)),
-      optionValidations(appointReportingCompanyModel.identityOfAppointingCompany.map(_.validate)),
+      appointReportingCompanyModel.agentDetails.validate(JsPath \ "agentDetails"),
+      appointReportingCompanyModel.reportingCompany.validate(JsPath \ "reportingCompany"),
+      combineValidations(validatedAuthorisingCompanies:_*),
+      optionValidations(appointReportingCompanyModel.ultimateParentCompany.map(_.validate(JsPath \ "ultimateParentCompany"))),
+      optionValidations(appointReportingCompanyModel.identityOfAppointingCompany.map(_.validate(JsPath \ "identityOfAppointingCompany"))),
+      appointReportingCompanyModel.accountingPeriod.validate(JsPath \ "accountingPeriod"),
       validateIdentityOfAppointingCompany,
       validateUltimateParentCompany
-    ).mapN((_,_,_,_,_,_,_) => appointReportingCompanyModel)
+    ).mapN((_,_,_,_,_,_,_,_) => appointReportingCompanyModel)
   }
 }
 
 case object IdentityOfAppointingCompanyIsNotSupplied extends Validation {
   val errorMessage: String = "Identity of Appointing Company must be supplied if it is not the same as the reporting company or agent"
-  val field: String = "identifyOfAppointingCompany"
+  val path = JsPath \ "identifyOfAppointingCompany"
   val value = Json.obj()
 }
 
 case class IdentityOfAppointingCompanyIsSupplied(identityOfCompanySubmittingModel: IdentityOfCompanySubmittingModel) extends Validation {
   val errorMessage: String = "Identity of Appointing Company must not be supplied if it is the same as the reporting company or agent"
-  val field: String = "identifyOfAppointingCompany"
+  val path = JsPath \ "identifyOfAppointingCompany"
   val value = Json.toJson(identityOfCompanySubmittingModel)
 }
 
 case class UltimateParentCompanyIsSupplied(ultimateParentModel: UltimateParentModel) extends Validation {
   val errorMessage: String = "Ultimate Parent Company must not be supplied if it is the same as the reporting company"
-  val field: String = "ultimateParentCompany"
+  val path = JsPath \ "ultimateParentCompany"
   val value = Json.toJson(ultimateParentModel)
 }
 
 case object UltimateParentCompanyIsNotSupplied extends Validation {
   val errorMessage: String = "Ultimate Parent Company must be supplied if it is not the same as the reporting company"
-  val field: String = "ultimateParentCompany"
+  val path = JsPath \ "ultimateParentCompany"
   val value = Json.obj()
 }
 

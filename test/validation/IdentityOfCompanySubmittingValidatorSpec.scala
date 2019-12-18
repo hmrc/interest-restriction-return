@@ -17,12 +17,12 @@
 package validation
 
 import assets.IdentityOfCompanySubmittingConstants._
-import assets.ReportingCompanyConstants._
-import assets.UltimateParentConstants._
-import assets.appointReportingCompany.AppointReportingCompanyConstants._
 import org.scalatest.{Matchers, WordSpec}
+import play.api.libs.json.JsPath
 
 class IdentityOfCompanySubmittingValidatorSpec extends WordSpec with Matchers {
+
+  implicit val path = JsPath \ "some" \ "path"
 
   "Identity of Company Submitting Validation" when {
 

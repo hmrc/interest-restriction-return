@@ -18,9 +18,11 @@ package validation
 
 import models.AgentDetailsModel
 import org.scalatest.{Matchers, WordSpec}
-import validation._
+import play.api.libs.json.JsPath
 
 class AgentDetailsValidatorSpec extends WordSpec with Matchers {
+
+  implicit val path = JsPath \ "some" \ "path"
 
   "Agent Details Validation" when {
     "passed false and No name should succeed" in {
@@ -52,7 +54,7 @@ class AgentDetailsValidatorSpec extends WordSpec with Matchers {
 
     "passed true and None should not succeed" in {
       val model = AgentDetailsModel(true, None)
-      model.validate.toEither.left.get.head.errorMessage shouldBe AgentNameNotSuppliedError.errorMessage
+      model.validate.toEither.left.get.head.errorMessage shouldBe AgentNameNotSuppliedError().errorMessage
     }
 
     "passed true and Some name (with incorrect name length > maxLength) should not succeed" in {

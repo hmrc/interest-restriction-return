@@ -18,7 +18,7 @@ package validation
 
 import models.Validation.ValidationResult
 import models.{IdentityOfCompanySubmittingModel, Validation}
-import play.api.libs.json.Json
+import play.api.libs.json.{JsPath, Json}
 
 trait IdentityOfCompanySubmittingValidator {
 
@@ -26,7 +26,7 @@ trait IdentityOfCompanySubmittingValidator {
 
   val identityOfCompanySubmitting: IdentityOfCompanySubmittingModel
 
-  private def validateIdentityOfCompanySubmitting: ValidationResult[IdentityOfCompanySubmittingModel] = {
+  private def validateIdentityOfCompanySubmitting(implicit path: JsPath): ValidationResult[IdentityOfCompanySubmittingModel] = {
     val isUk = identityOfCompanySubmitting.ctutr.isDefined || identityOfCompanySubmitting.crn.isDefined
     val isNonUk = identityOfCompanySubmitting.countryOfIncorporation.isDefined || identityOfCompanySubmitting.nonUkCrn.isDefined
 
@@ -37,13 +37,12 @@ trait IdentityOfCompanySubmittingValidator {
     }
   }
 
-  def validate: ValidationResult[IdentityOfCompanySubmittingModel] =
+  def validate(implicit path: JsPath): ValidationResult[IdentityOfCompanySubmittingModel] =
     validateIdentityOfCompanySubmitting.map(_ => identityOfCompanySubmitting)
 }
 
-case class CannotBeUkAndNonUk(companySubmitting: IdentityOfCompanySubmittingModel) extends Validation {
+case class CannotBeUkAndNonUk(companySubmitting: IdentityOfCompanySubmittingModel)(implicit val path: JsPath) extends Validation {
   val errorMessage: String = "Identity of company submitting cannot contain data for UK and NonUK fields"
-  val field = "identityOfCompanySubmitting"
   val value = Json.toJson(companySubmitting)
 }
 

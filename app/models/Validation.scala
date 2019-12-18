@@ -17,11 +17,11 @@
 package models
 
 import cats.data.ValidatedNec
-import play.api.libs.json.JsValue
+import play.api.libs.json.{JsPath, JsValue}
 
 trait Validation {
   val errorMessage: String
-  val field: String
+  val path: JsPath
   val value: JsValue
 }
 

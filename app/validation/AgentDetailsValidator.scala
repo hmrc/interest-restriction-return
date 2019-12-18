@@ -19,49 +19,45 @@ package validation
 import cats.data.{NonEmptyChain, Validated}
 import models.Validation.ValidationResult
 import models.{AgentDetailsModel, Validation}
-import play.api.libs.json.{JsString, Json}
+import play.api.libs.json.{JsPath, JsString, Json}
 
-trait AgentDetailsValidator {
+trait AgentDetailsValidator extends BaseValidation {
   import cats.implicits._
 
   val agentDetailsModel: AgentDetailsModel
 
-  private def validateAgentName: ValidationResult[Option[String]]  = {
+  private def validateAgentName(implicit topPath: JsPath): ValidationResult[Option[String]]  = {
     val lengthCheck = if(agentDetailsModel.agentName.fold(true: Boolean){name => name.length >= 1 && name.length <= 160}){
       agentDetailsModel.agentName.validNec
     } else {
       AgentNameLengthError(agentDetailsModel.agentName.get).invalidNec
     }
     val suppliedCheck = (agentDetailsModel.agentActingOnBehalfOfCompany,agentDetailsModel.agentName) match {
-      case (true,None) => AgentNameNotSuppliedError.invalidNec
+      case (true,None) => AgentNameNotSuppliedError().invalidNec
       case (false,Some(name)) => AgentNameSuppliedError(name).invalidNec
       case _ => agentDetailsModel.agentName.validNec
     }
 
-    if(lengthCheck.toOption.isDefined && suppliedCheck.toOption.isDefined){
-      agentDetailsModel.agentName.validNec
-    } else {
-      lengthCheck.combine(suppliedCheck)
-    }
+    combineValidations(lengthCheck, suppliedCheck)
   }
 
-  def validate: ValidationResult[AgentDetailsModel] = validateAgentName.map(_ => agentDetailsModel)
+  def validate(implicit path: JsPath): ValidationResult[AgentDetailsModel] = validateAgentName.map(_ => agentDetailsModel)
 }
 
-case class AgentNameLengthError(name: String) extends Validation {
+case class AgentNameLengthError(name: String)(implicit topPath: JsPath) extends Validation {
   val errorMessage: String = "Agent name must be between 1-160 characters if supplied"
-  val field: String = "agentName"
-  val value = Json.toJson(name)
+  val path = topPath \ "agentName"
+  val value = JsString(name)
 }
 
-case object AgentNameNotSuppliedError extends Validation {
+case class AgentNameNotSuppliedError(implicit topPath: JsPath) extends Validation {
   val errorMessage: String = "Agent name must be supplied if agent is acting on behalf of company"
-  val field: String = "agentName"
+  val path = topPath \ "agentName"
   val value = Json.obj()
 }
 
-case class AgentNameSuppliedError(name: String) extends Validation {
+case class AgentNameSuppliedError(name: String)(implicit topPath: JsPath) extends Validation {
   val errorMessage: String = "Agent name must not be supplied if agent is not acting on behalf of company"
-  val field: String = "agentName"
-  val value = Json.toJson(name)
+  val path = topPath \ "agentName"
+  val value = JsString(name)
 }

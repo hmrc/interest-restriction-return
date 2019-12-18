@@ -18,7 +18,7 @@ package validation
 
 import models.Validation.ValidationResult
 import models.{UltimateParentModel, Validation}
-import play.api.libs.json.Json
+import play.api.libs.json.{JsPath, Json}
 
 trait UltimateParentValidator {
 
@@ -26,7 +26,7 @@ trait UltimateParentValidator {
 
   val ultimateParentModel: UltimateParentModel
 
-  private def validateParentCanNotBeUkAndNonUk: ValidationResult[UltimateParentModel] = {
+  private def validateParentCanNotBeUkAndNonUk(implicit path: JsPath): ValidationResult[UltimateParentModel] = {
     val isUk = ultimateParentModel.ctutr.isDefined || ultimateParentModel.crn.isDefined
     val isNonUk = ultimateParentModel.countryOfIncorporation.isDefined || ultimateParentModel.nonUkCrn.isDefined
 
@@ -37,12 +37,11 @@ trait UltimateParentValidator {
     }
   }
 
-  def validate: ValidationResult[UltimateParentModel] = validateParentCanNotBeUkAndNonUk
+  def validate(implicit path: JsPath): ValidationResult[UltimateParentModel] = validateParentCanNotBeUkAndNonUk
 }
 
-case class UltimateParentCannotBeUkAndNonUk(model: UltimateParentModel) extends Validation {
+case class UltimateParentCannotBeUkAndNonUk(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {
   val errorMessage: String = "Ultimate Parent Company Model cannot contain data for UK and NonUK fields"
-  val field: String = "ultimateParentCompany"
   val value = Json.toJson(model)
 }
 

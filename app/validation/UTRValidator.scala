@@ -18,15 +18,15 @@ package validation
 
 import models.Validation.ValidationResult
 import models.{UTRModel, Validation}
-import play.api.libs.json.Json
+import play.api.libs.json.{JsPath, Json}
 
-trait UTRValidator {
+trait UTRValidator extends BaseValidation {
 
   import cats.implicits._
 
   val utrModel: UTRModel
 
-  private def validateUTR(utr: String): ValidationResult[UTRModel] = {
+  private def validateUtr(utr: String)(implicit path: JsPath): ValidationResult[UTRModel] = {
 
     val utrInts = utr.map(_.asDigit)
 
@@ -39,18 +39,26 @@ trait UTRValidator {
       if (utrCalc > 9) utrCalc - 9 else utrCalc
     }
 
-    if (checkSum == utrInts(0)) {
-      UTRModel(utr).validNec
+    if(utr.length != 10) {
+      UTRLengthError(UTRModel(utr)).invalidNec
     } else {
-      UTRError(UTRModel(utr)).invalidNec
+      if (checkSum == utrInts(0)) {
+        UTRModel(utr).validNec
+      } else {
+        UTRChecksumError(UTRModel(utr)).invalidNec
+      }
     }
   }
 
-  def validate: ValidationResult[UTRModel] = validateUTR(utrModel.utr)
+  def validate(implicit path: JsPath): ValidationResult[UTRModel] = validateUtr(utrModel.utr)
 }
 
-case class UTRError(utrValue: UTRModel) extends Validation {
+case class UTRChecksumError(utrValue: UTRModel)(implicit val path: JsPath) extends Validation {
   val errorMessage: String = "UTR Check Sum does not satisfy the check sum"
-  val field: String = "utr"
+  val value = Json.toJson(utrValue)
+}
+
+case class UTRLengthError(utrValue: UTRModel)(implicit val path: JsPath) extends Validation {
+  val errorMessage: String = s"UTR is only ${utrValue.utr.length} character${if (utrValue.utr.length != 1) "s" else ""} long and should be 10"
   val value = Json.toJson(utrValue)
 }

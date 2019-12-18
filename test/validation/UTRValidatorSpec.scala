@@ -18,15 +18,17 @@ package validation
 
 import models.UTRModel
 import org.scalatest.{Matchers, WordSpec}
-import validation._
+import play.api.libs.json.JsPath
 
 class UTRValidatorSpec extends WordSpec with Matchers{
+
+  implicit val path = JsPath \ "some" \ "path"
 
   "UTR Validation" when {
 
     "UTR is supplied and fails Check Sum" in {
       val model  = UTRModel("1234567890")
-      model.validate.toEither.left.get.head.errorMessage shouldBe UTRError(model).errorMessage
+      model.validate.toEither.left.get.head.errorMessage shouldBe UTRChecksumError(model).errorMessage
     }
 
     "UTR is supplied and passes Check Sum" in {

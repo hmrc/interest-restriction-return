@@ -18,8 +18,11 @@ package validation
 
 import assets.UltimateParentConstants._
 import org.scalatest.{Matchers, WordSpec}
+import play.api.libs.json.JsPath
 
 class UltimateParentValidatorSpec extends WordSpec with Matchers {
+
+  implicit val path = JsPath \ "some" \ "path"
 
   "Ultimate Parent Validation" when {
 
