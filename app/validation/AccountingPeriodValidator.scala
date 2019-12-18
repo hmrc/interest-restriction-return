@@ -36,10 +36,10 @@ trait AccountingPeriodValidator extends BaseValidation {
     }
 
   private def validateEndDateAfterStartDate(implicit path: JsPath): ValidationResult[LocalDate] =
-    if (accountingPeriodModel.endDate.isBefore(accountingPeriodModel.startDate)) {
-      EndDateAfterStartDate(accountingPeriodModel.endDate).invalidNec
-    } else {
+    if (accountingPeriodModel.endDate.isAfter(accountingPeriodModel.startDate)) {
       accountingPeriodModel.endDate.validNec
+    } else {
+      EndDateAfterStartDate(accountingPeriodModel.endDate).invalidNec
     }
 
   private def validateAccountingPeriod18MonthsMax(implicit path: JsPath): ValidationResult[LocalDate] =

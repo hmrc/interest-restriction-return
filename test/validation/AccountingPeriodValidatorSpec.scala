@@ -53,6 +53,14 @@ class AccountingPeriodValidatorSpec extends BaseValidationSpec {
         leftSideError(model.validate).errorMessage shouldBe EndDateAfterStartDate(endDate).errorMessage
       }
 
+      "End date is equal to start date" in {
+
+        val model = accountingPeriodModel.copy(
+          endDate = startDate
+        )
+        leftSideError(model.validate).errorMessage shouldBe EndDateAfterStartDate(endDate).errorMessage
+      }
+
       "Accounting period is greater than or equal to 18 months" in {
 
         val startDate = LocalDate.now().minusMonths(20)
