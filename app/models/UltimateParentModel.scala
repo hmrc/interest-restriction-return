@@ -19,7 +19,7 @@ package models
 import play.api.libs.json.{Format, Json}
 import validation.UltimateParentValidator
 
-case class UltimateParentModel(registeredCompanyName: String,
+case class UltimateParentModel(registeredCompanyName: CompanyNameModel,
                                ctutr: Option[UTRModel],
                                crn: Option[CRNModel],
                                knownAs: Option[String],

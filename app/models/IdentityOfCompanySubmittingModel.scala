@@ -19,7 +19,7 @@ package models
 import play.api.libs.json.Json
 import validation.IdentityOfCompanySubmittingValidator
 
-case class IdentityOfCompanySubmittingModel(companyName: String,
+case class IdentityOfCompanySubmittingModel(companyName: CompanyNameModel,
                                             ctutr: Option[UTRModel],
                                             crn: Option[CRNModel],
                                             countryOfIncorporation: Option[CountryCodeModel],

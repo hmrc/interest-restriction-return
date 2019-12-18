@@ -16,10 +16,10 @@
 
 package models.fullReturn
 
-import models.UTRModel
+import models.{CompanyNameModel, UTRModel}
 import play.api.libs.json.Json
 
-case class UkCompanyModel(companyName: String,
+case class UkCompanyModel(companyName: CompanyNameModel,
                           utr: UTRModel,
                           consenting: Boolean,
                           netTaxInterestExpense: BigDecimal,

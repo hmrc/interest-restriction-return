@@ -19,7 +19,7 @@ package models
 import play.api.libs.json.Json
 import validation.ReportingCompanyValidator
 
-case class ReportingCompanyModel(companyName: String,
+case class ReportingCompanyModel(companyName: CompanyNameModel,
                                  ctutr: UTRModel,
                                  crn: Option[CRNModel],
                                  sameAsUltimateParent: Boolean) extends ReportingCompanyValidator {

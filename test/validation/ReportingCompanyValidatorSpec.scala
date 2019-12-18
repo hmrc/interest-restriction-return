@@ -17,6 +17,7 @@
 package validation
 
 import assets.ReportingCompanyConstants._
+import models.CompanyNameModel
 import play.api.libs.json.JsPath
 
 class ReportingCompanyValidatorSpec extends BaseValidationSpec {
@@ -33,6 +34,17 @@ class ReportingCompanyValidatorSpec extends BaseValidationSpec {
     }
 
     "Return invalid" when {
+
+      "Company name" when {
+
+        "Company name is empty" in {
+          leftSideError(reportingCompanyModelMax.copy(companyName = CompanyNameModel("")).validate).errorMessage shouldBe CompanyNameLengthError("").errorMessage
+        }
+
+        s"Company name is longer that ${companyNameMaxLength}" in {
+          leftSideError(reportingCompanyModelMax.copy(companyName = companyNameTooLong).validate).errorMessage shouldBe CompanyNameLengthError("a" * (companyNameMaxLength + 1)).errorMessage
+        }
+      }
 
       "CTUTR is invalid" in {
         leftSideError(reportingCompanyModelMax.copy(ctutr = invalidUtr).validate).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
