@@ -16,15 +16,19 @@
 
 package models
 
-import play.api.libs.json.Json
-import validation.GroupCompanyDetailsValidator
+import play.api.libs.json.{JsPath, JsString, Reads, Writes}
+import validation.CountryCodeValidator
 
-case class GroupCompanyDetailsModel(totalCompanies: Int,
-                                    accountingPeriod: AccountingPeriodModel) extends GroupCompanyDetailsValidator {
-  override val groupCompanyDetails: GroupCompanyDetailsModel = this
+case class CountryCodeModel(code: String) extends CountryCodeValidator {
+  override val countryCodeModel = this
 }
 
-object GroupCompanyDetailsModel {
-  implicit val format = Json.format[GroupCompanyDetailsModel]
-}
+object CountryCodeModel {
 
+  implicit val reads: Reads[CountryCodeModel] = JsPath.read[String].map(CountryCodeModel.apply)
+
+  implicit val writes: Writes[CountryCodeModel] = Writes {
+    model => JsString(model.code)
+  }
+
+}

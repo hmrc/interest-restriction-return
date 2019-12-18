@@ -16,7 +16,7 @@
 
 package schemas.subSchemas
 
-import models.UTRModel
+import models.{CRNModel, UTRModel}
 import play.api.libs.json.{JsValue, Json}
 import schemas.BaseSchemaSpec
 import schemas.helpers._
@@ -133,26 +133,26 @@ class UltimateParentCompanySchemaSpec extends BaseSchemaSpec {
 
         s"below $crnLength" in {
 
-          val json = Json.toJson(UltimateParent(crn = Some("1" * (crnLength - 1))))
+          val json = Json.toJson(UltimateParent(crn = Some(CRNModel(("1" * (crnLength - 1))))))
 
           validate(json) shouldBe false
         }
 
         s"above $crnLength" in {
 
-          val json = Json.toJson(UltimateParent(crn = Some("1" * (crnLength + 1))))
+          val json = Json.toJson(UltimateParent(crn = Some(CRNModel(("1" * (crnLength + 1))))))
 
           validate(json) shouldBe false
         }
 
         "starts with 1 letter" in {
-          val json = Json.toJson(UltimateParent(crn = Some("A" + ("1" * (crnLength - 1)))))
+          val json = Json.toJson(UltimateParent(crn = Some(CRNModel(("A" + ("1" * (crnLength - 1)))))))
 
           validate(json) shouldBe false
         }
 
         "starts with 3 letters" in {
-          val json = Json.toJson(UltimateParent(crn = Some("AAA" + ("1" * (crnLength - 3)))))
+          val json = Json.toJson(UltimateParent(crn = Some(CRNModel(("AAA" + ("1" * (crnLength - 3)))))))
 
           validate(json) shouldBe false
 
@@ -207,7 +207,7 @@ class UltimateParentCompanySchemaSpec extends BaseSchemaSpec {
 
         s"is empty" in {
 
-          val json = Json.toJson(UltimateParent(nonUkCrn = Some("")))
+          val json = Json.toJson(UltimateParent(nonUkCrn = Some((""))))
 
           validate(json) shouldBe false
         }

@@ -16,16 +16,14 @@
 
 package models
 
-import models.Validation.ValidationResult
-import play.api.libs.json.{JsPath, Json}
+import play.api.libs.json.Json
+import validation.ReportingCompanyValidator
 
 case class ReportingCompanyModel(companyName: String,
                                  ctutr: UTRModel,
-                                 crn: Option[String],
-                                 sameAsUltimateParent: Boolean) {
-
-  def validate(path: JsPath): ValidationResult[ReportingCompanyModel] =  ctutr.validate(path \ "ctutr").map(_ => this)
-
+                                 crn: Option[CRNModel],
+                                 sameAsUltimateParent: Boolean) extends ReportingCompanyValidator {
+  override val reportingCompanyModel: ReportingCompanyModel = this
 }
 
 object ReportingCompanyModel {

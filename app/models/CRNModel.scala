@@ -16,15 +16,21 @@
 
 package models
 
-import play.api.libs.json.Json
-import validation.GroupCompanyDetailsValidator
+import play.api.libs.json.{JsPath, JsString, Reads, Writes}
+import validation.CRNValidator
 
-case class GroupCompanyDetailsModel(totalCompanies: Int,
-                                    accountingPeriod: AccountingPeriodModel) extends GroupCompanyDetailsValidator {
-  override val groupCompanyDetails: GroupCompanyDetailsModel = this
+case class CRNModel(crn: String) extends CRNValidator{
+  override val crnModel = this
 }
 
-object GroupCompanyDetailsModel {
-  implicit val format = Json.format[GroupCompanyDetailsModel]
+object CRNModel {
+
+  implicit val reads: Reads[CRNModel] = JsPath.read[String].map(CRNModel.apply)
+
+  implicit val writes: Writes[CRNModel] = Writes {
+    model => JsString(model.crn)
+  }
+
 }
+
 

@@ -16,24 +16,32 @@
 
 package validation
 
-import models.UTRModel
+import assets.ReportingCompanyConstants._
 import play.api.libs.json.JsPath
 import utils.BaseSpec
 
-class UTRValidatorSpec extends BaseSpec {
+class ReportingCompanyValidatorSpec extends BaseSpec {
 
   implicit val path = JsPath \ "some" \ "path"
 
-  "UTR Validation" when {
+  "Reporting Company Validation" should {
 
-    "UTR is supplied and fails Check Sum" in {
-      val model  = UTRModel("1234567890")
-      leftSideError(model.validate).errorMessage shouldBe UTRChecksumError(model).errorMessage
+    "Return valid" when {
+
+      "a valid Reporting Company model is validated" in {
+        rightSide(reportingCompanyModelMax.validate) shouldBe reportingCompanyModelMax
+      }
     }
 
-    "UTR is supplied and passes Check Sum" in {
-      val model  = UTRModel("9534668155")
-      rightSide(model.validate) shouldBe model
+    "Return invalid" when {
+
+      "CTUTR is invalid" in {
+        leftSideError(reportingCompanyModelMax.copy(ctutr = invalidUtr).validate).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
+      }
+
+      "CRN is invalid" in {
+        leftSideError(reportingCompanyModelMax.copy(crn = Some(invalidCrn)).validate).errorMessage shouldBe CRNFormatCheck(invalidCrn).errorMessage
+      }
     }
   }
 }

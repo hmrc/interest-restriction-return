@@ -16,16 +16,14 @@
 
 package validation
 
-import cats.data.{NonEmptyChain, Validated, ValidatedNec}
-import cats.data.Validated.{Invalid, Valid}
+import cats.data.Validated.Valid
 import cats.implicits._
-import cats.kernel.Semigroup
 import models.Validation
-import models.Validation.ValidationResult
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.{JsPath, JsString}
+import utils.BaseSpec
 
-class BaseValidationSpec extends WordSpec with Matchers{
+class BaseValidationSpec extends WordSpec with Matchers with BaseSpec {
 
   implicit val topPath = JsPath \ "path"
 
@@ -106,5 +104,4 @@ class BaseValidationSpec extends WordSpec with Matchers{
       result1.toEither shouldBe Right(None)
     }
   }
-
 }

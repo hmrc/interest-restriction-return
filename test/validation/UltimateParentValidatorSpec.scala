@@ -17,50 +17,75 @@
 package validation
 
 import assets.UltimateParentConstants._
-import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.JsPath
+import utils.BaseSpec
 
-class UltimateParentValidatorSpec extends WordSpec with Matchers {
+class UltimateParentValidatorSpec extends BaseSpec {
 
   implicit val path = JsPath \ "some" \ "path"
 
-  "Ultimate Parent Validation" when {
+  "Ultimate Parent Validation" should {
 
-    "Uk and NonUK fields are populated" should {
+    "Return valid" when {
 
-      "Return invalid" in {
+      "Uk fields are populated" in {
+        val model = ultimateParentModelMax.copy(
+          nonUkCrn = None,
+          countryOfIncorporation = None
+        )
+
+        rightSide(model.validate) shouldBe model
+      }
+
+      "NonUk fields are populated" in {
+
+        val model = ultimateParentModelMax.copy(
+          crn = None,
+          ctutr = None
+        )
+
+        rightSide(model.validate) shouldBe model
+      }
+    }
+
+    "Return invalid" when {
+
+      "Uk and NonUK fields are populated" in {
 
         val model = ultimateParentModelMax.copy(
           nonUkCrn = Some("12345678"),
-          countryOfIncorporation = Some("US")
+          countryOfIncorporation = Some(nonUkCountryCode)
         )
 
-        model.validate.toEither.left.get.head.errorMessage shouldBe UltimateParentCannotBeUkAndNonUk(model).errorMessage
-      }
-    }
-
-      "Uk fields are populated" should {
-
-        "Return valid" in {
-          val model = ultimateParentModelMax.copy(
-            nonUkCrn = None,
-            countryOfIncorporation = None
-          )
-
-          model.validate.toEither.right.get shouldBe model
-        }
+        leftSideError(model.validate).errorMessage shouldBe UltimateParentCannotBeUkAndNonUk(model).errorMessage
       }
 
-      "NonUk fields are populated" should {
+      "CTUTR is invalid" in {
+        val model = ultimateParentModelMax.copy(
+          nonUkCrn = None,
+          countryOfIncorporation = None,
+          ctutr = Some(invalidUtr))
 
-        "Return valid" in {
-          val model = ultimateParentModelMax.copy(
-            crn = None,
-            ctutr = None
-          )
+        leftSideError(model.validate).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
+      }
 
-          model.validate.toEither.right.get shouldBe model
-        }
+      "CRN is invalid" in {
+        val model = ultimateParentModelMax.copy(
+          nonUkCrn = None,
+          countryOfIncorporation = None,
+          crn = Some(invalidCrn))
+
+        leftSideError(model.validate).errorMessage shouldBe CRNFormatCheck(invalidCrn).errorMessage
+      }
+
+      "CountryOfIncorporation is invalid" in {
+        val model = ultimateParentModelMax.copy(
+          crn = None,
+          ctutr = None,
+          countryOfIncorporation = Some(invalidCountryCode))
+
+        leftSideError(model.validate).errorMessage shouldBe CountryCodeValueError(invalidCountryCode).errorMessage
       }
     }
   }
+}

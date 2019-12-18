@@ -16,8 +16,11 @@
 
 package utils
 
+import assets.BaseConstants
 import config.AppConfig
 import controllers.actions.mocks.{Authorised, Unauthorised}
+import models.Validation
+import models.Validation.ValidationResult
 import models.requests.IdentifierRequest
 import org.scalatest.{Matchers, WordSpec}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
@@ -30,7 +33,7 @@ import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.ExecutionContext
 
-trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with MaterializerSupport {
+trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with MaterializerSupport with BaseConstants {
 
   lazy val fakeRequest = FakeRequest("GET", "/")
   lazy implicit val identifierRequest = IdentifierRequest(fakeRequest, "id")
@@ -44,5 +47,10 @@ trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with Mate
 
   object AuthorisedAction extends Authorised[Option[Credentials]](Some(Credentials("id", "SCP")), bodyParsers)
   object UnauthorisedAction extends Unauthorised(new MissingBearerToken, bodyParsers)
+
+  def rightSide[A](validationResult: ValidationResult[A]): A = validationResult.toEither.right.get
+  def leftSideError[A](validationResult: ValidationResult[A]): Validation = validationResult.toEither.left.get.toChain.toList.head
+
+  def errorMessages(messages: String*) = messages.mkString("|")
 
 }

@@ -17,12 +17,12 @@
 package validation
 
 import assets.IdentityOfCompanySubmittingConstants._
-import assets.appointReportingCompany.AppointReportingCompanyConstants._
 import assets.ReportingCompanyConstants._
 import assets.UltimateParentConstants._
-import org.scalatest.{Matchers, WordSpec}
+import assets.appointReportingCompany.AppointReportingCompanyConstants._
+import utils.BaseSpec
 
-class AppointReportingCompanyValidatorSpec extends WordSpec with Matchers {
+class AppointReportingCompanyValidatorSpec extends BaseSpec {
 
   "Appoint Reporting Company Validation" when {
 
@@ -33,14 +33,14 @@ class AppointReportingCompanyValidatorSpec extends WordSpec with Matchers {
         "Return invalid, as it should not be supplied" in {
 
           val model = appointReportingCompanyModelMin.copy(identityOfAppointingCompany = Some(identityOfCompanySubmittingModelMax))
-          model.validate.toEither.left.get.head.errorMessage shouldBe IdentityOfAppointingCompanyIsSupplied(identityOfCompanySubmittingModelMax).errorMessage
+          leftSideError(model.validate).errorMessage shouldBe IdentityOfAppointingCompanyIsSupplied(identityOfCompanySubmittingModelMax).errorMessage
         }
       }
 
       "Identity of Appointing Company is NOT supplied" should {
 
         "Return valid" in {
-          appointReportingCompanyModelMin.validate.toEither.right.get shouldBe appointReportingCompanyModelMin
+          rightSide(appointReportingCompanyModelMin.validate) shouldBe appointReportingCompanyModelMin
         }
       }
     }
@@ -52,14 +52,14 @@ class AppointReportingCompanyValidatorSpec extends WordSpec with Matchers {
         "Return invalid, as it should be supplied" in {
 
           val model = appointReportingCompanyModelMax.copy(identityOfAppointingCompany = None)
-          model.validate.toEither.left.get.head.errorMessage shouldBe IdentityOfAppointingCompanyIsNotSupplied.errorMessage
+          leftSideError(model.validate).errorMessage shouldBe IdentityOfAppointingCompanyIsNotSupplied.errorMessage
         }
       }
 
       "Identity of Appointing Company is supplied" should {
 
         "Return valid" in {
-          appointReportingCompanyModelMax.validate.toEither.right.get shouldBe appointReportingCompanyModelMax
+          rightSide(appointReportingCompanyModelMax.validate) shouldBe appointReportingCompanyModelMax
         }
       }
     }
@@ -74,7 +74,7 @@ class AppointReportingCompanyValidatorSpec extends WordSpec with Matchers {
             reportingCompany = reportingCompanyModelMax.copy(sameAsUltimateParent = true),
             ultimateParentCompany = Some(ultimateParentModelMax)
           )
-          model.validate.toEither.left.get.head.errorMessage shouldBe UltimateParentCompanyIsSupplied(ultimateParentModelMax).errorMessage
+          leftSideError(model.validate).errorMessage shouldBe UltimateParentCompanyIsSupplied(ultimateParentModelMax).errorMessage
         }
       }
 
@@ -86,7 +86,7 @@ class AppointReportingCompanyValidatorSpec extends WordSpec with Matchers {
             reportingCompany = reportingCompanyModelMax.copy(sameAsUltimateParent = true),
             ultimateParentCompany = None
           )
-          model.validate.toEither.right.get shouldBe model
+          rightSide(model.validate) shouldBe model
         }
       }
     }
@@ -101,7 +101,7 @@ class AppointReportingCompanyValidatorSpec extends WordSpec with Matchers {
             reportingCompany = reportingCompanyModelMax.copy(sameAsUltimateParent = false),
             ultimateParentCompany = None
           )
-          model.validate.toEither.left.get.head.errorMessage shouldBe UltimateParentCompanyIsNotSupplied.errorMessage
+          leftSideError(model.validate).errorMessage shouldBe UltimateParentCompanyIsNotSupplied.errorMessage
         }
       }
 
@@ -113,7 +113,7 @@ class AppointReportingCompanyValidatorSpec extends WordSpec with Matchers {
             reportingCompany = reportingCompanyModelMax.copy(sameAsUltimateParent = false),
             ultimateParentCompany = Some(ultimateParentModelMax)
           )
-          model.validate.toEither.right.get shouldBe model
+          rightSide(model.validate) shouldBe model
         }
       }
     }

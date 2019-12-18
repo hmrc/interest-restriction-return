@@ -14,17 +14,20 @@
  * limitations under the License.
  */
 
-package models
+package validation
 
-import play.api.libs.json.Json
-import validation.GroupCompanyDetailsValidator
+import models.ReportingCompanyModel
+import models.Validation.ValidationResult
+import play.api.libs.json.JsPath
 
-case class GroupCompanyDetailsModel(totalCompanies: Int,
-                                    accountingPeriod: AccountingPeriodModel) extends GroupCompanyDetailsValidator {
-  override val groupCompanyDetails: GroupCompanyDetailsModel = this
+trait ReportingCompanyValidator extends BaseValidation {
+
+  import cats.implicits._
+
+  val reportingCompanyModel: ReportingCompanyModel
+
+  def validate(implicit path: JsPath): ValidationResult[ReportingCompanyModel] =
+    (reportingCompanyModel.ctutr.validate(path \ "ctutr"),
+      optionValidations(reportingCompanyModel.crn.map(_.validate(path \ "crn"))))
+      .mapN((_,_) => reportingCompanyModel)
 }
-
-object GroupCompanyDetailsModel {
-  implicit val format = Json.format[GroupCompanyDetailsModel]
-}
-

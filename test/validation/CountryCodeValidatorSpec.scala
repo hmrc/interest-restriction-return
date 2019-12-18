@@ -16,24 +16,28 @@
 
 package validation
 
-import models.UTRModel
+import models.CountryCodeModel
 import play.api.libs.json.JsPath
 import utils.BaseSpec
 
-class UTRValidatorSpec extends BaseSpec {
+class CountryCodeValidatorSpec extends BaseSpec {
 
   implicit val path = JsPath \ "some" \ "path"
 
-  "UTR Validation" when {
+  "Country Code Validation" when {
 
-    "UTR is supplied and fails Check Sum" in {
-      val model  = UTRModel("1234567890")
-      leftSideError(model.validate).errorMessage shouldBe UTRChecksumError(model).errorMessage
+    "Country Code is supplied and is not the correct length" in {
+      val model  = CountryCodeModel("A")
+      leftSideError(model.validate).errorMessage shouldBe
+        errorMessages(CountryCodeLengthError(model).errorMessage, CountryCodeValueError(model).errorMessage)
     }
 
-    "UTR is supplied and passes Check Sum" in {
-      val model  = UTRModel("9534668155")
-      rightSide(model.validate) shouldBe model
+    "Invalid Country Code supplied" in {
+      leftSideError(invalidCountryCode.validate).errorMessage shouldBe CountryCodeValueError(invalidCountryCode).errorMessage
+    }
+
+    "Valid Country Code supplied" in {
+      rightSide(nonUkCountryCode.validate) shouldBe nonUkCountryCode
     }
   }
 }

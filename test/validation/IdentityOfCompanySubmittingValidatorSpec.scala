@@ -17,49 +17,74 @@
 package validation
 
 import assets.IdentityOfCompanySubmittingConstants._
-import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.JsPath
+import utils.BaseSpec
 
-class IdentityOfCompanySubmittingValidatorSpec extends WordSpec with Matchers {
+class IdentityOfCompanySubmittingValidatorSpec extends BaseSpec {
 
   implicit val path = JsPath \ "some" \ "path"
 
-  "Identity of Company Submitting Validation" when {
+  "Identity of Company Submitting Validation" should {
 
-    "Uk and NonUK fields are populated" should {
+    "Return valid" when {
 
-      "Return invalid" in {
-
-        val model = identityOfCompanySubmittingModelMax.copy(
-          nonUkCrn = Some("1234567"),
-          countryOfIncorporation = Some("US")
-        )
-
-        model.validate.toEither.left.get.head.errorMessage shouldBe CannotBeUkAndNonUk(model).errorMessage
-      }
-    }
-
-    "Uk fields are populated" should {
-
-      "Return valid" in {
+      "Valid UK fields are populated" in {
         val model = identityOfCompanySubmittingModelMax.copy(
           nonUkCrn = None,
           countryOfIncorporation = None
         )
 
-        model.validate.toEither.right.get shouldBe model
+        rightSide(model.validate) shouldBe model
       }
-    }
 
-    "NonUk fields are populated" should {
+      "Valid NonUk fields are populated" in {
 
-      "Return valid" in {
         val model = identityOfCompanySubmittingModelMax.copy(
           crn = None,
           ctutr = None
         )
 
-        model.validate.toEither.right.get shouldBe model
+        rightSide(model.validate) shouldBe model
+      }
+    }
+
+    "Return invalid" when {
+
+      "Uk and NonUK fields are populated" in {
+
+        val model = identityOfCompanySubmittingModelMax.copy(
+          nonUkCrn = Some("1234567"),
+          countryOfIncorporation = Some(nonUkCountryCode)
+        )
+
+        leftSideError(model.validate).errorMessage shouldBe CannotBeUkAndNonUk(model).errorMessage
+      }
+
+      "CTUTR is invalid" in {
+        val model = identityOfCompanySubmittingModelMax.copy(
+          nonUkCrn = None,
+          countryOfIncorporation = None,
+          ctutr = Some(invalidUtr))
+
+        leftSideError(model.validate).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
+      }
+
+      "CRN is invalid" in {
+        val model = identityOfCompanySubmittingModelMax.copy(
+          nonUkCrn = None,
+          countryOfIncorporation = None,
+          crn = Some(invalidCrn))
+
+        leftSideError(model.validate).errorMessage shouldBe CRNFormatCheck(invalidCrn).errorMessage
+      }
+
+      "CountryOfIncorporation is invalid" in {
+        val model = identityOfCompanySubmittingModelMax.copy(
+          crn = None,
+          ctutr = None,
+          countryOfIncorporation = Some(invalidCountryCode))
+
+        leftSideError(model.validate).errorMessage shouldBe CountryCodeValueError(invalidCountryCode).errorMessage
       }
     }
   }

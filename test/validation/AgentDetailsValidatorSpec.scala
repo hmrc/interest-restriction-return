@@ -17,49 +17,49 @@
 package validation
 
 import models.AgentDetailsModel
-import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.JsPath
+import utils.BaseSpec
 
-class AgentDetailsValidatorSpec extends WordSpec with Matchers {
+class AgentDetailsValidatorSpec extends BaseSpec {
 
   implicit val path = JsPath \ "some" \ "path"
 
   "Agent Details Validation" when {
     "passed false and No name should succeed" in {
       val model = AgentDetailsModel(false, None)
-      model.validate.toEither.right.get shouldBe model
+      rightSide(model.validate) shouldBe model
     }
 
     "passed true and Some name (with correct name length) should succeed" in {
       val model = AgentDetailsModel(true, Some("AgentYang"))
-      model.validate.toEither.right.get shouldBe model
+      rightSide(model.validate) shouldBe model
     }
 
     "passed true and Some name (with incorrect name length) should not succeed" in {
       val model = AgentDetailsModel(true, Some(""))
-      model.validate.toEither.left.get.head.errorMessage shouldBe AgentNameLengthError("").errorMessage
+      leftSideError(model.validate).errorMessage shouldBe AgentNameLengthError("").errorMessage
     }
 
     "passed false and Some name (with correct name length) should not succeed" in {
       val model = AgentDetailsModel(false, Some("Yangksy"))
-      model.validate.toEither.left.get.head.errorMessage shouldBe AgentNameSuppliedError("Yangksy").errorMessage
+      leftSideError(model.validate).errorMessage shouldBe AgentNameSuppliedError("Yangksy").errorMessage
 
     }
 
     "passed false and Some name (with incorrect name length) should not succeed with 2 errors" in {
       val model = AgentDetailsModel(false , Some(""))
-      model.validate.toEither.left.get.toChain.get(0).get.errorMessage shouldBe
-        Seq(AgentNameLengthError("").errorMessage, AgentNameSuppliedError("").errorMessage).mkString("|")
+      leftSideError(model.validate).errorMessage shouldBe
+        errorMessages(AgentNameLengthError("").errorMessage, AgentNameSuppliedError("").errorMessage)
     }
 
     "passed true and None should not succeed" in {
       val model = AgentDetailsModel(true, None)
-      model.validate.toEither.left.get.head.errorMessage shouldBe AgentNameNotSuppliedError().errorMessage
+      leftSideError(model.validate).errorMessage shouldBe AgentNameNotSuppliedError().errorMessage
     }
 
     "passed true and Some name (with incorrect name length > maxLength) should not succeed" in {
       val model = AgentDetailsModel(true, Some("a" * 180))
-      model.validate.toEither.left.get.head.errorMessage shouldBe AgentNameLengthError("a" * 180).errorMessage
+      leftSideError(model.validate).errorMessage shouldBe AgentNameLengthError("a" * 180).errorMessage
     }
 
   }
