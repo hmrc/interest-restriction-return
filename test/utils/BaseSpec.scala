@@ -16,6 +16,7 @@
 
 package utils
 
+import assets.BaseConstants
 import config.AppConfig
 import controllers.actions.mocks.{Authorised, Unauthorised}
 import models.requests.IdentifierRequest
@@ -30,7 +31,7 @@ import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.ExecutionContext
 
-trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with MaterializerSupport {
+trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with MaterializerSupport with BaseConstants {
 
   lazy val fakeRequest = FakeRequest("GET", "/")
   lazy implicit val identifierRequest = IdentifierRequest(fakeRequest, "id")

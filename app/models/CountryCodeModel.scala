@@ -14,15 +14,21 @@
  * limitations under the License.
  */
 
-package assets
+package models
 
-import models.{CountryCodeModel, UTRModel}
+import play.api.libs.json.{JsPath, JsString, Reads, Writes}
+import validation.CountryCodeValidator
 
-trait BaseConstants {
+case class CountryCodeModel(code: String) extends CountryCodeValidator {
+  override val countryCodeModel = this
+}
 
-  val ctutr = UTRModel("1123456789")
-  val crn = "12345678"
-  val companyName = "Company Name ltd"
-  val nonUkCountryCode = CountryCodeModel("US")
+object CountryCodeModel {
+
+  implicit val reads: Reads[CountryCodeModel] = JsPath.read[String].map(CountryCodeModel.apply)
+
+  implicit val writes: Writes[CountryCodeModel] = Writes {
+    model => JsString(model.code)
+  }
 
 }

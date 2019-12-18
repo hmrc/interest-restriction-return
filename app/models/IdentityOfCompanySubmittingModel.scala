@@ -22,7 +22,7 @@ import validation.IdentityOfCompanySubmittingValidator
 case class IdentityOfCompanySubmittingModel(companyName: String,
                                             ctutr: Option[UTRModel],
                                             crn: Option[String],
-                                            countryOfIncorporation: Option[String],
+                                            countryOfIncorporation: Option[CountryCodeModel],
                                             nonUkCrn: Option[String]) extends IdentityOfCompanySubmittingValidator {
   override val identityOfCompanySubmitting: IdentityOfCompanySubmittingModel = this
 }

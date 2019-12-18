@@ -21,7 +21,7 @@ import play.api.libs.json.{Format, Json}
 case class DeemedParentModel(companyName: String,
                              ctutr: Option[UTRModel],
                              knownAs: Option[String],
-                             countryOfIncorporation: Option[String],
+                             countryOfIncorporation: Option[CountryCodeModel],
                              crn: Option[String])
 
 object DeemedParentModel {
