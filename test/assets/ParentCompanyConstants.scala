@@ -40,6 +40,17 @@ object ParentCompanyConstants {
     ultimateParent = None,
     deemedParent = None
   )
+
+  val parentCompanyModelUlt = ParentCompanyModel(
+    ultimateParent = Some(ultimateParentModelMax),
+    deemedParent = None
+  )
+
+  val parentCompanyModelDee = ParentCompanyModel(
+    ultimateParent = None,
+    deemedParent = Some(Seq(deemedParentModelMax)
+  )
+  )
 }
 
 

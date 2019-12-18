@@ -17,8 +17,12 @@
 package models
 
 import play.api.libs.json.Json
+import validation.ParentCompanyValidator
 
-case class ParentCompanyModel(ultimateParent: Option[UltimateParentModel], deemedParent: Option[Seq[DeemedParentModel]])
+case class ParentCompanyModel(ultimateParent: Option[UltimateParentModel], deemedParent: Option[Seq[DeemedParentModel]])  extends ParentCompanyValidator {
+  override val parentCompanyModel: ParentCompanyModel = this
+}
+
 
 object ParentCompanyModel {
 
