@@ -26,14 +26,45 @@ class CRNValidatorSpec extends WordSpec with Matchers{
 
   "CRN Validation" when {
 
-    "CRN is supplied and is made up of 8 numbers" in {
-      val model  = CRNModel("12345678")
-      model.validate.toEither.right.get shouldBe model
+    "Return valid" when {
+
+      "CRN is supplied and is made up of 8 numbers" in {
+        val model = CRNModel("12345678")
+        model.validate.toEither.right.get shouldBe model
+      }
+
+      "CRN is supplied and contains 2 letters and 6 numbers" in {
+        val model = CRNModel("AZ123456")
+        model.validate.toEither.right.get shouldBe model
+      }
     }
 
-    "CRN is supplied and contains 2 letters and 6 numbers" in {
-      val model  = CRNModel("AZ123456")
-      model.validate.toEither.right.get shouldBe model
+    "Return invalid" when {
+
+      "CRN is supplied, made up of only numbers and more than 8 numbers" in {
+        val model = CRNModel("12345678999")
+        model.validate.toEither.left.get.head.errorMessage shouldBe crnFormatCheck(model).errorMessage
+      }
+
+      "CRN is supplied, made up of only numbers and is less 8 numbers" in {
+        val model = CRNModel("123456789")
+        model.validate.toEither.left.get.head.errorMessage shouldBe crnFormatCheck(model).errorMessage
+      }
+
+      "CRN is supplied and contains more than 2 letters and 5 numbers" in {
+        val model = CRNModel("AZH23456")
+        model.validate.toEither.left.get.head.errorMessage shouldBe crnFormatCheck(model).errorMessage
+      }
+
+      "CRN is supplied and contains less than 2 letters and 7 numbers" in {
+        val model = CRNModel("A1234567")
+        model.validate.toEither.left.get.head.errorMessage shouldBe crnFormatCheck(model).errorMessage
+      }
+
+      "CRN is supplied and contains invalid characters" in {
+        val model = CRNModel("AA123@?!")
+        model.validate.toEither.left.get.head.errorMessage shouldBe crnFormatCheck(model).errorMessage
+      }
     }
   }
 }
