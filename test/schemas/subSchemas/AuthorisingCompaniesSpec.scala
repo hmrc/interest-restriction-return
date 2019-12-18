@@ -16,6 +16,7 @@
 
 package schemas.subSchemas
 
+import models.UTRModel
 import play.api.libs.json.{JsValue, Json}
 import schemas.BaseSchemaSpec
 import schemas.helpers._
@@ -31,6 +32,13 @@ class AuthorisingCompaniesSpec extends BaseSchemaSpec {
       "valid JSON supplied" in {
         val json = Json.toJson(Seq(AuthorisingCompanies()))
 
+        validate(json) shouldBe true
+      }
+
+      "consent is not supplied" in {
+        val json = Json.toJson(Seq(AuthorisingCompanies(
+          consenting = None
+        )))
         validate(json) shouldBe true
       }
     }
@@ -72,7 +80,7 @@ class AuthorisingCompaniesSpec extends BaseSchemaSpec {
         s"below $utrLength" in {
 
           val json = Json.toJson(Seq(AuthorisingCompanies(
-            utr = Some("1" * (utrLength - 1))
+            utr = Some(UTRModel("1" * (utrLength - 1)))
           )))
 
           validate(json) shouldBe false
@@ -81,7 +89,7 @@ class AuthorisingCompaniesSpec extends BaseSchemaSpec {
         s"above $utrLength" in {
 
           val json = Json.toJson(Seq(AuthorisingCompanies(
-            utr = Some("1" * (utrLength + 1))
+            utr = Some(UTRModel("1" * (utrLength + 1)))
           )))
 
           validate(json) shouldBe false
@@ -90,7 +98,7 @@ class AuthorisingCompaniesSpec extends BaseSchemaSpec {
         "is non numeric" in {
 
           val json = Json.toJson(Seq(AuthorisingCompanies(
-            utr = Some("a" * (utrLength))
+            utr = Some(UTRModel("a" * (utrLength)))
           )))
 
           validate(json) shouldBe false
@@ -99,7 +107,7 @@ class AuthorisingCompaniesSpec extends BaseSchemaSpec {
         "is a symbol" in {
 
           val json = Json.toJson(Seq(AuthorisingCompanies(
-            utr = Some("@")
+            utr = Some(UTRModel("@"))
           )))
 
           validate(json) shouldBe false
@@ -113,6 +121,9 @@ class AuthorisingCompaniesSpec extends BaseSchemaSpec {
 
           validate(json) shouldBe false
         }
+      }
+      "consenting" when {
+
       }
     }
   }

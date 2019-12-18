@@ -16,10 +16,11 @@
 
 package schemas.helpers.abbreviatedReturn
 
+import models.UTRModel
 import play.api.libs.json.Json
 
 case class UKCompanies(companyName: Option[String] = Some("name"),
-                       ctutr: Option[String] = Some("1111111111"),
+                       ctutr: Option[UTRModel] = Some(UTRModel("1111111111")),
                        consenting: Option[Boolean] = Some(true))
 
 object UKCompanies {

@@ -14,38 +14,39 @@
  * limitations under the License.
  */
 
-package assets.revokeReportingCompany
+package assets
 
-import assets.BaseConstants
-import models.revokeReportingCompany.CompanyMakingRevocationModel
+import models.IdentityOfCompanySubmittingModel
 import play.api.libs.json.Json
 
-object CompanyMakingRevocationConstants extends BaseConstants {
+object IdentityOfCompanySubmittingConstants extends BaseConstants {
 
-  val companyName = "some company"
+  val countryCode = "US"
+  val nonUkCrn = "01234567"
 
-  val companyMakingRevocationModelMax = CompanyMakingRevocationModel(
-    companyName = companyName,
-    utr = Some(ctutr),
-    crn = Some(crn),
-    countryOfIncorporation = Some("US")
-  )
-
-  val companyMakingRevocationJsonMax = Json.obj(
+  val identityOfCompanySubmittingJsonMax = Json.obj(
     "companyName" -> companyName,
-    "utr" -> ctutr,
-    "crn" -> crn,
-    "countryOfIncorporation" -> "US"
+    "ctutr" -> ctutr,
+    "crn" -> crn
   )
 
-  val companyMakingRevocationModelMin = CompanyMakingRevocationModel(
+  val identityOfCompanySubmittingModelMax = IdentityOfCompanySubmittingModel(
     companyName = companyName,
-    utr = None,
-    crn = None,
-    countryOfIncorporation = None
+    ctutr = Some(ctutr),
+    crn = Some(crn),
+    countryOfIncorporation = None,
+    nonUkCrn = None
   )
 
-  val companyMakingRevocationJsonMin = Json.obj(
+  val identityOfCompanySubmittingJsonMin = Json.obj(
     "companyName" -> companyName
+  )
+
+  val identityOfCompanySubmittingModelMin = IdentityOfCompanySubmittingModel(
+    companyName = companyName,
+    ctutr = None,
+    crn = None,
+    countryOfIncorporation = None,
+    nonUkCrn = None
   )
 }

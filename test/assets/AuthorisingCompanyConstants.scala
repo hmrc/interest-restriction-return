@@ -21,15 +21,15 @@ import play.api.libs.json.Json
 
 object AuthorisingCompanyConstants extends BaseConstants {
 
-  val companyName = "some authorising company"
-
   val authorisingCompanyJson = Json.obj(
     "companyName" -> companyName,
-    "utr" -> ctutr
+    "utr" -> ctutr,
+    "consenting" -> true
   )
 
   val authorisingCompanyModel = AuthorisingCompanyModel(
     companyName = companyName,
-    utr = ctutr
+    utr = ctutr,
+    consenting = Some(true)
   )
 }

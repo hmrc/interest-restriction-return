@@ -16,20 +16,13 @@
 
 package assets
 
-import models.AuthorisingCompanyModel
 import play.api.libs.json.Json
 
 object AuthorisingCompanyITConstants extends BaseITConstants {
 
-  val companyName = "some authorising company"
-
   val authorisingCompanyJson = Json.obj(
     "companyName" -> companyName,
-    "utr" -> ctutr
-  )
-
-  val authorisingCompanyModel = AuthorisingCompanyModel(
-    companyName = companyName,
-    utr = ctutr
+    "utr" -> ctutr,
+    "consenting" -> true
   )
 }

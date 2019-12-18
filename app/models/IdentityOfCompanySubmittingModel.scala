@@ -17,14 +17,17 @@
 package models
 
 import play.api.libs.json.Json
+import validation.IdentityOfCompanySubmittingValidator
 
-case class IdentityOfAppointingCompanyModel(companyName: String,
-                                            ctutr: Option[String],
+case class IdentityOfCompanySubmittingModel(companyName: String,
+                                            ctutr: Option[UTRModel],
                                             crn: Option[String],
                                             countryOfIncorporation: Option[String],
-                                            localCompanyNumber: Option[Boolean])
+                                            nonUkCrn: Option[String]) extends IdentityOfCompanySubmittingValidator {
+  override val identityOfCompanySubmitting: IdentityOfCompanySubmittingModel = this
+}
 
-object IdentityOfAppointingCompanyModel {
-  implicit val format = Json.format[IdentityOfAppointingCompanyModel]
+object IdentityOfCompanySubmittingModel {
+  implicit val format = Json.format[IdentityOfCompanySubmittingModel]
 }
 

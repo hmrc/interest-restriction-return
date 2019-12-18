@@ -60,6 +60,15 @@ class AppointReportingCompanySchemaSpec extends BaseSchemaSpec {
 
         validate(json) shouldBe true
       }
+
+      "Identity of Appointing Company is None" in {
+
+        val json = Json.toJson(AppointReportingCompanyModel(
+          identityOfAppointingCompany = None
+        ))
+
+        validate(json) shouldBe true
+      }
     }
 
     "Return Invalid" when {
@@ -98,100 +107,6 @@ class AppointReportingCompanySchemaSpec extends BaseSchemaSpec {
           val json = Json.toJson(AppointReportingCompanyModel(authorisingCompanies = None))
 
           validate(json) shouldBe false
-        }
-
-        "companyName" when {
-
-          "exceeds 160" in {
-
-            val json = Json.toJson(AppointReportingCompanyModel(
-              authorisingCompanies = Some(Seq(AuthorisingCompanies(
-                companyName = Some("A" * (maxCompanyNameLength + 1))
-              )))
-            ))
-
-            validate(json) shouldBe false
-          }
-
-          "is empty" in {
-
-            val json = Json.toJson(AppointReportingCompanyModel(
-              authorisingCompanies = Some(Seq(AuthorisingCompanies(
-                companyName = Some("")
-              )))
-            ))
-
-            validate(json) shouldBe false
-          }
-
-          "is not applied" in {
-
-            val json = Json.toJson(AppointReportingCompanyModel(
-              authorisingCompanies = Some(Seq(AuthorisingCompanies(
-                companyName = None
-              )))
-            ))
-
-            validate(json) shouldBe false
-          }
-        }
-
-        "utr" when {
-
-          s"below $utrLength" in {
-
-            val json = Json.toJson(AppointReportingCompanyModel(
-              authorisingCompanies = Some(Seq(AuthorisingCompanies(
-                utr = Some("1" * (utrLength - 1))
-              )))
-            ))
-
-            validate(json) shouldBe false
-          }
-
-          s"above $utrLength" in {
-
-            val json = Json.toJson(AppointReportingCompanyModel(
-              authorisingCompanies = Some(Seq(AuthorisingCompanies(
-                utr = Some("1" * (utrLength + 1))
-              )))
-            ))
-
-            validate(json) shouldBe false
-          }
-
-          "is non numeric" in {
-
-            val json = Json.toJson(AppointReportingCompanyModel(
-              authorisingCompanies = Some(Seq(AuthorisingCompanies(
-                utr = Some("a" * (utrLength))
-              )))
-            ))
-
-            validate(json) shouldBe false
-          }
-
-          "is a symbol" in {
-
-            val json = Json.toJson(AppointReportingCompanyModel(
-              authorisingCompanies = Some(Seq(AuthorisingCompanies(
-                utr = Some("@")
-              )))
-            ))
-
-            validate(json) shouldBe false
-          }
-
-          "is not applied" in {
-
-            val json = Json.toJson(AppointReportingCompanyModel(
-              authorisingCompanies = Some(Seq(AuthorisingCompanies(
-                utr = None
-              )))
-            ))
-
-            validate(json) shouldBe false
-          }
         }
       }
 

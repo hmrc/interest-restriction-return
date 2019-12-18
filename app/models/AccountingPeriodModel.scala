@@ -19,8 +19,11 @@ package models
 import java.time.LocalDate
 
 import play.api.libs.json.Json
+import validation.AccountingPeriodValidator
 
-case class AccountingPeriodModel(startDate: LocalDate, endDate: LocalDate)
+case class AccountingPeriodModel(startDate: LocalDate, endDate: LocalDate) extends AccountingPeriodValidator {
+  override val accountingPeriodModel: AccountingPeriodModel = this
+}
 
 object AccountingPeriodModel {
   implicit val format = Json.format[AccountingPeriodModel]

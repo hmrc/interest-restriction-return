@@ -14,18 +14,26 @@
  * limitations under the License.
  */
 
-package assets
+package validation
 
-import play.api.libs.json.Json
+import models.UTRModel
+import org.scalatest.{Matchers, WordSpec}
+import play.api.libs.json.JsPath
 
-object CompanyMakingRevocationITConstants extends BaseITConstants {
+class UTRValidatorSpec extends WordSpec with Matchers{
 
-  val companyName = "some company"
+  implicit val path = JsPath \ "some" \ "path"
 
-  val companyMakingRevocationJsonMax = Json.obj(
-    "companyName" -> companyName,
-    "utr" -> ctutr,
-    "crn" -> crn,
-    "countryOfIncorporation" -> "US"
-  )
+  "UTR Validation" when {
+
+    "UTR is supplied and fails Check Sum" in {
+      val model  = UTRModel("1234567890")
+      model.validate.toEither.left.get.head.errorMessage shouldBe UTRChecksumError(model).errorMessage
+    }
+
+    "UTR is supplied and passes Check Sum" in {
+      val model  = UTRModel("9534668155")
+      model.validate.toEither.right.get shouldBe model
+    }
+  }
 }

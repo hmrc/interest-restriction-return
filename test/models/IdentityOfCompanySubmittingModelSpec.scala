@@ -14,30 +14,30 @@
  * limitations under the License.
  */
 
-package models.revokeReportingCompany
+package models
 
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
-import assets.revokeReportingCompany.CompanyMakingRevocationConstants._
+import assets.IdentityOfCompanySubmittingConstants._
 
-class CompanyMakingRevocationModelSpec extends WordSpec with Matchers {
+class IdentityOfCompanySubmittingModelSpec extends WordSpec with Matchers {
 
-  "CompanyMakingRevocationModel" must {
+  "IdentityOfCompanySubmittingModel" must {
 
     "correctly write to json" when {
 
       "max values given" in {
 
-        val expectedValue = companyMakingRevocationJsonMax
-        val actualValue = Json.toJson(companyMakingRevocationModelMax)
+        val expectedValue = identityOfCompanySubmittingJsonMax
+        val actualValue = Json.toJson(identityOfCompanySubmittingModelMax)
 
         actualValue shouldBe expectedValue
       }
 
       "min values given" in {
 
-        val expectedValue = companyMakingRevocationJsonMin
-        val actualValue = Json.toJson(companyMakingRevocationModelMin)
+        val expectedValue = identityOfCompanySubmittingJsonMin
+        val actualValue = Json.toJson(identityOfCompanySubmittingModelMin)
 
         actualValue shouldBe expectedValue
       }
@@ -47,16 +47,16 @@ class CompanyMakingRevocationModelSpec extends WordSpec with Matchers {
 
       "max values given" in {
 
-        val expectedValue = companyMakingRevocationModelMax
-        val actualValue = companyMakingRevocationJsonMax.as[CompanyMakingRevocationModel]
+        val expectedValue = identityOfCompanySubmittingModelMax
+        val actualValue = identityOfCompanySubmittingJsonMax.as[IdentityOfCompanySubmittingModel]
 
         actualValue shouldBe expectedValue
       }
 
       "min values given" in {
 
-        val expectedValue = companyMakingRevocationModelMin
-        val actualValue = companyMakingRevocationJsonMin.as[CompanyMakingRevocationModel]
+        val expectedValue = identityOfCompanySubmittingModelMin
+        val actualValue = identityOfCompanySubmittingJsonMin.as[IdentityOfCompanySubmittingModel]
 
         actualValue shouldBe expectedValue
       }

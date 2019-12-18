@@ -16,13 +16,13 @@
 
 package models.revokeReportingCompany
 
-import models.{AccountingPeriodModel, AgentDetailsModel, AuthorisingCompanyModel, ReportingCompanyModel, UltimateParentModel}
+import models.{AccountingPeriodModel, AgentDetailsModel, AuthorisingCompanyModel, IdentityOfCompanySubmittingModel, ReportingCompanyModel, UltimateParentModel}
 import play.api.libs.json.Json
 
 case class RevokeReportingCompanyModel(agentDetails: AgentDetailsModel,
                                        reportingCompany: ReportingCompanyModel,
                                        isReportingCompanyRevokingItself: Boolean,
-                                       companyMakingRevocation: Option[CompanyMakingRevocationModel],
+                                       companyMakingRevocation: Option[IdentityOfCompanySubmittingModel],
                                        ultimateParent: Option[UltimateParentModel],
                                        accountingPeriod: AccountingPeriodModel,
                                        authorisingCompanies: Seq[AuthorisingCompanyModel],

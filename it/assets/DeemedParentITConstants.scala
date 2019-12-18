@@ -4,8 +4,7 @@ import play.api.libs.json.Json
 
 object DeemedParentITConstants extends BaseITConstants {
 
-  val companyName = "some company ltd"
-  val knownAs = "some company"
+val knownAs = "some company"
   val nonUkCountryCode = "US"
 
   val deemedParentJson= Json.obj(

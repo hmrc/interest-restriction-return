@@ -23,8 +23,8 @@ import play.api.libs.json.Json
 
 object AccountingPeriodConstants {
 
-  val startDate: LocalDate = LocalDate.of(2000,1,1)
-  val endDate: LocalDate = LocalDate.of(2010,1,1)
+  val startDate: LocalDate = LocalDate.now().minusMonths(18)
+  val endDate: LocalDate = startDate.plusMonths(18).minusDays(1)
 
   val accountingPeriodModel = AccountingPeriodModel(
     startDate = startDate,

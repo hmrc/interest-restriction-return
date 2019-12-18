@@ -18,16 +18,11 @@ package assets
 
 import play.api.libs.json.Json
 
-object IdentityOfAppointingCompanyITConstants extends BaseITConstants {
+object IdentityOfCompanySubmittingITConstants extends BaseITConstants {
 
-  val identityOfAppointingCompanyName = "some other appointing company"
-  val countryCode = "US"
-
-  val identityOfAppointingCompanyJson = Json.obj(
-    "companyName" -> identityOfAppointingCompanyName,
+  val identityOfCompanySubmittingJson = Json.obj(
+    "companyName" -> companyName,
     "ctutr" -> ctutr,
-    "crn" -> crn,
-    "countryOfIncorporation" -> "US",
-    "localCompanyNumber" -> true
+    "crn" -> crn
   )
 }

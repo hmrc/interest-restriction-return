@@ -16,19 +16,31 @@
 
 package models
 
-import play.api.libs.json.{JsPath, Json, JsonValidationError, Writes}
+import cats.data.NonEmptyChain
+import play.api.libs.json.{JsPath, JsValue, Json, JsonValidationError, Writes}
 
-case class ValidationErrorResponseModel(field: JsPath, errors: Seq[JsonValidationError])
+case class ValidationErrorResponseModel(field: String, value: JsValue = Json.obj(), errors: Seq[String])
 
 object ValidationErrorResponseModel {
   implicit val writes: Writes[ValidationErrorResponseModel] = Writes { models =>
-    Json.obj("field" -> models.field.toString(), "errors" -> models.errors.flatMap(_.messages))
+    Json.obj("field" -> models.field.toString(),
+      "value" -> models.value,
+      "errors" -> models.errors
+    )
   }
 
   def apply(errors: Seq[(JsPath, Seq[JsonValidationError])]): Seq[ValidationErrorResponseModel] = {
     errors.map {
-      case (field, errs) => ValidationErrorResponseModel(field, errs)
+      case (field, errs) => ValidationErrorResponseModel(field = field.toString, errors = errs.flatMap(_.messages))
     }
+  }
+
+  def apply(errors: NonEmptyChain[Validation]): Seq[ValidationErrorResponseModel] = {
+    errors.toChain.toList.map(errs => ValidationErrorResponseModel(
+      field = errs.path.toString,
+      errors = errs.errorMessage.split("\\|"),
+      value = errs.value
+    ))
   }
 }
 

@@ -16,10 +16,12 @@
 
 package schemas.helpers
 
+import models.UTRModel
 import play.api.libs.json.Json
 
 case class AuthorisingCompanies(companyName: Option[String] = Some("cde ltd"),
-                                utr: Option[String] = Some("1234567890"))
+                                utr: Option[UTRModel] = Some(UTRModel("1234567890")),
+                                consenting: Option[Boolean] = Some(true))
 
 object AuthorisingCompanies {
   implicit val writes = Json.writes[AuthorisingCompanies]

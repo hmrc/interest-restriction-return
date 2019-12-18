@@ -22,7 +22,7 @@ import schemas.helpers._
 case class RevokeReportingCompanyModel(agentDetails: Option[AgentDetails] = Some(AgentDetails()),
                                        reportingCompany: Option[ReportingCompany] = Some(ReportingCompany()),
                                        isReportingCompanyRevokingItself: Option[Boolean] = Some(true),
-                                       companyMakingRevocation: Option[CompanyMakingRevocation] = Some(CompanyMakingRevocation()),
+                                       companyMakingRevocation: Option[IdentityOfCompanySubmitting] = Some(IdentityOfCompanySubmitting()),
                                        ultimateParent: Option[UltimateParent] = Some(UltimateParent()),
                                        accountingPeriod: Option[AccountingPeriod] = Some(AccountingPeriod()),
                                        authorisingCompanies: Option[Seq[AuthorisingCompanies]] = Some(Seq(AuthorisingCompanies())),

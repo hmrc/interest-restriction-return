@@ -21,7 +21,7 @@ import assets.AllocatedReactivationsITConstants._
 import assets.AllocatedRestrictionsITConstants._
 object UkCompanyITConstants extends BaseITConstants {
 
-  val companyName = "some company"
+
   val netTaxInterestExpense: BigDecimal = 1.11
   val netTaxInterestIncome: BigDecimal = 2.22
   val taxEBITDA: BigDecimal = 3.33

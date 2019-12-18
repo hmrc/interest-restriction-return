@@ -14,15 +14,21 @@
  * limitations under the License.
  */
 
-package models.revokeReportingCompany
+package models
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsPath, JsString, Reads, Writes}
+import validation.UTRValidator
 
-case class CompanyMakingRevocationModel(companyName:String,
-                                        utr: Option[String],
-                                        crn: Option[String],
-                                        countryOfIncorporation: Option[String])
+case class UTRModel(utr: String) extends UTRValidator{
+  override val utrModel = this
+}
 
-object CompanyMakingRevocationModel {
-  implicit val format = Json.format[CompanyMakingRevocationModel]
+object UTRModel {
+
+  implicit val reads: Reads[UTRModel] = JsPath.read[String].map(UTRModel.apply)
+
+  implicit val writes: Writes[UTRModel] = Writes {
+    model => JsString(model.utr)
+  }
+
 }

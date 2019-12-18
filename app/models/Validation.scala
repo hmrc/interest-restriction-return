@@ -17,9 +17,12 @@
 package models
 
 import cats.data.ValidatedNec
+import play.api.libs.json.{JsPath, JsValue}
 
 trait Validation {
-  def errorMessages: String
+  val errorMessage: String
+  val path: JsPath
+  val value: JsValue
 }
 
 object Validation {

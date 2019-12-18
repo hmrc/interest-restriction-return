@@ -16,6 +16,7 @@
 
 package schemas.subSchemas
 
+import models.UTRModel
 import play.api.libs.json.{JsValue, Json}
 import schemas.BaseSchemaSpec
 import schemas.helpers._
@@ -90,7 +91,7 @@ class DeemedCompanySchemaSpec extends BaseSchemaSpec {
         s"below $utrLength" in {
 
           val json = Json.toJson(Seq(DeemedParent(
-            ctutr = Some("1" * (utrLength - 1))
+            ctutr = Some(UTRModel("1" * (utrLength - 1)))
           )))
 
           validate(json) shouldBe false
@@ -99,7 +100,7 @@ class DeemedCompanySchemaSpec extends BaseSchemaSpec {
         s"above $utrLength" in {
 
           val json = Json.toJson(Seq(DeemedParent(
-            ctutr = Some("1" * (utrLength + 1))
+            ctutr = Some(UTRModel("1" * (utrLength + 1)))
           )))
 
 
@@ -109,7 +110,7 @@ class DeemedCompanySchemaSpec extends BaseSchemaSpec {
         "is non numeric" in {
 
           val json = Json.toJson(Seq(DeemedParent(
-            ctutr = Some("a" * utrLength)
+            ctutr = Some(UTRModel("a" * utrLength))
           )))
 
 
@@ -119,7 +120,7 @@ class DeemedCompanySchemaSpec extends BaseSchemaSpec {
         "is a symbol" in {
 
           val json = Json.toJson(Seq(DeemedParent(
-            ctutr = Some("@")
+            ctutr = Some(UTRModel("@"))
           )))
 
           validate(json) shouldBe false

@@ -12,7 +12,7 @@
       "type": "boolean"
     },
     "companyMakingRevocation" : {
-      "$ref": "subSchemas/companyMakingRevocation.json"
+      "$ref": "subSchemas/identityOfCompanySubmitting.json"
     },
     "ultimateParent": {
       "$ref": "subSchemas/ultimateParent.json"

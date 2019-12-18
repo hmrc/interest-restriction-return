@@ -11,8 +11,11 @@
     "authorisingCompanies": {
       "$ref": "subSchemas/authorisingCompanies.json"
     },
+    "isReportingCompanyAppointingItself": {
+      "type": "boolean"
+    },
     "identityOfAppointingCompany":{
-      "$ref": "subSchemas/identityOfAppointingCompany.json"
+      "$ref": "subSchemas/identityOfCompanySubmitting.json"
     },
     "ultimateParentCompany": {
       "$ref": "subSchemas/ultimateParent.json"
@@ -28,7 +31,7 @@
     "agentDetails",
     "authorisingCompanies",
     "reportingCompany",
-    "identityOfAppointingCompany",
+    "isReportingCompanyAppointingItself",
     "accountingPeriod",
     "declaration"
   ],

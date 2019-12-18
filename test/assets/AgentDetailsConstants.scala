@@ -34,11 +34,11 @@ object AgentDetailsConstants {
   )
 
   val agentDetailsJsonMin = Json.obj(
-    "agentActingOnBehalfOfCompany" -> true
+    "agentActingOnBehalfOfCompany" -> false
   )
 
   val agentDetailsModelMin = AgentDetailsModel(
-    agentActingOnBehalfOfCompany = true,
+    agentActingOnBehalfOfCompany = false,
     agentName = None
   )
 }
