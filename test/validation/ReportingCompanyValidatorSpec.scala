@@ -16,27 +16,31 @@
 
 package validation
 
-import models.CountryCodeModel
+import assets.ReportingCompanyConstants._
 import play.api.libs.json.JsPath
 
-class CountryCodeValidatorSpec extends BaseValidationSpec {
+class ReportingCompanyValidatorSpec extends BaseValidationSpec {
 
   implicit val path = JsPath \ "some" \ "path"
 
-  "Country Code Validation" when {
+  "Reporting Company Validation" should {
 
-    "Country Code is supplied and is not the correct length" in {
-      val model  = CountryCodeModel("A")
-      leftSideError(model.validate).errorMessage shouldBe
-        errorMessages(CountryCodeLengthError(model).errorMessage, CountryCodeValueError(model).errorMessage)
+    "Return valid" when {
+
+      "a valid Reporting Company model is validated" in {
+        rightSide(reportingCompanyModelMax.validate) shouldBe reportingCompanyModelMax
+      }
     }
 
-    "Invalid Country Code supplied" in {
-      leftSideError(invalidCountryCode.validate).errorMessage shouldBe CountryCodeValueError(invalidCountryCode).errorMessage
-    }
+    "Return invalid" when {
 
-    "Valid Country Code supplied" in {
-      rightSide(nonUkCountryCode.validate) shouldBe nonUkCountryCode
+      "CTUTR is invalid" in {
+        leftSideError(reportingCompanyModelMax.copy(ctutr = invalidUtr).validate).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
+      }
+
+      "CRN is invalid" in {
+        leftSideError(reportingCompanyModelMax.copy(crn = Some(invalidCrn)).validate).errorMessage shouldBe CRNFormatCheck(invalidCrn).errorMessage
+      }
     }
   }
 }
