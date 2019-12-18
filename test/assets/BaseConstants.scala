@@ -27,6 +27,7 @@ trait BaseConstants {
   val invalidCrn = CRNModel("AAAA1234")
 
   val companyName = "Company Name ltd"
+
   val nonUkCountryCode = CountryCodeModel("US")
   val invalidCountryCode = CountryCodeModel("AA")
 

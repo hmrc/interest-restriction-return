@@ -18,6 +18,7 @@ package config
 
 object Constants {
 
+  val intMax = 32767
   val countryCodeLength = 2
   val validCountryCodes: Seq[String] = Seq(
     "AD",
