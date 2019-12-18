@@ -16,14 +16,20 @@
 
 package models
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json.{JsPath, JsString, Reads, Writes}
+import validation.CompanyNameValidator
 
-case class DeemedParentModel(companyName: CompanyNameModel,
-                             ctutr: Option[UTRModel],
-                             knownAs: Option[String],
-                             countryOfIncorporation: Option[CountryCodeModel],
-                             crn: Option[CRNModel])
 
-object DeemedParentModel {
-  implicit def format: Format[DeemedParentModel] = Json.format[DeemedParentModel]
+case class CompanyNameModel(name: String) extends CompanyNameValidator{
+  override val companyNameModel: CompanyNameModel = this
+}
+
+object CompanyNameModel {
+
+  implicit val reads: Reads[CompanyNameModel] = JsPath.read[String].map(CompanyNameModel.apply)
+
+  implicit val writes: Writes[CompanyNameModel] = Writes {
+    model => JsString(model.name)
+  }
+
 }
