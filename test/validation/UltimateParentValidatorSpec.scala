@@ -23,11 +23,33 @@ class UltimateParentValidatorSpec extends BaseValidationSpec {
 
   implicit val path = JsPath \ "some" \ "path"
 
-  "Ultimate Parent Validation" when {
+  "Ultimate Parent Validation" should {
 
-    "Uk and NonUK fields are populated" should {
+    "Return valid" when {
 
-      "Return invalid" in {
+      "Uk fields are populated" in {
+        val model = ultimateParentModelMax.copy(
+          nonUkCrn = None,
+          countryOfIncorporation = None
+        )
+
+        rightSide(model.validate) shouldBe model
+      }
+
+      "NonUk fields are populated" in {
+
+        val model = ultimateParentModelMax.copy(
+          crn = None,
+          ctutr = None
+        )
+
+        rightSide(model.validate) shouldBe model
+      }
+    }
+
+    "Return invalid" when {
+
+      "Uk and NonUK fields are populated" in {
 
         val model = ultimateParentModelMax.copy(
           nonUkCrn = Some("12345678"),
@@ -36,30 +58,33 @@ class UltimateParentValidatorSpec extends BaseValidationSpec {
 
         leftSideError(model.validate).errorMessage shouldBe UltimateParentCannotBeUkAndNonUk(model).errorMessage
       }
-    }
 
-      "Uk fields are populated" should {
+      "CTUTR is invalid" in {
+        val model = ultimateParentModelMax.copy(
+          nonUkCrn = None,
+          countryOfIncorporation = None,
+          ctutr = Some(invalidUtr))
 
-        "Return valid" in {
-          val model = ultimateParentModelMax.copy(
-            nonUkCrn = None,
-            countryOfIncorporation = None
-          )
-
-          rightSide(model.validate) shouldBe model
-        }
+        leftSideError(model.validate).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
       }
 
-      "NonUk fields are populated" should {
+      "CRN is invalid" in {
+        val model = ultimateParentModelMax.copy(
+          nonUkCrn = None,
+          countryOfIncorporation = None,
+          crn = Some(invalidCrn))
 
-        "Return valid" in {
-          val model = ultimateParentModelMax.copy(
-            crn = None,
-            ctutr = None
-          )
+        leftSideError(model.validate).errorMessage shouldBe CRNFormatCheck(invalidCrn).errorMessage
+      }
 
-          rightSide(model.validate) shouldBe model
-        }
+      "CountryOfIncorporation is invalid" in {
+        val model = ultimateParentModelMax.copy(
+          crn = None,
+          ctutr = None,
+          countryOfIncorporation = Some(invalidCountryCode))
+
+        leftSideError(model.validate).errorMessage shouldBe CountryCodeValueError(invalidCountryCode).errorMessage
       }
     }
   }
+}

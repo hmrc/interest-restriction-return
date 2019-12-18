@@ -28,5 +28,6 @@ trait BaseConstants {
 
   val companyName = "Company Name ltd"
   val nonUkCountryCode = CountryCodeModel("US")
+  val invalidCountryCode = CountryCodeModel("AA")
 
 }
