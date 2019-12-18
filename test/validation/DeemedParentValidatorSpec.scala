@@ -18,8 +18,9 @@ package validation
 
 import assets.DeemedParentConstants._
 import play.api.libs.json.JsPath
+import utils.BaseSpec
 
-class DeemedParentValidatorSpec extends BaseValidationSpec {
+class DeemedParentValidatorSpec extends BaseSpec {
 
   implicit val path = JsPath \ "some" \ "path"
 

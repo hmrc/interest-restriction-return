@@ -20,8 +20,9 @@ import java.time.LocalDate
 
 import assets.AccountingPeriodConstants._
 import play.api.libs.json.JsPath
+import utils.BaseSpec
 
-class AccountingPeriodValidatorSpec extends BaseValidationSpec {
+class AccountingPeriodValidatorSpec extends BaseSpec {
 
   implicit val path = JsPath \ "some" \ "path"
 

@@ -22,8 +22,9 @@ import assets.GroupCompanyDetailsConstants._
 import config.Constants
 import models.AccountingPeriodModel
 import play.api.libs.json.JsPath
+import utils.BaseSpec
 
-class GroupCompanyDetailsValidatorSpec extends BaseValidationSpec {
+class GroupCompanyDetailsValidatorSpec extends BaseSpec {
 
   implicit val path = JsPath \ "some" \ "path"
 

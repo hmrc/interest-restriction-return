@@ -18,8 +18,9 @@ package validation
 
 import models.CountryCodeModel
 import play.api.libs.json.JsPath
+import utils.BaseSpec
 
-class CountryCodeValidatorSpec extends BaseValidationSpec {
+class CountryCodeValidatorSpec extends BaseSpec {
 
   implicit val path = JsPath \ "some" \ "path"
 

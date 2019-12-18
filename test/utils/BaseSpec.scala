@@ -19,6 +19,8 @@ package utils
 import assets.BaseConstants
 import config.AppConfig
 import controllers.actions.mocks.{Authorised, Unauthorised}
+import models.Validation
+import models.Validation.ValidationResult
 import models.requests.IdentifierRequest
 import org.scalatest.{Matchers, WordSpec}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
@@ -45,5 +47,12 @@ trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with Mate
 
   object AuthorisedAction extends Authorised[Option[Credentials]](Some(Credentials("id", "SCP")), bodyParsers)
   object UnauthorisedAction extends Unauthorised(new MissingBearerToken, bodyParsers)
+
+  def rightSide[A](validationResult: ValidationResult[A]): A = validationResult.toEither.right.get
+  def leftSideError[A](validationResult: ValidationResult[A], position: Int = 0): Validation = {
+    validationResult.toEither.left.get.toChain.toList(position)
+  }
+
+  def errorMessages(messages: String*) = messages.mkString("|")
 
 }

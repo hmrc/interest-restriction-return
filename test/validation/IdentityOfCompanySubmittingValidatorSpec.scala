@@ -18,8 +18,9 @@ package validation
 
 import assets.IdentityOfCompanySubmittingConstants._
 import play.api.libs.json.JsPath
+import utils.BaseSpec
 
-class IdentityOfCompanySubmittingValidatorSpec extends BaseValidationSpec {
+class IdentityOfCompanySubmittingValidatorSpec extends BaseSpec {
 
   implicit val path = JsPath \ "some" \ "path"
 

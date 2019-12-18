@@ -17,12 +17,12 @@
 package validation
 
 import assets.IdentityOfCompanySubmittingConstants._
-import assets.appointReportingCompany.AppointReportingCompanyConstants._
 import assets.ReportingCompanyConstants._
 import assets.UltimateParentConstants._
-import org.scalatest.{Matchers, WordSpec}
+import assets.appointReportingCompany.AppointReportingCompanyConstants._
+import utils.BaseSpec
 
-class AppointReportingCompanyValidatorSpec extends BaseValidationSpec {
+class AppointReportingCompanyValidatorSpec extends BaseSpec {
 
   "Appoint Reporting Company Validation" when {
 
