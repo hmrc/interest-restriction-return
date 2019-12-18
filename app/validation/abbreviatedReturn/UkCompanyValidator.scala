@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-package models.abbreviatedReturn
+package validation.abbreviatedReturn
 
-import models.{CompanyNameModel, UTRModel}
-import play.api.libs.json.Json
-import validation.abbreviatedReturn.UkCompanyValidator
+import models.Validation.ValidationResult
+import models.abbreviatedReturn.UkCompanyModel
+import play.api.libs.json.JsPath
+import validation.BaseValidation
 
-case class UkCompanyModel(companyName: CompanyNameModel,
-                          ctutr: UTRModel,
-                          consenting: Boolean) extends UkCompanyValidator {
-  override val ukCompany: UkCompanyModel = this
-}
+trait UkCompanyValidator extends BaseValidation {
 
-object UkCompanyModel {
-  implicit val format = Json.format[UkCompanyModel]
+  val ukCompany: UkCompanyModel
+
+  def validate(implicit path: JsPath): ValidationResult[UkCompanyModel] =
+    ukCompany.ctutr.validate(path \ "ctutr").map(_ => ukCompany)
 }
