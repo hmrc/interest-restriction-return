@@ -38,7 +38,7 @@ object ValidationErrorResponseModel {
   def apply(errors: NonEmptyChain[Validation]): Seq[ValidationErrorResponseModel] = {
     errors.toChain.toList.map(errs => ValidationErrorResponseModel(
       field = errs.path.toString,
-      errors = Seq(errs.errorMessage),
+      errors = errs.errorMessage.split("\\|"),
       value = errs.value
     ))
   }

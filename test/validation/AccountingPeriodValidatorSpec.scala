@@ -56,8 +56,10 @@ class AccountingPeriodValidatorSpec extends WordSpec with Matchers {
 
       "Accounting period is greater than or equal to 18 months" in {
 
+        val startDate = LocalDate.now().minusMonths(20)
         val endDate = startDate.plusMonths(18)
         val model = accountingPeriodModel.copy(
+          startDate = startDate,
           endDate = endDate
         )
         model.validate.toEither.left.get.head.errorMessage shouldBe AccountingPeriod18MonthsMax(endDate).errorMessage

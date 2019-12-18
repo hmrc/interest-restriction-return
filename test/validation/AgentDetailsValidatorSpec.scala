@@ -48,8 +48,8 @@ class AgentDetailsValidatorSpec extends WordSpec with Matchers {
 
     "passed false and Some name (with incorrect name length) should not succeed with 2 errors" in {
       val model = AgentDetailsModel(false , Some(""))
-      model.validate.toEither.left.get.toChain.get(0).get.errorMessage shouldBe AgentNameLengthError("").errorMessage
-      model.validate.toEither.left.get.toChain.get(1).get.errorMessage shouldBe AgentNameSuppliedError("").errorMessage
+      model.validate.toEither.left.get.toChain.get(0).get.errorMessage shouldBe
+        Seq(AgentNameLengthError("").errorMessage, AgentNameSuppliedError("").errorMessage).mkString("|")
     }
 
     "passed true and None should not succeed" in {

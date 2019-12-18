@@ -20,7 +20,7 @@ import models.Validation.ValidationResult
 import models.{IdentityOfCompanySubmittingModel, Validation}
 import play.api.libs.json.{JsPath, Json}
 
-trait IdentityOfCompanySubmittingValidator {
+trait IdentityOfCompanySubmittingValidator extends BaseValidation {
 
   import cats.implicits._
 
@@ -38,7 +38,9 @@ trait IdentityOfCompanySubmittingValidator {
   }
 
   def validate(implicit path: JsPath): ValidationResult[IdentityOfCompanySubmittingModel] =
-    validateIdentityOfCompanySubmitting.map(_ => identityOfCompanySubmitting)
+    (validateIdentityOfCompanySubmitting,
+      optionValidations(identityOfCompanySubmitting.ctutr.map(_.validate(path \ "ctutr")))
+      ).mapN((_,_) => identityOfCompanySubmitting)
 }
 
 case class CannotBeUkAndNonUk(companySubmitting: IdentityOfCompanySubmittingModel)(implicit val path: JsPath) extends Validation {

@@ -59,6 +59,6 @@ case class UTRChecksumError(utrValue: UTRModel)(implicit val path: JsPath) exten
 }
 
 case class UTRLengthError(utrValue: UTRModel)(implicit val path: JsPath) extends Validation {
-  val errorMessage: String = s"UTR is only ${utrValue.utr.length} character${if (utrValue.utr.length != 1) "s" else ""} long and should be 10"
+  val errorMessage: String = s"UTR is ${utrValue.utr.length} character${if (utrValue.utr.length != 1) "s" else ""} long and should be 10"
   val value = Json.toJson(utrValue)
 }

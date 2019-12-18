@@ -20,7 +20,7 @@ import models.Validation.ValidationResult
 import models.{UltimateParentModel, Validation}
 import play.api.libs.json.{JsPath, Json}
 
-trait UltimateParentValidator {
+trait UltimateParentValidator extends BaseValidation {
 
   import cats.implicits._
 
@@ -37,7 +37,10 @@ trait UltimateParentValidator {
     }
   }
 
-  def validate(implicit path: JsPath): ValidationResult[UltimateParentModel] = validateParentCanNotBeUkAndNonUk
+  def validate(implicit path: JsPath): ValidationResult[UltimateParentModel] =
+    (validateParentCanNotBeUkAndNonUk,
+      optionValidations(ultimateParentModel.ctutr.map(_.validate(path \ "ctutr")))
+      ).mapN((_,_) => ultimateParentModel)
 }
 
 case class UltimateParentCannotBeUkAndNonUk(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {

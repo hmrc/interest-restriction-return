@@ -16,7 +16,6 @@
 
 package validation
 
-import cats.data.{NonEmptyChain, Validated}
 import models.Validation.ValidationResult
 import models.{AgentDetailsModel, Validation}
 import play.api.libs.json.{JsPath, JsString, Json}
@@ -38,7 +37,7 @@ trait AgentDetailsValidator extends BaseValidation {
       case _ => agentDetailsModel.agentName.validNec
     }
 
-    combineValidations(lengthCheck, suppliedCheck)
+    combineValidationsForField(lengthCheck, suppliedCheck)
   }
 
   def validate(implicit path: JsPath): ValidationResult[AgentDetailsModel] = validateAgentName.map(_ => agentDetailsModel)

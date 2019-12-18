@@ -22,7 +22,7 @@ import models.Validation.ValidationResult
 import models.{AccountingPeriodModel, Validation}
 import play.api.libs.json.{JsPath, Json}
 
-trait AccountingPeriodValidator {
+trait AccountingPeriodValidator extends BaseValidation {
 
   import cats.implicits._
 
@@ -58,9 +58,9 @@ trait AccountingPeriodValidator {
 
   def validate(implicit path: JsPath): ValidationResult[AccountingPeriodModel] =
     (validateStartDateCannotBeInFuture,
-      validateEndDateAfterStartDate,
+      combineValidationsForField(validateEndDateAfterStartDate,
       validateAccountingPeriod18MonthsMax,
-      validateEndDateCannotBeInTheFuture).mapN((_, _, _, _) => accountingPeriodModel)
+      validateEndDateCannotBeInTheFuture)).mapN((_, _) => accountingPeriodModel)
 
 }
 
