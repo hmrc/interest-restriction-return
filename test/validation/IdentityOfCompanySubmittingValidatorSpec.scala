@@ -17,7 +17,6 @@
 package validation
 
 import assets.IdentityOfCompanySubmittingConstants._
-import models.CRNModel
 import play.api.libs.json.JsPath
 
 class IdentityOfCompanySubmittingValidatorSpec extends BaseValidationSpec {
@@ -31,7 +30,7 @@ class IdentityOfCompanySubmittingValidatorSpec extends BaseValidationSpec {
       "Return invalid" in {
 
         val model = identityOfCompanySubmittingModelMax.copy(
-          nonUkCrn = Some(CRNModel("1234567")),
+          nonUkCrn = Some("1234567"),
           countryOfIncorporation = Some(nonUkCountryCode)
         )
 

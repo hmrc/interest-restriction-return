@@ -145,7 +145,7 @@ class IdentityOfCompanySubmittingSchemaSpec extends BaseSchemaSpec {
 
         s"is empty" in {
 
-          val json = Json.toJson(UltimateParent(nonUkCrn = Some(CRNModel(""))))
+          val json = Json.toJson(UltimateParent(nonUkCrn = Some((""))))
 
           validate(json) shouldBe false
         }

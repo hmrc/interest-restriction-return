@@ -24,7 +24,7 @@ case class UltimateParent(registeredCompanyName: Option[String] = Some("Ladon lt
                           crn: Option[CRNModel] = Some(CRNModel("AB123456")),
                           knownAs: Option[String] = Some("TwixBar"),
                           countryOfIncorporation: Option[String] = Some("US"),
-                          nonUkCrn: Option[CRNModel] = Some(CRNModel("Aa1234567890"))
+                          nonUkCrn: Option[String] = Some("Aa1234567890")
                          )
 
 object UltimateParent {
