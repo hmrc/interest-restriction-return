@@ -98,6 +98,13 @@ class BaseValidationSpec extends WordSpec with Matchers{
       result.toEither.left.get.head.errorMessage shouldBe "error"
       result.toEither.left.get.toList(1).errorMessage shouldBe "error1"
     }
+
+    "return Right(None) if there are no valids or invalids" in {
+
+      val result1 = baseValidation.optionValidations()
+
+      result1.toEither shouldBe Right(None)
+    }
   }
 
 }
