@@ -46,14 +46,14 @@ class BaseValidationSpec extends WordSpec with Matchers with BaseSpec {
 
       val result = baseValidation.combineValidationsForField(Valid("ok"))
 
-      result.getOrElse("") shouldBe "ok"
+      rightSide(result) shouldBe "ok"
     }
 
     "return 2 invalids as a single message if there are 2 errors" in {
 
       val result = baseValidation.combineValidationsForField(TestError().invalidNec,TestError1().invalidNec)
 
-      result.toEither.left.get.head.errorMessage shouldBe "error|error1"
+      leftSideError(result).errorMessage shouldBe "error|error1"
     }
   }
 
@@ -62,15 +62,15 @@ class BaseValidationSpec extends WordSpec with Matchers with BaseSpec {
 
       val result = baseValidation.combineValidations(Valid("ok"))
 
-      result.getOrElse("") shouldBe "ok"
+     rightSide(result) shouldBe "ok"
     }
 
     "return 2 invalids if there are 2 errors" in {
 
       val result = baseValidation.combineValidations(TestError().invalidNec,TestError1().invalidNec)
 
-      result.toEither.left.get.head.errorMessage shouldBe "error"
-      result.toEither.left.get.toList(1).errorMessage shouldBe "error1"
+      leftSideError(result).errorMessage shouldBe "error"
+      leftSideError(result,1).errorMessage shouldBe "error1"
     }
   }
 
@@ -79,29 +79,30 @@ class BaseValidationSpec extends WordSpec with Matchers with BaseSpec {
 
       val result = baseValidation.optionValidations(Some(Valid("ok")))
 
-      result.getOrElse("") shouldBe Some("ok")
+      rightSide(result) shouldBe Some("ok")
     }
 
     "return none if the data was empty" in {
 
       val result = baseValidation.optionValidations(None)
 
-      result.getOrElse("") shouldBe None
+      rightSide(result) shouldBe None
     }
 
-    "return 2 invalids if there are 2 errors" in {
+    "return 3 invalids if there are 3 errors" in {
 
-      val result = baseValidation.optionValidations(Some(TestError().invalidNec),Some(TestError1().invalidNec))
+      val result = baseValidation.optionValidations(Some(TestError().invalidNec),Some(TestError1().invalidNec),Some(TestError1().invalidNec))
 
-      result.toEither.left.get.head.errorMessage shouldBe "error"
-      result.toEither.left.get.toList(1).errorMessage shouldBe "error1"
+      leftSideError(result).errorMessage shouldBe "error"
+      leftSideError(result,1).errorMessage shouldBe "error1"
+      leftSideError(result,2).errorMessage shouldBe "error1"
     }
 
     "return Right(None) if there are no valids or invalids" in {
 
       val result1 = baseValidation.optionValidations()
 
-      result1.toEither shouldBe Right(None)
+      rightSide(result1) shouldBe None
     }
   }
 }
