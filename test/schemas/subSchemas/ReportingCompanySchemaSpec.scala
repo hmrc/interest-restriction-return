@@ -16,7 +16,7 @@
 
 package schemas.subSchemas
 
-import models.UTRModel
+import models.{CRNModel, UTRModel}
 import play.api.libs.json.{JsValue, Json}
 import schemas.BaseSchemaSpec
 import schemas.helpers._
@@ -106,35 +106,35 @@ class ReportingCompanySchemaSpec extends BaseSchemaSpec {
 
         s"below $crnLength" in {
 
-          val json = Json.toJson(ReportingCompany(crn = Some("1" * (crnLength - 1))))
+          val json = Json.toJson(ReportingCompany(crn = Some(CRNModel(("1" * (crnLength - 1))))))
 
           validate(json) shouldBe false
         }
 
         s"above $crnLength" in {
 
-          val json = Json.toJson(ReportingCompany(crn = Some("1" * (crnLength + 1))))
+          val json = Json.toJson(ReportingCompany(crn = Some(CRNModel(("1" * (crnLength + 1))))))
 
           validate(json) shouldBe false
         }
 
         "is non numeric" in {
 
-          val json = Json.toJson(ReportingCompany(crn = Some("a" * crnLength)))
+          val json = Json.toJson(ReportingCompany(crn = Some(CRNModel(("a" * crnLength)))))
 
           validate(json) shouldBe false
         }
 
         "crn contains at least one lowercase character and six numbers" in {
 
-          val json = Json.toJson(ReportingCompany(crn = Some("aA111111")))
+          val json = Json.toJson(ReportingCompany(crn = Some(CRNModel(("aA111111")))))
 
           validate(json) shouldBe false
         }
 
         "is a symbol" in {
 
-          val json = Json.toJson(ReportingCompany(crn = Some("@")))
+          val json = Json.toJson(ReportingCompany(crn = Some(CRNModel(("@")))))
 
           validate(json) shouldBe false
         }

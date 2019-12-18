@@ -14,15 +14,23 @@
  * limitations under the License.
  */
 
-package assets
+package models
 
-import models.{CRNModel, CountryCodeModel, UTRModel}
+import play.api.libs.json.{JsPath, JsString, Reads, Writes}
+import validation.CRNValidator
 
-trait BaseConstants {
+case class CRNModel(crn: String) extends CRNValidator{
+  override val crnModel = this
+}
 
-  val ctutr = UTRModel("1123456789")
-  val crn = CRNModel("12345678")
-  val companyName = "Company Name ltd"
-  val nonUkCountryCode = CountryCodeModel("US")
+object CRNModel {
+
+  implicit val reads: Reads[CRNModel] = JsPath.read[String].map(CRNModel.apply)
+
+  implicit val writes: Writes[CRNModel] = Writes {
+    model => JsString(model.crn)
+  }
 
 }
+
+

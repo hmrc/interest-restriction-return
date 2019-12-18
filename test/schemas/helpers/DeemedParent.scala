@@ -17,12 +17,13 @@
 package schemas.helpers
 
 import models.UTRModel
+import models.CRNModel
 import play.api.libs.json.Json
 
 case class DeemedParent(companyName: Option[String] = Some("name"),
                         knownAs: Option[String] = Some("efg"),
                         ctutr: Option[UTRModel] = Some(UTRModel("1111111111")),
-                        crn: Option[String] = Some("AB123456"),
+                        crn: Option[CRNModel] = Some(CRNModel("AB123456")),
                         countryOfIncorporation: Option[String] = Some("US"))
 
 object DeemedParent {
