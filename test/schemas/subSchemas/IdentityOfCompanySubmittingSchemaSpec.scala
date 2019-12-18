@@ -16,7 +16,7 @@
 
 package schemas.subSchemas
 
-import models.UTRModel
+import models.{CRNModel, UTRModel}
 import play.api.libs.json.{JsValue, Json}
 import schemas.BaseSchemaSpec
 import schemas.helpers.{IdentityOfCompanySubmitting, UltimateParent}
@@ -99,7 +99,7 @@ class IdentityOfCompanySubmittingSchemaSpec extends BaseSchemaSpec {
         s"is empty" in {
 
           val json = Json.toJson(IdentityOfCompanySubmitting(
-            crn = Some("")
+            crn = Some(CRNModel(""))
           ))
 
           validate(json) shouldBe false
@@ -145,7 +145,7 @@ class IdentityOfCompanySubmittingSchemaSpec extends BaseSchemaSpec {
 
         s"is empty" in {
 
-          val json = Json.toJson(UltimateParent(nonUkCrn = Some("")))
+          val json = Json.toJson(UltimateParent(nonUkCrn = Some(CRNModel(""))))
 
           validate(json) shouldBe false
         }

@@ -16,7 +16,7 @@
 
 package schemas.subSchemas
 
-import models.UTRModel
+import models.{CRNModel, UTRModel}
 import play.api.libs.json.{JsValue, Json}
 import schemas.BaseSchemaSpec
 import schemas.helpers._
@@ -132,7 +132,7 @@ class DeemedCompanySchemaSpec extends BaseSchemaSpec {
         s"below $crnLength" in {
 
           val json = Json.toJson(Seq(DeemedParent(
-            crn = Some("1" * (crnLength - 1))
+            crn = Some(CRNModel("1" * (crnLength - 1)))
           )))
 
           validate(json) shouldBe false
@@ -141,7 +141,7 @@ class DeemedCompanySchemaSpec extends BaseSchemaSpec {
         s"above $crnLength" in {
 
           val json = Json.toJson(Seq(DeemedParent(
-            crn = Some("1" * (crnLength + 1))
+            crn = Some(CRNModel("1" * (crnLength + 1)))
           )))
 
 

@@ -18,6 +18,7 @@ package validation
 
 import assets.UltimateParentConstants._
 import play.api.libs.json.JsPath
+import models.CRNModel
 
 class UltimateParentValidatorSpec extends BaseValidationSpec {
 
@@ -30,7 +31,7 @@ class UltimateParentValidatorSpec extends BaseValidationSpec {
       "Return invalid" in {
 
         val model = ultimateParentModelMax.copy(
-          nonUkCrn = Some("12345678"),
+          nonUkCrn = Some(CRNModel("12345678")),
           countryOfIncorporation = Some(nonUkCountryCode)
         )
 

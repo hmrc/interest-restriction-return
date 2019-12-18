@@ -14,15 +14,26 @@
  * limitations under the License.
  */
 
-package assets
+package validation
 
-import models.{CRNModel, CountryCodeModel, UTRModel}
+import models.CRNModel
+import org.scalatest.{Matchers, WordSpec}
+import play.api.libs.json.JsPath
 
-trait BaseConstants {
+class CRNValidatorSpec extends WordSpec with Matchers{
 
-  val ctutr = UTRModel("1123456789")
-  val crn = CRNModel("12345678")
-  val companyName = "Company Name ltd"
-  val nonUkCountryCode = CountryCodeModel("US")
+  implicit val path = JsPath \ "some" \ "path"
 
+  "CRN Validation" when {
+
+    "CRN is supplied and is made up of 8 numbers" in {
+      val model  = CRNModel("12345678")
+      model.validate.toEither.right.get shouldBe model
+    }
+
+    "CRN is supplied and contains 2 letters and 6 numbers" in {
+      val model  = CRNModel("AZ123456")
+      model.validate.toEither.right.get shouldBe model
+    }
+  }
 }

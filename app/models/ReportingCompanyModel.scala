@@ -21,7 +21,7 @@ import play.api.libs.json.{JsPath, Json}
 
 case class ReportingCompanyModel(companyName: String,
                                  ctutr: UTRModel,
-                                 crn: Option[String],
+                                 crn: Option[CRNModel],
                                  sameAsUltimateParent: Boolean) {
 
   def validate(path: JsPath): ValidationResult[ReportingCompanyModel] =  ctutr.validate(path \ "ctutr").map(_ => this)

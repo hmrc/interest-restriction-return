@@ -21,10 +21,10 @@ import validation.UltimateParentValidator
 
 case class UltimateParentModel(registeredCompanyName: String,
                                ctutr: Option[UTRModel],
-                               crn: Option[String],
+                               crn: Option[CRNModel],
                                knownAs: Option[String],
                                countryOfIncorporation: Option[CountryCodeModel],
-                               nonUkCrn: Option[String]
+                               nonUkCrn: Option[CRNModel]
                               ) extends UltimateParentValidator {
   override val ultimateParentModel: UltimateParentModel = this
 }

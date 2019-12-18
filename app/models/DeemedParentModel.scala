@@ -22,7 +22,7 @@ case class DeemedParentModel(companyName: String,
                              ctutr: Option[UTRModel],
                              knownAs: Option[String],
                              countryOfIncorporation: Option[CountryCodeModel],
-                             crn: Option[String])
+                             crn: Option[CRNModel])
 
 object DeemedParentModel {
   implicit def format: Format[DeemedParentModel] = Json.format[DeemedParentModel]

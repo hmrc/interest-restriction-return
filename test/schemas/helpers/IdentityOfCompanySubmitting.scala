@@ -16,14 +16,14 @@
 
 package schemas.helpers
 
-import models.UTRModel
+import models.{CRNModel, UTRModel}
 import play.api.libs.json.Json
 
 case class IdentityOfCompanySubmitting(companyName: Option[String] = Some("identity of an Appointing Company"),
                                        ctutr: Option[UTRModel] = Some(UTRModel("1234567890")),
-                                       crn: Option[String] = Some("AA345678"),
+                                       crn: Option[CRNModel] = Some(CRNModel("AB123456")),
                                        countryOfIncorporation: Option[String] =  Some("US"),
-                                       nonUkCrn: Option[String] = Some("01234567"))
+                                       nonUkCrn: Option[CRNModel] = Some(CRNModel("01234567")))
 
 object IdentityOfCompanySubmitting {
   implicit val writes = Json.writes[IdentityOfCompanySubmitting]

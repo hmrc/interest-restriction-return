@@ -17,6 +17,7 @@
 package schemas
 
 import helpers._
+import models.CRNModel
 import play.api.libs.json.{JsValue, Json}
 import schemas.helpers.appointReportingCompany.AppointReportingCompanyModel
 
@@ -37,7 +38,7 @@ class AppointReportingCompanySchemaSpec extends BaseSchemaSpec {
       " crn is two characters and six numbers" in {
 
         val json = Json.toJson(AppointReportingCompanyModel(
-          reportingCompany = Some(ReportingCompany(crn = Some("AA111111")))
+          reportingCompany = Some(ReportingCompany(crn = Some(CRNModel("AA111111"))))
         ))
 
         validate(json) shouldBe true

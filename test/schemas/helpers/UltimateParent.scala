@@ -16,15 +16,15 @@
 
 package schemas.helpers
 
-import models.UTRModel
+import models.{CRNModel, UTRModel}
 import play.api.libs.json.Json
 
 case class UltimateParent(registeredCompanyName: Option[String] = Some("Ladon ltd"),
                           ctutr: Option[UTRModel] = Some(UTRModel("1234567890")),
-                          crn: Option[String] = Some("AA123456") ,
+                          crn: Option[CRNModel] = Some(CRNModel("AB123456")),
                           knownAs: Option[String] = Some("TwixBar"),
                           countryOfIncorporation: Option[String] = Some("US"),
-                          nonUkCrn: Option[String] = Some("Aa1234567890")
+                          nonUkCrn: Option[CRNModel] = Some(CRNModel("Aa1234567890"))
                          )
 
 object UltimateParent {
