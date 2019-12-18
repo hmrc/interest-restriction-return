@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package assets
+package validation
 
-import models.{CountryCodeModel, UTRModel}
+import models.Validation
+import models.Validation.ValidationResult
+import utils.BaseSpec
 
-trait BaseConstants {
+trait BaseValidationSpec extends BaseSpec {
 
-  val ctutr = UTRModel("1123456789")
-  val crn = "12345678"
-  val companyName = "Company Name ltd"
-  val nonUkCountryCode = CountryCodeModel("US")
+  def rightSide[A](validationResult: ValidationResult[A]): A = validationResult.toEither.right.get
+  def leftSideError[A](validationResult: ValidationResult[A]): Validation = validationResult.toEither.left.get.toChain.toList.head
 
+  def errorMessages(messages: String*) = messages.mkString("|")
 }

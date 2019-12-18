@@ -21,8 +21,7 @@ import play.api.libs.json.Json
 
 object DeemedParentConstants extends BaseConstants {
 
-val knownAs = "some company"
-  val nonUkCountryCode = "US"
+  val knownAs = "some company"
 
   val deemedParentModelMax = DeemedParentModel(
     companyName = companyName,

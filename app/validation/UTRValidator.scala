@@ -26,9 +26,9 @@ trait UTRValidator extends BaseValidation {
 
   val utrModel: UTRModel
 
-  private def validateUtr(utr: String)(implicit path: JsPath): ValidationResult[UTRModel] = {
+  def validate(implicit path: JsPath): ValidationResult[UTRModel] = {
 
-    val utrInts = utr.map(_.asDigit)
+    val utrInts = utrModel.utr.map(_.asDigit)
 
     def checkSum = {
 
@@ -39,18 +39,16 @@ trait UTRValidator extends BaseValidation {
       if (utrCalc > 9) utrCalc - 9 else utrCalc
     }
 
-    if(utr.length != 10) {
-      UTRLengthError(UTRModel(utr)).invalidNec
+    if(utrModel.utr.length != 10) {
+      UTRLengthError(utrModel).invalidNec
     } else {
       if (checkSum == utrInts(0)) {
-        UTRModel(utr).validNec
+        utrModel.validNec
       } else {
-        UTRChecksumError(UTRModel(utr)).invalidNec
+        UTRChecksumError(utrModel).invalidNec
       }
     }
   }
-
-  def validate(implicit path: JsPath): ValidationResult[UTRModel] = validateUtr(utrModel.utr)
 }
 
 case class UTRChecksumError(utrValue: UTRModel)(implicit val path: JsPath) extends Validation {

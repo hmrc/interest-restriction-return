@@ -19,10 +19,9 @@ package validation
 import java.time.LocalDate
 
 import assets.AccountingPeriodConstants._
-import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.JsPath
 
-class AccountingPeriodValidatorSpec extends WordSpec with Matchers {
+class AccountingPeriodValidatorSpec extends BaseValidationSpec {
 
   implicit val path = JsPath \ "some" \ "path"
 
@@ -30,7 +29,7 @@ class AccountingPeriodValidatorSpec extends WordSpec with Matchers {
 
     "Return Valid" when {
       "Start date is in the past" in {
-        accountingPeriodModel.validate.toEither.right.get shouldBe accountingPeriodModel
+        rightSide(accountingPeriodModel.validate) shouldBe accountingPeriodModel
       }
     }
 
@@ -42,7 +41,7 @@ class AccountingPeriodValidatorSpec extends WordSpec with Matchers {
         val model = accountingPeriodModel.copy(
           startDate = startDate
         )
-        model.validate.toEither.left.get.head.errorMessage shouldBe StartDateCannotBeInFuture(startDate).errorMessage
+        leftSideError(model.validate).errorMessage shouldBe StartDateCannotBeInFuture(startDate).errorMessage
       }
 
       "End date is before start date" in {
@@ -51,7 +50,7 @@ class AccountingPeriodValidatorSpec extends WordSpec with Matchers {
         val model = accountingPeriodModel.copy(
           endDate = endDate
         )
-        model.validate.toEither.left.get.head.errorMessage shouldBe EndDateAfterStartDate(endDate).errorMessage
+        leftSideError(model.validate).errorMessage shouldBe EndDateAfterStartDate(endDate).errorMessage
       }
 
       "Accounting period is greater than or equal to 18 months" in {
@@ -62,7 +61,7 @@ class AccountingPeriodValidatorSpec extends WordSpec with Matchers {
           startDate = startDate,
           endDate = endDate
         )
-        model.validate.toEither.left.get.head.errorMessage shouldBe AccountingPeriod18MonthsMax(endDate).errorMessage
+        leftSideError(model.validate).errorMessage shouldBe AccountingPeriod18MonthsMax(endDate).errorMessage
       }
       "End date is in the future" in {
 
@@ -71,7 +70,7 @@ class AccountingPeriodValidatorSpec extends WordSpec with Matchers {
           startDate = LocalDate.now().minusMonths(12),
           endDate = endDate
         )
-        model.validate.toEither.left.get.head.errorMessage shouldBe EndDateCannotBeInTheFuture(endDate).errorMessage
+        leftSideError(model.validate).errorMessage shouldBe EndDateCannotBeInTheFuture(endDate).errorMessage
       }
     }
   }

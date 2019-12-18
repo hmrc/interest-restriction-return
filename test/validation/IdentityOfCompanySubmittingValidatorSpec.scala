@@ -17,10 +17,9 @@
 package validation
 
 import assets.IdentityOfCompanySubmittingConstants._
-import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.JsPath
 
-class IdentityOfCompanySubmittingValidatorSpec extends WordSpec with Matchers {
+class IdentityOfCompanySubmittingValidatorSpec extends BaseValidationSpec {
 
   implicit val path = JsPath \ "some" \ "path"
 
@@ -32,10 +31,10 @@ class IdentityOfCompanySubmittingValidatorSpec extends WordSpec with Matchers {
 
         val model = identityOfCompanySubmittingModelMax.copy(
           nonUkCrn = Some("1234567"),
-          countryOfIncorporation = Some("US")
+          countryOfIncorporation = Some(nonUkCountryCode)
         )
 
-        model.validate.toEither.left.get.head.errorMessage shouldBe CannotBeUkAndNonUk(model).errorMessage
+        leftSideError(model.validate).errorMessage shouldBe CannotBeUkAndNonUk(model).errorMessage
       }
     }
 
@@ -47,7 +46,7 @@ class IdentityOfCompanySubmittingValidatorSpec extends WordSpec with Matchers {
           countryOfIncorporation = None
         )
 
-        model.validate.toEither.right.get shouldBe model
+        rightSide(model.validate) shouldBe model
       }
     }
 
@@ -59,7 +58,7 @@ class IdentityOfCompanySubmittingValidatorSpec extends WordSpec with Matchers {
           ctutr = None
         )
 
-        model.validate.toEither.right.get shouldBe model
+        rightSide(model.validate) shouldBe model
       }
     }
   }

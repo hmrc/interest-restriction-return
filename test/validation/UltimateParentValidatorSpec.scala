@@ -17,10 +17,9 @@
 package validation
 
 import assets.UltimateParentConstants._
-import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.JsPath
 
-class UltimateParentValidatorSpec extends WordSpec with Matchers {
+class UltimateParentValidatorSpec extends BaseValidationSpec {
 
   implicit val path = JsPath \ "some" \ "path"
 
@@ -32,10 +31,10 @@ class UltimateParentValidatorSpec extends WordSpec with Matchers {
 
         val model = ultimateParentModelMax.copy(
           nonUkCrn = Some("12345678"),
-          countryOfIncorporation = Some("US")
+          countryOfIncorporation = Some(nonUkCountryCode)
         )
 
-        model.validate.toEither.left.get.head.errorMessage shouldBe UltimateParentCannotBeUkAndNonUk(model).errorMessage
+        leftSideError(model.validate).errorMessage shouldBe UltimateParentCannotBeUkAndNonUk(model).errorMessage
       }
     }
 
@@ -47,7 +46,7 @@ class UltimateParentValidatorSpec extends WordSpec with Matchers {
             countryOfIncorporation = None
           )
 
-          model.validate.toEither.right.get shouldBe model
+          rightSide(model.validate) shouldBe model
         }
       }
 
@@ -59,7 +58,7 @@ class UltimateParentValidatorSpec extends WordSpec with Matchers {
             ctutr = None
           )
 
-          model.validate.toEither.right.get shouldBe model
+          rightSide(model.validate) shouldBe model
         }
       }
     }

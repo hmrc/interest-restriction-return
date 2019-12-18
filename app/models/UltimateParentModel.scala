@@ -23,7 +23,7 @@ case class UltimateParentModel(registeredCompanyName: String,
                                ctutr: Option[UTRModel],
                                crn: Option[String],
                                knownAs: Option[String],
-                               countryOfIncorporation: Option[String],
+                               countryOfIncorporation: Option[CountryCodeModel],
                                nonUkCrn: Option[String]
                               ) extends UltimateParentValidator {
   override val ultimateParentModel: UltimateParentModel = this
