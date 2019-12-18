@@ -16,26 +16,18 @@
 
 package validation
 
+import models.ReportingCompanyModel
 import models.Validation.ValidationResult
-import models.{CRNModel, Validation}
-import play.api.libs.json.{JsPath, Json}
+import play.api.libs.json.JsPath
 
-trait CRNValidator extends BaseValidation {
+trait ReportingCompanyValidator extends BaseValidation {
 
   import cats.implicits._
 
-  val crnModel: CRNModel
+  val reportingCompanyModel: ReportingCompanyModel
 
-  def validate(implicit path: JsPath): ValidationResult[CRNModel] = {
-    val patternCRN = "^[0-9]{8}$|^[A-Z]{2}[0-9]{6}$".r
-    crnModel.crn match {
-      case patternCRN() => crnModel.validNec
-      case _ => CRNFormatCheck(crnModel).invalidNec
-    }
-  }
-}
-
-case class CRNFormatCheck(crnValue: CRNModel)(implicit val path: JsPath) extends Validation {
-  val errorMessage: String = "CRN supplied is incorrect format. CRN should be 8 numbers or 2 letters and 6 numbers"
-  val value = Json.toJson(crnValue)
+  def validate(implicit path: JsPath): ValidationResult[ReportingCompanyModel] =
+    (reportingCompanyModel.ctutr.validate(path \ "ctutr"),
+      optionValidations(reportingCompanyModel.crn.map(_.validate(path \ "crn"))))
+      .mapN((_,_) => reportingCompanyModel)
 }
