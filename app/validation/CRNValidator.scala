@@ -26,15 +26,13 @@ trait CRNValidator extends BaseValidation {
 
   val crnModel: CRNModel
 
-  private def validateCrn(crn: String)(implicit path: JsPath): ValidationResult[CRNModel] = {
+  def validate(implicit path: JsPath): ValidationResult[CRNModel] = {
     val patternCRN = "^[0-9]{8}$|^[A-Z]{2}[0-9]{6}$".r
     crnModel.crn match {
       case patternCRN() => crnModel.validNec
       case _ => crnFormatCheck(crnModel).invalidNec
     }
   }
-
-  def validate(implicit path: JsPath): ValidationResult[CRNModel] = validateCrn(crnModel.crn)
 }
 
 case class crnFormatCheck(crnValue: CRNModel)(implicit val path: JsPath) extends Validation {
