@@ -23,8 +23,12 @@ import validation.BaseValidation
 
 trait UkCompanyValidator extends BaseValidation {
 
+  import cats.implicits._
+
   val ukCompany: UkCompanyModel
 
   def validate(implicit path: JsPath): ValidationResult[UkCompanyModel] =
-    ukCompany.ctutr.validate(path \ "ctutr").map(_ => ukCompany)
+    (ukCompany.ctutr.validate(path \ "ctutr"),
+      ukCompany.companyName.validate(path \ "companyName")
+      ).mapN((_,_) => ukCompany)
 }

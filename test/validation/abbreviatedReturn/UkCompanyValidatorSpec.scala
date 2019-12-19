@@ -18,7 +18,7 @@ package validation.abbreviatedReturn
 
 import assets.abbreviatedReturn.UkCompanyConstants._
 import play.api.libs.json.JsPath
-import validation.{BaseValidationSpec, UTRChecksumError}
+import validation.{BaseValidationSpec, CompanyNameLengthError, UTRChecksumError}
 
 class UkCompanyValidatorSpec extends BaseValidationSpec {
 
@@ -37,6 +37,11 @@ class UkCompanyValidatorSpec extends BaseValidationSpec {
 
       "CTUTR is invalid" in {
         leftSideError(ukCompanyModel.copy(ctutr = invalidUtr).validate).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
+      }
+
+      "CompanyName is invalid" in {
+        leftSideError(ukCompanyModel.copy(companyName = companyNameTooLong).validate).errorMessage shouldBe
+          CompanyNameLengthError(companyNameTooLong.name).errorMessage
       }
     }
   }
