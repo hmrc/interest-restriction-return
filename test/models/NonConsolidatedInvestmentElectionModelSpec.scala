@@ -16,11 +16,11 @@
 
 package models
 
-import assets.NonConsolidatedInvestmentConstants._
+import assets.NonConsolidatedInvestmentElectionConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 
-class NonConsolidatedInvestmentModelSpec extends WordSpec with Matchers {
+class NonConsolidatedInvestmentElectionModelSpec extends WordSpec with Matchers {
 
   "NonConsolidatedInvestmentModel" must {
 
@@ -47,14 +47,14 @@ class NonConsolidatedInvestmentModelSpec extends WordSpec with Matchers {
 
       "max values given" in {
         val expectedValue = nonConsolidatedInvestmentModelMax
-        val actualValue = nonConsolidatedInvestmentJsonMax.as[NonConsolidatedInvestmentModel]
+        val actualValue = nonConsolidatedInvestmentJsonMax.as[NonConsolidatedInvestmentElectionModel]
 
         actualValue shouldBe expectedValue
       }
 
       "min values given" in {
         val expectedValue = nonConsolidatedInvestmentModelMin
-        val actualValue = nonConsolidatedInvestmentJsonMin.as[NonConsolidatedInvestmentModel]
+        val actualValue = nonConsolidatedInvestmentJsonMin.as[NonConsolidatedInvestmentElectionModel]
 
         actualValue shouldBe expectedValue
       }

@@ -17,9 +17,14 @@
 package models
 
 import play.api.libs.json.Json
+import validation.ConsolidatedPartnershipValidator
 
 case class ConsolidatedPartnershipModel(isElected: Boolean,
-                                        consolidatedPartnerships: Option[Seq[String]])
+                                        consolidatedPartnerships: Option[Seq[PartnershipModel]]
+                                       ) extends ConsolidatedPartnershipValidator {
+  override val consolidatedPartnershipModel = this
+}
+
 
 object ConsolidatedPartnershipModel {
   implicit val format = Json.format[ConsolidatedPartnershipModel]

@@ -14,30 +14,17 @@
  * limitations under the License.
  */
 
-package assets
+package models
 
-import models.{GroupRatioBlendedModel, InvestorGroupModel}
-import assets.InvestorGroupConstants._
 import play.api.libs.json.Json
+import validation.NonConsolidatedInvestmentElectionValidator
 
-object GroupRatioBlendedConstants {
+case class NonConsolidatedInvestmentElectionModel(isElected: Boolean,
+                                                  nonConsolidatedInvestments: Option[Seq[NonConsolidatedInvestmentModel]]) extends NonConsolidatedInvestmentElectionValidator {
 
-  val groupRatioBlendedModelMax = GroupRatioBlendedModel(
-    isElected = true,
-    investorGroups = Some(Seq(InvestorGroupModel(investorName)))
-  )
+  override val nonConsolidatedInvestmentElectionModel = this
+}
 
-  val groupRatioBlendedJsonMax = Json.obj(
-    "isElected" -> true,
-    "investorGroups" -> Seq(InvestorGroupModel(investorName))
-  )
-
-  val groupRatioBlendedModelMin = GroupRatioBlendedModel(
-    isElected = true,
-    investorGroups = None
-  )
-
-  val groupRatioBlendedJsonMin = Json.obj(
-    "isElected" -> true
-  )
+object NonConsolidatedInvestmentElectionModel {
+  implicit val format = Json.format[NonConsolidatedInvestmentElectionModel]
 }

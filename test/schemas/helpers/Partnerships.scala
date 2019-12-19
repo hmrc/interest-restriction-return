@@ -18,8 +18,8 @@ package schemas.helpers
 
 import play.api.libs.json.Json
 
-case class Partnership(partnershipName: Option[String] = Some("Name"))
+case class Partnerships(partnershipName: Option[String] = Some("Name"))
 
-object Partnership {
-  implicit val writes = Json.writes[Partnership]
+object Partnerships {
+  implicit val writes = Json.writes[Partnerships]
 }

@@ -16,6 +16,7 @@
 
 package schemas.subSchemas
 
+import models.UTRModel
 import play.api.libs.json.{JsValue, Json}
 import schemas.BaseSchemaSpec
 import schemas.helpers._
@@ -207,7 +208,7 @@ class GroupLevelElectionsSpec extends BaseSchemaSpec {
               val json = Json.toJson(GroupLevelElections(
                 interestAllowanceConsolidatedPartnership = Some(InterestAllowanceConsolidatedPartnership(
                   consolidatedPartnerships = Some(Seq(
-                    Partnership(
+                    Partnerships(
                       partnershipName = Some("")
                     )
                   ))
@@ -223,7 +224,7 @@ class GroupLevelElectionsSpec extends BaseSchemaSpec {
               val json = Json.toJson(GroupLevelElections(
                 interestAllowanceConsolidatedPartnership = Some(InterestAllowanceConsolidatedPartnership(
                   consolidatedPartnerships = Some(Seq(
-                    Partnership(
+                    Partnerships(
                       partnershipName = None
                     )
                   ))
@@ -243,7 +244,6 @@ class GroupLevelElectionsSpec extends BaseSchemaSpec {
               ))
 
               validate(json) shouldBe false
-
             }
           }
         }

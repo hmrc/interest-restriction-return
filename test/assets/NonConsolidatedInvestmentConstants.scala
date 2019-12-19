@@ -17,28 +17,12 @@
 package assets
 
 import models.NonConsolidatedInvestmentModel
-import play.api.libs.json.Json
 
 object NonConsolidatedInvestmentConstants {
 
-  val consolidatedInvestments = Seq("investment1", "investment2", "investment3")
+  val investmentName = "some Investment"
 
-  val nonConsolidatedInvestmentModelMax = NonConsolidatedInvestmentModel(
-    isElected = true,
-    nonConsolidatedInvestments = Some(consolidatedInvestments)
-  )
-
-  val nonConsolidatedInvestmentJsonMax = Json.obj(
-    "isElected" -> true,
-    "nonConsolidatedInvestments" -> consolidatedInvestments
-  )
-
-  val nonConsolidatedInvestmentModelMin = NonConsolidatedInvestmentModel(
-    isElected = true,
-    nonConsolidatedInvestments = None
-  )
-
-  val nonConsolidatedInvestmentJsonMin = Json.obj(
-    "isElected" -> true
+  val nonConsolidatedModel = NonConsolidatedInvestmentModel(
+    nonConsolidatedInvestment = investmentName
   )
 }

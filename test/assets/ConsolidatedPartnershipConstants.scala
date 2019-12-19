@@ -18,19 +18,20 @@ package assets
 
 import models.ConsolidatedPartnershipModel
 import play.api.libs.json.Json
+import assets.PartnershipsConstants._
 
-object ConsolidatedPartnershipConstants {
+object ConsolidatedPartnershipConstants extends BaseConstants {
 
-  val consolidatedPartnerships = Seq("investment1", "investment2", "investment3")
+  val consolidatedPartnerships = "investment1"
 
   val consolidatedPartnershipsModelMax = ConsolidatedPartnershipModel(
     isElected = true,
-    consolidatedPartnerships = Some(consolidatedPartnerships)
+    consolidatedPartnerships = Some(Seq(partnershipModel))
   )
 
   val consolidatedPartnershipsJsonMax = Json.obj(
     "isElected" -> true,
-    "consolidatedPartnerships" -> consolidatedPartnerships
+    "consolidatedPartnerships" -> Seq(partnershipModel)
   )
 
   val consolidatedPartnershipsModelMin = ConsolidatedPartnershipModel(

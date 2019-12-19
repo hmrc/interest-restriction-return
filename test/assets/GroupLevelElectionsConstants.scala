@@ -18,7 +18,7 @@ package assets
 
 import assets.ConsolidatedPartnershipConstants._
 import assets.GroupRatioBlendedConstants._
-import assets.NonConsolidatedInvestmentConstants._
+import assets.NonConsolidatedInvestmentElectionConstants._
 import models.GroupLevelElectionsModel
 import play.api.libs.json.Json
 

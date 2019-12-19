@@ -16,22 +16,18 @@
 
 package models
 
-import play.api.libs.json.Json
-import validation.NonConsolidatedInvestmentValidator
+import play.api.libs.json._
+import validation.InvestorGroupValidator
 
 
-case class NonConsolidatedInvestmentModel(nonConsolidatedInvestment: String) extends NonConsolidatedInvestmentValidator {
-  override val nonConsolidatedInvestmentModel = this
+case class InvestorGroupModel(investorName: String) extends InvestorGroupValidator
+{
+  override val investorGroupModel = this
 }
 
-
-object NonConsolidatedInvestmentModel {
-  implicit val format = Json.format[NonConsolidatedInvestmentModel]
+object InvestorGroupModel {
+  implicit val format = Json.format[InvestorGroupModel]
 }
-
-
-
-
 
 
 

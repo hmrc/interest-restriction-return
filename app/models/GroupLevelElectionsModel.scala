@@ -22,7 +22,7 @@ case class GroupLevelElectionsModel(isElected: Boolean,
                                     groupRatioBlended: Option[GroupRatioBlendedModel],
                                     groupEBITDAChargeableGains: Option[Boolean],
                                     interestAllowanceAlternativeCalculation: Option[Boolean],
-                                    interestAllowanceNonConsolidatedInvestment: Option[NonConsolidatedInvestmentModel],
+                                    interestAllowanceNonConsolidatedInvestment: Option[NonConsolidatedInvestmentElectionModel],
                                     interestAllowanceConsolidatedPartnership: Option[ConsolidatedPartnershipModel])
 
 object GroupLevelElectionsModel {

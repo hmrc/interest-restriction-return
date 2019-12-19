@@ -21,6 +21,7 @@ import models.{CRNModel, CountryCodeModel, UTRModel}
 trait BaseConstants {
 
   val ctutr = UTRModel("1123456789")
+  val sautr = UTRModel("1234567890")
   val crn = CRNModel("12345678")
   val companyName = "Company Name ltd"
   val nonUkCountryCode = CountryCodeModel("US")
