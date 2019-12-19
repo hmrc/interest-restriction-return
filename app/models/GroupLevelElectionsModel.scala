@@ -17,13 +17,16 @@
 package models
 
 import play.api.libs.json.Json
+import validation.GroupLevelElectionValidation
 
 case class GroupLevelElectionsModel(isElected: Boolean,
                                     groupRatioBlended: Option[GroupRatioBlendedModel],
                                     groupEBITDAChargeableGains: Option[Boolean],
                                     interestAllowanceAlternativeCalculation: Option[Boolean],
                                     interestAllowanceNonConsolidatedInvestment: Option[NonConsolidatedInvestmentElectionModel],
-                                    interestAllowanceConsolidatedPartnership: Option[ConsolidatedPartnershipModel])
+                                    interestAllowanceConsolidatedPartnership: Option[ConsolidatedPartnershipModel]) extends GroupLevelElectionValidation {
+  override val groupLevelElectionsModel = this
+}
 
 object GroupLevelElectionsModel {
   implicit val format = Json.format[GroupLevelElectionsModel]
