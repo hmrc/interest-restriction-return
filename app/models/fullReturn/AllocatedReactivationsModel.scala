@@ -17,9 +17,12 @@
 package models.fullReturn
 
 import play.api.libs.json.Json
+import validation.fullReturn.AllocatedReactivationsValidator
 
 case class AllocatedReactivationsModel(ap1NetDisallowances: BigDecimal,
-                                       currentPeriodReactivation: BigDecimal)
+                                       currentPeriodReactivation: BigDecimal) extends AllocatedReactivationsValidator {
+  override val allocatedReactivationsModel: AllocatedReactivationsModel = this
+}
 
 object AllocatedReactivationsModel {
   implicit val format = Json.format[AllocatedReactivationsModel]
