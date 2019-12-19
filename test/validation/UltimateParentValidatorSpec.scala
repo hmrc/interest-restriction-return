@@ -17,6 +17,7 @@
 package validation
 
 import assets.UltimateParentConstants._
+import models.CompanyNameModel
 import play.api.libs.json.JsPath
 import utils.BaseSpec
 
@@ -58,6 +59,17 @@ class UltimateParentValidatorSpec extends BaseSpec {
         )
 
         leftSideError(model.validate).errorMessage shouldBe UltimateParentCannotBeUkAndNonUk(model).errorMessage
+      }
+
+      "Company name" when {
+
+        "Company name is empty" in {
+          leftSideError(ultimateParentModelMax.copy(registeredCompanyName = CompanyNameModel("")).validate).errorMessage shouldBe CompanyNameLengthError("").errorMessage
+        }
+
+        s"Company name is longer that ${companyNameMaxLength}" in {
+          leftSideError(ultimateParentModelMax.copy(registeredCompanyName = companyNameTooLong).validate).errorMessage shouldBe CompanyNameLengthError("a" * (companyNameMaxLength + 1)).errorMessage
+        }
       }
 
       "CTUTR is invalid" in {

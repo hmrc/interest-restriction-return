@@ -21,12 +21,11 @@ import play.api.libs.json.Json
 
 object UltimateParentConstants extends BaseConstants {
 
-  val registeredCompanyName = "some company"
   val knownAs = "something"
   val otherUkTaxReference = "other reference"
 
   val ultimateParentModelMax = UltimateParentModel(
-    registeredCompanyName = registeredCompanyName,
+    registeredCompanyName = companyName,
     ctutr = Some(ctutr),
     crn = Some(crn),
     knownAs = Some(knownAs),
@@ -35,14 +34,14 @@ object UltimateParentConstants extends BaseConstants {
   )
 
   val ultimateParentJsonMax = Json.obj(
-    "registeredCompanyName" -> registeredCompanyName,
+    "registeredCompanyName" -> companyName,
     "ctutr" -> ctutr,
     "crn" -> crn,
     "knownAs" -> knownAs
   )
 
   val ultimateParentModelMin = UltimateParentModel(
-    registeredCompanyName = registeredCompanyName,
+    registeredCompanyName = companyName,
     ctutr = None,
     crn = None,
     knownAs = None,
@@ -51,6 +50,6 @@ object UltimateParentConstants extends BaseConstants {
   )
 
   val ultimateParentJsonMin = Json.obj(
-    "registeredCompanyName" -> registeredCompanyName
+    "registeredCompanyName" -> companyName
   )
 }

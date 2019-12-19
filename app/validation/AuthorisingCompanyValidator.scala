@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package models
+package validation
 
-import play.api.libs.json.{Format, Json}
-import validation.DeemedParentValidator
+import models.AuthorisingCompanyModel
+import models.Validation.ValidationResult
+import play.api.libs.json.JsPath
 
-case class DeemedParentModel(companyName: CompanyNameModel,
-                             ctutr: Option[UTRModel],
-                             countryOfIncorporation: Option[CountryCodeModel],
-                             nonUkCrn: Option[String])
-  extends DeemedParentValidator {
-  override val deemedParentModel: DeemedParentModel = this
-}
+trait AuthorisingCompanyValidator extends BaseValidation {
 
+  import cats.implicits._
 
-object DeemedParentModel {
-  implicit def format: Format[DeemedParentModel] = Json.format[DeemedParentModel]
+  val authorisingCompanyModel: AuthorisingCompanyModel
+
+  def validate(implicit path: JsPath): ValidationResult[AuthorisingCompanyModel] =
+    (authorisingCompanyModel.companyName.validate(path \ "companyName"),
+      authorisingCompanyModel.utr.validate(path \ "utr")
+      ).mapN((_,_) => authorisingCompanyModel)
 }

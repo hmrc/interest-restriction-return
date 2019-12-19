@@ -16,7 +16,7 @@
 
 package assets
 
-import models.{CRNModel, CountryCodeModel, UTRModel}
+import models.{CRNModel, CompanyNameModel, CountryCodeModel, UTRModel}
 
 trait BaseConstants {
 
@@ -24,13 +24,12 @@ trait BaseConstants {
   val invalidUtr = UTRModel("1999999999")
 
   val crn = CRNModel("12345678")
+  val companyName = CompanyNameModel("Company Name ltd")
+  val companyNameMaxLength = 160
+  val companyNameTooLong = CompanyNameModel("a" * (companyNameMaxLength + 1))
   val invalidCrn = CRNModel("AAAA1234")
   val nonUkCrn = "12345678901"
-
-  val companyName = "Company Name ltd"
-
   val nonUkCountryCode = CountryCodeModel("US")
   val invalidCountryCode = CountryCodeModel("AA")
-
 
 }

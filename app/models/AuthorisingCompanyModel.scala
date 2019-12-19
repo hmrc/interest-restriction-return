@@ -18,12 +18,12 @@ package models
 
 import models.Validation.ValidationResult
 import play.api.libs.json.{JsPath, Json}
+import validation.AuthorisingCompanyValidator
 
-case class AuthorisingCompanyModel(companyName: String,
+case class AuthorisingCompanyModel(companyName: CompanyNameModel,
                                    utr: UTRModel,
-                                   consenting: Option[Boolean]) {
-
-  def validate(path: JsPath): ValidationResult[AuthorisingCompanyModel] = utr.validate(path \ "utr").map(_ => this)
+                                   consenting: Option[Boolean]) extends AuthorisingCompanyValidator {
+  override val authorisingCompanyModel: AuthorisingCompanyModel = this
 }
 
 object AuthorisingCompanyModel {
