@@ -36,7 +36,6 @@ class ValidationErrorResponseModelSpec extends WordSpec with Matchers {
 
       val expected = Json.arr(Json.obj(
         "field" -> "/FOO",
-        "value" -> Json.obj(),
         "errors" -> Json.arr("BAR", "Snakes", "bye", "hello")
       ))
 

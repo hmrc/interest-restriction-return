@@ -17,16 +17,16 @@
 package models
 
 import cats.data.NonEmptyChain
-import play.api.libs.json.{JsPath, JsValue, Json, JsonValidationError, Writes}
+import play.api.libs.json.{JsObject, JsPath, JsValue, Json, JsonValidationError, Writes}
 
 case class ValidationErrorResponseModel(field: String, value: JsValue = Json.obj(), errors: Seq[String])
 
 object ValidationErrorResponseModel {
   implicit val writes: Writes[ValidationErrorResponseModel] = Writes { models =>
-    Json.obj("field" -> models.field.toString(),
+    JsObject(Json.obj("field" -> models.field.toString(),
       "value" -> models.value,
       "errors" -> models.errors
-    )
+    ).fields.filterNot(_._2 == Json.obj()).toMap)
   }
 
   def apply(errors: Seq[(JsPath, Seq[JsonValidationError])]): Seq[ValidationErrorResponseModel] = {
