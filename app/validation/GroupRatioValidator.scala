@@ -31,7 +31,7 @@ trait GroupRatioValidator extends BaseValidation {
       case (true, true) => groupRatioModel.validNec
       case (true, false) => groupRatioModel.validNec
       case (false, false) => groupRatioModel.validNec
-      case _ => GroupRatioError(groupRatioModel.isElected).invalidNec
+      case _ => GroupRatioError(groupRatioModel).invalidNec
     }
   }
 
@@ -50,7 +50,7 @@ trait GroupRatioValidator extends BaseValidation {
     ).mapN((_, _, _) => groupRatioModel)
 }
 
-case class GroupRatioError(groupRatio: Boolean)(implicit val topPath: JsPath) extends Validation {
+case class GroupRatioError(groupRatio: GroupRatioModel)(implicit val topPath: JsPath) extends Validation {
   val errorMessage: String = "Group Ratio is not elected, unable to supply GroupEBITDA and Blended Election "
   val path = topPath \ "groupRatio"
   val value = Json.toJson(groupRatio)
