@@ -17,7 +17,7 @@
 package validation
 
 import models.Validation.ValidationResult
-import models.{GroupRatioBlendedModel, Validation}
+import models.{GroupRatioBlendedModel, InvestorGroupModel, Validation}
 import play.api.libs.json.{JsPath, Json}
 
 trait GroupRatioBlendedValidator extends BaseValidation {
@@ -28,14 +28,22 @@ trait GroupRatioBlendedValidator extends BaseValidation {
 
   private def validateGroupRatioBlended(implicit path: JsPath): ValidationResult[GroupRatioBlendedModel] = {
     (groupRatioBlendedModel.isElected,  groupRatioBlendedModel.investorGroups.isDefined) match {
-      case (true, true) => groupRatioBlendedModel.validNec
-      case (true, false) => groupRatioBlendedModel.validNec
-      case (false, false) => groupRatioBlendedModel.validNec
-      case _ => GroupRatioBlendedNotElectedError(groupRatioBlendedModel).invalidNec
+      case (false, true) => GroupRatioBlendedNotElectedError(groupRatioBlendedModel).invalidNec
+      case _ => groupRatioBlendedModel.validNec
     }
   }
 
-  def validate(implicit path: JsPath): ValidationResult[GroupRatioBlendedModel] = validateGroupRatioBlended.map(_ => groupRatioBlendedModel)
+  def validate(implicit path: JsPath): ValidationResult[GroupRatioBlendedModel] = {
+
+    val investorGroupsValidation: ValidationResult[Option[InvestorGroupModel]] = optionValidations(groupRatioBlendedModel.investorGroups.map(investors =>
+      combineValidations(investors.zipWithIndex.map {
+        case (a, i) => a.validate(JsPath \ s"investorGroups[$i]")
+      }:_*)
+    ))
+
+    (validateGroupRatioBlended,
+      investorGroupsValidation).mapN((_,_) => groupRatioBlendedModel)
+  }
 }
 
 

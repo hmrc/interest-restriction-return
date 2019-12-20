@@ -17,9 +17,12 @@
 package models
 
 import play.api.libs.json.Json
+import validation.GroupCompanyDetailsValidator
 
 case class GroupCompanyDetailsModel(totalCompanies: Int,
-                                    accountingPeriod: AccountingPeriodModel)
+                                    accountingPeriod: AccountingPeriodModel) extends GroupCompanyDetailsValidator {
+  override val groupCompanyDetails: GroupCompanyDetailsModel = this
+}
 
 object GroupCompanyDetailsModel {
   implicit val format = Json.format[GroupCompanyDetailsModel]

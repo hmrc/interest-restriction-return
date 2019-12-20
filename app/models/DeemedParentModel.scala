@@ -17,12 +17,16 @@
 package models
 
 import play.api.libs.json.{Format, Json}
+import validation.DeemedParentValidator
 
-case class DeemedParentModel(companyName: String,
+case class DeemedParentModel(companyName: CompanyNameModel,
                              ctutr: Option[UTRModel],
-                             knownAs: Option[String],
                              countryOfIncorporation: Option[CountryCodeModel],
-                             crn: Option[CRNModel])
+                             nonUkCrn: Option[String])
+  extends DeemedParentValidator {
+  override val deemedParentModel: DeemedParentModel = this
+}
+
 
 object DeemedParentModel {
   implicit def format: Format[DeemedParentModel] = Json.format[DeemedParentModel]

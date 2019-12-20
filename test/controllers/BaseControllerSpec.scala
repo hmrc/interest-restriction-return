@@ -64,7 +64,6 @@ class BaseControllerSpec extends BaseSpec {
         await(jsonBodyOf(actual)) shouldBe Json.arr(
           Json.obj(
             "field" -> "/y",
-            "value" -> Json.obj(),
             "errors" -> Json.arr("error.path.missing")
           )
         )

@@ -17,12 +17,12 @@
 package validation
 
 import assets.IdentityOfCompanySubmittingConstants._
-import assets.appointReportingCompany.AppointReportingCompanyConstants._
 import assets.ReportingCompanyConstants._
 import assets.UltimateParentConstants._
-import org.scalatest.{Matchers, WordSpec}
+import assets.appointReportingCompany.AppointReportingCompanyConstants._
+import utils.BaseSpec
 
-class AppointReportingCompanyValidatorSpec extends BaseValidationSpec {
+class AppointReportingCompanyValidatorSpec extends BaseSpec {
 
   "Appoint Reporting Company Validation" when {
 
@@ -95,19 +95,19 @@ class AppointReportingCompanyValidatorSpec extends BaseValidationSpec {
 
       "Ultimate Parent is NOT supplied" should {
 
-        "Return invalid, as it should be supplied" in {
+        "Return valid, as it is optional" in {
 
           val model = appointReportingCompanyModelMax.copy(
             reportingCompany = reportingCompanyModelMax.copy(sameAsUltimateParent = false),
             ultimateParentCompany = None
           )
-          leftSideError(model.validate).errorMessage shouldBe UltimateParentCompanyIsNotSupplied.errorMessage
+          rightSide(model.validate) shouldBe model
         }
       }
 
       "Ultimate Parent is supplied" should {
 
-        "Return valid" in {
+        "Return valid, as it can be optionally supplied" in {
 
           val model = appointReportingCompanyModelMax.copy(
             reportingCompany = reportingCompanyModelMax.copy(sameAsUltimateParent = false),

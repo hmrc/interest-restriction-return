@@ -38,7 +38,6 @@ trait AppointReportingCompanyValidator extends BaseValidation {
   private def validateUltimateParentCompany: ValidationResult[Option[UltimateParentModel]] = {
     (appointReportingCompanyModel.reportingCompany.sameAsUltimateParent, appointReportingCompanyModel.ultimateParentCompany) match {
       case (true, Some(parent)) => UltimateParentCompanyIsSupplied(parent).invalidNec
-      case (false, None) => UltimateParentCompanyIsNotSupplied.invalidNec
       case _ => appointReportingCompanyModel.ultimateParentCompany.validNec
     }
   }
@@ -79,13 +78,6 @@ case class UltimateParentCompanyIsSupplied(ultimateParentModel: UltimateParentMo
   val path = JsPath \ "ultimateParentCompany"
   val value = Json.toJson(ultimateParentModel)
 }
-
-case object UltimateParentCompanyIsNotSupplied extends Validation {
-  val errorMessage: String = "Ultimate Parent Company must be supplied if it is not the same as the reporting company"
-  val path = JsPath \ "ultimateParentCompany"
-  val value = Json.obj()
-}
-
 
 
 

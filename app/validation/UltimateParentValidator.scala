@@ -39,9 +39,11 @@ trait UltimateParentValidator extends BaseValidation {
 
   def validate(implicit path: JsPath): ValidationResult[UltimateParentModel] =
     (validateParentCanNotBeUkAndNonUk,
+      ultimateParentModel.registeredCompanyName.validate(path \ "companyName"),
       optionValidations(ultimateParentModel.ctutr.map(_.validate(path \ "ctutr"))),
+      optionValidations(ultimateParentModel.crn.map(_.validate(path \ "crn"))),
       optionValidations(ultimateParentModel.countryOfIncorporation.map(_.validate(path \ "countryOfIncorporation")))
-      ).mapN((_,_,_) => ultimateParentModel)
+      ).mapN((_,_,_,_,_) => ultimateParentModel)
 }
 
 case class UltimateParentCannotBeUkAndNonUk(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {

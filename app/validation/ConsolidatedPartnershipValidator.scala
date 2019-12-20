@@ -17,7 +17,7 @@
 package validation
 
 import models.Validation.ValidationResult
-import models.{ConsolidatedPartnershipModel, Validation}
+import models.{ConsolidatedPartnershipModel, PartnershipModel, Validation}
 import play.api.libs.json.{JsPath, Json}
 
 trait ConsolidatedPartnershipValidator extends BaseValidation {
@@ -28,18 +28,34 @@ trait ConsolidatedPartnershipValidator extends BaseValidation {
 
   private def validateConsolidatedPartnershipModel(implicit path: JsPath): ValidationResult[ConsolidatedPartnershipModel] = {
     (consolidatedPartnershipModel.isElected, consolidatedPartnershipModel.consolidatedPartnerships.isDefined) match {
-      case (true, true) => consolidatedPartnershipModel.validNec
-      case (true, false) => consolidatedPartnershipModel.validNec
-      case (false, false) => consolidatedPartnershipModel.validNec
-      case _ => ConsolidatedPartnershipElectedError(consolidatedPartnershipModel).invalidNec
+      case (false, true) => ConsolidatedPartnershipsSupplied(consolidatedPartnershipModel).invalidNec
+      case (true, false) => ConsolidatedPartnershipsNotSupplied(consolidatedPartnershipModel).invalidNec
+      case _ => consolidatedPartnershipModel.validNec
     }
   }
 
-  def validate(implicit path: JsPath): ValidationResult[ConsolidatedPartnershipModel] = validateConsolidatedPartnershipModel.map(_ => consolidatedPartnershipModel)
+  def validate(implicit path: JsPath): ValidationResult[ConsolidatedPartnershipModel] = {
+
+    val consolidatedPartnershipsValidation: ValidationResult[Option[PartnershipModel]] =
+      optionValidations(consolidatedPartnershipModel.consolidatedPartnerships.map(consolidatedPartnerships =>
+        combineValidations(consolidatedPartnerships.zipWithIndex.map {
+          case (a, i) => a.validate(JsPath \ s"consolidatedPartnerships[$i]")
+        }:_*)
+      ))
+
+    (validateConsolidatedPartnershipModel,
+      consolidatedPartnershipsValidation).mapN((_,_) => consolidatedPartnershipModel)
+  }
 }
 
-case class ConsolidatedPartnershipElectedError(consolidatedPartnershipModel: ConsolidatedPartnershipModel)(implicit val topPath: JsPath) extends Validation {
+case class ConsolidatedPartnershipsSupplied(consolidatedPartnershipModel: ConsolidatedPartnershipModel)(implicit val topPath: JsPath) extends Validation {
   val errorMessage: String = "Consolidated Partnership is not elected, unable to supply partnership names"
+  val path = topPath \ "consolidatedPartnership"
+  val value = Json.toJson(consolidatedPartnershipModel)
+}
+
+case class ConsolidatedPartnershipsNotSupplied(consolidatedPartnershipModel: ConsolidatedPartnershipModel)(implicit val topPath: JsPath) extends Validation {
+  val errorMessage: String = "Consolidated Partnership is elected, must supply partnership names"
   val path = topPath \ "consolidatedPartnership"
   val value = Json.toJson(consolidatedPartnershipModel)
 }

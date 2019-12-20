@@ -16,17 +16,21 @@
 
 package models.fullReturn
 
-import models.UTRModel
+import models.{CompanyNameModel, UTRModel}
 import play.api.libs.json.Json
+import validation.fullReturn.UkCompanyValidator
 
-case class UkCompanyModel(companyName: String,
+case class UkCompanyModel(companyName: CompanyNameModel,
                           utr: UTRModel,
                           consenting: Boolean,
                           netTaxInterestExpense: BigDecimal,
                           netTaxInterestIncome: BigDecimal,
                           taxEBITDA: BigDecimal,
                           allocatedRestrictions: Option[AllocatedRestrictionsModel],
-                          allocatedReactivations: Option[AllocatedReactivationsModel])
+                          allocatedReactivations: Option[AllocatedReactivationsModel]
+                         ) extends UkCompanyValidator {
+  override val ukCompany: UkCompanyModel = this
+}
 
 object UkCompanyModel {
   implicit val format = Json.format[UkCompanyModel]

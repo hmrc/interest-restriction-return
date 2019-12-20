@@ -18,8 +18,9 @@ package validation
 
 import models.CountryCodeModel
 import play.api.libs.json.JsPath
+import utils.BaseSpec
 
-class CountryCodeValidatorSpec extends BaseValidationSpec {
+class CountryCodeValidatorSpec extends BaseSpec {
 
   implicit val path = JsPath \ "some" \ "path"
 
@@ -32,8 +33,7 @@ class CountryCodeValidatorSpec extends BaseValidationSpec {
     }
 
     "Invalid Country Code supplied" in {
-      val model  = CountryCodeModel("AA")
-      leftSideError(model.validate).errorMessage shouldBe CountryCodeValueError(model).errorMessage
+      leftSideError(invalidCountryCode.validate).errorMessage shouldBe CountryCodeValueError(invalidCountryCode).errorMessage
     }
 
     "Valid Country Code supplied" in {

@@ -33,11 +33,11 @@ object NonConsolidatedInvestmentElectionConstants {
   )
 
   val nonConsolidatedInvestmentModelMin = NonConsolidatedInvestmentElectionModel(
-    isElected = true,
+    isElected = false,
     nonConsolidatedInvestments = None
   )
 
   val nonConsolidatedInvestmentJsonMin = Json.obj(
-    "isElected" -> true
+    "isElected" -> false
   )
 }

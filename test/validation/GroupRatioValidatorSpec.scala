@@ -37,8 +37,8 @@ class GroupRatioValidatorSpec extends BaseValidationSpec {
         rightSide(model.validate) shouldBe model
       }
 
-      "isElected is false  and groupRatioBlended is not given" in {
-        val model = groupRatioModelMax.copy(isElected = false ,groupRatioBlended = None)
+      "isElected is false  and neither are provided" in {
+        val model = groupRatioModelMax.copy(isElected = false ,groupRatioBlended = None, groupEBITDAChargeableGains = None)
         rightSide(model.validate) shouldBe model
       }
 
@@ -52,10 +52,13 @@ class GroupRatioValidatorSpec extends BaseValidationSpec {
 
       "isElected is false and Group Ratio Blended is given" in {
         val model = groupRatioModelMax.copy(isElected = false, groupRatioBlended = Some(groupRatioBlendedModelMax))
-        leftSideError(model.validate).errorMessage shouldBe GroupRatioError(model).errorMessage
+        leftSideError(model.validate).errorMessage shouldBe GroupRatioBlendedError(model).errorMessage
       }
 
+      "isElected is false and GroupEBITDA is given" in {
+        val model = groupRatioModelMax.copy(isElected = false, groupRatioBlended = None, groupEBITDAChargeableGains = Some(false))
+        leftSideError(model.validate).errorMessage shouldBe GroupEBITDAError(Some(false)).errorMessage
+      }
     }
-
   }
 }

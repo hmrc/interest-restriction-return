@@ -35,11 +35,11 @@ object ConsolidatedPartnershipConstants extends BaseConstants {
   )
 
   val consolidatedPartnershipsModelMin = ConsolidatedPartnershipModel(
-    isElected = true,
+    isElected = false,
     consolidatedPartnerships = None
   )
 
   val consolidatedPartnershipsJsonMin = Json.obj(
-    "isElected" -> true
+    "isElected" -> false
   )
 }

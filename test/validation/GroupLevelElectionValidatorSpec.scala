@@ -17,6 +17,10 @@
 package validation
 
 import assets.GroupLevelElectionsConstants._
+import assets.GroupRatioConstants._
+import assets.NonConsolidatedInvestmentElectionConstants._
+import assets.ConsolidatedPartnershipConstants._
+import models.{NonConsolidatedInvestmentModel, PartnershipModel}
 import play.api.libs.json.JsPath
 
 class GroupLevelElectionValidatorSpec extends BaseValidationSpec {
@@ -24,18 +28,49 @@ class GroupLevelElectionValidatorSpec extends BaseValidationSpec {
   implicit val path = JsPath \ "some" \ "path"
 
   "Group Level Election Validation" when {
+
     "Return Valid" when {
 
-      "Alternative Calculation is false" in {
-        val model = groupLevelElectionsModel.copy(interestAllowanceAlternativeCalculation = false)
+      "Valid Elections model is supplied" in {
+        rightSide(groupLevelElectionsModel.validate) shouldBe groupLevelElectionsModel
+      }
+    }
 
-        rightSide(model.validate) shouldBe model
+
+    "Return Invalid" when {
+
+      "groupRatio has errors" in {
+        val model = groupLevelElectionsModel.copy(
+          groupRatio = groupRatioModelMax.copy(
+            isElected = false,
+            groupRatioBlended = None,
+            groupEBITDAChargeableGains = Some(true)
+          )
+        )
+
+        leftSideError(model.validate).errorMessage shouldBe GroupEBITDAError(model.groupRatio.groupEBITDAChargeableGains).errorMessage
       }
 
-      "A Test goes here" in {
-        val model = groupLevelElectionsModel.copy()
+      "interestAllowanceNonConsolidatedInvestment has errors" in {
+        val model = groupLevelElectionsModel.copy(
+          interestAllowanceNonConsolidatedInvestment = nonConsolidatedInvestmentModelMax.copy(
+            isElected = true,
+            nonConsolidatedInvestments = Some(Seq(NonConsolidatedInvestmentModel("")))
+          )
+        )
 
-        rightSide(model.validate) shouldBe model
+        leftSideError(model.validate).errorMessage shouldBe NonConsolidatedInvestmentNameError("").errorMessage
+      }
+
+      "interestAllowanceConsolidatedPartnership has errors" in {
+        val model = groupLevelElectionsModel.copy(
+          interestAllowanceConsolidatedPartnership = consolidatedPartnershipsModelMax.copy(
+            isElected = true,
+            consolidatedPartnerships = Some(Seq(PartnershipModel("")))
+          )
+        )
+
+        leftSideError(model.validate).errorMessage shouldBe PartnershipNameError("").errorMessage
       }
     }
   }

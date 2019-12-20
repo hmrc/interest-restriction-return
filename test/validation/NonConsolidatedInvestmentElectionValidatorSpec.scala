@@ -24,32 +24,46 @@ class NonConsolidatedInvestmentElectionValidatorSpec extends BaseValidationSpec 
   implicit val path = JsPath \ "some" \ "path"
 
   "Non-Consolidated Investment" when {
+
     "Return valid" when {
 
       "isElected is true and a Seq of investments are given" in {
-        val model = NonConsolidatedInvestmentElectionModel(isElected = true, nonConsolidatedInvestments = Some(Seq(NonConsolidatedInvestmentModel("Big Bucks 1"))))
-        model.validate.toEither.right.get shouldBe model
+        val model = NonConsolidatedInvestmentElectionModel(
+          isElected = true,
+          nonConsolidatedInvestments = Some(Seq(NonConsolidatedInvestmentModel("Big Bucks 1")))
+        )
+        rightSide(model.validate) shouldBe model
       }
 
-      "isElected is true and no investments are given" in {
-        val model = NonConsolidatedInvestmentElectionModel(isElected = true, nonConsolidatedInvestments = None)
-        model.validate.toEither.right.get shouldBe model
+      "isElected is false and no investments are given" in {
+        val model = NonConsolidatedInvestmentElectionModel(isElected = false, nonConsolidatedInvestments = None)
+        rightSide(model.validate) shouldBe model
       }
-    }
-
-    "isElected is false and no investments are given" in {
-      val model = NonConsolidatedInvestmentElectionModel(isElected = false, nonConsolidatedInvestments = None)
-      model.validate.toEither.right.get shouldBe model
-
     }
 
     "Return invalid" when {
 
-        "isElected is false and some investments are given" in {
-        val model = NonConsolidatedInvestmentElectionModel(isElected = false, nonConsolidatedInvestments = Some(Seq(NonConsolidatedInvestmentModel("Big Bucks 1"))))
-          model.validate.toEither.left.get.head.errorMessage shouldBe NonConsolidatedInvestmentElectionError(model).errorMessage
+      "isElected is true and no investments are given" in {
+        val model = NonConsolidatedInvestmentElectionModel(isElected = true, nonConsolidatedInvestments = None)
+        leftSideError(model.validate).errorMessage shouldBe NonConsolidatedInvestmentNotSupplied(model).errorMessage
+      }
+
+      "isElected is false and some investments are given" in {
+        val model = NonConsolidatedInvestmentElectionModel(
+          isElected = false,
+          nonConsolidatedInvestments = Some(Seq(NonConsolidatedInvestmentModel("Big Bucks 1")))
+        )
+        leftSideError(model.validate).errorMessage shouldBe NonConsolidatedInvestmentSupplied(model).errorMessage
+      }
+
+      "nonConsolidatedInvestments is invalid" in {
+        val model = NonConsolidatedInvestmentElectionModel(
+          isElected = true,
+          nonConsolidatedInvestments = Some(Seq(NonConsolidatedInvestmentModel("")))
+        )
+
+        leftSideError(model.validate).errorMessage shouldBe NonConsolidatedInvestmentNameError("").errorMessage
       }
     }
-
   }
 }

@@ -28,28 +28,31 @@ class ConsolidatedPartnershipValidatorSpec extends BaseValidationSpec {
 
       "isElected is true and a Seq of partnerships are given" in {
         val model = ConsolidatedPartnershipModel(isElected = true, consolidatedPartnerships = Some(Seq(PartnershipModel("Partner 1"))))
-        model.validate.toEither.right.get shouldBe model
+        rightSide(model.validate) shouldBe model
       }
 
-      "isElected is true and no partnerships are given" in {
-        val model = ConsolidatedPartnershipModel(isElected = true, consolidatedPartnerships = None)
-        model.validate.toEither.right.get shouldBe model
+      "isElected is false and no partnerships are given" in {
+        val model = ConsolidatedPartnershipModel(isElected = false, consolidatedPartnerships = None)
+        rightSide(model.validate) shouldBe model
       }
-    }
-
-    "isElected is false and no partnerships are given" in {
-      val model = ConsolidatedPartnershipModel(isElected = false, consolidatedPartnerships = None)
-      model.validate.toEither.right.get shouldBe model
-
     }
 
     "Return invalid" when {
 
-        "isElected is false and some partnerships are given" in {
-        val model = ConsolidatedPartnershipModel(isElected = false, consolidatedPartnerships = Some(Seq(PartnershipModel("Partner 1"), PartnershipModel("Partner 2"))))
-          model.validate.toEither.left.get.head.errorMessage shouldBe ConsolidatedPartnershipElectedError(model).errorMessage
+      "isElected is true and no partnerships are given" in {
+        val model = ConsolidatedPartnershipModel(isElected = true, consolidatedPartnerships = None)
+        leftSideError(model.validate).errorMessage shouldBe ConsolidatedPartnershipsNotSupplied(model).errorMessage
+      }
+
+      "isElected is false and some partnerships are given" in {
+        val model = ConsolidatedPartnershipModel(isElected = false, consolidatedPartnerships = Some(Seq(PartnershipModel("Partner 1"))))
+        leftSideError(model.validate).errorMessage shouldBe ConsolidatedPartnershipsSupplied(model).errorMessage
+      }
+
+      "consolidatedPartnerships is invalid" in {
+        val model = ConsolidatedPartnershipModel(isElected = true, consolidatedPartnerships = Some(Seq(PartnershipModel(""))))
+        leftSideError(model.validate).errorMessage shouldBe PartnershipNameError("").errorMessage
       }
     }
-
   }
 }

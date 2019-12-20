@@ -18,7 +18,7 @@ package models
 
 import assets.AccountingPeriodConstants._
 import org.scalatest.{Matchers, WordSpec}
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, JsPath, Json}
 
 class AccountingPeriodModelSpec extends WordSpec with Matchers {
 
@@ -36,6 +36,45 @@ class AccountingPeriodModelSpec extends WordSpec with Matchers {
 
       val expectedValue = accountingPeriodModel
       val actualValue = accountingPeriodJson.as[AccountingPeriodModel]
+
+      actualValue shouldBe expectedValue
+    }
+
+    "handle JSON which contains a numeric for the date by returning jsString error" in {
+
+      val invalidJson = Json.obj(
+        "startDate" -> 20190101,
+        "endDate" -> endDate
+      )
+
+      val expectedValue = JsError(JsPath \ "startDate", "error.expected.jsstring")
+      val actualValue = invalidJson.validate[AccountingPeriodModel]
+
+      actualValue shouldBe expectedValue
+    }
+
+    "handle JSON which contains an invalid date format by returning ISO date format error" in {
+
+      val invalidJson = Json.obj(
+        "startDate" -> "2019-1-01",
+        "endDate" -> endDate
+      )
+
+      val expectedValue = JsError(JsPath \ "startDate", "Date must be in ISO Date format YYYY-MM-DD")
+      val actualValue = invalidJson.validate[AccountingPeriodModel]
+
+      actualValue shouldBe expectedValue
+    }
+
+    "handle JSON which contains an invalid date by returning invalid date error" in {
+
+      val invalidJson = Json.obj(
+        "startDate" -> "2019-02-29",
+        "endDate" -> endDate
+      )
+
+      val expectedValue = JsError(JsPath \ "startDate", "Date must be a valid date")
+      val actualValue = invalidJson.validate[AccountingPeriodModel]
 
       actualValue shouldBe expectedValue
     }

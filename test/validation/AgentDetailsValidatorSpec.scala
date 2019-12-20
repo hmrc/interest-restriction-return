@@ -18,8 +18,9 @@ package validation
 
 import models.AgentDetailsModel
 import play.api.libs.json.JsPath
+import utils.BaseSpec
 
-class AgentDetailsValidatorSpec extends BaseValidationSpec {
+class AgentDetailsValidatorSpec extends BaseSpec {
 
   implicit val path = JsPath \ "some" \ "path"
 

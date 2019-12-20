@@ -30,12 +30,12 @@ trait CRNValidator extends BaseValidation {
     val patternCRN = "^[0-9]{8}$|^[A-Z]{2}[0-9]{6}$".r
     crnModel.crn match {
       case patternCRN() => crnModel.validNec
-      case _ => crnFormatCheck(crnModel).invalidNec
+      case _ => CRNFormatCheck(crnModel).invalidNec
     }
   }
 }
 
-case class crnFormatCheck(crnValue: CRNModel)(implicit val path: JsPath) extends Validation {
+case class CRNFormatCheck(crnValue: CRNModel)(implicit val path: JsPath) extends Validation {
   val errorMessage: String = "CRN supplied is incorrect format. CRN should be 8 numbers or 2 letters and 6 numbers"
   val value = Json.toJson(crnValue)
 }

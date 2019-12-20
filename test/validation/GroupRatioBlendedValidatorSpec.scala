@@ -24,32 +24,36 @@ class GroupRatioBlendedValidatorSpec extends BaseValidationSpec {
   implicit val path = JsPath \ "some" \ "path"
 
   "Group Ratio Blended" when {
+
     "Return valid" when {
 
       "isElected is true and a Seq of investor group given" in {
-        val model = GroupRatioBlendedModel(isElected = true, investorGroups = Some(Seq(InvestorGroupModel("Big Bucks 1"))))
-        model.validate.toEither.right.get shouldBe model
+        val model = GroupRatioBlendedModel(isElected = true, investorGroups = Some(Seq(InvestorGroupModel(companyName.name))))
+        rightSide(model.validate) shouldBe model
       }
 
       "isElected is true and no investor group given" in {
         val model = GroupRatioBlendedModel(isElected = true, investorGroups = None)
-        model.validate.toEither.right.get shouldBe model
+        rightSide(model.validate) shouldBe model
       }
-    }
 
-    "isElected is false and no investor group are given" in {
-      val model = GroupRatioBlendedModel(isElected = false, investorGroups = None)
-      model.validate.toEither.right.get shouldBe model
-
+      "isElected is false and no investor group are given" in {
+        val model = GroupRatioBlendedModel(isElected = false, investorGroups = None)
+        rightSide(model.validate) shouldBe model
+      }
     }
 
     "Return invalid" when {
 
-        "isElected is false and some investor group are given" in {
-        val model = GroupRatioBlendedModel(isElected = false, investorGroups = Some(Seq(InvestorGroupModel("Big Bucks 1"))))
-          model.validate.toEither.left.get.head.errorMessage shouldBe GroupRatioBlendedNotElectedError(model).errorMessage
+      "isElected is false and some investor group are given" in {
+        val model = GroupRatioBlendedModel(isElected = false, investorGroups = Some(Seq(InvestorGroupModel(companyName.name))))
+        leftSideError(model.validate).errorMessage shouldBe GroupRatioBlendedNotElectedError(model).errorMessage
+      }
+
+      "investorGroup contains validation errors" in {
+        val model = GroupRatioBlendedModel(isElected = true, investorGroups = Some(Seq(InvestorGroupModel(""))))
+        leftSideError(model.validate).errorMessage shouldBe InvestorNameError("").errorMessage
       }
     }
-
   }
 }

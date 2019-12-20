@@ -16,14 +16,93 @@
 
 package validation
 
+import cats.data.Validated.Valid
+import cats.implicits._
 import models.Validation
-import models.Validation.ValidationResult
+import org.scalatest.{Matchers, WordSpec}
+import play.api.libs.json.{JsPath, JsString}
 import utils.BaseSpec
 
-trait BaseValidationSpec extends BaseSpec {
+class BaseValidationSpec extends WordSpec with Matchers with BaseSpec {
 
-  def rightSide[A](validationResult: ValidationResult[A]): A = validationResult.toEither.right.get
-  def leftSideError[A](validationResult: ValidationResult[A]): Validation = validationResult.toEither.left.get.toChain.toList.head
+  implicit val topPath = JsPath \ "path"
 
-  def errorMessages(messages: String*) = messages.mkString("|")
+  case class TestError(implicit topPath: JsPath) extends Validation {
+    val errorMessage: String = "error"
+    val path = topPath \ "path"
+    val value = JsString("bad")
+  }
+
+  case class TestError1(implicit topPath: JsPath) extends Validation {
+    val errorMessage: String = "error1"
+    val path = topPath \ "path1"
+    val value = JsString("bad1")
+  }
+
+  val baseValidation = new BaseValidation {}
+
+  "combineValidationsForField" should {
+    "return a single validation if there are no errors" in {
+
+      val result = baseValidation.combineValidationsForField(Valid("ok"))
+
+      rightSide(result) shouldBe "ok"
+    }
+
+    "return 2 invalids as a single message if there are 2 errors" in {
+
+      val result = baseValidation.combineValidationsForField(TestError().invalidNec,TestError1().invalidNec)
+
+      leftSideError(result).errorMessage shouldBe "error|error1"
+    }
+  }
+
+  "combineValidations" should {
+    "return a single validation if there are no errors" in {
+
+      val result = baseValidation.combineValidations(Valid("ok"))
+
+     rightSide(result) shouldBe "ok"
+    }
+
+    "return 2 invalids if there are 2 errors" in {
+
+      val result = baseValidation.combineValidations(TestError().invalidNec,TestError1().invalidNec)
+
+      leftSideError(result).errorMessage shouldBe "error"
+      leftSideError(result,1).errorMessage shouldBe "error1"
+    }
+  }
+
+  "optionValidations" should {
+    "return a single validation if there are no errors" in {
+
+      val result = baseValidation.optionValidations(Some(Valid("ok")))
+
+      rightSide(result) shouldBe Some("ok")
+    }
+
+    "return none if the data was empty" in {
+
+      val result = baseValidation.optionValidations(None)
+
+      rightSide(result) shouldBe None
+    }
+
+    "return 3 invalids if there are 3 errors" in {
+
+      val result = baseValidation.optionValidations(Some(TestError().invalidNec),Some(TestError1().invalidNec),Some(TestError1().invalidNec))
+
+      leftSideError(result).errorMessage shouldBe "error"
+      leftSideError(result,1).errorMessage shouldBe "error1"
+      leftSideError(result,2).errorMessage shouldBe "error1"
+    }
+
+    "return Right(None) if there are no valids or invalids" in {
+
+      val result1 = baseValidation.optionValidations()
+
+      rightSide(result1) shouldBe None
+    }
+  }
 }

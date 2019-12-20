@@ -26,26 +26,12 @@ trait GroupLevelElectionValidation extends BaseValidation {
 
   val groupLevelElectionsModel: GroupLevelElectionsModel
 
-  private def validateAlternativeCalculation(implicit path: JsPath): ValidationResult[Boolean] = {
-    groupLevelElectionsModel.interestAllowanceAlternativeCalculation match {
-      case true => groupLevelElectionsModel.interestAllowanceAlternativeCalculation.validNec
-      case false => groupLevelElectionsModel.interestAllowanceAlternativeCalculation.validNec
-      case _ => AlternativeCalculationError(groupLevelElectionsModel.interestAllowanceAlternativeCalculation).invalidNec
-    }
-  }
-
   def validate(implicit path: JsPath): ValidationResult[GroupLevelElectionsModel] =
     (groupLevelElectionsModel.groupRatio.validate,
-      validateAlternativeCalculation,
       groupLevelElectionsModel.interestAllowanceNonConsolidatedInvestment.validate,
-      groupLevelElectionsModel.interestAllowanceConsolidatedPartnership.validate).mapN((_, _, _, _) => groupLevelElectionsModel)
+      groupLevelElectionsModel.interestAllowanceConsolidatedPartnership.validate
+      ).mapN((_,_,_) => groupLevelElectionsModel)
 }
-
-case class AlternativeCalculationError(altCalcElect: Boolean)(implicit val path: JsPath) extends Validation {
-  val errorMessage: String = "You must choose if you wish to make an election to make an alternative calculation for interest allowance"
-  val value = Json.toJson(altCalcElect)
-}
-
 
 
 

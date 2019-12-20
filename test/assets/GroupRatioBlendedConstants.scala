@@ -33,11 +33,11 @@ object GroupRatioBlendedConstants {
   )
 
   val groupRatioBlendedModelMin = GroupRatioBlendedModel(
-    isElected = true,
+    isElected = false,
     investorGroups = None
   )
 
   val groupRatioBlendedJsonMin = Json.obj(
-    "isElected" -> true
+    "isElected" -> false
   )
 }

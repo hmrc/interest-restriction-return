@@ -22,7 +22,7 @@ import play.api.libs.json.Json
 object IdentityOfCompanySubmittingConstants extends BaseConstants {
 
   val countryCode = "US"
-  val nonUkCrn = "01234567"
+
 
   val identityOfCompanySubmittingJsonMax = Json.obj(
     "companyName" -> companyName,

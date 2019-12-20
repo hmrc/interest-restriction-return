@@ -16,12 +16,15 @@
 
 package models.abbreviatedReturn
 
-import models.UTRModel
+import models.{CompanyNameModel, UTRModel}
 import play.api.libs.json.Json
+import validation.abbreviatedReturn.UkCompanyValidator
 
-case class UkCompanyModel(companyName: String,
+case class UkCompanyModel(companyName: CompanyNameModel,
                           ctutr: UTRModel,
-                          consenting: Boolean)
+                          consenting: Boolean) extends UkCompanyValidator {
+  override val ukCompany: UkCompanyModel = this
+}
 
 object UkCompanyModel {
   implicit val format = Json.format[UkCompanyModel]

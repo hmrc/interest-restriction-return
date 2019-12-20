@@ -18,8 +18,9 @@ package validation
 
 import models.UTRModel
 import play.api.libs.json.JsPath
+import utils.BaseSpec
 
-class UTRValidatorSpec extends BaseValidationSpec {
+class UTRValidatorSpec extends BaseSpec {
 
   implicit val path = JsPath \ "some" \ "path"
 
