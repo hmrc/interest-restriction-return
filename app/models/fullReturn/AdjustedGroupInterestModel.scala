@@ -17,10 +17,13 @@
 package models.fullReturn
 
 import play.api.libs.json.Json
+import validation.fullReturn.AdjustedGroupInterestValidator
 
 case class AdjustedGroupInterestModel(qngie: BigDecimal,
                                       groupEBITDA: BigDecimal,
-                                      groupRatio: BigDecimal)
+                                      groupRatio: BigDecimal) extends AdjustedGroupInterestValidator{
+  override val adjustedGroupInterestModel: AdjustedGroupInterestModel = this
+}
 
 object AdjustedGroupInterestModel {
   implicit val format = Json.format[AdjustedGroupInterestModel]
