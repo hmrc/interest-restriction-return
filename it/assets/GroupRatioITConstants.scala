@@ -16,18 +16,13 @@
 
 package assets
 
-import models.PartnershipModel
+import assets.GroupRatioBlendedITConstants._
 import play.api.libs.json.Json
 
-object PartnershipsConstants {
+object GroupRatioITConstants {
 
-  val partnerName = "some partner"
-
-  val partnershipModel = PartnershipModel(
-    partnershipName = partnerName
-  )
-
-  val partnershipJson = Json.obj(
-    "partnershipName" -> partnerName
-  )
+  val groupRatioJson= Json.obj(
+    "isElected" -> true,
+    "groupEBITDAChargeableGains" -> Some(true),
+    "groupRatioBlended" -> groupRatioBlendedJson)
 }

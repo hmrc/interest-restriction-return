@@ -25,7 +25,7 @@ object GroupRatioConstants {
   val groupRatioJsonMax = Json.obj(
     "isElected" -> true,
     "groupEBITDAChargeableGains" -> Some(true),
-    "groupRatioBlended" -> Some(groupRatioBlendedJsonMax))
+    "groupRatioBlended" -> Seq(groupRatioBlendedJsonMax))
 
   val groupRatioModelMax = GroupRatioModel(
     isElected = true,

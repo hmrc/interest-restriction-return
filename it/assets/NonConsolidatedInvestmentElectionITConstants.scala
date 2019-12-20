@@ -16,18 +16,13 @@
 
 package assets
 
-import models.PartnershipModel
+import assets.NonConsolidatedInvestmentITConstants._
 import play.api.libs.json.Json
 
-object PartnershipsConstants {
+object NonConsolidatedInvestmentElectionITConstants {
 
-  val partnerName = "some partner"
+  val nonConsolidatedInvestmentJson= Json.obj(
+    "isElected" -> true,
+    "nonConsolidatedInvestments" -> Seq(nonConsolidatedJson))
 
-  val partnershipModel = PartnershipModel(
-    partnershipName = partnerName
-  )
-
-  val partnershipJson = Json.obj(
-    "partnershipName" -> partnerName
-  )
 }

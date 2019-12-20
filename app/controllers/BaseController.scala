@@ -17,9 +17,11 @@
 package controllers
 
 import models.ValidationErrorResponseModel
+import play.api.Logger
 import play.api.libs.json._
 import play.api.mvc.{Request, Result}
 import uk.gov.hmrc.play.bootstrap.controller.BackendBaseController
+
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
 
@@ -32,6 +34,7 @@ trait BaseController extends BackendBaseController {
     Try(request.body.validate[T]) match {
       case Success(JsSuccess(payload, _)) => f(payload)
       case Success(JsError(errs)) =>
+        Logger.debug(request.body.toString())
         Future.successful(BadRequest(Json.toJson(ValidationErrorResponseModel(errs))))
       case Failure(e) => Future.successful(BadRequest(s"Could not parse body due to ${e.getMessage}"))
     }

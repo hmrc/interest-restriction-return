@@ -16,18 +16,13 @@
 
 package assets
 
-import models.PartnershipModel
 import play.api.libs.json.Json
 
-object PartnershipsConstants {
+object InvestorGroupITConstants {
 
-  val partnerName = "some partner"
+  val investorName = "some Investor"
 
-  val partnershipModel = PartnershipModel(
-    partnershipName = partnerName
-  )
-
-  val partnershipJson = Json.obj(
-    "partnershipName" -> partnerName
+  val investorGroupsJson= Json.obj(
+    "investorName" -> investorName
   )
 }

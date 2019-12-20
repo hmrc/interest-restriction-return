@@ -1,18 +1,17 @@
 package assets
 
 import play.api.libs.json.Json
-import assets.GroupRatioBlendedITConstants.groupRatioBlendedJson
-import assets.NonConsolidatedInvestmentITConstants.nonConsolidatedInvestmentJson
-import assets.ConsolidatedPartnershipITConstants.consolidatedPartnershipsJson
+import assets.GroupRatioITConstants._
+import assets.NonConsolidatedInvestmentElectionITConstants._
+import assets.ConsolidatedPartnershipITConstants._
 
 object GroupLevelElectionsITConstants {
 
-  val groupLevelElectionsJson = Json.obj(
-    "isElected" -> true,
-    "groupRatioBlended" -> groupRatioBlendedJson,
-    "groupEBITDAChargeableGains" -> true,
+  val groupLevelElectionsJson= Json.obj(
+    "groupRatio" -> groupRatioJson,
     "interestAllowanceAlternativeCalculation" -> true,
     "interestAllowanceNonConsolidatedInvestment" -> nonConsolidatedInvestmentJson,
     "interestAllowanceConsolidatedPartnership" -> consolidatedPartnershipsJson
   )
+
 }
