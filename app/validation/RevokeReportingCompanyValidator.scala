@@ -30,25 +30,31 @@ trait RevokeReportingCompanyValidator extends BaseValidation {
   private def validateReportingCompanyRevokeItself(implicit path: JsPath): ValidationResult[Boolean] = {
     val revokeItself = revokeReportingCompanyModel.isReportingCompanyRevokingItself
     val company = revokeReportingCompanyModel.companyMakingRevocation
-    val declaration = revokeReportingCompanyModel.declaration
-    (revokeItself, company, declaration) match {
-      case (_,_,false) => DeclaredFiftyPercentOfEligibleCompanies(declaration).invalidNec
-      case (true,Some(details),true) => DetailsNotNeededIfCompanyRevokingItself(details).invalidNec
-      case (true,None,true) => revokeItself.validNec
-      case (false,Some(companyMakingRevocation),true) if companyMakingRevocation.validate.isValid => revokeItself.validNec
+    (revokeItself, company) match {
+      case (true,Some(details)) => DetailsNotNeededIfCompanyRevokingItself(details).invalidNec
+      case (true,None) => revokeItself.validNec
+      case (false,Some(companyMakingRevocation)) if companyMakingRevocation.validate.isValid => revokeItself.validNec
       case _ => CompanyMakingAppointmentMustSupplyDetails().invalidNec
+    }
+  }
+
+  private def validateDeclaration(implicit path: JsPath): ValidationResult[Boolean] = {
+    val declaration = revokeReportingCompanyModel.declaration
+    if(declaration) declaration.validNec else {
+      DeclaredFiftyPercentOfEligibleCompanies(declaration).invalidNec
     }
   }
 
   def validate(implicit path: JsPath): ValidationResult[RevokeReportingCompanyModel] =
     (revokeReportingCompanyModel.agentDetails.validate(path \ "agentDetails"),
       revokeReportingCompanyModel.reportingCompany.validate(path \ "reportingCompany"),
-      validateReportingCompanyRevokeItself,
+      validateReportingCompanyRevokeItself(path \ "isReportingCompanyRevokingItself"),
       optionValidations(revokeReportingCompanyModel.companyMakingRevocation.map(_.validate(path \ "companyMakingRevocation"))),
       optionValidations(revokeReportingCompanyModel.ultimateParent.map(_.validate(path \ "ultimateParent"))),
       revokeReportingCompanyModel.accountingPeriod.validate(path \ "accountingPeriod"),
-      combineValidationsForField(revokeReportingCompanyModel.authorisingCompanies.map(_.validate(path \ "authorisingCompanies")):_*)
-    ).mapN((_,_,_,_,_,_,_) => revokeReportingCompanyModel)
+      combineValidationsForField(revokeReportingCompanyModel.authorisingCompanies.map(_.validate(path \ "authorisingCompanies")):_*),
+      validateDeclaration(path \ "declaration")
+    ).mapN((_,_,_,_,_,_,_,_) => revokeReportingCompanyModel)
 }
 
 case class CompanyMakingAppointmentMustSupplyDetails(implicit val path: JsPath) extends Validation {

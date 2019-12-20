@@ -16,8 +16,7 @@
 
 package validation
 
-import assets.RevokeReportingCompanyConstants._
-import models.IdentityOfCompanySubmittingModel
+import assets.revokeReportingCompany.RevokeReportingCompanyConstants.revokeReportingCompanyModelMax
 import play.api.libs.json.JsPath
 import utils.BaseSpec
 
@@ -30,12 +29,12 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
     "Return valid" when {
 
       "a Reporting Company revokes itself" in {
-        val testingModel = revokeReportingCompanyModel.copy(companyMakingRevocation = None)
+        val testingModel = revokeReportingCompanyModelMax.copy(companyMakingRevocation = None)
         rightSide(testingModel.validate) shouldBe testingModel
       }
 
       "a Reporting Company is being revoked by another company and supplies their details" in {
-        val testingModel = revokeReportingCompanyModel.copy(isReportingCompanyRevokingItself = false)
+        val testingModel = revokeReportingCompanyModelMax.copy(isReportingCompanyRevokingItself = false)
         rightSide(testingModel.validate) shouldBe testingModel
       }
     }
@@ -43,19 +42,43 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
     "Return invalid" when {
 
       "a company submitting on behalf doesn't supply their company details" in {
-        leftSideError(revokeReportingCompanyModel.copy(
-          isReportingCompanyRevokingItself = false, companyMakingRevocation = None).validate).errorMessage shouldBe
+        val testModel = revokeReportingCompanyModelMax.copy(
+          isReportingCompanyRevokingItself = false, companyMakingRevocation = None)
+
+        leftSideErrorLength(testModel.validate) shouldBe 1
+
+        leftSideError(testModel.validate).errorMessage shouldBe
           CompanyMakingAppointmentMustSupplyDetails().errorMessage
       }
 
       "the declaration hasn't been declared" in {
-        leftSideError(revokeReportingCompanyModel.copy(declaration = false).validate).errorMessage shouldBe
+        val testModel = revokeReportingCompanyModelMax.copy(declaration = false,companyMakingRevocation = None)
+
+        leftSideErrorLength(testModel.validate) shouldBe 1
+
+        leftSideError(testModel.validate).errorMessage shouldBe
           DeclaredFiftyPercentOfEligibleCompanies(declaration = false).errorMessage
       }
 
+      "the declaration hasn't been declared and the company is revoking itself but still supplies revoking company details" in {
+        val testModel = revokeReportingCompanyModelMax.copy(declaration = false)
+
+        leftSideErrorLength(testModel.validate) shouldBe 2
+
+        leftSideError(testModel.validate,1).errorMessage shouldBe
+          DeclaredFiftyPercentOfEligibleCompanies(declaration = false).errorMessage
+
+        leftSideError(testModel.validate).errorMessage shouldBe
+          DetailsNotNeededIfCompanyRevokingItself(revokeReportingCompanyModelMax.companyMakingRevocation.get).errorMessage
+      }
+
       "a Company revokes itself but still supplies the revoking company details" in {
-        leftSideError(revokeReportingCompanyModel.copy(isReportingCompanyRevokingItself = true).validate).errorMessage shouldBe
-          DetailsNotNeededIfCompanyRevokingItself(revokeReportingCompanyModel.companyMakingRevocation.get).errorMessage
+        val testModel = revokeReportingCompanyModelMax.copy(isReportingCompanyRevokingItself = true)
+
+        leftSideErrorLength(testModel.validate) shouldBe 1
+
+        leftSideError(testModel.validate).errorMessage shouldBe
+          DetailsNotNeededIfCompanyRevokingItself(revokeReportingCompanyModelMax.companyMakingRevocation.get).errorMessage
       }
     }
 
