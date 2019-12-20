@@ -17,11 +17,14 @@
 package models.fullReturn
 
 import play.api.libs.json.Json
+import validation.fullReturn.GroupLevelAmountValidator
 
 case class GroupLevelAmountModel(interestReactivationCap: BigDecimal,
                                  interestAllowanceForward: BigDecimal,
                                  interestAllowanceForPeriod: BigDecimal,
-                                 interestCapacityForPeriod: BigDecimal)
+                                 interestCapacityForPeriod: BigDecimal) extends GroupLevelAmountValidator {
+  override val groupLevelAmount: GroupLevelAmountModel = this
+}
 
 object GroupLevelAmountModel {
   implicit val format = Json.format[GroupLevelAmountModel]
