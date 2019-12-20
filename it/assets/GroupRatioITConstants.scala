@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
-package schemas.helpers
+package assets
 
+import assets.GroupRatioBlendedITConstants._
 import play.api.libs.json.Json
 
-case class Partnership(partnershipName: Option[String] = Some("Name"))
+object GroupRatioITConstants {
 
-object Partnership {
-  implicit val writes = Json.writes[Partnership]
+  val groupRatioJson= Json.obj(
+    "isElected" -> true,
+    "groupEBITDAChargeableGains" -> Some(true),
+    "groupRatioBlended" -> groupRatioBlendedJson)
 }

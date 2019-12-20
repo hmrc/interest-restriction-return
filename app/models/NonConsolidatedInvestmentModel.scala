@@ -17,10 +17,22 @@
 package models
 
 import play.api.libs.json.Json
+import validation.NonConsolidatedInvestmentValidator
 
-case class NonConsolidatedInvestmentModel(isElected: Boolean,
-                                          nonConsolidatedInvestments: Option[Seq[String]])
+
+case class NonConsolidatedInvestmentModel(nonConsolidatedInvestment: String) extends NonConsolidatedInvestmentValidator {
+  override val nonConsolidatedInvestmentModel = this
+}
+
 
 object NonConsolidatedInvestmentModel {
   implicit val format = Json.format[NonConsolidatedInvestmentModel]
 }
+
+
+
+
+
+
+
+

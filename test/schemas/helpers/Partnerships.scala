@@ -14,30 +14,12 @@
  * limitations under the License.
  */
 
-package assets
+package schemas.helpers
 
-import models.{GroupRatioBlendedModel, InvestorGroupModel}
-import assets.InvestorGroupConstants._
 import play.api.libs.json.Json
 
-object GroupRatioBlendedConstants {
+case class Partnerships(partnershipName: Option[String] = Some("Name"))
 
-  val groupRatioBlendedModelMax = GroupRatioBlendedModel(
-    isElected = true,
-    investorGroups = Some(Seq(InvestorGroupModel(investorName)))
-  )
-
-  val groupRatioBlendedJsonMax = Json.obj(
-    "isElected" -> true,
-    "investorGroups" -> Seq(InvestorGroupModel(investorName))
-  )
-
-  val groupRatioBlendedModelMin = GroupRatioBlendedModel(
-    isElected = false,
-    investorGroups = None
-  )
-
-  val groupRatioBlendedJsonMin = Json.obj(
-    "isElected" -> false
-  )
+object Partnerships {
+  implicit val writes = Json.writes[Partnerships]
 }

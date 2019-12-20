@@ -50,7 +50,7 @@ object AbbreviatedReturnConstants {
     groupCompanyDetails = groupCompanyDetailsModel,
     submissionType = Original,
     revisedReturnDetails = Some("revised details"),
-    groupLevelElections = Some(groupLevelElectionsModelMax),
+    groupLevelElections = Some(groupLevelElectionsModel),
     ukCompanies = Seq(ukCompanyModel)
   )
 

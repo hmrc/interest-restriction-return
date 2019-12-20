@@ -16,30 +16,30 @@
 
 package assets
 
-import models.ConsolidatedPartnershipModel
+import assets.GroupRatioBlendedConstants._
+import models.GroupRatioModel
 import play.api.libs.json.Json
-import assets.PartnershipsConstants._
 
-object ConsolidatedPartnershipConstants extends BaseConstants {
+object GroupRatioConstants {
 
-  val consolidatedPartnerships = "investment1"
-
-  val consolidatedPartnershipsModelMax = ConsolidatedPartnershipModel(
-    isElected = true,
-    consolidatedPartnerships = Some(Seq(partnershipModel))
-  )
-
-  val consolidatedPartnershipsJsonMax = Json.obj(
+  val groupRatioJsonMax = Json.obj(
     "isElected" -> true,
-    "consolidatedPartnerships" -> Seq(partnershipJson)
+    "groupEBITDAChargeableGains" -> Some(true),
+    "groupRatioBlended" -> groupRatioBlendedJsonMax)
+
+  val groupRatioModelMax = GroupRatioModel(
+    isElected = true,
+    groupEBITDAChargeableGains = Some(true),
+    groupRatioBlended = Some(groupRatioBlendedModelMax)
   )
 
-  val consolidatedPartnershipsModelMin = ConsolidatedPartnershipModel(
-    isElected = false,
-    consolidatedPartnerships = None
-  )
-
-  val consolidatedPartnershipsJsonMin = Json.obj(
+  val groupRatioJsonMin = Json.obj(
     "isElected" -> false
+  )
+
+  val groupRatioModelMin= GroupRatioModel(
+    isElected = false,
+    groupEBITDAChargeableGains = None,
+    groupRatioBlended = None
   )
 }

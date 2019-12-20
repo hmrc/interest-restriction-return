@@ -78,19 +78,10 @@ class AbbreviatedReturnSchemaSpec extends BaseSchemaSpec {
 
         val json = Json.toJson(AbbreviatedReturnModel(
           groupLevelElections = Some(GroupLevelElections(
-            groupEBITDAChargeableGains = None
+            groupRatio = Some(GroupRatio(
+              groupEBITDAChargeableGains = None
+            ))
           ))))
-
-        validate(json) shouldBe true
-      }
-
-      "Validated a successful JSON payload interestAllowanceAlternativeCalculation is None" in {
-
-        val json = Json.toJson(AbbreviatedReturnModel(
-          groupLevelElections = Some(GroupLevelElections(
-            interestAllowanceAlternativeCalculation = None
-          ))
-        ))
 
         validate(json) shouldBe true
       }
@@ -99,7 +90,9 @@ class AbbreviatedReturnSchemaSpec extends BaseSchemaSpec {
 
         val json = Json.toJson(AbbreviatedReturnModel(
           groupLevelElections = Some(GroupLevelElections(
-            isElected = Some(false)
+            groupRatio = Some(GroupRatio(
+              isElected = Some(false)
+            ))
           ))
         ))
 
@@ -110,8 +103,10 @@ class AbbreviatedReturnSchemaSpec extends BaseSchemaSpec {
 
         val json = Json.toJson(AbbreviatedReturnModel(
           groupLevelElections = Some(GroupLevelElections(
-            groupRatioBlended = Some(GroupRatioBlended(
-              isElected = Some(false)
+            groupRatio = Some(GroupRatio(
+              groupRatioBlended = Some(GroupRatioBlended(
+                isElected = Some(false)
+              ))
             ))
           ))
         ))

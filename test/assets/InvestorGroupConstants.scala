@@ -16,28 +16,13 @@
 
 package assets
 
-import models.{GroupRatioBlendedModel, InvestorGroupModel}
-import assets.InvestorGroupConstants._
-import play.api.libs.json.Json
+import models.InvestorGroupModel
 
-object GroupRatioBlendedConstants {
+object InvestorGroupConstants {
 
-  val groupRatioBlendedModelMax = GroupRatioBlendedModel(
-    isElected = true,
-    investorGroups = Some(Seq(InvestorGroupModel(investorName)))
-  )
+  val investorName = "some Investor"
 
-  val groupRatioBlendedJsonMax = Json.obj(
-    "isElected" -> true,
-    "investorGroups" -> Seq(InvestorGroupModel(investorName))
-  )
-
-  val groupRatioBlendedModelMin = GroupRatioBlendedModel(
-    isElected = false,
-    investorGroups = None
-  )
-
-  val groupRatioBlendedJsonMin = Json.obj(
-    "isElected" -> false
+  val investorGroupsModel = InvestorGroupModel(
+    investorName = investorName
   )
 }

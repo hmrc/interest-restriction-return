@@ -14,23 +14,21 @@
  * limitations under the License.
  */
 
-package assets
+package models
 
-import models.{CRNModel, CompanyNameModel, CountryCodeModel, UTRModel}
+import play.api.libs.json._
+import validation.InvestorGroupValidator
 
-trait BaseConstants {
 
-  val ctutr = UTRModel("1123456789")
-  val sautr = UTRModel("1234567890")
-  val invalidUtr = UTRModel("1999999999")
-
-  val crn = CRNModel("12345678")
-  val companyName = CompanyNameModel("Company Name ltd")
-  val companyNameMaxLength = 160
-  val companyNameTooLong = CompanyNameModel("a" * (companyNameMaxLength + 1))
-  val invalidCrn = CRNModel("AAAA1234")
-  val nonUkCrn = "12345678901"
-  val nonUkCountryCode = CountryCodeModel("US")
-  val invalidCountryCode = CountryCodeModel("AA")
-
+case class InvestorGroupModel(investorName: String) extends InvestorGroupValidator
+{
+  override val investorGroupModel = this
 }
+
+object InvestorGroupModel {
+  implicit val format = Json.format[InvestorGroupModel]
+}
+
+
+
+

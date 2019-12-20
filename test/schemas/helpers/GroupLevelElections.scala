@@ -18,9 +18,7 @@ package schemas.helpers
 
 import play.api.libs.json.Json
 
-case class GroupLevelElections(isElected: Option[Boolean] = Some(true),
-                               groupRatioBlended: Option[GroupRatioBlended] = Some(GroupRatioBlended()),
-                               groupEBITDAChargeableGains: Option[Boolean] = Some(true),
+case class GroupLevelElections(groupRatio: Option[GroupRatio] = Some(GroupRatio()),
                                interestAllowanceAlternativeCalculation: Option[Boolean] = Some(true),
                                interestAllowanceNonConsolidatedInvestment: Option[InterestAllowanceNonConsolidatedInvestment] = Some(InterestAllowanceNonConsolidatedInvestment()),
                                interestAllowanceConsolidatedPartnership: Option[InterestAllowanceConsolidatedPartnership] = Some(InterestAllowanceConsolidatedPartnership())

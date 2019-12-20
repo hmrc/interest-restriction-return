@@ -17,42 +17,24 @@
 package assets
 
 import assets.ConsolidatedPartnershipConstants._
-import assets.GroupRatioBlendedConstants._
-import assets.NonConsolidatedInvestmentConstants._
+import assets.GroupRatioConstants._
+import assets.NonConsolidatedInvestmentElectionConstants._
 import models.GroupLevelElectionsModel
 import play.api.libs.json.Json
 
 object GroupLevelElectionsConstants {
 
   val groupLevelElectionsJsonMax = Json.obj(
-    "isElected" -> true,
-    "groupRatioBlended" -> groupRatioBlendedJsonMax,
-    "groupEBITDAChargeableGains" -> true,
+    "groupRatio" -> groupRatioJsonMax,
     "interestAllowanceAlternativeCalculation" -> true,
     "interestAllowanceNonConsolidatedInvestment" -> nonConsolidatedInvestmentJsonMax,
     "interestAllowanceConsolidatedPartnership" -> consolidatedPartnershipsJsonMax
   )
 
-  val groupLevelElectionsModelMax = GroupLevelElectionsModel(
-    isElected = true,
-    groupRatioBlended = Some(groupRatioBlendedModelMax),
-    groupEBITDAChargeableGains = Some(true),
-    interestAllowanceAlternativeCalculation = Some(true),
-    interestAllowanceNonConsolidatedInvestment = Some(nonConsolidatedInvestmentModelMax),
-    interestAllowanceConsolidatedPartnership = Some(consolidatedPartnershipsModelMax)
-  )
-
-  val groupLevelElectionsJsonMin = Json.obj(
-    "isElected" -> true,
-    "groupRatioBlended" -> groupRatioBlendedJsonMax
-  )
-
-  val groupLevelElectionsModelMin = GroupLevelElectionsModel(
-    isElected = true,
-    groupRatioBlended = Some(groupRatioBlendedModelMax),
-    groupEBITDAChargeableGains = None,
-    interestAllowanceAlternativeCalculation = None,
-    interestAllowanceNonConsolidatedInvestment = None,
-    interestAllowanceConsolidatedPartnership = None
+  val groupLevelElectionsModel = GroupLevelElectionsModel(
+    groupRatio = groupRatioModelMax,
+    interestAllowanceAlternativeCalculation = true,
+    interestAllowanceNonConsolidatedInvestment = nonConsolidatedInvestmentModelMax,
+    interestAllowanceConsolidatedPartnership = consolidatedPartnershipsModelMax
   )
 }

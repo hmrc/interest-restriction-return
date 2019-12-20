@@ -16,11 +16,12 @@
 
 package schemas.helpers
 
+import models.UTRModel
 import play.api.libs.json.Json
 
 case class InterestAllowanceConsolidatedPartnership(isElected: Option[Boolean] = Some(true),
-                                                    consolidatedPartnerships: Option[Seq[Partnership]] = Some(Seq(Partnership())))
-
+                                                    consolidatedPartnerships: Option[Seq[Partnerships]] = Some(Seq(Partnerships()))
+                                                   )
 object InterestAllowanceConsolidatedPartnership {
   implicit val writes = Json.writes[InterestAllowanceConsolidatedPartnership]
 }
