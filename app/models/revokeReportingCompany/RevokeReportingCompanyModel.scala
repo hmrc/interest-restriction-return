@@ -18,6 +18,7 @@ package models.revokeReportingCompany
 
 import models.{AccountingPeriodModel, AgentDetailsModel, AuthorisingCompanyModel, IdentityOfCompanySubmittingModel, ReportingCompanyModel, UltimateParentModel}
 import play.api.libs.json.Json
+import validation.RevokeReportingCompanyValidator
 
 case class RevokeReportingCompanyModel(agentDetails: AgentDetailsModel,
                                        reportingCompany: ReportingCompanyModel,
@@ -26,7 +27,9 @@ case class RevokeReportingCompanyModel(agentDetails: AgentDetailsModel,
                                        ultimateParent: Option[UltimateParentModel],
                                        accountingPeriod: AccountingPeriodModel,
                                        authorisingCompanies: Seq[AuthorisingCompanyModel],
-                                       declaration: Boolean)
+                                       declaration: Boolean) extends RevokeReportingCompanyValidator {
+  override val revokeReportingCompanyModel: RevokeReportingCompanyModel = this
+}
 
 object RevokeReportingCompanyModel {
   implicit val format = Json.format[RevokeReportingCompanyModel]

@@ -53,6 +53,10 @@ trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with Mate
     validationResult.toEither.left.get.toChain.toList(position)
   }
 
+  def leftSideErrorLength[A](validationResult: ValidationResult[A]): Int = {
+    validationResult.toEither.left.get.toChain.length.toInt
+  }
+
   def errorMessages(messages: String*) = messages.mkString("|")
 
 }

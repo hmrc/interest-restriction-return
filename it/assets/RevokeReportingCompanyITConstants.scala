@@ -32,8 +32,6 @@ object RevokeReportingCompanyITConstants {
     "agentDetails" -> agentDetailsJson,
     "reportingCompany" -> reportingCompanyJson,
     "isReportingCompanyRevokingItself" -> true,
-    "companyMakingRevocation" -> identityOfCompanySubmittingJson,
-    "ultimateParent" -> ultimateParentJson,
     "accountingPeriod" -> accountingPeriodJson,
     "authorisingCompanies" -> Seq(authorisingCompanyJson),
     "declaration" -> true
