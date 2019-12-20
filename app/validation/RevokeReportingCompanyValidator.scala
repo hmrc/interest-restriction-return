@@ -16,7 +16,7 @@
 
 package validation
 
-import models.{IdentityOfCompanySubmittingModel, Validation}
+import models.{IdentityOfCompanySubmittingModel, UltimateParentModel, Validation}
 import models.Validation.ValidationResult
 import models.revokeReportingCompany.RevokeReportingCompanyModel
 import play.api.libs.json.{JsBoolean, JsPath, Json}
@@ -32,9 +32,8 @@ trait RevokeReportingCompanyValidator extends BaseValidation {
     val company = revokeReportingCompanyModel.companyMakingRevocation
     (revokeItself, company) match {
       case (true,Some(details)) => DetailsNotNeededIfCompanyRevokingItself(details).invalidNec
-      case (true,None) => revokeItself.validNec
-      case (false,Some(companyMakingRevocation)) if companyMakingRevocation.validate.isValid => revokeItself.validNec
-      case _ => CompanyMakingAppointmentMustSupplyDetails().invalidNec
+      case (false,None) => CompanyMakingAppointmentMustSupplyDetails().invalidNec
+      case _ => revokeItself.validNec
     }
   }
 
@@ -45,12 +44,19 @@ trait RevokeReportingCompanyValidator extends BaseValidation {
     }
   }
 
+  private def validateUltimateParentCompany(implicit path: JsPath): ValidationResult[Option[UltimateParentModel]] = {
+    (revokeReportingCompanyModel.reportingCompany.sameAsUltimateParent, revokeReportingCompanyModel.ultimateParent) match {
+      case (true, Some(parent)) => UltimateParentCompanyIsSupplied(parent).invalidNec
+      case _ => revokeReportingCompanyModel.ultimateParent.validNec
+    }
+  }
+
   def validate(implicit path: JsPath): ValidationResult[RevokeReportingCompanyModel] =
     (revokeReportingCompanyModel.agentDetails.validate(path \ "agentDetails"),
       revokeReportingCompanyModel.reportingCompany.validate(path \ "reportingCompany"),
       validateReportingCompanyRevokeItself(path \ "isReportingCompanyRevokingItself"),
       optionValidations(revokeReportingCompanyModel.companyMakingRevocation.map(_.validate(path \ "companyMakingRevocation"))),
-      optionValidations(revokeReportingCompanyModel.ultimateParent.map(_.validate(path \ "ultimateParent"))),
+      validateUltimateParentCompany(path \ "ultimateParent"),
       revokeReportingCompanyModel.accountingPeriod.validate(path \ "accountingPeriod"),
       combineValidationsForField(revokeReportingCompanyModel.authorisingCompanies.map(_.validate(path \ "authorisingCompanies")):_*),
       validateDeclaration(path \ "declaration")
