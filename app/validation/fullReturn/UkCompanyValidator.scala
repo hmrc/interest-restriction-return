@@ -50,12 +50,9 @@ trait UkCompanyValidator extends BaseValidation {
     val expense = ukCompany.netTaxInterestExpense
     val income = ukCompany.netTaxInterestIncome
 
-    if(expense > 0 && income != 0) {
+    if(expense != 0 && income != 0) {
       ExpenseAndIncomeBothNotGreaterThanZero(ukCompany.netTaxInterestExpense, ukCompany.netTaxInterestIncome).invalidNec
-    } else if (income > 0 && expense != 0)
-      {
-        ExpenseAndIncomeBothNotGreaterThanZero(ukCompany.netTaxInterestExpense, ukCompany.netTaxInterestIncome).invalidNec
-  } else
+    } else
       {
         ukCompany.netTaxInterestIncome.validNec
       }

@@ -51,6 +51,11 @@ class UkCompanyValidatorSpec extends BaseValidationSpec {
       "netTaxInterestIncomes is < 0" in {
         leftSideError(ukCompanyModelMax.copy(netTaxInterestIncome = -1).validate).errorMessage shouldBe NetTaxInterestIncomeError(-1).errorMessage
       }
+
+      "ExpenseAndIncomeBothNotGreaterThanZero where both values are > 0" in {
+        leftSideError(ukCompanyModelMax.copy(netTaxInterestExpense = 20.00,netTaxInterestIncome = 30.00).validate).errorMessage shouldBe ExpenseAndIncomeBothNotGreaterThanZero(20.00,30.00).errorMessage
+      }
+
     }
   }
 }
