@@ -16,10 +16,7 @@
 
 package validation
 
-import assets.ConsolidatedPartnershipConstants.consolidatedPartnershipsModelMax
 import assets.GroupLevelElectionsConstants._
-import assets.GroupRatioBlendedConstants.groupRatioBlendedModelMax
-import assets.NonConsolidatedInvestmentElectionConstants.nonConsolidatedInvestmentModelMax
 import play.api.libs.json.JsPath
 
 class GroupLevelElectionValidatorSpec extends BaseValidationSpec {
@@ -29,37 +26,16 @@ class GroupLevelElectionValidatorSpec extends BaseValidationSpec {
   "Group Level Election Validation" when {
     "Return Valid" when {
 
-      "Group Level Election isElected true other elections are optional" in {
-        val model = groupLevelElectionsModelMax.copy(isElected = true,
-          groupRatioBlended = Some(groupRatioBlendedModelMax),
-          groupEBITDAChargeableGains = Some(true),
-          interestAllowanceAlternativeCalculation = Some(true),
-          interestAllowanceNonConsolidatedInvestment = Some(nonConsolidatedInvestmentModelMax),
-          interestAllowanceConsolidatedPartnership = Some(consolidatedPartnershipsModelMax))
+      "Alternative Calculation is false" in {
+        val model = groupLevelElectionsModel.copy(interestAllowanceAlternativeCalculation = false)
 
-        rightSide(model.validateGroupLevelElectionModel) shouldBe model
+        rightSide(model.validate) shouldBe model
       }
 
-      "Group Level Election isElected true some elections are optional" in {
-        val model = groupLevelElectionsModelMax.copy(isElected = true,
-          groupRatioBlended = None,
-          groupEBITDAChargeableGains = Some(true),
-          interestAllowanceAlternativeCalculation = Some(true),
-          interestAllowanceNonConsolidatedInvestment = Some(nonConsolidatedInvestmentModelMax),
-          interestAllowanceConsolidatedPartnership = Some(consolidatedPartnershipsModelMax))
+      "A Test goes here" in {
+        val model = groupLevelElectionsModel.copy()
 
-        rightSide(model.validateGroupLevelElectionModel) shouldBe model
-      }
-
-      "Group Level Election isElected true all elections are not made" in {
-        val model = groupLevelElectionsModelMax.copy(isElected = true,
-          groupRatioBlended = None,
-          groupEBITDAChargeableGains = Some(true),
-          interestAllowanceAlternativeCalculation = Some(true),
-          interestAllowanceNonConsolidatedInvestment = None,
-          interestAllowanceConsolidatedPartnership = None)
-
-        rightSide(model.validateGroupLevelElectionModel) shouldBe model
+        rightSide(model.validate) shouldBe model
       }
     }
   }

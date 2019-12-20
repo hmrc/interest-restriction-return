@@ -26,55 +26,22 @@ trait GroupLevelElectionValidation extends BaseValidation {
 
   val groupLevelElectionsModel: GroupLevelElectionsModel
 
-  private def validateGroupRatioElection(implicit path: JsPath): ValidationResult[Boolean] = {
-    groupLevelElectionsModel.isElected match {
-      case true => groupLevelElectionsModel.isElected.validNec
-      case false => groupLevelElectionsModel.isElected.validNec
-      case _ => GroupRatioElectionError(groupLevelElectionsModel.isElected).invalidNec
-    }
-  }
-
-  private def validateGroupEBITDA(implicit path: JsPath): ValidationResult[Option[Boolean]] = {
-    groupLevelElectionsModel.groupEBITDAChargeableGains match {
-      case Some(true) => groupLevelElectionsModel.groupEBITDAChargeableGains.validNec
-      case Some(false) => groupLevelElectionsModel.groupEBITDAChargeableGains.validNec
-      case _ => GroupEBITDAError(groupLevelElectionsModel.groupEBITDAChargeableGains).invalidNec
-    }
-  }
-
-  private def validateAlternativeCalculation(implicit path: JsPath): ValidationResult[Option[Boolean]] = {
+  private def validateAlternativeCalculation(implicit path: JsPath): ValidationResult[Boolean] = {
     groupLevelElectionsModel.interestAllowanceAlternativeCalculation match {
-      case Some(true) => groupLevelElectionsModel.interestAllowanceAlternativeCalculation.validNec
-      case Some(false) => groupLevelElectionsModel.interestAllowanceAlternativeCalculation.validNec
+      case true => groupLevelElectionsModel.interestAllowanceAlternativeCalculation.validNec
+      case false => groupLevelElectionsModel.interestAllowanceAlternativeCalculation.validNec
       case _ => AlternativeCalculationError(groupLevelElectionsModel.interestAllowanceAlternativeCalculation).invalidNec
     }
   }
 
-  def validateGroupLevelElectionModel(implicit path: JsPath): ValidationResult[GroupLevelElectionsModel] =
-    (validateGroupRatioElection,
-      optionValidations(groupLevelElectionsModel.groupRatioBlended.map(_.validate(path \ "groupRatioBlended"))),
-      validateGroupEBITDA,
+  def validate(implicit path: JsPath): ValidationResult[GroupLevelElectionsModel] =
+    (groupLevelElectionsModel.groupRatio.validate,
       validateAlternativeCalculation,
-      optionValidations(groupLevelElectionsModel.interestAllowanceNonConsolidatedInvestment.map(_.validate(path \ "nonConsolidatedInvestments"))),
-      optionValidations(groupLevelElectionsModel.interestAllowanceConsolidatedPartnership.map(_.validate(path \ "consolidatedPartnership")))).mapN((_, _, _, _, _, _) => groupLevelElectionsModel)
+      groupLevelElectionsModel.interestAllowanceNonConsolidatedInvestment.validate,
+      groupLevelElectionsModel.interestAllowanceConsolidatedPartnership.validate).mapN((_, _, _, _) => groupLevelElectionsModel)
 }
 
-case class GroupLevelElectionModelError(model: GroupLevelElectionsModel)(implicit val path: JsPath) extends Validation {
-  val errorMessage: String = "Ultimate Parent Company Model cannot contain data for UK and NonUK fields"
-  val value = Json.toJson(model)
-}
-
-case class GroupRatioElectionError(election: Boolean)(implicit val path: JsPath) extends Validation {
-  val errorMessage: String = "You must choose if you wish to make an election"
-  val value = Json.toJson(election)
-}
-
-case class GroupEBITDAError(ebitdaElect: Option[Boolean])(implicit val path: JsPath) extends Validation {
-  val errorMessage: String = "You must choose if you wish to make an election for the group's EBITDA"
-  val value = Json.toJson(ebitdaElect)
-}
-
-case class AlternativeCalculationError(altCalcElect: Option[Boolean])(implicit val path: JsPath) extends Validation {
+case class AlternativeCalculationError(altCalcElect: Boolean)(implicit val path: JsPath) extends Validation {
   val errorMessage: String = "You must choose if you wish to make an election to make an alternative calculation for interest allowance"
   val value = Json.toJson(altCalcElect)
 }

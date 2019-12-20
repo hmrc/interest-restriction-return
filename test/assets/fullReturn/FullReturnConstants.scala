@@ -44,7 +44,7 @@ object FullReturnConstants {
     groupCompanyDetails = groupCompanyDetailsModel,
     submissionType = Original,
     revisedReturnDetails = Some(revisedReturnDetails),
-    groupLevelElections = Some(groupLevelElectionsModelMax),
+    groupLevelElections = Some(groupLevelElectionsModel),
     ukCompanies = Seq(ukCompanyModelMax),
     angie = Some(angie),
     groupSubjectToInterestRestrictions = true,

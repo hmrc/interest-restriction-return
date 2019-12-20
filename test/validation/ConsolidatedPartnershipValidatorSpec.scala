@@ -19,7 +19,7 @@ package validation
 import models.{ConsolidatedPartnershipModel, PartnershipModel}
 import play.api.libs.json.JsPath
 
-class ConsolidatedPartenrshipValidatorSpec extends BaseValidationSpec {
+class ConsolidatedPartnershipValidatorSpec extends BaseValidationSpec {
 
   implicit val path = JsPath \ "some" \ "path"
 
