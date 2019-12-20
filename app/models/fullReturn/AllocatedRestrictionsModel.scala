@@ -19,6 +19,7 @@ package models.fullReturn
 import java.time.LocalDate
 
 import play.api.libs.json.Json
+import validation.fullReturn.AllocatedRestrictionsValidator
 
 case class AllocatedRestrictionsModel(ap1End: Option[LocalDate],
                                       ap2End: Option[LocalDate],
@@ -27,7 +28,9 @@ case class AllocatedRestrictionsModel(ap1End: Option[LocalDate],
                                       disallowanceAp2: Option[BigDecimal],
                                       disallowanceAp3: Option[BigDecimal],
                                       totalDisallowances: Option[BigDecimal]
-                                     )
+                                     ) extends AllocatedRestrictionsValidator {
+  override val allocatedRestrictionsModel: AllocatedRestrictionsModel = this
+}
 
 object AllocatedRestrictionsModel {
   implicit val format = Json.format[AllocatedRestrictionsModel]

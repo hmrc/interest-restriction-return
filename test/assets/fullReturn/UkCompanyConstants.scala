@@ -25,7 +25,7 @@ object UkCompanyConstants extends BaseConstants {
 
 
   val netTaxInterestExpense: BigDecimal = 1.11
-  val netTaxInterestIncome: BigDecimal = 2.22
+  val netTaxInterestIncome: BigDecimal = 0
   val taxEBITDA: BigDecimal = 3.33
 
   val ukCompanyModelMax = UkCompanyModel(
