@@ -46,20 +46,20 @@ trait RevokeReportingCompanyValidator extends BaseValidation {
 
   private def validateUltimateParentCompany(implicit path: JsPath): ValidationResult[Option[UltimateParentModel]] = {
     (revokeReportingCompanyModel.reportingCompany.sameAsUltimateParent, revokeReportingCompanyModel.ultimateParent) match {
-      case (true, Some(parent)) => UltimateParentCompanyIsSupplied(parent).invalidNec
+      case (true, Some(parent)) => UltimateParentCompanyIsSuppliedRevoke(parent).invalidNec
       case _ => revokeReportingCompanyModel.ultimateParent.validNec
     }
   }
 
-  def validate(implicit path: JsPath): ValidationResult[RevokeReportingCompanyModel] =
-    (revokeReportingCompanyModel.agentDetails.validate(path \ "agentDetails"),
-      revokeReportingCompanyModel.reportingCompany.validate(path \ "reportingCompany"),
-      validateReportingCompanyRevokeItself(path \ "isReportingCompanyRevokingItself"),
-      optionValidations(revokeReportingCompanyModel.companyMakingRevocation.map(_.validate(path \ "companyMakingRevocation"))),
-      validateUltimateParentCompany(path \ "ultimateParent"),
-      revokeReportingCompanyModel.accountingPeriod.validate(path \ "accountingPeriod"),
-      combineValidationsForField(revokeReportingCompanyModel.authorisingCompanies.map(_.validate(path \ "authorisingCompanies")):_*),
-      validateDeclaration(path \ "declaration")
+  def validate: ValidationResult[RevokeReportingCompanyModel] =
+    (revokeReportingCompanyModel.agentDetails.validate(JsPath \ "agentDetails"),
+      revokeReportingCompanyModel.reportingCompany.validate(JsPath \ "reportingCompany"),
+      validateReportingCompanyRevokeItself(JsPath \ "isReportingCompanyRevokingItself"),
+      optionValidations(revokeReportingCompanyModel.companyMakingRevocation.map(_.validate(JsPath \ "companyMakingRevocation"))),
+      validateUltimateParentCompany(JsPath \ "ultimateParent"),
+      revokeReportingCompanyModel.accountingPeriod.validate(JsPath \ "accountingPeriod"),
+      combineValidationsForField(revokeReportingCompanyModel.authorisingCompanies.map(_.validate(JsPath \ "authorisingCompanies")):_*),
+      validateDeclaration(JsPath \ "declaration")
     ).mapN((_,_,_,_,_,_,_,_) => revokeReportingCompanyModel)
 }
 
@@ -77,4 +77,11 @@ case class DeclaredFiftyPercentOfEligibleCompanies(declaration: Boolean)(implici
 case class DetailsNotNeededIfCompanyRevokingItself(companyMakingRevocation: IdentityOfCompanySubmittingModel)(implicit val path: JsPath) extends Validation {
   val errorMessage: String = "If the reporting company is submitting this revocation, the identity of company making revocation is not needed."
   val value = Json.toJson(companyMakingRevocation)
+}
+
+//TODO identify common messages and move
+case class UltimateParentCompanyIsSuppliedRevoke(ultimateParentModel: UltimateParentModel) extends Validation {
+  val errorMessage: String = "Ultimate Parent Company must not be supplied if it is the same as the reporting company"
+  val path = JsPath \ "ultimateParentCompany"
+  val value = Json.toJson(ultimateParentModel)
 }

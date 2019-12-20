@@ -23,7 +23,7 @@ import controllers.actions.AuthAction
 import models.ValidationErrorResponseModel
 import models.revokeReportingCompany.RevokeReportingCompanyModel
 import models.revokeReportingCompany.RevokeReportingCompanyModel._
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsPath, JsValue, Json}
 import play.api.mvc.{Action, ControllerComponents}
 import services.RevokeReportingCompanyService
 
