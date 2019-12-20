@@ -16,8 +16,7 @@
 
 package validation
 
-import assets.ReportingCompanyConstants._
-import models.CompanyNameModel
+import assets.RevokeReportingCompanyConstants._
 import play.api.libs.json.JsPath
 import utils.BaseSpec
 
@@ -29,31 +28,24 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
 
     "Return valid" when {
 
-      "a valid Reporting Company model is validated" in {
-        rightSide(reportingCompanyModelMax.validate) shouldBe reportingCompanyModelMax
+      "a valid Revoke Reporting Company model is validated" in {
+        rightSide(revokeReportingCompanyModel.validate) shouldBe revokeReportingCompanyModel
       }
     }
 
     "Return invalid" when {
 
-      "Company name" when {
-
-        "Company name is empty" in {
-          leftSideError(reportingCompanyModelMax.copy(companyName = CompanyNameModel("")).validate).errorMessage shouldBe CompanyNameLengthError("").errorMessage
-        }
-
-        s"Company name is longer that ${companyNameMaxLength}" in {
-          leftSideError(reportingCompanyModelMax.copy(companyName = companyNameTooLong).validate).errorMessage shouldBe CompanyNameLengthError("a" * (companyNameMaxLength + 1)).errorMessage
-        }
+      "a company submitting on behalf doesn't supply their company details" in {
+        leftSideError(revokeReportingCompanyModel.copy(
+          isReportingCompanyRevokingItself = false, companyMakingRevocation = None).validate).errorMessage shouldBe
+          CompanyMakingAppointmentMustSupplyDetails().errorMessage
       }
 
-      "CTUTR is invalid" in {
-        leftSideError(reportingCompanyModelMax.copy(ctutr = invalidUtr).validate).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
-      }
-
-      "CRN is invalid" in {
-        leftSideError(reportingCompanyModelMax.copy(crn = Some(invalidCrn)).validate).errorMessage shouldBe CRNFormatCheck(invalidCrn).errorMessage
+      "the declaration hasn't been declared" in {
+        leftSideError(revokeReportingCompanyModel.copy(declaration = false).validate).errorMessage shouldBe
+          DeclaredFiftyPercentOfEligibleCompanies(declaration = false).errorMessage
       }
     }
+
   }
 }
