@@ -16,7 +16,7 @@
 
 package validation
 
-import models.Validation
+import models.{IdentityOfCompanySubmittingModel, Validation}
 import models.Validation.ValidationResult
 import models.revokeReportingCompany.RevokeReportingCompanyModel
 import play.api.libs.json.{JsBoolean, JsPath, Json}
@@ -32,9 +32,10 @@ trait RevokeReportingCompanyValidator extends BaseValidation {
     val company = revokeReportingCompanyModel.companyMakingRevocation
     val declaration = revokeReportingCompanyModel.declaration
     (revokeItself, company, declaration) match {
-      case (true,_,true) => revokeItself.validNec
-      case (false,Some(companyMakingRevocation),true) if companyMakingRevocation.validate.isValid => revokeItself.validNec
       case (_,_,false) => DeclaredFiftyPercentOfEligibleCompanies(declaration).invalidNec
+      case (true,Some(details),true) => DetailsNotNeededIfCompanyRevokingItself(details).invalidNec
+      case (true,None,true) => revokeItself.validNec
+      case (false,Some(companyMakingRevocation),true) if companyMakingRevocation.validate.isValid => revokeItself.validNec
       case _ => CompanyMakingAppointmentMustSupplyDetails().invalidNec
     }
   }
@@ -59,4 +60,9 @@ case class CompanyMakingAppointmentMustSupplyDetails(implicit val path: JsPath) 
 case class DeclaredFiftyPercentOfEligibleCompanies(declaration: Boolean)(implicit val path: JsPath) extends Validation {
   val errorMessage: String = "The declaration that the listed companies constitute at least 50% of the eligible companies is missing."
   val value = JsBoolean(declaration)
+}
+
+case class DetailsNotNeededIfCompanyRevokingItself(companyMakingRevocation: IdentityOfCompanySubmittingModel)(implicit val path: JsPath) extends Validation {
+  val errorMessage: String = "If the reporting company is submitting this revocation, the identity of company making revocation is not needed."
+  val value = Json.toJson(companyMakingRevocation)
 }

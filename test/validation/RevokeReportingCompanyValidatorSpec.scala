@@ -17,6 +17,7 @@
 package validation
 
 import assets.RevokeReportingCompanyConstants._
+import models.IdentityOfCompanySubmittingModel
 import play.api.libs.json.JsPath
 import utils.BaseSpec
 
@@ -28,8 +29,14 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
 
     "Return valid" when {
 
-      "a valid Revoke Reporting Company model is validated" in {
-        rightSide(revokeReportingCompanyModel.validate) shouldBe revokeReportingCompanyModel
+      "a Reporting Company revokes itself" in {
+        val testingModel = revokeReportingCompanyModel.copy(companyMakingRevocation = None)
+        rightSide(testingModel.validate) shouldBe testingModel
+      }
+
+      "a Reporting Company is being revoked by another company and supplies their details" in {
+        val testingModel = revokeReportingCompanyModel.copy(isReportingCompanyRevokingItself = false)
+        rightSide(testingModel.validate) shouldBe testingModel
       }
     }
 
@@ -44,6 +51,11 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
       "the declaration hasn't been declared" in {
         leftSideError(revokeReportingCompanyModel.copy(declaration = false).validate).errorMessage shouldBe
           DeclaredFiftyPercentOfEligibleCompanies(declaration = false).errorMessage
+      }
+
+      "a Company revokes itself but still supplies the revoking company details" in {
+        leftSideError(revokeReportingCompanyModel.copy(isReportingCompanyRevokingItself = true).validate).errorMessage shouldBe
+          DetailsNotNeededIfCompanyRevokingItself(revokeReportingCompanyModel.companyMakingRevocation.get).errorMessage
       }
     }
 
