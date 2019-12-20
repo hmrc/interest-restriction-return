@@ -51,16 +51,22 @@ trait RevokeReportingCompanyValidator extends BaseValidation {
     }
   }
 
-  def validate: ValidationResult[RevokeReportingCompanyModel] =
+  def validate: ValidationResult[RevokeReportingCompanyModel] = {
+
+    val validatedAuthorisingCompanies = revokeReportingCompanyModel.authorisingCompanies.zipWithIndex.map {
+      case (a, i) => a.validate(JsPath \ s"authorisingCompanies[$i]")
+    }
+
     (revokeReportingCompanyModel.agentDetails.validate(JsPath \ "agentDetails"),
       revokeReportingCompanyModel.reportingCompany.validate(JsPath \ "reportingCompany"),
       validateReportingCompanyRevokeItself(JsPath \ "isReportingCompanyRevokingItself"),
       optionValidations(revokeReportingCompanyModel.companyMakingRevocation.map(_.validate(JsPath \ "companyMakingRevocation"))),
       validateUltimateParentCompany(JsPath \ "ultimateParent"),
       revokeReportingCompanyModel.accountingPeriod.validate(JsPath \ "accountingPeriod"),
-      combineValidationsForField(revokeReportingCompanyModel.authorisingCompanies.map(_.validate(JsPath \ "authorisingCompanies")):_*),
+      combineValidationsForField(validatedAuthorisingCompanies: _*),
       validateDeclaration(JsPath \ "declaration")
-    ).mapN((_,_,_,_,_,_,_,_) => revokeReportingCompanyModel)
+    ).mapN((_, _, _, _, _, _, _, _) => revokeReportingCompanyModel)
+  }
 }
 
 case class CompanyMakingAppointmentMustSupplyDetails(implicit val path: JsPath) extends Validation {

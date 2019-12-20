@@ -16,6 +16,7 @@
 
 package validation
 
+import assets.IdentityOfCompanySubmittingConstants.identityOfCompanySubmittingModelMax
 import assets.revokeReportingCompany.RevokeReportingCompanyConstants.revokeReportingCompanyModelMax
 import play.api.libs.json.JsPath
 import utils.BaseSpec
@@ -29,19 +30,23 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
     "Return valid" when {
 
       "a Reporting Company revokes itself" in {
-        val testingModel = revokeReportingCompanyModelMax.copy(companyMakingRevocation = None)
+        val testingModel = revokeReportingCompanyModelMax
+
         rightSide(testingModel.validate) shouldBe testingModel
       }
 
       "a Reporting Company is being revoked by another company and supplies their details" in {
-        val testingModel = revokeReportingCompanyModelMax.copy(isReportingCompanyRevokingItself = false)
+        val testingModel = revokeReportingCompanyModelMax.copy(isReportingCompanyRevokingItself = false,
+          companyMakingRevocation = Some(identityOfCompanySubmittingModelMax))
+
         rightSide(testingModel.validate) shouldBe testingModel
       }
 
       "a revoking company is the same as the ultimate parent, and ultimate parent was not supplied, " in {
-        val testingModel = revokeReportingCompanyModelMax.copy(companyMakingRevocation = None,
+        val testingModel = revokeReportingCompanyModelMax.copy(
           reportingCompany = revokeReportingCompanyModelMax.reportingCompany.copy(sameAsUltimateParent = true),
           ultimateParent = None)
+
         rightSide(testingModel.validate) shouldBe testingModel
       }
     }
@@ -49,7 +54,7 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
     "Return invalid" when {
 
       "a revoking company is the same as the ultimate parent, and ultimate parent was supplied, " in {
-        val testingModel = revokeReportingCompanyModelMax.copy(companyMakingRevocation = None,
+        val testingModel = revokeReportingCompanyModelMax.copy(
           reportingCompany = revokeReportingCompanyModelMax.reportingCompany.copy(sameAsUltimateParent = true))
 
         leftSideErrorLength(testingModel.validate) shouldBe 1
@@ -60,7 +65,7 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
 
       "a company submitting on behalf doesn't supply their company details" in {
         val testModel = revokeReportingCompanyModelMax.copy(
-          isReportingCompanyRevokingItself = false, companyMakingRevocation = None)
+          isReportingCompanyRevokingItself = false)
 
         leftSideErrorLength(testModel.validate) shouldBe 1
 
@@ -69,7 +74,7 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
       }
 
       "the declaration hasn't been declared" in {
-        val testModel = revokeReportingCompanyModelMax.copy(declaration = false,companyMakingRevocation = None)
+        val testModel = revokeReportingCompanyModelMax.copy(declaration = false)
 
         leftSideErrorLength(testModel.validate) shouldBe 1
 
@@ -78,7 +83,7 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
       }
 
       "the declaration hasn't been declared and the company is revoking itself but still supplies revoking company details" in {
-        val testModel = revokeReportingCompanyModelMax.copy(declaration = false)
+        val testModel = revokeReportingCompanyModelMax.copy(declaration = false,companyMakingRevocation = Some(identityOfCompanySubmittingModelMax))
 
         leftSideErrorLength(testModel.validate) shouldBe 2
 
@@ -86,16 +91,17 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
           DeclaredFiftyPercentOfEligibleCompanies(declaration = false).errorMessage
 
         leftSideError(testModel.validate).errorMessage shouldBe
-          DetailsNotNeededIfCompanyRevokingItself(revokeReportingCompanyModelMax.companyMakingRevocation.get).errorMessage
+          DetailsNotNeededIfCompanyRevokingItself(identityOfCompanySubmittingModelMax).errorMessage
       }
 
       "a Company revokes itself but still supplies the revoking company details" in {
-        val testModel = revokeReportingCompanyModelMax.copy(isReportingCompanyRevokingItself = true)
+        val testModel = revokeReportingCompanyModelMax.copy(isReportingCompanyRevokingItself = true,
+          companyMakingRevocation = Some(identityOfCompanySubmittingModelMax))
 
         leftSideErrorLength(testModel.validate) shouldBe 1
 
         leftSideError(testModel.validate).errorMessage shouldBe
-          DetailsNotNeededIfCompanyRevokingItself(revokeReportingCompanyModelMax.companyMakingRevocation.get).errorMessage
+          DetailsNotNeededIfCompanyRevokingItself(identityOfCompanySubmittingModelMax).errorMessage
       }
     }
 
