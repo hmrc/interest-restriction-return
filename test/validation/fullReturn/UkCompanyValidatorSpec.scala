@@ -1,0 +1,56 @@
+/*
+ * Copyright 2019 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package validation.fullReturn
+
+import assets.fullReturn.UkCompanyConstants._
+import play.api.libs.json.JsPath
+import validation.{BaseValidationSpec, CompanyNameLengthError, UTRChecksumError}
+
+class UkCompanyValidatorSpec extends BaseValidationSpec {
+
+  implicit val path = JsPath \ "some" \ "path"
+
+  "Full UK Company Validation" should {
+
+    "Return valid" when {
+
+      "a valid Full UK Company model is validated" in {
+        rightSide(ukCompanyModelMax.validate) shouldBe ukCompanyModelMax
+      }
+    }
+
+    "Return invalid" when {
+
+      "CTUTR is invalid" in {
+        leftSideError(ukCompanyModelMax.copy(utr = invalidUtr).validate).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
+      }
+
+      "CompanyName is invalid" in {
+        leftSideError(ukCompanyModelMax.copy(companyName = companyNameTooLong).validate).errorMessage shouldBe
+          CompanyNameLengthError(companyNameTooLong.name).errorMessage
+      }
+
+      "netTaxInterestExpense is < 0" in {
+        leftSideError(ukCompanyModelMax.copy(netTaxInterestExpense = -1).validate).errorMessage shouldBe NetTaxInterestExpenseError(-1).errorMessage
+      }
+
+      "netTaxInterestIncomes is < 0" in {
+        leftSideError(ukCompanyModelMax.copy(netTaxInterestIncome = -1).validate).errorMessage shouldBe NetTaxInterestIncomeError(-1).errorMessage
+      }
+    }
+  }
+}
