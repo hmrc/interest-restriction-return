@@ -16,7 +16,7 @@
 
 package validation.fullReturn
 
-import config.Constants.pattern0to100TwoDecimals
+import config.Constants.maxTwoDecimalsRegex
 import models.Validation
 import models.Validation.ValidationResult
 import models.fullReturn.AdjustedGroupInterestModel
@@ -33,8 +33,7 @@ trait AdjustedGroupInterestValidator extends BaseValidation {
 
   private def validateGroupRatio(implicit path: JsPath): ValidationResult[BigDecimal] = {
     val isBetween0And100 = adjustedGroupInterestModel.groupRatio >= 0 && adjustedGroupInterestModel.groupRatio <= 100
-    val hasTwoDecimalPlaces = adjustedGroupInterestModel.groupRatio.toString matches pattern0to100TwoDecimals
-    //adjustedGroupInterestModel.groupRatio.toString.matches("([0-9]{3}|[0-9]{2})[.][0-9]{2}")
+    val hasTwoDecimalPlaces = adjustedGroupInterestModel.groupRatio.toString matches maxTwoDecimalsRegex
 
     if (isBetween0And100 && hasTwoDecimalPlaces) {
       adjustedGroupInterestModel.groupRatio.validNec
@@ -46,9 +45,9 @@ trait AdjustedGroupInterestValidator extends BaseValidation {
   private def validateGroupRatioCalculation(implicit path: JsPath): ValidationResult[BigDecimal] = {
 
     (adjustedGroupInterestModel.qngie, adjustedGroupInterestModel.groupEBITDA, adjustedGroupInterestModel.groupRatio) match {
-      case (_, groupEBITDA, groupRatio) if groupEBITDA <= BigDecimal(0.0) && groupRatio == BigDecimal(100.0) =>
+      case (_, groupEBITDA, groupRatio) if groupEBITDA <= 0 && groupRatio == 100 =>
         adjustedGroupInterestModel.groupRatio.validNec
-      case (_, groupEBITDA, groupRatio) if groupEBITDA <= BigDecimal(0.0) && groupRatio != BigDecimal(100.0) =>
+      case (_, groupEBITDA, groupRatio) if groupEBITDA <= 0 && groupRatio != 100 =>
         NegativeOrZeroGroupEBITDAError(groupRatio).invalidNec
       case (qngie, groupEBITDA, groupRatio) if groupRatio != (qngie / groupEBITDA) =>
         GroupRatioCalculationError(qngie, groupEBITDA, groupRatio).invalidNec
@@ -69,7 +68,7 @@ case class GroupRatioError(groupRatio: BigDecimal)(implicit topPath: JsPath) ext
 
 case class GroupRatioCalculationError(qngie: BigDecimal, groupEBITDA: BigDecimal, groupRatio: BigDecimal)(implicit topPath: JsPath) extends Validation {
 
-  val errorMessage: String = s"The value for Group Ratio Percent you provided (${groupRatio}, does not match the value calculated from the provided QNGIE ($qngie) and group-EBITDA {$groupEBITDA}, ${(qngie / groupEBITDA)}"
+  val errorMessage: String = s"The value for Group Ratio Percent you provided ${groupRatio}, does not match the value calculated from the provided QNGIE ($qngie) and group-EBITDA {$groupEBITDA}, ${(qngie / groupEBITDA)}"
   val path = topPath \ "groupEBITDA"
   val value = Json.toJson(qngie, groupEBITDA, groupRatio)
 }

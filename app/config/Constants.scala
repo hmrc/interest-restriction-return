@@ -18,7 +18,7 @@ package config
 
 object Constants {
 
-  val pattern0to100TwoDecimals = """\d{1,3}\.\d{1,2}"""
+  val maxTwoDecimalsRegex = """^(\d+(\.\d{1,2})?)$"""
   val intMax = 32767
   val countryCodeLength = 2
   val validCountryCodes: Seq[String] = Seq(

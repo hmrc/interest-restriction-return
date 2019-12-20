@@ -87,6 +87,7 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
           )
           rightSide(model.validate) shouldBe model
         }
+
         "has a decimal which is a round number" in {
 
           val qngie = 5.0
@@ -97,6 +98,20 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
             qngie = qngie,
             groupEBITDA = groupEBITDA,
             groupRatio = qngie / groupEBITDA
+          )
+          rightSide(model.validate) shouldBe model
+        }
+
+        "has no decimal places" in {
+
+          val qngie = 10.0
+          val groupEBITDA = 2.0
+          val groupRatio = 5
+
+          val model = adjustedGroupInterestModel.copy(
+            qngie = qngie,
+            groupEBITDA = groupEBITDA,
+            groupRatio = groupRatio
           )
           rightSide(model.validate) shouldBe model
         }
@@ -118,23 +133,8 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
 
         "is greater than 100" in {
 
-          val groupRatio: BigDecimal = 1000.00
+          val groupRatio: BigDecimal = 100.01
           val model = adjustedGroupInterestModel.copy(
-            groupRatio = groupRatio
-          )
-          leftSideError(model.validate).errorMessage shouldBe GroupRatioError(groupRatio).errorMessage
-        }
-
-        "has no decimal places" in {
-
-          val qngie = 10.0
-          val groupEBITDA = 2.0
-          val groupRatio = 5
-
-          val model = adjustedGroupInterestModel.copy(
-
-            qngie = qngie,
-            groupEBITDA = groupEBITDA,
             groupRatio = groupRatio
           )
           leftSideError(model.validate).errorMessage shouldBe GroupRatioError(groupRatio).errorMessage
