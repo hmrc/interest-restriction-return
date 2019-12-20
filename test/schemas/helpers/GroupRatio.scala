@@ -18,12 +18,10 @@ package schemas.helpers
 
 import play.api.libs.json.Json
 
-case class GroupLevelElections(groupRatio: Option[GroupRatio] = Some(GroupRatio()),
-                               interestAllowanceAlternativeCalculation: Option[Boolean] = Some(true),
-                               interestAllowanceNonConsolidatedInvestment: Option[InterestAllowanceNonConsolidatedInvestment] = Some(InterestAllowanceNonConsolidatedInvestment()),
-                               interestAllowanceConsolidatedPartnership: Option[InterestAllowanceConsolidatedPartnership] = Some(InterestAllowanceConsolidatedPartnership())
-                              )
+case class GroupRatio(isElected: Option[Boolean] = Some(true),
+                      groupRatioBlended: Option[GroupRatioBlended] = Some(GroupRatioBlended()),
+                      groupEBITDAChargeableGains: Option[Boolean] = Some(true))
 
-object GroupLevelElections {
-  implicit val writes = Json.writes[GroupLevelElections]
+object GroupRatio {
+  implicit val writes = Json.writes[GroupRatio]
 }

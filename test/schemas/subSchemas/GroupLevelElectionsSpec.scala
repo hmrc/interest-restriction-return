@@ -45,78 +45,157 @@ class GroupLevelElectionsSpec extends BaseSchemaSpec {
         "is None" in {
 
           val json = Json.toJson(GroupLevelElections(
-            isElected = None
+            groupRatio = None
+          ))
+
+          validate(json) shouldBe false
+        }
+
+        "groupRatioBlended" when {
+
+          "election" when {
+
+            "is None" in {
+
+              val json = Json.toJson(GroupLevelElections(
+                groupRatio = Some(GroupRatio(
+                  groupRatioBlended = Some(GroupRatioBlended(
+                    isElected = None
+                  ))
+                ))
+              ))
+
+              validate(json) shouldBe false
+            }
+          }
+
+          "investorGroups" when {
+
+            "groupName" when {
+
+              "contains a seq which includes an empty string" in {
+
+                val json = Json.toJson(GroupLevelElections(
+                  groupRatio = Some(GroupRatio(
+                    groupRatioBlended = Some(GroupRatioBlended(
+                      investorGroups = Some(Seq(
+                        InvestorGroup(
+                          groupName = Some("Group A")
+                        ),
+                        InvestorGroup(
+                          groupName = Some("")
+                        )
+                      ))
+                    ))
+                  ))
+                ))
+
+                validate(json) shouldBe false
+              }
+
+              "is None" in {
+
+                val json = Json.toJson(GroupLevelElections(
+                  groupRatio = Some(GroupRatio(
+                    groupRatioBlended = Some(GroupRatioBlended(
+                      investorGroups = Some(Seq(
+                        InvestorGroup(
+                          groupName = None
+                        ))
+                      )
+                    ))
+                  ))
+                ))
+
+                validate(json) shouldBe false
+
+              }
+            }
+
+            "contains an empty seq" in {
+
+              val json = Json.toJson(GroupLevelElections(
+                groupRatio = Some(GroupRatio(
+                  groupRatioBlended = Some(GroupRatioBlended(
+                    investorGroups = Some(Seq())
+                  ))
+                ))
+              ))
+
+              validate(json) shouldBe false
+
+            }
+          }
+        }
+      }
+
+      "InterestAllowanceAlternativeCalculation" when {
+
+        "is None" in {
+          val json = Json.toJson(GroupLevelElections(
+            interestAllowanceAlternativeCalculation = None
           ))
 
           validate(json) shouldBe false
         }
       }
 
-      "groupRatioBlended" when {
+      "InterestAllowanceConsolidatedPartnership" when {
 
-        "election" when {
+        "election is None" in {
 
-          "is None" in {
+          val json = Json.toJson(GroupLevelElections(
+            interestAllowanceConsolidatedPartnership = Some(InterestAllowanceConsolidatedPartnership(
+              isElected = None
+            ))
+          ))
+
+          validate(json) shouldBe false
+        }
+
+        "partnership" when {
+
+          "contains a seq which includes an empty string" in {
 
             val json = Json.toJson(GroupLevelElections(
-              groupRatioBlended = Some(GroupRatioBlended(
-                isElected = None
+              interestAllowanceConsolidatedPartnership = Some(InterestAllowanceConsolidatedPartnership(
+                consolidatedPartnerships = Some(Seq(
+                  Partnerships(
+                    partnershipName = Some("")
+                  )
+                ))
               ))
             ))
 
             validate(json) shouldBe false
+
           }
-        }
 
-        "investorGroups" when {
+          "is None" in {
 
-          "groupName" when {
-
-            "contains a seq which includes an empty string" in {
-
-              val json = Json.toJson(GroupLevelElections(
-                groupRatioBlended = Some(GroupRatioBlended(
-                  investorGroups = Some(Seq(
-                    InvestorGroup(
-                      groupName = Some("Group A")
-                    ),
-                    InvestorGroup(
-                      groupName = Some("")
-                    )
-                  ))
+            val json = Json.toJson(GroupLevelElections(
+              interestAllowanceConsolidatedPartnership = Some(InterestAllowanceConsolidatedPartnership(
+                consolidatedPartnerships = Some(Seq(
+                  Partnerships(
+                    partnershipName = None
+                  )
                 ))
               ))
+            ))
 
-              validate(json) shouldBe false
-            }
+            validate(json) shouldBe false
 
-            "is None" in {
-
-              val json = Json.toJson(GroupLevelElections(
-                groupRatioBlended = Some(GroupRatioBlended(
-                  investorGroups = Some(Seq(
-                    InvestorGroup(
-                      groupName = None
-                    )
-                  ))
-                ))
-              ))
-
-              validate(json) shouldBe false
-
-            }
           }
 
           "contains an empty seq" in {
 
             val json = Json.toJson(GroupLevelElections(
-              groupRatioBlended = Some(GroupRatioBlended(
-                investorGroups = Some(Seq())
+              interestAllowanceConsolidatedPartnership = Some(InterestAllowanceConsolidatedPartnership(
+                consolidatedPartnerships = Some(Seq())
               ))
             ))
 
             validate(json) shouldBe false
-
           }
         }
       }
@@ -137,7 +216,7 @@ class GroupLevelElectionsSpec extends BaseSchemaSpec {
           }
         }
 
-        "interestAllowanceNonConsolidatedInvestment" when {
+        "nonConsolidatedInvestments" when {
 
           "investmentName" when {
 
@@ -188,65 +267,6 @@ class GroupLevelElectionsSpec extends BaseSchemaSpec {
           }
         }
 
-        "InterestAllowanceConsolidatedPartnership" when {
-
-          "election is None" in {
-
-            val json = Json.toJson(GroupLevelElections(
-              interestAllowanceConsolidatedPartnership = Some(InterestAllowanceConsolidatedPartnership(
-                isElected = None
-              ))
-            ))
-
-            validate(json) shouldBe false
-          }
-
-          "partnership" when {
-
-            "contains a seq which includes an empty string" in {
-
-              val json = Json.toJson(GroupLevelElections(
-                interestAllowanceConsolidatedPartnership = Some(InterestAllowanceConsolidatedPartnership(
-                  consolidatedPartnerships = Some(Seq(
-                    Partnerships(
-                      partnershipName = Some("")
-                    )
-                  ))
-                ))
-              ))
-
-              validate(json) shouldBe false
-
-            }
-
-            "is None" in {
-
-              val json = Json.toJson(GroupLevelElections(
-                interestAllowanceConsolidatedPartnership = Some(InterestAllowanceConsolidatedPartnership(
-                  consolidatedPartnerships = Some(Seq(
-                    Partnerships(
-                      partnershipName = None
-                    )
-                  ))
-                ))
-              ))
-
-              validate(json) shouldBe false
-
-            }
-
-            "contains an empty seq" in {
-
-              val json = Json.toJson(GroupLevelElections(
-                interestAllowanceConsolidatedPartnership = Some(InterestAllowanceConsolidatedPartnership(
-                  consolidatedPartnerships = Some(Seq())
-                ))
-              ))
-
-              validate(json) shouldBe false
-            }
-          }
-        }
       }
     }
   }
