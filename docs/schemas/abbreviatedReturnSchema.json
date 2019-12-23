@@ -39,7 +39,6 @@
   "required": [
     "agentDetails",
     "reportingCompany",
-    "parentCompany",
     "publicInfrastructure",
     "groupCompanyDetails",
     "submissionType",

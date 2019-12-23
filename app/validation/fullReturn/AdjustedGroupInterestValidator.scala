@@ -50,7 +50,7 @@ trait AdjustedGroupInterestValidator extends BaseValidation {
       case (_, groupEBITDA, groupRatio) if groupEBITDA <= 0 && groupRatio != 100 =>
         NegativeOrZeroGroupEBITDAError(groupRatio).invalidNec
       case (qngie, groupEBITDA, groupRatio) if groupRatio != (qngie / groupEBITDA) =>
-        GroupRatioCalculationError(qngie, groupEBITDA, groupRatio).invalidNec
+        GroupRatioCalculationError(adjustedGroupInterestModel).invalidNec
       case _ => adjustedGroupInterestModel.groupRatio.validNec
     }
   }
@@ -66,11 +66,12 @@ case class GroupRatioError(groupRatio: BigDecimal)(implicit topPath: JsPath) ext
   val value = Json.toJson(groupRatio)
 }
 
-case class GroupRatioCalculationError(qngie: BigDecimal, groupEBITDA: BigDecimal, groupRatio: BigDecimal)(implicit topPath: JsPath) extends Validation {
+case class GroupRatioCalculationError(details: AdjustedGroupInterestModel)(implicit topPath: JsPath) extends Validation {
 
-  val errorMessage: String = s"The value for Group Ratio Percent you provided ${groupRatio}, does not match the value calculated from the provided QNGIE ($qngie) and group-EBITDA {$groupEBITDA}, ${(qngie / groupEBITDA)}"
+  val errorMessage: String = s"The value for Group Ratio Percent you provided ${details.groupRatio}, " +
+    s"does not match the value calculated from the provided QNGIE (${details.qngie}) and group-EBITDA ${details.groupEBITDA}, ${details.qngie / details.groupEBITDA}"
   val path = topPath \ "groupEBITDA"
-  val value = Json.toJson(qngie, groupEBITDA, groupRatio)
+  val value = Json.toJson(details)
 }
 
 case class NegativeOrZeroGroupEBITDAError(groupRatio: BigDecimal)(implicit topPath: JsPath) extends Validation {

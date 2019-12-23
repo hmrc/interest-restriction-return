@@ -139,6 +139,15 @@ class AbbreviatedReturnSchemaSpec extends BaseSchemaSpec {
 
         validate(json) shouldBe true
       }
+
+      "parent company is none (only really valid when Reporting Company is same as UPC" in {
+
+        val json = Json.toJson(AbbreviatedReturnModel(
+          parentCompany = None
+        ))
+
+        validate(json) shouldBe true
+      }
     }
 
     "Return invalid" when {
@@ -168,15 +177,6 @@ class AbbreviatedReturnSchemaSpec extends BaseSchemaSpec {
 
         val json = Json.toJson(AbbreviatedReturnModel(
           publicInfrastructure = None
-        ))
-
-        validate(json) shouldBe false
-      }
-
-      "parent company is none" in {
-
-        val json = Json.toJson(AbbreviatedReturnModel(
-          parentCompany = None
         ))
 
         validate(json) shouldBe false

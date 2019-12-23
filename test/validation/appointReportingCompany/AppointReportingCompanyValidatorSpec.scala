@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package validation
+package validation.appointReportingCompany
 
 import assets.IdentityOfCompanySubmittingConstants._
 import assets.ReportingCompanyConstants._

@@ -22,7 +22,7 @@ import assets.GroupLevelElectionsConstants._
 import assets.ParentCompanyConstants._
 import assets.ReportingCompanyConstants._
 import assets.abbreviatedReturn.UkCompanyConstants._
-import models.Original
+import models.{Original, Revised}
 import models.abbreviatedReturn.AbbreviatedReturnModel
 import play.api.libs.json.Json
 
@@ -34,9 +34,9 @@ object AbbreviatedReturnConstants {
     "agentDetails" -> agentDetailsJsonMax,
     "reportingCompany" -> reportingCompanyJsonMax,
     "publicInfrastructure" -> true,
-    "parentCompany" -> parentCompanyJsonMax,
+    "parentCompany" -> parentCompanyJsonUlt,
     "groupCompanyDetails" -> groupCompanyDetailsJson,
-    "submissionType" -> Original,
+    "submissionType" -> Revised,
     "revisedReturnDetails" -> "revised details",
     "groupLevelElections" -> groupLevelElectionsJsonMax,
     "ukCompanies" -> Seq(ukCompanyJson)
@@ -46,9 +46,9 @@ object AbbreviatedReturnConstants {
     agentDetails = agentDetailsModelMax,
     reportingCompany = reportingCompanyModelMax,
     publicInfrastructure = true,
-    parentCompany = parentCompanyModelMax,
+    parentCompany = Some(parentCompanyModelUlt),
     groupCompanyDetails = groupCompanyDetailsModel,
-    submissionType = Original,
+    submissionType = Revised,
     revisedReturnDetails = Some("revised details"),
     groupLevelElections = Some(groupLevelElectionsModel),
     ukCompanies = Seq(ukCompanyModel)
@@ -58,7 +58,6 @@ object AbbreviatedReturnConstants {
     "agentDetails" -> agentDetailsJsonMin,
     "reportingCompany" -> reportingCompanyJsonMin,
     "publicInfrastructure" -> true,
-    "parentCompany" -> parentCompanyJsonMin,
     "groupCompanyDetails" -> groupCompanyDetailsJson,
     "submissionType" -> Original,
     "ukCompanies" -> Seq(ukCompanyJson)
@@ -68,7 +67,7 @@ object AbbreviatedReturnConstants {
     agentDetails = agentDetailsModelMin,
     reportingCompany = reportingCompanyModelMin,
     publicInfrastructure = true,
-    parentCompany = parentCompanyModelMin,
+    parentCompany = None,
     groupCompanyDetails = groupCompanyDetailsModel,
     submissionType = Original,
     revisedReturnDetails = None,

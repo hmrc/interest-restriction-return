@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package validation
+package validation.appointReportingCompany
 
 import models.Validation.ValidationResult
 import models.appointReportingCompany.AppointReportingCompanyModel
 import models.{IdentityOfCompanySubmittingModel, UltimateParentModel, Validation}
 import play.api.libs.json.{JsPath, Json}
+import validation.BaseValidation
 
 trait AppointReportingCompanyValidator extends BaseValidation {
 
