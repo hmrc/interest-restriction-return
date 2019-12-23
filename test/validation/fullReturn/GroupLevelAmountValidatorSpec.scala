@@ -36,7 +36,7 @@ class GroupLevelAmountValidatorSpec extends BaseSpec {
     "Return invalid" when {
 
       "interestReactivationCap is < 0" in {
-        leftSideError(groupLevelAmountModel.copy(interestReactivationCap = -0.1).validate).errorMessage shouldBe
+        leftSideError(groupLevelAmountModel.copy(interestReactivationCap = Some(-0.1)).validate).errorMessage shouldBe
           GroupLevelAmountCannotBeNegative("interestReactivationCap", -0.1).errorMessage
       }
 

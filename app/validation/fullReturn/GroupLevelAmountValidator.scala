@@ -33,7 +33,7 @@ trait GroupLevelAmountValidator extends BaseValidation {
 
   def validate(implicit path: JsPath): ValidationResult[GroupLevelAmountModel] =
     (
-      validatePositive("interestReactivationCap", groupLevelAmount.interestReactivationCap),
+      optionValidations(groupLevelAmount.interestReactivationCap.map(cap => validatePositive("interestReactivationCap", cap))),
       validatePositive("interestAllowanceForPeriod", groupLevelAmount.interestAllowanceForPeriod),
       validatePositive("interestAllowanceForward", groupLevelAmount.interestAllowanceForward),
       validatePositive("interestCapacityForPeriod", groupLevelAmount.interestCapacityForPeriod)

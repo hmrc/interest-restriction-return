@@ -44,7 +44,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
         val model = restrictionModel.copy(
           ap1End = Some(ap1End),
           disallowanceAp1 = Some(disallowanceAp1),
-          totalDisallowances = Some(totalDisallowances)
+          totalDisallowances = Some(disallowanceAp1)
         )
 
         rightSide(model.validate) shouldBe model
@@ -57,7 +57,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
           disallowanceAp1 = Some(disallowanceAp1),
           ap2End = Some(ap2End),
           disallowanceAp2 = Some(disallowanceAp2),
-          totalDisallowances = Some(totalDisallowances)
+          totalDisallowances = Some(disallowanceAp1 + disallowanceAp2)
         )
 
         rightSide(model.validate) shouldBe model
@@ -266,6 +266,17 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
           )
 
           leftSideError(model.validate).errorMessage shouldBe AllocatedRestrictionTotalNegative(-1).errorMessage
+        }
+
+        "does not match the calculated total" in {
+
+          val model = restrictionModel.copy(
+            ap1End = Some(ap1End),
+            disallowanceAp1 = Some(disallowanceAp1),
+            totalDisallowances = Some(1)
+          )
+
+          leftSideError(model.validate).errorMessage shouldBe AllocatedRestrictionTotalDoesNotMatch(1, disallowanceAp1).errorMessage
         }
       }
     }

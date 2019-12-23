@@ -23,8 +23,8 @@ import play.api.libs.json.Json
 object AdjustedGroupInterestConstants extends BaseConstants {
 
   val qngie: BigDecimal = 100
-  val groupEBITDA: BigDecimal = 50
-  val groupRatio: BigDecimal = qngie / groupEBITDA
+  val groupEBITDA: BigDecimal = 200
+  val groupRatio: BigDecimal = (qngie / groupEBITDA) * 100
 
   val adjustedGroupInterestModel = AdjustedGroupInterestModel(
     qngie = qngie,

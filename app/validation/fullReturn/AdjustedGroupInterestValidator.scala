@@ -24,6 +24,7 @@ import play.api.libs.json.{JsPath, Json}
 import validation.BaseValidation
 
 import scala.math.BigDecimal
+import scala.math.BigDecimal.RoundingMode
 
 trait AdjustedGroupInterestValidator extends BaseValidation {
 
@@ -49,7 +50,7 @@ trait AdjustedGroupInterestValidator extends BaseValidation {
         adjustedGroupInterestModel.groupRatio.validNec
       case (_, groupEBITDA, groupRatio) if groupEBITDA <= 0 && groupRatio != 100 =>
         NegativeOrZeroGroupEBITDAError(groupRatio).invalidNec
-      case (qngie, groupEBITDA, groupRatio) if groupRatio != (qngie / groupEBITDA) =>
+      case (qngie, groupEBITDA, groupRatio) if groupRatio != ((qngie / groupEBITDA) * 100).min(100).setScale(2, RoundingMode.HALF_UP) =>
         GroupRatioCalculationError(adjustedGroupInterestModel).invalidNec
       case _ => adjustedGroupInterestModel.groupRatio.validNec
     }
@@ -69,7 +70,8 @@ case class GroupRatioError(groupRatio: BigDecimal)(implicit topPath: JsPath) ext
 case class GroupRatioCalculationError(details: AdjustedGroupInterestModel)(implicit topPath: JsPath) extends Validation {
 
   val errorMessage: String = s"The value for Group Ratio Percent you provided ${details.groupRatio}, " +
-    s"does not match the value calculated from the provided QNGIE (${details.qngie}) and group-EBITDA ${details.groupEBITDA}, ${details.qngie / details.groupEBITDA}"
+    s"does not match the value calculated from the provided QNGIE (${details.qngie}) and group-EBITDA ${details.groupEBITDA}, " +
+    s"${((details.qngie / details.groupEBITDA) * 100).setScale(2, RoundingMode.HALF_UP).min(100)}"
   val path = topPath \ "groupEBITDA"
   val value = Json.toJson(details)
 }

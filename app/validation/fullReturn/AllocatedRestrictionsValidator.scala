@@ -59,12 +59,18 @@ trait AllocatedRestrictionsValidator extends BaseValidation {
         allocatedRestrictionsModel.disallowanceAp2.isDefined ||
         allocatedRestrictionsModel.disallowanceAp3.isDefined
 
+    val totalDisallowancesCalculated: BigDecimal = allocatedRestrictionsModel.disallowanceAp1.getOrElse[BigDecimal](0) +
+      allocatedRestrictionsModel.disallowanceAp2.getOrElse[BigDecimal](0) +
+      allocatedRestrictionsModel.disallowanceAp3.getOrElse[BigDecimal](0)
+
     if (hasApRestrictions && allocatedRestrictionsModel.totalDisallowances.isEmpty) {
       AllocatedRestrictionTotalNotSupplied().invalidNec
     } else {
       val totalDisallowances: BigDecimal = allocatedRestrictionsModel.totalDisallowances.getOrElse(0)
       if (totalDisallowances < 0) {
         AllocatedRestrictionTotalNegative(totalDisallowances).invalidNec
+      } else if(totalDisallowances != totalDisallowancesCalculated) {
+        AllocatedRestrictionTotalDoesNotMatch(totalDisallowances, totalDisallowancesCalculated).invalidNec
       } else {
         totalDisallowances.validNec
       }
@@ -112,5 +118,11 @@ case class AllocatedRestrictionTotalNotSupplied(implicit topPath: JsPath) extend
 case class AllocatedRestrictionTotalNegative(amt: BigDecimal)(implicit topPath: JsPath) extends Validation {
   val path = topPath \ "totalDisallowances"
   val errorMessage: String = "totalDisallowances cannot be negative"
+  val value = Json.obj()
+}
+
+case class AllocatedRestrictionTotalDoesNotMatch(amt: BigDecimal, calculatedAmt: BigDecimal)(implicit topPath: JsPath) extends Validation {
+  val path = topPath \ "totalDisallowances"
+  val errorMessage: String = s"The totalDisallowances was $calculatedAmt which does not match the supplied amount of $amt"
   val value = Json.obj()
 }

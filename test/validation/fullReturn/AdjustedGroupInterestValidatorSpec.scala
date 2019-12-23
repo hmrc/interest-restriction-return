@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package validation
+package validation.fullReturn
 
 import assets.fullReturn.AdjustedGroupInterestConstants._
 import play.api.libs.json.JsPath
 import utils.BaseSpec
-import validation.fullReturn.{GroupRatioCalculationError, GroupRatioError}
+import validation.BaseValidationSpec
 
 class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpec {
 
@@ -49,41 +49,41 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
 
       "Group Ratio" when {
 
-        "is between 0 and 10" in {
+        "is 1%" in {
 
-          val qngie = 10.0
-          val groupEBITDA = 2.0
+          val qngie = 100.0
+          val groupEBITDA = 10000
 
           val model = adjustedGroupInterestModel.copy(
             qngie = qngie,
             groupEBITDA = groupEBITDA,
-            groupRatio = qngie / groupEBITDA
+            groupRatio = 1.00
           )
           rightSide(model.validate) shouldBe model
         }
-        "is between 10 and 100" in {
+        "is 50%" in {
 
-          val qngie = 200.0
+          val qngie = 100.0
+          val groupEBITDA = 200
+
+          val model = adjustedGroupInterestModel.copy(
+
+            qngie = qngie,
+            groupEBITDA = groupEBITDA,
+            groupRatio = 50
+          )
+          rightSide(model.validate) shouldBe model
+        }
+        "is > 100 and is capped" in {
+
+          val qngie = 100000.0
           val groupEBITDA = 10.0
 
           val model = adjustedGroupInterestModel.copy(
 
             qngie = qngie,
             groupEBITDA = groupEBITDA,
-            groupRatio = qngie / groupEBITDA
-          )
-          rightSide(model.validate) shouldBe model
-        }
-        "is 100" in {
-
-          val qngie = 1000.0
-          val groupEBITDA = 10.0
-
-          val model = adjustedGroupInterestModel.copy(
-
-            qngie = qngie,
-            groupEBITDA = groupEBITDA,
-            groupRatio = qngie / groupEBITDA
+            groupRatio = 100
           )
           rightSide(model.validate) shouldBe model
         }
@@ -91,22 +91,37 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
         "has a decimal which is a round number" in {
 
           val qngie = 5.0
-          val groupEBITDA = 2.0
+          val groupEBITDA = 8.0
+          val groupRatio = 62.5
 
           val model = adjustedGroupInterestModel.copy(
 
             qngie = qngie,
             groupEBITDA = groupEBITDA,
-            groupRatio = qngie / groupEBITDA
+            groupRatio = groupRatio
           )
           rightSide(model.validate) shouldBe model
         }
 
         "has no decimal places" in {
 
-          val qngie = 10.0
-          val groupEBITDA = 2.0
-          val groupRatio = 5
+          val qngie = 100
+          val groupEBITDA = 200
+          val groupRatio = 50
+
+          val model = adjustedGroupInterestModel.copy(
+            qngie = qngie,
+            groupEBITDA = groupEBITDA,
+            groupRatio = groupRatio
+          )
+          rightSide(model.validate) shouldBe model
+        }
+
+        "has two decimal places" in {
+
+          val qngie = 100.0
+          val groupEBITDA = 260.0
+          val groupRatio = 38.46
 
           val model = adjustedGroupInterestModel.copy(
             qngie = qngie,

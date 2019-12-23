@@ -24,7 +24,7 @@ import assets.GroupLevelElectionsITConstants.groupLevelElectionsJson
 import assets.ParentCompanyITConstants.parentCompanyJson
 import assets.ReportingCompanyITConstants._
 import assets.UkCompanyITConstants.ukCompanyFullJson
-import models.Original
+import models.{Original, Revised}
 import play.api.libs.json.Json
 
 object FullReturnITConstants {
@@ -39,17 +39,16 @@ object FullReturnITConstants {
   val fullReturnJson = Json.obj(
     "agentDetails" -> agentDetailsJson,
     "reportingCompany" -> reportingCompanyJson,
-    "parentCompany" -> parentCompanyJson,
     "publicInfrastructure" -> true,
     "groupCompanyDetails" -> groupCompanyDetailsJson,
-    "submissionType" -> Original,
+    "submissionType" -> Revised,
     "revisedReturnDetails" -> "some details",
     "groupLevelElections" -> groupLevelElectionsJson,
     "ukCompanies" -> Seq(ukCompanyFullJson),
     "angie" -> 1.1,
     "groupSubjectToInterestRestrictions" -> true,
     "groupSubjectToInterestReactivation" -> true,
-    "totalReactivation" -> 20000000.87,
+    "totalReactivation" -> 6.66,
     "groupLevelAmount" -> groupLevelAmountJson,
     "adjustedGroupInterest" -> adjustedGroupInterestJson
   )
