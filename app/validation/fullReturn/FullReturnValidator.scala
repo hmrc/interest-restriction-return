@@ -21,6 +21,7 @@ import models.fullReturn.{FullReturnModel, UkCompanyModel}
 import models.{Original, ParentCompanyModel, Revised, Validation}
 import play.api.libs.json.{JsPath, Json}
 import validation.BaseValidation
+import validation.appointReportingCompany.AuthorisingCompaniesEmpty
 
 trait FullReturnValidator extends BaseValidation {
 
@@ -94,17 +95,19 @@ trait FullReturnValidator extends BaseValidation {
 
   def validate: ValidationResult[FullReturnModel] = {
 
-    val validatedUkCompanies = fullReturnModel.ukCompanies.zipWithIndex.map {
-      case (a, i) => a.validate(JsPath \ s"ukCompanies[$i]")
-    }
+    val validatedUkCompanies =
+      if(fullReturnModel.ukCompanies.isEmpty) UkCompaniesEmpty.invalidNec else {
+        combineValidations(fullReturnModel.ukCompanies.zipWithIndex.map {
+          case (a, i) => a.validate(JsPath \ s"ukCompanies[$i]")
+        }:_*)
+      }
 
-    (
-      fullReturnModel.agentDetails.validate(JsPath \ "agentDetails"),
+    (fullReturnModel.agentDetails.validate(JsPath \ "agentDetails"),
       fullReturnModel.reportingCompany.validate(JsPath \ "reportingCompany"),
       optionValidations(fullReturnModel.parentCompany.map(_.validate(JsPath \ "parentCompany"))),
       fullReturnModel.groupCompanyDetails.validate(JsPath \ "groupCompanyDetails"),
       optionValidations(fullReturnModel.groupLevelElections.map(_.validate(JsPath \ "groupLevelElections"))),
-      combineValidations(validatedUkCompanies:_*),
+      validatedUkCompanies,
       validateAngie,
       validateInterestReactivationCap,
       validateAllocatedRestrictions,
@@ -181,6 +184,12 @@ case class MissingAllocatedReactivationsForCompanies(company: UkCompanyModel, i:
 case class CompaniesContainedAllocatedReactivations(company: UkCompanyModel, i: Int) extends Validation {
   val errorMessage: String = s"Allocated Reactivations cannot be supplied for this UK Company when the group is not subject to Interest Reactivations"
   val path = JsPath \ s"ukCompanies[$i]"
+  val value = Json.obj()
+}
+
+case object UkCompaniesEmpty extends Validation {
+  val errorMessage: String = "ukCompanies must have at least 1 UK company"
+  val path = JsPath \ "ukCompanies"
   val value = Json.obj()
 }
 

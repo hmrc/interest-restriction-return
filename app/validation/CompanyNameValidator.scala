@@ -38,8 +38,7 @@ trait CompanyNameValidator extends BaseValidation {
     validateCompanyName.map(_ => companyNameModel)
 }
 
-case class CompanyNameLengthError(name: String)(implicit topPath: JsPath) extends Validation {
+case class CompanyNameLengthError(name: String)(implicit val path: JsPath) extends Validation {
   val errorMessage: String = s"Company name is ${name.length} character${if (name.length != 1) "s" else ""} long and should be between 1 and 160"
-  val path = topPath \ "name"
   val value = JsString(name)
 }

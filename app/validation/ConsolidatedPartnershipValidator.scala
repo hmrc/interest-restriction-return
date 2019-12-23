@@ -38,9 +38,11 @@ trait ConsolidatedPartnershipValidator extends BaseValidation {
 
     val consolidatedPartnershipsValidation: ValidationResult[Option[PartnershipModel]] =
       optionValidations(consolidatedPartnershipModel.consolidatedPartnerships.map(consolidatedPartnerships =>
-        combineValidations(consolidatedPartnerships.zipWithIndex.map {
-          case (a, i) => a.validate(JsPath \ s"consolidatedPartnerships[$i]")
-        }:_*)
+        if(consolidatedPartnerships.isEmpty) ConsolidatedPartnershipsEmpty().invalidNec else {
+          combineValidations(consolidatedPartnerships.zipWithIndex.map {
+            case (a, i) => a.validate(JsPath \ s"consolidatedPartnerships[$i]")
+          }: _*)
+        }
       ))
 
     (validateConsolidatedPartnershipModel,
@@ -58,6 +60,12 @@ case class ConsolidatedPartnershipsNotSupplied(consolidatedPartnershipModel: Con
   val errorMessage: String = "Consolidated Partnership is elected, must supply partnership names"
   val path = topPath \ "consolidatedPartnership"
   val value = Json.toJson(consolidatedPartnershipModel)
+}
+
+case class ConsolidatedPartnershipsEmpty(implicit val topPath: JsPath) extends Validation {
+  val errorMessage: String = "consolidatedPartnership must have at least 1 partnership"
+  val path = topPath \ "consolidatedPartnership"
+  val value = Json.obj()
 }
 
 
