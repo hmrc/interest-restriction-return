@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package validation
+package validation.revokeReportingCompany
 
 import assets.IdentityOfCompanySubmittingConstants.identityOfCompanySubmittingModelMax
 import assets.revokeReportingCompany.RevokeReportingCompanyConstants.revokeReportingCompanyModelMax

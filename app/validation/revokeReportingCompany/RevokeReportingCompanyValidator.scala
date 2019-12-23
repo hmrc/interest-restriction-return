@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package validation
+package validation.revokeReportingCompany
 
-import models.{IdentityOfCompanySubmittingModel, UltimateParentModel, Validation}
 import models.Validation.ValidationResult
 import models.revokeReportingCompany.RevokeReportingCompanyModel
+import models.{IdentityOfCompanySubmittingModel, UltimateParentModel, Validation}
 import play.api.libs.json.{JsBoolean, JsPath, Json}
+import validation.BaseValidation
 
 trait RevokeReportingCompanyValidator extends BaseValidation {
 

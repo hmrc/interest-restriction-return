@@ -18,7 +18,7 @@ package models.revokeReportingCompany
 
 import models.{AccountingPeriodModel, AgentDetailsModel, AuthorisingCompanyModel, IdentityOfCompanySubmittingModel, ReportingCompanyModel, UltimateParentModel}
 import play.api.libs.json.Json
-import validation.RevokeReportingCompanyValidator
+import validation.revokeReportingCompany.RevokeReportingCompanyValidator
 
 case class RevokeReportingCompanyModel(agentDetails: AgentDetailsModel,
                                        reportingCompany: ReportingCompanyModel,
