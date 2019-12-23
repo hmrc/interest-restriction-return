@@ -161,7 +161,7 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
           val model = adjustedGroupInterestModel.copy(
             groupRatio = groupRatio
           )
-          leftSideError(model.validate).errorMessage shouldBe GroupRatioCalculationError(qngie, groupEBITDA, groupRatio).errorMessage
+          leftSideError(model.validate).errorMessage shouldBe GroupRatioCalculationError(model).errorMessage
 
         }
       }

@@ -19,10 +19,9 @@ package assets
 import assets.AgentDetailsITConstants._
 import assets.GroupCompanyDetailsITConstants.groupCompanyDetailsJson
 import assets.GroupLevelElectionsITConstants.groupLevelElectionsJson
-import assets.ParentCompanyITConstants.parentCompanyJson
 import assets.ReportingCompanyITConstants._
 import assets.UkCompanyITConstants.ukCompanyJson
-import models.Original
+import models.Revised
 import play.api.libs.json.Json
 
 object AbbreviatedReturnITConstants {
@@ -37,9 +36,8 @@ object AbbreviatedReturnITConstants {
     "agentDetails" -> agentDetailsJson,
     "reportingCompany" -> reportingCompanyJson,
     "publicInfrastructure" -> true,
-    "parentCompany" -> parentCompanyJson,
     "groupCompanyDetails" -> groupCompanyDetailsJson,
-    "submissionType" -> Original,
+    "submissionType" -> Revised,
     "revisedReturnDetails" -> "revised details",
     "groupLevelElections" -> groupLevelElectionsJson,
     "ukCompanies" -> Seq(ukCompanyJson)

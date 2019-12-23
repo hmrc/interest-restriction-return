@@ -16,12 +16,16 @@
 
 package controllers
 
+import cats.data.Validated.{Invalid, Valid}
 import controllers.actions.AuthAction
 import javax.inject.{Inject, Singleton}
+import models.ValidationErrorResponseModel
 import models.abbreviatedReturn.AbbreviatedReturnModel
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, ControllerComponents}
 import services.AbbreviatedReturnService
+
+import scala.concurrent.Future
 
 @Singleton()
 class AbbreviatedReturnController @Inject()(authAction: AuthAction,
@@ -30,9 +34,13 @@ class AbbreviatedReturnController @Inject()(authAction: AuthAction,
 
   def submitAbbreviatedReturn(): Action[JsValue] = authAction.async(parse.json) { implicit request =>
     withJsonBody[AbbreviatedReturnModel] { abbreviatedReturnModel =>
-      abbreviatedReturnService.submitsAbbreviatedReturn(abbreviatedReturnModel).map {
-        case Left(err) => Status(err.status)(err.body)
-        case Right(response) => Ok(Json.toJson(response))
+      abbreviatedReturnModel.validate match {
+        case Invalid(e) => Future.successful(BadRequest(Json.toJson(ValidationErrorResponseModel(e))))
+        case Valid(model) =>
+          abbreviatedReturnService.submitsAbbreviatedReturn(model).map {
+            case Left(err) => Status(err.status)(err.body)
+            case Right(response) => Ok(Json.toJson(response))
+          }
       }
     }
   }

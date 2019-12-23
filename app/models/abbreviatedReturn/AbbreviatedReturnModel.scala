@@ -18,16 +18,19 @@ package models.abbreviatedReturn
 
 import models._
 import play.api.libs.json.Json
+import validation.abbreviatedReturn.AbbreviatedReturnValidator
 
 case class AbbreviatedReturnModel(agentDetails: AgentDetailsModel,
                                   reportingCompany: ReportingCompanyModel,
-                                  parentCompany: ParentCompanyModel,
+                                  parentCompany: Option[ParentCompanyModel],
                                   publicInfrastructure: Boolean,
                                   groupCompanyDetails: GroupCompanyDetailsModel,
                                   submissionType: SubmissionType,
                                   revisedReturnDetails: Option[String],
                                   groupLevelElections: Option[GroupLevelElectionsModel],
-                                  ukCompanies: Seq[UkCompanyModel])
+                                  ukCompanies: Seq[UkCompanyModel]) extends AbbreviatedReturnValidator {
+  override val abbreviatedReturnModel: AbbreviatedReturnModel = this
+}
 
 object AbbreviatedReturnModel{
 
