@@ -16,12 +16,13 @@
 
 package models.fullReturn
 
-import models.{AgentDetailsModel, GroupCompanyDetailsModel, GroupLevelElectionsModel, ParentCompanyModel, ReportingCompanyModel, SubmissionType}
+import models._
 import play.api.libs.json.Json
+import validation.fullReturn.FullReturnValidator
 
 case class FullReturnModel(agentDetails: AgentDetailsModel,
                            reportingCompany: ReportingCompanyModel,
-                           parentCompany: ParentCompanyModel,
+                           parentCompany: Option[ParentCompanyModel],
                            publicInfrastructure: Boolean,
                            groupCompanyDetails: GroupCompanyDetailsModel,
                            submissionType: SubmissionType,
@@ -33,7 +34,9 @@ case class FullReturnModel(agentDetails: AgentDetailsModel,
                            groupSubjectToInterestReactivation: Boolean,
                            totalReactivation: BigDecimal,
                            groupLevelAmount: GroupLevelAmountModel,
-                           adjustedGroupInterest: AdjustedGroupInterestModel)
+                           adjustedGroupInterest: AdjustedGroupInterestModel) extends FullReturnValidator {
+  override val fullReturnModel: FullReturnModel = this
+}
 
 object FullReturnModel{
 

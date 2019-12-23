@@ -17,12 +17,12 @@
 package controllers
 
 import javax.inject.{Inject, Singleton}
-
 import cats.data.Validated.{Invalid, Valid}
 import controllers.actions.AuthAction
 import models.ValidationErrorResponseModel
 import models.revokeReportingCompany.RevokeReportingCompanyModel
 import models.revokeReportingCompany.RevokeReportingCompanyModel._
+import play.api.Logger
 import play.api.libs.json.{JsPath, JsValue, Json}
 import play.api.mvc.{Action, ControllerComponents}
 import services.RevokeReportingCompanyService
@@ -38,7 +38,9 @@ class RevokeReportingCompanyController @Inject()(authAction: AuthAction,
   def revoke(): Action[JsValue] = authAction.async(parse.json) { implicit request =>
     withJsonBody[RevokeReportingCompanyModel] { revokeReportingCompanyModel =>
       revokeReportingCompanyModel.validate match {
-        case Invalid(e) => Future.successful(BadRequest(Json.toJson(ValidationErrorResponseModel(e))))
+        case Invalid(e) =>
+          Logger.debug(s"[RevokeReportingCompanyController][revoke] Business Rule Errors: ${Json.toJson(ValidationErrorResponseModel(e))}")
+          Future.successful(BadRequest(Json.toJson(ValidationErrorResponseModel(e))))
         case Valid(model) =>
           revokeReportingCompanyService.revoke(model).map {
             case Left(err) => Status(err.status)(err.body)

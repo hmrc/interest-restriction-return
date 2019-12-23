@@ -24,7 +24,7 @@ import assets.ReportingCompanyConstants._
 import assets.fullReturn.GroupLevelAmountConstants._
 import assets.fullReturn.UkCompanyConstants._
 import assets.fullReturn.AdjustedGroupInterestConstants._
-import models.Original
+import models.{Original, Revised}
 import models.fullReturn.FullReturnModel
 import play.api.libs.json.Json
 
@@ -34,15 +34,17 @@ object FullReturnConstants {
 
   val revisedReturnDetails = "some details"
   val angie: BigDecimal = 1.11
-  val totalReactivations = 20000000.00
+  val totalReactivations = ukCompanyModelMax.allocatedRestrictions.foldLeft[BigDecimal](0){
+    (total, company) => total + company.totalDisallowances.getOrElse[BigDecimal](0)
+  }
 
   val fullReturnModelMax = FullReturnModel(
     agentDetails = agentDetailsModelMax,
     reportingCompany = reportingCompanyModelMax,
-    parentCompany = parentCompanyModelMax,
+    parentCompany = Some(parentCompanyModelUlt),
     publicInfrastructure = true,
     groupCompanyDetails = groupCompanyDetailsModel,
-    submissionType = Original,
+    submissionType = Revised,
     revisedReturnDetails = Some(revisedReturnDetails),
     groupLevelElections = Some(groupLevelElectionsModel),
     ukCompanies = Seq(ukCompanyModelMax),
@@ -57,10 +59,10 @@ object FullReturnConstants {
   val fullReturnJsonMax = Json.obj(
     "agentDetails" -> agentDetailsJsonMax,
     "reportingCompany" -> reportingCompanyJsonMax,
-    "parentCompany" -> parentCompanyJsonMax,
+    "parentCompany" -> parentCompanyJsonUlt,
     "publicInfrastructure" -> true,
     "groupCompanyDetails" -> groupCompanyDetailsJson,
-    "submissionType" -> Original,
+    "submissionType" -> Revised,
     "revisedReturnDetails" -> revisedReturnDetails,
     "groupLevelElections" -> groupLevelElectionsJsonMax,
     "ukCompanies" -> Seq(ukCompanyJsonMax),
@@ -75,7 +77,7 @@ object FullReturnConstants {
   val fullReturnModelMin = FullReturnModel(
     agentDetails = agentDetailsModelMin,
     reportingCompany = reportingCompanyModelMin,
-    parentCompany = parentCompanyModelMin,
+    parentCompany = None,
     publicInfrastructure = true,
     groupCompanyDetails = groupCompanyDetailsModel,
     submissionType = Original,
@@ -93,7 +95,6 @@ object FullReturnConstants {
   val fullReturnJsonMin = Json.obj(
     "agentDetails" -> agentDetailsJsonMin,
     "reportingCompany" -> reportingCompanyJsonMin,
-    "parentCompany" -> parentCompanyJsonMin,
     "publicInfrastructure" -> true,
     "groupCompanyDetails" -> groupCompanyDetailsJson,
     "submissionType" -> Original,

@@ -19,7 +19,7 @@ package models.fullReturn
 import play.api.libs.json.Json
 import validation.fullReturn.GroupLevelAmountValidator
 
-case class GroupLevelAmountModel(interestReactivationCap: BigDecimal,
+case class GroupLevelAmountModel(interestReactivationCap: Option[BigDecimal],
                                  interestAllowanceForward: BigDecimal,
                                  interestAllowanceForPeriod: BigDecimal,
                                  interestCapacityForPeriod: BigDecimal) extends GroupLevelAmountValidator {
