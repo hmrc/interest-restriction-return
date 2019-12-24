@@ -33,8 +33,8 @@ class CompaniesHouseConnector @Inject()(httpClient: HttpClient,
   private[connectors] lazy val getCompanyInformationUrl: CRNModel => String = crn =>
     s"${appConfig.companiesHouseProxy}/companies-house-api-proxy/company/${crn.crn}"
 
-  def getCompanyDetails(crn: CRNModel)
-             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[CompaniesHouseResponse] = {
+  def validateCRN(crn: CRNModel)
+                 (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[CompaniesHouseResponse] = {
 
     Logger.debug(s"[CompaniesHouseConnector][getCompanyDetails] URL: ${getCompanyInformationUrl(crn)}")
     httpClient.GET[CompaniesHouseResponse](getCompanyInformationUrl(crn))(CompaniesHouseReads, hc, ec)

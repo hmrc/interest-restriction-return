@@ -14,51 +14,50 @@
  * limitations under the License.
  */
 
-package connectors
+package services
 
 import connectors.httpParsers.CompaniesHouseHttpParser.{CompaniesHouseResponse, InvalidCRN, UnexpectedFailure, ValidCRN}
-import connectors.mocks.MockHttpClient
+import connectors.mocks.MockCompaniesHouseConnector
 import play.api.http.Status._
 import utils.BaseSpec
 
-class CompaniesHouseConnectorSpec extends MockHttpClient with BaseSpec {
+class CompaniesHouseServiceSpec extends MockCompaniesHouseConnector with BaseSpec {
 
-  "CompaniesHouseConnector.appoint" when {
+  "CompaniesHouseService.appoint" when {
 
-    def setup(response: CompaniesHouseResponse): CompaniesHouseConnector = {
-      val url = s"http://localhost:9262/companies-house-api-proxy/company/${crn.crn}"
-      mockHttpGet[CompaniesHouseResponse](url)(response)
-      new CompaniesHouseConnector(mockHttpClient, appConfig)
+    def setup(response: CompaniesHouseResponse): CompaniesHouseService = {
+      mockValidateCRN(crn)(response)
+      new CompaniesHouseService(mockCompaniesHouseConnector)
     }
 
-    "Success response from Companies House" should {
+    "CRN is valid" should {
 
       "return a Right(ValidCRN)" in {
 
-        val connector = setup(Right(ValidCRN))
-        val result = connector.validateCRN(crn)
+        val service = setup(Right(ValidCRN))
+        val result = service.validateCRN(crn)
 
         await(result) shouldBe Right(ValidCRN)
       }
     }
 
-    "Not Found response from Companies House" should {
+    "CRN is invalid" should {
 
-      "return a Left(InvalidCRN)" in {
+      "return a Right(ValidCRN)" in {
 
-        val connector = setup(Left(InvalidCRN))
-        val result = connector.validateCRN(crn)
+        val service = setup(Left(InvalidCRN))
+        val result = service.validateCRN(crn)
 
         await(result) shouldBe Left(InvalidCRN)
       }
     }
 
-    "Other Error response from Companies House" should {
+    "update is unsuccessful" should {
 
       "return a Left(UnexpectedFailure)" in {
 
-        val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-        val result = connector.validateCRN(crn)
+        val service = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
+        val result = service.validateCRN(crn)
 
         await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
       }
