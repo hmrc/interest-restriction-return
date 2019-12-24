@@ -46,7 +46,7 @@ object FullReturnConstants {
     groupCompanyDetails = groupCompanyDetailsModel,
     submissionType = Revised,
     revisedReturnDetails = Some(revisedReturnDetails),
-    groupLevelElections = Some(groupLevelElectionsModel),
+    groupLevelElections = groupLevelElectionsModelMax,
     ukCompanies = Seq(ukCompanyModelMax),
     angie = Some(angie),
     returnContainsEstimates = true,
@@ -54,7 +54,7 @@ object FullReturnConstants {
     groupSubjectToInterestReactivation = true,
     totalReactivation = totalReactivations,
     groupLevelAmount = groupLevelAmountModel,
-    adjustedGroupInterest = adjustedGroupInterestModel
+    adjustedGroupInterest = Some(adjustedGroupInterestModel)
   )
 
   val fullReturnJsonMax = Json.obj(
@@ -84,7 +84,7 @@ object FullReturnConstants {
     groupCompanyDetails = groupCompanyDetailsModel,
     submissionType = Original,
     revisedReturnDetails = None,
-    groupLevelElections = None,
+    groupLevelElections = groupLevelElectionsModelMin,
     ukCompanies = Seq(ukCompanyModelMin),
     angie = None,
     returnContainsEstimates = true,
@@ -92,7 +92,7 @@ object FullReturnConstants {
     groupSubjectToInterestReactivation = true,
     totalReactivation = totalReactivations,
     groupLevelAmount = groupLevelAmountModel,
-    adjustedGroupInterest = adjustedGroupInterestModel
+    adjustedGroupInterest = None
   )
 
   val fullReturnJsonMin = Json.obj(
@@ -102,11 +102,11 @@ object FullReturnConstants {
     "groupCompanyDetails" -> groupCompanyDetailsJson,
     "submissionType" -> Original,
     "ukCompanies" -> Seq(ukCompanyJsonMin),
+    "groupLevelElections" -> groupLevelElectionsJsonMin,
     "returnContainsEstimates" -> true,
     "groupSubjectToInterestRestrictions" -> true,
     "groupSubjectToInterestReactivation" -> true,
     "totalReactivation" -> totalReactivations,
-    "groupLevelAmount" -> groupLevelAmountJson,
-    "adjustedGroupInterest" -> adjustedGroupInterestJson
+    "groupLevelAmount" -> groupLevelAmountJson
   )
 }

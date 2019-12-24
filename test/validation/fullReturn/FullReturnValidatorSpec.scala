@@ -211,9 +211,8 @@ class FullReturnValidatorSpec extends BaseSpec {
 
       "Group Level Elections are invalid" in {
         leftSideError(fullReturnModelMax.copy(
-          groupLevelElections = Some(groupLevelElectionsModel.copy(
+          groupLevelElections = groupLevelElectionsModelMax.copy(
             groupRatio = groupRatioModelMin.copy(groupEBITDAChargeableGains = Some(true))
-          )
           )).validate).errorMessage shouldBe GroupEBITDASupplied(Some(true)).errorMessage
       }
 
@@ -229,15 +228,30 @@ class FullReturnValidatorSpec extends BaseSpec {
         ).validate).errorMessage shouldBe GroupLevelAmountCannotBeNegative("interestAllowanceForPeriod", -1).errorMessage
       }
 
-      "Adjusted Group Interest details are invalid" in {
+      "Group Ratio is Elected and Adjusted Group Interest details are invalid" in {
         val adjustedGroupInterestValue = adjustedGroupInterestModel.copy(
           qngie = 100,
           groupEBITDA = 200,
           groupRatio = 60
         )
         leftSideError(fullReturnModelMax.copy(
-          adjustedGroupInterest = adjustedGroupInterestValue
+          adjustedGroupInterest = Some(adjustedGroupInterestValue)
         ).validate).errorMessage shouldBe GroupRatioCalculationError(adjustedGroupInterestValue).errorMessage
+      }
+
+      "Group Ratio is Elected and Adjusted Group Interest details are not supplied" in {
+        leftSideError(fullReturnModelMax.copy(
+          adjustedGroupInterest = None
+        ).validate).errorMessage shouldBe AdjustedNetGroupInterestNotSupplied.errorMessage
+      }
+
+      "Group Ratio is not Elected and Adjusted Group Interest details are supplied" in {
+        leftSideError(fullReturnModelMax.copy(
+          groupLevelElections = groupLevelElectionsModelMax.copy(
+            groupRatio = groupRatioModelMin
+          ),
+          adjustedGroupInterest = Some(adjustedGroupInterestModel)
+        ).validate).errorMessage shouldBe AdjustedNetGroupInterestSupplied(adjustedGroupInterestModel).errorMessage
       }
     }
   }

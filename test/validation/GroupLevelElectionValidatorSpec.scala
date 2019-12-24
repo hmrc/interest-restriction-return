@@ -32,7 +32,7 @@ class GroupLevelElectionValidatorSpec extends BaseValidationSpec {
     "Return Valid" when {
 
       "Valid Elections model is supplied" in {
-        rightSide(groupLevelElectionsModel.validate) shouldBe groupLevelElectionsModel
+        rightSide(groupLevelElectionsModelMax.validate) shouldBe groupLevelElectionsModelMax
       }
     }
 
@@ -40,7 +40,7 @@ class GroupLevelElectionValidatorSpec extends BaseValidationSpec {
     "Return Invalid" when {
 
       "groupRatio has errors" in {
-        val model = groupLevelElectionsModel.copy(
+        val model = groupLevelElectionsModelMax.copy(
           groupRatio = groupRatioModelMax.copy(
             isElected = false,
             groupRatioBlended = None,
@@ -52,7 +52,7 @@ class GroupLevelElectionValidatorSpec extends BaseValidationSpec {
       }
 
       "interestAllowanceNonConsolidatedInvestment has errors" in {
-        val model = groupLevelElectionsModel.copy(
+        val model = groupLevelElectionsModelMax.copy(
           interestAllowanceNonConsolidatedInvestment = nonConsolidatedInvestmentModelMax.copy(
             isElected = true,
             nonConsolidatedInvestments = Some(Seq(NonConsolidatedInvestmentModel("")))
@@ -63,7 +63,7 @@ class GroupLevelElectionValidatorSpec extends BaseValidationSpec {
       }
 
       "interestAllowanceConsolidatedPartnership has errors" in {
-        val model = groupLevelElectionsModel.copy(
+        val model = groupLevelElectionsModelMax.copy(
           interestAllowanceConsolidatedPartnership = consolidatedPartnershipsModelMax.copy(
             isElected = true,
             consolidatedPartnerships = Some(Seq(PartnershipModel("")))

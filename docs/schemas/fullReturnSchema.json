@@ -76,7 +76,8 @@
     "returnContainsEstimate",
     "groupSubjectToInterestRestrictions",
     "groupSubjectToInterestReactivation",
-    "totalReactivation"
+    "totalReactivation",
+    "groupLevelElections"
   ],
   "additionalProperties": false
 }

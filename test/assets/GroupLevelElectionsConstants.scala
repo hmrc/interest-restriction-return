@@ -31,10 +31,24 @@ object GroupLevelElectionsConstants {
     "interestAllowanceConsolidatedPartnership" -> consolidatedPartnershipsJsonMax
   )
 
-  val groupLevelElectionsModel = GroupLevelElectionsModel(
+  val groupLevelElectionsModelMax = GroupLevelElectionsModel(
     groupRatio = groupRatioModelMax,
     interestAllowanceAlternativeCalculation = true,
     interestAllowanceNonConsolidatedInvestment = nonConsolidatedInvestmentModelMax,
     interestAllowanceConsolidatedPartnership = consolidatedPartnershipsModelMax
+  )
+
+  val groupLevelElectionsJsonMin = Json.obj(
+    "groupRatio" -> groupRatioJsonMin,
+    "interestAllowanceAlternativeCalculation" -> true,
+    "interestAllowanceNonConsolidatedInvestment" -> nonConsolidatedInvestmentJsonMin,
+    "interestAllowanceConsolidatedPartnership" -> consolidatedPartnershipsJsonMin
+  )
+
+  val groupLevelElectionsModelMin = GroupLevelElectionsModel(
+    groupRatio = groupRatioModelMin,
+    interestAllowanceAlternativeCalculation = true,
+    interestAllowanceNonConsolidatedInvestment = nonConsolidatedInvestmentModelMin,
+    interestAllowanceConsolidatedPartnership = consolidatedPartnershipsModelMin
   )
 }

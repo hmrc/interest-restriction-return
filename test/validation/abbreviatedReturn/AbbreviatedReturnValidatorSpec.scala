@@ -99,7 +99,7 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
 
       "Group Level Elections are invalid" in {
         leftSideError(abbreviatedReturnModelMax.copy(
-          groupLevelElections = Some(groupLevelElectionsModel.copy(
+          groupLevelElections = Some(groupLevelElectionsModelMax.copy(
             groupRatio = groupRatioModelMin.copy(groupEBITDAChargeableGains = Some(true))
           )
         )).validate).errorMessage shouldBe GroupEBITDASupplied(Some(true)).errorMessage
