@@ -45,6 +45,7 @@ object FullReturnITConstants {
     "submissionType" -> Revised,
     "revisedReturnDetails" -> "some details",
     "groupLevelElections" -> groupLevelElectionsJson,
+    "returnContainsEstimates" -> true,
     "ukCompanies" -> Seq(ukCompanyFullJson),
     "angie" -> 1.1,
     "groupSubjectToInterestRestrictions" -> true,
@@ -53,8 +54,4 @@ object FullReturnITConstants {
     "groupLevelAmount" -> groupLevelAmountJson,
     "adjustedGroupInterest" -> adjustedGroupInterestJson
   )
-
-  println("#######\n\n\n\n\n")
-  println(fullReturnJson)
-  println("\n\n\n\n\n#######")
 }

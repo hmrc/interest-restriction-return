@@ -105,7 +105,7 @@ trait FullReturnValidator extends BaseValidation {
     val validatedUkCompanies =
       if(fullReturnModel.ukCompanies.isEmpty) UkCompaniesEmpty.invalidNec else {
         combineValidations(fullReturnModel.ukCompanies.zipWithIndex.map {
-          case (a, i) => a.validate(JsPath \ s"ukCompanies[$i]")
+          case (a, i) => a.validate(fullReturnModel.groupCompanyDetails.accountingPeriod)(JsPath \ s"ukCompanies[$i]")
         }:_*)
       }
 

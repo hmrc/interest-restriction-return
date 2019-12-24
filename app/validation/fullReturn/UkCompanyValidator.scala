@@ -17,7 +17,7 @@
 package validation.fullReturn
 
 import models.Validation.ValidationResult
-import models.Validation
+import models.{AccountingPeriodModel, Validation}
 import models.fullReturn.UkCompanyModel
 import play.api.libs.json.{JsPath, Json}
 import validation.BaseValidation
@@ -58,13 +58,13 @@ trait UkCompanyValidator extends BaseValidation {
       }
   }
 
-  def validate(implicit path: JsPath): ValidationResult[UkCompanyModel] =
+  def validate(groupAccountingPeriod: AccountingPeriodModel)(implicit path: JsPath): ValidationResult[UkCompanyModel] =
     (ukCompany.utr.validate(path \ "utr"),
       ukCompany.companyName.validate(path \ "companyName"),
       validateNetTaxInterestExpense,
       validateNetTaxInterestIncome,
       validateExpenseAndIncomeBothNotGreaterThanZero,
-      optionValidations(ukCompany.allocatedRestrictions.map(_.validate(path \ "allocatedRestrictions"))),
+      optionValidations(ukCompany.allocatedRestrictions.map(_.validate(groupAccountingPeriod)(path \ "allocatedRestrictions"))),
       optionValidations(ukCompany.allocatedReactivations.map(_.validate(path \ "allocatedReactivations")))
       ).mapN((_,_,_,_,_,_,_) => ukCompany)
 }
