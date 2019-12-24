@@ -21,7 +21,7 @@ import validation.ReportingCompanyValidator
 
 case class ReportingCompanyModel(companyName: CompanyNameModel,
                                  ctutr: UTRModel,
-                                 crn: Option[CRNModel],
+                                 crn: CRNModel,
                                  sameAsUltimateParent: Boolean) extends ReportingCompanyValidator {
   override val reportingCompanyModel: ReportingCompanyModel = this
 }

@@ -48,7 +48,7 @@ class GroupLevelElectionValidatorSpec extends BaseValidationSpec {
           )
         )
 
-        leftSideError(model.validate).errorMessage shouldBe GroupEBITDAError(model.groupRatio.groupEBITDAChargeableGains).errorMessage
+        leftSideError(model.validate).errorMessage shouldBe GroupEBITDASupplied(model.groupRatio.groupEBITDAChargeableGains).errorMessage
       }
 
       "interestAllowanceNonConsolidatedInvestment has errors" in {

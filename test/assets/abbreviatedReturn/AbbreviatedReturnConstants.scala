@@ -32,7 +32,7 @@ object AbbreviatedReturnConstants {
 
   val abbreviatedReturnJsonMax = Json.obj(
     "agentDetails" -> agentDetailsJsonMax,
-    "reportingCompany" -> reportingCompanyJsonMax,
+    "reportingCompany" -> reportingCompanyJson,
     "publicInfrastructure" -> true,
     "parentCompany" -> parentCompanyJsonUlt,
     "groupCompanyDetails" -> groupCompanyDetailsJson,
@@ -44,7 +44,7 @@ object AbbreviatedReturnConstants {
 
   val abbreviatedReturnModelMax = AbbreviatedReturnModel(
     agentDetails = agentDetailsModelMax,
-    reportingCompany = reportingCompanyModelMax,
+    reportingCompany = reportingCompanyModel,
     publicInfrastructure = true,
     parentCompany = Some(parentCompanyModelUlt),
     groupCompanyDetails = groupCompanyDetailsModel,
@@ -56,7 +56,7 @@ object AbbreviatedReturnConstants {
 
   val abbreviatedReturnJsonMin = Json.obj(
     "agentDetails" -> agentDetailsJsonMin,
-    "reportingCompany" -> reportingCompanyJsonMin,
+    "reportingCompany" -> reportingCompanyJson,
     "publicInfrastructure" -> true,
     "groupCompanyDetails" -> groupCompanyDetailsJson,
     "submissionType" -> Original,
@@ -65,7 +65,7 @@ object AbbreviatedReturnConstants {
 
   val abbreviatedReturnModelMin = AbbreviatedReturnModel(
     agentDetails = agentDetailsModelMin,
-    reportingCompany = reportingCompanyModelMin,
+    reportingCompany = reportingCompanyModel,
     publicInfrastructure = true,
     parentCompany = None,
     groupCompanyDetails = groupCompanyDetailsModel,

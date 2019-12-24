@@ -16,6 +16,7 @@
 
 package assets
 
+import assets.AbbreviatedReturnITConstants.abbreviatedReturnJson
 import assets.AdjustedGroupInterestITConstants.adjustedGroupInterestJson
 import assets.AgentDetailsITConstants._
 import assets.GroupCompanyDetailsITConstants.groupCompanyDetailsJson
@@ -52,4 +53,8 @@ object FullReturnITConstants {
     "groupLevelAmount" -> groupLevelAmountJson,
     "adjustedGroupInterest" -> adjustedGroupInterestJson
   )
+
+  println("#######\n\n\n\n\n")
+  println(fullReturnJson)
+  println("\n\n\n\n\n#######")
 }

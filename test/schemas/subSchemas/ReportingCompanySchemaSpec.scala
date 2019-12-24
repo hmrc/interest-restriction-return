@@ -138,6 +138,13 @@ class ReportingCompanySchemaSpec extends BaseSchemaSpec {
 
           validate(json) shouldBe false
         }
+
+        "is not supplied" in {
+
+          val json = Json.toJson(ReportingCompany(crn = None))
+
+          validate(json) shouldBe false
+        }
       }
 
       "sameAsUltimateParent" when {
