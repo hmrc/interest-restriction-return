@@ -26,4 +26,6 @@ class AppConfig @Inject()(val servicesConfig: ServicesConfig) {
   lazy val desUrl: String = servicesConfig.getString("microservice.services.des.url")
   lazy val desAuthorisationToken: String = s"Bearer ${servicesConfig.getString("microservice.services.des.authorisation-token")}"
   lazy val desEnvironmentHeader: (String, String) = "Environment" -> servicesConfig.getString("microservice.services.des.environment")
+
+  lazy val companiesHouseProxy = servicesConfig.baseUrl("companies-house-api-proxy")
 }

@@ -33,4 +33,10 @@ trait MockHttpClient extends MockFactory {
       .expects(url, model, *, *, *, *, *)
       .returns(Future.successful(response))
   }
+
+  def mockHttpGet[O](url: String)(response: O): Unit = {
+    (mockHttpClient.GET[O](_: String)(_: HttpReads[O], _: HeaderCarrier, _: ExecutionContext))
+      .expects(url, *, *, *)
+      .returns(Future.successful(response))
+  }
 }
