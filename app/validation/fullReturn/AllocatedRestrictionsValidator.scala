@@ -43,13 +43,27 @@ trait AllocatedRestrictionsValidator extends BaseValidation {
   }
 
   private def validateAllAps(implicit topPath: JsPath): ValidationResult[(Option[LocalDate], Option[LocalDate], Option[LocalDate])] = {
+
     val apDates = (allocatedRestrictionsModel.ap1End, allocatedRestrictionsModel.ap2End, allocatedRestrictionsModel.ap3End)
-    apDates match {
+
+    val validDatesSupplied = apDates match {
       case (None, Some(_), _) => AllocatedRestrictionLaterPeriodSupplied(2).invalidNec
       case (None, _, Some(_)) => AllocatedRestrictionLaterPeriodSupplied(3).invalidNec
       case (_, None, Some(_)) => AllocatedRestrictionLaterPeriodSupplied(3).invalidNec
       case _ => apDates.validNec
     }
+
+    val validateAp2 = apDates match {
+      case (Some(ap1), Some(ap2), _) if !ap2.isAfter(ap1) => AllocatedRestrictionDateBeforePrevious(2).invalidNec
+      case _ => apDates.validNec
+    }
+
+    val validateAp3 = apDates match {
+      case (_, Some(ap2), Some(ap3)) if !ap3.isAfter(ap2) => AllocatedRestrictionDateBeforePrevious(3).invalidNec
+      case _ => apDates.validNec
+    }
+
+    combineValidations(validDatesSupplied, validateAp2, validateAp3)
   }
 
   def validateTotalRestriction(implicit path: JsPath): ValidationResult[BigDecimal] = {
@@ -124,5 +138,11 @@ case class AllocatedRestrictionTotalNegative(amt: BigDecimal)(implicit topPath: 
 case class AllocatedRestrictionTotalDoesNotMatch(amt: BigDecimal, calculatedAmt: BigDecimal)(implicit topPath: JsPath) extends Validation {
   val path = topPath \ "totalDisallowances"
   val errorMessage: String = s"The totalDisallowances was $calculatedAmt which does not match the supplied amount of $amt"
+  val value = Json.obj()
+}
+
+case class AllocatedRestrictionDateBeforePrevious(i: Int)(implicit topPath: JsPath) extends Validation {
+  val path = topPath \ s"ap${i}End"
+  val errorMessage: String = s"ap${i}End cannot be equal to or before ap${i-1}End"
   val value = Json.obj()
 }

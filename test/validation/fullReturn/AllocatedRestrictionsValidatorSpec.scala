@@ -159,6 +159,32 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
 
           leftSideError(model.validate).errorMessage shouldBe AllocatedRestrictionLaterPeriodSupplied(2).errorMessage
         }
+
+        "is supplied with a date equal to Ap1" in {
+
+          val model = restrictionModel.copy(
+            ap1End = Some(ap1End),
+            disallowanceAp1 = Some(disallowanceAp1),
+            ap2End = Some(ap1End),
+            disallowanceAp2 = Some(disallowanceAp2),
+            totalDisallowances = Some(totalDisallowances)
+          )
+
+          leftSideError(model.validate).errorMessage shouldBe AllocatedRestrictionDateBeforePrevious(2).errorMessage
+        }
+
+        "is supplied with a date less than Ap1" in {
+
+          val model = restrictionModel.copy(
+            ap1End = Some(ap1End),
+            disallowanceAp1 = Some(disallowanceAp1),
+            ap2End = Some(ap1End.minusDays(1)),
+            disallowanceAp2 = Some(disallowanceAp2),
+            totalDisallowances = Some(totalDisallowances)
+          )
+
+          leftSideError(model.validate).errorMessage shouldBe AllocatedRestrictionDateBeforePrevious(2).errorMessage
+        }
       }
 
       "Ap3" when {
@@ -216,6 +242,36 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
           )
 
           leftSideError(model.validate).errorMessage shouldBe AllocatedRestrictionLaterPeriodSupplied(3).errorMessage
+        }
+
+        "is supplied with a date equal to Ap2" in {
+
+          val model = restrictionModel.copy(
+            ap1End = Some(ap1End),
+            disallowanceAp1 = Some(disallowanceAp1),
+            ap2End = Some(ap2End),
+            disallowanceAp2 = Some(disallowanceAp2),
+            ap3End = Some(ap2End),
+            disallowanceAp3 = Some(disallowanceAp3),
+            totalDisallowances = Some(totalDisallowances)
+          )
+
+          leftSideError(model.validate).errorMessage shouldBe AllocatedRestrictionDateBeforePrevious(3).errorMessage
+        }
+
+        "is supplied with a date less than Ap2" in {
+
+          val model = restrictionModel.copy(
+            ap1End = Some(ap1End),
+            disallowanceAp1 = Some(disallowanceAp1),
+            ap2End = Some(ap2End),
+            disallowanceAp2 = Some(disallowanceAp2),
+            ap3End = Some(ap2End.minusDays(1)),
+            disallowanceAp3 = Some(disallowanceAp3),
+            totalDisallowances = Some(totalDisallowances)
+          )
+
+          leftSideError(model.validate).errorMessage shouldBe AllocatedRestrictionDateBeforePrevious(3).errorMessage
         }
       }
 
