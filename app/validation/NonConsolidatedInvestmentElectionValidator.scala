@@ -38,10 +38,12 @@ trait NonConsolidatedInvestmentElectionValidator extends BaseValidation {
 
     val nonConsolidatedInvestmentsValidation: ValidationResult[Option[NonConsolidatedInvestmentModel]] =
       optionValidations(nonConsolidatedInvestmentElectionModel.nonConsolidatedInvestments.map(nonConsolidatedInvestments =>
-        combineValidations(nonConsolidatedInvestments.zipWithIndex.map {
-        case (a, i) => a.validate(JsPath \ s"nonConsolidatedInvestments[$i]")
-      }:_*)
-    ))
+        if(nonConsolidatedInvestments.isEmpty) NonConsolidatedInvestmentEmpty().invalidNec else {
+          combineValidations(nonConsolidatedInvestments.zipWithIndex.map {
+            case (a, i) => a.validate(JsPath \ s"nonConsolidatedInvestments[$i]")
+          }: _*)
+        }
+      ))
 
     (validateNonConsolidatedInvestment,
       nonConsolidatedInvestmentsValidation).mapN((_,_) => nonConsolidatedInvestmentElectionModel)
@@ -60,6 +62,12 @@ case class NonConsolidatedInvestmentNotSupplied(nonConsolidatedInvestmentElectio
   val errorMessage: String = "You must provide non-consolidated investments if non-consolidated election is made"
   val path = topPath \ "nonConsolidatedInvestments"
   val value = Json.toJson(nonConsolidatedInvestmentElectionModel)
+}
+
+case class NonConsolidatedInvestmentEmpty(implicit val topPath: JsPath) extends Validation {
+  val errorMessage: String = "nonConsolidatedInvestments must contain at least 1 value if supplied"
+  val path = topPath \ "nonConsolidatedInvestments"
+  val value = Json.obj()
 }
 
 

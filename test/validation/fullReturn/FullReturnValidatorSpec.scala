@@ -67,7 +67,7 @@ class FullReturnValidatorSpec extends BaseSpec {
       "Reporting Company is the same as UPC but Parent Details are supplied" in {
 
         leftSideError(fullReturnModelMax.copy(
-          reportingCompany = reportingCompanyModelMin,
+          reportingCompany = reportingCompanyModel.copy(sameAsUltimateParent = true),
           parentCompany = Some(parentCompanyModelUlt)
         ).validate).errorMessage shouldBe ParentCompanyDetailsSupplied(parentCompanyModelUlt).errorMessage
       }
@@ -75,7 +75,7 @@ class FullReturnValidatorSpec extends BaseSpec {
       "Reporting Company is not the same as UPC and UPC is not supplied" in {
 
         leftSideError(fullReturnModelMax.copy(
-          reportingCompany = reportingCompanyModelMax,
+          reportingCompany = reportingCompanyModel,
           parentCompany = None
         ).validate).errorMessage shouldBe ParentCompanyDetailsNotSupplied.errorMessage
       }
@@ -195,7 +195,7 @@ class FullReturnValidatorSpec extends BaseSpec {
 
       "Reporting Company details are invalid" in {
         leftSideError(fullReturnModelMax.copy(
-          reportingCompany = reportingCompanyModelMax.copy(
+          reportingCompany = reportingCompanyModel.copy(
             companyName = companyNameTooLong)).validate).errorMessage shouldBe CompanyNameLengthError(companyNameTooLong.name).errorMessage
       }
 
@@ -211,10 +211,9 @@ class FullReturnValidatorSpec extends BaseSpec {
 
       "Group Level Elections are invalid" in {
         leftSideError(fullReturnModelMax.copy(
-          groupLevelElections = Some(groupLevelElectionsModel.copy(
+          groupLevelElections = groupLevelElectionsModelMax.copy(
             groupRatio = groupRatioModelMin.copy(groupEBITDAChargeableGains = Some(true))
-          )
-          )).validate).errorMessage shouldBe GroupEBITDAError(Some(true)).errorMessage
+          )).validate).errorMessage shouldBe GroupEBITDASupplied(Some(true)).errorMessage
       }
 
       "Uk Company details are invalid" in {
@@ -229,15 +228,30 @@ class FullReturnValidatorSpec extends BaseSpec {
         ).validate).errorMessage shouldBe GroupLevelAmountCannotBeNegative("interestAllowanceForPeriod", -1).errorMessage
       }
 
-      "Adjusted Group Interest details are invalid" in {
+      "Group Ratio is Elected and Adjusted Group Interest details are invalid" in {
         val adjustedGroupInterestValue = adjustedGroupInterestModel.copy(
           qngie = 100,
           groupEBITDA = 200,
           groupRatio = 60
         )
         leftSideError(fullReturnModelMax.copy(
-          adjustedGroupInterest = adjustedGroupInterestValue
+          adjustedGroupInterest = Some(adjustedGroupInterestValue)
         ).validate).errorMessage shouldBe GroupRatioCalculationError(adjustedGroupInterestValue).errorMessage
+      }
+
+      "Group Ratio is Elected and Adjusted Group Interest details are not supplied" in {
+        leftSideError(fullReturnModelMax.copy(
+          adjustedGroupInterest = None
+        ).validate).errorMessage shouldBe AdjustedNetGroupInterestNotSupplied.errorMessage
+      }
+
+      "Group Ratio is not Elected and Adjusted Group Interest details are supplied" in {
+        leftSideError(fullReturnModelMax.copy(
+          groupLevelElections = groupLevelElectionsModelMax.copy(
+            groupRatio = groupRatioModelMin
+          ),
+          adjustedGroupInterest = Some(adjustedGroupInterestModel)
+        ).validate).errorMessage shouldBe AdjustedNetGroupInterestSupplied(adjustedGroupInterestModel).errorMessage
       }
     }
   }

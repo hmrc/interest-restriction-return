@@ -16,6 +16,7 @@
 
 package assets
 
+import assets.AbbreviatedReturnITConstants.abbreviatedReturnJson
 import assets.AdjustedGroupInterestITConstants.adjustedGroupInterestJson
 import assets.AgentDetailsITConstants._
 import assets.GroupCompanyDetailsITConstants.groupCompanyDetailsJson
@@ -44,6 +45,7 @@ object FullReturnITConstants {
     "submissionType" -> Revised,
     "revisedReturnDetails" -> "some details",
     "groupLevelElections" -> groupLevelElectionsJson,
+    "returnContainsEstimates" -> true,
     "ukCompanies" -> Seq(ukCompanyFullJson),
     "angie" -> 1.1,
     "groupSubjectToInterestRestrictions" -> true,

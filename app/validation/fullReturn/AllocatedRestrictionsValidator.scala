@@ -18,9 +18,9 @@ package validation.fullReturn
 
 import java.time.LocalDate
 
-import models.Validation
 import models.Validation.ValidationResult
 import models.fullReturn.AllocatedRestrictionsModel
+import models.{AccountingPeriodModel, Validation}
 import play.api.libs.json.{JsPath, Json}
 import validation.BaseValidation
 
@@ -42,15 +42,29 @@ trait AllocatedRestrictionsValidator extends BaseValidation {
     }
   }
 
-  private def validateAllAps(implicit topPath: JsPath): ValidationResult[(Option[LocalDate], Option[LocalDate], Option[LocalDate])] = {
-    val apDates = (allocatedRestrictionsModel.ap1End, allocatedRestrictionsModel.ap2End, allocatedRestrictionsModel.ap3End)
-    apDates match {
-      case (None, Some(_), _) => AllocatedRestrictionLaterPeriodSupplied(2).invalidNec
-      case (None, _, Some(_)) => AllocatedRestrictionLaterPeriodSupplied(3).invalidNec
-      case (_, None, Some(_)) => AllocatedRestrictionLaterPeriodSupplied(3).invalidNec
-      case _ => apDates.validNec
+  def validateAp1(groupStartDate: LocalDate)(implicit topPath: JsPath): ValidationResult[Option[LocalDate]] =
+    allocatedRestrictionsModel.ap1End.fold[ValidationResult[Option[LocalDate]]](None.validNec)(ap1 =>
+      if(ap1.isAfter(groupStartDate)) Some(ap1).validNec else Ap1NotAfterGroupStartDate(ap1, groupStartDate).invalidNec
+    )
+
+  def validateAp2(implicit topPath: JsPath): ValidationResult[Option[LocalDate]] =
+    (allocatedRestrictionsModel.ap1End, allocatedRestrictionsModel.ap2End) match {
+      case (optAp1, Some(ap2)) =>
+        optAp1.fold[ValidationResult[Option[LocalDate]]](AllocatedRestrictionLaterPeriodSupplied(2).invalidNec)(ap1 =>
+          if (!ap2.isAfter(ap1)) AllocatedRestrictionDateBeforePrevious(2).invalidNec else Some(ap2).validNec
+        )
+      case _ => None.validNec
     }
-  }
+
+  def validateAp3(groupEndDate: LocalDate)(implicit topPath: JsPath): ValidationResult[Option[LocalDate]] =
+    (allocatedRestrictionsModel.ap1End, allocatedRestrictionsModel.ap2End, allocatedRestrictionsModel.ap3End) match {
+      case (None, _, Some(_)) | (_, None, Some(_)) => AllocatedRestrictionLaterPeriodSupplied(3).invalidNec
+      case (_, Some(ap2), Some(ap3)) => combineValidationsForField(
+        if (!ap3.isAfter(ap2)) AllocatedRestrictionDateBeforePrevious(3).invalidNec else Some(ap3).validNec,
+        if (ap3.isBefore(groupEndDate)) Ap3BeforeGroupEndDate(ap3, groupEndDate).invalidNec else Some(ap3).validNec
+      )
+      case _ => None.validNec
+    }
 
   def validateTotalRestriction(implicit path: JsPath): ValidationResult[BigDecimal] = {
 
@@ -77,12 +91,14 @@ trait AllocatedRestrictionsValidator extends BaseValidation {
     }
   }
 
-  def validate(implicit path: JsPath): ValidationResult[AllocatedRestrictionsModel] =
+  def validate(groupAccountingPeriod: AccountingPeriodModel)(implicit path: JsPath): ValidationResult[AllocatedRestrictionsModel] =
     (apRestrictionValidator(allocatedRestrictionsModel.ap1End, allocatedRestrictionsModel.disallowanceAp1, 1),
       apRestrictionValidator(allocatedRestrictionsModel.ap2End, allocatedRestrictionsModel.disallowanceAp2, 2),
       apRestrictionValidator(allocatedRestrictionsModel.ap3End, allocatedRestrictionsModel.disallowanceAp3, 3),
-      validateAllAps,
-      validateTotalRestriction).mapN((_,_,_,_,_) => allocatedRestrictionsModel)
+      validateAp1(groupAccountingPeriod.startDate),
+      validateAp2,
+      validateAp3(groupAccountingPeriod.endDate),
+      validateTotalRestriction).mapN((_,_,_,_,_,_,_) => allocatedRestrictionsModel)
 }
 
 case class AllocatedRestrictionNotSupplied(i: Int)(implicit topPath: JsPath) extends Validation {
@@ -125,4 +141,22 @@ case class AllocatedRestrictionTotalDoesNotMatch(amt: BigDecimal, calculatedAmt:
   val path = topPath \ "totalDisallowances"
   val errorMessage: String = s"The totalDisallowances was $calculatedAmt which does not match the supplied amount of $amt"
   val value = Json.obj()
+}
+
+case class AllocatedRestrictionDateBeforePrevious(i: Int)(implicit topPath: JsPath) extends Validation {
+  val path = topPath \ s"ap${i}End"
+  val errorMessage: String = s"ap${i}End cannot be equal to or before ap${i-1}End"
+  val value = Json.obj()
+}
+
+case class Ap1NotAfterGroupStartDate(ap1Date: LocalDate, groupStartDate: LocalDate)(implicit topPath: JsPath) extends Validation {
+  val path = topPath \ "ap1End"
+  val errorMessage: String = s"ap1End ($ap1Date) must be after the group accounting period start date ($groupStartDate)"
+  val value = Json.obj("ap1End" -> ap1Date, "groupStartDate" -> groupStartDate)
+}
+
+case class Ap3BeforeGroupEndDate(ap3Date: LocalDate, groupEndDate: LocalDate)(implicit topPath: JsPath) extends Validation {
+  val path = topPath \ "ap3End"
+  val errorMessage: String = s"ap3End ($ap3Date) is before the group accounting period end date ($groupEndDate)"
+  val value = Json.obj("ap3End" -> ap3Date, "groupEndDate" -> groupEndDate)
 }

@@ -37,6 +37,10 @@ object RevokeReportingCompanyITConstants {
     "declaration" -> true
   )
 
+  println("#########\n\n\n\n\n")
+  println("Json: " + revokeReportingCompanyJson)
+  println("\n\n\n\n\n#########")
+
   val revokeReportingCompanyDesSuccessJson = Json.obj(
     "acknowledgementReference" -> ackRef
   )

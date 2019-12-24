@@ -45,20 +45,22 @@ trait AppointReportingCompanyValidator extends BaseValidation {
 
   def validate: ValidationResult[AppointReportingCompanyModel] = {
 
-    val validatedAuthorisingCompanies = appointReportingCompanyModel.authorisingCompanies.zipWithIndex.map {
-      case (a, i) => a.validate(JsPath \ s"authorisingCompanies[$i]")
-    }
+    val validatedAuthorisingCompanies =
+      if(appointReportingCompanyModel.authorisingCompanies.isEmpty) AuthorisingCompaniesEmpty.invalidNec else {
+        combineValidations(appointReportingCompanyModel.authorisingCompanies.zipWithIndex.map {
+          case (a, i) => a.validate(JsPath \ s"authorisingCompanies[$i]")
+        }:_*)
+      }
 
-    (
-      appointReportingCompanyModel.agentDetails.validate(JsPath \ "agentDetails"),
+    (appointReportingCompanyModel.agentDetails.validate(JsPath \ "agentDetails"),
       appointReportingCompanyModel.reportingCompany.validate(JsPath \ "reportingCompany"),
-      combineValidations(validatedAuthorisingCompanies:_*),
+      validatedAuthorisingCompanies,
       optionValidations(appointReportingCompanyModel.ultimateParentCompany.map(_.validate(JsPath \ "ultimateParentCompany"))),
       optionValidations(appointReportingCompanyModel.identityOfAppointingCompany.map(_.validate(JsPath \ "identityOfAppointingCompany"))),
       appointReportingCompanyModel.accountingPeriod.validate(JsPath \ "accountingPeriod"),
       validateIdentityOfAppointingCompany,
       validateUltimateParentCompany
-    ).mapN((_,_,_,_,_,_,_,_) => appointReportingCompanyModel)
+      ).mapN((_,_,_,_,_,_,_,_) => appointReportingCompanyModel)
   }
 }
 
@@ -80,6 +82,11 @@ case class UltimateParentCompanyIsSupplied(ultimateParentModel: UltimateParentMo
   val value = Json.toJson(ultimateParentModel)
 }
 
+case object AuthorisingCompaniesEmpty extends Validation {
+  val errorMessage: String = "authorisingCompanies must have at least 1 authorising company"
+  val path = JsPath \ "authorisingCompanies"
+  val value = Json.obj()
+}
 
 
 

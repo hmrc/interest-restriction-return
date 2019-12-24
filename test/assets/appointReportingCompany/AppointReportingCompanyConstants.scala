@@ -31,7 +31,7 @@ object AppointReportingCompanyConstants {
 
   val appointReportingCompanyJsonMax = Json.obj(
     "agentDetails" -> agentDetailsJsonMax,
-    "reportingCompany" -> reportingCompanyJsonMax,
+    "reportingCompany" -> reportingCompanyJson,
     "authorisingCompanies" -> Json.arr(
       authorisingCompanyJson
     ),
@@ -44,7 +44,7 @@ object AppointReportingCompanyConstants {
 
   val appointReportingCompanyModelMax = AppointReportingCompanyModel(
     agentDetails = agentDetailsModelMax,
-    reportingCompany = reportingCompanyModelMax,
+    reportingCompany = reportingCompanyModel,
     authorisingCompanies = Seq(authorisingCompanyModel),
     isReportingCompanyAppointingItself = false,
     identityOfAppointingCompany = Some(identityOfCompanySubmittingModelMax),
@@ -54,7 +54,7 @@ object AppointReportingCompanyConstants {
   )
   val appointReportingCompanyJsonMin = Json.obj(
     "agentDetails" -> agentDetailsJsonMin,
-    "reportingCompany" -> reportingCompanyJsonMin,
+    "reportingCompany" -> reportingCompanyJson,
     "authorisingCompanies" -> Json.arr(
       authorisingCompanyJson
     ),
@@ -65,7 +65,7 @@ object AppointReportingCompanyConstants {
 
   val appointReportingCompanyModelMin = AppointReportingCompanyModel(
     agentDetails = agentDetailsModelMin,
-    reportingCompany = reportingCompanyModelMin,
+    reportingCompany = reportingCompanyModel,
     authorisingCompanies = Seq(authorisingCompanyModel),
     isReportingCompanyAppointingItself = true,
     identityOfAppointingCompany = None,

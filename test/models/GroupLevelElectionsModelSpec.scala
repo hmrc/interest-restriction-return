@@ -29,7 +29,7 @@ class GroupLevelElectionsModelSpec extends WordSpec with Matchers {
       "max values given" in {
 
         val expectedValue = groupLevelElectionsJsonMax
-        val actualValue = Json.toJson(groupLevelElectionsModel)
+        val actualValue = Json.toJson(groupLevelElectionsModelMax)
 
         actualValue shouldBe expectedValue
       }
@@ -39,7 +39,7 @@ class GroupLevelElectionsModelSpec extends WordSpec with Matchers {
 
       "max values given" in {
 
-        val expectedValue = groupLevelElectionsModel
+        val expectedValue = groupLevelElectionsModelMax
         val actualValue = groupLevelElectionsJsonMax.as[GroupLevelElectionsModel]
 
         actualValue shouldBe expectedValue

@@ -29,6 +29,6 @@ trait ReportingCompanyValidator extends BaseValidation {
   def validate(implicit path: JsPath): ValidationResult[ReportingCompanyModel] =
     (reportingCompanyModel.companyName.validate(path \ "companyName"),
       reportingCompanyModel.ctutr.validate(path \ "ctutr"),
-      optionValidations(reportingCompanyModel.crn.map(_.validate(path \ "crn"))))
-      .mapN((_,_,_) => reportingCompanyModel)
+      reportingCompanyModel.crn.validate(path \ "crn")
+      ).mapN((_,_,_) => reportingCompanyModel)
 }

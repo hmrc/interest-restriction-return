@@ -42,4 +42,9 @@ object AbbreviatedReturnITConstants {
     "groupLevelElections" -> groupLevelElectionsJson,
     "ukCompanies" -> Seq(ukCompanyJson)
   )
+
+
+  println("#######\n\n\n\n\n")
+  println(abbreviatedReturnJson)
+  println("\n\n\n\n\n#######")
 }

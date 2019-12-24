@@ -27,14 +27,15 @@ case class FullReturnModel(agentDetails: AgentDetailsModel,
                            groupCompanyDetails: GroupCompanyDetailsModel,
                            submissionType: SubmissionType,
                            revisedReturnDetails: Option[String],
-                           groupLevelElections: Option[GroupLevelElectionsModel],
+                           groupLevelElections: GroupLevelElectionsModel,
                            ukCompanies: Seq[UkCompanyModel],
                            angie: Option[BigDecimal],
+                           returnContainsEstimates: Boolean,
                            groupSubjectToInterestRestrictions: Boolean,
                            groupSubjectToInterestReactivation: Boolean,
                            totalReactivation: BigDecimal,
                            groupLevelAmount: GroupLevelAmountModel,
-                           adjustedGroupInterest: AdjustedGroupInterestModel) extends FullReturnValidator {
+                           adjustedGroupInterest: Option[AdjustedGroupInterestModel]) extends FullReturnValidator {
   override val fullReturnModel: FullReturnModel = this
 }
 

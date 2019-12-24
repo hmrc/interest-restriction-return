@@ -35,11 +35,14 @@ trait GroupRatioBlendedValidator extends BaseValidation {
 
   def validate(implicit path: JsPath): ValidationResult[GroupRatioBlendedModel] = {
 
-    val investorGroupsValidation: ValidationResult[Option[InvestorGroupModel]] = optionValidations(groupRatioBlendedModel.investorGroups.map(investors =>
-      combineValidations(investors.zipWithIndex.map {
-        case (a, i) => a.validate(JsPath \ s"investorGroups[$i]")
-      }:_*)
-    ))
+    val investorGroupsValidation: ValidationResult[Option[InvestorGroupModel]] =
+      optionValidations(groupRatioBlendedModel.investorGroups.map(investors =>
+        if(investors.isEmpty) InvestorGroupsEmpty().invalidNec else {
+          combineValidations(investors.zipWithIndex.map {
+            case (a, i) => a.validate(JsPath \ s"investorGroups[$i]")
+          }: _*)
+        }
+      ))
 
     (validateGroupRatioBlended,
       investorGroupsValidation).mapN((_,_) => groupRatioBlendedModel)
@@ -53,7 +56,8 @@ case class GroupRatioBlendedNotElectedError(groupRatioBlended: GroupRatioBlended
   val value = Json.toJson(groupRatioBlended)
 }
 
-
-
-
-
+case class InvestorGroupsEmpty(implicit val topPath: JsPath) extends Validation {
+  val errorMessage: String = "investorGroups must have at least 1 investor if supplied"
+  val path = topPath \ "investorGroups"
+  val value = Json.obj()
+}

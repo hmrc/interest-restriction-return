@@ -30,7 +30,7 @@ object RevokeReportingCompanyConstants {
 
   val revokeReportingCompanyModelMax = RevokeReportingCompanyModel(
     agentDetails = agentDetailsModelMax,
-    reportingCompany = reportingCompanyModelMax,
+    reportingCompany = reportingCompanyModel,
     isReportingCompanyRevokingItself = true,
     companyMakingRevocation = None,
     ultimateParent = Some(ultimateParentModelMax),
@@ -41,7 +41,7 @@ object RevokeReportingCompanyConstants {
 
   val revokeReportingCompanyJsonMax = Json.obj(
     "agentDetails" -> agentDetailsJsonMax,
-    "reportingCompany" -> reportingCompanyJsonMax,
+    "reportingCompany" -> reportingCompanyJson,
     "isReportingCompanyRevokingItself" -> true,
     "ultimateParent" -> ultimateParentJsonMax,
     "accountingPeriod" -> accountingPeriodJson,
@@ -51,7 +51,7 @@ object RevokeReportingCompanyConstants {
 
   val revokeReportingCompanyModelMin = RevokeReportingCompanyModel(
     agentDetails = agentDetailsModelMax,
-    reportingCompany = reportingCompanyModelMax,
+    reportingCompany = reportingCompanyModel,
     isReportingCompanyRevokingItself = true,
     companyMakingRevocation = None,
     ultimateParent = None,
@@ -62,7 +62,7 @@ object RevokeReportingCompanyConstants {
 
   val revokeReportingCompanyJsonMin = Json.obj(
     "agentDetails" -> agentDetailsJsonMax,
-    "reportingCompany" -> reportingCompanyJsonMax,
+    "reportingCompany" -> reportingCompanyJson,
     "isReportingCompanyRevokingItself" -> true,
     "accountingPeriod" -> accountingPeriodJson,
     "authorisingCompanies" -> Seq(authorisingCompanyJson),

@@ -51,10 +51,8 @@ trait BaseValidation {
   }
 
   def optionValidations[T](validations: Option[ValidationResult[T]]*): ValidationResult[Option[T]] = {
-    Logger.debug(s"[BaseValidation][optionValidations] validations: $validations}")
     val invalids = validations.collect { case Some(Invalid(invalid)) => invalid}
     val valid = validations.collect { case Some(Valid(v)) => v}
-    Logger.debug(s"[BaseValidation][optionValidations] Invalids: $invalids}")
     invalids match {
       case seq if seq.isEmpty => if(valid.nonEmpty) Some(valid.head).validNec else None.validNec
       case errors => Invalid(combineInvalids(errors.tail,errors.head))

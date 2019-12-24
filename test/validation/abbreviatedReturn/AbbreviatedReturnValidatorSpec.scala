@@ -63,7 +63,7 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
       "Reporting Company is the same as UPC but Parent Details are supplied" in {
 
         leftSideError(abbreviatedReturnModelMax.copy(
-          reportingCompany = reportingCompanyModelMin,
+          reportingCompany = reportingCompanyModel.copy(sameAsUltimateParent = true),
           parentCompany = Some(parentCompanyModelUlt)
         ).validate).errorMessage shouldBe ParentCompanyDetailsSupplied(parentCompanyModelUlt).errorMessage
       }
@@ -71,7 +71,7 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
       "Reporting Company is not the same as UPC and UPC is not supplied" in {
 
         leftSideError(abbreviatedReturnModelMax.copy(
-          reportingCompany = reportingCompanyModelMax,
+          reportingCompany = reportingCompanyModel,
           parentCompany = None
         ).validate).errorMessage shouldBe ParentCompanyDetailsNotSupplied.errorMessage
       }
@@ -83,7 +83,7 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
 
       "Reporting Company details are invalid" in {
         leftSideError(abbreviatedReturnModelMax.copy(
-          reportingCompany = reportingCompanyModelMax.copy(
+          reportingCompany = reportingCompanyModel.copy(
             companyName = companyNameTooLong)).validate).errorMessage shouldBe CompanyNameLengthError(companyNameTooLong.name).errorMessage
       }
 
@@ -99,10 +99,10 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
 
       "Group Level Elections are invalid" in {
         leftSideError(abbreviatedReturnModelMax.copy(
-          groupLevelElections = Some(groupLevelElectionsModel.copy(
+          groupLevelElections = Some(groupLevelElectionsModelMax.copy(
             groupRatio = groupRatioModelMin.copy(groupEBITDAChargeableGains = Some(true))
           )
-        )).validate).errorMessage shouldBe GroupEBITDAError(Some(true)).errorMessage
+        )).validate).errorMessage shouldBe GroupEBITDASupplied(Some(true)).errorMessage
       }
 
       "Uk Company details are invalid" in {

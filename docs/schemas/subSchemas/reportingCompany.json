@@ -17,6 +17,7 @@
   "required": [
     "companyName",
     "ctutr",
+    "crn",
     "sameAsUltimateParent"
   ],
   "additionalProperties": false

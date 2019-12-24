@@ -69,8 +69,7 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
 
         leftSideErrorLength(testModel.validate) shouldBe 1
 
-        leftSideError(testModel.validate).errorMessage shouldBe
-          CompanyMakingAppointmentMustSupplyDetails().errorMessage
+        leftSideError(testModel.validate).errorMessage shouldBe CompanyMakingAppointmentMustSupplyDetails.errorMessage
       }
 
       "the declaration hasn't been declared" in {

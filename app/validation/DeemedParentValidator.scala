@@ -39,15 +39,17 @@ trait DeemedParentValidator extends BaseValidation {
 
   def validate(implicit path: JsPath): ValidationResult[DeemedParentModel] =
     (validateDeemedParentCanNotBeUkAndNonUk,
+      deemedParentModel.companyName.validate(path \ "companyName"),
       optionValidations(deemedParentModel.ctutr.map(_.validate(path \ "ctutr"))),
       optionValidations(deemedParentModel.countryOfIncorporation.map(_.validate(path \ "countryOfIncorporation")))
-      ).mapN((_,_,_) => deemedParentModel)
+      ).mapN((_,_,_,_) => deemedParentModel)
 }
 
 case class DeemedParentCannotBeUkAndNonUk(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
   val errorMessage: String = "Deemed Parent Company Model cannot contain data for UK and NonUK fields"
   val value = Json.toJson(model)
 }
+
 
 
 

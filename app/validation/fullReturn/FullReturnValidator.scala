@@ -17,7 +17,7 @@
 package validation.fullReturn
 
 import models.Validation.ValidationResult
-import models.fullReturn.{FullReturnModel, UkCompanyModel}
+import models.fullReturn.{AdjustedGroupInterestModel, FullReturnModel, UkCompanyModel}
 import models.{Original, ParentCompanyModel, Revised, Validation}
 import play.api.libs.json.{JsPath, Json}
 import validation.BaseValidation
@@ -58,10 +58,10 @@ trait FullReturnValidator extends BaseValidation {
 
   private def validateAllocatedRestrictions: ValidationResult[Boolean] = {
     (fullReturnModel.groupSubjectToInterestRestrictions, fullReturnModel.ukCompanies.zipWithIndex) match {
-      case (true, x) if x.exists(_._1.allocatedRestrictions.isEmpty) => combineValidations(x.map {
+      case (true, companies) if companies.exists(_._1.allocatedRestrictions.isEmpty) => combineValidations(companies.map {
         case (company, i) => MissingAllocatedRestrictionsForCompanies(company, i).invalidNec
       }:_*)
-      case (false, x) if x.exists(_._1.allocatedRestrictions.nonEmpty) => combineValidations(x.map {
+      case (false, companies) if companies.exists(_._1.allocatedRestrictions.nonEmpty) => combineValidations(companies.map {
         case (company, i) => CompaniesContainedAllocatedRestrictions(company, i).invalidNec
       }:_*)
       case _ => fullReturnModel.groupSubjectToInterestRestrictions.validNec
@@ -70,10 +70,10 @@ trait FullReturnValidator extends BaseValidation {
 
   private def validateAllocatedReactivations: ValidationResult[Boolean] = {
     (fullReturnModel.groupSubjectToInterestReactivation, fullReturnModel.ukCompanies.zipWithIndex) match {
-      case (true, x) if x.exists(_._1.allocatedReactivations.isEmpty) => combineValidations(x.map {
+      case (true, companies) if companies.exists(_._1.allocatedReactivations.isEmpty) => combineValidations(companies.map {
         case (company, i) => MissingAllocatedReactivationsForCompanies(company, i).invalidNec
       }:_*)
-      case (false, x) if x.exists(_._1.allocatedReactivations.nonEmpty) => combineValidations(x.map {
+      case (false, companies) if companies.exists(_._1.allocatedReactivations.nonEmpty) => combineValidations(companies.map {
         case (company, i) => CompaniesContainedAllocatedReactivations(company, i).invalidNec
       }:_*)
       case _ => fullReturnModel.groupSubjectToInterestReactivation.validNec
@@ -92,19 +92,29 @@ trait FullReturnValidator extends BaseValidation {
     }
   }
 
+  private def validateAdjustedNetGroupInterest: ValidationResult[Option[AdjustedGroupInterestModel]] = {
+    (fullReturnModel.groupLevelElections.groupRatio.isElected, fullReturnModel.adjustedGroupInterest) match {
+      case (true, None) => AdjustedNetGroupInterestNotSupplied.invalidNec
+      case (false, Some(details)) => AdjustedNetGroupInterestSupplied(details).invalidNec
+      case _ => fullReturnModel.adjustedGroupInterest.validNec
+    }
+  }
+
   def validate: ValidationResult[FullReturnModel] = {
 
-    val validatedUkCompanies = fullReturnModel.ukCompanies.zipWithIndex.map {
-      case (a, i) => a.validate(JsPath \ s"ukCompanies[$i]")
-    }
+    val validatedUkCompanies =
+      if(fullReturnModel.ukCompanies.isEmpty) UkCompaniesEmpty.invalidNec else {
+        combineValidations(fullReturnModel.ukCompanies.zipWithIndex.map {
+          case (a, i) => a.validate(fullReturnModel.groupCompanyDetails.accountingPeriod)(JsPath \ s"ukCompanies[$i]")
+        }:_*)
+      }
 
-    (
-      fullReturnModel.agentDetails.validate(JsPath \ "agentDetails"),
+    (fullReturnModel.agentDetails.validate(JsPath \ "agentDetails"),
       fullReturnModel.reportingCompany.validate(JsPath \ "reportingCompany"),
       optionValidations(fullReturnModel.parentCompany.map(_.validate(JsPath \ "parentCompany"))),
       fullReturnModel.groupCompanyDetails.validate(JsPath \ "groupCompanyDetails"),
-      optionValidations(fullReturnModel.groupLevelElections.map(_.validate(JsPath \ "groupLevelElections"))),
-      combineValidations(validatedUkCompanies:_*),
+      fullReturnModel.groupLevelElections.validate(JsPath \ "groupLevelElections"),
+      validatedUkCompanies,
       validateAngie,
       validateInterestReactivationCap,
       validateAllocatedRestrictions,
@@ -112,9 +122,10 @@ trait FullReturnValidator extends BaseValidation {
       validateTotalReactivations,
       validateParentCompany,
       validateRevisedReturnDetails,
+      validateAdjustedNetGroupInterest,
       fullReturnModel.groupLevelAmount.validate(JsPath \ "groupLevelAmount"),
-      fullReturnModel.adjustedGroupInterest.validate(JsPath \ "adjustedGroupInterest")
-      ).mapN((_,_,_,_,_,_,_,_,_,_,_,_,_,_,_) => fullReturnModel)
+      optionValidations(fullReturnModel.adjustedGroupInterest.map(_.validate(JsPath \ "adjustedGroupInterest")))
+      ).mapN((_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_) => fullReturnModel)
   }
 }
 
@@ -184,6 +195,23 @@ case class CompaniesContainedAllocatedReactivations(company: UkCompanyModel, i: 
   val value = Json.obj()
 }
 
+case object UkCompaniesEmpty extends Validation {
+  val errorMessage: String = "ukCompanies must have at least 1 UK company"
+  val path = JsPath \ "ukCompanies"
+  val value = Json.obj()
+}
+
+case object AdjustedNetGroupInterestNotSupplied extends Validation {
+  val errorMessage: String = "Adjusted Group Interest is required when Group Ratio is elected"
+  val path = JsPath \ "adjustedGroupInterest"
+  val value = Json.obj()
+}
+
+case class AdjustedNetGroupInterestSupplied(details: AdjustedGroupInterestModel) extends Validation {
+  val errorMessage: String = "Adjusted Group Interest should not be supplied as Group Ratio is not elected"
+  val path = JsPath \ "adjustedGroupInterest"
+  val value = Json.toJson(details)
+}
 
 
 

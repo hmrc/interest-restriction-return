@@ -37,14 +37,31 @@ trait ParentCompanyValidator extends BaseValidation {
     }
   }
 
-  def validate(implicit path: JsPath): ValidationResult[ParentCompanyModel] =
-    (validateParentCompanyCanNotBeUltimateAndDeemed
-      ).map((_) => parentCompanyModel)
+  def validate(implicit path: JsPath): ValidationResult[ParentCompanyModel] = {
+
+    val validatedDeemedParent = parentCompanyModel.deemedParent.map(deemedParents =>
+      if(deemedParents.isEmpty) DeemedParentsEmpty().invalidNec else {
+        combineValidations(deemedParents.zipWithIndex.map {
+          case (x, i) => x.validate(path \ s"deemedParent[$i]")
+        }: _*)
+      })
+
+    (validateParentCompanyCanNotBeUltimateAndDeemed,
+      optionValidations(parentCompanyModel.ultimateParent.map(_.validate(path \ "ultimateParent"))),
+      optionValidations(validatedDeemedParent)
+    ).mapN((_, _, _) => parentCompanyModel)
+  }
 }
 
 case class ParentCompanyCanNotBeUltimateAndDeemed(model: ParentCompanyModel)(implicit val path: JsPath) extends Validation {
   val errorMessage: String = "Parent Company Model cannot contain data for Ultimate and Deemed fields"
   val value = Json.toJson(model)
+}
+
+case class DeemedParentsEmpty(implicit topPath: JsPath) extends Validation {
+  val errorMessage: String = "deemedParent must have at least 1 deemed parent if supplied"
+  val path = topPath \ "deemedParent"
+  val value = Json.obj()
 }
 
 

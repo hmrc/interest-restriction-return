@@ -19,12 +19,13 @@ package assets
 import java.time.LocalDate
 
 import play.api.libs.json.Json
+import assets.AccountingPeriodITConstants._
 
 object AllocatedRestrictionsITConstants {
 
-  val ap1End = LocalDate.of(2000,1,1)
-  val ap2End = LocalDate.of(2000,2,1)
-  val ap3End = LocalDate.of(2000,3,1)
+  val ap1End: LocalDate = startDate.plusDays(1)
+  val ap2End: LocalDate = startDate.plusMonths(12)
+  val ap3End: LocalDate = endDate
 
   val disallowanceAp1: BigDecimal = 1.11
   val disallowanceAp2: BigDecimal = 2.22

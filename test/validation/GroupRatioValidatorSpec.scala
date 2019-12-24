@@ -25,26 +25,15 @@ class GroupRatioValidatorSpec extends BaseValidationSpec {
   implicit val path = JsPath \ "some" \ "path"
 
   "Group Ratio " when {
+
     "Return valid" when {
 
-      "isElected is true  and groupRatioBlended is not given" in {
-        val model = groupRatioModelMax.copy(isElected = true ,groupRatioBlended = None)
-        rightSide(model.validate) shouldBe model
+      "isElected is true and bot are provided" in {
+        rightSide(groupRatioModelMax.validate) shouldBe groupRatioModelMax
       }
 
-      "isElected is true  and groupRatioBlended is given" in {
-        val model = groupRatioModelMax.copy(isElected = true ,groupRatioBlended = Some(groupRatioBlendedModelMax))
-        rightSide(model.validate) shouldBe model
-      }
-
-      "isElected is false  and neither are provided" in {
-        val model = groupRatioModelMax.copy(isElected = false ,groupRatioBlended = None, groupEBITDAChargeableGains = None)
-        rightSide(model.validate) shouldBe model
-      }
-
-      "groupEBIDTA is false" in {
-        val model = groupRatioModelMax.copy(groupEBITDAChargeableGains = Some(false))
-        rightSide(model.validate) shouldBe model
+      "isElected is false and neither are provided" in {
+        rightSide(groupRatioModelMin.validate) shouldBe groupRatioModelMin
       }
     }
 
@@ -52,12 +41,22 @@ class GroupRatioValidatorSpec extends BaseValidationSpec {
 
       "isElected is false and Group Ratio Blended is given" in {
         val model = groupRatioModelMax.copy(isElected = false, groupRatioBlended = Some(groupRatioBlendedModelMax))
-        leftSideError(model.validate).errorMessage shouldBe GroupRatioBlendedError(model).errorMessage
+        leftSideError(model.validate).errorMessage shouldBe GroupRatioBlendedSupplied(model).errorMessage
       }
 
       "isElected is false and GroupEBITDA is given" in {
         val model = groupRatioModelMax.copy(isElected = false, groupRatioBlended = None, groupEBITDAChargeableGains = Some(false))
-        leftSideError(model.validate).errorMessage shouldBe GroupEBITDAError(Some(false)).errorMessage
+        leftSideError(model.validate).errorMessage shouldBe GroupEBITDASupplied(Some(false)).errorMessage
+      }
+
+      "isElected is true and Group Ratio Blended is not provided" in {
+        val model = groupRatioModelMax.copy(isElected = true, groupRatioBlended = None)
+        leftSideError(model.validate).errorMessage shouldBe GroupRatioBlendedNotSupplied().errorMessage
+      }
+
+      "isElected is true and GroupEBITDA is not provided" in {
+        val model = groupRatioModelMax.copy(isElected = true, groupEBITDAChargeableGains = None)
+        leftSideError(model.validate).errorMessage shouldBe GroupEBITDANotSupplied().errorMessage
       }
     }
   }

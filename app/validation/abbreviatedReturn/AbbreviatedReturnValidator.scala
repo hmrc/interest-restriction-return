@@ -21,6 +21,7 @@ import models.abbreviatedReturn.AbbreviatedReturnModel
 import models.{Original, ParentCompanyModel, Revised, Validation}
 import play.api.libs.json.{JsPath, Json}
 import validation.BaseValidation
+import validation.appointReportingCompany.AuthorisingCompaniesEmpty
 
 trait AbbreviatedReturnValidator extends BaseValidation {
 
@@ -46,20 +47,22 @@ trait AbbreviatedReturnValidator extends BaseValidation {
 
   def validate: ValidationResult[AbbreviatedReturnModel] = {
 
-    val validatedUkCompanies = abbreviatedReturnModel.ukCompanies.zipWithIndex.map {
-      case (a, i) => a.validate(JsPath \ s"ukCompanies[$i]")
-    }
+    val validatedUkCompanies =
+      if(abbreviatedReturnModel.ukCompanies.isEmpty) UkCompaniesEmpty.invalidNec else {
+        combineValidations(abbreviatedReturnModel.ukCompanies.zipWithIndex.map {
+          case (a, i) => a.validate(JsPath \ s"ukCompanies[$i]")
+        }:_*)
+      }
 
-    (
-      abbreviatedReturnModel.agentDetails.validate(JsPath \ "agentDetails"),
+    (abbreviatedReturnModel.agentDetails.validate(JsPath \ "agentDetails"),
       abbreviatedReturnModel.reportingCompany.validate(JsPath \ "reportingCompany"),
       optionValidations(abbreviatedReturnModel.parentCompany.map(_.validate(JsPath \ "parentCompany"))),
       abbreviatedReturnModel.groupCompanyDetails.validate(JsPath \ "groupCompanyDetails"),
       optionValidations(abbreviatedReturnModel.groupLevelElections.map(_.validate(JsPath \ "groupLevelElections"))),
-      combineValidations(validatedUkCompanies:_*),
+      validatedUkCompanies,
       validateParentCompany,
       validateRevisedReturnDetails
-    ).mapN((_,_,_,_,_,_,_,_) => abbreviatedReturnModel)
+      ).mapN((_,_,_,_,_,_,_,_) => abbreviatedReturnModel)
   }
 }
 
@@ -87,3 +90,8 @@ case class ParentCompanyDetailsSupplied(parentCompany: ParentCompanyModel) exten
   val value = Json.toJson(parentCompany)
 }
 
+case object UkCompaniesEmpty extends Validation {
+  val errorMessage: String = "ukCompanies must have at least 1 UK company"
+  val path = JsPath \ "ukCompanies"
+  val value = Json.obj()
+}

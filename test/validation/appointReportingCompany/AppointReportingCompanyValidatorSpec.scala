@@ -71,7 +71,7 @@ class AppointReportingCompanyValidatorSpec extends BaseSpec {
         "Return invalid, as it should be NOT be supplied" in {
 
           val model = appointReportingCompanyModelMax.copy(
-            reportingCompany = reportingCompanyModelMax.copy(sameAsUltimateParent = true),
+            reportingCompany = reportingCompanyModel.copy(sameAsUltimateParent = true),
             ultimateParentCompany = Some(ultimateParentModelMax)
           )
           leftSideError(model.validate).errorMessage shouldBe UltimateParentCompanyIsSupplied(ultimateParentModelMax).errorMessage
@@ -83,7 +83,7 @@ class AppointReportingCompanyValidatorSpec extends BaseSpec {
         "Return valid" in {
 
           val model = appointReportingCompanyModelMax.copy(
-            reportingCompany = reportingCompanyModelMax.copy(sameAsUltimateParent = true),
+            reportingCompany = reportingCompanyModel.copy(sameAsUltimateParent = true),
             ultimateParentCompany = None
           )
           rightSide(model.validate) shouldBe model
@@ -98,7 +98,7 @@ class AppointReportingCompanyValidatorSpec extends BaseSpec {
         "Return valid, as it is optional" in {
 
           val model = appointReportingCompanyModelMax.copy(
-            reportingCompany = reportingCompanyModelMax.copy(sameAsUltimateParent = false),
+            reportingCompany = reportingCompanyModel.copy(sameAsUltimateParent = false),
             ultimateParentCompany = None
           )
           rightSide(model.validate) shouldBe model
@@ -110,7 +110,7 @@ class AppointReportingCompanyValidatorSpec extends BaseSpec {
         "Return valid, as it can be optionally supplied" in {
 
           val model = appointReportingCompanyModelMax.copy(
-            reportingCompany = reportingCompanyModelMax.copy(sameAsUltimateParent = false),
+            reportingCompany = reportingCompanyModel.copy(sameAsUltimateParent = false),
             ultimateParentCompany = Some(ultimateParentModelMax)
           )
           rightSide(model.validate) shouldBe model

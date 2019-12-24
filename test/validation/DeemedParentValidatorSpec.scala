@@ -30,10 +30,7 @@ class DeemedParentValidatorSpec extends BaseSpec {
 
       "Return invalid" in {
 
-        val model = deemedParentModelMax.copy(
-          nonUkCrn = Some("12345678"),
-          countryOfIncorporation = Some(nonUkCountryCode)
-        )
+        val model = deemedParentModelMax.copy(ctutr = Some(ctutr))
 
         leftSideError(model.validate).errorMessage shouldBe DeemedParentCannotBeUkAndNonUk(model).errorMessage
       }
