@@ -16,27 +16,22 @@
 
 package connectors.mocks
 
+import connectors.CompaniesHouseConnector
+import connectors.httpParsers.CompaniesHouseHttpParser.CompaniesHouseResponse
+import models.CRNModel
+import models.requests.IdentifierRequest
 import org.scalamock.scalatest.MockFactory
-import play.api.libs.json.Format
-import uk.gov.hmrc.http.{HeaderCarrier, HttpReads}
-import uk.gov.hmrc.play.bootstrap.http.HttpClient
+import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait MockHttpClient extends MockFactory {
+trait MockCompaniesHouseConnector extends MockFactory {
 
-  lazy val mockHttpClient: HttpClient = mock[HttpClient]
+  lazy val mockCompaniesHouseConnector: CompaniesHouseConnector = mock[CompaniesHouseConnector]
 
-  def mockHttpPost[I,O](url: String, model: I)(response: O): Unit = {
-    (mockHttpClient.POST[I,O](_: String, _: I, _: Seq[(String, String)])
-      (_: Format[I], _: HttpReads[O], _: HeaderCarrier, _: ExecutionContext))
-      .expects(url, model, *, *, *, *, *)
-      .returns(Future.successful(response))
-  }
-
-  def mockHttpGet[O](url: String)(response: O): Unit = {
-    (mockHttpClient.GET[O](_: String)(_: HttpReads[O], _: HeaderCarrier, _: ExecutionContext))
-      .expects(url, *, *, *)
+  def mockValidateCRN(crn: CRNModel)(response: CompaniesHouseResponse): Unit = {
+    (mockCompaniesHouseConnector.validateCRN(_: CRNModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
+      .expects(crn, *, *, *)
       .returns(Future.successful(response))
   }
 }

@@ -34,14 +34,6 @@ class FullSchemaSpec extends BaseSchemaSpec {
         validate(json) shouldBe true
       }
 
-      "groupLevelElections is empty" in {
-
-        val json = Json.toJson(FullReturnModel(groupLevelElections = None)
-        )
-
-        validate(json) shouldBe true
-      }
-
       "ANGIE is None" in {
 
           val json = Json.toJson(FullReturnModel(angie = None
@@ -70,6 +62,14 @@ class FullSchemaSpec extends BaseSchemaSpec {
     }
 
     "Return invalid" when {
+
+      "groupLevelElections is empty" in {
+
+        val json = Json.toJson(FullReturnModel(groupLevelElections = None)
+        )
+
+        validate(json) shouldBe false
+      }
 
       "agentDetails is empty" in {
 
