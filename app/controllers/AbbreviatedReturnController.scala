@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,13 @@
 
 package controllers
 
-import cats.data.Validated.{Invalid, Valid}
-import controllers.actions.AuthAction
 import javax.inject.{Inject, Singleton}
-import models.ValidationErrorResponseModel
+
+import controllers.actions.AuthAction
 import models.abbreviatedReturn.AbbreviatedReturnModel
-import play.api.Logger
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.JsValue
 import play.api.mvc.{Action, ControllerComponents}
 import services.AbbreviatedReturnService
-
-import scala.concurrent.Future
 
 @Singleton()
 class AbbreviatedReturnController @Inject()(authAction: AuthAction,
@@ -34,17 +30,8 @@ class AbbreviatedReturnController @Inject()(authAction: AuthAction,
                                             override val controllerComponents: ControllerComponents) extends BaseController {
 
   def submitAbbreviatedReturn(): Action[JsValue] = authAction.async(parse.json) { implicit request =>
-    withJsonBody[AbbreviatedReturnModel] { abbreviatedReturnModel =>
-      abbreviatedReturnModel.validate match {
-        case Invalid(e) =>
-          Logger.debug(s"[AbbreviatedReturnController][submitAbbreviatedReturn] Business Rule Errors: ${Json.toJson(ValidationErrorResponseModel(e))}")
-          Future.successful(BadRequest(Json.toJson(ValidationErrorResponseModel(e))))
-        case Valid(model) =>
-          abbreviatedReturnService.submitsAbbreviatedReturn(model).map {
-            case Left(err) => Status(err.status)(err.body)
-            case Right(response) => Ok(Json.toJson(response))
-          }
-      }
+    withJsonBody[AbbreviatedReturnModel] { fullReturnModel =>
+      handleValidation(fullReturnModel.validate, "AbbreviatedReturnController", abbreviatedReturnService)
     }
   }
 }

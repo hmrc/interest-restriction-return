@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,21 @@
 
 package services
 
-import connectors.AbbreviatedReturnConnector
-import connectors.httpParsers.AbbreviatedReturnHttpParser.AbbreviatedReturnResponse
 import javax.inject.Inject
+
+import connectors.AbbreviatedReturnConnector
+import connectors.HttpHelper.SubmissionHttpResponse
 import models.abbreviatedReturn.AbbreviatedReturnModel
 import models.requests.IdentifierRequest
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class AbbreviatedReturnService @Inject()(abbreviatedReturnConnector: AbbreviatedReturnConnector) {
+class AbbreviatedReturnService @Inject()(abbreviatedReturnConnector: AbbreviatedReturnConnector)
+  extends Submission[AbbreviatedReturnModel]{
 
-  def submitsAbbreviatedReturn(abbreviatedReturn: AbbreviatedReturnModel)
-             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[AbbreviatedReturnResponse] =
+  override def submit(abbreviatedReturn: AbbreviatedReturnModel)
+             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionHttpResponse] =
     abbreviatedReturnConnector.submitAbbreviatedReturn(abbreviatedReturn)
 
 }

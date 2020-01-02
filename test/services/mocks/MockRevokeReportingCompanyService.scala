@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package services.mocks
 
-import connectors.httpParsers.RevokeReportingCompanyHttpParser.RevokeReportingCompanyResponse
+import connectors.HttpHelper.SubmissionHttpResponse
 import models.requests.IdentifierRequest
 import models.revokeReportingCompany.RevokeReportingCompanyModel
 import org.scalamock.scalatest.MockFactory
@@ -29,8 +29,8 @@ trait MockRevokeReportingCompanyService extends MockFactory {
 
   lazy val mockRevokeReportingCompanyService: RevokeReportingCompanyService = mock[RevokeReportingCompanyService]
 
-  def mockRevokeReportingCompany(model: RevokeReportingCompanyModel)(response: RevokeReportingCompanyResponse): Unit = {
-    (mockRevokeReportingCompanyService.revoke(_: RevokeReportingCompanyModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
+  def mockRevokeReportingCompany(model: RevokeReportingCompanyModel)(response: SubmissionHttpResponse): Unit = {
+    (mockRevokeReportingCompanyService.submit(_: RevokeReportingCompanyModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
       .expects(model, *, *, *)
       .returns(Future.successful(response))
   }

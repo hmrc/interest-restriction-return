@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package schemas.helpers
+package services
 
-import play.api.libs.json.Json
+import connectors.HttpHelper.SubmissionHttpResponse
+import models.requests.IdentifierRequest
+import uk.gov.hmrc.http.HeaderCarrier
 
-case class ParentCompany(ultimateParent: Option[UltimateParent] = Some(UltimateParent()),
-                         deemedParent: Option[Seq[DeemedParent]] = None)
+import scala.concurrent.{ExecutionContext, Future}
 
-object ParentCompany {
-  implicit val writes = Json.writes[ParentCompany]
+trait Submission[T] {
+
+  def submit(submission: T)(implicit hc: HeaderCarrier,ec: ExecutionContext,request: IdentifierRequest[_]): Future[SubmissionHttpResponse]
 }

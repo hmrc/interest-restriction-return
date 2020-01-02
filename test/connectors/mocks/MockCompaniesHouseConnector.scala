@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 package connectors.mocks
 
 import connectors.CompaniesHouseConnector
-import connectors.httpParsers.CompaniesHouseHttpParser.CompaniesHouseResponse
+import connectors.HttpHelper.CRNHttpResponse
 import models.CRNModel
 import models.requests.IdentifierRequest
 import org.scalamock.scalatest.MockFactory
@@ -29,7 +29,7 @@ trait MockCompaniesHouseConnector extends MockFactory {
 
   lazy val mockCompaniesHouseConnector: CompaniesHouseConnector = mock[CompaniesHouseConnector]
 
-  def mockValidateCRN(crn: CRNModel)(response: CompaniesHouseResponse): Unit = {
+  def mockValidateCRN(crn: CRNModel)(response: CRNHttpResponse): Unit = {
     (mockCompaniesHouseConnector.validateCRN(_: CRNModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
       .expects(crn, *, *, *)
       .returns(Future.successful(response))

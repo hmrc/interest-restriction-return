@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,8 @@
 package connectors.httpParsers
 
 import assets.fullReturn.FullReturnConstants._
-import connectors.httpParsers.FullReturnHttpParser.{FullReturnReads, InvalidSuccessResponse, SuccessResponse, UnexpectedFailure}
+import connectors.{InvalidSuccessResponse, SuccessResponse, UnexpectedFailure}
+import connectors.httpParsers.FullReturnHttpParser.FullReturnReads
 import org.scalatest.{Matchers, WordSpec}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.http.Status

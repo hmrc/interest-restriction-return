@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,10 @@
 
 package services
 
-import connectors.CompaniesHouseConnector
-import connectors.httpParsers.CompaniesHouseHttpParser.CompaniesHouseResponse
 import javax.inject.Inject
+
+import connectors.CompaniesHouseConnector
+import connectors.HttpHelper.CRNHttpResponse
 import models.CRNModel
 import models.requests.IdentifierRequest
 import uk.gov.hmrc.http.HeaderCarrier
@@ -28,7 +29,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class CompaniesHouseService @Inject()(companiesHouseConnector: CompaniesHouseConnector) {
 
   def validateCRN(crn: CRNModel)
-             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[CompaniesHouseResponse] =
+             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[CRNHttpResponse] =
     companiesHouseConnector.validateCRN(crn)
 
 }

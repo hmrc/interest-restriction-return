@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,11 @@
 
 package connectors
 
-import config.AppConfig
-import connectors.httpParsers.FullReturnHttpParser.{FullReturnReads, FullReturnResponse}
 import javax.inject.Inject
+
+import config.AppConfig
+import connectors.HttpHelper.SubmissionHttpResponse
+import connectors.httpParsers.FullReturnHttpParser.FullReturnReads
 import models.fullReturn.FullReturnModel
 import models.requests.IdentifierRequest
 import play.api.Logger
@@ -34,7 +36,7 @@ class FullReturnConnector @Inject()(httpClient: HttpClient,
   private[connectors] lazy val fullReturnUrl = s"${appConfig.desUrl}/interest-restriction/return/full"
 
   def submit(fullReturnModel: FullReturnModel)
-             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[FullReturnResponse] = {
+             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionHttpResponse] = {
 
     Logger.debug(s"[FullReturnConnector][submit] URL: $fullReturnUrl")
     Logger.debug(s"[FullReturnConnector][submit] Headers: ${desHc.headers}")

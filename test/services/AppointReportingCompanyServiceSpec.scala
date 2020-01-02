@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,8 @@
 package services
 
 import assets.appointReportingCompany.AppointReportingCompanyConstants._
-import connectors.httpParsers.AppointReportingCompanyHttpParser.{AppointReportingCompanyResponse, SuccessResponse, UnexpectedFailure}
+import connectors.HttpHelper.SubmissionHttpResponse
+import connectors.{SuccessResponse, UnexpectedFailure}
 import connectors.mocks.MockAppointReportingCompanyConnector
 import play.api.http.Status._
 import utils.BaseSpec
@@ -26,7 +27,7 @@ class AppointReportingCompanyServiceSpec extends MockAppointReportingCompanyConn
 
   "AppointReportingCompanyService.appoint" when {
 
-    def setup(response: AppointReportingCompanyResponse): AppointReportingCompanyService = {
+    def setup(response: SubmissionHttpResponse): AppointReportingCompanyService = {
       mockAppointReportingCompany(appointReportingCompanyModelMax)(response)
       new AppointReportingCompanyService(mockAppointReportingCompanyConnector)
     }
@@ -36,7 +37,7 @@ class AppointReportingCompanyServiceSpec extends MockAppointReportingCompanyConn
       "return a Right(SuccessResponse)" in {
 
         val service = setup(Right(SuccessResponse("ackRef")))
-        val result = service.appoint(appointReportingCompanyModelMax)
+        val result = service.submit(appointReportingCompanyModelMax)
 
         await(result) shouldBe Right(SuccessResponse("ackRef"))
       }
@@ -47,7 +48,7 @@ class AppointReportingCompanyServiceSpec extends MockAppointReportingCompanyConn
       "return a Left(UnexpectedFailure)" in {
 
         val service = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-        val result = service.appoint(appointReportingCompanyModelMax)
+        val result = service.submit(appointReportingCompanyModelMax)
 
         await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
       }

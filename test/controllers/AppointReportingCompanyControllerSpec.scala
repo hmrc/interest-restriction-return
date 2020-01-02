@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 package controllers
 
 import assets.appointReportingCompany.AppointReportingCompanyConstants._
-import connectors.httpParsers.AppointReportingCompanyHttpParser.{SuccessResponse, UnexpectedFailure}
+import connectors.{SuccessResponse, UnexpectedFailure}
 import play.api.http.Status
 import play.api.libs.json.Json
 import play.api.test.{FakeRequest, Helpers}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 package connectors.mocks
 
 import connectors.FullReturnConnector
-import connectors.httpParsers.FullReturnHttpParser.FullReturnResponse
+import connectors.HttpHelper.SubmissionHttpResponse
 import models.fullReturn.FullReturnModel
 import models.requests.IdentifierRequest
 import org.scalamock.scalatest.MockFactory
@@ -29,7 +29,7 @@ trait MockFullReturnConnector extends MockFactory {
 
   lazy val mockFullReturnConnector: FullReturnConnector = mock[FullReturnConnector]
 
-  def mockFullReturn(model: FullReturnModel)(response: FullReturnResponse): Unit = {
+  def mockFullReturn(model: FullReturnModel)(response: SubmissionHttpResponse): Unit = {
     (mockFullReturnConnector.submit(_: FullReturnModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
       .expects(model, *, *, *)
       .returns(Future.successful(response))

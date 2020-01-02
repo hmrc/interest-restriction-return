@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package services.mocks
 
-import connectors.httpParsers.AbbreviatedReturnHttpParser.AbbreviatedReturnResponse
+import connectors.HttpHelper.SubmissionHttpResponse
 import models.abbreviatedReturn.AbbreviatedReturnModel
 import models.requests.IdentifierRequest
 import org.scalamock.scalatest.MockFactory
@@ -29,8 +29,8 @@ trait MockAbbreviatedReturnService extends MockFactory {
 
   lazy val mockAbbreviatedReturnService: AbbreviatedReturnService = mock[AbbreviatedReturnService]
 
-  def mockAbbreviatedReturn(model: AbbreviatedReturnModel)(response: AbbreviatedReturnResponse): Unit = {
-    (mockAbbreviatedReturnService.submitsAbbreviatedReturn(_: AbbreviatedReturnModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
+  def mockAbbreviatedReturn(model: AbbreviatedReturnModel)(response: SubmissionHttpResponse): Unit = {
+    (mockAbbreviatedReturnService.submit(_: AbbreviatedReturnModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
       .expects(model, *, *, *)
       .returns(Future.successful(response))
   }

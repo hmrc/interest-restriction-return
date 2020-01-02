@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,21 @@
 
 package services
 
-import connectors.AppointReportingCompanyConnector
-import connectors.httpParsers.AppointReportingCompanyHttpParser.AppointReportingCompanyResponse
 import javax.inject.Inject
+
+import connectors.AppointReportingCompanyConnector
+import connectors.HttpHelper.SubmissionHttpResponse
 import models.appointReportingCompany.AppointReportingCompanyModel
 import models.requests.IdentifierRequest
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class AppointReportingCompanyService @Inject()(appointReportingCompanyConnector: AppointReportingCompanyConnector) {
+class AppointReportingCompanyService @Inject()(appointReportingCompanyConnector: AppointReportingCompanyConnector)
+  extends Submission[AppointReportingCompanyModel]{
 
-  def appoint(appointReportingCompany: AppointReportingCompanyModel)
-             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[AppointReportingCompanyResponse] =
+  override def submit(appointReportingCompany: AppointReportingCompanyModel)
+                     (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionHttpResponse] =
     appointReportingCompanyConnector.appoint(appointReportingCompany)
 
 }

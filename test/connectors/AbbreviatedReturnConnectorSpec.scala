@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 package connectors
 
 import assets.abbreviatedReturn.AbbreviatedReturnConstants._
-import connectors.httpParsers.AbbreviatedReturnHttpParser.{AbbreviatedReturnResponse, ErrorResponse, SuccessResponse, UnexpectedFailure}
+import connectors.HttpHelper.SubmissionHttpResponse
 import connectors.mocks.MockHttpClient
 import models.abbreviatedReturn.AbbreviatedReturnModel
 import play.api.http.Status._
@@ -27,7 +27,7 @@ class AbbreviatedReturnConnectorSpec extends MockHttpClient with BaseSpec {
 
   "AbbreviatedReturnConnector.submitAbbreviatedReturn" when {
 
-    def setup(response: AbbreviatedReturnResponse): AbbreviatedReturnConnector = {
+    def setup(response: SubmissionHttpResponse): AbbreviatedReturnConnector = {
       val desUrl = "http://localhost:9262/interest-restriction/return/abbreviated"
       mockHttpPost[AbbreviatedReturnModel, Either[ErrorResponse, SuccessResponse]](desUrl, abbreviatedReturnModelMax)(response)
       new AbbreviatedReturnConnector(mockHttpClient, appConfig)

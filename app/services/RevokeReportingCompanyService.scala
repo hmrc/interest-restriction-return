@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,21 @@
 
 package services
 
-import connectors.RevokeReportingCompanyConnector
-import connectors.httpParsers.RevokeReportingCompanyHttpParser.RevokeReportingCompanyResponse
 import javax.inject.Inject
+
+import connectors.HttpHelper.SubmissionHttpResponse
+import connectors.RevokeReportingCompanyConnector
 import models.requests.IdentifierRequest
 import models.revokeReportingCompany.RevokeReportingCompanyModel
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class RevokeReportingCompanyService @Inject()(revokeReportingCompanyConnector: RevokeReportingCompanyConnector) {
+class RevokeReportingCompanyService @Inject()(revokeReportingCompanyConnector: RevokeReportingCompanyConnector)
+  extends Submission[RevokeReportingCompanyModel]{
 
-  def revoke(revokeReportingCompany: RevokeReportingCompanyModel)
-             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[RevokeReportingCompanyResponse] =
+  override def submit (revokeReportingCompany: RevokeReportingCompanyModel)
+                      (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionHttpResponse] =
     revokeReportingCompanyConnector.revoke(revokeReportingCompany)
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package services.mocks
 
-import connectors.httpParsers.AppointReportingCompanyHttpParser.AppointReportingCompanyResponse
+import connectors.HttpHelper.SubmissionHttpResponse
 import models.appointReportingCompany.AppointReportingCompanyModel
 import models.requests.IdentifierRequest
 import org.scalamock.scalatest.MockFactory
@@ -29,8 +29,8 @@ trait MockAppointReportingCompanyService extends MockFactory {
 
   lazy val mockAppointReportingCompanyService: AppointReportingCompanyService = mock[AppointReportingCompanyService]
 
-  def mockAppointReportingCompany(model: AppointReportingCompanyModel)(response: AppointReportingCompanyResponse): Unit = {
-    (mockAppointReportingCompanyService.appoint(_: AppointReportingCompanyModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
+  def mockAppointReportingCompany(model: AppointReportingCompanyModel)(response: SubmissionHttpResponse): Unit = {
+    (mockAppointReportingCompanyService.submit(_: AppointReportingCompanyModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
       .expects(model, *, *, *)
       .returns(Future.successful(response))
   }
