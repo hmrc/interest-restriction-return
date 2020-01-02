@@ -16,7 +16,7 @@
 
 package services.mocks
 
-import connectors.httpParsers.AppointReportingCompanyHttpParser.AppointReportingCompanyResponse
+import connectors.HttpHelper.SubmissionHttpResponse
 import models.appointReportingCompany.AppointReportingCompanyModel
 import models.requests.IdentifierRequest
 import org.scalamock.scalatest.MockFactory
@@ -29,8 +29,8 @@ trait MockAppointReportingCompanyService extends MockFactory {
 
   lazy val mockAppointReportingCompanyService: AppointReportingCompanyService = mock[AppointReportingCompanyService]
 
-  def mockAppointReportingCompany(model: AppointReportingCompanyModel)(response: AppointReportingCompanyResponse): Unit = {
-    (mockAppointReportingCompanyService.appoint(_: AppointReportingCompanyModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
+  def mockAppointReportingCompany(model: AppointReportingCompanyModel)(response: SubmissionHttpResponse): Unit = {
+    (mockAppointReportingCompanyService.submit(_: AppointReportingCompanyModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
       .expects(model, *, *, *)
       .returns(Future.successful(response))
   }

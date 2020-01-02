@@ -16,7 +16,7 @@
 
 package services.mocks
 
-import connectors.httpParsers.FullReturnHttpParser.FullReturnResponse
+import connectors.HttpHelper.SubmissionHttpResponse
 import models.fullReturn.FullReturnModel
 import models.requests.IdentifierRequest
 import org.scalamock.scalatest.MockFactory
@@ -29,7 +29,7 @@ trait MockFullReturnService extends MockFactory {
 
   lazy val mockFullReturnService: FullReturnService = mock[FullReturnService]
 
-  def mockFullReturn(model: FullReturnModel)(response: FullReturnResponse): Unit = {
+  def mockFullReturn(model: FullReturnModel)(response: SubmissionHttpResponse): Unit = {
     (mockFullReturnService.submit(_: FullReturnModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
       .expects(model, *, *, *)
       .returns(Future.successful(response))

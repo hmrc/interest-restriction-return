@@ -17,7 +17,8 @@
 package services
 
 import assets.revokeReportingCompany.RevokeReportingCompanyConstants._
-import connectors.httpParsers.RevokeReportingCompanyHttpParser.{RevokeReportingCompanyResponse, SuccessResponse, UnexpectedFailure}
+import connectors.HttpHelper.SubmissionHttpResponse
+import connectors.{SuccessResponse, UnexpectedFailure}
 import connectors.mocks.MockRevokeReportingCompanyConnector
 import play.api.http.Status._
 import utils.BaseSpec
@@ -26,7 +27,7 @@ class RevokeReportingCompanyServiceSpec extends MockRevokeReportingCompanyConnec
 
   "RevokeReportingCompanyService.revoke" when {
 
-    def setup(response: RevokeReportingCompanyResponse): RevokeReportingCompanyService = {
+    def setup(response: SubmissionHttpResponse): RevokeReportingCompanyService = {
       mockRevokeReportingCompany(revokeReportingCompanyModelMax)(response)
       new RevokeReportingCompanyService(mockRevokeReportingCompanyConnector)
     }
@@ -36,7 +37,7 @@ class RevokeReportingCompanyServiceSpec extends MockRevokeReportingCompanyConnec
       "return a Right(SuccessResponse)" in {
 
         val service = setup(Right(SuccessResponse("ackRef")))
-        val result = service.revoke(revokeReportingCompanyModelMax)
+        val result = service.submit(revokeReportingCompanyModelMax)
 
         await(result) shouldBe Right(SuccessResponse("ackRef"))
       }
@@ -47,7 +48,7 @@ class RevokeReportingCompanyServiceSpec extends MockRevokeReportingCompanyConnec
       "return a Left(UnexpectedFailure)" in {
 
         val service = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-        val result = service.revoke(revokeReportingCompanyModelMax)
+        val result = service.submit(revokeReportingCompanyModelMax)
 
         await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
       }

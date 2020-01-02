@@ -17,7 +17,7 @@
 package controllers
 
 import assets.fullReturn.FullReturnConstants._
-import connectors.httpParsers.FullReturnHttpParser.{SuccessResponse, UnexpectedFailure}
+import connectors.{SuccessResponse, UnexpectedFailure}
 import play.api.http.Status
 import play.api.libs.json.Json
 import play.api.test.{FakeRequest, Helpers}

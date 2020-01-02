@@ -17,7 +17,7 @@
 package connectors.mocks
 
 import connectors.AppointReportingCompanyConnector
-import connectors.httpParsers.AppointReportingCompanyHttpParser.AppointReportingCompanyResponse
+import connectors.HttpHelper.SubmissionHttpResponse
 import models.appointReportingCompany.AppointReportingCompanyModel
 import models.requests.IdentifierRequest
 import org.scalamock.scalatest.MockFactory
@@ -29,7 +29,7 @@ trait MockAppointReportingCompanyConnector extends MockFactory {
 
   lazy val mockAppointReportingCompanyConnector: AppointReportingCompanyConnector = mock[AppointReportingCompanyConnector]
 
-  def mockAppointReportingCompany(model: AppointReportingCompanyModel)(response: AppointReportingCompanyResponse): Unit = {
+  def mockAppointReportingCompany(model: AppointReportingCompanyModel)(response: SubmissionHttpResponse): Unit = {
     (mockAppointReportingCompanyConnector.appoint(_: AppointReportingCompanyModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
       .expects(model, *, *, *)
       .returns(Future.successful(response))

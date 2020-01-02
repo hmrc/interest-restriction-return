@@ -17,7 +17,8 @@
 package connectors.httpParsers
 
 import assets.fullReturn.FullReturnConstants._
-import connectors.httpParsers.FullReturnHttpParser.{FullReturnReads, InvalidSuccessResponse, SuccessResponse, UnexpectedFailure}
+import connectors.{InvalidSuccessResponse, SuccessResponse, UnexpectedFailure}
+import connectors.httpParsers.FullReturnHttpParser.FullReturnReads
 import org.scalatest.{Matchers, WordSpec}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.http.Status

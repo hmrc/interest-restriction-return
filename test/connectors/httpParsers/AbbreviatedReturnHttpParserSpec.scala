@@ -17,7 +17,8 @@
 package connectors.httpParsers
 
 import assets.abbreviatedReturn.AbbreviatedReturnConstants.ackRef
-import connectors.httpParsers.AbbreviatedReturnHttpParser.{AbbreviatedReturnReads, InvalidSuccessResponse, SuccessResponse, UnexpectedFailure}
+import connectors.httpParsers.AbbreviatedReturnHttpParser.AbbreviatedReturnReads
+import connectors.{InvalidSuccessResponse, SuccessResponse, UnexpectedFailure}
 import org.scalatest.{Matchers, WordSpec}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.http.Status

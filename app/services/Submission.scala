@@ -14,24 +14,15 @@
  * limitations under the License.
  */
 
-package connectors.mocks
+package services
 
-import connectors.FullReturnConnector
 import connectors.HttpHelper.SubmissionHttpResponse
-import models.fullReturn.FullReturnModel
 import models.requests.IdentifierRequest
-import org.scalamock.scalatest.MockFactory
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait MockFullReturnConnector extends MockFactory {
+trait Submission[T] {
 
-  lazy val mockFullReturnConnector: FullReturnConnector = mock[FullReturnConnector]
-
-  def mockFullReturn(model: FullReturnModel)(response: SubmissionHttpResponse): Unit = {
-    (mockFullReturnConnector.submit(_: FullReturnModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
-      .expects(model, *, *, *)
-      .returns(Future.successful(response))
-  }
+  def submit(submission: T)(implicit hc: HeaderCarrier,ec: ExecutionContext,request: IdentifierRequest[_]): Future[SubmissionHttpResponse]
 }

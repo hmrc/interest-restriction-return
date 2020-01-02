@@ -16,9 +16,11 @@
 
 package connectors
 
-import config.AppConfig
-import connectors.httpParsers.AbbreviatedReturnHttpParser.{AbbreviatedReturnReads, AbbreviatedReturnResponse}
 import javax.inject.Inject
+
+import config.AppConfig
+import connectors.HttpHelper.SubmissionHttpResponse
+import connectors.httpParsers.AbbreviatedReturnHttpParser.AbbreviatedReturnReads
 import models.abbreviatedReturn.AbbreviatedReturnModel
 import models.requests.IdentifierRequest
 import play.api.Logger
@@ -34,7 +36,7 @@ class AbbreviatedReturnConnector @Inject()(httpClient: HttpClient,
   private[connectors] lazy val abbreviatedReturnUrl = s"${appConfig.desUrl}/interest-restriction/return/abbreviated"
 
   def submitAbbreviatedReturn(abbreviatedReturnModel: AbbreviatedReturnModel)
-                             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[AbbreviatedReturnResponse] = {
+                             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionHttpResponse] = {
 
     Logger.debug(s"[AbbreviatedReturnConnector][submitAbbreviatedReturn] URL: $abbreviatedReturnUrl")
     Logger.debug(s"[AbbreviatedReturnConnector][submitAbbreviatedReturn] Headers: ${desHc.headers}")

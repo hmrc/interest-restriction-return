@@ -16,48 +16,16 @@
 
 package connectors.httpParsers
 
-import play.api.Logger
-import play.api.http.Status._
-import play.api.libs.json.Json
+import connectors.{HttpErrorMessages, HttpHelper}
+import connectors.HttpHelper.SubmissionHttpResponse
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
 object RevokeReportingCompanyHttpParser {
 
-  type RevokeReportingCompanyResponse = Either[ErrorResponse, SuccessResponse]
+  implicit object RevokeReportingCompanyReads extends HttpReads[SubmissionHttpResponse] {
 
-  implicit object RevokeReportingCompanyReads extends HttpReads[RevokeReportingCompanyResponse] {
-
-    override def read(method: String, url: String, response: HttpResponse): RevokeReportingCompanyResponse = {
-
-      response.status match {
-        case OK =>
-          Logger.debug("[RevokeReportingCompanyHttpParser][read]: Status OK")
-          Logger.debug(s"[RevokeReportingCompanyHttpParser][read]: Json Response: ${response.json}")
-          response.json.validate[SuccessResponse](SuccessResponse.fmt).fold(
-            invalid => {
-              Logger.warn(s"[RevokeReportingCompanyHttpParser][read]: Invalid Success Response Json - $invalid")
-              Left(InvalidSuccessResponse)
-            },
-            valid => Right(valid)
-          )
-        case status =>
-          Logger.warn(s"[RevokeReportingCompanyReads][read]: Unexpected response, status $status returned")
-          Left(UnexpectedFailure(status, s"Status $status Error returned when trying to revoke a reporting company"))
-      }
+    override def read(method: String, url: String, response: HttpResponse): SubmissionHttpResponse = {
+      HttpHelper.read(response,"RevokeReportingCompanyHttpParser",HttpErrorMessages.REVOKE_ERROR)
     }
   }
-
-  case class SuccessResponse(acknowledgementReference: String)
-  object SuccessResponse {
-    implicit val fmt = Json.format[SuccessResponse]
-  }
-
-  sealed trait ErrorResponse {
-    val status: Int = INTERNAL_SERVER_ERROR
-    val body: String
-  }
-  object InvalidSuccessResponse extends ErrorResponse {
-    override val body: String = "Invalid Json returned in Success response"
-  }
-  case class UnexpectedFailure(override val status: Int, override val body: String) extends ErrorResponse
 }

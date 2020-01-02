@@ -16,13 +16,14 @@
 
 package connectors.httpParsers
 
-import connectors.httpParsers.AppointReportingCompanyHttpParser.{AppointReportingCompanyReads, InvalidSuccessResponse, SuccessResponse, UnexpectedFailure}
+import assets.appointReportingCompany.AppointReportingCompanyConstants._
+import connectors.httpParsers.AppointReportingCompanyHttpParser.AppointReportingCompanyReads
+import connectors.{InvalidSuccessResponse, SuccessResponse, UnexpectedFailure}
 import org.scalatest.{Matchers, WordSpec}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.http.Status
 import play.api.libs.json.Json
 import uk.gov.hmrc.http.HttpResponse
-import assets.appointReportingCompany.AppointReportingCompanyConstants._
 
 class AppointReportingCompanyHttpParserSpec extends WordSpec with Matchers with GuiceOneAppPerSuite  {
 

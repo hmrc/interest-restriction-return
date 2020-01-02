@@ -17,7 +17,8 @@
 package services
 
 import assets.fullReturn.FullReturnConstants._
-import connectors.httpParsers.FullReturnHttpParser.{FullReturnResponse, SuccessResponse, UnexpectedFailure}
+import connectors.HttpHelper.SubmissionHttpResponse
+import connectors.{SuccessResponse, UnexpectedFailure}
 import connectors.mocks.MockFullReturnConnector
 import play.api.http.Status._
 import utils.BaseSpec
@@ -28,7 +29,7 @@ class FullReturnServiceSpec extends MockFullReturnConnector with BaseSpec {
 
     "fullReturnModelMax is used" when {
 
-      def setup(response: FullReturnResponse): FullReturnService = {
+      def setup(response: SubmissionHttpResponse): FullReturnService = {
         mockFullReturn(fullReturnModelMax)(response)
         new FullReturnService(mockFullReturnConnector)
       }
@@ -58,7 +59,7 @@ class FullReturnServiceSpec extends MockFullReturnConnector with BaseSpec {
 
     "fullReturnModelMin is used" when {
 
-      def setup(response: FullReturnResponse): FullReturnService = {
+      def setup(response: SubmissionHttpResponse): FullReturnService = {
         mockFullReturn(fullReturnModelMin)(response)
         new FullReturnService(mockFullReturnConnector)
       }

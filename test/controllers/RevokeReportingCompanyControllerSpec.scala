@@ -17,7 +17,7 @@
 package controllers
 
 import assets.revokeReportingCompany.RevokeReportingCompanyConstants._
-import connectors.httpParsers.RevokeReportingCompanyHttpParser.{SuccessResponse, UnexpectedFailure}
+import connectors.{SuccessResponse, UnexpectedFailure}
 import play.api.http.Status
 import play.api.libs.json.Json
 import play.api.test.{FakeRequest, Helpers}

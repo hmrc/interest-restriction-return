@@ -17,7 +17,8 @@
 package connectors.httpParsers
 
 import assets.revokeReportingCompany.RevokeReportingCompanyConstants._
-import connectors.httpParsers.RevokeReportingCompanyHttpParser.{RevokeReportingCompanyReads, InvalidSuccessResponse, SuccessResponse, UnexpectedFailure}
+import connectors.httpParsers.RevokeReportingCompanyHttpParser.RevokeReportingCompanyReads
+import connectors.{InvalidSuccessResponse, SuccessResponse, UnexpectedFailure}
 import org.scalatest.{Matchers, WordSpec}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.http.Status
