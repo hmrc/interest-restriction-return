@@ -17,7 +17,6 @@
 package connectors
 
 import connectors.HttpHelper.CRNResponse
-import connectors.httpParsers.CompaniesHouseHttpParser.InvalidCRN
 import connectors.mocks.MockHttpClient
 import play.api.http.Status._
 import utils.BaseSpec
