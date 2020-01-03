@@ -17,7 +17,7 @@
 package connectors
 
 import assets.abbreviatedReturn.AbbreviatedReturnConstants._
-import connectors.HttpHelper.SubmissionHttpResponse
+import connectors.HttpHelper.SubmissionResponse
 import connectors.mocks.MockHttpClient
 import models.abbreviatedReturn.AbbreviatedReturnModel
 import play.api.http.Status._
@@ -27,7 +27,7 @@ class AbbreviatedReturnConnectorSpec extends MockHttpClient with BaseSpec {
 
   "AbbreviatedReturnConnector.submitAbbreviatedReturn" when {
 
-    def setup(response: SubmissionHttpResponse): AbbreviatedReturnConnector = {
+    def setup(response: SubmissionResponse): AbbreviatedReturnConnector = {
       val desUrl = "http://localhost:9262/interest-restriction/return/abbreviated"
       mockHttpPost[AbbreviatedReturnModel, Either[ErrorResponse, SuccessResponse]](desUrl, abbreviatedReturnModelMax)(response)
       new AbbreviatedReturnConnector(mockHttpClient, appConfig)

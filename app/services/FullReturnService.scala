@@ -19,7 +19,7 @@ package services
 import javax.inject.Inject
 
 import connectors.FullReturnConnector
-import connectors.HttpHelper.SubmissionHttpResponse
+import connectors.HttpHelper.SubmissionResponse
 import models.fullReturn.FullReturnModel
 import models.requests.IdentifierRequest
 import uk.gov.hmrc.http.HeaderCarrier
@@ -29,7 +29,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class FullReturnService @Inject()(fullReturnConnector: FullReturnConnector) extends Submission[FullReturnModel] {
 
   override def submit(fullReturn: FullReturnModel)
-                     (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionHttpResponse] =
+                     (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] =
     fullReturnConnector.submit(fullReturn)
 
 }

@@ -19,7 +19,7 @@ package connectors
 import javax.inject.Inject
 
 import config.AppConfig
-import connectors.HttpHelper.SubmissionHttpResponse
+import connectors.HttpHelper.SubmissionResponse
 import connectors.httpParsers.AppointReportingCompanyHttpParser.AppointReportingCompanyReads
 import models.appointReportingCompany.AppointReportingCompanyModel
 import models.requests.IdentifierRequest
@@ -36,7 +36,7 @@ class AppointReportingCompanyConnector @Inject()(httpClient: HttpClient,
   private[connectors] lazy val appointUrl = s"${appConfig.desUrl}/interest-restriction/reporting-company/appoint"
 
   def appoint(appointReportingCompanyModel: AppointReportingCompanyModel)
-             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionHttpResponse] = {
+             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
 
     Logger.debug(s"[AppointReportingCompanyConnector][appoint] URL: $appointUrl")
     Logger.debug(s"[AppointReportingCompanyConnector][appoint] Headers: ${desHc.headers}")

@@ -16,7 +16,7 @@
 
 package services
 
-import connectors.HttpHelper.SubmissionHttpResponse
+import connectors.HttpHelper.SubmissionResponse
 import models.requests.IdentifierRequest
 import uk.gov.hmrc.http.HeaderCarrier
 
@@ -24,5 +24,5 @@ import scala.concurrent.{ExecutionContext, Future}
 
 trait Submission[T] {
 
-  def submit(submission: T)(implicit hc: HeaderCarrier,ec: ExecutionContext,request: IdentifierRequest[_]): Future[SubmissionHttpResponse]
+  def submit(submission: T)(implicit hc: HeaderCarrier,ec: ExecutionContext,request: IdentifierRequest[_]): Future[SubmissionResponse]
 }

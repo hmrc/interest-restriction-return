@@ -17,7 +17,7 @@
 package connectors.mocks
 
 import connectors.CompaniesHouseConnector
-import connectors.HttpHelper.CRNHttpResponse
+import connectors.HttpHelper.CRNResponse
 import models.CRNModel
 import models.requests.IdentifierRequest
 import org.scalamock.scalatest.MockFactory
@@ -29,7 +29,7 @@ trait MockCompaniesHouseConnector extends MockFactory {
 
   lazy val mockCompaniesHouseConnector: CompaniesHouseConnector = mock[CompaniesHouseConnector]
 
-  def mockValidateCRN(crn: CRNModel)(response: CRNHttpResponse): Unit = {
+  def mockValidateCRN(crn: CRNModel)(response: CRNResponse): Unit = {
     (mockCompaniesHouseConnector.validateCRN(_: CRNModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
       .expects(crn, *, *, *)
       .returns(Future.successful(response))

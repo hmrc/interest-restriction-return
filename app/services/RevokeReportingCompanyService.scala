@@ -18,7 +18,7 @@ package services
 
 import javax.inject.Inject
 
-import connectors.HttpHelper.SubmissionHttpResponse
+import connectors.HttpHelper.SubmissionResponse
 import connectors.RevokeReportingCompanyConnector
 import models.requests.IdentifierRequest
 import models.revokeReportingCompany.RevokeReportingCompanyModel
@@ -30,7 +30,7 @@ class RevokeReportingCompanyService @Inject()(revokeReportingCompanyConnector: R
   extends Submission[RevokeReportingCompanyModel]{
 
   override def submit (revokeReportingCompany: RevokeReportingCompanyModel)
-                      (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionHttpResponse] =
+                      (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] =
     revokeReportingCompanyConnector.revoke(revokeReportingCompany)
 
 }

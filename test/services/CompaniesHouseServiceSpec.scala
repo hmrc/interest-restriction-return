@@ -16,7 +16,7 @@
 
 package services
 
-import connectors.HttpHelper.CRNHttpResponse
+import connectors.HttpHelper.CRNResponse
 import connectors.UnexpectedFailure
 import connectors.httpParsers.CompaniesHouseHttpParser.InvalidCRN
 import connectors.mocks.MockCompaniesHouseConnector
@@ -27,7 +27,7 @@ class CompaniesHouseServiceSpec extends MockCompaniesHouseConnector with BaseSpe
 
   "CompaniesHouseService.appoint" when {
 
-    def setup(response: CRNHttpResponse): CompaniesHouseService = {
+    def setup(response: CRNResponse): CompaniesHouseService = {
       mockValidateCRN(crn)(response)
       new CompaniesHouseService(mockCompaniesHouseConnector)
     }

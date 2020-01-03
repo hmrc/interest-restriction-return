@@ -17,7 +17,7 @@
 package connectors
 
 import assets.revokeReportingCompany.RevokeReportingCompanyConstants._
-import connectors.HttpHelper.SubmissionHttpResponse
+import connectors.HttpHelper.SubmissionResponse
 import connectors.mocks.MockHttpClient
 import models.revokeReportingCompany.RevokeReportingCompanyModel
 import play.api.http.Status._
@@ -27,7 +27,7 @@ class RevokeReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec {
 
   "RevokeReportingCompanyConnector.revoke" when {
 
-    def setup(response: SubmissionHttpResponse): RevokeReportingCompanyConnector = {
+    def setup(response: SubmissionResponse): RevokeReportingCompanyConnector = {
       val desUrl = "http://localhost:9262/interest-restriction/reporting-company/revoke"
       mockHttpPost[RevokeReportingCompanyModel, Either[ErrorResponse, SuccessResponse]](desUrl, revokeReportingCompanyModelMax)(response)
       new RevokeReportingCompanyConnector(mockHttpClient, appConfig)

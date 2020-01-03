@@ -17,7 +17,7 @@
 package services
 
 import assets.appointReportingCompany.AppointReportingCompanyConstants._
-import connectors.HttpHelper.SubmissionHttpResponse
+import connectors.HttpHelper.SubmissionResponse
 import connectors.{SuccessResponse, UnexpectedFailure}
 import connectors.mocks.MockAppointReportingCompanyConnector
 import play.api.http.Status._
@@ -27,7 +27,7 @@ class AppointReportingCompanyServiceSpec extends MockAppointReportingCompanyConn
 
   "AppointReportingCompanyService.appoint" when {
 
-    def setup(response: SubmissionHttpResponse): AppointReportingCompanyService = {
+    def setup(response: SubmissionResponse): AppointReportingCompanyService = {
       mockAppointReportingCompany(appointReportingCompanyModelMax)(response)
       new AppointReportingCompanyService(mockAppointReportingCompanyConnector)
     }

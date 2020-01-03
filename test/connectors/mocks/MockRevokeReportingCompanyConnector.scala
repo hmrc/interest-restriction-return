@@ -16,7 +16,7 @@
 
 package connectors.mocks
 
-import connectors.HttpHelper.SubmissionHttpResponse
+import connectors.HttpHelper.SubmissionResponse
 import connectors.RevokeReportingCompanyConnector
 import models.requests.IdentifierRequest
 import models.revokeReportingCompany.RevokeReportingCompanyModel
@@ -29,7 +29,7 @@ trait MockRevokeReportingCompanyConnector extends MockFactory {
 
   lazy val mockRevokeReportingCompanyConnector: RevokeReportingCompanyConnector = mock[RevokeReportingCompanyConnector]
 
-  def mockRevokeReportingCompany(model: RevokeReportingCompanyModel)(response: SubmissionHttpResponse): Unit = {
+  def mockRevokeReportingCompany(model: RevokeReportingCompanyModel)(response: SubmissionResponse): Unit = {
     (mockRevokeReportingCompanyConnector.revoke(_: RevokeReportingCompanyModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
       .expects(model, *, *, *)
       .returns(Future.successful(response))

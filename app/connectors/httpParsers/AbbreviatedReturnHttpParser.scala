@@ -16,16 +16,16 @@
 
 package connectors.httpParsers
 
-import connectors.{HttpErrorMessages, HttpHelper}
-import connectors.HttpHelper.SubmissionHttpResponse
+import connectors.HttpHelper.SubmissionResponse
+import connectors.{DesBaseConnector, HttpErrorMessages}
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
-object AbbreviatedReturnHttpParser {
+object AbbreviatedReturnHttpParser extends DesBaseConnector {
 
-  implicit object AbbreviatedReturnReads extends HttpReads[SubmissionHttpResponse] {
+  implicit object AbbreviatedReturnReads extends HttpReads[SubmissionResponse] {
 
-    override def read(method: String, url: String, response: HttpResponse): SubmissionHttpResponse = {
-      HttpHelper.read(response,"AbbreviatedReturnHttpParser",HttpErrorMessages.ABBREVIATED_ERROR)
+    override def read(method: String, url: String, response: HttpResponse): SubmissionResponse = {
+      handleHttpResponse(response,"AbbreviatedReturnHttpParser",HttpErrorMessages.ABBREVIATED_ERROR)
     }
   }
 }
