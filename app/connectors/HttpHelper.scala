@@ -21,7 +21,7 @@ import play.api.libs.json.Json
 
 object HttpHelper {
   type SubmissionResponse = Either[ErrorResponse, SuccessResponse]
-  type CRNResponse = Either[ErrorResponse, Boolean]
+  type CompaniesHouseResponse = Either[ErrorResponse, Boolean]
 }
 
 case class SuccessResponse(acknowledgementReference: String)

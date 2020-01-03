@@ -16,7 +16,7 @@
 
 package connectors.httpParsers
 
-import connectors.HttpHelper.CRNResponse
+import connectors.HttpHelper.CompaniesHouseResponse
 import connectors.{HttpErrorMessages, InvalidCRN, UnexpectedFailure}
 import play.api.Logger
 import play.api.http.Status._
@@ -24,9 +24,9 @@ import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
 object CompaniesHouseHttpParser {
 
-  implicit object CompaniesHouseReads extends HttpReads[CRNResponse] {
+  implicit object CompaniesHouseReads extends HttpReads[CompaniesHouseResponse] {
 
-    override def read(method: String, url: String, response: HttpResponse): CRNResponse = {
+    override def read(method: String, url: String, response: HttpResponse): CompaniesHouseResponse = {
       response.status match {
         case OK =>
           Logger.debug("[CompaniesHouseHttpParser][read]: Status OK")

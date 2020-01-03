@@ -16,7 +16,7 @@
 
 package services
 
-import connectors.HttpHelper.CRNResponse
+import connectors.HttpHelper.CompaniesHouseResponse
 import connectors.mocks.MockCompaniesHouseConnector
 import connectors.{InvalidCRN, UnexpectedFailure}
 import play.api.http.Status._
@@ -26,7 +26,7 @@ class CompaniesHouseServiceSpec extends MockCompaniesHouseConnector with BaseSpe
 
   "CompaniesHouseService.appoint" when {
 
-    def setup(response: CRNResponse): CompaniesHouseService = {
+    def setup(response: CompaniesHouseResponse): CompaniesHouseService = {
       mockValidateCRN(crn)(response)
       new CompaniesHouseService(mockCompaniesHouseConnector)
     }
