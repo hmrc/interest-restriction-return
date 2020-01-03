@@ -19,7 +19,7 @@ package services
 import javax.inject.Inject
 
 import connectors.CompaniesHouseConnector
-import connectors.HttpHelper.CRNResponse
+import connectors.HttpHelper.CompaniesHouseResponse
 import models.CRNModel
 import models.requests.IdentifierRequest
 import uk.gov.hmrc.http.HeaderCarrier
@@ -29,7 +29,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class CompaniesHouseService @Inject()(companiesHouseConnector: CompaniesHouseConnector) {
 
   def validateCRN(crn: CRNModel)
-             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[CRNResponse] =
+             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[CompaniesHouseResponse] =
     companiesHouseConnector.validateCRN(crn)
 
 }

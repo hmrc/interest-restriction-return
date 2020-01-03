@@ -16,7 +16,7 @@
 
 package connectors
 
-import connectors.HttpHelper.CRNResponse
+import connectors.HttpHelper.CompaniesHouseResponse
 import connectors.mocks.MockHttpClient
 import play.api.http.Status._
 import utils.BaseSpec
@@ -25,9 +25,9 @@ class CompaniesHouseConnectorSpec extends MockHttpClient with BaseSpec {
 
   "CompaniesHouseConnector.appoint" when {
 
-    def setup(response: CRNResponse): CompaniesHouseConnector = {
+    def setup(response: CompaniesHouseResponse): CompaniesHouseConnector = {
       val url = s"http://localhost:9262/companies-house-api-proxy/company/${crn.crn}"
-      mockHttpGet[CRNResponse](url)(response)
+      mockHttpGet[CompaniesHouseResponse](url)(response)
       new CompaniesHouseConnector(mockHttpClient, appConfig)
     }
 

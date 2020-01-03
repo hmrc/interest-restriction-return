@@ -19,7 +19,7 @@ package connectors
 import javax.inject.Inject
 
 import config.AppConfig
-import connectors.HttpHelper.CRNResponse
+import connectors.HttpHelper.CompaniesHouseResponse
 import connectors.httpParsers.CompaniesHouseHttpParser.CompaniesHouseReads
 import models.CRNModel
 import models.requests.IdentifierRequest
@@ -36,10 +36,10 @@ class CompaniesHouseConnector @Inject()(httpClient: HttpClient,
     s"${appConfig.companiesHouseProxy}/companies-house-api-proxy/company/${crn.crn}"
 
   def validateCRN(crn: CRNModel)
-                 (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[CRNResponse] = {
+                 (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[CompaniesHouseResponse] = {
 
     Logger.debug(s"[CompaniesHouseConnector][getCompanyDetails] URL: ${getCompanyInformationUrl(crn)}")
-    httpClient.GET[CRNResponse](getCompanyInformationUrl(crn))(CompaniesHouseReads, hc, ec)
+    httpClient.GET[CompaniesHouseResponse](getCompanyInformationUrl(crn))(CompaniesHouseReads, hc, ec)
   }
 
 }
