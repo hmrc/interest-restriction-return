@@ -19,7 +19,7 @@ package connectors
 import javax.inject.Inject
 
 import config.AppConfig
-import connectors.HttpHelper.SubmissionHttpResponse
+import connectors.HttpHelper.SubmissionResponse
 import connectors.httpParsers.FullReturnHttpParser.FullReturnReads
 import models.fullReturn.FullReturnModel
 import models.requests.IdentifierRequest
@@ -36,7 +36,7 @@ class FullReturnConnector @Inject()(httpClient: HttpClient,
   private[connectors] lazy val fullReturnUrl = s"${appConfig.desUrl}/interest-restriction/return/full"
 
   def submit(fullReturnModel: FullReturnModel)
-             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionHttpResponse] = {
+             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
 
     Logger.debug(s"[FullReturnConnector][submit] URL: $fullReturnUrl")
     Logger.debug(s"[FullReturnConnector][submit] Headers: ${desHc.headers}")

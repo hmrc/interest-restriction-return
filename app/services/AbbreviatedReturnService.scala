@@ -19,7 +19,7 @@ package services
 import javax.inject.Inject
 
 import connectors.AbbreviatedReturnConnector
-import connectors.HttpHelper.SubmissionHttpResponse
+import connectors.HttpHelper.SubmissionResponse
 import models.abbreviatedReturn.AbbreviatedReturnModel
 import models.requests.IdentifierRequest
 import uk.gov.hmrc.http.HeaderCarrier
@@ -30,7 +30,7 @@ class AbbreviatedReturnService @Inject()(abbreviatedReturnConnector: Abbreviated
   extends Submission[AbbreviatedReturnModel]{
 
   override def submit(abbreviatedReturn: AbbreviatedReturnModel)
-             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionHttpResponse] =
+             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] =
     abbreviatedReturnConnector.submitAbbreviatedReturn(abbreviatedReturn)
 
 }

@@ -17,7 +17,7 @@
 package services
 
 import assets.revokeReportingCompany.RevokeReportingCompanyConstants._
-import connectors.HttpHelper.SubmissionHttpResponse
+import connectors.HttpHelper.SubmissionResponse
 import connectors.{SuccessResponse, UnexpectedFailure}
 import connectors.mocks.MockRevokeReportingCompanyConnector
 import play.api.http.Status._
@@ -27,7 +27,7 @@ class RevokeReportingCompanyServiceSpec extends MockRevokeReportingCompanyConnec
 
   "RevokeReportingCompanyService.revoke" when {
 
-    def setup(response: SubmissionHttpResponse): RevokeReportingCompanyService = {
+    def setup(response: SubmissionResponse): RevokeReportingCompanyService = {
       mockRevokeReportingCompany(revokeReportingCompanyModelMax)(response)
       new RevokeReportingCompanyService(mockRevokeReportingCompanyConnector)
     }

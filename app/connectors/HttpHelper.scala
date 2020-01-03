@@ -16,32 +16,12 @@
 
 package connectors
 
-import play.api.Logger
-import play.api.http.Status.{INTERNAL_SERVER_ERROR, OK}
+import play.api.http.Status.INTERNAL_SERVER_ERROR
 import play.api.libs.json.Json
-import uk.gov.hmrc.http.HttpResponse
 
 object HttpHelper {
-  type SubmissionHttpResponse = Either[ErrorResponse, SuccessResponse]
-  type CRNHttpResponse = Either[ErrorResponse, Boolean]
-
-  def read(response: HttpResponse, parserName: String, unexpectedErrorMessage: String): SubmissionHttpResponse = {
-    response.status match {
-      case OK =>
-        Logger.debug(s"[$parserName][read]: Status OK")
-        Logger.debug(s"[$parserName][read]: Json Response: ${response.json}")
-        response.json.validate[SuccessResponse](SuccessResponse.fmt).fold(
-          invalid => {
-            Logger.warn(s"[$parserName][read]: Invalid Success Response Json - $invalid")
-            Left(InvalidSuccessResponse)
-          },
-          valid => Right(valid)
-        )
-      case status =>
-        Logger.warn(s"[$parserName][read]: Unexpected response, status $status returned")
-        Left(UnexpectedFailure(response.status,s"Status ${response.status} $unexpectedErrorMessage"))
-    }
-  }
+  type SubmissionResponse = Either[ErrorResponse, SuccessResponse]
+  type CRNResponse = Either[ErrorResponse, Boolean]
 }
 
 case class SuccessResponse(acknowledgementReference: String)

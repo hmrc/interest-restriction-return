@@ -17,16 +17,16 @@
 package connectors.httpParsers
 
 import connectors.{ErrorResponse, HttpErrorMessages, UnexpectedFailure}
-import connectors.HttpHelper.CRNHttpResponse
+import connectors.HttpHelper.CRNResponse
 import play.api.Logger
 import play.api.http.Status._
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
 object CompaniesHouseHttpParser {
 
-  implicit object CompaniesHouseReads extends HttpReads[CRNHttpResponse] {
+  implicit object CompaniesHouseReads extends HttpReads[CRNResponse] {
 
-    override def read(method: String, url: String, response: HttpResponse): CRNHttpResponse = {
+    override def read(method: String, url: String, response: HttpResponse): CRNResponse = {
       response.status match {
         case OK =>
           Logger.debug("[CompaniesHouseHttpParser][read]: Status OK")

@@ -17,7 +17,7 @@
 package connectors
 
 import assets.appointReportingCompany.AppointReportingCompanyConstants._
-import connectors.HttpHelper.SubmissionHttpResponse
+import connectors.HttpHelper.SubmissionResponse
 import connectors.mocks.MockHttpClient
 import models.appointReportingCompany.AppointReportingCompanyModel
 import play.api.http.Status._
@@ -27,7 +27,7 @@ class AppointReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec 
 
   "AppointReportingCompanyConnector.appoint" when {
 
-    def setup(response: SubmissionHttpResponse): AppointReportingCompanyConnector = {
+    def setup(response: SubmissionResponse): AppointReportingCompanyConnector = {
       val desUrl = "http://localhost:9262/interest-restriction/reporting-company/appoint"
       mockHttpPost[AppointReportingCompanyModel, Either[ErrorResponse, SuccessResponse]](desUrl, appointReportingCompanyModelMax)(response)
       new AppointReportingCompanyConnector(mockHttpClient, appConfig)

@@ -19,7 +19,7 @@ package services
 import javax.inject.Inject
 
 import connectors.AppointReportingCompanyConnector
-import connectors.HttpHelper.SubmissionHttpResponse
+import connectors.HttpHelper.SubmissionResponse
 import models.appointReportingCompany.AppointReportingCompanyModel
 import models.requests.IdentifierRequest
 import uk.gov.hmrc.http.HeaderCarrier
@@ -30,7 +30,7 @@ class AppointReportingCompanyService @Inject()(appointReportingCompanyConnector:
   extends Submission[AppointReportingCompanyModel]{
 
   override def submit(appointReportingCompany: AppointReportingCompanyModel)
-                     (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionHttpResponse] =
+                     (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] =
     appointReportingCompanyConnector.appoint(appointReportingCompany)
 
 }

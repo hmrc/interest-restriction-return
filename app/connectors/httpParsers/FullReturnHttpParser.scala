@@ -16,16 +16,16 @@
 
 package connectors.httpParsers
 
-import connectors.{HttpErrorMessages, HttpHelper}
-import connectors.HttpHelper.SubmissionHttpResponse
+import connectors.HttpHelper.SubmissionResponse
+import connectors.{DesBaseConnector, HttpErrorMessages}
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
-object FullReturnHttpParser {
+object FullReturnHttpParser extends DesBaseConnector {
 
-  implicit object FullReturnReads extends HttpReads[SubmissionHttpResponse] {
+  implicit object FullReturnReads extends HttpReads[SubmissionResponse] {
 
-    override def read(method: String, url: String, response: HttpResponse): SubmissionHttpResponse = {
-      HttpHelper.read(response,"FullReturnHttpParser",HttpErrorMessages.FULL_ERROR)
+    override def read(method: String, url: String, response: HttpResponse): SubmissionResponse = {
+      handleHttpResponse(response,"FullReturnHttpParser",HttpErrorMessages.FULL_ERROR)
     }
   }
 }

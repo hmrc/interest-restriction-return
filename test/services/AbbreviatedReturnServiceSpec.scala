@@ -17,7 +17,7 @@
 package services
 
 import assets.abbreviatedReturn.AbbreviatedReturnConstants._
-import connectors.HttpHelper.SubmissionHttpResponse
+import connectors.HttpHelper.SubmissionResponse
 import connectors.{SuccessResponse, UnexpectedFailure}
 import connectors.mocks.MockAbbreviatedReturnConnector
 import play.api.http.Status._
@@ -27,7 +27,7 @@ class AbbreviatedReturnServiceSpec extends MockAbbreviatedReturnConnector with B
 
   "AbbreviatedReturnService.submitsAbbreviatedReturn" when {
 
-    def setup(response: SubmissionHttpResponse): AbbreviatedReturnService = {
+    def setup(response: SubmissionResponse): AbbreviatedReturnService = {
       mockAbbreviatedReturn(abbreviatedReturnModelMax)(response)
       new AbbreviatedReturnService(mockAbbreviatedReturnConnector)
     }
