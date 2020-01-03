@@ -16,8 +16,8 @@
 
 package connectors.httpParsers
 
-import connectors.{ErrorResponse, HttpErrorMessages, UnexpectedFailure}
 import connectors.HttpHelper.CRNResponse
+import connectors.{HttpErrorMessages, InvalidCRN, UnexpectedFailure}
 import play.api.Logger
 import play.api.http.Status._
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
@@ -39,10 +39,5 @@ object CompaniesHouseHttpParser {
           Left(UnexpectedFailure(response.status,s"Status ${response.status} ${HttpErrorMessages.CRN_UNEXPECTED_ERROR}"))
       }
     }
-  }
-
-  case object InvalidCRN extends ErrorResponse {
-    override val status: Int = NOT_FOUND
-    override val body: String = HttpErrorMessages.CRN_INVALID_ERROR
   }
 }

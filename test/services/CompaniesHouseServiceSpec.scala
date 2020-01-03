@@ -17,9 +17,8 @@
 package services
 
 import connectors.HttpHelper.CRNResponse
-import connectors.UnexpectedFailure
-import connectors.httpParsers.CompaniesHouseHttpParser.InvalidCRN
 import connectors.mocks.MockCompaniesHouseConnector
+import connectors.{InvalidCRN, UnexpectedFailure}
 import play.api.http.Status._
 import utils.BaseSpec
 

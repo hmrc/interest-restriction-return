@@ -16,7 +16,7 @@
 
 package connectors
 
-import play.api.http.Status.INTERNAL_SERVER_ERROR
+import play.api.http.Status.{INTERNAL_SERVER_ERROR, NOT_FOUND}
 import play.api.libs.json.Json
 
 object HttpHelper {
@@ -36,6 +36,10 @@ trait ErrorResponse {
 object InvalidSuccessResponse extends ErrorResponse {
   override val status: Int = INTERNAL_SERVER_ERROR
   override val body: String =  HttpErrorMessages.UNEXPECTED_ERROR
+}
+case object InvalidCRN extends ErrorResponse {
+  override val status: Int = NOT_FOUND
+  override val body: String = HttpErrorMessages.CRN_INVALID_ERROR
 }
 case class UnexpectedFailure(override val status: Int,override val body: String) extends ErrorResponse
 
