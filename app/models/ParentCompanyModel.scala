@@ -22,6 +22,8 @@ import validation.ParentCompanyValidator
 case class ParentCompanyModel(ultimateParent: Option[UltimateParentModel],
                               deemedParent: Option[Seq[DeemedParentModel]])  extends ParentCompanyValidator {
   override val parentCompanyModel: ParentCompanyModel = this
+
+  val ukCrn: Option[CRNModel] = ultimateParent.flatMap(_.crn)
 }
 
 

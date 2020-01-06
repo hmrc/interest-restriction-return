@@ -28,7 +28,14 @@ case class AppointReportingCompanyModel(agentDetails: AgentDetailsModel,
                                         ultimateParentCompany: Option[UltimateParentModel],
                                         accountingPeriod: AccountingPeriodModel,
                                         declaration: Boolean) extends AppointReportingCompanyValidator {
+
   override val appointReportingCompanyModel: AppointReportingCompanyModel = this
+
+  val ukCrns: Seq[CRNModel] = Seq(
+    Some(reportingCompany.crn),
+    ultimateParentCompany.flatMap(_.crn),
+    identityOfAppointingCompany.flatMap(_.crn)
+  ).flatten
 }
 
 object AppointReportingCompanyModel{

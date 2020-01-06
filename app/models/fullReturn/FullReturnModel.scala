@@ -36,11 +36,15 @@ case class FullReturnModel(agentDetails: AgentDetailsModel,
                            totalReactivation: BigDecimal,
                            groupLevelAmount: GroupLevelAmountModel,
                            adjustedGroupInterest: Option[AdjustedGroupInterestModel]) extends FullReturnValidator {
+
   override val fullReturnModel: FullReturnModel = this
+
+  val ukCrns: Seq[CRNModel] = Seq(
+    Some(reportingCompany.crn),
+    parentCompany.flatMap(_.ukCrn)
+  ).flatten
 }
 
 object FullReturnModel{
-
   implicit val format = Json.format[FullReturnModel]
-
 }

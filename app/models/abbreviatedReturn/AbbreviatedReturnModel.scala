@@ -29,7 +29,13 @@ case class AbbreviatedReturnModel(agentDetails: AgentDetailsModel,
                                   revisedReturnDetails: Option[String],
                                   groupLevelElections: Option[GroupLevelElectionsModel],
                                   ukCompanies: Seq[UkCompanyModel]) extends AbbreviatedReturnValidator {
+
   override val abbreviatedReturnModel: AbbreviatedReturnModel = this
+
+  val ukCrns: Seq[CRNModel] = Seq(
+    Some(reportingCompany.crn),
+    parentCompany.flatMap(_.ukCrn)
+  ).flatten
 }
 
 object AbbreviatedReturnModel{
