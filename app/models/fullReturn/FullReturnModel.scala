@@ -17,7 +17,7 @@
 package models.fullReturn
 
 import models._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsPath, Json}
 import validation.fullReturn.FullReturnValidator
 
 case class FullReturnModel(agentDetails: AgentDetailsModel,
@@ -39,9 +39,9 @@ case class FullReturnModel(agentDetails: AgentDetailsModel,
 
   override val fullReturnModel: FullReturnModel = this
 
-  val ukCrns: Seq[CRNModel] = Seq(
-    Some(reportingCompany.crn),
-    parentCompany.flatMap(_.ukCrn)
+  val ukCrns: Seq[(JsPath, CRNModel)] = Seq(
+    Some(JsPath \ "reportingCompany" \ "crn" -> reportingCompany.crn),
+    parentCompany.flatMap(_.ukCrn).map(crn => JsPath \ "parentCompany" \ "ultimateParent" \ "crn" -> crn)
   ).flatten
 }
 

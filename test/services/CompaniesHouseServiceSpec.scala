@@ -36,7 +36,7 @@ class CompaniesHouseServiceSpec extends MockCompaniesHouseConnector with BaseSpe
       "return a Right(ValidCRN)" in {
 
         val service = setup(Right(ValidCRN))
-        val result = service.validateCRN(crn)
+        val result = service.validateCRN(Seq(crn))
 
         await(result) shouldBe Right(ValidCRN)
       }
@@ -47,7 +47,7 @@ class CompaniesHouseServiceSpec extends MockCompaniesHouseConnector with BaseSpe
       "return a Right(ValidCRN)" in {
 
         val service = setup(Left(InvalidCRN))
-        val result = service.validateCRN(crn)
+        val result = service.validateCRN(Seq(crn))
 
         await(result) shouldBe Left(InvalidCRN)
       }
@@ -58,7 +58,7 @@ class CompaniesHouseServiceSpec extends MockCompaniesHouseConnector with BaseSpe
       "return a Left(UnexpectedFailure)" in {
 
         val service = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-        val result = service.validateCRN(crn)
+        val result = service.validateCRN(Seq(crn))
 
         await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
       }

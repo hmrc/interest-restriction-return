@@ -16,11 +16,12 @@
 
 package models.fullReturn
 
+import assets.BaseConstants
 import assets.fullReturn.FullReturnConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 
-class FullReturnModelSpec extends WordSpec with Matchers {
+class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants {
 
   "FullReturnModel" must {
 
@@ -57,6 +58,25 @@ class FullReturnModelSpec extends WordSpec with Matchers {
 
         val expectedValue = fullReturnModelMin
         val actualValue = fullReturnJsonMin.as[FullReturnModel]
+
+        actualValue shouldBe expectedValue
+      }
+    }
+
+    "correctly collect all of the ukCrns" when {
+
+      "max crns given" in {
+
+        val expectedValue = Seq(crn, crnLetters)
+        val actualValue = fullReturnModelMax.ukCrns
+
+        actualValue shouldBe expectedValue
+      }
+
+      "min crns given" in {
+
+        val expectedValue = Seq(crn)
+        val actualValue = fullReturnModelMin.ukCrns
 
         actualValue shouldBe expectedValue
       }

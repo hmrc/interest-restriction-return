@@ -25,6 +25,8 @@ case class IdentityOfCompanySubmittingModel(companyName: CompanyNameModel,
                                             countryOfIncorporation: Option[CountryCodeModel],
                                             nonUkCrn: Option[String]) extends IdentityOfCompanySubmittingValidator {
   override val identityOfCompanySubmitting: IdentityOfCompanySubmittingModel = this
+
+
 }
 
 object IdentityOfCompanySubmittingModel {

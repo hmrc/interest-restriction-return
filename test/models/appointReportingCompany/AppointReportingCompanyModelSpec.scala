@@ -16,11 +16,12 @@
 
 package models.appointReportingCompany
 
+import assets.BaseConstants
+import assets.appointReportingCompany.AppointReportingCompanyConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
-import assets.appointReportingCompany.AppointReportingCompanyConstants._
 
-class AppointReportingCompanyModelSpec extends WordSpec with Matchers {
+class AppointReportingCompanyModelSpec extends WordSpec with Matchers with BaseConstants {
 
   "AppointReportingCompanyModel" must {
 
@@ -57,6 +58,25 @@ class AppointReportingCompanyModelSpec extends WordSpec with Matchers {
 
         val expectedValue = appointReportingCompanyModelMin
         val actualValue = appointReportingCompanyJsonMin.as[AppointReportingCompanyModel]
+
+        actualValue shouldBe expectedValue
+      }
+    }
+
+    "correctly collect all of the ukCrns" when {
+
+      "max crns given" in {
+
+        val expectedValue = Seq(crn, crnLetters, crn)
+        val actualValue = appointReportingCompanyModelMax.ukCrns
+
+        actualValue shouldBe expectedValue
+      }
+
+      "min crns given" in {
+
+        val expectedValue = Seq(crn)
+        val actualValue = appointReportingCompanyModelMin.ukCrns
 
         actualValue shouldBe expectedValue
       }

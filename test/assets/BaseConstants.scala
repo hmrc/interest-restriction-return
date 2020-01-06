@@ -25,6 +25,7 @@ trait BaseConstants {
   val invalidUtr = UTRModel("1999999999")
 
   val crn = CRNModel("12345678")
+  val crnLetters = CRNModel("AB123456")
   val companyName = CompanyNameModel("Company Name ltd")
   val knownAs = "something"
   val companyNameMaxLength = 160

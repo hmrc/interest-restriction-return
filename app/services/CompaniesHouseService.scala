@@ -16,20 +16,26 @@
 
 package services
 
-import javax.inject.Inject
-
 import connectors.CompaniesHouseConnector
-import connectors.HttpHelper.CompaniesHouseResponse
-import models.CRNModel
+import connectors.httpParsers.CompaniesHouseHttpParser.SuccessResponse
+import javax.inject.Inject
+import models.{CRNModel, ValidationErrorResponseModel}
 import models.requests.IdentifierRequest
+import play.api.libs.json.JsPath
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class CompaniesHouseService @Inject()(companiesHouseConnector: CompaniesHouseConnector) {
 
-  def validateCRN(crn: CRNModel)
-             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[CompaniesHouseResponse] =
-    companiesHouseConnector.validateCRN(crn)
+  def validateCRN(crns: Seq[(JsPath, CRNModel)])
+                 (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[Either[ValidationErrorResponseModel, SuccessResponse]] = {
 
+    Future.sequence(crns.map { case (field, crn) =>
+      ValidationErrorResponseModel(field, crn)
+      companiesHouseConnector.validateCRN(crn).map(response =>
+        (field, crn, response)
+      )
+    })
+  }
 }
