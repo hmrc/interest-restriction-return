@@ -17,7 +17,7 @@
 package connectors.httpParsers
 
 import connectors.HttpHelper.CompaniesHouseResponse
-import connectors.{HttpErrorMessages, InvalidCRN, UnexpectedFailure}
+import connectors.{HttpErrorMessages, InvalidCRN, UnexpectedFailure, ValidCRN}
 import play.api.Logger
 import play.api.http.Status._
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
@@ -31,7 +31,7 @@ object CompaniesHouseHttpParser {
         case OK =>
           Logger.debug("[CompaniesHouseHttpParser][read]: Status OK")
           Logger.debug(s"[CompaniesHouseHttpParser][read]: Json Response: ${response.json}")
-          Right(true)
+          Right(ValidCRN)
         case NOT_FOUND =>
           Left(InvalidCRN)
         case status =>

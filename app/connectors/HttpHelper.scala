@@ -20,14 +20,17 @@ import play.api.http.Status.{INTERNAL_SERVER_ERROR, NOT_FOUND}
 import play.api.libs.json.Json
 
 object HttpHelper {
-  type SubmissionResponse = Either[ErrorResponse, SuccessResponse]
-  type CompaniesHouseResponse = Either[ErrorResponse, Boolean]
+  type SubmissionResponse = Either[ErrorResponse, DesSuccessResponse]
+  type CompaniesHouseResponse = Either[ErrorResponse, HttpSuccess]
 }
 
-case class SuccessResponse(acknowledgementReference: String)
-object SuccessResponse {
-  implicit val fmt = Json.format[SuccessResponse]
+case class DesSuccessResponse(acknowledgementReference: String)
+object DesSuccessResponse {
+  implicit val fmt = Json.format[DesSuccessResponse]
 }
+
+sealed trait HttpSuccess
+case object ValidCRN extends HttpSuccess
 
 trait ErrorResponse {
   val status: Int

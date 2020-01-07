@@ -18,7 +18,7 @@ package connectors.httpParsers
 
 import assets.revokeReportingCompany.RevokeReportingCompanyConstants._
 import connectors.httpParsers.RevokeReportingCompanyHttpParser.RevokeReportingCompanyReads
-import connectors.{InvalidSuccessResponse, SuccessResponse, UnexpectedFailure}
+import connectors.{InvalidSuccessResponse, DesSuccessResponse, UnexpectedFailure}
 import org.scalatest.{Matchers, WordSpec}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.http.Status
@@ -35,7 +35,7 @@ class RevokeReportingCompanyHttpParserSpec extends WordSpec with Matchers with G
 
       "return a Right containing an acknowledgementReference" in {
 
-        val expectedResult = Right(SuccessResponse(ackRef))
+        val expectedResult = Right(DesSuccessResponse(ackRef))
         val actualResult = RevokeReportingCompanyReads.read("", "", HttpResponse(Status.OK, Some(ackRefResponse)))
 
         actualResult shouldBe expectedResult

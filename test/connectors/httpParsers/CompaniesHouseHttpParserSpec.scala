@@ -17,7 +17,7 @@
 package connectors.httpParsers
 
 import connectors.httpParsers.CompaniesHouseHttpParser.CompaniesHouseReads
-import connectors.{InvalidCRN, UnexpectedFailure}
+import connectors.{InvalidCRN, UnexpectedFailure, ValidCRN}
 import org.scalatest.{Matchers, WordSpec}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.http.Status
@@ -31,7 +31,7 @@ class CompaniesHouseHttpParserSpec extends WordSpec with Matchers with GuiceOneA
 
       "return a Right(ValidCRN)" in {
 
-        val expectedResult = Right(true)
+        val expectedResult = Right(ValidCRN)
         val actualResult = CompaniesHouseReads.read("", "", HttpResponse(Status.OK))
 
         actualResult shouldBe expectedResult

@@ -17,7 +17,7 @@
 package controllers
 
 import assets.appointReportingCompany.AppointReportingCompanyConstants._
-import connectors.{SuccessResponse, UnexpectedFailure}
+import connectors.{DesSuccessResponse, UnexpectedFailure}
 import play.api.http.Status
 import play.api.libs.json.Json
 import play.api.test.{FakeRequest, Helpers}
@@ -48,7 +48,7 @@ class AppointReportingCompanyControllerSpec extends MockAppointReportingCompanyS
 
           "return 200 (OK)" in {
 
-            mockAppointReportingCompany(appointReportingCompanyModelMax)(Right(SuccessResponse(ackRef)))
+            mockAppointReportingCompany(appointReportingCompanyModelMax)(Right(DesSuccessResponse(ackRef)))
             val result = AuthorisedController.appoint()(validJsonFakeRequest)
             status(result) shouldBe Status.OK
           }

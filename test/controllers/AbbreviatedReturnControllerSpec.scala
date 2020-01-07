@@ -17,7 +17,7 @@
 package controllers
 
 import assets.abbreviatedReturn.AbbreviatedReturnConstants._
-import connectors.{SuccessResponse, UnexpectedFailure}
+import connectors.{DesSuccessResponse, UnexpectedFailure}
 import play.api.http.Status
 import play.api.libs.json.Json
 import play.api.test.{FakeRequest, Helpers}
@@ -48,7 +48,7 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
 
           "return 200 (OK)" in {
 
-            mockAbbreviatedReturn(abbreviatedReturnModelMax)(Right(SuccessResponse(ackRef)))
+            mockAbbreviatedReturn(abbreviatedReturnModelMax)(Right(DesSuccessResponse(ackRef)))
             val result = AuthorisedController.submitAbbreviatedReturn()(validJsonFakeRequest)
             status(result) shouldBe Status.OK
           }

@@ -17,7 +17,7 @@
 package controllers
 
 import assets.revokeReportingCompany.RevokeReportingCompanyConstants._
-import connectors.{SuccessResponse, UnexpectedFailure}
+import connectors.{DesSuccessResponse, UnexpectedFailure}
 import play.api.http.Status
 import play.api.libs.json.Json
 import play.api.test.{FakeRequest, Helpers}
@@ -48,7 +48,7 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
 
           "return 200 (OK)" in {
 
-            mockRevokeReportingCompany(revokeReportingCompanyModelMax)(Right(SuccessResponse(ackRef)))
+            mockRevokeReportingCompany(revokeReportingCompanyModelMax)(Right(DesSuccessResponse(ackRef)))
             val result = AuthorisedController.revoke()(validJsonFakeRequest)
             status(result) shouldBe Status.OK
           }

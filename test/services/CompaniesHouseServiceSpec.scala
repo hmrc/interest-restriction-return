@@ -18,7 +18,7 @@ package services
 
 import connectors.HttpHelper.CompaniesHouseResponse
 import connectors.mocks.MockCompaniesHouseConnector
-import connectors.{InvalidCRN, UnexpectedFailure}
+import connectors.{InvalidCRN, UnexpectedFailure, ValidCRN}
 import play.api.http.Status._
 import utils.BaseSpec
 
@@ -35,10 +35,10 @@ class CompaniesHouseServiceSpec extends MockCompaniesHouseConnector with BaseSpe
 
       "return a Right(ValidCRN)" in {
 
-        val service = setup(Right(true))
+        val service = setup(Right(ValidCRN))
         val result = service.validateCRN(crn)
 
-        await(result) shouldBe Right(true)
+        await(result) shouldBe Right(ValidCRN)
       }
     }
 

@@ -18,7 +18,7 @@ package services
 
 import assets.revokeReportingCompany.RevokeReportingCompanyConstants._
 import connectors.HttpHelper.SubmissionResponse
-import connectors.{SuccessResponse, UnexpectedFailure}
+import connectors.{DesSuccessResponse, UnexpectedFailure}
 import connectors.mocks.MockRevokeReportingCompanyConnector
 import play.api.http.Status._
 import utils.BaseSpec
@@ -36,10 +36,10 @@ class RevokeReportingCompanyServiceSpec extends MockRevokeReportingCompanyConnec
 
       "return a Right(SuccessResponse)" in {
 
-        val service = setup(Right(SuccessResponse("ackRef")))
+        val service = setup(Right(DesSuccessResponse("ackRef")))
         val result = service.submit(revokeReportingCompanyModelMax)
 
-        await(result) shouldBe Right(SuccessResponse("ackRef"))
+        await(result) shouldBe Right(DesSuccessResponse("ackRef"))
       }
     }
 

@@ -35,10 +35,10 @@ class CompaniesHouseConnectorSpec extends MockHttpClient with BaseSpec {
 
       "return a Right(ValidCRN)" in {
 
-        val connector = setup(Right(true))
+        val connector = setup(Right(ValidCRN))
         val result = connector.validateCRN(crn)
 
-        await(result) shouldBe Right(true)
+        await(result) shouldBe Right(ValidCRN)
       }
     }
 

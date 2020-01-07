@@ -18,7 +18,7 @@ package services
 
 import assets.abbreviatedReturn.AbbreviatedReturnConstants._
 import connectors.HttpHelper.SubmissionResponse
-import connectors.{SuccessResponse, UnexpectedFailure}
+import connectors.{DesSuccessResponse, UnexpectedFailure}
 import connectors.mocks.MockAbbreviatedReturnConnector
 import play.api.http.Status._
 import utils.BaseSpec
@@ -35,10 +35,10 @@ class AbbreviatedReturnServiceSpec extends MockAbbreviatedReturnConnector with B
     "submission is successful" should {
       "return a Right(SuccessResponse)" in {
 
-        val service = setup(Right(SuccessResponse("ackRef")))
+        val service = setup(Right(DesSuccessResponse("ackRef")))
         val result = service.submit(abbreviatedReturnModelMax)
 
-        await(result) shouldBe Right(SuccessResponse("ackRef"))
+        await(result) shouldBe Right(DesSuccessResponse("ackRef"))
       }
     }
 

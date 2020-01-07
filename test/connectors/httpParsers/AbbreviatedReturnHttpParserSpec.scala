@@ -18,7 +18,7 @@ package connectors.httpParsers
 
 import assets.abbreviatedReturn.AbbreviatedReturnConstants.ackRef
 import connectors.httpParsers.AbbreviatedReturnHttpParser.AbbreviatedReturnReads
-import connectors.{InvalidSuccessResponse, SuccessResponse, UnexpectedFailure}
+import connectors.{InvalidSuccessResponse, DesSuccessResponse, UnexpectedFailure}
 import org.scalatest.{Matchers, WordSpec}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.http.Status
@@ -35,7 +35,7 @@ class AbbreviatedReturnHttpParserSpec extends WordSpec with Matchers with GuiceO
 
       "return a Right containing an acknowledgementReference" in {
 
-        val expectedResult = Right(SuccessResponse(ackRef))
+        val expectedResult = Right(DesSuccessResponse(ackRef))
         val actualResult = AbbreviatedReturnReads.read("", "", HttpResponse(Status.OK, Some(ackRefResponse)))
 
         actualResult shouldBe expectedResult

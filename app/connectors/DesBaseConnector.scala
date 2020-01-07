@@ -35,7 +35,7 @@ trait DesBaseConnector {
       case OK =>
         Logger.debug(s"[$parserName][read]: Status OK")
         Logger.debug(s"[$parserName][read]: Json Response: ${response.json}")
-        response.json.validate[SuccessResponse](SuccessResponse.fmt).fold(
+        response.json.validate[DesSuccessResponse](DesSuccessResponse.fmt).fold(
           invalid => {
             Logger.warn(s"[$parserName][read]: Invalid Success Response Json - $invalid")
             Left(InvalidSuccessResponse)
