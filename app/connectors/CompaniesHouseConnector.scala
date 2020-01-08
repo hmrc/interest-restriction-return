@@ -16,9 +16,11 @@
 
 package connectors
 
-import config.AppConfig
-import connectors.httpParsers.CompaniesHouseHttpParser.{CompaniesHouseReads, CompaniesHouseResponse}
 import javax.inject.Inject
+
+import config.AppConfig
+import connectors.HttpHelper.CompaniesHouseResponse
+import connectors.httpParsers.CompaniesHouseHttpParser.CompaniesHouseReads
 import models.CRNModel
 import models.requests.IdentifierRequest
 import play.api.Logger

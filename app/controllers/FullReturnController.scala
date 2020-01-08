@@ -16,17 +16,13 @@
 
 package controllers
 
-import cats.data.Validated.{Invalid, Valid}
-import controllers.actions.AuthAction
 import javax.inject.{Inject, Singleton}
-import models.ValidationErrorResponseModel
+
+import controllers.actions.AuthAction
 import models.fullReturn.FullReturnModel
-import play.api.Logger
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.JsValue
 import play.api.mvc.{Action, ControllerComponents}
 import services.FullReturnService
-
-import scala.concurrent.Future
 
 @Singleton()
 class FullReturnController @Inject()(authAction: AuthAction,
@@ -35,16 +31,7 @@ class FullReturnController @Inject()(authAction: AuthAction,
 
   def submit(): Action[JsValue] = authAction.async(parse.json) { implicit request =>
     withJsonBody[FullReturnModel] { fullReturnModel =>
-      fullReturnModel.validate match {
-        case Invalid(e) =>
-          Logger.debug(s"[FullReturnController][submit] Business Rule Errors: ${Json.toJson(ValidationErrorResponseModel(e))}")
-          Future.successful(BadRequest(Json.toJson(ValidationErrorResponseModel(e))))
-        case Valid(model) =>
-          fullReturnService.submit(model).map {
-            case Left(err) => Status(err.status)(err.body)
-            case Right(response) => Ok(Json.toJson(response))
-          }
-      }
+      handleValidation(fullReturnModel.validate,"FullReturnController",fullReturnService)
     }
   }
 }

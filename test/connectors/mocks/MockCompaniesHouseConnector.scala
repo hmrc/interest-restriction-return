@@ -17,7 +17,7 @@
 package connectors.mocks
 
 import connectors.CompaniesHouseConnector
-import connectors.httpParsers.CompaniesHouseHttpParser.CompaniesHouseResponse
+import connectors.HttpHelper.CompaniesHouseResponse
 import models.CRNModel
 import models.requests.IdentifierRequest
 import org.scalamock.scalatest.MockFactory

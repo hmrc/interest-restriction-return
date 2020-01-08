@@ -17,7 +17,8 @@
 package services
 
 import assets.appointReportingCompany.AppointReportingCompanyConstants._
-import connectors.httpParsers.AppointReportingCompanyHttpParser.{AppointReportingCompanyResponse, SuccessResponse, UnexpectedFailure}
+import connectors.HttpHelper.SubmissionResponse
+import connectors.{DesSuccessResponse, UnexpectedFailure}
 import connectors.mocks.MockAppointReportingCompanyConnector
 import play.api.http.Status._
 import utils.BaseSpec
@@ -26,7 +27,7 @@ class AppointReportingCompanyServiceSpec extends MockAppointReportingCompanyConn
 
   "AppointReportingCompanyService.appoint" when {
 
-    def setup(response: AppointReportingCompanyResponse): AppointReportingCompanyService = {
+    def setup(response: SubmissionResponse): AppointReportingCompanyService = {
       mockAppointReportingCompany(appointReportingCompanyModelMax)(response)
       new AppointReportingCompanyService(mockAppointReportingCompanyConnector)
     }
@@ -35,10 +36,10 @@ class AppointReportingCompanyServiceSpec extends MockAppointReportingCompanyConn
 
       "return a Right(SuccessResponse)" in {
 
-        val service = setup(Right(SuccessResponse("ackRef")))
-        val result = service.appoint(appointReportingCompanyModelMax)
+        val service = setup(Right(DesSuccessResponse("ackRef")))
+        val result = service.submit(appointReportingCompanyModelMax)
 
-        await(result) shouldBe Right(SuccessResponse("ackRef"))
+        await(result) shouldBe Right(DesSuccessResponse("ackRef"))
       }
     }
 
@@ -47,7 +48,7 @@ class AppointReportingCompanyServiceSpec extends MockAppointReportingCompanyConn
       "return a Left(UnexpectedFailure)" in {
 
         val service = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-        val result = service.appoint(appointReportingCompanyModelMax)
+        val result = service.submit(appointReportingCompanyModelMax)
 
         await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
       }

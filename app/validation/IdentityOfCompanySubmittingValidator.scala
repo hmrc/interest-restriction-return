@@ -16,6 +16,7 @@
 
 package validation
 
+import connectors.CompaniesHouseConnector
 import models.Validation.ValidationResult
 import models.{IdentityOfCompanySubmittingModel, Validation}
 import play.api.libs.json.{JsPath, Json}

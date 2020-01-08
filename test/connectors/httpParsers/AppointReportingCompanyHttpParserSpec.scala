@@ -16,13 +16,14 @@
 
 package connectors.httpParsers
 
-import connectors.httpParsers.AppointReportingCompanyHttpParser.{AppointReportingCompanyReads, InvalidSuccessResponse, SuccessResponse, UnexpectedFailure}
+import assets.appointReportingCompany.AppointReportingCompanyConstants._
+import connectors.httpParsers.AppointReportingCompanyHttpParser.AppointReportingCompanyReads
+import connectors.{InvalidSuccessResponse, DesSuccessResponse, UnexpectedFailure}
 import org.scalatest.{Matchers, WordSpec}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.http.Status
 import play.api.libs.json.Json
 import uk.gov.hmrc.http.HttpResponse
-import assets.appointReportingCompany.AppointReportingCompanyConstants._
 
 class AppointReportingCompanyHttpParserSpec extends WordSpec with Matchers with GuiceOneAppPerSuite  {
 
@@ -34,7 +35,7 @@ class AppointReportingCompanyHttpParserSpec extends WordSpec with Matchers with 
 
       "return a Right containing an acknowledgementReference" in {
 
-        val expectedResult = Right(SuccessResponse(ackRef))
+        val expectedResult = Right(DesSuccessResponse(ackRef))
         val actualResult = AppointReportingCompanyReads.read("", "", HttpResponse(Status.OK, Some(ackRefResponse)))
 
         actualResult shouldBe expectedResult

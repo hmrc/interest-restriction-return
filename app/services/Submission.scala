@@ -14,24 +14,15 @@
  * limitations under the License.
  */
 
-package services.mocks
+package services
 
 import connectors.HttpHelper.SubmissionResponse
-import models.abbreviatedReturn.AbbreviatedReturnModel
 import models.requests.IdentifierRequest
-import org.scalamock.scalatest.MockFactory
-import services.AbbreviatedReturnService
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait MockAbbreviatedReturnService extends MockFactory {
+trait Submission[T] {
 
-  lazy val mockAbbreviatedReturnService: AbbreviatedReturnService = mock[AbbreviatedReturnService]
-
-  def mockAbbreviatedReturn(model: AbbreviatedReturnModel)(response: SubmissionResponse): Unit = {
-    (mockAbbreviatedReturnService.submit(_: AbbreviatedReturnModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
-      .expects(model, *, *, *)
-      .returns(Future.successful(response))
-  }
+  def submit(submission: T)(implicit hc: HeaderCarrier,ec: ExecutionContext,request: IdentifierRequest[_]): Future[SubmissionResponse]
 }

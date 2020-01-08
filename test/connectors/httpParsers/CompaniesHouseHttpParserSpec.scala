@@ -16,7 +16,8 @@
 
 package connectors.httpParsers
 
-import connectors.httpParsers.CompaniesHouseHttpParser.{CompaniesHouseReads, InvalidCRN, UnexpectedFailure, ValidCRN}
+import connectors.httpParsers.CompaniesHouseHttpParser.CompaniesHouseReads
+import connectors.{InvalidCRN, UnexpectedFailure, ValidCRN}
 import org.scalatest.{Matchers, WordSpec}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.http.Status

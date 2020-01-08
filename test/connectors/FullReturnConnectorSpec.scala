@@ -17,7 +17,7 @@
 package connectors
 
 import assets.fullReturn.FullReturnConstants._
-import connectors.httpParsers.FullReturnHttpParser.{FullReturnResponse, ErrorResponse, SuccessResponse, UnexpectedFailure}
+import connectors.HttpHelper.SubmissionResponse
 import connectors.mocks.MockHttpClient
 import models.fullReturn.FullReturnModel
 import play.api.http.Status._
@@ -27,9 +27,9 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
 
   "FullReturnConnector.submit using fullReturnModelMax" when {
 
-    def setup(response: FullReturnResponse): FullReturnConnector = {
+    def setup(response: SubmissionResponse): FullReturnConnector = {
       val desUrl = "http://localhost:9262/interest-restriction/return/full"
-      mockHttpPost[FullReturnModel, Either[ErrorResponse, SuccessResponse]](desUrl, fullReturnModelMax)(response)
+      mockHttpPost[FullReturnModel, Either[ErrorResponse, DesSuccessResponse]](desUrl, fullReturnModelMax)(response)
       new FullReturnConnector(mockHttpClient, appConfig)
     }
 
@@ -37,10 +37,10 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
 
       "return a Right(SuccessResponse)" in {
 
-        val connector = setup(Right(SuccessResponse("ackRef")))
+        val connector = setup(Right(DesSuccessResponse("ackRef")))
         val result = connector.submit(fullReturnModelMax)
 
-        await(result) shouldBe Right(SuccessResponse("ackRef"))
+        await(result) shouldBe Right(DesSuccessResponse("ackRef"))
       }
     }
 
@@ -58,9 +58,9 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
 
   "FullReturnConnector.submit using fullReturnModelMin" when {
 
-    def setup(response: FullReturnResponse): FullReturnConnector = {
+    def setup(response: SubmissionResponse): FullReturnConnector = {
       val desUrl = "http://localhost:9262/interest-restriction/return/full"
-      mockHttpPost[FullReturnModel, Either[ErrorResponse, SuccessResponse]](desUrl, fullReturnModelMin)(response)
+      mockHttpPost[FullReturnModel, Either[ErrorResponse, DesSuccessResponse]](desUrl, fullReturnModelMin)(response)
       new FullReturnConnector(mockHttpClient, appConfig)
     }
 
@@ -68,10 +68,10 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
 
       "return a Right(SuccessResponse)" in {
 
-        val connector = setup(Right(SuccessResponse(ackRef)))
+        val connector = setup(Right(DesSuccessResponse(ackRef)))
         val result = connector.submit(fullReturnModelMin)
 
-        await(result) shouldBe Right(SuccessResponse(ackRef))
+        await(result) shouldBe Right(DesSuccessResponse(ackRef))
       }
     }
 

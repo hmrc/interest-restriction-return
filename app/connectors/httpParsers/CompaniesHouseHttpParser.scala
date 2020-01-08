@@ -16,19 +16,17 @@
 
 package connectors.httpParsers
 
+import connectors.HttpHelper.CompaniesHouseResponse
+import connectors.{HttpErrorMessages, InvalidCRN, UnexpectedFailure, ValidCRN}
 import play.api.Logger
 import play.api.http.Status._
-import play.api.libs.json.Json
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
 object CompaniesHouseHttpParser {
 
-  type CompaniesHouseResponse = Either[ErrorResponse, SuccessResponse]
-
   implicit object CompaniesHouseReads extends HttpReads[CompaniesHouseResponse] {
 
     override def read(method: String, url: String, response: HttpResponse): CompaniesHouseResponse = {
-
       response.status match {
         case OK =>
           Logger.debug("[CompaniesHouseHttpParser][read]: Status OK")
@@ -38,21 +36,8 @@ object CompaniesHouseHttpParser {
           Left(InvalidCRN)
         case status =>
           Logger.warn(s"[CompaniesHouseReads][read]: Unexpected response, status $status returned")
-          Left(UnexpectedFailure(status, s"Status $status Error returned when calling Companies House"))
+          Left(UnexpectedFailure(response.status,s"Status ${response.status} ${HttpErrorMessages.CRN_UNEXPECTED_ERROR}"))
       }
     }
-  }
-
-  sealed trait SuccessResponse
-  case object ValidCRN extends SuccessResponse
-
-  sealed trait ErrorResponse {
-    val status: Int = INTERNAL_SERVER_ERROR
-    val body: String
-  }
-  case class UnexpectedFailure(override val status: Int, override val body: String) extends ErrorResponse
-  case object InvalidCRN extends ErrorResponse {
-    override val status: Int = NOT_FOUND
-    override val body: String = "CRN Not Found on Companies House"
   }
 }

@@ -17,7 +17,7 @@
 package connectors.mocks
 
 import connectors.AbbreviatedReturnConnector
-import connectors.httpParsers.AbbreviatedReturnHttpParser.AbbreviatedReturnResponse
+import connectors.HttpHelper.SubmissionResponse
 import models.abbreviatedReturn.AbbreviatedReturnModel
 import models.requests.IdentifierRequest
 import org.scalamock.scalatest.MockFactory
@@ -29,7 +29,7 @@ trait MockAbbreviatedReturnConnector extends MockFactory {
 
   lazy val mockAbbreviatedReturnConnector: AbbreviatedReturnConnector = mock[AbbreviatedReturnConnector]
 
-  def mockAbbreviatedReturn(model: AbbreviatedReturnModel)(response: AbbreviatedReturnResponse): Unit = {
+  def mockAbbreviatedReturn(model: AbbreviatedReturnModel)(response: SubmissionResponse): Unit = {
     (mockAbbreviatedReturnConnector.submitAbbreviatedReturn(_: AbbreviatedReturnModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
       .expects(model, *, *, *)
       .returns(Future.successful(response))

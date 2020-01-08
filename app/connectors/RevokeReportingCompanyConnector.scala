@@ -16,9 +16,11 @@
 
 package connectors
 
-import config.AppConfig
-import connectors.httpParsers.RevokeReportingCompanyHttpParser.{RevokeReportingCompanyReads, RevokeReportingCompanyResponse}
 import javax.inject.Inject
+
+import config.AppConfig
+import connectors.HttpHelper.SubmissionResponse
+import connectors.httpParsers.RevokeReportingCompanyHttpParser.RevokeReportingCompanyReads
 import models.requests.IdentifierRequest
 import models.revokeReportingCompany.RevokeReportingCompanyModel
 import play.api.Logger
@@ -34,7 +36,7 @@ class RevokeReportingCompanyConnector @Inject()(httpClient: HttpClient,
   private[connectors] lazy val revokeUrl = s"${appConfig.desUrl}/interest-restriction/reporting-company/revoke"
 
   def revoke(revokeReportingCompanyModel: RevokeReportingCompanyModel)
-             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[RevokeReportingCompanyResponse] = {
+             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
 
     Logger.debug(s"[RevokeReportingCompanyConnector][revoke] URL: $revokeUrl")
     Logger.debug(s"[RevokeReportingCompanyConnector][revoke] Headers: ${desHc.headers}")

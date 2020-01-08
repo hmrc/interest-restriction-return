@@ -16,9 +16,10 @@
 
 package services
 
-import connectors.CompaniesHouseConnector
-import connectors.httpParsers.CompaniesHouseHttpParser.CompaniesHouseResponse
 import javax.inject.Inject
+
+import connectors.CompaniesHouseConnector
+import connectors.HttpHelper.CompaniesHouseResponse
 import models.CRNModel
 import models.requests.IdentifierRequest
 import uk.gov.hmrc.http.HeaderCarrier

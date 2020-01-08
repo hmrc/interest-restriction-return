@@ -17,8 +17,11 @@
 package connectors
 
 import config.AppConfig
+import connectors.HttpHelper.SubmissionResponse
 import models.requests.IdentifierRequest
-import uk.gov.hmrc.http.HeaderCarrier
+import play.api.Logger
+import play.api.http.Status.OK
+import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import uk.gov.hmrc.http.logging.Authorization
 
 trait DesBaseConnector {
@@ -27,4 +30,21 @@ trait DesBaseConnector {
     hc.withExtraHeaders(appConfig.desEnvironmentHeader, "providerId" -> request.identifier)
       .copy(authorization = Some(Authorization(appConfig.desAuthorisationToken)))
 
+  def handleHttpResponse(response: HttpResponse, parserName: String, unexpectedErrorMessage: String): SubmissionResponse = {
+    response.status match {
+      case OK =>
+        Logger.debug(s"[$parserName][read]: Status OK")
+        Logger.debug(s"[$parserName][read]: Json Response: ${response.json}")
+        response.json.validate[DesSuccessResponse](DesSuccessResponse.fmt).fold(
+          invalid => {
+            Logger.warn(s"[$parserName][read]: Invalid Success Response Json - $invalid")
+            Left(InvalidSuccessResponse)
+          },
+          valid => Right(valid)
+        )
+      case status =>
+        Logger.warn(s"[$parserName][read]: Unexpected response, status $status returned")
+        Left(UnexpectedFailure(response.status,s"Status ${response.status} $unexpectedErrorMessage"))
+    }
+  }
 }

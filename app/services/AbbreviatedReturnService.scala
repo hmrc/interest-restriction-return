@@ -16,19 +16,21 @@
 
 package services
 
-import connectors.AbbreviatedReturnConnector
-import connectors.httpParsers.AbbreviatedReturnHttpParser.AbbreviatedReturnResponse
 import javax.inject.Inject
+
+import connectors.AbbreviatedReturnConnector
+import connectors.HttpHelper.SubmissionResponse
 import models.abbreviatedReturn.AbbreviatedReturnModel
 import models.requests.IdentifierRequest
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class AbbreviatedReturnService @Inject()(abbreviatedReturnConnector: AbbreviatedReturnConnector) {
+class AbbreviatedReturnService @Inject()(abbreviatedReturnConnector: AbbreviatedReturnConnector)
+  extends Submission[AbbreviatedReturnModel]{
 
-  def submitsAbbreviatedReturn(abbreviatedReturn: AbbreviatedReturnModel)
-             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[AbbreviatedReturnResponse] =
+  override def submit(abbreviatedReturn: AbbreviatedReturnModel)
+             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] =
     abbreviatedReturnConnector.submitAbbreviatedReturn(abbreviatedReturn)
 
 }

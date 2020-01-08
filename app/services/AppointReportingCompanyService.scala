@@ -16,19 +16,21 @@
 
 package services
 
-import connectors.AppointReportingCompanyConnector
-import connectors.httpParsers.AppointReportingCompanyHttpParser.AppointReportingCompanyResponse
 import javax.inject.Inject
+
+import connectors.AppointReportingCompanyConnector
+import connectors.HttpHelper.SubmissionResponse
 import models.appointReportingCompany.AppointReportingCompanyModel
 import models.requests.IdentifierRequest
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class AppointReportingCompanyService @Inject()(appointReportingCompanyConnector: AppointReportingCompanyConnector) {
+class AppointReportingCompanyService @Inject()(appointReportingCompanyConnector: AppointReportingCompanyConnector)
+  extends Submission[AppointReportingCompanyModel]{
 
-  def appoint(appointReportingCompany: AppointReportingCompanyModel)
-             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[AppointReportingCompanyResponse] =
+  override def submit(appointReportingCompany: AppointReportingCompanyModel)
+                     (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] =
     appointReportingCompanyConnector.appoint(appointReportingCompany)
 
 }

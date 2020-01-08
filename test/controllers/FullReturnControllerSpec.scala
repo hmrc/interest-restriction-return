@@ -17,7 +17,7 @@
 package controllers
 
 import assets.fullReturn.FullReturnConstants._
-import connectors.httpParsers.FullReturnHttpParser.{SuccessResponse, UnexpectedFailure}
+import connectors.{DesSuccessResponse, UnexpectedFailure}
 import play.api.http.Status
 import play.api.libs.json.Json
 import play.api.test.{FakeRequest, Helpers}
@@ -48,7 +48,7 @@ class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
 
           "return 200 (OK)" in {
 
-            mockFullReturn(fullReturnModelMax)(Right(SuccessResponse(ackRef)))
+            mockFullReturn(fullReturnModelMax)(Right(DesSuccessResponse(ackRef)))
             val result = AuthorisedController.submit()(validJsonFakeRequest)
             status(result) shouldBe Status.OK
           }

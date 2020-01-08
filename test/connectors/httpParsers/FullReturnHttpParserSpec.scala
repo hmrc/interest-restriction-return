@@ -17,7 +17,8 @@
 package connectors.httpParsers
 
 import assets.fullReturn.FullReturnConstants._
-import connectors.httpParsers.FullReturnHttpParser.{FullReturnReads, InvalidSuccessResponse, SuccessResponse, UnexpectedFailure}
+import connectors.{InvalidSuccessResponse, DesSuccessResponse, UnexpectedFailure}
+import connectors.httpParsers.FullReturnHttpParser.FullReturnReads
 import org.scalatest.{Matchers, WordSpec}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.http.Status
@@ -34,7 +35,7 @@ class FullReturnHttpParserSpec extends WordSpec with Matchers with GuiceOneAppPe
 
       "return a Right containing an acknowledgementReference" in {
 
-        val expectedResult = Right(SuccessResponse(ackRef))
+        val expectedResult = Right(DesSuccessResponse(ackRef))
         val actualResult = FullReturnReads.read("", "", HttpResponse(Status.OK, Some(ackRefResponse)))
 
         actualResult shouldBe expectedResult

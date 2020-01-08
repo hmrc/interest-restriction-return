@@ -84,5 +84,5 @@ case class NetTaxInterestIncomeError(netTaxInterestIncome: BigDecimal)(implicit 
 case class ExpenseAndIncomeBothNotGreaterThanZero(netTaxInterestExpense: BigDecimal,netTaxInterestIncome: BigDecimal)
                                                  (implicit val path: JsPath) extends Validation {
   val errorMessage: String = "UK Company Model cannot contain Positive for Expense and Income fields"
-  val value = Json.toJson(netTaxInterestExpense,netTaxInterestIncome)
+  val value = Json.toJson((netTaxInterestExpense,netTaxInterestIncome))
 }

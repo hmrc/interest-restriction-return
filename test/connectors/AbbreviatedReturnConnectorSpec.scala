@@ -17,7 +17,7 @@
 package connectors
 
 import assets.abbreviatedReturn.AbbreviatedReturnConstants._
-import connectors.httpParsers.AbbreviatedReturnHttpParser.{AbbreviatedReturnResponse, ErrorResponse, SuccessResponse, UnexpectedFailure}
+import connectors.HttpHelper.SubmissionResponse
 import connectors.mocks.MockHttpClient
 import models.abbreviatedReturn.AbbreviatedReturnModel
 import play.api.http.Status._
@@ -27,9 +27,9 @@ class AbbreviatedReturnConnectorSpec extends MockHttpClient with BaseSpec {
 
   "AbbreviatedReturnConnector.submitAbbreviatedReturn" when {
 
-    def setup(response: AbbreviatedReturnResponse): AbbreviatedReturnConnector = {
+    def setup(response: SubmissionResponse): AbbreviatedReturnConnector = {
       val desUrl = "http://localhost:9262/interest-restriction/return/abbreviated"
-      mockHttpPost[AbbreviatedReturnModel, Either[ErrorResponse, SuccessResponse]](desUrl, abbreviatedReturnModelMax)(response)
+      mockHttpPost[AbbreviatedReturnModel, Either[ErrorResponse, DesSuccessResponse]](desUrl, abbreviatedReturnModelMax)(response)
       new AbbreviatedReturnConnector(mockHttpClient, appConfig)
     }
 
@@ -37,10 +37,10 @@ class AbbreviatedReturnConnectorSpec extends MockHttpClient with BaseSpec {
 
       "return a Right(SuccessResponse)" in {
 
-        val connector = setup(Right(SuccessResponse(ackRef)))
+        val connector = setup(Right(DesSuccessResponse(ackRef)))
         val result = connector.submitAbbreviatedReturn(abbreviatedReturnModelMax)
 
-        await(result) shouldBe Right(SuccessResponse(ackRef))
+        await(result) shouldBe Right(DesSuccessResponse(ackRef))
       }
     }
 
