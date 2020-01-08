@@ -24,7 +24,9 @@ trait IntegrationSpecBase extends WordSpec
     "application.router" -> "testOnlyDoNotUseInAppConf.Routes",
     "microservice.services.auth.host" -> mockHost,
     "microservice.services.auth.port" -> mockPort,
-    "microservice.services.des.url" -> mockUrl
+    "microservice.services.des.url" -> mockUrl,
+    "microservice.services.companies-house-api-proxy.host" -> mockHost,
+    "microservice.services.companies-house-api-proxy.port" -> mockPort
   )
 
   override def beforeEach(): Unit = {
