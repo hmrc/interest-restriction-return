@@ -17,14 +17,18 @@
 package controllers
 
 import assets.abbreviatedReturn.AbbreviatedReturnConstants._
-import connectors.{DesSuccessResponse, UnexpectedFailure}
+import connectors.httpParsers.AbbreviatedReturnHttpParser
+import connectors.httpParsers.AbbreviatedReturnHttpParser.SuccessResponse
+import connectors.httpParsers.CompaniesHouseHttpParser
+import connectors.httpParsers.CompaniesHouseHttpParser.InvalidCRN
+import models.ValidationErrorResponseModel
 import play.api.http.Status
 import play.api.libs.json.Json
 import play.api.test.{FakeRequest, Helpers}
-import services.mocks.MockAbbreviatedReturnService
+import services.mocks.{MockAbbreviatedReturnService, MockCompaniesHouseService}
 import utils.BaseSpec
 
-class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with BaseSpec {
+class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with MockCompaniesHouseService with BaseSpec {
 
   override lazy val fakeRequest = FakeRequest("POST", "/interest-restriction-return/return/abbreviated")
 
@@ -33,9 +37,10 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
     "the user is authenticated" when {
 
       object AuthorisedController extends AbbreviatedReturnController(
-        AuthorisedAction,
-        mockAbbreviatedReturnService,
-        Helpers.stubControllerComponents()
+        authAction = AuthorisedAction,
+        abbreviatedReturnService = mockAbbreviatedReturnService,
+        companiesHouseService = mockCompaniesHouseService,
+        controllerComponents = Helpers.stubControllerComponents()
       )
 
       "a valid payload is submitted" when {
@@ -44,21 +49,51 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
           .withBody(abbreviatedReturnJsonMax)
           .withHeaders("Content-Type" -> "application/json")
 
-        "a success response is returned from the service" should {
+        "a success response is returned from the companies house service with no validation errors" when {
 
-          "return 200 (OK)" in {
+          "a success response is returned from the abbreviated return service" should {
 
-            mockAbbreviatedReturn(abbreviatedReturnModelMax)(Right(DesSuccessResponse(ackRef)))
-            val result = AuthorisedController.submitAbbreviatedReturn()(validJsonFakeRequest)
-            status(result) shouldBe Status.OK
+            "return 200 (OK)" in {
+
+              mockCompaniesHouse(abbreviatedReturnModelMax.ukCrns)(Right(Seq.empty))
+              mockAbbreviatedReturn(abbreviatedReturnModelMax)(Right(SuccessResponse(ackRef)))
+              val result = AuthorisedController.submitAbbreviatedReturn()(validJsonFakeRequest)
+              status(result) shouldBe Status.OK
+            }
+          }
+
+          "an error response is returned from the service" should {
+
+            "return the Error" in {
+
+              mockCompaniesHouse(abbreviatedReturnModelMax.ukCrns)(Right(Seq.empty))
+              mockAbbreviatedReturn(abbreviatedReturnModelMax)(Left(AbbreviatedReturnHttpParser.UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
+              val result = AuthorisedController.submitAbbreviatedReturn()(validJsonFakeRequest)
+              status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+            }
           }
         }
 
-        "an error response is returned from the service" should {
+        "a success response is returned from the companies house service with validation errors" when {
+
+          "return the 400 (BAD REQUEST)" in {
+
+            mockCompaniesHouse(abbreviatedReturnModelMax.ukCrns)(Right(
+              abbreviatedReturnModelMax.ukCrns.map{
+                currentCrn => ValidationErrorResponseModel(currentCrn._1.toString, Json.toJson(crn), Seq(InvalidCRN.body))
+              }
+            ))
+
+            val result = AuthorisedController.submitAbbreviatedReturn()(validJsonFakeRequest)
+            status(result) shouldBe Status.BAD_REQUEST
+          }
+        }
+
+        "a error response is returned from the companies house service" when {
 
           "return the Error" in {
 
-            mockAbbreviatedReturn(abbreviatedReturnModelMax)(Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
+            mockCompaniesHouse(abbreviatedReturnModelMax.ukCrns)(Left(CompaniesHouseHttpParser.UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
             val result = AuthorisedController.submitAbbreviatedReturn()(validJsonFakeRequest)
             status(result) shouldBe Status.INTERNAL_SERVER_ERROR
           }
@@ -86,6 +121,7 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
         object UnauthorisedController extends AbbreviatedReturnController(
           authAction = UnauthorisedAction,
           abbreviatedReturnService = mockAbbreviatedReturnService,
+          companiesHouseService = mockCompaniesHouseService,
           controllerComponents = Helpers.stubControllerComponents()
         )
 

@@ -67,7 +67,10 @@ class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants {
 
       "max crns given" in {
 
-        val expectedValue = Seq(crn, crnLetters)
+        val expectedValue = Seq(
+          FullReturnModel.reportingCompanyCrnPath -> crn,
+          FullReturnModel.ultimateParentCrnPath -> crnLetters
+        )
         val actualValue = fullReturnModelMax.ukCrns
 
         actualValue shouldBe expectedValue
@@ -75,7 +78,9 @@ class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants {
 
       "min crns given" in {
 
-        val expectedValue = Seq(crn)
+        val expectedValue = Seq(
+          FullReturnModel.reportingCompanyCrnPath -> crn
+        )
         val actualValue = fullReturnModelMin.ukCrns
 
         actualValue shouldBe expectedValue

@@ -17,7 +17,7 @@
 package models.abbreviatedReturn
 
 import models._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsPath, Json}
 import validation.abbreviatedReturn.AbbreviatedReturnValidator
 
 case class AbbreviatedReturnModel(agentDetails: AgentDetailsModel,
@@ -32,9 +32,9 @@ case class AbbreviatedReturnModel(agentDetails: AgentDetailsModel,
 
   override val abbreviatedReturnModel: AbbreviatedReturnModel = this
 
-  val ukCrns: Seq[CRNModel] = Seq(
-    Some(reportingCompany.crn),
-    parentCompany.flatMap(_.ukCrn)
+  val ukCrns: Seq[(JsPath, CRNModel)] = Seq(
+    Some(AbbreviatedReturnModel.reportingCompanyCrnPath -> reportingCompany.crn),
+    parentCompany.flatMap(_.ukCrn).map(crn => AbbreviatedReturnModel.ultimateParentCrnPath -> crn)
   ).flatten
 }
 
@@ -42,4 +42,6 @@ object AbbreviatedReturnModel{
 
   implicit val format = Json.format[AbbreviatedReturnModel]
 
+  val reportingCompanyCrnPath = JsPath \ "reportingCompany" \ "crn"
+  val ultimateParentCrnPath = JsPath \ "parentCompany" \ "ultimateParent" \ "crn"
 }

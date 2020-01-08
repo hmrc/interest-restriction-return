@@ -67,7 +67,10 @@ class AbbreviatedReturnModelSpec extends WordSpec with Matchers with BaseConstan
 
       "max crns given" in {
 
-        val expectedValue = Seq(crn, crnLetters)
+        val expectedValue = Seq(
+          AbbreviatedReturnModel.reportingCompanyCrnPath -> crn,
+          AbbreviatedReturnModel.ultimateParentCrnPath -> crnLetters
+        )
         val actualValue = abbreviatedReturnModelMax.ukCrns
 
         actualValue shouldBe expectedValue
@@ -75,7 +78,9 @@ class AbbreviatedReturnModelSpec extends WordSpec with Matchers with BaseConstan
 
       "min crns given" in {
 
-        val expectedValue = Seq(crn)
+        val expectedValue = Seq(
+          AbbreviatedReturnModel.reportingCompanyCrnPath -> crn
+        )
         val actualValue = abbreviatedReturnModelMin.ukCrns
 
         actualValue shouldBe expectedValue

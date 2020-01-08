@@ -17,7 +17,7 @@
 package services
 
 import connectors.CompaniesHouseConnector
-import connectors.httpParsers.CompaniesHouseHttpParser.{InvalidCRN, UnexpectedFailure}
+import connectors.httpParsers.CompaniesHouseHttpParser.UnexpectedFailure
 import javax.inject.Inject
 import models.requests.IdentifierRequest
 import models.{CRNModel, ValidationErrorResponseModel}
@@ -28,35 +28,24 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class CompaniesHouseService @Inject()(companiesHouseConnector: CompaniesHouseConnector) {
 
-  def invalidCRNs(crns: Seq[(JsPath, CRNModel)])
-                 (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_])
-  : Future[Either[UnexpectedFailure, Seq[ValidationErrorResponseModel]]] = {
-
-    Future.sequence {
-      crns.map { case (field, crn) =>
-        companiesHouseConnector.validateCRN(crn).map {
-          case Left(InvalidCRN) => Some(Right(ValidationErrorResponseModel(field.toString, Json.toJson(crn), Seq(err.body))))
-          case Left(err) => Some(Left(err))
-          case Right(_) => None
-        }
-      }
-    } map { responses =>
-      if (responses.collect { case Some(Left(err)) => err }.nonEmpty)
-
-
-      _.collect {
-        case Some(validationError@Right(_)) => validationError
-      }
-    }
-  }
-
   def invalidCRNs(crns: Seq[(JsPath, CRNModel)], errors: Seq[ValidationErrorResponseModel] = Seq())
                  (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_])
   : Future[Either[UnexpectedFailure, Seq[ValidationErrorResponseModel]]] = {
-    crns.head
+
+    if(crns.isEmpty) {
+      Future.successful(Right(errors))
+    } else {
+      companiesHouseConnector.validateCRN(crns.head._2).flatMap {
+        case Left(err: UnexpectedFailure) =>
+          Future.successful(Left(err))
+        case Left(err) =>
+          invalidCRNs(
+            crns.tail,
+            errors :+ ValidationErrorResponseModel(crns.head._1.toString, Json.toJson(crns.head._2), Seq(err.body))
+          )
+        case _ =>
+          invalidCRNs(crns.tail, errors)
+      }
+    }
   }
-
-
-
-
 }
