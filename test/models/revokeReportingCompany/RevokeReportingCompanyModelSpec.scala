@@ -67,8 +67,8 @@ class RevokeReportingCompanyModelSpec extends WordSpec with Matchers with BaseCo
 
       "max crns given" in {
 
-        val expectedValue = Seq(crn, crnLetters, crn)
-        val actualValue = appointReportingCompanyModelMax.ukCrns
+        val expectedValue = Seq(crn, crnLetters)
+        val actualValue = revokeReportingCompanyModelMax.ukCrns
 
         actualValue shouldBe expectedValue
       }
@@ -76,7 +76,7 @@ class RevokeReportingCompanyModelSpec extends WordSpec with Matchers with BaseCo
       "min crns given" in {
 
         val expectedValue = Seq(crn)
-        val actualValue = appointReportingCompanyModelMin.ukCrns
+        val actualValue = revokeReportingCompanyModelMin.ukCrns
 
         actualValue shouldBe expectedValue
       }

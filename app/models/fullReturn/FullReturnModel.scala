@@ -41,13 +41,13 @@ case class FullReturnModel(agentDetails: AgentDetailsModel,
 
   val ukCrns: Seq[(JsPath, CRNModel)] = Seq(
     Some(FullReturnModel.reportingCompanyCrnPath -> reportingCompany.crn),
-    parentCompany.flatMap(_.ukCrn).map(crn => FullReturnModel.ultimateParentCrnPath -> crn)
+    parentCompany.flatMap(_.ukCrn.map(crn => FullReturnModel.ultimateParentCrnPath -> crn))
   ).flatten
 }
 
 object FullReturnModel{
   implicit val format = Json.format[FullReturnModel]
 
-  val reportingCompanyCrnPath = JsPath \ "reportingCompany" \ "crn"
-  val ultimateParentCrnPath = JsPath \ "parentCompany" \ "ultimateParent" \ "crn"
+  val reportingCompanyCrnPath: JsPath = JsPath \ "reportingCompany" \ "crn"
+  val ultimateParentCrnPath: JsPath = JsPath \ "parentCompany" \ "ultimateParent" \ "crn"
 }

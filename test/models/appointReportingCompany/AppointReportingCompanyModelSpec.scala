@@ -67,7 +67,11 @@ class AppointReportingCompanyModelSpec extends WordSpec with Matchers with BaseC
 
       "max crns given" in {
 
-        val expectedValue = Seq(crn, crnLetters, crn)
+        val expectedValue = Seq(
+          AppointReportingCompanyModel.reportingCompanyCrnPath -> crn,
+          AppointReportingCompanyModel.ultimateParentCrnPath -> crnLetters,
+          AppointReportingCompanyModel.identityOfAppointingCompanyCrnPath -> crn
+        )
         val actualValue = appointReportingCompanyModelMax.ukCrns
 
         actualValue shouldBe expectedValue
@@ -75,7 +79,9 @@ class AppointReportingCompanyModelSpec extends WordSpec with Matchers with BaseC
 
       "min crns given" in {
 
-        val expectedValue = Seq(crn)
+        val expectedValue = Seq(
+          AppointReportingCompanyModel.reportingCompanyCrnPath -> crn
+        )
         val actualValue = appointReportingCompanyModelMin.ukCrns
 
         actualValue shouldBe expectedValue

@@ -17,7 +17,7 @@
 package models.appointReportingCompany
 
 import models._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsPath, Json}
 import validation.appointReportingCompany.AppointReportingCompanyValidator
 
 case class AppointReportingCompanyModel(agentDetails: AgentDetailsModel,
@@ -31,10 +31,10 @@ case class AppointReportingCompanyModel(agentDetails: AgentDetailsModel,
 
   override val appointReportingCompanyModel: AppointReportingCompanyModel = this
 
-  val ukCrns: Seq[CRNModel] = Seq(
-    Some(reportingCompany.crn),
-    ultimateParentCompany.flatMap(_.crn),
-    identityOfAppointingCompany.flatMap(_.crn)
+  val ukCrns: Seq[(JsPath, CRNModel)] = Seq(
+    Some(AppointReportingCompanyModel.reportingCompanyCrnPath -> reportingCompany.crn),
+    ultimateParentCompany.flatMap(_.crn.map(crn => AppointReportingCompanyModel.ultimateParentCrnPath -> crn)),
+    identityOfAppointingCompany.flatMap(_.crn.map(crn => AppointReportingCompanyModel.identityOfAppointingCompanyCrnPath -> crn))
   ).flatten
 }
 
@@ -42,4 +42,7 @@ object AppointReportingCompanyModel{
 
   implicit val format = Json.format[AppointReportingCompanyModel]
 
+  val reportingCompanyCrnPath: JsPath = JsPath \ "reportingCompany" \ "crn"
+  val ultimateParentCrnPath: JsPath = JsPath \ "ultimateParentCompany" \ "crn"
+  val identityOfAppointingCompanyCrnPath: JsPath = JsPath \ "identityOfAppointingCompany" \ "crn"
 }
