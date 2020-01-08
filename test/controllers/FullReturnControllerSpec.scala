@@ -17,14 +17,17 @@
 package controllers
 
 import assets.fullReturn.FullReturnConstants._
-import connectors.{DesSuccessResponse, UnexpectedFailure}
+import connectors.httpParsers.{CompaniesHouseHttpParser, FullReturnHttpParser}
+import connectors.httpParsers.CompaniesHouseHttpParser.InvalidCRN
+import connectors.httpParsers.FullReturnHttpParser.SuccessResponse
+import models.ValidationErrorResponseModel
 import play.api.http.Status
 import play.api.libs.json.Json
 import play.api.test.{FakeRequest, Helpers}
-import services.mocks.MockFullReturnService
+import services.mocks.{MockCompaniesHouseService, MockFullReturnService}
 import utils.BaseSpec
 
-class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
+class FullReturnControllerSpec extends MockFullReturnService with MockCompaniesHouseService with BaseSpec {
 
   override lazy val fakeRequest = FakeRequest("POST", "/interest-restriction-return/return/full")
 
@@ -33,9 +36,10 @@ class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
     "the user is authenticated" when {
 
       object AuthorisedController extends FullReturnController(
-        AuthorisedAction,
-        mockFullReturnService,
-        Helpers.stubControllerComponents()
+        authAction = AuthorisedAction,
+        fullReturnService = mockFullReturnService,
+        companiesHouseService = mockCompaniesHouseService,
+        controllerComponents = Helpers.stubControllerComponents()
       )
 
       "a valid payload is submitted" when {
@@ -44,21 +48,53 @@ class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
           .withBody(fullReturnJsonMax)
           .withHeaders("Content-Type" -> "application/json")
 
-        "a success response is returned from the service" should {
+        "a success response is returned from the companies house service with no validation errors" when {
 
-          "return 200 (OK)" in {
+          "a success response is returned from the service full return service" should {
 
-            mockFullReturn(fullReturnModelMax)(Right(DesSuccessResponse(ackRef)))
-            val result = AuthorisedController.submit()(validJsonFakeRequest)
-            status(result) shouldBe Status.OK
+            "return 200 (OK)" in {
+
+              mockCompaniesHouse(fullReturnModelMax.ukCrns)(Right(Seq.empty))
+              mockFullReturn(fullReturnModelMax)(Right(SuccessResponse(ackRef)))
+
+              val result = AuthorisedController.submit()(validJsonFakeRequest)
+              status(result) shouldBe Status.OK
+            }
+          }
+
+          "an error response is returned from the service" should {
+
+            "return the Error" in {
+
+              mockCompaniesHouse(fullReturnModelMax.ukCrns)(Right(Seq.empty))
+              mockFullReturn(fullReturnModelMax)(Left(FullReturnHttpParser.UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
+
+              val result = AuthorisedController.submit()(validJsonFakeRequest)
+              status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+            }
           }
         }
 
-        "an error response is returned from the service" should {
+        "a success response is returned from the companies house service with validation errors" when {
+
+          "return the 400 (BAD REQUEST)" in {
+
+            mockCompaniesHouse(fullReturnModelMax.ukCrns)(Right(
+              fullReturnModelMax.ukCrns.map{
+                currentCrn => ValidationErrorResponseModel(currentCrn._1.toString, Json.toJson(crn), Seq(InvalidCRN.body))
+              }
+            ))
+
+            val result = AuthorisedController.submit()(validJsonFakeRequest)
+            status(result) shouldBe Status.BAD_REQUEST
+          }
+        }
+
+        "a error response is returned from the companies house service" when {
 
           "return the Error" in {
 
-            mockFullReturn(fullReturnModelMax)(Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
+            mockCompaniesHouse(fullReturnModelMax.ukCrns)(Left(CompaniesHouseHttpParser.UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
             val result = AuthorisedController.submit()(validJsonFakeRequest)
             status(result) shouldBe Status.INTERNAL_SERVER_ERROR
           }
@@ -86,6 +122,7 @@ class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
         object UnauthorisedController extends FullReturnController(
           authAction = UnauthorisedAction,
           fullReturnService = mockFullReturnService,
+          companiesHouseService = mockCompaniesHouseService,
           controllerComponents = Helpers.stubControllerComponents()
         )
 
