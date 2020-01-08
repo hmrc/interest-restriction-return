@@ -51,7 +51,6 @@ class AppointReportingCompanyControllerSpec extends MockAppointReportingCompanyS
 
         "a success response is returned from the companies house service with no validation errors" when {
 
-
           "a success response is returned from the appoint reporting company service" should {
 
             "return 200 (OK)" in {
