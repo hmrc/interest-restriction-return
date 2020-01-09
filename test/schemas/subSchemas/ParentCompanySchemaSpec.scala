@@ -28,23 +28,23 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
 
     "Return valid" when {
 
-      "Validated a successful JSON payload with UK Parent company" in {
+      "Validated a successful JSON payload with a Uk Ultimate Parent company" in {
 
         val json = Json.toJson(ParentCompany())
 
         validate(json) shouldBe true
       }
 
-      "Validated a successful JSON payload with NonUK Parent company" in {
+      "Validated a successful JSON payload with NonUK Ultimate Parent company" in {
 
         val json = Json.toJson(ParentCompany(
-          ultimateParent = Some(UltimateParent())
+          ultimateParent = Some(UltimateParent(isUk = Some(false)))
         ))
 
         validate(json) shouldBe true
       }
 
-      "Validated a successful JSON payload with Deemed Parent company" in {
+      "Validated a successful JSON payload with Uk Deemed Parent company" in {
 
         val json = Json.toJson(ParentCompany(
           ultimateParent = None, deemedParent = Some(Seq(DeemedParent()))
@@ -53,47 +53,87 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
         validate(json) shouldBe true
       }
 
-      "Validated a successful JSON payload with 3 Deemed Parent companies" in {
+
+      "Validated a successful JSON payload with Non Uk Deemed Parent company" in {
+
+        val json = Json.toJson(ParentCompany(
+          ultimateParent = None, deemedParent = Some(Seq(DeemedParent(isUk = Some(false))))
+        ))
+
+        validate(json) shouldBe true
+      }
+
+      "Validated a successful JSON payload with 3 Uk Deemed Parent companies" in {
 
         val json = Json.toJson(ParentCompany(
           ultimateParent = None, deemedParent = Some(Seq(
-            DeemedParent(), DeemedParent(), DeemedParent()
-          ))
+            DeemedParent(isUk = Some(true)), DeemedParent(isUk = Some(true)), DeemedParent(isUk = Some(true))))
         ))
 
         validate(json) shouldBe true
       }
 
-      //TODO undecided
-      "Validated a successful JSON with a Deemed Parent company with no UTR" in {
+      "Validated a successful JSON payload with a mix of Uk and Non Uk Deemed Parent companies" in {
+
+        val json = Json.toJson(ParentCompany(
+          ultimateParent = None, deemedParent = Some(Seq(
+            DeemedParent(isUk = Some(false)), DeemedParent(isUk = Some(true)), DeemedParent(isUk = Some(false))))
+        ))
+
+        validate(json) shouldBe true
+      }
+
+      "Validated a successful JSON with a Deemed Parent company with no ctutr" in {
 
         val json = Json.toJson(ParentCompany(
           ultimateParent = None, Some(Seq(
-            DeemedParent(ctutr = None)
-          ))
+            DeemedParent(ctutr = None)))
         ))
 
         validate(json) shouldBe true
       }
 
-      "Validated a successful JSON payload when ctutr is none" in {
+      "Validated a successful JSON with a Deemed Parent company with no sautr" in {
 
         val json = Json.toJson(ParentCompany(
-          ultimateParent = Some(UltimateParent(
-            ctutr = None
-          ))
+          ultimateParent = None, Some(Seq(DeemedParent(sautr = None)))
         ))
 
         validate(json) shouldBe true
       }
 
-
-      "Validated a successful JSON payload when knownAs is none" in {
+      "Validated a successful JSON payload when Deemed Parent knownAs is none" in {
 
         val json = Json.toJson(ParentCompany(
-          ultimateParent = Some(UltimateParent(
-            knownAs = None
-          ))
+          ultimateParent = None,
+          deemedParent = Some(Seq(DeemedParent(knownAs = None)))
+        ))
+
+        validate(json) shouldBe true
+      }
+
+      "Validated a successful JSON payload when Ultimate Parent ctutr is none" in {
+
+        val json = Json.toJson(ParentCompany(
+          ultimateParent = Some(UltimateParent(ctutr = None))
+        ))
+
+        validate(json) shouldBe true
+      }
+
+      "Validated a successful JSON payload when Ultimate Parent sautr is none" in {
+
+        val json = Json.toJson(ParentCompany(
+          ultimateParent = Some(UltimateParent(sautr = None))
+        ))
+
+        validate(json) shouldBe true
+      }
+
+      "Validated a successful JSON payload when Ultimate Parent knownAs is none" in {
+
+        val json = Json.toJson(ParentCompany(
+          ultimateParent = Some(UltimateParent(knownAs = None))
         ))
 
         validate(json) shouldBe true

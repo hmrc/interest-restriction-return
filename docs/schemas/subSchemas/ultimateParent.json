@@ -1,11 +1,17 @@
 {
   "type": "object",
   "properties": {
-    "registeredCompanyName": {
+    "isUk": {
+      "type": "boolean"
+    },
+    "companyName": {
       "$ref": "../definitions/definitions.json#/definitions/companyName"
     },
     "ctutr": {
       "$ref": "../definitions/definitions.json#/definitions/ctutr"
+    },
+    "sautr": {
+      "$ref": "../definitions/definitions.json#/definitions/sautr"
     },
     "knownAs": {
       "$ref": "../definitions/definitions.json#/definitions/companyName"
@@ -21,7 +27,8 @@
     }
   },
   "required": [
-    "registeredCompanyName"
+    "isUk",
+    "companyName"
   ],
   "additionalProperties": false
 }

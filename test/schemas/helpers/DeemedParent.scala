@@ -20,11 +20,15 @@ import models.UTRModel
 import models.CRNModel
 import play.api.libs.json.Json
 
-case class DeemedParent(companyName: Option[String] = Some("name"),
+case class DeemedParent(isUk: Option[Boolean] = Some(true),
+                        companyName: Option[String] = Some("name"),
                         knownAs: Option[String] = Some("efg"),
                         ctutr: Option[UTRModel] = Some(UTRModel("1111111111")),
+                        sautr: Option[UTRModel] = Some(UTRModel("1111111111")),
                         crn: Option[CRNModel] = Some(CRNModel("AB123456")),
-                        countryOfIncorporation: Option[String] = Some("US"))
+                        countryOfIncorporation: Option[String] = Some("US"),
+                        nonUkCrn: Option[String] = Some("12345678")
+                       )
 
 object DeemedParent {
   implicit val writes = Json.writes[DeemedParent]

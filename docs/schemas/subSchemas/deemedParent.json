@@ -5,6 +5,9 @@
   "items": {
     "type": "object",
     "properties": {
+      "isUk": {
+        "type": "boolean"
+      },
       "companyName": {
         "$ref": "../definitions/definitions.json#/definitions/companyName"
       },
@@ -14,14 +17,21 @@
       "ctutr": {
         "$ref": "../definitions/definitions.json#/definitions/ctutr"
       },
+      "sautr": {
+        "$ref": "../definitions/definitions.json#/definitions/sautr"
+      },
       "crn": {
         "$ref": "../definitions/definitions.json#/definitions/crn"
       },
       "countryOfIncorporation": {
         "$ref": "../definitions/countrycodes.json#/definitions/countryCode"
+      },
+      "nonUkCrn": {
+        "type": "string"
       }
     },
     "required": [
+      "isUk",
       "companyName"
     ],
     "additionalProperties": false

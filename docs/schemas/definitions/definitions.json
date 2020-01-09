@@ -7,6 +7,12 @@
       "maxLength": 10,
       "pattern": "[0-9]{10}"
     },
+    "sautr": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 10,
+      "pattern": "[0-9]{10}"
+    },
     "companyName": {
       "type": "string",
       "minLength": 1,

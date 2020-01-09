@@ -30,7 +30,7 @@ class DeemedParentValidatorSpec extends BaseSpec {
 
       "Return invalid" in {
 
-        val model = deemedParentModelMax.copy(ctutr = Some(ctutr))
+        val model = deemedParentModelMax
 
         leftSideError(model.validate).errorMessage shouldBe DeemedParentCannotBeUkAndNonUk(model).errorMessage
       }
@@ -39,10 +39,7 @@ class DeemedParentValidatorSpec extends BaseSpec {
       "Uk fields are populated" should {
 
         "Return valid" in {
-          val model = deemedParentModelMax.copy(
-            nonUkCrn = None,
-            countryOfIncorporation = None
-          )
+          val model = deemedParentModelUkCompany
 
           rightSide(model.validate) shouldBe model
         }
@@ -51,10 +48,7 @@ class DeemedParentValidatorSpec extends BaseSpec {
       "NonUk fields are populated" should {
 
         "Return valid" in {
-          val model = deemedParentModelMax.copy(
-            nonUkCrn = None,
-            ctutr = None
-          )
+          val model = deemedParentModelNonUkCompany
 
           rightSide(model.validate) shouldBe model
         }

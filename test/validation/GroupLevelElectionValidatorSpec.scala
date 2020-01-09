@@ -16,14 +16,16 @@
 
 package validation
 
+import assets.ConsolidatedPartnershipConstants._
 import assets.GroupLevelElectionsConstants._
 import assets.GroupRatioConstants._
 import assets.NonConsolidatedInvestmentElectionConstants._
-import assets.ConsolidatedPartnershipConstants._
-import models.{NonConsolidatedInvestmentModel, PartnershipModel}
+import models.{NonConsolidatedInvestmentModel, PartnershipModel, UTRModel}
 import play.api.libs.json.JsPath
 
 class GroupLevelElectionValidatorSpec extends BaseValidationSpec {
+
+  val sautrFake = UTRModel("1234567890")
 
   implicit val path = JsPath \ "some" \ "path"
 
@@ -66,7 +68,7 @@ class GroupLevelElectionValidatorSpec extends BaseValidationSpec {
         val model = groupLevelElectionsModelMax.copy(
           interestAllowanceConsolidatedPartnership = consolidatedPartnershipsModelMax.copy(
             isElected = true,
-            consolidatedPartnerships = Some(Seq(PartnershipModel("")))
+            consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = "", sautr = Some(sautrFake))))
           )
         )
 

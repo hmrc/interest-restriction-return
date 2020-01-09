@@ -23,36 +23,93 @@ import play.api.libs.json.Json
 
 object ParentCompanyConstants {
 
-  val parentCompanyJsonMax = Json.obj(
-    "ultimateParent" -> ultimateParentJsonMax,
-    "deemedParent" -> Seq(deemedParentJsonMax)
-  )
-
-  val parentCompanyJsonUlt = Json.obj(
-    "ultimateParent" -> ultimateParentJsonMax
-  )
-
   val parentCompanyModelMax = ParentCompanyModel(
     ultimateParent = Some(ultimateParentModelMax),
     deemedParent = Some(Seq(deemedParentModelMax))
   )
-
-  val parentCompanyJsonMin = Json.obj()
 
   val parentCompanyModelMin = ParentCompanyModel(
     ultimateParent = None,
     deemedParent = None
   )
 
-  val parentCompanyModelUlt = ParentCompanyModel(
-    ultimateParent = Some(ultimateParentModelMax),
+  val parentCompanyModelUltMax = ParentCompanyModel(
+    ultimateParent = Some(ultimateParentModelUkCompany),
     deemedParent = None
   )
 
-  val parentCompanyModelDee = ParentCompanyModel(
-    ultimateParent = None,
-    deemedParent = Some(Seq(deemedParentModelMax)
+  val parentCompanyModelUltUkCompany = ParentCompanyModel(
+    ultimateParent = Some(ultimateParentModelUkCompany),
+    deemedParent = None
   )
+
+  val parentCompanyModelUltNonUkCompany = ParentCompanyModel(
+    ultimateParent = Some(ultimateParentModelNonUkCompany),
+    deemedParent = None
+  )
+
+  val parentCompanyModelUltUkPartnership = ParentCompanyModel(
+    ultimateParent = Some(ultimateParentModelUkPartnership),
+    deemedParent = None
+  )
+
+  val parentCompanyModelDeemedMax = ParentCompanyModel(
+    ultimateParent = None,
+    deemedParent = Some(Seq(deemedParentModelUkCompany))
+  )
+
+  val parentCompanyModelDeemedUkCompany = ParentCompanyModel(
+    ultimateParent = None,
+    deemedParent = Some(Seq(deemedParentModelUkCompany))
+  )
+
+  val parentCompanyModelDeemedNonUkCompany = ParentCompanyModel(
+    ultimateParent = None,
+    deemedParent = Some(Seq(deemedParentModelNonUkCompany))
+  )
+
+  val parentCompanyModelDeemedUkPartnership = ParentCompanyModel(
+    ultimateParent = None,
+    deemedParent = Some(Seq(deemedParentModelUkPartnership))
+  )
+
+  val parentCompanyJsonMax = Json.obj(
+    "ultimateParent" -> ultimateParentJsonMax,
+    "deemedParent" -> Seq(deemedParentJsonMax)
+  )
+
+  val parentCompanyJsonMin = Json.obj()
+
+  val parentCompanyJsonUltMax= Json.obj(
+    "ultimateParent" -> ultimateParentJsonMax
+  )
+
+  val parentCompanyJsonUltUkCompany = Json.obj(
+    "ultimateParent" -> ultimateParentJsonUkCompany
+  )
+
+  val parentCompanyJsonUltNonUkCompany = Json.obj(
+    "ultimateParent" -> ultimateParentJsonNonUkCompany
+  )
+
+  val parentCompanyJsonUltUkPartnership = Json.obj(
+    "ultimateParent" -> ultimateParentJsonUkPartnership
+  )
+
+  val parentCompanyJsonDeemedMax = Json.obj(
+    "deemedParent" -> Seq(deemedParentJsonMax)
+  )
+
+  val parentCompanyJsonDeemedUkCompany = Json.obj(
+    "deemedParent" -> Seq(deemedParentJsonUkCompany)
+  )
+
+  val parentCompanyJsonDeemedNonUkCompany = Json.obj(
+    "deemedParent" -> Seq(deemedParentJsonNonUkCompany)
+  )
+
+  val parentCompanyJsonDeemedUkPartnership = Json.obj(
+    "deemedParent" -> Seq(deemedParentJsonUkPartnership)
   )
 }
 

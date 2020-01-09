@@ -30,20 +30,14 @@ class UltimateParentValidatorSpec extends BaseSpec {
     "Return valid" when {
 
       "Uk fields are populated" in {
-        val model = ultimateParentModelMax.copy(
-          nonUkCrn = None,
-          countryOfIncorporation = None
-        )
+        val model = ultimateParentModelUkCompany
 
         rightSide(model.validate) shouldBe model
       }
 
       "NonUk fields are populated" in {
 
-        val model = ultimateParentModelMax.copy(
-          crn = None,
-          ctutr = None
-        )
+        val model = ultimateParentModelNonUkCompany
 
         rightSide(model.validate) shouldBe model
       }
@@ -64,11 +58,11 @@ class UltimateParentValidatorSpec extends BaseSpec {
       "Company name" when {
 
         "Company name is empty" in {
-          leftSideError(ultimateParentModelMax.copy(registeredCompanyName = CompanyNameModel("")).validate).errorMessage shouldBe CompanyNameLengthError("").errorMessage
+          leftSideError(ultimateParentModelUkCompany.copy(companyName = CompanyNameModel("")).validate).errorMessage shouldBe CompanyNameLengthError("").errorMessage
         }
 
         s"Company name is longer that ${companyNameMaxLength}" in {
-          leftSideError(ultimateParentModelMax.copy(registeredCompanyName = companyNameTooLong).validate).errorMessage shouldBe CompanyNameLengthError("a" * (companyNameMaxLength + 1)).errorMessage
+          leftSideError(ultimateParentModelUkCompany.copy(companyName = companyNameTooLong).validate).errorMessage shouldBe CompanyNameLengthError("a" * (companyNameMaxLength + 1)).errorMessage
         }
       }
 

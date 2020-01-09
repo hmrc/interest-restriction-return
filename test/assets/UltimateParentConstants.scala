@@ -21,35 +21,100 @@ import play.api.libs.json.Json
 
 object UltimateParentConstants extends BaseConstants {
 
-  val knownAs = "something"
   val otherUkTaxReference = "other reference"
 
   val ultimateParentModelMax = UltimateParentModel(
-    registeredCompanyName = companyName,
-    ctutr = Some(ctutr),
-    crn = Some(crn),
+    isUk = true,
+    companyName = companyName,
     knownAs = Some(knownAs),
-    countryOfIncorporation = None,
-    nonUkCrn = None
-  )
-
-  val ultimateParentJsonMax = Json.obj(
-    "registeredCompanyName" -> companyName,
-    "ctutr" -> ctutr,
-    "crn" -> crn,
-    "knownAs" -> knownAs
+    ctutr = Some(ctutr),
+    sautr = Some(sautr),
+    crn = Some(crn),
+    nonUkCrn = Some(nonUkCrn),
+    countryOfIncorporation = Some(nonUkCountryCode)
   )
 
   val ultimateParentModelMin = UltimateParentModel(
-    registeredCompanyName = companyName,
-    ctutr = None,
-    crn = None,
+    isUk = true,
+    companyName = companyName,
     knownAs = None,
-    countryOfIncorporation = None,
-    nonUkCrn = None
+    ctutr = None,
+    sautr = None,
+    crn = None,
+    nonUkCrn = None,
+    countryOfIncorporation = None
+  )
+
+  val ultimateParentModelUkCompany = UltimateParentModel(
+    isUk = true,
+    companyName = companyName,
+    knownAs = Some(knownAs),
+    ctutr = Some(ctutr),
+    sautr = None,
+    crn = Some(crn),
+    nonUkCrn = None,
+    countryOfIncorporation = None
+  )
+
+  val ultimateParentModelNonUkCompany = UltimateParentModel(
+    isUk = false,
+    companyName = companyName,
+    knownAs = Some(knownAs),
+    ctutr = None,
+    sautr = None,
+    crn = None,
+    nonUkCrn = Some(nonUkCrn),
+    countryOfIncorporation = Some(nonUkCountryCode)
+  )
+
+  val ultimateParentModelUkPartnership = UltimateParentModel(
+    isUk = true,
+    companyName = companyName,
+    knownAs = Some(knownAs),
+    ctutr = None,
+    sautr = Some(sautr),
+    crn = Some(crn),
+    nonUkCrn = None,
+    countryOfIncorporation = None
+  )
+
+  val ultimateParentJsonMax = Json.obj(
+    "isUk" -> true,
+    "companyName" -> companyName,
+    "knownAs" -> knownAs,
+    "ctutr" -> ctutr,
+    "sautr" -> sautr,
+    "crn" -> crn,
+    "nonUkCrn" -> nonUkCrn,
+    "countryOfIncorporation" -> nonUkCountryCode
   )
 
   val ultimateParentJsonMin = Json.obj(
-    "registeredCompanyName" -> companyName
+    "isUk" -> true,
+    "companyName" -> companyName
+  )
+
+  val ultimateParentJsonUkCompany = Json.obj(
+    "isUk" -> true,
+    "companyName" -> companyName,
+    "knownAs" -> knownAs,
+    "ctutr" -> ctutr,
+    "crn" -> crn
+  )
+
+  val ultimateParentJsonNonUkCompany = Json.obj(
+    "isUk" -> false,
+    "companyName" -> companyName,
+    "knownAs" -> knownAs,
+    "nonUkCrn" -> nonUkCrn,
+    "countryOfIncorporation" -> nonUkCountryCode
+  )
+
+  val ultimateParentJsonUkPartnership = Json.obj(
+    "isUk" -> true,
+    "companyName" -> companyName,
+    "knownAs" -> knownAs,
+    "sautr" -> ctutr,
+    "crn" -> crn
   )
 }

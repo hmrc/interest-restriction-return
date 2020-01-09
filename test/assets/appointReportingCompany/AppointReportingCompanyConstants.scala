@@ -32,12 +32,10 @@ object AppointReportingCompanyConstants {
   val appointReportingCompanyJsonMax = Json.obj(
     "agentDetails" -> agentDetailsJsonMax,
     "reportingCompany" -> reportingCompanyJson,
-    "authorisingCompanies" -> Json.arr(
-      authorisingCompanyJson
-    ),
+    "authorisingCompanies" -> Json.arr(authorisingCompanyJson),
     "isReportingCompanyAppointingItself" -> false,
     "identityOfAppointingCompany" -> identityOfCompanySubmittingJsonMax,
-    "ultimateParentCompany" -> ultimateParentJsonMax,
+    "ultimateParentCompany" -> ultimateParentJsonUkCompany,
     "accountingPeriod" -> accountingPeriodJson,
     "declaration" -> true
   )
@@ -48,16 +46,14 @@ object AppointReportingCompanyConstants {
     authorisingCompanies = Seq(authorisingCompanyModel),
     isReportingCompanyAppointingItself = false,
     identityOfAppointingCompany = Some(identityOfCompanySubmittingModelMax),
-    ultimateParentCompany = Some(ultimateParentModelMax),
+    ultimateParentCompany = Some(ultimateParentModelUkCompany),
     accountingPeriod = accountingPeriodModel,
     declaration = true
   )
   val appointReportingCompanyJsonMin = Json.obj(
     "agentDetails" -> agentDetailsJsonMin,
     "reportingCompany" -> reportingCompanyJson,
-    "authorisingCompanies" -> Json.arr(
-      authorisingCompanyJson
-    ),
+    "authorisingCompanies" -> Json.arr(authorisingCompanyJson),
     "isReportingCompanyAppointingItself" -> true,
     "accountingPeriod" -> accountingPeriodJson,
     "declaration" -> true

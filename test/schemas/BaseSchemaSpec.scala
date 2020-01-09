@@ -16,6 +16,7 @@
 
 package schemas
 
+import models.{CountryCodeModel, UTRModel}
 import org.scalatest.{Matchers, WordSpec}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import utils.SchemaValidation
@@ -30,5 +31,8 @@ trait BaseSchemaSpec extends WordSpec with Matchers with GuiceOneAppPerSuite wit
   val crnLength = 8
   val electString = "elect"
   val revokeString = "revoke"
+  val ctutrFake = Some(UTRModel("1111111111"))
+  val sautrFake = Some(UTRModel("1111111111"))
+  val nonUKCountryCode = Some(CountryCodeModel("US"))
 
 }
