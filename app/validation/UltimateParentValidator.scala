@@ -26,24 +26,35 @@ trait UltimateParentValidator extends BaseValidation {
 
   val ultimateParentModel: UltimateParentModel
 
-  private def validateParentCanNotBeUkAndNonUk(implicit path: JsPath): ValidationResult[UltimateParentModel] = {
-    val isUk = ultimateParentModel.ctutr.isDefined || ultimateParentModel.crn.isDefined
+  private def validateUltimateParentCanNotBeUkAndNonUk(implicit path: JsPath): ValidationResult[UltimateParentModel] = {
+    val ukFlag = ultimateParentModel.isUk
+    val isUk = ultimateParentModel.ctutr.isDefined || ultimateParentModel.crn.isDefined || ultimateParentModel.sautr.isDefined
     val isNonUk = ultimateParentModel.countryOfIncorporation.isDefined || ultimateParentModel.nonUkCrn.isDefined
 
-    if(isUk && isNonUk) {
-      UltimateParentCannotBeUkAndNonUk(ultimateParentModel).invalidNec
-    } else {
-      ultimateParentModel.validNec
+    (ukFlag, isUk, isNonUk) match {
+      case (true, true, true) => UltimateParentCannotBeUkAndNonUk(ultimateParentModel).invalidNec
+      case _ => ultimateParentModel.validNec
+    }
+  }
+
+  private def validateCorrectUTRSupplied(implicit path: JsPath): ValidationResult[UltimateParentModel] = {
+    val ctutr = ultimateParentModel.ctutr.isDefined
+    val sautr = ultimateParentModel.sautr.isDefined
+
+    (ctutr, sautr) match {
+      case (true, true) => UltimateUTRSuppliedError(ultimateParentModel).invalidNec
+      case _ => ultimateParentModel.validNec
     }
   }
 
   def validate(implicit path: JsPath): ValidationResult[UltimateParentModel] =
-    (validateParentCanNotBeUkAndNonUk,
+    (validateUltimateParentCanNotBeUkAndNonUk,
+      validateCorrectUTRSupplied,
       ultimateParentModel.companyName.validate(path \ "companyName"),
       optionValidations(ultimateParentModel.ctutr.map(_.validate(path \ "ctutr"))),
       optionValidations(ultimateParentModel.crn.map(_.validate(path \ "crn"))),
       optionValidations(ultimateParentModel.countryOfIncorporation.map(_.validate(path \ "countryOfIncorporation")))
-      ).mapN((_,_,_,_,_) => ultimateParentModel)
+    ).mapN((_, _, _, _, _, _) => ultimateParentModel)
 }
 
 case class UltimateParentCannotBeUkAndNonUk(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {
@@ -51,8 +62,10 @@ case class UltimateParentCannotBeUkAndNonUk(model: UltimateParentModel)(implicit
   val value = Json.toJson(model)
 }
 
-
-
+case class UltimateUTRSuppliedError(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {
+  val errorMessage: String = "both ctutr and sautr cannot be supplied simultaneously for Uk Ultimate Parent"
+  val value = Json.toJson(model)
+}
 
 
 

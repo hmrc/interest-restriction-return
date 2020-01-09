@@ -27,22 +27,33 @@ trait DeemedParentValidator extends BaseValidation {
   val deemedParentModel: DeemedParentModel
 
   private def validateDeemedParentCanNotBeUkAndNonUk(implicit path: JsPath): ValidationResult[DeemedParentModel] = {
-    val isUk = deemedParentModel.ctutr.isDefined
+    val ukFlag = deemedParentModel.isUk
+    val isUk = deemedParentModel.ctutr.isDefined || deemedParentModel.crn.isDefined || deemedParentModel.sautr.isDefined
     val isNonUk = deemedParentModel.countryOfIncorporation.isDefined || deemedParentModel.nonUkCrn.isDefined
 
-    if(isUk && isNonUk) {
-      DeemedParentCannotBeUkAndNonUk(deemedParentModel).invalidNec
-    } else {
-      deemedParentModel.validNec
+    (ukFlag, isUk, isNonUk) match {
+      case (true, true, true) => DeemedParentCannotBeUkAndNonUk(deemedParentModel).invalidNec
+      case _ => deemedParentModel.validNec
+    }
+  }
+
+  private def validateCorrectUTRSupplied(implicit path: JsPath): ValidationResult[DeemedParentModel] = {
+    val ctutr = deemedParentModel.ctutr.isDefined
+    val sautr = deemedParentModel.sautr.isDefined
+
+    (ctutr, sautr) match {
+      case (true, true) => DeemedParentUTRSuppliedError(deemedParentModel).invalidNec
+      case _ => deemedParentModel.validNec
     }
   }
 
   def validate(implicit path: JsPath): ValidationResult[DeemedParentModel] =
     (validateDeemedParentCanNotBeUkAndNonUk,
+      validateCorrectUTRSupplied,
       deemedParentModel.companyName.validate(path \ "companyName"),
       optionValidations(deemedParentModel.ctutr.map(_.validate(path \ "ctutr"))),
       optionValidations(deemedParentModel.countryOfIncorporation.map(_.validate(path \ "countryOfIncorporation")))
-      ).mapN((_,_,_,_) => deemedParentModel)
+      ).mapN((_,_,_,_,_) => deemedParentModel)
 }
 
 case class DeemedParentCannotBeUkAndNonUk(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
@@ -50,6 +61,10 @@ case class DeemedParentCannotBeUkAndNonUk(model: DeemedParentModel)(implicit val
   val value = Json.toJson(model)
 }
 
+case class DeemedParentUTRSuppliedError(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
+  val errorMessage: String = "both ctutr and sautr cannot be supplied simultaneously for Uk Deemed Parent"
+  val value = Json.toJson(model)
+}
 
 
 

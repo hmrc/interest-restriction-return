@@ -29,6 +29,7 @@ trait BaseConstants {
   val knownAs = "something"
   val companyNameMaxLength = 160
   val companyNameTooLong = CompanyNameModel("a" * (companyNameMaxLength + 1))
+  val knownAsTooLong = "a" * (companyNameMaxLength + 1)
   val invalidCrn = CRNModel("AAAA1234")
   val nonUkCrn = "1234567890"
   val nonUkCountryCode = CountryCodeModel("US")

@@ -36,22 +36,29 @@ class DeemedParentValidatorSpec extends BaseSpec {
       }
     }
 
-      "Uk fields are populated" should {
+    "Uk fields are populated" should {
 
-        "Return valid" in {
-          val model = deemedParentModelUkCompany
+      "Return valid" in {
+        val model = deemedParentModelUkCompany
 
-          rightSide(model.validate) shouldBe model
-        }
-      }
-
-      "NonUk fields are populated" should {
-
-        "Return valid" in {
-          val model = deemedParentModelNonUkCompany
-
-          rightSide(model.validate) shouldBe model
-        }
+        rightSide(model.validate) shouldBe model
       }
     }
+
+    "NonUk fields are populated" should {
+
+      "Return valid" in {
+        val model = deemedParentModelNonUkCompany
+
+        rightSide(model.validate) shouldBe model
+      }
+    }
+
+    "Both versions of UTR are supplied for Uk Company" in {
+      val model = deemedParentModelUkCompany.copy(
+        sautr = Some(sautr))
+
+      leftSideError(model.validate).errorMessage shouldBe DeemedParentUTRSuppliedError(model).errorMessage
+    }
   }
+}
