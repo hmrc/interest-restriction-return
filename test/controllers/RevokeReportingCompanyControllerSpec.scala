@@ -17,9 +17,7 @@
 package controllers
 
 import assets.revokeReportingCompany.RevokeReportingCompanyConstants._
-import connectors.httpParsers.RevokeReportingCompanyHttpParser
-import connectors.httpParsers.RevokeReportingCompanyHttpParser.SuccessResponse
-import connectors.httpParsers.CompaniesHouseHttpParser
+import connectors.{DesSuccessResponse, InvalidCRN, UnexpectedFailure}
 import models.ValidationErrorResponseModel
 import play.api.http.Status
 import play.api.libs.json.Json
@@ -55,7 +53,7 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
             "return 200 (OK)" in {
 
               mockCompaniesHouse(revokeReportingCompanyModelMax.ukCrns)(Right(Seq.empty))
-              mockRevokeReportingCompany(revokeReportingCompanyModelMax)(Right(SuccessResponse(ackRef)))
+              mockRevokeReportingCompany(revokeReportingCompanyModelMax)(Right(DesSuccessResponse(ackRef)))
 
               val result = AuthorisedController.revoke()(validJsonFakeRequest)
               status(result) shouldBe Status.OK
@@ -68,7 +66,7 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
 
               mockCompaniesHouse(revokeReportingCompanyModelMax.ukCrns)(Right(Seq.empty))
               mockRevokeReportingCompany(revokeReportingCompanyModelMax)(Left(
-                RevokeReportingCompanyHttpParser.UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err"))
+                UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err"))
               )
 
               val result = AuthorisedController.revoke()(validJsonFakeRequest)
@@ -83,7 +81,7 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
 
             mockCompaniesHouse(revokeReportingCompanyModelMax.ukCrns)(Right(
               revokeReportingCompanyModelMax.ukCrns.map{
-                currentCrn => ValidationErrorResponseModel(currentCrn._1.toString, Json.toJson(crn), Seq(CompaniesHouseHttpParser.InvalidCRN.body))
+                currentCrn => ValidationErrorResponseModel(currentCrn._1.toString, Json.toJson(crn), Seq(InvalidCRN.body))
               }
             ))
 
@@ -96,7 +94,7 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
 
           "return the Error" in {
 
-            mockCompaniesHouse(revokeReportingCompanyModelMax.ukCrns)(Left(CompaniesHouseHttpParser.UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
+            mockCompaniesHouse(revokeReportingCompanyModelMax.ukCrns)(Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
             val result = AuthorisedController.revoke()(validJsonFakeRequest)
             status(result) shouldBe Status.INTERNAL_SERVER_ERROR
           }

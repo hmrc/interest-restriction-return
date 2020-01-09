@@ -16,7 +16,7 @@
 
 package services.mocks
 
-import connectors.httpParsers.CompaniesHouseHttpParser.UnexpectedFailure
+import connectors.UnexpectedFailure
 import models.requests.IdentifierRequest
 import models.{CRNModel, ValidationErrorResponseModel}
 import org.scalamock.scalatest.MockFactory

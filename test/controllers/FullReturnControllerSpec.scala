@@ -17,9 +17,7 @@
 package controllers
 
 import assets.fullReturn.FullReturnConstants._
-import connectors.httpParsers.{CompaniesHouseHttpParser, FullReturnHttpParser}
-import connectors.httpParsers.CompaniesHouseHttpParser.InvalidCRN
-import connectors.httpParsers.FullReturnHttpParser.SuccessResponse
+import connectors.{DesSuccessResponse, InvalidCRN, UnexpectedFailure}
 import models.ValidationErrorResponseModel
 import play.api.http.Status
 import play.api.libs.json.Json
@@ -55,7 +53,7 @@ class FullReturnControllerSpec extends MockFullReturnService with MockCompaniesH
             "return 200 (OK)" in {
 
               mockCompaniesHouse(fullReturnModelMax.ukCrns)(Right(Seq.empty))
-              mockFullReturn(fullReturnModelMax)(Right(SuccessResponse(ackRef)))
+              mockFullReturn(fullReturnModelMax)(Right(DesSuccessResponse(ackRef)))
 
               val result = AuthorisedController.submit()(validJsonFakeRequest)
               status(result) shouldBe Status.OK
@@ -67,7 +65,7 @@ class FullReturnControllerSpec extends MockFullReturnService with MockCompaniesH
             "return the Error" in {
 
               mockCompaniesHouse(fullReturnModelMax.ukCrns)(Right(Seq.empty))
-              mockFullReturn(fullReturnModelMax)(Left(FullReturnHttpParser.UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
+              mockFullReturn(fullReturnModelMax)(Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
 
               val result = AuthorisedController.submit()(validJsonFakeRequest)
               status(result) shouldBe Status.INTERNAL_SERVER_ERROR
@@ -94,7 +92,7 @@ class FullReturnControllerSpec extends MockFullReturnService with MockCompaniesH
 
           "return the Error" in {
 
-            mockCompaniesHouse(fullReturnModelMax.ukCrns)(Left(CompaniesHouseHttpParser.UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
+            mockCompaniesHouse(fullReturnModelMax.ukCrns)(Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
             val result = AuthorisedController.submit()(validJsonFakeRequest)
             status(result) shouldBe Status.INTERNAL_SERVER_ERROR
           }

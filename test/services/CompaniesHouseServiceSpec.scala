@@ -16,7 +16,7 @@
 
 package services
 
-import connectors.httpParsers.CompaniesHouseHttpParser.{InvalidCRN, UnexpectedFailure, ValidCRN}
+import connectors.{InvalidCRN, UnexpectedFailure, ValidCRN}
 import connectors.mocks.MockCompaniesHouseConnector
 import models.{CRNModel, ValidationErrorResponseModel}
 import play.api.http.Status._

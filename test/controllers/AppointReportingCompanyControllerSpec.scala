@@ -17,10 +17,7 @@
 package controllers
 
 import assets.appointReportingCompany.AppointReportingCompanyConstants._
-import connectors.httpParsers.AppointReportingCompanyHttpParser
-import connectors.httpParsers.AppointReportingCompanyHttpParser.SuccessResponse
-import connectors.httpParsers.CompaniesHouseHttpParser
-import connectors.httpParsers.CompaniesHouseHttpParser.InvalidCRN
+import connectors.{DesSuccessResponse, InvalidCRN, UnexpectedFailure}
 import models.ValidationErrorResponseModel
 import play.api.http.Status
 import play.api.libs.json.Json
@@ -56,7 +53,7 @@ class AppointReportingCompanyControllerSpec extends MockAppointReportingCompanyS
             "return 200 (OK)" in {
 
               mockCompaniesHouse(appointReportingCompanyModelMax.ukCrns)(Right(Seq.empty))
-              mockAppointReportingCompany(appointReportingCompanyModelMax)(Right(SuccessResponse(ackRef)))
+              mockAppointReportingCompany(appointReportingCompanyModelMax)(Right(DesSuccessResponse(ackRef)))
 
               val result = AuthorisedController.appoint()(validJsonFakeRequest)
               status(result) shouldBe Status.OK
@@ -68,9 +65,7 @@ class AppointReportingCompanyControllerSpec extends MockAppointReportingCompanyS
             "return the Error" in {
 
               mockCompaniesHouse(appointReportingCompanyModelMax.ukCrns)(Right(Seq.empty))
-              mockAppointReportingCompany(appointReportingCompanyModelMax)(Left(
-                AppointReportingCompanyHttpParser.UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err"))
-              )
+              mockAppointReportingCompany(appointReportingCompanyModelMax)(Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
 
               val result = AuthorisedController.appoint()(validJsonFakeRequest)
               status(result) shouldBe Status.INTERNAL_SERVER_ERROR
@@ -97,7 +92,7 @@ class AppointReportingCompanyControllerSpec extends MockAppointReportingCompanyS
 
           "return the Error" in {
 
-            mockCompaniesHouse(appointReportingCompanyModelMax.ukCrns)(Left(CompaniesHouseHttpParser.UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
+            mockCompaniesHouse(appointReportingCompanyModelMax.ukCrns)(Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
             val result = AuthorisedController.appoint()(validJsonFakeRequest)
             status(result) shouldBe Status.INTERNAL_SERVER_ERROR
           }

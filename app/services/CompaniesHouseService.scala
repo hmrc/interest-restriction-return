@@ -16,8 +16,7 @@
 
 package services
 
-import connectors.CompaniesHouseConnector
-import connectors.httpParsers.CompaniesHouseHttpParser.UnexpectedFailure
+import connectors.{CompaniesHouseConnector, UnexpectedFailure}
 import javax.inject.Inject
 import models.requests.IdentifierRequest
 import models.{CRNModel, ValidationErrorResponseModel}

@@ -17,10 +17,7 @@
 package controllers
 
 import assets.abbreviatedReturn.AbbreviatedReturnConstants._
-import connectors.httpParsers.AbbreviatedReturnHttpParser
-import connectors.httpParsers.AbbreviatedReturnHttpParser.SuccessResponse
-import connectors.httpParsers.CompaniesHouseHttpParser
-import connectors.httpParsers.CompaniesHouseHttpParser.InvalidCRN
+import connectors.{DesSuccessResponse, InvalidCRN, UnexpectedFailure}
 import models.ValidationErrorResponseModel
 import play.api.http.Status
 import play.api.libs.json.Json
@@ -56,7 +53,7 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
             "return 200 (OK)" in {
 
               mockCompaniesHouse(abbreviatedReturnModelMax.ukCrns)(Right(Seq.empty))
-              mockAbbreviatedReturn(abbreviatedReturnModelMax)(Right(SuccessResponse(ackRef)))
+              mockAbbreviatedReturn(abbreviatedReturnModelMax)(Right(DesSuccessResponse(ackRef)))
               val result = AuthorisedController.submitAbbreviatedReturn()(validJsonFakeRequest)
               status(result) shouldBe Status.OK
             }
@@ -67,7 +64,7 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
             "return the Error" in {
 
               mockCompaniesHouse(abbreviatedReturnModelMax.ukCrns)(Right(Seq.empty))
-              mockAbbreviatedReturn(abbreviatedReturnModelMax)(Left(AbbreviatedReturnHttpParser.UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
+              mockAbbreviatedReturn(abbreviatedReturnModelMax)(Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
               val result = AuthorisedController.submitAbbreviatedReturn()(validJsonFakeRequest)
               status(result) shouldBe Status.INTERNAL_SERVER_ERROR
             }
@@ -93,7 +90,7 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
 
           "return the Error" in {
 
-            mockCompaniesHouse(abbreviatedReturnModelMax.ukCrns)(Left(CompaniesHouseHttpParser.UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
+            mockCompaniesHouse(abbreviatedReturnModelMax.ukCrns)(Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
             val result = AuthorisedController.submitAbbreviatedReturn()(validJsonFakeRequest)
             status(result) shouldBe Status.INTERNAL_SERVER_ERROR
           }
