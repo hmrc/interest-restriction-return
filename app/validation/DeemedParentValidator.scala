@@ -33,6 +33,8 @@ trait DeemedParentValidator extends BaseValidation {
 
     (ukFlag, isUk, isNonUk) match {
       case (true, true, true) => DeemedParentCannotBeUkAndNonUk(deemedParentModel).invalidNec
+      case (true, false, true) => DeemedParentWrongDetailsError(deemedParentModel).invalidNec
+      case (false, true, false) => DeemedParentWrongDetailsError(deemedParentModel).invalidNec
       case _ => deemedParentModel.validNec
     }
   }
@@ -66,6 +68,10 @@ case class DeemedParentUTRSuppliedError(model: DeemedParentModel)(implicit val p
   val value = Json.toJson(model)
 }
 
+case class DeemedParentWrongDetailsError(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
+  val errorMessage: String = "you have given the wrong details for the type of deemed parent you have tried to supply"
+  val value = Json.toJson(model)
+}
 
 
 

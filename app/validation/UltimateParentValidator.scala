@@ -33,6 +33,8 @@ trait UltimateParentValidator extends BaseValidation {
 
     (ukFlag, isUk, isNonUk) match {
       case (true, true, true) => UltimateParentCannotBeUkAndNonUk(ultimateParentModel).invalidNec
+      case (true, false, true) => UltimateParentWrongDetailsError(ultimateParentModel).invalidNec
+      case (false, true, false) => UltimateParentWrongDetailsError(ultimateParentModel).invalidNec
       case _ => ultimateParentModel.validNec
     }
   }
@@ -40,9 +42,8 @@ trait UltimateParentValidator extends BaseValidation {
   private def validateCorrectUTRSupplied(implicit path: JsPath): ValidationResult[UltimateParentModel] = {
     val ctutr = ultimateParentModel.ctutr.isDefined
     val sautr = ultimateParentModel.sautr.isDefined
-
     (ctutr, sautr) match {
-      case (true, true) => UltimateUTRSuppliedError(ultimateParentModel).invalidNec
+      case (true, true) => UltimateParentUTRSuppliedError(ultimateParentModel).invalidNec
       case _ => ultimateParentModel.validNec
     }
   }
@@ -62,10 +63,17 @@ case class UltimateParentCannotBeUkAndNonUk(model: UltimateParentModel)(implicit
   val value = Json.toJson(model)
 }
 
-case class UltimateUTRSuppliedError(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {
+case class UltimateParentUTRSuppliedError(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {
   val errorMessage: String = "both ctutr and sautr cannot be supplied simultaneously for Uk Ultimate Parent"
   val value = Json.toJson(model)
 }
+
+case class UltimateParentWrongDetailsError(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {
+  val errorMessage: String = "you have given the wrong details for the type of ultimate parent you have tried to supply"
+  val value = Json.toJson(model)
+}
+
+
 
 
 

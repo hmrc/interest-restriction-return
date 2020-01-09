@@ -60,5 +60,27 @@ class DeemedParentValidatorSpec extends BaseSpec {
 
       leftSideError(model.validate).errorMessage shouldBe DeemedParentUTRSuppliedError(model).errorMessage
     }
+    "Return Invalid" when {
+
+      "if Uk Flag is false and Uk details are supplied " in {
+        val model = deemedParentModelNonUkCompany.copy(
+          ctutr = Some(ctutr),
+          nonUkCrn = None,
+          countryOfIncorporation = None)
+
+        leftSideError(model.validate).errorMessage shouldBe DeemedParentWrongDetailsError(model).errorMessage
+      }
+
+      "if Uk Flag is true and Non-Uk details are supplied " in {
+        val model = deemedParentModelUkCompany.copy(
+          ctutr = None,
+          crn = None,
+          nonUkCrn = Some(nonUkCrn)
+        )
+
+        leftSideError(model.validate).errorMessage shouldBe DeemedParentWrongDetailsError(model).errorMessage
+      }
+    }
+
   }
 }

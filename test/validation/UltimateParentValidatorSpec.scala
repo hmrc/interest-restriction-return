@@ -107,9 +107,27 @@ class UltimateParentValidatorSpec extends BaseSpec {
         val model = ultimateParentModelUkCompany.copy(
           sautr = Some(sautr))
 
-        leftSideError(model.validate).errorMessage shouldBe UltimateUTRSuppliedError(model).errorMessage
+        leftSideError(model.validate).errorMessage shouldBe UltimateParentUTRSuppliedError(model).errorMessage
       }
 
+      "if Uk Flag is false and Uk details are supplied " in {
+        val model = ultimateParentModelNonUkCompany.copy(
+          ctutr = Some(ctutr),
+          nonUkCrn = None,
+          countryOfIncorporation = None)
+
+        leftSideError(model.validate).errorMessage shouldBe UltimateParentWrongDetailsError(model).errorMessage
+      }
+
+      "if Uk Flag is true and Non-Uk details are supplied " in {
+        val model = ultimateParentModelUkCompany.copy(
+          ctutr = None,
+          crn = None,
+          nonUkCrn = Some(nonUkCrn)
+        )
+
+        leftSideError(model.validate).errorMessage shouldBe UltimateParentWrongDetailsError(model).errorMessage
+      }
     }
   }
 }
