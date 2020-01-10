@@ -41,7 +41,7 @@ object FullReturnConstants {
   val fullReturnModelMax = FullReturnModel(
     agentDetails = agentDetailsModelMax,
     reportingCompany = reportingCompanyModel,
-    parentCompany = Some(parentCompanyModelUlt),
+    parentCompany = Some(parentCompanyModelUltUkCompany),
     publicInfrastructure = true,
     groupCompanyDetails = groupCompanyDetailsModel,
     submissionType = Revised,
@@ -60,7 +60,7 @@ object FullReturnConstants {
   val fullReturnJsonMax = Json.obj(
     "agentDetails" -> agentDetailsJsonMax,
     "reportingCompany" -> reportingCompanyJson,
-    "parentCompany" -> parentCompanyJsonUlt,
+    "parentCompany" -> parentCompanyJsonUltUkCompany,
     "publicInfrastructure" -> true,
     "groupCompanyDetails" -> groupCompanyDetailsJson,
     "submissionType" -> Revised,

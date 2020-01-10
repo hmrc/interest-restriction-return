@@ -16,7 +16,7 @@
 
 package schemas.subSchemas
 
-import models.{CRNModel, UTRModel}
+import models.{CRNModel, CountryCodeModel, UTRModel}
 import play.api.libs.json.{JsValue, Json}
 import schemas.BaseSchemaSpec
 import schemas.helpers._
@@ -78,21 +78,21 @@ class UltimateParentCompanySchemaSpec extends BaseSchemaSpec {
 
         "is None" in {
 
-          val json = Json.toJson(UltimateParent(registeredCompanyName = None))
+          val json = Json.toJson(UltimateParent(companyName = None))
 
           validate(json) shouldBe false
         }
 
         s"is empty" in {
 
-          val json = Json.toJson(UltimateParent(registeredCompanyName = Some("")))
+          val json = Json.toJson(UltimateParent(companyName = Some("")))
 
           validate(json) shouldBe false
         }
 
         s"is longer than $maxCompanyNameLength characters" in {
 
-          val json = Json.toJson(UltimateParent(registeredCompanyName = Some("A" * (maxCompanyNameLength + 1))))
+          val json = Json.toJson(UltimateParent(companyName = Some("A" * (maxCompanyNameLength + 1))))
 
           validate(json) shouldBe false
         }
@@ -180,25 +180,25 @@ class UltimateParentCompanySchemaSpec extends BaseSchemaSpec {
 
         "is only one letter" in {
 
-          val json = Json.toJson(UltimateParent(countryOfIncorporation = Some("A")))
+          val json = Json.toJson(UltimateParent(countryOfIncorporation = Some(CountryCodeModel("A"))))
           validate(json) shouldBe false
         }
 
         "is three letters" in {
 
-          val json = Json.toJson(UltimateParent(countryOfIncorporation = Some("AAA")))
+          val json = Json.toJson(UltimateParent(countryOfIncorporation = Some(CountryCodeModel("AAA"))))
           validate(json) shouldBe false
         }
 
         "contains a number" in {
 
-          val json = Json.toJson(UltimateParent(countryOfIncorporation = Some("A1")))
+          val json = Json.toJson(UltimateParent(countryOfIncorporation = Some(CountryCodeModel("A1"))))
           validate(json) shouldBe false
         }
 
         "contains a symbol" in {
 
-          val json = Json.toJson(UltimateParent(countryOfIncorporation = Some("A@")))
+          val json = Json.toJson(UltimateParent(countryOfIncorporation = Some(CountryCodeModel("A@"))))
           validate(json) shouldBe false
         }
       }

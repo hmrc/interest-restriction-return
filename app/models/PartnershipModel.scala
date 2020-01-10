@@ -20,7 +20,8 @@ import play.api.libs.json.Json
 import validation.PartnershipValidator
 
 
-case class PartnershipModel(partnershipName: String) extends PartnershipValidator
+case class PartnershipModel(partnershipName: String,
+                            sautr:Option[UTRModel]) extends PartnershipValidator
 {
   override val partnershipModel = this
 }

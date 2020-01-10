@@ -38,7 +38,7 @@ class ParentCompanyValidatorSpec extends BaseValidationSpec {
       "Ultimate fields are populated" should {
 
         "Return valid" in {
-          val model = parentCompanyModelUlt
+          val model = parentCompanyModelUltMax
 
           rightSide(model.validate) shouldBe model
         }
@@ -47,7 +47,7 @@ class ParentCompanyValidatorSpec extends BaseValidationSpec {
       "Deemed fields are populated" should {
 
         "Return valid" in {
-          val model = parentCompanyModelDee
+          val model = parentCompanyModelDeemedMax
 
           rightSide(model.validate) shouldBe model
         }

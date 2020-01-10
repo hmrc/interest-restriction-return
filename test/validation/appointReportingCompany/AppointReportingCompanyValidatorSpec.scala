@@ -72,7 +72,7 @@ class AppointReportingCompanyValidatorSpec extends BaseSpec {
 
           val model = appointReportingCompanyModelMax.copy(
             reportingCompany = reportingCompanyModel.copy(sameAsUltimateParent = true),
-            ultimateParentCompany = Some(ultimateParentModelMax)
+            ultimateParentCompany = Some(ultimateParentModelUkCompany)
           )
           leftSideError(model.validate).errorMessage shouldBe UltimateParentCompanyIsSupplied(ultimateParentModelMax).errorMessage
         }
@@ -111,7 +111,7 @@ class AppointReportingCompanyValidatorSpec extends BaseSpec {
 
           val model = appointReportingCompanyModelMax.copy(
             reportingCompany = reportingCompanyModel.copy(sameAsUltimateParent = false),
-            ultimateParentCompany = Some(ultimateParentModelMax)
+            ultimateParentCompany = Some(ultimateParentModelUkCompany)
           )
           rightSide(model.validate) shouldBe model
         }

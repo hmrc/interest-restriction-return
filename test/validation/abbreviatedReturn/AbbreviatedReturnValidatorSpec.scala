@@ -64,8 +64,8 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
 
         leftSideError(abbreviatedReturnModelMax.copy(
           reportingCompany = reportingCompanyModel.copy(sameAsUltimateParent = true),
-          parentCompany = Some(parentCompanyModelUlt)
-        ).validate).errorMessage shouldBe ParentCompanyDetailsSupplied(parentCompanyModelUlt).errorMessage
+          parentCompany = Some(parentCompanyModelUltUkCompany)
+        ).validate).errorMessage shouldBe ParentCompanyDetailsSupplied(parentCompanyModelUltUkCompany).errorMessage
       }
 
       "Reporting Company is not the same as UPC and UPC is not supplied" in {

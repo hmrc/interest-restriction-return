@@ -68,8 +68,8 @@ class FullReturnValidatorSpec extends BaseSpec {
 
         leftSideError(fullReturnModelMax.copy(
           reportingCompany = reportingCompanyModel.copy(sameAsUltimateParent = true),
-          parentCompany = Some(parentCompanyModelUlt)
-        ).validate).errorMessage shouldBe ParentCompanyDetailsSupplied(parentCompanyModelUlt).errorMessage
+          parentCompany = Some(parentCompanyModelUltUkCompany)
+        ).validate).errorMessage shouldBe ParentCompanyDetailsSupplied(parentCompanyModelMax).errorMessage
       }
 
       "Reporting Company is not the same as UPC and UPC is not supplied" in {

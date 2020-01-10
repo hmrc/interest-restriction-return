@@ -21,28 +21,98 @@ import play.api.libs.json.Json
 
 object DeemedParentConstants extends BaseConstants {
 
-
   val deemedParentModelMax = DeemedParentModel(
+    isUk = true,
     companyName = companyName,
-    ctutr = None,
+    knownAs = Some(knownAs),
+    ctutr = Some(ctutr),
+    sautr = Some(sautr),
+    crn = Some(crn),
     nonUkCrn = Some(nonUkCrn),
     countryOfIncorporation = Some(nonUkCountryCode)
   )
 
-  val deemedParentJsonMax = Json.obj(
-    "companyName" -> companyName,
-    "nonUkCrn" -> nonUkCrn,
-    "countryOfIncorporation" -> nonUkCountryCode
-  )
-
   val deemedParentModelMin = DeemedParentModel(
+    isUk = true,
     companyName = companyName,
+    knownAs = None,
     ctutr = None,
+    crn = None,
+    sautr = None,
     nonUkCrn = None,
     countryOfIncorporation = None
   )
 
+  val deemedParentModelUkCompany = DeemedParentModel(
+    isUk = true,
+    companyName = companyName,
+    knownAs = Some(knownAs),
+    ctutr = Some(ctutr),
+    sautr = None,
+    crn = Some(crn),
+    nonUkCrn = None,
+    countryOfIncorporation = None
+  )
+
+  val deemedParentModelNonUkCompany = DeemedParentModel(
+    isUk = false,
+    companyName = companyName,
+    knownAs = Some(knownAs),
+    ctutr = None,
+    sautr = None,
+    crn = None,
+    nonUkCrn = Some(nonUkCrn),
+    countryOfIncorporation = Some(nonUkCountryCode)
+  )
+
+  val deemedParentModelUkPartnership = DeemedParentModel(
+    isUk = true,
+    companyName = companyName,
+    knownAs = Some(knownAs),
+    ctutr = None,
+    sautr = Some(sautr),
+    crn = Some(crn),
+    nonUkCrn = None,
+    countryOfIncorporation = None
+  )
+
+  val deemedParentJsonMax = Json.obj(
+    "isUk" -> true,
+    "companyName" -> companyName,
+    "knownAs" -> knownAs,
+    "ctutr" -> ctutr,
+    "sautr" -> sautr,
+    "crn" -> crn,
+    "nonUkCrn" -> nonUkCrn,
+    "countryOfIncorporation" -> Some(nonUkCountryCode)
+  )
+
   val deemedParentJsonMin = Json.obj(
+    "isUk" -> true,
     "companyName" -> companyName
+  )
+
+  val deemedParentJsonUkCompany = Json.obj(
+    "isUk" -> true,
+    "companyName" -> companyName,
+    "knownAs" -> knownAs,
+    "ctutr" -> ctutr,
+    "crn" -> crn
+  )
+
+  val deemedParentJsonNonUkCompany= Json.obj(
+    "isUk" -> false,
+    "companyName" -> companyName,
+    "knownAs" -> knownAs,
+    "nonUkCrn" -> crn,
+    "countryOfIncorporation" -> nonUkCountryCode
+  )
+
+  val deemedParentJsonUkPartnership = Json.obj(
+    "isUk" -> false,
+    "companyName" -> companyName,
+    "knownAs" -> knownAs,
+    "sautr" -> sautr,
+    "crn" -> crn
   )
 }

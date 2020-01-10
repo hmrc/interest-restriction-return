@@ -40,7 +40,7 @@ trait InvestorGroupValidator extends BaseValidation {
 }
 
 case class InvestorNameError(investorName: String)(implicit val topPath: JsPath) extends Validation {
-  val errorMessage: String = "Investor Names must not be more than 32767"
+  val errorMessage: String = "Investor Names must be between 1 and 32767 characters"
   val path = topPath \ "investorGroups"
   val value = Json.toJson(investorName)
 }

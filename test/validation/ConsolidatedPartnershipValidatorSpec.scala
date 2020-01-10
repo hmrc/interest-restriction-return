@@ -16,10 +16,12 @@
 
 package validation
 
-import models.{ConsolidatedPartnershipModel, PartnershipModel}
+import models.{ConsolidatedPartnershipModel, PartnershipModel, UTRModel}
 import play.api.libs.json.JsPath
 
 class ConsolidatedPartnershipValidatorSpec extends BaseValidationSpec {
+
+  val sautrFake = UTRModel("1234567890")
 
   implicit val path = JsPath \ "some" \ "path"
 
@@ -27,7 +29,7 @@ class ConsolidatedPartnershipValidatorSpec extends BaseValidationSpec {
     "Return valid" when {
 
       "isElected is true and a Seq of partnerships are given" in {
-        val model = ConsolidatedPartnershipModel(isElected = true, consolidatedPartnerships = Some(Seq(PartnershipModel("Partner 1"))))
+        val model = ConsolidatedPartnershipModel(isElected = true, consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = "Partner 1",sautr = Some(sautrFake)))))
         rightSide(model.validate) shouldBe model
       }
 
@@ -45,12 +47,12 @@ class ConsolidatedPartnershipValidatorSpec extends BaseValidationSpec {
       }
 
       "isElected is false and some partnerships are given" in {
-        val model = ConsolidatedPartnershipModel(isElected = false, consolidatedPartnerships = Some(Seq(PartnershipModel("Partner 1"))))
+        val model = ConsolidatedPartnershipModel(isElected = false, consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = "Partner 1", sautr = Some(sautrFake)))))
         leftSideError(model.validate).errorMessage shouldBe ConsolidatedPartnershipsSupplied(model).errorMessage
       }
 
       "consolidatedPartnerships is invalid" in {
-        val model = ConsolidatedPartnershipModel(isElected = true, consolidatedPartnerships = Some(Seq(PartnershipModel(""))))
+        val model = ConsolidatedPartnershipModel(isElected = true, consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = "", sautr = Some(sautrFake)))))
         leftSideError(model.validate).errorMessage shouldBe PartnershipNameError("").errorMessage
       }
     }

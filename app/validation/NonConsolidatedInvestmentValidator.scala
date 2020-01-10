@@ -40,7 +40,7 @@ trait NonConsolidatedInvestmentValidator extends BaseValidation {
 }
 
 case class NonConsolidatedInvestmentNameError(nonConsolidatedInvestment: String)(implicit val topPath: JsPath) extends Validation {
-  val errorMessage: String = "NonConsolidatedInvestment names must not be more than 32767"
+  val errorMessage: String = "NonConsolidatedInvestment names must be between 1 and 32767 characters"
   val path = topPath \ "investorGroups"
   val value = Json.toJson(nonConsolidatedInvestment)
 }

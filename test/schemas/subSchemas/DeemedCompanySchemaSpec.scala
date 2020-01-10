@@ -57,10 +57,8 @@ class DeemedCompanySchemaSpec extends BaseSchemaSpec {
 
         "is None" in {
 
-          val json = Json.toJson(Seq(DeemedParent(
-            companyName = None
+          val json = Json.toJson(Seq(DeemedParent(companyName = None
           )))
-
 
           validate(json) shouldBe false
         }
@@ -71,7 +69,6 @@ class DeemedCompanySchemaSpec extends BaseSchemaSpec {
             companyName = Some("")
           )))
 
-
           validate(json) shouldBe false
         }
 
@@ -80,7 +77,6 @@ class DeemedCompanySchemaSpec extends BaseSchemaSpec {
           val json = Json.toJson(Seq(DeemedParent(
             companyName = Some("A" * (maxCompanyNameLength + 1))
           )))
-
 
           validate(json) shouldBe false
         }
@@ -103,7 +99,6 @@ class DeemedCompanySchemaSpec extends BaseSchemaSpec {
             ctutr = Some(UTRModel("1" * (utrLength + 1)))
           )))
 
-
           validate(json) shouldBe false
         }
 
@@ -112,7 +107,6 @@ class DeemedCompanySchemaSpec extends BaseSchemaSpec {
           val json = Json.toJson(Seq(DeemedParent(
             ctutr = Some(UTRModel("a" * utrLength))
           )))
-
 
           validate(json) shouldBe false
         }
@@ -144,7 +138,6 @@ class DeemedCompanySchemaSpec extends BaseSchemaSpec {
             crn = Some(CRNModel("1" * (crnLength + 1)))
           )))
 
-
           validate(json) shouldBe false
         }
       }
@@ -157,7 +150,6 @@ class DeemedCompanySchemaSpec extends BaseSchemaSpec {
             knownAs = Some("")
           )))
 
-
           validate(json) shouldBe false
         }
 
@@ -166,7 +158,6 @@ class DeemedCompanySchemaSpec extends BaseSchemaSpec {
           val json = Json.toJson(Seq(DeemedParent(
             knownAs = Some("A" * (maxCompanyNameLength + 1))
           )))
-
 
           validate(json) shouldBe false
         }

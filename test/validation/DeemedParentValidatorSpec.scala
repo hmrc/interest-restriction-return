@@ -30,34 +30,57 @@ class DeemedParentValidatorSpec extends BaseSpec {
 
       "Return invalid" in {
 
-        val model = deemedParentModelMax.copy(ctutr = Some(ctutr))
+        val model = deemedParentModelMax
 
         leftSideError(model.validate).errorMessage shouldBe DeemedParentCannotBeUkAndNonUk(model).errorMessage
       }
     }
 
-      "Uk fields are populated" should {
+    "Uk fields are populated" should {
 
-        "Return valid" in {
-          val model = deemedParentModelMax.copy(
-            nonUkCrn = None,
-            countryOfIncorporation = None
-          )
+      "Return valid" in {
+        val model = deemedParentModelUkCompany
 
-          rightSide(model.validate) shouldBe model
-        }
-      }
-
-      "NonUk fields are populated" should {
-
-        "Return valid" in {
-          val model = deemedParentModelMax.copy(
-            nonUkCrn = None,
-            ctutr = None
-          )
-
-          rightSide(model.validate) shouldBe model
-        }
+        rightSide(model.validate) shouldBe model
       }
     }
+
+    "NonUk fields are populated" should {
+
+      "Return valid" in {
+        val model = deemedParentModelNonUkCompany
+
+        rightSide(model.validate) shouldBe model
+      }
+    }
+
+    "Both versions of UTR are supplied for Uk Company" in {
+      val model = deemedParentModelUkCompany.copy(
+        sautr = Some(sautr))
+
+      leftSideError(model.validate).errorMessage shouldBe DeemedParentUTRSuppliedError(model).errorMessage
+    }
+    "Return Invalid" when {
+
+      "if Uk Flag is false and Uk details are supplied " in {
+        val model = deemedParentModelNonUkCompany.copy(
+          ctutr = Some(ctutr),
+          nonUkCrn = None,
+          countryOfIncorporation = None)
+
+        leftSideError(model.validate).errorMessage shouldBe DeemedParentWrongDetailsError(model).errorMessage
+      }
+
+      "if Uk Flag is true and Non-Uk details are supplied " in {
+        val model = deemedParentModelUkCompany.copy(
+          ctutr = None,
+          crn = None,
+          nonUkCrn = Some(nonUkCrn)
+        )
+
+        leftSideError(model.validate).errorMessage shouldBe DeemedParentWrongDetailsError(model).errorMessage
+      }
+    }
+
   }
+}
