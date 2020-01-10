@@ -16,7 +16,8 @@
 
 package models
 
-import play.api.libs.json.Json
+import models.abbreviatedReturn.AbbreviatedReturnModel
+import play.api.libs.json.{JsPath, Json}
 import validation.ReportingCompanyValidator
 
 case class ReportingCompanyModel(companyName: CompanyNameModel,

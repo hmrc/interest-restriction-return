@@ -30,7 +30,7 @@ object AbbreviatedReturnConstants {
 
   val ackRef = "ackRef"
 
-  val abbreviatedReturnJsonMax = Json.obj(
+  val abbreviatedReturnUltimateParentJson = Json.obj(
     "agentDetails" -> agentDetailsJsonMax,
     "reportingCompany" -> reportingCompanyJson,
     "publicInfrastructure" -> true,
@@ -42,11 +42,35 @@ object AbbreviatedReturnConstants {
     "ukCompanies" -> Seq(ukCompanyJson)
   )
 
-  val abbreviatedReturnModelMax = AbbreviatedReturnModel(
+  val abbreviatedReturnUltimateParentModel = AbbreviatedReturnModel(
     agentDetails = agentDetailsModelMax,
     reportingCompany = reportingCompanyModel,
     publicInfrastructure = true,
     parentCompany = Some(parentCompanyModelUltUkCompany),
+    groupCompanyDetails = groupCompanyDetailsModel,
+    submissionType = Revised,
+    revisedReturnDetails = Some("revised details"),
+    groupLevelElections = Some(groupLevelElectionsModelMax),
+    ukCompanies = Seq(ukCompanyModel)
+  )
+
+  val abbreviatedReturnDeemedParentJson = Json.obj(
+    "agentDetails" -> agentDetailsJsonMax,
+    "reportingCompany" -> reportingCompanyJson,
+    "publicInfrastructure" -> true,
+    "parentCompany" -> parentCompanyJsonDeemedMax,
+    "groupCompanyDetails" -> groupCompanyDetailsJson,
+    "submissionType" -> Revised,
+    "revisedReturnDetails" -> "revised details",
+    "groupLevelElections" -> groupLevelElectionsJsonMax,
+    "ukCompanies" -> Seq(ukCompanyJson)
+  )
+
+  val abbreviatedReturnDeemedParentModel = AbbreviatedReturnModel(
+    agentDetails = agentDetailsModelMax,
+    reportingCompany = reportingCompanyModel,
+    publicInfrastructure = true,
+    parentCompany = Some(parentCompanyModelDeemedMax),
     groupCompanyDetails = groupCompanyDetailsModel,
     submissionType = Revised,
     revisedReturnDetails = Some("revised details"),

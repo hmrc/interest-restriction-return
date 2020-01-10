@@ -43,7 +43,7 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
       "a valid payload is submitted" when {
 
         lazy val validJsonFakeRequest = fakeRequest
-          .withBody(abbreviatedReturnJsonMax)
+          .withBody(abbreviatedReturnUltimateParentJson)
           .withHeaders("Content-Type" -> "application/json")
 
         "a success response is returned from the companies house service with no validation errors" when {
@@ -52,8 +52,8 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
 
             "return 200 (OK)" in {
 
-              mockCompaniesHouse(abbreviatedReturnModelMax.ukCrns)(Right(Seq.empty))
-              mockAbbreviatedReturn(abbreviatedReturnModelMax)(Right(DesSuccessResponse(ackRef)))
+              mockCompaniesHouse(abbreviatedReturnUltimateParentModel.ukCrns)(Right(Seq.empty))
+              mockAbbreviatedReturn(abbreviatedReturnUltimateParentModel)(Right(DesSuccessResponse(ackRef)))
               val result = AuthorisedController.submitAbbreviatedReturn()(validJsonFakeRequest)
               status(result) shouldBe Status.OK
             }
@@ -63,8 +63,8 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
 
             "return the Error" in {
 
-              mockCompaniesHouse(abbreviatedReturnModelMax.ukCrns)(Right(Seq.empty))
-              mockAbbreviatedReturn(abbreviatedReturnModelMax)(Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
+              mockCompaniesHouse(abbreviatedReturnUltimateParentModel.ukCrns)(Right(Seq.empty))
+              mockAbbreviatedReturn(abbreviatedReturnUltimateParentModel)(Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
               val result = AuthorisedController.submitAbbreviatedReturn()(validJsonFakeRequest)
               status(result) shouldBe Status.INTERNAL_SERVER_ERROR
             }
@@ -75,8 +75,8 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
 
           "return the 400 (BAD REQUEST)" in {
 
-            mockCompaniesHouse(abbreviatedReturnModelMax.ukCrns)(Right(
-              abbreviatedReturnModelMax.ukCrns.map{
+            mockCompaniesHouse(abbreviatedReturnUltimateParentModel.ukCrns)(Right(
+              abbreviatedReturnUltimateParentModel.ukCrns.map{
                 currentCrn => ValidationErrorResponseModel(currentCrn._1.toString, Json.toJson(crn), Seq(InvalidCRN.body))
               }
             ))
@@ -90,7 +90,7 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
 
           "return the Error" in {
 
-            mockCompaniesHouse(abbreviatedReturnModelMax.ukCrns)(Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
+            mockCompaniesHouse(abbreviatedReturnUltimateParentModel.ukCrns)(Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
             val result = AuthorisedController.submitAbbreviatedReturn()(validJsonFakeRequest)
             status(result) shouldBe Status.INTERNAL_SERVER_ERROR
           }

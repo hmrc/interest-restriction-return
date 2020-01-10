@@ -42,7 +42,7 @@ class FullReturnValidatorSpec extends BaseSpec {
     "Return valid" when {
 
       "a valid Full Return is supplied" in {
-        rightSide(fullReturnModelMax.validate) shouldBe fullReturnModelMax
+        rightSide(fullReturnUltimateParentModel.validate) shouldBe fullReturnUltimateParentModel
       }
     }
 
@@ -50,7 +50,7 @@ class FullReturnValidatorSpec extends BaseSpec {
 
       "Return type is Original and some details for a revision are supplied" in {
 
-        leftSideError(fullReturnModelMax.copy(
+        leftSideError(fullReturnUltimateParentModel.copy(
           submissionType = Original,
           revisedReturnDetails = Some("Revision")
         ).validate).errorMessage shouldBe RevisedReturnDetailsSupplied("Revision").errorMessage
@@ -58,7 +58,7 @@ class FullReturnValidatorSpec extends BaseSpec {
 
       "Return type is Revised and no details for a revision are supplied" in {
 
-        leftSideError(fullReturnModelMax.copy(
+        leftSideError(fullReturnUltimateParentModel.copy(
           submissionType = Revised,
           revisedReturnDetails = None
         ).validate).errorMessage shouldBe RevisedReturnDetailsNotSupplied.errorMessage
@@ -66,7 +66,7 @@ class FullReturnValidatorSpec extends BaseSpec {
 
       "Reporting Company is the same as UPC but Parent Details are supplied" in {
 
-        leftSideError(fullReturnModelMax.copy(
+        leftSideError(fullReturnUltimateParentModel.copy(
           reportingCompany = reportingCompanyModel.copy(sameAsUltimateParent = true),
           parentCompany = Some(parentCompanyModelUltUkCompany)
         ).validate).errorMessage shouldBe ParentCompanyDetailsSupplied(parentCompanyModelMax).errorMessage
@@ -74,25 +74,25 @@ class FullReturnValidatorSpec extends BaseSpec {
 
       "Reporting Company is not the same as UPC and UPC is not supplied" in {
 
-        leftSideError(fullReturnModelMax.copy(
+        leftSideError(fullReturnUltimateParentModel.copy(
           reportingCompany = reportingCompanyModel,
           parentCompany = None
         ).validate).errorMessage shouldBe ParentCompanyDetailsNotSupplied.errorMessage
       }
 
       "Angie is negative" in {
-        leftSideError(fullReturnModelMax.copy(angie = Some(-0.01)).validate).errorMessage shouldBe NegativeAngieError(-0.01).errorMessage
+        leftSideError(fullReturnUltimateParentModel.copy(angie = Some(-0.01)).validate).errorMessage shouldBe NegativeAngieError(-0.01).errorMessage
       }
 
       "Group is subject to interest reactivations and no reactivation cap is supplied" in {
-        leftSideError(fullReturnModelMax.copy(
+        leftSideError(fullReturnUltimateParentModel.copy(
           groupSubjectToInterestReactivation = true,
           groupLevelAmount = groupLevelAmountModel.copy(interestReactivationCap = None)
         ).validate).errorMessage shouldBe InterestReactivationCapNotSupplied.errorMessage
       }
 
       "Total Reactivations does not match the sum of the total reactivations for each company" in {
-        leftSideError(fullReturnModelMax.copy(
+        leftSideError(fullReturnUltimateParentModel.copy(
           totalReactivation = 10,
           ukCompanies = Seq(ukCompanyModelMax, ukCompanyModelMax)
         ).validate).errorMessage shouldBe TotalReactivationsDoesNotMatch(10, 13.32).errorMessage
@@ -100,7 +100,7 @@ class FullReturnValidatorSpec extends BaseSpec {
 
       "Group is not subject to interest reactivations but has allocated reactivations supplied" in {
 
-        val model = fullReturnModelMax.copy(
+        val model = fullReturnUltimateParentModel.copy(
           groupSubjectToInterestReactivation = false,
           ukCompanies = Seq(
             ukCompanyModelMax.copy(
@@ -121,7 +121,7 @@ class FullReturnValidatorSpec extends BaseSpec {
 
       "Group is subject to interest reactivations but has allocated reactivations missing" in {
 
-        val model = fullReturnModelMax.copy(
+        val model = fullReturnUltimateParentModel.copy(
           groupSubjectToInterestReactivation = true,
           ukCompanies = Seq(
             ukCompanyModelMax.copy(
@@ -145,7 +145,7 @@ class FullReturnValidatorSpec extends BaseSpec {
 
       "Group is not subject to interest restrictions but has allocated restrictions supplied" in {
 
-        val model = fullReturnModelMax.copy(
+        val model = fullReturnUltimateParentModel.copy(
           groupSubjectToInterestRestrictions = false,
           ukCompanies = Seq(
             ukCompanyModelMax.copy(
@@ -166,7 +166,7 @@ class FullReturnValidatorSpec extends BaseSpec {
 
       "Group is subject to interest restrictions but has allocated restrictions missing" in {
 
-        val model = fullReturnModelMax.copy(
+        val model = fullReturnUltimateParentModel.copy(
           groupSubjectToInterestRestrictions = true,
           ukCompanies = Seq(
             ukCompanyModelMax.copy(
@@ -189,41 +189,41 @@ class FullReturnValidatorSpec extends BaseSpec {
       }
 
       "Agent details are invalid" in {
-        leftSideError(fullReturnModelMax.copy(agentDetails = agentDetailsModelMax.copy(agentName = None)).validate).errorMessage shouldBe
+        leftSideError(fullReturnUltimateParentModel.copy(agentDetails = agentDetailsModelMax.copy(agentName = None)).validate).errorMessage shouldBe
           AgentNameNotSuppliedError().errorMessage
       }
 
       "Reporting Company details are invalid" in {
-        leftSideError(fullReturnModelMax.copy(
+        leftSideError(fullReturnUltimateParentModel.copy(
           reportingCompany = reportingCompanyModel.copy(
             companyName = companyNameTooLong)).validate).errorMessage shouldBe CompanyNameLengthError(companyNameTooLong.name).errorMessage
       }
 
       "Parent Company is invalid" in {
-        leftSideError(fullReturnModelMax.copy(parentCompany = Some(parentCompanyModelMax)).validate).errorMessage shouldBe
+        leftSideError(fullReturnUltimateParentModel.copy(parentCompany = Some(parentCompanyModelMax)).validate).errorMessage shouldBe
           ParentCompanyCanNotBeUltimateAndDeemed(parentCompanyModelMax).errorMessage
       }
 
       "Group Company Details are invalid" in {
-        leftSideError(fullReturnModelMax.copy(groupCompanyDetails = groupCompanyDetailsModel.copy(totalCompanies = 0)).validate).errorMessage shouldBe
+        leftSideError(fullReturnUltimateParentModel.copy(groupCompanyDetails = groupCompanyDetailsModel.copy(totalCompanies = 0)).validate).errorMessage shouldBe
           GroupCompanyDetailsTotalCompaniesError(0).errorMessage
       }
 
       "Group Level Elections are invalid" in {
-        leftSideError(fullReturnModelMax.copy(
+        leftSideError(fullReturnUltimateParentModel.copy(
           groupLevelElections = groupLevelElectionsModelMax.copy(
             groupRatio = groupRatioModelMin.copy(groupEBITDAChargeableGains = Some(true))
           )).validate).errorMessage shouldBe GroupEBITDASupplied(Some(true)).errorMessage
       }
 
       "Uk Company details are invalid" in {
-        leftSideError(fullReturnModelMax.copy(
+        leftSideError(fullReturnUltimateParentModel.copy(
           ukCompanies = Seq(ukCompanyModelMax.copy(companyName = companyNameTooLong))
         ).validate).errorMessage shouldBe CompanyNameLengthError(companyNameTooLong.name).errorMessage
       }
 
       "Group Level Amount details are invalid" in {
-        leftSideError(fullReturnModelMax.copy(
+        leftSideError(fullReturnUltimateParentModel.copy(
           groupLevelAmount = groupLevelAmountModel.copy(interestAllowanceForPeriod = -1)
         ).validate).errorMessage shouldBe GroupLevelAmountCannotBeNegative("interestAllowanceForPeriod", -1).errorMessage
       }
@@ -234,19 +234,19 @@ class FullReturnValidatorSpec extends BaseSpec {
           groupEBITDA = 200,
           groupRatio = 60
         )
-        leftSideError(fullReturnModelMax.copy(
+        leftSideError(fullReturnUltimateParentModel.copy(
           adjustedGroupInterest = Some(adjustedGroupInterestValue)
         ).validate).errorMessage shouldBe GroupRatioCalculationError(adjustedGroupInterestValue).errorMessage
       }
 
       "Group Ratio is Elected and Adjusted Group Interest details are not supplied" in {
-        leftSideError(fullReturnModelMax.copy(
+        leftSideError(fullReturnUltimateParentModel.copy(
           adjustedGroupInterest = None
         ).validate).errorMessage shouldBe AdjustedNetGroupInterestNotSupplied.errorMessage
       }
 
       "Group Ratio is not Elected and Adjusted Group Interest details are supplied" in {
-        leftSideError(fullReturnModelMax.copy(
+        leftSideError(fullReturnUltimateParentModel.copy(
           groupLevelElections = groupLevelElectionsModelMax.copy(
             groupRatio = groupRatioModelMin
           ),

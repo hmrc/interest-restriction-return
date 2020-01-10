@@ -29,8 +29,8 @@ class AbbreviatedReturnModelSpec extends WordSpec with Matchers with BaseConstan
 
       "max values given" in {
 
-        val expectedValue = abbreviatedReturnJsonMax
-        val actualValue = Json.toJson(abbreviatedReturnModelMax)
+        val expectedValue = abbreviatedReturnUltimateParentJson
+        val actualValue = Json.toJson(abbreviatedReturnUltimateParentModel)
 
         actualValue shouldBe expectedValue
       }
@@ -48,8 +48,8 @@ class AbbreviatedReturnModelSpec extends WordSpec with Matchers with BaseConstan
 
       "max values given" in {
 
-        val expectedValue = abbreviatedReturnModelMax
-        val actualValue = abbreviatedReturnJsonMax.as[AbbreviatedReturnModel]
+        val expectedValue = abbreviatedReturnUltimateParentModel
+        val actualValue = abbreviatedReturnUltimateParentJson.as[AbbreviatedReturnModel]
 
         actualValue shouldBe expectedValue
       }
@@ -65,13 +65,26 @@ class AbbreviatedReturnModelSpec extends WordSpec with Matchers with BaseConstan
 
     "correctly collect all of the ukCrns" when {
 
-      "max crns given" in {
+      "ultimate parent crn is given" in {
 
         val expectedValue = Seq(
-          AbbreviatedReturnModel.reportingCompanyCrnPath -> crn,
-          AbbreviatedReturnModel.ultimateParentCrnPath -> crnLetters
+          AbbreviatedReturnModel.ultimateParentCrnPath -> crnLetters,
+          AbbreviatedReturnModel.reportingCompanyCrnPath -> crn
         )
-        val actualValue = abbreviatedReturnModelMax.ukCrns
+        val actualValue = abbreviatedReturnUltimateParentModel.ukCrns
+
+        actualValue shouldBe expectedValue
+      }
+
+      "deemed parent crn is given" in {
+
+        val expectedValue = Seq(
+          AbbreviatedReturnModel.deemedParentCrnPath(0) -> crn,
+          AbbreviatedReturnModel.deemedParentCrnPath(1) -> crn,
+          AbbreviatedReturnModel.deemedParentCrnPath(2) -> crn,
+          AbbreviatedReturnModel.reportingCompanyCrnPath -> crn
+        )
+        val actualValue = abbreviatedReturnDeemedParentModel.ukCrns
 
         actualValue shouldBe expectedValue
       }

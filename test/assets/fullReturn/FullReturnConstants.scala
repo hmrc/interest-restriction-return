@@ -38,7 +38,7 @@ object FullReturnConstants {
     (total, company) => total + company.totalDisallowances.getOrElse[BigDecimal](0)
   }
 
-  val fullReturnModelMax = FullReturnModel(
+  val fullReturnUltimateParentModel = FullReturnModel(
     agentDetails = agentDetailsModelMax,
     reportingCompany = reportingCompanyModel,
     parentCompany = Some(parentCompanyModelUltUkCompany),
@@ -57,10 +57,48 @@ object FullReturnConstants {
     adjustedGroupInterest = Some(adjustedGroupInterestModel)
   )
 
-  val fullReturnJsonMax = Json.obj(
+  val fullReturnUltimateJson = Json.obj(
     "agentDetails" -> agentDetailsJsonMax,
     "reportingCompany" -> reportingCompanyJson,
     "parentCompany" -> parentCompanyJsonUltUkCompany,
+    "publicInfrastructure" -> true,
+    "groupCompanyDetails" -> groupCompanyDetailsJson,
+    "submissionType" -> Revised,
+    "revisedReturnDetails" -> revisedReturnDetails,
+    "groupLevelElections" -> groupLevelElectionsJsonMax,
+    "ukCompanies" -> Seq(ukCompanyJsonMax),
+    "angie" -> angie,
+    "returnContainsEstimates" -> true,
+    "groupSubjectToInterestRestrictions" -> true,
+    "groupSubjectToInterestReactivation" -> true,
+    "totalReactivation" -> totalReactivations,
+    "groupLevelAmount" -> groupLevelAmountJson,
+    "adjustedGroupInterest" -> adjustedGroupInterestJson
+  )
+
+  val fullReturnDeemedParentModel = FullReturnModel(
+    agentDetails = agentDetailsModelMax,
+    reportingCompany = reportingCompanyModel,
+    parentCompany = Some(parentCompanyModelDeemedMax),
+    publicInfrastructure = true,
+    groupCompanyDetails = groupCompanyDetailsModel,
+    submissionType = Revised,
+    revisedReturnDetails = Some(revisedReturnDetails),
+    groupLevelElections = groupLevelElectionsModelMax,
+    ukCompanies = Seq(ukCompanyModelMax),
+    angie = Some(angie),
+    returnContainsEstimates = true,
+    groupSubjectToInterestRestrictions = true,
+    groupSubjectToInterestReactivation = true,
+    totalReactivation = totalReactivations,
+    groupLevelAmount = groupLevelAmountModel,
+    adjustedGroupInterest = Some(adjustedGroupInterestModel)
+  )
+
+  val fullReturnDeemedJson = Json.obj(
+    "agentDetails" -> agentDetailsJsonMax,
+    "reportingCompany" -> reportingCompanyJson,
+    "parentCompany" -> parentCompanyModelDeemedMax,
     "publicInfrastructure" -> true,
     "groupCompanyDetails" -> groupCompanyDetailsJson,
     "submissionType" -> Revised,

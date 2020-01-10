@@ -99,7 +99,7 @@ object UltimateParentConstants extends BaseConstants {
     "companyName" -> companyName,
     "knownAs" -> knownAs,
     "ctutr" -> ctutr,
-    "crn" -> crn
+    "crn" -> crnLetters
   )
 
   val ultimateParentJsonNonUkCompany = Json.obj(
@@ -115,6 +115,6 @@ object UltimateParentConstants extends BaseConstants {
     "companyName" -> companyName,
     "knownAs" -> knownAs,
     "sautr" -> ctutr,
-    "crn" -> crn
+    "crn" -> crnLetters
   )
 }

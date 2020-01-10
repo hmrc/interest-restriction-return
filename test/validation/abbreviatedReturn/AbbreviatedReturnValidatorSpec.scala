@@ -38,7 +38,7 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
     "Return valid" when {
 
       "a valid Abbreviated Return is supplied" in {
-        rightSide(abbreviatedReturnModelMax.validate) shouldBe abbreviatedReturnModelMax
+        rightSide(abbreviatedReturnUltimateParentModel.validate) shouldBe abbreviatedReturnUltimateParentModel
       }
     }
 
@@ -46,7 +46,7 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
 
       "Return type is Original and some details for a revision are supplied" in {
 
-        leftSideError(abbreviatedReturnModelMax.copy(
+        leftSideError(abbreviatedReturnUltimateParentModel.copy(
           submissionType = Original,
           revisedReturnDetails = Some("Revision")
         ).validate).errorMessage shouldBe RevisedReturnDetailsSupplied("Revision").errorMessage
@@ -54,7 +54,7 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
 
       "Return type is Revised and no details for a revision are supplied" in {
 
-        leftSideError(abbreviatedReturnModelMax.copy(
+        leftSideError(abbreviatedReturnUltimateParentModel.copy(
           submissionType = Revised,
           revisedReturnDetails = None
         ).validate).errorMessage shouldBe RevisedReturnDetailsNotSupplied.errorMessage
@@ -62,7 +62,7 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
 
       "Reporting Company is the same as UPC but Parent Details are supplied" in {
 
-        leftSideError(abbreviatedReturnModelMax.copy(
+        leftSideError(abbreviatedReturnUltimateParentModel.copy(
           reportingCompany = reportingCompanyModel.copy(sameAsUltimateParent = true),
           parentCompany = Some(parentCompanyModelUltUkCompany)
         ).validate).errorMessage shouldBe ParentCompanyDetailsSupplied(parentCompanyModelUltUkCompany).errorMessage
@@ -70,35 +70,35 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
 
       "Reporting Company is not the same as UPC and UPC is not supplied" in {
 
-        leftSideError(abbreviatedReturnModelMax.copy(
+        leftSideError(abbreviatedReturnUltimateParentModel.copy(
           reportingCompany = reportingCompanyModel,
           parentCompany = None
         ).validate).errorMessage shouldBe ParentCompanyDetailsNotSupplied.errorMessage
       }
 
       "Agent details are invalid" in {
-        leftSideError(abbreviatedReturnModelMax.copy(agentDetails = agentDetailsModelMax.copy(agentName = None)).validate).errorMessage shouldBe
+        leftSideError(abbreviatedReturnUltimateParentModel.copy(agentDetails = agentDetailsModelMax.copy(agentName = None)).validate).errorMessage shouldBe
           AgentNameNotSuppliedError().errorMessage
       }
 
       "Reporting Company details are invalid" in {
-        leftSideError(abbreviatedReturnModelMax.copy(
+        leftSideError(abbreviatedReturnUltimateParentModel.copy(
           reportingCompany = reportingCompanyModel.copy(
             companyName = companyNameTooLong)).validate).errorMessage shouldBe CompanyNameLengthError(companyNameTooLong.name).errorMessage
       }
 
       "Parent Company is invalid" in {
-        leftSideError(abbreviatedReturnModelMax.copy(parentCompany = Some(parentCompanyModelMax)).validate).errorMessage shouldBe
+        leftSideError(abbreviatedReturnUltimateParentModel.copy(parentCompany = Some(parentCompanyModelMax)).validate).errorMessage shouldBe
           ParentCompanyCanNotBeUltimateAndDeemed(parentCompanyModelMax).errorMessage
       }
 
       "Group Company Details are invalid" in {
-        leftSideError(abbreviatedReturnModelMax.copy(groupCompanyDetails = groupCompanyDetailsModel.copy(totalCompanies = 0)).validate).errorMessage shouldBe
+        leftSideError(abbreviatedReturnUltimateParentModel.copy(groupCompanyDetails = groupCompanyDetailsModel.copy(totalCompanies = 0)).validate).errorMessage shouldBe
           GroupCompanyDetailsTotalCompaniesError(0).errorMessage
       }
 
       "Group Level Elections are invalid" in {
-        leftSideError(abbreviatedReturnModelMax.copy(
+        leftSideError(abbreviatedReturnUltimateParentModel.copy(
           groupLevelElections = Some(groupLevelElectionsModelMax.copy(
             groupRatio = groupRatioModelMin.copy(groupEBITDAChargeableGains = Some(true))
           )
@@ -106,7 +106,7 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
       }
 
       "Uk Company details are invalid" in {
-        leftSideError(abbreviatedReturnModelMax.copy(
+        leftSideError(abbreviatedReturnUltimateParentModel.copy(
           ukCompanies = Seq(ukCompanyModel.copy(companyName = companyNameTooLong))
         ).validate).errorMessage shouldBe CompanyNameLengthError(companyNameTooLong.name).errorMessage
       }
