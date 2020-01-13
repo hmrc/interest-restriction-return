@@ -15,11 +15,13 @@
  */
 
 package models.revokeReportingCompany
+import assets.BaseConstants
+import assets.appointReportingCompany.AppointReportingCompanyConstants.{appointReportingCompanyModelMax, appointReportingCompanyModelMin}
 import assets.revokeReportingCompany.RevokeReportingCompanyConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 
-class RevokeReportingCompanyModelSpec extends WordSpec with Matchers {
+class RevokeReportingCompanyModelSpec extends WordSpec with Matchers with BaseConstants {
 
   "RevokeReportingCompanyModel" must {
 
@@ -56,6 +58,31 @@ class RevokeReportingCompanyModelSpec extends WordSpec with Matchers {
 
         val expectedValue = revokeReportingCompanyModelMax
         val actualValue = revokeReportingCompanyJsonMax.as[RevokeReportingCompanyModel]
+
+        actualValue shouldBe expectedValue
+      }
+    }
+
+    "correctly collect all of the ukCrns" when {
+
+      "max crns given" in {
+
+        val expectedValue = Seq(
+          RevokeReportingCompanyModel.reportingCompanyCrnPath -> crn,
+          RevokeReportingCompanyModel.ultimateParentCrnPath -> crnLetters
+        )
+
+        val actualValue = revokeReportingCompanyModelMax.ukCrns
+
+        actualValue shouldBe expectedValue
+      }
+
+      "min crns given" in {
+
+        val expectedValue = Seq(
+          RevokeReportingCompanyModel.reportingCompanyCrnPath -> crn
+        )
+        val actualValue = revokeReportingCompanyModelMin.ukCrns
 
         actualValue shouldBe expectedValue
       }

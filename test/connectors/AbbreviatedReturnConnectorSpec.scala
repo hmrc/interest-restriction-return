@@ -29,7 +29,7 @@ class AbbreviatedReturnConnectorSpec extends MockHttpClient with BaseSpec {
 
     def setup(response: SubmissionResponse): AbbreviatedReturnConnector = {
       val desUrl = "http://localhost:9262/interest-restriction/return/abbreviated"
-      mockHttpPost[AbbreviatedReturnModel, Either[ErrorResponse, DesSuccessResponse]](desUrl, abbreviatedReturnModelMax)(response)
+      mockHttpPost[AbbreviatedReturnModel, Either[ErrorResponse, DesSuccessResponse]](desUrl, abbreviatedReturnUltimateParentModel)(response)
       new AbbreviatedReturnConnector(mockHttpClient, appConfig)
     }
 
@@ -38,7 +38,7 @@ class AbbreviatedReturnConnectorSpec extends MockHttpClient with BaseSpec {
       "return a Right(SuccessResponse)" in {
 
         val connector = setup(Right(DesSuccessResponse(ackRef)))
-        val result = connector.submitAbbreviatedReturn(abbreviatedReturnModelMax)
+        val result = connector.submitAbbreviatedReturn(abbreviatedReturnUltimateParentModel)
 
         await(result) shouldBe Right(DesSuccessResponse(ackRef))
       }
@@ -49,7 +49,7 @@ class AbbreviatedReturnConnectorSpec extends MockHttpClient with BaseSpec {
       "return a Left(UnexpectedFailure)" in {
 
         val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-        val result = connector.submitAbbreviatedReturn(abbreviatedReturnModelMax)
+        val result = connector.submitAbbreviatedReturn(abbreviatedReturnUltimateParentModel)
 
         await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
       }

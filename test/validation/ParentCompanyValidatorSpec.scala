@@ -47,7 +47,7 @@ class ParentCompanyValidatorSpec extends BaseValidationSpec {
       "Deemed fields are populated" should {
 
         "Return valid" in {
-          val model = parentCompanyModelDeemedMax
+          val model = parentCompanyModelDeemedMin
 
           rightSide(model.validate) shouldBe model
         }

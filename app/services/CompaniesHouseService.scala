@@ -16,20 +16,35 @@
 
 package services
 
+import connectors.{CompaniesHouseConnector, UnexpectedFailure}
 import javax.inject.Inject
-
-import connectors.CompaniesHouseConnector
-import connectors.HttpHelper.CompaniesHouseResponse
-import models.CRNModel
 import models.requests.IdentifierRequest
+import models.{CRNModel, ValidationErrorResponseModel}
+import play.api.libs.json.{JsPath, Json}
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class CompaniesHouseService @Inject()(companiesHouseConnector: CompaniesHouseConnector) {
 
-  def validateCRN(crn: CRNModel)
-             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[CompaniesHouseResponse] =
-    companiesHouseConnector.validateCRN(crn)
+  def invalidCRNs(crns: Seq[(JsPath, CRNModel)], errors: Seq[ValidationErrorResponseModel] = Seq())
+                 (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_])
+  : Future[Either[UnexpectedFailure, Seq[ValidationErrorResponseModel]]] = {
 
+    if(crns.isEmpty) {
+      Future.successful(Right(errors))
+    } else {
+      companiesHouseConnector.validateCRN(crns.head._2).flatMap {
+        case Left(err: UnexpectedFailure) =>
+          Future.successful(Left(err))
+        case Left(err) =>
+          invalidCRNs(
+            crns.tail,
+            errors :+ ValidationErrorResponseModel(crns.head._1.toString, Json.toJson(crns.head._2), Seq(err.body))
+          )
+        case _ =>
+          invalidCRNs(crns.tail, errors)
+      }
+    }
+  }
 }

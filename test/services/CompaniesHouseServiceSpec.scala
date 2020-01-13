@@ -16,29 +16,47 @@
 
 package services
 
-import connectors.HttpHelper.CompaniesHouseResponse
-import connectors.mocks.MockCompaniesHouseConnector
 import connectors.{InvalidCRN, UnexpectedFailure, ValidCRN}
+import connectors.mocks.MockCompaniesHouseConnector
+import models.{CRNModel, ValidationErrorResponseModel}
 import play.api.http.Status._
+import play.api.libs.json.{JsPath, Json}
 import utils.BaseSpec
 
 class CompaniesHouseServiceSpec extends MockCompaniesHouseConnector with BaseSpec {
 
   "CompaniesHouseService.appoint" when {
 
-    def setup(response: CompaniesHouseResponse): CompaniesHouseService = {
-      mockValidateCRN(crn)(response)
-      new CompaniesHouseService(mockCompaniesHouseConnector)
-    }
+    object TestCompaniesHouseService extends CompaniesHouseService(mockCompaniesHouseConnector)
+
+    val jsPath = JsPath  \ "crn"
 
     "CRN is valid" should {
 
       "return a Right(ValidCRN)" in {
 
-        val service = setup(Right(ValidCRN))
-        val result = service.validateCRN(crn)
+        mockValidateCRN(crn)(Right(ValidCRN))
 
-        await(result) shouldBe Right(ValidCRN)
+        val actualResult = TestCompaniesHouseService.invalidCRNs(Seq(jsPath -> crn))
+        val expectedResult = Right(Seq.empty)
+
+        await(actualResult) shouldBe expectedResult
+      }
+    }
+
+    "Multiple CRNs are given and valid" should {
+
+      "return a Right(ValidCRN)" in {
+
+        val testCrns: Seq[(JsPath, CRNModel)] = for(_ <- 1 to 1000) yield {
+          mockValidateCRN(crn)(Right(ValidCRN))
+          jsPath -> crn
+        }
+        
+        val actualResult = TestCompaniesHouseService.invalidCRNs(testCrns)
+        val expectedResult = Right(Seq.empty)
+
+        await(actualResult) shouldBe expectedResult
       }
     }
 
@@ -46,10 +64,12 @@ class CompaniesHouseServiceSpec extends MockCompaniesHouseConnector with BaseSpe
 
       "return a Right(ValidCRN)" in {
 
-        val service = setup(Left(InvalidCRN))
-        val result = service.validateCRN(crn)
+        mockValidateCRN(crn)(Left(InvalidCRN))
 
-        await(result) shouldBe Left(InvalidCRN)
+        val actualResult = TestCompaniesHouseService.invalidCRNs(Seq(JsPath \ "crn" -> crn))
+        val expectedResult = Right(Seq(ValidationErrorResponseModel(jsPath.toString, Json.toJson(crn), Seq(InvalidCRN.body))))
+
+        await(actualResult) shouldBe expectedResult
       }
     }
 
@@ -57,10 +77,12 @@ class CompaniesHouseServiceSpec extends MockCompaniesHouseConnector with BaseSpe
 
       "return a Left(UnexpectedFailure)" in {
 
-        val service = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-        val result = service.validateCRN(crn)
+        mockValidateCRN(crn)(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
 
-        await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
+        val actualResult = TestCompaniesHouseService.invalidCRNs(Seq(JsPath \ "crn" -> crn))
+        val expectedResult = Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
+
+        await(actualResult) shouldBe expectedResult
       }
     }
   }

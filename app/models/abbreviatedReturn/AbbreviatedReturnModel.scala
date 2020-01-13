@@ -17,7 +17,7 @@
 package models.abbreviatedReturn
 
 import models._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsPath, Json}
 import validation.abbreviatedReturn.AbbreviatedReturnValidator
 
 case class AbbreviatedReturnModel(agentDetails: AgentDetailsModel,
@@ -29,11 +29,27 @@ case class AbbreviatedReturnModel(agentDetails: AgentDetailsModel,
                                   revisedReturnDetails: Option[String],
                                   groupLevelElections: Option[GroupLevelElectionsModel],
                                   ukCompanies: Seq[UkCompanyModel]) extends AbbreviatedReturnValidator {
+
   override val abbreviatedReturnModel: AbbreviatedReturnModel = this
+
+  private val reportingCompanyCrnWithPath: (JsPath, CRNModel) = AbbreviatedReturnModel.reportingCompanyCrnPath -> reportingCompany.crn
+
+  private val ultimateParentCrnWithPath: Seq[(JsPath, CRNModel)] = parentCompany.flatMap(_.ultimateUkCrns).fold[Seq[(JsPath, CRNModel)]](Seq()){
+    crn => Seq(AbbreviatedReturnModel.ultimateParentCrnPath -> crn)
+  }
+
+  private val deemedParentCrnsWithPath: Seq[(JsPath, CRNModel)] = parentCompany.flatMap(_.deemedUkCrns).fold[Seq[(JsPath, CRNModel)]](Seq()){
+    _.zipWithIndex.map(x => AbbreviatedReturnModel.deemedParentCrnPath(x._2) -> x._1)
+  }
+
+  val ukCrns: Seq[(JsPath, CRNModel)] = ultimateParentCrnWithPath ++ deemedParentCrnsWithPath :+ reportingCompanyCrnWithPath
 }
 
 object AbbreviatedReturnModel{
 
   implicit val format = Json.format[AbbreviatedReturnModel]
 
+  val reportingCompanyCrnPath: JsPath = JsPath \ "reportingCompany" \ "crn"
+  val ultimateParentCrnPath: JsPath = JsPath \ "parentCompany" \ "ultimateParent" \ "crn"
+  def deemedParentCrnPath(i: Int): JsPath = JsPath \ "parentCompany" \ s"deemedParent[$i]" \ "crn"
 }

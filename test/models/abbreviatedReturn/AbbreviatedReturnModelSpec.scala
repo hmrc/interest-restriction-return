@@ -16,11 +16,12 @@
 
 package models.abbreviatedReturn
 
+import assets.BaseConstants
 import assets.abbreviatedReturn.AbbreviatedReturnConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 
-class AbbreviatedReturnModelSpec extends WordSpec with Matchers {
+class AbbreviatedReturnModelSpec extends WordSpec with Matchers with BaseConstants {
 
   "AbbreviatedReturnModel" must {
 
@@ -28,8 +29,8 @@ class AbbreviatedReturnModelSpec extends WordSpec with Matchers {
 
       "max values given" in {
 
-        val expectedValue = abbreviatedReturnJsonMax
-        val actualValue = Json.toJson(abbreviatedReturnModelMax)
+        val expectedValue = abbreviatedReturnUltimateParentJson
+        val actualValue = Json.toJson(abbreviatedReturnUltimateParentModel)
 
         actualValue shouldBe expectedValue
       }
@@ -47,8 +48,8 @@ class AbbreviatedReturnModelSpec extends WordSpec with Matchers {
 
       "max values given" in {
 
-        val expectedValue = abbreviatedReturnModelMax
-        val actualValue = abbreviatedReturnJsonMax.as[AbbreviatedReturnModel]
+        val expectedValue = abbreviatedReturnUltimateParentModel
+        val actualValue = abbreviatedReturnUltimateParentJson.as[AbbreviatedReturnModel]
 
         actualValue shouldBe expectedValue
       }
@@ -57,6 +58,43 @@ class AbbreviatedReturnModelSpec extends WordSpec with Matchers {
 
         val expectedValue = abbreviatedReturnModelMin
         val actualValue = abbreviatedReturnJsonMin.as[AbbreviatedReturnModel]
+
+        actualValue shouldBe expectedValue
+      }
+    }
+
+    "correctly collect all of the ukCrns" when {
+
+      "ultimate parent crn is given" in {
+
+        val expectedValue = Seq(
+          AbbreviatedReturnModel.ultimateParentCrnPath -> crnLetters,
+          AbbreviatedReturnModel.reportingCompanyCrnPath -> crn
+        )
+        val actualValue = abbreviatedReturnUltimateParentModel.ukCrns
+
+        actualValue shouldBe expectedValue
+      }
+
+      "deemed parent crn is given" in {
+
+        val expectedValue = Seq(
+          AbbreviatedReturnModel.deemedParentCrnPath(0) -> crn,
+          AbbreviatedReturnModel.deemedParentCrnPath(1) -> crn,
+          AbbreviatedReturnModel.deemedParentCrnPath(2) -> crn,
+          AbbreviatedReturnModel.reportingCompanyCrnPath -> crn
+        )
+        val actualValue = abbreviatedReturnDeemedParentModel.ukCrns
+
+        actualValue shouldBe expectedValue
+      }
+
+      "min crns given" in {
+
+        val expectedValue = Seq(
+          AbbreviatedReturnModel.reportingCompanyCrnPath -> crn
+        )
+        val actualValue = abbreviatedReturnModelMin.ukCrns
 
         actualValue shouldBe expectedValue
       }

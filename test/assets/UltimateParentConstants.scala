@@ -29,7 +29,7 @@ object UltimateParentConstants extends BaseConstants {
     knownAs = Some(knownAs),
     ctutr = Some(ctutr),
     sautr = Some(sautr),
-    crn = Some(crn),
+    crn = Some(crnLetters),
     nonUkCrn = Some(nonUkCrn),
     countryOfIncorporation = Some(nonUkCountryCode)
   )
@@ -51,7 +51,7 @@ object UltimateParentConstants extends BaseConstants {
     knownAs = Some(knownAs),
     ctutr = Some(ctutr),
     sautr = None,
-    crn = Some(crn),
+    crn = Some(crnLetters),
     nonUkCrn = None,
     countryOfIncorporation = None
   )
@@ -73,7 +73,7 @@ object UltimateParentConstants extends BaseConstants {
     knownAs = Some(knownAs),
     ctutr = None,
     sautr = Some(sautr),
-    crn = Some(crn),
+    crn = Some(crnLetters),
     nonUkCrn = None,
     countryOfIncorporation = None
   )
@@ -84,7 +84,7 @@ object UltimateParentConstants extends BaseConstants {
     "knownAs" -> knownAs,
     "ctutr" -> ctutr,
     "sautr" -> sautr,
-    "crn" -> crn,
+    "crn" -> crnLetters,
     "nonUkCrn" -> nonUkCrn,
     "countryOfIncorporation" -> nonUkCountryCode
   )
@@ -99,7 +99,7 @@ object UltimateParentConstants extends BaseConstants {
     "companyName" -> companyName,
     "knownAs" -> knownAs,
     "ctutr" -> ctutr,
-    "crn" -> crn
+    "crn" -> crnLetters
   )
 
   val ultimateParentJsonNonUkCompany = Json.obj(
@@ -115,6 +115,6 @@ object UltimateParentConstants extends BaseConstants {
     "companyName" -> companyName,
     "knownAs" -> knownAs,
     "sautr" -> ctutr,
-    "crn" -> crn
+    "crn" -> crnLetters
   )
 }

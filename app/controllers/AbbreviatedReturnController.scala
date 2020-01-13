@@ -17,21 +17,27 @@
 package controllers
 
 import javax.inject.{Inject, Singleton}
-
 import controllers.actions.AuthAction
 import models.abbreviatedReturn.AbbreviatedReturnModel
 import play.api.libs.json.JsValue
 import play.api.mvc.{Action, ControllerComponents}
-import services.AbbreviatedReturnService
+import services.{AbbreviatedReturnService, CompaniesHouseService}
 
 @Singleton()
 class AbbreviatedReturnController @Inject()(authAction: AuthAction,
                                             abbreviatedReturnService: AbbreviatedReturnService,
+                                            companiesHouseService: CompaniesHouseService,
                                             override val controllerComponents: ControllerComponents) extends BaseController {
 
   def submitAbbreviatedReturn(): Action[JsValue] = authAction.async(parse.json) { implicit request =>
-    withJsonBody[AbbreviatedReturnModel] { fullReturnModel =>
-      handleValidation(fullReturnModel.validate, "AbbreviatedReturnController", abbreviatedReturnService)
+    withJsonBody[AbbreviatedReturnModel] { AbbreviatedModel =>
+      handleValidation(
+        validationModel = AbbreviatedModel.validate,
+        crns = AbbreviatedModel.ukCrns,
+        service = abbreviatedReturnService,
+        companiesHouseService = companiesHouseService,
+        controllerName = "AbbreviatedReturnController"
+      )
     }
   }
 }

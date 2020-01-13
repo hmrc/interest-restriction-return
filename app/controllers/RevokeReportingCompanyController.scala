@@ -17,23 +17,29 @@
 package controllers
 
 import javax.inject.{Inject, Singleton}
-
 import controllers.actions.AuthAction
 import models.revokeReportingCompany.RevokeReportingCompanyModel
 import models.revokeReportingCompany.RevokeReportingCompanyModel._
 import play.api.libs.json.JsValue
 import play.api.mvc.{Action, ControllerComponents}
-import services.RevokeReportingCompanyService
+import services.{CompaniesHouseService, RevokeReportingCompanyService}
 
 
 @Singleton()
 class RevokeReportingCompanyController @Inject()(authAction: AuthAction,
                                                  revokeReportingCompanyService: RevokeReportingCompanyService,
+                                                 companiesHouseService: CompaniesHouseService,
                                                  override val controllerComponents: ControllerComponents) extends BaseController {
 
   def revoke(): Action[JsValue] = authAction.async(parse.json) { implicit request =>
-    withJsonBody[RevokeReportingCompanyModel] { fullReturnModel =>
-      handleValidation(fullReturnModel.validate,"RevokeReportingCompanyController",revokeReportingCompanyService)
+    withJsonBody[RevokeReportingCompanyModel] { revokeReportingCompanyModel =>
+      handleValidation(
+        validationModel = revokeReportingCompanyModel.validate,
+        crns = revokeReportingCompanyModel.ukCrns,
+        service = revokeReportingCompanyService,
+        companiesHouseService = companiesHouseService,
+        controllerName = "RevokeReportingCompanyController"
+      )
     }
   }
 }

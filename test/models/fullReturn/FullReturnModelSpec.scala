@@ -16,11 +16,12 @@
 
 package models.fullReturn
 
+import assets.BaseConstants
 import assets.fullReturn.FullReturnConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 
-class FullReturnModelSpec extends WordSpec with Matchers {
+class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants {
 
   "FullReturnModel" must {
 
@@ -28,8 +29,8 @@ class FullReturnModelSpec extends WordSpec with Matchers {
 
       "max values given" in {
 
-        val expectedValue = fullReturnJsonMax
-        val actualValue = Json.toJson(fullReturnModelMax)
+        val expectedValue = fullReturnUltimateJson
+        val actualValue = Json.toJson(fullReturnUltimateParentModel)
 
         actualValue shouldBe expectedValue
       }
@@ -47,8 +48,8 @@ class FullReturnModelSpec extends WordSpec with Matchers {
 
       "max values given" in {
 
-        val expectedValue = fullReturnModelMax
-        val actualValue = fullReturnJsonMax.as[FullReturnModel]
+        val expectedValue = fullReturnUltimateParentModel
+        val actualValue = fullReturnUltimateJson.as[FullReturnModel]
 
         actualValue shouldBe expectedValue
       }
@@ -57,6 +58,43 @@ class FullReturnModelSpec extends WordSpec with Matchers {
 
         val expectedValue = fullReturnModelMin
         val actualValue = fullReturnJsonMin.as[FullReturnModel]
+
+        actualValue shouldBe expectedValue
+      }
+    }
+
+    "correctly collect all of the ukCrns" when {
+
+      "ultimate parent crn is given" in {
+
+        val expectedValue = Seq(
+          FullReturnModel.ultimateParentCrnPath -> crnLetters,
+          FullReturnModel.reportingCompanyCrnPath -> crn
+        )
+        val actualValue = fullReturnUltimateParentModel.ukCrns
+
+        actualValue shouldBe expectedValue
+      }
+
+      "deemed parent crn is given" in {
+
+        val expectedValue = Seq(
+          FullReturnModel.deemedParentCrnPath(0) -> crn,
+          FullReturnModel.deemedParentCrnPath(1) -> crn,
+          FullReturnModel.deemedParentCrnPath(2) -> crn,
+          FullReturnModel.reportingCompanyCrnPath -> crn
+        )
+        val actualValue = fullReturnDeemedParentModel.ukCrns
+
+        actualValue shouldBe expectedValue
+      }
+
+      "min crns given" in {
+
+        val expectedValue = Seq(
+          FullReturnModel.reportingCompanyCrnPath -> crn
+        )
+        val actualValue = fullReturnModelMin.ukCrns
 
         actualValue shouldBe expectedValue
       }

@@ -17,7 +17,7 @@
 package models.fullReturn
 
 import models._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsPath, Json}
 import validation.fullReturn.FullReturnValidator
 
 case class FullReturnModel(agentDetails: AgentDetailsModel,
@@ -36,11 +36,27 @@ case class FullReturnModel(agentDetails: AgentDetailsModel,
                            totalReactivation: BigDecimal,
                            groupLevelAmount: GroupLevelAmountModel,
                            adjustedGroupInterest: Option[AdjustedGroupInterestModel]) extends FullReturnValidator {
+
   override val fullReturnModel: FullReturnModel = this
+
+
+  private val reportingCompanyCrnWithPath: (JsPath, CRNModel) = FullReturnModel.reportingCompanyCrnPath -> reportingCompany.crn
+
+  private val ultimateParentCrnWithPath: Seq[(JsPath, CRNModel)] = parentCompany.flatMap(_.ultimateUkCrns).fold[Seq[(JsPath, CRNModel)]](Seq()){
+    crn => Seq(FullReturnModel.ultimateParentCrnPath -> crn)
+  }
+
+  private val deemedParentCrnsWithPath: Seq[(JsPath, CRNModel)] = parentCompany.flatMap(_.deemedUkCrns).fold[Seq[(JsPath, CRNModel)]](Seq()){
+    _.zipWithIndex.map(x => FullReturnModel.deemedParentCrnPath(x._2) -> x._1)
+  }
+
+  val ukCrns: Seq[(JsPath, CRNModel)] = ultimateParentCrnWithPath ++ deemedParentCrnsWithPath :+ reportingCompanyCrnWithPath
 }
 
 object FullReturnModel{
-
   implicit val format = Json.format[FullReturnModel]
 
+  val reportingCompanyCrnPath: JsPath = JsPath \ "reportingCompany" \ "crn"
+  val ultimateParentCrnPath: JsPath = JsPath \ "parentCompany" \ "ultimateParent" \ "crn"
+  def deemedParentCrnPath(i: Int): JsPath = JsPath \ "parentCompany" \ s"deemedParent[$i]" \ "crn"
 }
