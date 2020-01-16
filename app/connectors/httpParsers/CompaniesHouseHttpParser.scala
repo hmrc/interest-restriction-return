@@ -30,9 +30,11 @@ object CompaniesHouseHttpParser {
       response.status match {
         case OK =>
           Logger.debug("[CompaniesHouseHttpParser][read]: Status OK")
-          Logger.debug(s"[CompaniesHouseHttpParser][read]: Json Response: ${response.json}")
+          Logger.debug(s"[CompaniesHouseHttpParser][read]: Json Response: ${response.body}")
           Right(ValidCRN)
         case NOT_FOUND =>
+          Logger.debug("[CompaniesHouseHttpParser][read]: Status NOT FOUND")
+          Logger.debug(s"[CompaniesHouseHttpParser][read]: Json Response: ${response.body}")
           Left(InvalidCRN)
         case status =>
           Logger.warn(s"[CompaniesHouseReads][read]: Unexpected response, status $status returned")
