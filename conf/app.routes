@@ -9,3 +9,5 @@ POST       /reporting-company/revoke                    controllers.RevokeReport
 POST       /return/abbreviated                          controllers.AbbreviatedReturnController.submitAbbreviatedReturn()
 
 POST       /return/full                                 controllers.FullReturnController.submit()
+
+GET        /validate-crn/:crn                           controllers.CompaniesHouseController.validateCrn(crn)

@@ -16,20 +16,20 @@
 
 package controllers
 
-import controllers.actions.AuthAction
 import javax.inject.{Inject, Singleton}
+
+import controllers.actions.AuthAction
+import models.CRNModel
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import connectors.httpParsers.CompaniesHouseHttpParser._
-import scala.concurrent.Future
-import uk.gov.hmrc.http.{HttpReads, HttpResponse}
-import play.api.libs.json._
+import services.CompaniesHouseService
+
 
 @Singleton()
-class MicroserviceHelloWorldController @Inject()(authAction: AuthAction,
-                                                 override val controllerComponents: ControllerComponents) extends BaseController {
+class CompaniesHouseController @Inject()(authAction: AuthAction,
+                                         companiesHouseService: CompaniesHouseService,
+                                         override val controllerComponents: ControllerComponents) extends BaseController {
 
-  def hello(): Action[AnyContent] = Action.async { implicit request =>
-    CompaniesHouseReads.read("GET","",HttpResponse(200,Some(Json.obj("chaz" -> "dingle")),Map("x"->Seq("y")),Some("RE")))
-    Future.successful(Ok("Hello world"))
+  def validateCRN(crn: String): Action[AnyContent] = authAction.async { implicit request =>
+    companiesHouseService.validateCRN(CRNModel(crn))
   }
 }

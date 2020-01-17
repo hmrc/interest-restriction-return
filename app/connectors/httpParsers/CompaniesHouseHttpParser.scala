@@ -21,6 +21,7 @@ import connectors.{HttpErrorMessages, InvalidCRN, UnexpectedFailure, ValidCRN}
 import play.api.Logger
 import play.api.http.Status._
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
+import play.api.libs.json._
 
 object CompaniesHouseHttpParser {
 
@@ -29,8 +30,8 @@ object CompaniesHouseHttpParser {
     override def read(method: String, url: String, response: HttpResponse): CompaniesHouseResponse = {
       response.status match {
         case OK =>
-          Logger.debug("[CompaniesHouseHttpParser][read]: Status OK")
-          Logger.debug(s"[CompaniesHouseHttpParser][read]: Json Response: $response")
+          Logger.info("[CompaniesHouseHttpParser][read]: Status OK")
+          Logger.info(s"[CompaniesHouseHttpParser][read]: Json Response: $response")
           Right(ValidCRN)
         case NOT_FOUND =>
           Logger.debug("[CompaniesHouseHttpParser][read]: Status NOT FOUND")
