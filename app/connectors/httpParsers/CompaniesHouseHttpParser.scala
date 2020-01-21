@@ -21,7 +21,6 @@ import connectors.{HttpErrorMessages, InvalidCRN, UnexpectedFailure, ValidCRN}
 import play.api.Logger
 import play.api.http.Status._
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
-import play.api.libs.json._
 
 object CompaniesHouseHttpParser {
 
