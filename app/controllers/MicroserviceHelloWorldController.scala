@@ -19,17 +19,14 @@ package controllers
 import controllers.actions.AuthAction
 import javax.inject.{Inject, Singleton}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import connectors.httpParsers.CompaniesHouseHttpParser._
+
 import scala.concurrent.Future
-import uk.gov.hmrc.http.{HttpReads, HttpResponse}
-import play.api.libs.json._
 
 @Singleton()
 class MicroserviceHelloWorldController @Inject()(authAction: AuthAction,
                                                  override val controllerComponents: ControllerComponents) extends BaseController {
 
-  def hello(): Action[AnyContent] = Action.async { implicit request =>
-    CompaniesHouseReads.read("GET","",HttpResponse(200,Some(Json.obj("chaz" -> "dingle")),Map("x"->Seq("y")),Some("RE")))
+  def hello(): Action[AnyContent] = authAction.async { implicit request =>
     Future.successful(Ok("Hello world"))
   }
 }

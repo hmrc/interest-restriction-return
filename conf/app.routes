@@ -10,4 +10,4 @@ POST       /return/abbreviated                          controllers.AbbreviatedR
 
 POST       /return/full                                 controllers.FullReturnController.submit()
 
-GET        /validate-crn/:crn                           controllers.CompaniesHouseController.validateCrn(crn)
+GET        /validate-crn/:crn                           controllers.CompaniesHouseController.validateCRN(crn)

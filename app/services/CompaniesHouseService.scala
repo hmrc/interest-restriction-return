@@ -16,13 +16,13 @@
 
 package services
 
-import connectors.{CompaniesHouseConnector, UnexpectedFailure}
 import javax.inject.Inject
+
+import connectors.{CompaniesHouseConnector, UnexpectedFailure}
 import models.requests.IdentifierRequest
 import models.{CRNModel, ValidationErrorResponseModel}
 import play.api.libs.json.{JsPath, Json}
 import uk.gov.hmrc.http.HeaderCarrier
-import play.api.mvc.Results._
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -46,14 +46,6 @@ class CompaniesHouseService @Inject()(companiesHouseConnector: CompaniesHouseCon
         case _ =>
           invalidCRNs(crns.tail, errors)
       }
-    }
-  }
-
-  def validateCRN(cRNModel: CRNModel) = {
-    companiesHouseConnector.validateCRN(cRNModel).map {
-      case Left(_: UnexpectedFailure) => InternalServerError
-      case Left(_) => BadRequest
-      case _ => NoContent
     }
   }
 }

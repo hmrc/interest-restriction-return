@@ -18,18 +18,22 @@ package controllers
 
 import javax.inject.{Inject, Singleton}
 
+import connectors.{CompaniesHouseConnector, UnexpectedFailure}
 import controllers.actions.AuthAction
 import models.CRNModel
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import services.CompaniesHouseService
 
 
 @Singleton()
 class CompaniesHouseController @Inject()(authAction: AuthAction,
-                                         companiesHouseService: CompaniesHouseService,
+                                         companiesHouseConnector: CompaniesHouseConnector,
                                          override val controllerComponents: ControllerComponents) extends BaseController {
 
   def validateCRN(crn: String): Action[AnyContent] = authAction.async { implicit request =>
-    companiesHouseService.validateCRN(CRNModel(crn))
+    companiesHouseConnector.validateCRN(CRNModel(crn)).map {
+      case Left(_: UnexpectedFailure) => InternalServerError
+      case Left(_) => BadRequest
+      case _ => NoContent
+    }
   }
 }
