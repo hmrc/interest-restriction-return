@@ -19,8 +19,9 @@ trait CreateRequestHelper extends ServerProvider {
 
   val defaultCookie = DefaultWSCookie("CSRF-Token","123")
 
-  def getRequest(path: String, follow: Boolean = true): WSRequest = {
-    ws.url(s"http://localhost:$port$path").withFollowRedirects(follow)
+  def getRequest(path: String, follow: Boolean = true): Future[WSResponse] = {
+    ws.url(s"http://localhost:$port/interest-restriction-return$path").withFollowRedirects(follow)
+      .get()
   }
 
   def postRequest(path: String, formJson: JsValue, follow: Boolean = true): Future[WSResponse] = {

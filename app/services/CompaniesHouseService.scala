@@ -16,8 +16,9 @@
 
 package services
 
-import connectors.{CompaniesHouseConnector, UnexpectedFailure}
 import javax.inject.Inject
+
+import connectors.{CompaniesHouseConnector, UnexpectedFailure}
 import models.requests.IdentifierRequest
 import models.{CRNModel, ValidationErrorResponseModel}
 import play.api.libs.json.{JsPath, Json}
