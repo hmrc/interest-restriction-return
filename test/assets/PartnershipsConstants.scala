@@ -16,8 +16,8 @@
 
 package assets
 
-import models.PartnershipModel
 import play.api.libs.json.Json
+import v1.models.PartnershipModel
 
 object PartnershipsConstants extends  BaseConstants {
 

@@ -16,9 +16,9 @@
 
 package assets
 
-import models.ConsolidatedPartnershipModel
-import play.api.libs.json.Json
 import assets.PartnershipsConstants._
+import play.api.libs.json.Json
+import v1.models.ConsolidatedPartnershipModel
 
 object ConsolidatedPartnershipConstants extends BaseConstants {
 

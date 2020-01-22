@@ -16,7 +16,7 @@
 
 package assets
 
-import models.{CRNModel, CompanyNameModel, CountryCodeModel, UTRModel}
+import v1.models.{CRNModel, CompanyNameModel, CountryCodeModel, UTRModel}
 
 trait BaseConstants {
 

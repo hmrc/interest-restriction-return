@@ -16,9 +16,9 @@
 
 package assets
 
-import models.{GroupRatioBlendedModel, InvestorGroupModel}
 import assets.InvestorGroupConstants._
 import play.api.libs.json.Json
+import v1.models.{GroupRatioBlendedModel, InvestorGroupModel}
 
 object GroupRatioBlendedConstants {
 

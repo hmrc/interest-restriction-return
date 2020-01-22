@@ -18,8 +18,8 @@ package assets
 
 import java.time.LocalDate
 
-import models.AccountingPeriodModel
 import play.api.libs.json.Json
+import v1.models.AccountingPeriodModel
 
 object AccountingPeriodConstants {
 

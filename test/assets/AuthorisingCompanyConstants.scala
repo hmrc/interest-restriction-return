@@ -16,8 +16,8 @@
 
 package assets
 
-import models.AuthorisingCompanyModel
 import play.api.libs.json.Json
+import v1.models.AuthorisingCompanyModel
 
 object AuthorisingCompanyConstants extends BaseConstants {
 

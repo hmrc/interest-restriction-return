@@ -16,8 +16,8 @@
 
 package schemas.helpers
 
-import models.{CRNModel, UTRModel}
 import play.api.libs.json.Json
+import v1.models.{CRNModel, UTRModel}
 
 case class ReportingCompany(companyName: Option[String] = Some("MIB Ltd"),
                             ctutr: Option[UTRModel] = Some(UTRModel("1234567890")),

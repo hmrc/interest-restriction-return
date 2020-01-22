@@ -16,10 +16,10 @@
 
 package schemas
 
-import models.{CountryCodeModel, UTRModel}
 import org.scalatest.{Matchers, WordSpec}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import utils.SchemaValidation
+import v1.models.{CountryCodeModel, UTRModel}
 
 //noinspection ScalaStyle
 trait BaseSchemaSpec extends WordSpec with Matchers with GuiceOneAppPerSuite with SchemaValidation {

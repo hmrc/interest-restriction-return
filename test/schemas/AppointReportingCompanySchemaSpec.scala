@@ -17,9 +17,9 @@
 package schemas
 
 import helpers._
-import models.CRNModel
 import play.api.libs.json.{JsValue, Json}
 import schemas.helpers.appointReportingCompany.AppointReportingCompanyModel
+import v1.models.CRNModel
 
 class AppointReportingCompanySchemaSpec extends BaseSchemaSpec {
 

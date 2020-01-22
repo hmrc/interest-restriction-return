@@ -16,10 +16,10 @@
 
 package schemas.subSchemas
 
-import models.{CRNModel, CountryCodeModel, UTRModel}
 import play.api.libs.json.{JsValue, Json}
 import schemas.BaseSchemaSpec
 import schemas.helpers._
+import v1.models.{CRNModel, CountryCodeModel, UTRModel}
 
 class UltimateParentCompanySchemaSpec extends BaseSchemaSpec {
 

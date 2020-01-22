@@ -16,10 +16,10 @@
 
 package schemas.subSchemas
 
-import models.{CRNModel, UTRModel}
 import play.api.libs.json.{JsValue, Json}
 import schemas.BaseSchemaSpec
 import schemas.helpers.{IdentityOfCompanySubmitting, UltimateParent}
+import v1.models.{CRNModel, UTRModel}
 
 class IdentityOfCompanySubmittingSchemaSpec extends BaseSchemaSpec {
 

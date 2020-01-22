@@ -25,8 +25,9 @@ import assets.GroupLevelElectionsITConstants.groupLevelElectionsJson
 import assets.ParentCompanyITConstants.parentCompanyJson
 import assets.ReportingCompanyITConstants._
 import assets.UkCompanyITConstants.ukCompanyFullJson
-import models.{Original, Revised}
+import models.Revised
 import play.api.libs.json.Json
+import v1.models.Revised
 
 object FullReturnITConstants {
 

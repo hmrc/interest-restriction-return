@@ -16,8 +16,8 @@
 
 package schemas.helpers.fullReturn
 
-import models.UTRModel
 import play.api.libs.json.Json
+import v1.models.UTRModel
 
 case class UkCompanyFull(companyName: Option[String] = Some("ABC Ltd"),
                          utr: Option[UTRModel] = Some(UTRModel("1234567890")),

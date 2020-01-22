@@ -16,8 +16,8 @@
 
 package assets
 
-import models.ReportingCompanyModel
 import play.api.libs.json.Json
+import v1.models.ReportingCompanyModel
 
 object ReportingCompanyConstants extends BaseConstants {
 

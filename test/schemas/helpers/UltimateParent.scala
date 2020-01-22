@@ -16,8 +16,8 @@
 
 package schemas.helpers
 
-import models.{CRNModel, CountryCodeModel, UTRModel}
 import play.api.libs.json.Json
+import v1.models.{CRNModel, CountryCodeModel, UTRModel}
 
 case class UltimateParent(isUk: Option[Boolean] = Some(true),
                           companyName: Option[String] = Some("Ladon ltd"),

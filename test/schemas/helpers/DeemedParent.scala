@@ -16,9 +16,8 @@
 
 package schemas.helpers
 
-import models.UTRModel
-import models.CRNModel
 import play.api.libs.json.Json
+import v1.models.{CRNModel, UTRModel}
 
 case class DeemedParent(isUk: Option[Boolean] = Some(true),
                         companyName: Option[String] = Some("name"),

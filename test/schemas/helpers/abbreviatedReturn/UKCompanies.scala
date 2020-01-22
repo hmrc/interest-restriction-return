@@ -16,8 +16,8 @@
 
 package schemas.helpers.abbreviatedReturn
 
-import models.UTRModel
 import play.api.libs.json.Json
+import v1.models.UTRModel
 
 case class UKCompanies(companyName: Option[String] = Some("name"),
                        ctutr: Option[UTRModel] = Some(UTRModel("1111111111")),

@@ -20,12 +20,32 @@ import javax.inject.{Inject, Singleton}
 import play.api.Configuration
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
+trait AppConfig {
+
+  def desUrl: String
+  def desEnvironmentHeader: (String, String)
+  def desAuthorisationToken: String
+  def apiGatewayContext: String
+  def apiStatus(version: String): String
+  def featureSwitch: Option[Configuration]
+  def endpointsEnabled: Boolean
+  def companiesHouseProxy: String
+}
+
 @Singleton
-class AppConfig @Inject()(val servicesConfig: ServicesConfig) {
+class AppConfigImpl @Inject()(val servicesConfig: ServicesConfig, configuration: Configuration) extends AppConfig {
 
   lazy val desUrl: String = servicesConfig.getString("microservice.services.des.url")
   lazy val desAuthorisationToken: String = s"Bearer ${servicesConfig.getString("microservice.services.des.authorisation-token")}"
   lazy val desEnvironmentHeader: (String, String) = "Environment" -> servicesConfig.getString("microservice.services.des.environment")
+
+  val apiGatewayContext: String = servicesConfig.getString("api.gateway.context")
+
+  def apiStatus(version: String): String = servicesConfig.getString(s"api.$version.status")
+
+  def featureSwitch: Option[Configuration] = configuration.getOptional[Configuration](s"feature-switch")
+
+  val endpointsEnabled: Boolean = servicesConfig.getBoolean("api-definitions.endpoints.enabled")
 
   lazy val companiesHouseProxy = servicesConfig.baseUrl("companies-house-api-proxy")
 }

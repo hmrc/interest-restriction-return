@@ -19,8 +19,8 @@ package assets
 import assets.ConsolidatedPartnershipConstants._
 import assets.GroupRatioConstants._
 import assets.NonConsolidatedInvestmentElectionConstants._
-import models.GroupLevelElectionsModel
 import play.api.libs.json.Json
+import v1.models.GroupLevelElectionsModel
 
 object GroupLevelElectionsConstants {
 

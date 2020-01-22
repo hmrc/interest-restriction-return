@@ -16,10 +16,10 @@
 
 package schemas.subSchemas
 
-import models.UTRModel
 import play.api.libs.json.{JsValue, Json}
 import schemas.BaseSchemaSpec
 import schemas.helpers._
+import v1.models.UTRModel
 
 class GroupLevelElectionsSpec extends BaseSchemaSpec {
 

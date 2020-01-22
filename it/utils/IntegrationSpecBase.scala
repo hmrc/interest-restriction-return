@@ -22,11 +22,11 @@ trait IntegrationSpecBase extends WordSpec
 
   def config: Map[String, String] = Map(
     "application.router" -> "testOnlyDoNotUseInAppConf.Routes",
-    "microservice.services.auth.host" -> mockHost,
-    "microservice.services.auth.port" -> mockPort,
-    "microservice.services.des.url" -> mockUrl,
-    "microservice.services.companies-house-api-proxy.host" -> mockHost,
-    "microservice.services.companies-house-api-proxy.port" -> mockPort
+    "microservice.v1.services.auth.host" -> mockHost,
+    "microservice.v1.services.auth.port" -> mockPort,
+    "microservice.v1.services.des.url" -> mockUrl,
+    "microservice.v1.services.companies-house-api-proxy.host" -> mockHost,
+    "microservice.v1.services.companies-house-api-proxy.port" -> mockPort
   )
 
   override def beforeEach(): Unit = {

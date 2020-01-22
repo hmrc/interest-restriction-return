@@ -16,8 +16,8 @@
 
 package assets
 
-import models.UltimateParentModel
 import play.api.libs.json.Json
+import v1.models.UltimateParentModel
 
 object UltimateParentConstants extends BaseConstants {
 

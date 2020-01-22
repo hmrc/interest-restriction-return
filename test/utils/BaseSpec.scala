@@ -18,18 +18,18 @@ package utils
 
 import assets.BaseConstants
 import config.AppConfig
-import controllers.actions.mocks.{Authorised, Unauthorised}
-import models.Validation
-import models.Validation.ValidationResult
-import models.requests.IdentifierRequest
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.Matchers
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.mvc.BodyParsers
-import play.api.test.FakeRequest
+import play.api.test.{DefaultAwaitTimeout, FakeRequest, FutureAwaits}
 import uk.gov.hmrc.auth.core.MissingBearerToken
 import uk.gov.hmrc.auth.core.retrieve.Credentials
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.test.UnitSpec
+import v1.controllers.actions.mocks.{Authorised, Unauthorised}
+import v1.models.Validation
+import v1.models.Validation.ValidationResult
+import v1.models.requests.IdentifierRequest
 
 import scala.concurrent.ExecutionContext
 

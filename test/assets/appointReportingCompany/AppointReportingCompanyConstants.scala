@@ -16,14 +16,14 @@
 
 package assets.appointReportingCompany
 
-import assets.AgentDetailsConstants._
-import assets.ReportingCompanyConstants._
-import assets.AuthorisingCompanyConstants._
-import assets.UltimateParentConstants._
-import assets.IdentityOfCompanySubmittingConstants._
-import play.api.libs.json.Json
 import assets.AccountingPeriodConstants._
-import models.appointReportingCompany.AppointReportingCompanyModel
+import assets.AgentDetailsConstants._
+import assets.AuthorisingCompanyConstants._
+import assets.IdentityOfCompanySubmittingConstants._
+import assets.ReportingCompanyConstants._
+import assets.UltimateParentConstants._
+import play.api.libs.json.Json
+import v1.models.appointReportingCompany.AppointReportingCompanyModel
 
 object AppointReportingCompanyConstants {
 

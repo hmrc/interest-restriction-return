@@ -17,8 +17,8 @@
 package assets.fullReturn
 
 import assets.BaseConstants
-import models.fullReturn.AdjustedGroupInterestModel
 import play.api.libs.json.Json
+import v1.models.fullReturn.AdjustedGroupInterestModel
 
 object AdjustedGroupInterestConstants extends BaseConstants {
 

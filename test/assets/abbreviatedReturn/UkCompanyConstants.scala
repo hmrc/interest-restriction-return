@@ -17,8 +17,8 @@
 package assets.abbreviatedReturn
 
 import assets.BaseConstants
-import models.abbreviatedReturn.UkCompanyModel
 import play.api.libs.json.Json
+import v1.models.abbreviatedReturn.UkCompanyModel
 
 object UkCompanyConstants extends BaseConstants {
 

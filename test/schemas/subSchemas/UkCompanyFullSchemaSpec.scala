@@ -16,10 +16,10 @@
 
 package schemas.subSchemas
 
-import models.UTRModel
 import play.api.libs.json.{JsValue, Json}
 import schemas.BaseSchemaSpec
 import schemas.helpers.fullReturn.UkCompanyFull
+import v1.models.UTRModel
 
 class UkCompanyFullSchemaSpec extends BaseSchemaSpec {
 

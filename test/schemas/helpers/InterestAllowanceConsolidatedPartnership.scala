@@ -16,8 +16,8 @@
 
 package schemas.helpers
 
-import models.UTRModel
 import play.api.libs.json.Json
+import v1.models.UTRModel
 
 case class InterestAllowanceConsolidatedPartnership(isElected: Option[Boolean] = Some(true),
                                                     consolidatedPartnerships: Option[Seq[Partnerships]] = Some(Seq(Partnerships()))

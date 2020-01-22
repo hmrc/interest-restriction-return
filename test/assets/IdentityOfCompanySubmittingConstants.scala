@@ -16,8 +16,8 @@
 
 package assets
 
-import models.IdentityOfCompanySubmittingModel
 import play.api.libs.json.Json
+import v1.models.IdentityOfCompanySubmittingModel
 
 object IdentityOfCompanySubmittingConstants extends BaseConstants {
 

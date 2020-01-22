@@ -16,8 +16,8 @@
 
 package schemas.helpers
 
-import models.UTRModel
 import play.api.libs.json.Json
+import v1.models.UTRModel
 
 case class AuthorisingCompanies(companyName: Option[String] = Some("cde ltd"),
                                 utr: Option[UTRModel] = Some(UTRModel("1234567890")),
