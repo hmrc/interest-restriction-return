@@ -19,6 +19,7 @@ package routing
 import config.{AppConfig, FeatureSwitch}
 import definition.Versions
 import javax.inject.{Inject, Singleton}
+import play.api.Logger
 import play.api.http.{DefaultHttpRequestHandler, HttpConfiguration, HttpFilters}
 import play.api.libs.json.Json
 import play.api.mvc.{DefaultActionBuilder, Handler, RequestHeader, Results}
@@ -48,9 +49,15 @@ class VersionRoutingRequestHandler @Inject()(versionRoutingMap: VersionRoutingMa
     def apiHandler = Versions.getFromRequest(request) match {
       case Some(version) =>
         versionRoutingMap.versionRouter(version) match {
-          case Some(versionRouter) if featureSwitch.isVersionEnabled(version) => routeWith(versionRouter)(request)
-          case Some(_) => Some(unsupportedVersionAction)
-          case None => Some(unsupportedVersionAction)
+          case Some(versionRouter) if featureSwitch.isVersionEnabled(version) =>
+            Logger.debug(s"[VersionRoutingRequestHandler][routeRequest] apiHandler. Routing with version: $version")
+            routeWith(versionRouter)(request)
+          case Some(_) =>
+            Logger.debug(s"[VersionRoutingRequestHandler][routeRequest] apiHandler. Version: $version is not enabled")
+            Some(unsupportedVersionAction)
+          case None =>
+            Logger.debug(s"[VersionRoutingRequestHandler][routeRequest] apiHandler. No mapping found in router for version: $version")
+            Some(unsupportedVersionAction)
         }
       case None => Some(invalidAcceptHeaderError)
     }

@@ -1,0 +1,25 @@
+is:
+  - headers.acceptJson
+  - headers.contentTypeJson
+displayName: Appoint a Reporting Company
+description: Request to appoint a Reporting Company that can submit Interest Restriction Returns
+body:
+  application/json:
+    description: The payload required for the post to be successful
+    type: !include schemas/appointReportingCompanySchema.json
+    examples:
+      example-1:
+        description: The maximum possible payload in a request
+        value: !include examples/reportingCompany/appoint/max-post.json
+      example-2:
+        description: The minimum possible payload in a request
+        value: !include examples/reportingCompany/appoint/min-post.json
+responses:
+  200:
+    body:
+      application/json:
+        type: !include schemas/appointReportingCompanyResponseSchema.json
+        examples:
+          example-1:
+            description: Typical response received
+            value: !include examples/reportingCompany/appoint/post-response.json

@@ -1,5 +1,5 @@
-# Add all the application routes to the v1.routes file
-
+# Add all the application routes to the vN.routes files
+->         /                          definition.Routes
 ->         /                          health.Routes
 
 # NOTE: versioned API routes (e.g. v1.routes) are handled automatically

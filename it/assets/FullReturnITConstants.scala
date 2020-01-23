@@ -16,16 +16,13 @@
 
 package assets
 
-import assets.AbbreviatedReturnITConstants.abbreviatedReturnJson
 import assets.AdjustedGroupInterestITConstants.adjustedGroupInterestJson
 import assets.AgentDetailsITConstants._
 import assets.GroupCompanyDetailsITConstants.groupCompanyDetailsJson
 import assets.GroupLevelAmountITConstants.groupLevelAmountJson
 import assets.GroupLevelElectionsITConstants.groupLevelElectionsJson
-import assets.ParentCompanyITConstants.parentCompanyJson
 import assets.ReportingCompanyITConstants._
 import assets.UkCompanyITConstants.ukCompanyFullJson
-import models.Revised
 import play.api.libs.json.Json
 import v1.models.Revised
 

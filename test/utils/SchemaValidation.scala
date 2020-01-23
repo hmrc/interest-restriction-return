@@ -30,17 +30,17 @@ trait SchemaValidation {
   private[utils] final lazy val jsonMapper = new ObjectMapper()
   private[utils] final lazy val jsonFactory = jsonMapper.getFactory
 
-  private[utils] def loadRequestSchema(schemaName: String): JsonSchema = {
-    val file = new File(s"docs/schemas/$schemaName")
+  private[utils] def loadRequestSchema(schemaName: String, version: String): JsonSchema = {
+    val file = new File(s"resources/public/api/conf/$version/schemas/$schemaName")
     val uri = file.toURI
     JsonSchemaFactory.byDefault().getJsonSchema(uri.toString)
   }
 
-  def validateJson(schemaName: String, json: JsValue): Boolean = {
+  def validateJson(schemaName: String, schemaVersion: String, json: JsValue): Boolean = {
     Logger.debug(s"Json to validate: $json")
     val jsonParser = jsonFactory.createParser(json.toString)
     val jsonNode: JsonNode = jsonMapper.readTree(jsonParser)
-    val result: ProcessingReport = loadRequestSchema(schemaName).validate(jsonNode)
+    val result: ProcessingReport = loadRequestSchema(schemaName, schemaVersion).validate(jsonNode)
     if(!result.isSuccess) Logger.error(result.toString)
     result.isSuccess
   }
