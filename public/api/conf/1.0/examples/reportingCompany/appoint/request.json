@@ -7,8 +7,7 @@
     "companyName": "ACompany",
     "ctutr": "1123456789",
     "crn": "12345678",
-    "sameAsUltimateParent": true,
-    "reportingCompanyDeemed": true
+    "sameAsUltimateParent": true
   },
   "isReportingCompanyAppointingItself":false,
   "identityOfAppointingCompany": {
