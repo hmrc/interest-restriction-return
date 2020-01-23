@@ -26,7 +26,7 @@ class ValidationErrorResponseModelSpec extends WordSpec with Matchers {
 
     val errors: Seq[(JsPath, Seq[JsonValidationError])] = Seq(JsPath \ "FOO" -> Seq(JsonValidationError(Seq("BAR", "Snakes")), JsonValidationError(Seq("bye", "hello"))))
 
-    "be successfully constructed given a sequence of Json v1.validation errors" in {
+    "be successfully constructed given a sequence of Json validation errors" in {
 
       val expected = Seq(ValidationErrorResponseModel(field = "/FOO", errors = Seq("BAR", "Snakes", "bye", "hello")))
 

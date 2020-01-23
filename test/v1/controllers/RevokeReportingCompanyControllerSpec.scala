@@ -46,7 +46,7 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
           .withBody(revokeReportingCompanyJsonMax)
           .withHeaders("Content-Type" -> "application/json")
 
-        "a success response is returned from the companies house service with no v1.validation errors" when {
+        "a success response is returned from the companies house service with no validation errors" when {
 
           "a success response is returned from the revoke reporting company service" should {
 
@@ -75,7 +75,7 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
           }
         }
 
-        "a success response is returned from the companies house service with v1.validation errors" when {
+        "a success response is returned from the companies house service with validation errors" when {
 
           "return the 400 (BAD REQUEST)" in {
 
@@ -107,7 +107,7 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
           .withBody(Json.obj())
           .withHeaders("Content-Type" -> "application/json")
 
-        "return a BAD_REQUEST JSON v1.validation error" in {
+        "return a BAD_REQUEST JSON validation error" in {
 
           val result = AuthorisedController.revoke()(invalidJsonFakeRequest)
           status(result) shouldBe Status.BAD_REQUEST

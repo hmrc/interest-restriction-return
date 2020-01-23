@@ -46,7 +46,7 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
           .withBody(abbreviatedReturnUltimateParentJson)
           .withHeaders("Content-Type" -> "application/json")
 
-        "a success response is returned from the companies house service with no v1.validation errors" when {
+        "a success response is returned from the companies house service with no validation errors" when {
 
           "a success response is returned from the abbreviated return service" should {
 
@@ -71,7 +71,7 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
           }
         }
 
-        "a success response is returned from the companies house service with v1.validation errors" when {
+        "a success response is returned from the companies house service with validation errors" when {
 
           "return the 400 (BAD REQUEST)" in {
 
@@ -103,7 +103,7 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
           .withBody(Json.obj())
           .withHeaders("Content-Type" -> "application/json")
 
-        "return a BAD_REQUEST JSON v1.validation error" in {
+        "return a BAD_REQUEST JSON validation error" in {
 
           val result = AuthorisedController.submitAbbreviatedReturn()(invalidJsonFakeRequest)
           status(result) shouldBe Status.BAD_REQUEST
