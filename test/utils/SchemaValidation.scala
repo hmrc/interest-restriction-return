@@ -31,7 +31,7 @@ trait SchemaValidation {
   private[utils] final lazy val jsonFactory = jsonMapper.getFactory
 
   private[utils] def loadRequestSchema(schemaName: String, version: String): JsonSchema = {
-    val file = new File(s"resources/public/api/conf/$version/schemas/$schemaName")
+    val file = new File(s"public/api/conf/$version/schemas/$schemaName")
     val uri = file.toURI
     JsonSchemaFactory.byDefault().getJsonSchema(uri.toString)
   }

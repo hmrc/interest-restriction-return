@@ -23,7 +23,7 @@ This is a protected backend microservice that is the conduit between Public faci
 
 **Authentication required:** `Yes, bearer token required`
 
-**Request Schema:** [Json Schema](resources/public/api/conf/1.0/schemas/appointReportingCompanySchema.json)
+**Request Schema:** [Json Schema](public/api/conf/1.0/schemas/appointReportingCompanySchema.json)
 
 **Example Request**
 ```json
@@ -129,7 +129,7 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
 
 **Authentication required:** `Yes, bearer token required`
 
-**Request Schema:** [Json Schema](resources/public/api/conf/1.0/schemas/revokeReportingCompanySchema.json)
+**Request Schema:** [Json Schema](public/api/conf/1.0/schemas/revokeReportingCompanySchema.json)
 
 **Example Request**
 ```json
@@ -248,7 +248,7 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
 
 **Authentication required:** `Yes, bearer token required`
 
-**Request Schema:** [Json Schema](resources/public/api/conf/1.0/schemas/abbreviatedReturnSchema.json)
+**Request Schema:** [Json Schema](public/api/conf/1.0/schemas/abbreviatedReturnSchema.json)
 
 **Example Request**
 ```json
@@ -407,7 +407,7 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
 
 **Authentication required:** `Yes, bearer token required`
 
-**Request Schema:** [Json Schema](resources/public/api/conf/1.0/schemas/fullReturnSchema.json)
+**Request Schema:** [Json Schema](public/api/conf/1.0/schemas/fullReturnSchema.json)
 
 **Example Request**
 ```json
