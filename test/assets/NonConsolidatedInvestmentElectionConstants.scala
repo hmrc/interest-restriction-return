@@ -16,9 +16,9 @@
 
 package assets
 
-import models.{NonConsolidatedInvestmentElectionModel, NonConsolidatedInvestmentModel}
 import assets.NonConsolidatedInvestmentConstants._
 import play.api.libs.json.Json
+import v1.models.NonConsolidatedInvestmentElectionModel
 
 object NonConsolidatedInvestmentElectionConstants {
 

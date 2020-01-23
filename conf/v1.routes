@@ -1,0 +1,13 @@
+# microservice specific routes
+
+GET        /hello-world                                 v1.controllers.MicroserviceHelloWorldController.hello()
+
+POST       /reporting-company/appoint                   v1.controllers.AppointReportingCompanyController.appoint()
+
+POST       /reporting-company/revoke                    v1.controllers.RevokeReportingCompanyController.revoke()
+
+POST       /return/abbreviated                          v1.controllers.AbbreviatedReturnController.submitAbbreviatedReturn()
+
+POST       /return/full                                 v1.controllers.FullReturnController.submit()
+
+GET        /validate-crn/:crn                           v1.controllers.CompaniesHouseController.validateCRN(crn)

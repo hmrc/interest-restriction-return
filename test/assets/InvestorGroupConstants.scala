@@ -16,7 +16,7 @@
 
 package assets
 
-import models.InvestorGroupModel
+import v1.models.InvestorGroupModel
 
 object InvestorGroupConstants {
 

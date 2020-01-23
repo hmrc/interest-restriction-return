@@ -16,8 +16,8 @@
 
 package assets
 
-import models.AgentDetailsModel
 import play.api.libs.json.Json
+import v1.models.AgentDetailsModel
 
 object AgentDetailsConstants {
 

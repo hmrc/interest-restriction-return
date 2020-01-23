@@ -1,5 +1,8 @@
-# Add all the application routes to the app.routes file
-->         /interest-restriction-return              app.Routes
+# Add all the application routes to the vN.routes files
+->         /                          definition.Routes
 ->         /                          health.Routes
+
+# NOTE: versioned API routes (e.g. v1.routes) are handled automatically
+# via VersionRoutingRequestHandler and so there is no need to include them here
 
 GET        /admin/metrics             com.kenshoo.play.metrics.MetricsController.metrics

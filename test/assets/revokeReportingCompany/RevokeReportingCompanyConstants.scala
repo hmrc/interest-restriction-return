@@ -21,8 +21,8 @@ import assets.AgentDetailsConstants._
 import assets.AuthorisingCompanyConstants._
 import assets.ReportingCompanyConstants._
 import assets.UltimateParentConstants._
-import models.revokeReportingCompany.RevokeReportingCompanyModel
 import play.api.libs.json.Json
+import v1.models.revokeReportingCompany.RevokeReportingCompanyModel
 
 object RevokeReportingCompanyConstants {
 

@@ -16,8 +16,8 @@
 
 package assets.fullReturn
 
-import models.fullReturn.GroupLevelAmountModel
 import play.api.libs.json.Json
+import v1.models.fullReturn.GroupLevelAmountModel
 
 object GroupLevelAmountConstants {
 

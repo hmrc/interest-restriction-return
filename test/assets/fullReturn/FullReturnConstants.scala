@@ -21,12 +21,12 @@ import assets.GroupCompanyDetailsConstants._
 import assets.GroupLevelElectionsConstants._
 import assets.ParentCompanyConstants._
 import assets.ReportingCompanyConstants._
+import assets.fullReturn.AdjustedGroupInterestConstants._
 import assets.fullReturn.GroupLevelAmountConstants._
 import assets.fullReturn.UkCompanyConstants._
-import assets.fullReturn.AdjustedGroupInterestConstants._
-import models.{Original, Revised}
-import models.fullReturn.FullReturnModel
 import play.api.libs.json.Json
+import v1.models.fullReturn.FullReturnModel
+import v1.models.{Original, Revised}
 
 object FullReturnConstants {
 

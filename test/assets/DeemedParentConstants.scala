@@ -16,8 +16,8 @@
 
 package assets
 
-import models.DeemedParentModel
 import play.api.libs.json.Json
+import v1.models.DeemedParentModel
 
 object DeemedParentConstants extends BaseConstants {
 

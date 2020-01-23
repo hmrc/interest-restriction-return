@@ -17,8 +17,8 @@
 package assets
 
 import assets.GroupRatioBlendedConstants._
-import models.GroupRatioModel
 import play.api.libs.json.Json
+import v1.models.GroupRatioModel
 
 object GroupRatioConstants {
 

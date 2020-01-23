@@ -18,9 +18,9 @@ package assets.fullReturn
 
 import java.time.LocalDate
 
-import models.fullReturn.AllocatedRestrictionsModel
 import assets.AccountingPeriodConstants._
 import play.api.libs.json.Json
+import v1.models.fullReturn.AllocatedRestrictionsModel
 
 object AllocatedRestrictionsConstants {
 
