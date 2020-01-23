@@ -3,6 +3,8 @@ is:
   - headers.contentTypeJson
 displayName: Appoint a Reporting Company
 description: Request to appoint a Reporting Company that can submit Interest Restriction Returns
+(annotations.scope): "write:interest-restriction-return"
+securedBy: [ sec.oauth_2_0: { scopes: [ "write:interest-restriction-return" ] } ]
 body:
   application/json:
     description: The payload required for the post to be successful
