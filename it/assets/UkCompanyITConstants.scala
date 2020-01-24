@@ -39,7 +39,6 @@ object UkCompanyITConstants extends BaseITConstants {
     "netTaxInterestExpense" -> netTaxInterestExpense,
     "netTaxInterestIncome" -> netTaxInterestIncome,
     "taxEBITDA" -> taxEBITDA,
-    "allocatedRestrictions" -> allocatedRestrictionsJson,
     "allocatedReactivations" -> allocatedReactivationsJson
   )
 }

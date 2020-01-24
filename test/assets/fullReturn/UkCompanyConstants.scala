@@ -35,7 +35,7 @@ object UkCompanyConstants extends BaseConstants {
     netTaxInterestExpense = netTaxInterestExpense,
     netTaxInterestIncome = netTaxInterestIncome,
     taxEBITDA = taxEBITDA,
-    allocatedRestrictions = Some(allocatedRestrictionsModel),
+    allocatedRestrictions = None,
     allocatedReactivations = Some(allocatedReactivationsModel)
   )
 
@@ -46,7 +46,6 @@ object UkCompanyConstants extends BaseConstants {
     "netTaxInterestExpense" -> netTaxInterestExpense,
     "netTaxInterestIncome" -> netTaxInterestIncome,
     "taxEBITDA" -> taxEBITDA,
-    "allocatedRestrictions" -> allocatedRestrictionsJson,
     "allocatedReactivations" -> allocatedReactivationsJson
   )
 

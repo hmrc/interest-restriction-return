@@ -34,8 +34,8 @@ object FullReturnConstants {
 
   val revisedReturnDetails = "some details"
   val angie: BigDecimal = 1.11
-  val totalReactivations = ukCompanyModelMax.allocatedRestrictions.foldLeft[BigDecimal](0){
-    (total, company) => total + company.totalDisallowances.getOrElse[BigDecimal](0)
+  val totalReactivations = ukCompanyModelMax.allocatedReactivations.foldLeft[BigDecimal](0){
+    (total, company) => total + company.currentPeriodReactivation
   }
 
   val fullReturnUltimateParentModel = FullReturnModel(
@@ -50,7 +50,7 @@ object FullReturnConstants {
     ukCompanies = Seq(ukCompanyModelMax),
     angie = Some(angie),
     returnContainsEstimates = true,
-    groupSubjectToInterestRestrictions = true,
+    groupSubjectToInterestRestrictions = false,
     groupSubjectToInterestReactivation = true,
     totalReactivation = totalReactivations,
     groupLevelAmount = groupLevelAmountModel,
@@ -69,7 +69,7 @@ object FullReturnConstants {
     "ukCompanies" -> Seq(ukCompanyJsonMax),
     "angie" -> angie,
     "returnContainsEstimates" -> true,
-    "groupSubjectToInterestRestrictions" -> true,
+    "groupSubjectToInterestRestrictions" -> false,
     "groupSubjectToInterestReactivation" -> true,
     "totalReactivation" -> totalReactivations,
     "groupLevelAmount" -> groupLevelAmountJson,
@@ -88,7 +88,7 @@ object FullReturnConstants {
     ukCompanies = Seq(ukCompanyModelMax),
     angie = Some(angie),
     returnContainsEstimates = true,
-    groupSubjectToInterestRestrictions = true,
+    groupSubjectToInterestRestrictions = false,
     groupSubjectToInterestReactivation = true,
     totalReactivation = totalReactivations,
     groupLevelAmount = groupLevelAmountModel,
@@ -107,7 +107,7 @@ object FullReturnConstants {
     "ukCompanies" -> Seq(ukCompanyJsonMax),
     "angie" -> angie,
     "returnContainsEstimates" -> true,
-    "groupSubjectToInterestRestrictions" -> true,
+    "groupSubjectToInterestRestrictions" -> false,
     "groupSubjectToInterestReactivation" -> true,
     "totalReactivation" -> totalReactivations,
     "groupLevelAmount" -> groupLevelAmountJson,
@@ -126,7 +126,7 @@ object FullReturnConstants {
     ukCompanies = Seq(ukCompanyModelMin),
     angie = None,
     returnContainsEstimates = true,
-    groupSubjectToInterestRestrictions = true,
+    groupSubjectToInterestRestrictions = false,
     groupSubjectToInterestReactivation = true,
     totalReactivation = totalReactivations,
     groupLevelAmount = groupLevelAmountModel,
@@ -142,7 +142,7 @@ object FullReturnConstants {
     "ukCompanies" -> Seq(ukCompanyJsonMin),
     "groupLevelElections" -> groupLevelElectionsJsonMin,
     "returnContainsEstimates" -> true,
-    "groupSubjectToInterestRestrictions" -> true,
+    "groupSubjectToInterestRestrictions" -> false,
     "groupSubjectToInterestReactivation" -> true,
     "totalReactivation" -> totalReactivations,
     "groupLevelAmount" -> groupLevelAmountJson

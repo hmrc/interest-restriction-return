@@ -84,18 +84,26 @@ class FullReturnValidatorSpec extends BaseSpec {
         leftSideError(fullReturnUltimateParentModel.copy(angie = Some(-0.01)).validate).errorMessage shouldBe NegativeAngieError(-0.01).errorMessage
       }
 
+      "Both group level interest restrictions and group level reactivtions are supplied" in {
+        leftSideError(fullReturnUltimateParentModel.copy(
+          groupSubjectToInterestReactivation = true,
+          groupSubjectToInterestRestrictions = true
+        ).validate).errorMessage shouldBe GroupLevelInterestRestrictionsAndReactivationSupplied.errorMessage
+      }
+
       "Group is subject to interest reactivations and no reactivation cap is supplied" in {
         leftSideError(fullReturnUltimateParentModel.copy(
           groupSubjectToInterestReactivation = true,
+          groupSubjectToInterestRestrictions = false,
           groupLevelAmount = groupLevelAmountModel.copy(interestReactivationCap = None)
         ).validate).errorMessage shouldBe InterestReactivationCapNotSupplied.errorMessage
       }
 
       "Total Reactivations does not match the sum of the total reactivations for each company" in {
         leftSideError(fullReturnUltimateParentModel.copy(
-          totalReactivation = 10,
-          ukCompanies = Seq(ukCompanyModelMax, ukCompanyModelMax)
-        ).validate).errorMessage shouldBe TotalReactivationsDoesNotMatch(10, 13.32).errorMessage
+          totalReactivation = incorrectTotalReactivation,
+          ukCompanies = Seq(ukCompanyModelMax, ukCompanyModelMax) //4.44
+        ).validate).errorMessage shouldBe TotalReactivationsDoesNotMatch(incorrectTotalReactivation, currentPeriodReactivation + currentPeriodReactivation).errorMessage
       }
 
       "Group is not subject to interest reactivations but has allocated reactivations supplied" in {
@@ -123,6 +131,7 @@ class FullReturnValidatorSpec extends BaseSpec {
 
         val model = fullReturnUltimateParentModel.copy(
           groupSubjectToInterestReactivation = true,
+          groupSubjectToInterestRestrictions = false,
           ukCompanies = Seq(
             ukCompanyModelMax.copy(
               allocatedReactivations = Some(allocatedReactivationsModel)
@@ -147,6 +156,7 @@ class FullReturnValidatorSpec extends BaseSpec {
 
         val model = fullReturnUltimateParentModel.copy(
           groupSubjectToInterestRestrictions = false,
+
           ukCompanies = Seq(
             ukCompanyModelMax.copy(
               allocatedRestrictions = Some(allocatedRestrictionsModel)
@@ -168,6 +178,7 @@ class FullReturnValidatorSpec extends BaseSpec {
 
         val model = fullReturnUltimateParentModel.copy(
           groupSubjectToInterestRestrictions = true,
+          groupSubjectToInterestReactivation = false,
           ukCompanies = Seq(
             ukCompanyModelMax.copy(
               allocatedRestrictions = Some(allocatedRestrictionsModel)
