@@ -41,15 +41,6 @@ class FullReturnControllerISpec extends IntegrationSpecBase with CreateRequestHe
             val res = postRequest("/return/full", fullReturnJson)
 
             whenReady(res) { result =>
-
-              //TODO DELETE
-              println("*******************************************")
-              println(fullReturnJson)
-              println("*******************************************")
-              println(res)
-              println("*******************************************")
-
-
               result should have(
                 httpStatus(OK),
                 jsonBodyAs(fullReturnDesSuccessJson)
@@ -67,9 +58,6 @@ class FullReturnControllerISpec extends IntegrationSpecBase with CreateRequestHe
             DESStub.fullReturnError
 
             val res = postRequest("/return/full", fullReturnJson)
-
-            //TODO DELETE
-            println(res)
 
             whenReady(res) { result =>
               result should have(
@@ -105,9 +93,6 @@ class FullReturnControllerISpec extends IntegrationSpecBase with CreateRequestHe
           CompaniesHouseStub.checkCrn(INTERNAL_SERVER_ERROR)
 
           val res = postRequest("/return/full", fullReturnJson)
-
-          //TODO DELETE
-          println(res)
 
           whenReady(res) { result =>
             result should have(
