@@ -1,1 +1,1 @@
-- Raise technical issues on the [interest-resriction-return](https://github.com/hmrc/interest-resriction-return/issues) issues page
+Raise technical issues on the [interest-restriction-return](https://github.com/hmrc/interest-restriction-return/issues) issues page
