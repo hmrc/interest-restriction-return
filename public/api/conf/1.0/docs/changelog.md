@@ -1,1 +1,1 @@
-You can find the change log on the [interest-resriction-return](github.com/hmrc/interest-resriction-return/wiki) wiki page.
+You can find the change log on the [interest-restriction-return](https://github.com/hmrc/interest-restriction-return/wiki) wiki page.
