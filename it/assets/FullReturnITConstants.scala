@@ -46,9 +46,9 @@ object FullReturnITConstants {
     "returnContainsEstimates" -> true,
     "ukCompanies" -> Seq(ukCompanyFullJson),
     "angie" -> 1.1,
-    "groupSubjectToInterestRestrictions" -> true,
+    "groupSubjectToInterestRestrictions" -> false,
     "groupSubjectToInterestReactivation" -> true,
-    "totalReactivation" -> 6.66,
+    "totalReactivation" -> 2.22,
     "groupLevelAmount" -> groupLevelAmountJson,
     "adjustedGroupInterest" -> adjustedGroupInterestJson
   )

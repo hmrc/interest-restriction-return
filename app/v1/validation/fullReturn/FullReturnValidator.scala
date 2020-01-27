@@ -16,6 +16,7 @@
 
 package v1.validation.fullReturn
 
+import play.api.Logger
 import play.api.libs.json.{JsPath, Json}
 import v1.models.Validation.ValidationResult
 import v1.models.fullReturn.{AdjustedGroupInterestModel, FullReturnModel, UkCompanyModel}
@@ -57,11 +58,12 @@ trait FullReturnValidator extends BaseValidation {
   }
 
   private def validateAllocatedRestrictions: ValidationResult[Boolean] = {
-    (fullReturnModel.groupSubjectToInterestRestrictions, fullReturnModel.ukCompanies.zipWithIndex) match {
-      case (true, companies) if companies.exists(_._1.allocatedRestrictions.isEmpty) => combineValidations(companies.map {
+    (fullReturnModel.groupSubjectToInterestRestrictions, fullReturnModel.groupSubjectToInterestReactivation, fullReturnModel.ukCompanies.zipWithIndex) match {
+      case (true, true, _) => GroupLevelInterestRestrictionsAndReactivationSupplied.invalidNec
+      case (true, false, companies) if companies.exists(_._1.allocatedRestrictions.isEmpty) => combineValidations(companies.map {
         case (company, i) => MissingAllocatedRestrictionsForCompanies(company, i).invalidNec
       }:_*)
-      case (false, companies) if companies.exists(_._1.allocatedRestrictions.nonEmpty) => combineValidations(companies.map {
+      case (false, true, companies) if companies.exists(_._1.allocatedRestrictions.nonEmpty) => combineValidations(companies.map {
         case (company, i) => CompaniesContainedAllocatedRestrictions(company, i).invalidNec
       }:_*)
       case _ => fullReturnModel.groupSubjectToInterestRestrictions.validNec
@@ -69,11 +71,12 @@ trait FullReturnValidator extends BaseValidation {
   }
 
   private def validateAllocatedReactivations: ValidationResult[Boolean] = {
-    (fullReturnModel.groupSubjectToInterestReactivation, fullReturnModel.ukCompanies.zipWithIndex) match {
-      case (true, companies) if companies.exists(_._1.allocatedReactivations.isEmpty) => combineValidations(companies.map {
+    (fullReturnModel.groupSubjectToInterestReactivation, fullReturnModel.groupSubjectToInterestRestrictions, fullReturnModel.ukCompanies.zipWithIndex) match {
+      case (true, true, _) => GroupLevelInterestRestrictionsAndReactivationSupplied.invalidNec
+      case (true, false, companies) if companies.exists(_._1.allocatedReactivations.isEmpty) => combineValidations(companies.map {
         case (company, i) => MissingAllocatedReactivationsForCompanies(company, i).invalidNec
       }:_*)
-      case (false, companies) if companies.exists(_._1.allocatedReactivations.nonEmpty) => combineValidations(companies.map {
+      case (false, _, companies) if companies.exists(_._1.allocatedReactivations.nonEmpty) => combineValidations(companies.map {
         case (company, i) => CompaniesContainedAllocatedReactivations(company, i).invalidNec
       }:_*)
       case _ => fullReturnModel.groupSubjectToInterestReactivation.validNec
@@ -84,8 +87,8 @@ trait FullReturnValidator extends BaseValidation {
     val reactivations: BigDecimal = fullReturnModel.totalReactivation
     val calculatedReactivations: BigDecimal = fullReturnModel.ukCompanies.foldLeft[BigDecimal](0) {
       (total, company) =>
-        total + company.allocatedRestrictions.fold[BigDecimal](0)(restrictions =>
-          restrictions.totalDisallowances.getOrElse[BigDecimal](0))
+        total + company.allocatedReactivations.fold[BigDecimal](0)(reactivations =>
+          reactivations.currentPeriodReactivation)
     }
     if(reactivations == calculatedReactivations) reactivations.validNec else {
       TotalReactivationsDoesNotMatch(reactivations, calculatedReactivations).invalidNec
@@ -157,6 +160,12 @@ case class NegativeAngieError(amt: BigDecimal) extends Validation {
   val errorMessage: String = "ANGIE cannot be negative"
   val path = JsPath \ "angie"
   val value = Json.toJson(amt)
+}
+
+case object GroupLevelInterestRestrictionsAndReactivationSupplied extends Validation {
+  override val errorMessage: String = "You cannot supply both a group level restriction and reactivation in the same return"
+  val path = JsPath \ "groupSubjectToInterestRestrictions"
+  val value = Json.obj()
 }
 
 case object InterestReactivationCapNotSupplied extends Validation {
