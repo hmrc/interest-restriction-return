@@ -37,7 +37,6 @@ class AbbreviatedReturnConnectorSpec extends MockHttpClient with BaseSpec {
     "submission is successful" should {
 
       "return a Right(SuccessResponse)" in {
-        println(Json.prettyPrint(Json.toJson(abbreviatedReturnUltimateParentModel)))
         val connector = setup(Right(DesSuccessResponse(ackRef)))
         val result = connector.submitAbbreviatedReturn(abbreviatedReturnUltimateParentModel)
 
