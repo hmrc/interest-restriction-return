@@ -1,4 +1,5 @@
 {
+  "description": "Details of all the UK Companies which form part of the group",
   "type": "array",
   "minItems": 1,
   "items": {
@@ -11,17 +12,21 @@
         "$ref": "../definitions/definitions.json#/definitions/ctutr"
       },
       "consenting": {
+        "description": "Indicate whether the reporting company is the same as the ultimate parent",
         "type": "boolean"
       },
       "netTaxInterestExpense": {
+        "description": "The Net Tax Interest Expense amount",
         "type": "number",
         "minimum": 0
       },
       "netTaxInterestIncome": {
+        "description": "The Net Tax Interest Income amount",
         "type": "number",
         "minimum": 0
       },
       "taxEBITDA": {
+        "description": "Earnings Before Interest, Tax, Depreciation and Amortization (EBITDA) amount",
         "type": "number"
       },
       "allocatedRestrictions": {

@@ -2,9 +2,11 @@
     "type": "object",
     "properties": {
       "agentActingOnBehalfOfCompany": {
+        "description": "Indicates if an Agency is acting on behalf of the Reporting Company for the group",
         "type": "boolean"
       },
       "agentName": {
+        "description": "The name of the Agency that is acting on behalf of the company. Required if 'agentActingOnBehalfOfCompany' is 'true'",
         "type": "string",
         "minLength": 1,
         "maxLength": 160
