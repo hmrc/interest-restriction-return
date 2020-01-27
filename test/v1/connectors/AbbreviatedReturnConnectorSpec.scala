@@ -17,11 +17,10 @@
 package v1.connectors
 
 import assets.abbreviatedReturn.AbbreviatedReturnConstants._
+import play.api.http.Status._
+import utils.BaseSpec
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.mocks.MockHttpClient
-import play.api.http.Status._
-import play.api.libs.json.Json
-import utils.BaseSpec
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
 
 class AbbreviatedReturnConnectorSpec extends MockHttpClient with BaseSpec {
