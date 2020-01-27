@@ -7,7 +7,7 @@
     }
   },
   "required": [
-    "acknowledgementRef"
+    "acknowledgementReference"
   ],
   "additionalProperties": false
 }
