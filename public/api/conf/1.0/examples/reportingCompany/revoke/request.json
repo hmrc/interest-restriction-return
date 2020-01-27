@@ -9,15 +9,24 @@
     "crn": "12345678",
     "sameAsUltimateParent": true
   },
-  "isReportingCompanyAppointingItself":false,
-  "identityOfAppointingCompany": {
+  "isReportingCompanyRevokingItself":false,
+  "companyMakingRevocation": {
     "companyName": "BCompany",
     "ctutr": "9999999999",
     "crn": "87654321"
   },
-  "authorisingCompanies": [{
+  "ultimateParent": {
+    "isUk": true,
     "companyName": "CCompany",
-    "utr": "5555555555"
+    "knownAs": "something",
+    "ctutr": "1123456789",
+    "crn": "AB123456"
+  },
+  "authorisingCompanies": [{
+    "companyName": "DCompany",
+    "utr": "5555555555",
+    "consenting": true
+
   }],
   "accountingPeriod": {
     "startDate": "2018-11-01",
