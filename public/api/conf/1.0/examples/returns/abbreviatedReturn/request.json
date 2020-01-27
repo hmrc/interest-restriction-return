@@ -1,0 +1,88 @@
+{
+  "agentDetails": {
+    "agentActingOnBehalfOfCompany": true,
+    "agentName": "AAGent"
+  },
+  "reportingCompany": {
+    "companyName": "ACompany",
+    "ctutr": "1123456789",
+    "crn": "12345678",
+    "sameAsUltimateParent": true
+  },
+  "parentCompany": {
+    "ultimateParent": {
+      "isUk": true,
+      "companyName": {
+        "name": "name"
+      },
+      "ctutr": {
+        "utr": "1111111111"
+      },
+      "sautr": {
+        "utr": "1111111111"
+      },
+      "crn": "12345678",
+      "knownAs": "company",
+      "countryOfIncorporation": {
+        "code": "UK"
+      },
+      "nonUkCrn": "12345678"
+    },
+    "deemedParent": [
+      {
+        "isUk": true,
+        "companyName": {
+          "name": "name"
+        },
+        "ctutr": {
+          "utr": "1111111111"
+        },
+        "sautr": {
+          "utr": "1111111111"
+        },
+        "crn": "12345678",
+        "knownAs": "company",
+        "countryOfIncorporation": {
+          "code": "UK"
+        },
+        "nonUkCrn": "12345678"
+      }
+    ]
+
+  },
+  "publicInfrastructure": true,
+  "groupCompanyDetails": {
+    "totalCompanies": 1,
+    "accountingPeriod": {
+      "startDate": "01/01/2020",
+      "endDate": "01/04/2020"
+    }
+  },
+  "submissionType": "original",
+  "revisedReturnDetails": "details",
+  "groupLevelElections": {
+    "groupRatio": {
+      "isElected": true,
+      "groupEBITDAChargeableGains": true,
+      "groupRatioBlended": {
+        "isElected": true,
+        "investorGroups": [
+          {
+            "investorName": "name"
+          }
+        ]
+      }
+    }
+  },
+  "ukCompanies": [
+    {
+      "companyName": {
+        "name": "name"
+      },
+      "ctutr": {
+        "utr": "1111111111"
+      },
+      "consenting": true
+    }
+  ]
+}
