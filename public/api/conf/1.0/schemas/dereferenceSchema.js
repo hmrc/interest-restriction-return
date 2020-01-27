@@ -1,9 +1,14 @@
 const $RefParser = require("json-schema-ref-parser");
 const fs = require("fs");
 
-var args = process.argv.slice(2);
+var schemas = [
+    "abbreviatedReturnSchema.json",
+    "appointReportingCompanySchema.json",
+    "fullReturnSchema.json",
+    "revokeReportingCompanySchema.json"
+];
 
-args.forEach(function(schemaName) {
+schemas.forEach(function(schemaName) {
     $RefParser.dereference(schemaName, (err, schema) => {
         if (err) {
             console.error(err);
