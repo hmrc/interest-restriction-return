@@ -8,7 +8,7 @@ securedBy: [ sec.oauth_2_0: { scopes: [ "write:interest-restriction-return" ] } 
 body:
   application/json:
     description: The payload required for the post to be successful
-    type: !include schemas/abbreviatedReturnSchema.json.json
+    type: !include schemas/abbreviatedReturnSchema.json
     examples:
       example-1:
         description: Abbreviated Return
@@ -17,7 +17,7 @@ responses:
   200:
     body:
       application/json:
-        type: !include schemas/abbreviatedReturnSchema.json
+        type: !include schemas/abbreviatedReturnResponseSchema.json.json
         examples:
           example-1:
             description: Typical response received
