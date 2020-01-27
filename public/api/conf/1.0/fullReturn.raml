@@ -1,0 +1,24 @@
+is:
+  - headers.acceptJson
+  - headers.contentTypeJson
+displayName: Post a Full Interest Restriction Return
+description: To submit a Full IRR
+(annotations.scope): "write:interest-restriction-return"
+securedBy: [ sec.oauth_2_0: { scopes: [ "write:interest-restriction-return" ] } ]
+body:
+  application/json:
+    description: The payload required for the post to be successful
+    type: !include schemas/fullReturnSchema.json
+    examples:
+      example-1:
+        description: Submit a full IRR
+        value: !include examples/return/full/request.json
+responses:
+  200:
+    body:
+      application/json:
+        type: !include schemas/fullReturnSchema.json
+        examples:
+          example-1:
+            description: Typical response received
+            value: !include examples/return/full/response.json
