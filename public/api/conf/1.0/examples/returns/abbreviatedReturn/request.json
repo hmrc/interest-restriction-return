@@ -1,88 +1,62 @@
 {
-  "agentDetails": {
-    "agentActingOnBehalfOfCompany": true,
-    "agentName": "AAGent"
+  "agentDetails" : {
+    "agentActingOnBehalfOfCompany" : true,
+    "agentName" : "some agent"
   },
-  "reportingCompany": {
-    "companyName": "ACompany",
-    "ctutr": "1123456789",
-    "crn": "12345678",
-    "sameAsUltimateParent": true
+  "reportingCompany" : {
+    "companyName" : "Company Name ltd",
+    "ctutr" : "1123456789",
+    "crn" : "12345678",
+    "sameAsUltimateParent" : false
   },
-  "parentCompany": {
-    "ultimateParent": {
-      "isUk": true,
-      "companyName": {
-        "name": "name"
-      },
-      "ctutr": {
-        "utr": "1111111111"
-      },
-      "sautr": {
-        "utr": "1111111111"
-      },
-      "crn": "12345678",
-      "knownAs": "company",
-      "countryOfIncorporation": {
-        "code": "UK"
-      },
-      "nonUkCrn": "12345678"
+  "parentCompany" : {
+    "ultimateParent" : {
+      "isUk" : true,
+      "companyName" : "Company Name ltd",
+      "ctutr" : "1123456789",
+      "crn" : "AB123456",
+      "knownAs" : "something"
+    }
+  },
+  "publicInfrastructure" : true,
+  "groupCompanyDetails" : {
+    "totalCompanies" : 1,
+    "accountingPeriod" : {
+      "startDate" : "2018-07-27",
+      "endDate" : "2020-01-26"
+    }
+  },
+  "submissionType" : "revised",
+  "revisedReturnDetails" : "revised details",
+  "groupLevelElections" : {
+    "groupRatio" : {
+      "isElected" : true,
+      "groupEBITDAChargeableGains" : true,
+      "groupRatioBlended" : {
+        "isElected" : true,
+        "investorGroups" : [ {
+          "investorName" : "some Investor"
+        } ]
+      }
     },
-    "deemedParent": [
-      {
-        "isUk": true,
-        "companyName": {
-          "name": "name"
-        },
-        "ctutr": {
-          "utr": "1111111111"
-        },
-        "sautr": {
-          "utr": "1111111111"
-        },
-        "crn": "12345678",
-        "knownAs": "company",
-        "countryOfIncorporation": {
-          "code": "UK"
-        },
-        "nonUkCrn": "12345678"
-      }
-    ]
-
-  },
-  "publicInfrastructure": true,
-  "groupCompanyDetails": {
-    "totalCompanies": 1,
-    "accountingPeriod": {
-      "startDate": "01/01/2020",
-      "endDate": "01/04/2020"
+    "interestAllowanceAlternativeCalculation" : true,
+    "interestAllowanceNonConsolidatedInvestment" : {
+      "isElected" : true,
+      "nonConsolidatedInvestments" : [ {
+        "nonConsolidatedInvestment" : "some Investment"
+      } ]
+    },
+    "interestAllowanceConsolidatedPartnership" : {
+      "isElected" : true,
+      "consolidatedPartnerships" : [ {
+        "partnershipName" : "some partner",
+        "sautr" : "1234567890"
+      } ]
     }
   },
-  "submissionType": "original",
-  "revisedReturnDetails": "details",
-  "groupLevelElections": {
-    "groupRatio": {
-      "isElected": true,
-      "groupEBITDAChargeableGains": true,
-      "groupRatioBlended": {
-        "isElected": true,
-        "investorGroups": [
-          {
-            "investorName": "name"
-          }
-        ]
-      }
-    }
-  },
-  "ukCompanies": [
-    {
-      "companyName": {
-        "name": "name"
-      },
-      "ctutr": {
-        "utr": "1111111111"
-      },
-      "consenting": true
-    }
-  ]
+  "ukCompanies" : [ {
+    "companyName" : "Company Name ltd",
+    "ctutr" : "1123456789",
+    "consenting" : true
+  } ]
 }
