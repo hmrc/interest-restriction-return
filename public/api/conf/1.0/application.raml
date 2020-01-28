@@ -29,8 +29,12 @@ documentation:
   '/reporting-company':
     '/appoint':
         post: !include appointReportingCompany.raml
-
-'/organisations/interest-restriction':
+    '/revoke':
+        post: !include revokeReportingCompany.raml
   '/return':
     '/full':
         post: !include fullReturn.raml
+    '/abbreviated':
+        post: !include abbreviatedReturn.raml
+
+

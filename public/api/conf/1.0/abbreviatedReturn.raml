@@ -1,0 +1,24 @@
+is:
+  - headers.acceptJson
+  - headers.contentTypeJson
+displayName: Abbreviated Return
+description: Request to submit an Abbreviated return for an Interest Restriction Return
+(annotations.scope): "write:interest-restriction-return"
+securedBy: [ sec.oauth_2_0: { scopes: [ "write:interest-restriction-return" ] } ]
+body:
+  application/json:
+    description: The payload required for the post to be successful
+    type: !include schemas/abbreviatedReturnSchema.json
+    examples:
+      example-1:
+        description: Abbreviated Return
+        value: !include examples/returns/abbreviatedReturn/request.json
+responses:
+  200:
+    body:
+      application/json:
+        type: !include schemas/abbreviatedReturnResponseSchema.json
+        examples:
+          example-1:
+            description: Typical response received
+            value: !include examples/returns/abbreviatedReturn/response.json

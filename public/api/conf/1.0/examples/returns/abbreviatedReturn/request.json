@@ -1,0 +1,85 @@
+{
+  "agentDetails" : {
+    "agentActingOnBehalfOfCompany" : true,
+    "agentName" : "AAgent"
+  },
+  "reportingCompany" : {
+    "companyName" : "ACompany",
+    "ctutr" : "1123456789",
+    "crn" : "12345678",
+    "sameAsUltimateParent" : false
+  },
+  "parentCompany" : {
+    "ultimateParent" : {
+      "isUk" : true,
+      "companyName" : "BCompany",
+      "ctutr" : "9999999999",
+      "crn" : "87654321",
+      "knownAs" : "BCompany Known As"
+    }
+  },
+  "publicInfrastructure" : true,
+  "groupCompanyDetails" : {
+    "totalCompanies" : 1,
+    "accountingPeriod" : {
+      "startDate" : "2018-07-27",
+      "endDate" : "2020-01-26"
+    }
+  },
+  "submissionType" : "revised",
+  "revisedReturnDetails" : "Reason for revision",
+  "groupLevelElections" : {
+    "groupRatio" : {
+      "isElected" : true,
+      "groupEBITDAChargeableGains" : true,
+      "groupRatioBlended" : {
+        "isElected" : true,
+        "investorGroups" : [{
+          "groupName" : "AInvestor"
+        },
+        {
+          "groupName" : "BInvestor"
+        },
+        {
+          "groupName" : "CInvestor"
+        }]
+      }
+    },
+    "interestAllowanceAlternativeCalculation" : true,
+    "interestAllowanceNonConsolidatedInvestment" : {
+      "isElected" : true,
+      "nonConsolidatedInvestments" : [{
+        "investmentName" : "AInvestment"
+      },
+      {
+        "investmentName" : "BInvestment"
+      }]
+    },
+    "interestAllowanceConsolidatedPartnership" : {
+      "isElected" : true,
+      "consolidatedPartnerships" : [{
+        "partnershipName" : "APartnership",
+        "sautr" : "1234567890"
+      },
+      {
+        "partnershipName" : "BPartnership",
+        "sautr" : "1111111111"
+      }]
+    }
+  },
+  "ukCompanies" : [{
+    "companyName" : "ACompany",
+    "ctutr" : "1123456789",
+    "consenting" : true
+  },
+  {
+    "companyName" : "BCompany",
+    "ctutr" : "9999999999",
+    "consenting" : true
+  },
+  {
+    "companyName" : "CCompany",
+    "ctutr" : "2222222222",
+    "consenting" : false
+  }]
+}
