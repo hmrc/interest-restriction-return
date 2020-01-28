@@ -39,6 +39,7 @@ class ApiDefinitionFactory @Inject()(appConfig: AppConfig) {
         name = "Interest Restriction Return (IRR)",
         description = "An API for providing Interest Restriction Return data",
         context = appConfig.apiGatewayContext,
+        categories = Seq("CORPORATION_TAX"),
         versions = Seq(
           APIVersion(version = VERSION_1, access = buildWhiteListingAccess(), status = buildAPIStatus(VERSION_1), endpointsEnabled = appConfig.endpointsEnabled)
         ),
