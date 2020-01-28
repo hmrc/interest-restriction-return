@@ -30,8 +30,8 @@ class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants {
 
       "max values given" in {
 
-        val expectedValue = fullReturnUltimateJson
-        val actualValue = Json.toJson(fullReturnUltimateParentModel)
+        val expectedValue = fullReturnReactivationUltimateJson
+        val actualValue = Json.toJson(fullReturnUltimateParentModelMax)
 
         actualValue shouldBe expectedValue
       }
@@ -49,8 +49,8 @@ class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants {
 
       "max values given" in {
 
-        val expectedValue = fullReturnUltimateParentModel
-        val actualValue = fullReturnUltimateJson.as[FullReturnModel]
+        val expectedValue = fullReturnUltimateParentModelMax
+        val actualValue = fullReturnReactivationUltimateJson.as[FullReturnModel]
 
         actualValue shouldBe expectedValue
       }
@@ -72,7 +72,7 @@ class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants {
           FullReturnModel.ultimateParentCrnPath -> crnLetters,
           FullReturnModel.reportingCompanyCrnPath -> crn
         )
-        val actualValue = fullReturnUltimateParentModel.ukCrns
+        val actualValue = fullReturnUltimateParentModelMax.ukCrns
 
         actualValue shouldBe expectedValue
       }

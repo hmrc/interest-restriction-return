@@ -16,7 +16,6 @@
 
 package v1.validation.fullReturn
 
-import play.api.Logger
 import play.api.libs.json.{JsPath, Json}
 import v1.models.Validation.ValidationResult
 import v1.models.fullReturn.{AdjustedGroupInterestModel, FullReturnModel, UkCompanyModel}

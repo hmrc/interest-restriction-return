@@ -16,7 +16,7 @@
 
 package v1.models.fullReturn
 
-import play.api.libs.json.{JsPath, Json}
+import play.api.libs.json._
 import v1.models._
 import v1.validation.fullReturn.FullReturnValidator
 
@@ -39,24 +39,64 @@ case class FullReturnModel(agentDetails: AgentDetailsModel,
 
   override val fullReturnModel: FullReturnModel = this
 
+  val oSum: Seq[BigDecimal] => Option[BigDecimal] = {
+    case x if x.isEmpty => None
+    case x => Some(x.sum)
+  }
+
+  val numberOfUkCompanies: Int = ukCompanies.length
+  val aggregateNetTaxInterestIncome: BigDecimal = ukCompanies.map(_.netTaxInterestIncome).sum
+  val aggregateNetTaxInterestExpense: BigDecimal = ukCompanies.map(_.netTaxInterestExpense).sum
+  val aggregateTaxEBITDA: BigDecimal = ukCompanies.map(_.taxEBITDA).sum
+  val aggregateAllocatedRestrictions: Option[BigDecimal] = oSum(ukCompanies.flatMap(_.allocatedRestrictions.flatMap(_.totalDisallowances)))
+  val aggregateAllocatedReactivations: Option[BigDecimal] = oSum(ukCompanies.flatMap(_.allocatedReactivations.map(_.currentPeriodReactivation)))
 
   private val reportingCompanyCrnWithPath: (JsPath, CRNModel) = FullReturnModel.reportingCompanyCrnPath -> reportingCompany.crn
 
-  private val ultimateParentCrnWithPath: Seq[(JsPath, CRNModel)] = parentCompany.flatMap(_.ultimateUkCrns).fold[Seq[(JsPath, CRNModel)]](Seq()){
+  private val ultimateParentCrnWithPath: Seq[(JsPath, CRNModel)] = parentCompany.flatMap(_.ultimateUkCrns).fold[Seq[(JsPath, CRNModel)]](Seq()) {
     crn => Seq(FullReturnModel.ultimateParentCrnPath -> crn)
   }
 
-  private val deemedParentCrnsWithPath: Seq[(JsPath, CRNModel)] = parentCompany.flatMap(_.deemedUkCrns).fold[Seq[(JsPath, CRNModel)]](Seq()){
+  private val deemedParentCrnsWithPath: Seq[(JsPath, CRNModel)] = parentCompany.flatMap(_.deemedUkCrns).fold[Seq[(JsPath, CRNModel)]](Seq()) {
     _.zipWithIndex.map(x => FullReturnModel.deemedParentCrnPath(x._2) -> x._1)
   }
 
   val ukCrns: Seq[(JsPath, CRNModel)] = ultimateParentCrnWithPath ++ deemedParentCrnsWithPath :+ reportingCompanyCrnWithPath
 }
 
-object FullReturnModel{
-  implicit val format = Json.format[FullReturnModel]
+object FullReturnModel {
+
+  val writes: Writes[FullReturnModel] = Writes { models =>
+    JsObject(Json.obj(
+      "agentDetails" -> models.agentDetails,
+      "reportingCompany" -> models.reportingCompany,
+      "parentCompany" -> models.parentCompany,
+      "publicInfrastructure" -> models.publicInfrastructure,
+      "groupCompanyDetails" -> models.groupCompanyDetails,
+      "submissionType" -> models.submissionType,
+      "revisedReturnDetails" -> models.revisedReturnDetails,
+      "groupLevelElections" -> models.groupLevelElections,
+      "ukCompanies" -> models.ukCompanies,
+      "numberOfUkCompanies" -> models.numberOfUkCompanies,
+      "aggregateNetTaxInterestIncome" -> models.aggregateNetTaxInterestIncome,
+      "aggregateNetTaxInterestExpense" -> models.aggregateNetTaxInterestExpense,
+      "aggregateTaxEBITDA" -> models.aggregateTaxEBITDA,
+      "aggregateAllocatedRestrictions" -> models.aggregateAllocatedRestrictions,
+      "aggregateAllocatedReactivations" -> models.aggregateAllocatedReactivations,
+      "angie" -> models.angie,
+      "returnContainsEstimates" -> models.returnContainsEstimates,
+      "groupSubjectToInterestRestrictions" -> models.groupSubjectToInterestRestrictions,
+      "groupSubjectToInterestReactivation" -> models.groupSubjectToInterestReactivation,
+      "totalReactivation" -> models.totalReactivation,
+      "groupLevelAmount" -> models.groupLevelAmount,
+      "adjustedGroupInterest" -> models.adjustedGroupInterest
+    ).fields.filterNot(_._2 == JsNull))
+  }
+
+  implicit val format: Format[FullReturnModel] = Format[FullReturnModel](Json.reads[FullReturnModel], writes)
 
   val reportingCompanyCrnPath: JsPath = JsPath \ "reportingCompany" \ "crn"
   val ultimateParentCrnPath: JsPath = JsPath \ "parentCompany" \ "ultimateParent" \ "crn"
+
   def deemedParentCrnPath(i: Int): JsPath = JsPath \ "parentCompany" \ s"deemedParent[$i]" \ "crn"
 }
