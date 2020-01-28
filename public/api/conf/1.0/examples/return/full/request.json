@@ -28,7 +28,7 @@
         "isElected": true,
         "investorGroups": [
           {
-            "investorName": "some Investor"
+            "groupName": "some Investor"
           }
         ]
       }
@@ -38,7 +38,7 @@
       "isElected": true,
       "nonConsolidatedInvestments": [
         {
-          "nonConsolidatedInvestment": "some Investment"
+          "investmentName": "some Investment"
         }
       ]
     },
@@ -60,9 +60,9 @@
       "netTaxInterestIncome": 2.22,
       "taxEBITDA": 3.33,
       "allocatedRestrictions": {
-        "ap1End": "2018-06-25",
-        "ap2End": "2019-06-24",
-        "ap3End": "2019-12-23",
+        "ap1EndDate": "2018-06-25",
+        "ap2EndDate": "2019-06-24",
+        "ap3EndDate": "2019-12-23",
         "disallowanceAp1": 1.11,
         "disallowanceAp2": 2.22,
         "disallowanceAp3": 3.33,
@@ -75,6 +75,7 @@
     }
   ],
   "angie": 1.1,
+  "groupSubjectToInterestRestrictions": false,
   "groupSubjectToInterestReactivation": true,
   "totalReactivation": 6.66,
   "groupLevelAmount": {
