@@ -36,8 +36,7 @@ class FullSchemaSpec extends BaseSchemaSpec {
 
       "ANGIE is None" in {
 
-          val json = Json.toJson(FullReturnModel(angie = None
-          ))
+          val json = Json.toJson(FullReturnModel(angie = None))
 
           validate(json) shouldBe true
         }
@@ -45,68 +44,59 @@ class FullSchemaSpec extends BaseSchemaSpec {
 
       "Revised Return Details is None" in {
 
-        val json = Json.toJson(FullReturnModel(revisedReturnDetails = None)
-        )
+        val json = Json.toJson(FullReturnModel(revisedReturnDetails = None))
 
         validate(json) shouldBe true
       }
 
       "adjustedGroupInterest is None" in {
 
-        val json = Json.toJson(FullReturnModel(adjustedGroupInterest = None
-        ))
+        val json = Json.toJson(FullReturnModel(adjustedGroupInterest = None))
 
         validate(json) shouldBe true
       }
 
+      "parentCompany is empty" in {
+
+        val json = Json.toJson(FullReturnModel(parentCompany = None))
+
+        validate(json) shouldBe true
+      }
     }
 
     "Return invalid" when {
 
       "groupLevelElections is empty" in {
 
-        val json = Json.toJson(FullReturnModel(groupLevelElections = None)
-        )
+        val json = Json.toJson(FullReturnModel(groupLevelElections = None))
 
         validate(json) shouldBe false
       }
 
       "agentDetails is empty" in {
 
-        val json = Json.toJson(FullReturnModel(agentDetails = None)
-        )
+        val json = Json.toJson(FullReturnModel(agentDetails = None))
 
         validate(json) shouldBe false
       }
 
       "reportingCompany is empty" in {
 
-        val json = Json.toJson(FullReturnModel(reportingCompany = None)
-        )
-
-        validate(json) shouldBe false
-      }
-
-      "parentCompany is empty" in {
-
-        val json = Json.toJson(FullReturnModel(parentCompany = None)
-        )
+        val json = Json.toJson(FullReturnModel(reportingCompany = None))
 
         validate(json) shouldBe false
       }
 
       "publicInfrastructure is empty" in {
 
-        val json = Json.toJson(FullReturnModel(publicInfrastructure = None)
-        )
+        val json = Json.toJson(FullReturnModel(publicInfrastructure = None))
 
         validate(json) shouldBe false
       }
 
       "groupCompanyDetails is empty" in {
 
-        val json = Json.toJson(FullReturnModel(groupCompanyDetails = None)
-        )
+        val json = Json.toJson(FullReturnModel(groupCompanyDetails = None))
 
         validate(json) shouldBe false
       }
@@ -115,16 +105,14 @@ class FullSchemaSpec extends BaseSchemaSpec {
 
         "is None" in {
 
-          val json = Json.toJson(FullReturnModel(submissionType = None)
-          )
+          val json = Json.toJson(FullReturnModel(submissionType = None))
 
           validate(json) shouldBe false
         }
 
         "is supplied but empty" in {
 
-          val json = Json.toJson(FullReturnModel(submissionType = Some(""))
-          )
+          val json = Json.toJson(FullReturnModel(submissionType = Some("")))
 
           validate(json) shouldBe false
         }
@@ -134,8 +122,7 @@ class FullSchemaSpec extends BaseSchemaSpec {
 
         "is supplied but empty" in {
 
-          val json = Json.toJson(FullReturnModel(revisedReturnDetails = Some(""))
-          )
+          val json = Json.toJson(FullReturnModel(revisedReturnDetails = Some("")))
 
           validate(json) shouldBe false
         }
@@ -143,8 +130,7 @@ class FullSchemaSpec extends BaseSchemaSpec {
         s"exceeds the maximum description length of ${maxDescriptionLength}" in {
 
           val json = Json.toJson(FullReturnModel(
-            revisedReturnDetails = Some("A" * (maxDescriptionLength + 1))
-          ))
+            revisedReturnDetails = Some("A" * (maxDescriptionLength + 1))))
 
           validate(json) shouldBe false
         }
@@ -154,16 +140,14 @@ class FullSchemaSpec extends BaseSchemaSpec {
 
         "is None" in {
 
-          val json = Json.toJson(FullReturnModel(ukCompanies = None)
-          )
+          val json = Json.toJson(FullReturnModel(ukCompanies = None))
 
           validate(json) shouldBe false
         }
 
         "is supplied but empty" in {
 
-          val json = Json.toJson(FullReturnModel(ukCompanies = Some(Seq.empty)
-          ))
+          val json = Json.toJson(FullReturnModel(ukCompanies = Some(Seq.empty)))
 
           validate(json) shouldBe false
         }
@@ -173,8 +157,7 @@ class FullSchemaSpec extends BaseSchemaSpec {
 
         "is negative" in {
 
-          val json = Json.toJson(FullReturnModel(angie = Some(-0.11)
-          ))
+          val json = Json.toJson(FullReturnModel(angie = Some(-0.11)))
 
           validate(json) shouldBe false
         }
@@ -182,8 +165,7 @@ class FullSchemaSpec extends BaseSchemaSpec {
 
       "Return Contains Estimate" in{
 
-        val json = Json.toJson(FullReturnModel(returnContainsEstimate = None
-        ))
+        val json = Json.toJson(FullReturnModel(returnContainsEstimates = None))
 
         validate(json) shouldBe false
 
@@ -193,8 +175,7 @@ class FullSchemaSpec extends BaseSchemaSpec {
 
         "groupSubjectToInterestRestrictions is None" in {
 
-          val json = Json.toJson(FullReturnModel(groupSubjectToInterestRestrictions = None
-          ))
+          val json = Json.toJson(FullReturnModel(groupSubjectToInterestRestrictions = None))
 
           validate(json) shouldBe false
         }
@@ -204,8 +185,7 @@ class FullSchemaSpec extends BaseSchemaSpec {
 
         "groupSubjectToInterestReactivation is None" in {
 
-          val json = Json.toJson(FullReturnModel(groupSubjectToInterestReactivation = None
-          ))
+          val json = Json.toJson(FullReturnModel(groupSubjectToInterestReactivation = None))
 
           validate(json) shouldBe false
         }
@@ -213,8 +193,7 @@ class FullSchemaSpec extends BaseSchemaSpec {
 
       "groupLevelAmount is None" in {
 
-        val json = Json.toJson(FullReturnModel(groupLevelAmount = None
-        ))
+        val json = Json.toJson(FullReturnModel(groupLevelAmount = None))
 
         validate(json) shouldBe false
       }
@@ -224,8 +203,7 @@ class FullSchemaSpec extends BaseSchemaSpec {
         "is None" in {
 
           val json = Json.toJson(FullReturnModel(
-            totalReactivation = None
-          ))
+            totalReactivation = None))
 
           validate(json) shouldBe false
         }
@@ -233,8 +211,7 @@ class FullSchemaSpec extends BaseSchemaSpec {
         "is less than 0" in {
 
           val json = Json.toJson(FullReturnModel(
-            totalReactivation = Some(-0.01)
-          ))
+            totalReactivation = Some(-0.01)))
 
           validate(json) shouldBe false
         }
