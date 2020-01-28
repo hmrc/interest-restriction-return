@@ -1,5 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Provides the ability to submit a full Interest Restriction Return (IRR) for the group",
   "type": "object",
   "properties": {
     "agentDetails": {
@@ -12,40 +13,33 @@
       "$ref": "subSchemas/parentCompany.json"
     },
     "publicInfrastructure": {
-      "type": "boolean"
+      "$ref": "definitions/definitions.json#/definitions/publicInfrastructure"
     },
     "groupCompanyDetails": {
       "$ref": "subSchemas/groupCompanyDetails.json"
     },
     "submissionType": {
-      "type": "string",
-      "enum": [
-        "original",
-        "revised"
-      ]
+      "$ref": "definitions/definitions.json#/definitions/submissionType"
     },
     "revisedReturnDetails": {
-      "type": "string",
-      "minLength": 1,
-      "maxLength": 2000
+      "$ref": "definitions/definitions.json#/definitions/revisedReturnDetails"
     },
     "angie": {
+      "description": "Adjusted Net Group-Interest Expense (ANGIE) amount",
       "type": "number",
       "minimum": 0
     },
     "returnContainsEstimate": {
+      "description": "Indicator for whether the return contains figures which are estimated",
       "type": "boolean"
     },
     "groupSubjectToInterestRestrictions": {
+      "description": "Indicator for whether the group is subject to interest restrictions",
       "type": "boolean"
     },
     "groupSubjectToInterestReactivation": {
+      "description": "Indicator for whether the group is subject to interest reactivations",
       "type": "boolean"
-    },
-    "revisedReturnDifferences": {
-      "type": "string",
-      "minLength": 1,
-      "maxLength": 32767
     },
     "groupLevelElections": {
       "$ref": "subSchemas/groupLevelElections.json"
@@ -60,6 +54,7 @@
       "$ref": "subSchemas/adjustedGroupInterest.json"
     },
     "totalReactivation": {
+      "description": "Total of all allocated reactivations for each UK company",
       "type": "number",
       "minimum": 0
     }

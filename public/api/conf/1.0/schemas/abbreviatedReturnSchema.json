@@ -1,8 +1,10 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Provides the ability to submit an abbreviated Interest Restriction Return (IRR) for the group",
   "type": "object",
   "properties": {
     "agentDetails": {
+      "description": "If an Agent is submitting this return on behalf of the reporting company and group details are supplied here",
       "$ref": "subSchemas/agentDetails.json"
     },
     "reportingCompany": {
@@ -12,22 +14,16 @@
       "$ref": "subSchemas/parentCompany.json"
     },
     "publicInfrastructure": {
-      "type": "boolean"
+      "$ref": "definitions/definitions.json#/definitions/publicInfrastructure"
     },
     "groupCompanyDetails": {
       "$ref": "subSchemas/groupCompanyDetails.json"
     },
     "submissionType": {
-      "type": "string",
-      "enum": [
-        "original",
-        "revised"
-      ]
+      "$ref": "definitions/definitions.json#/definitions/submissionType"
     },
     "revisedReturnDetails": {
-      "type": "string",
-      "minLength": 1,
-      "maxLength": 2000
+      "$ref": "definitions/definitions.json#/definitions/revisedReturnDetails"
     },
     "ukCompanies": {
       "$ref": "subSchemas/ukCompanies.json"

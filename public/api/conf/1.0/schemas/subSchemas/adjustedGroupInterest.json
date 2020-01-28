@@ -2,13 +2,16 @@
   "type": "object",
   "properties": {
     "qngie": {
+      "description": "Qualifying Net Group-Interest Expense (QNGIE) amount",
       "type": "number",
       "minimum": 0
     },
     "groupEBITDA": {
+      "description": "Earnings Before Interest, Tax, Depreciation and Amortization (EBITDA) amount",
       "type": "number"
     },
     "groupRatio": {
+      "description": "Percentage figure, capped at 100%. Should be calculated as the QNGIE divided by the EBITDA, if negative result then set to 100%",
       "type": "number",
       "minimum": 0,
       "maximum": 100

@@ -5,6 +5,7 @@
       "type": "number"
     },
     "currentPeriodReactivation": {
+      "description": "Amount being reactivated for current period of account",
       "type": "number",
       "minimum": 0
     }
