@@ -29,8 +29,12 @@ documentation:
   '/reporting-company':
     '/appoint':
         post: !include appointReportingCompany.raml
-  '/return':
-    '/abbreviated':
-        post: !include abbreviatedReturn.raml
     '/revoke':
         post: !include revokeReportingCompany.raml
+  '/return':
+    '/full':
+        post: !include fullReturn.raml
+    '/abbreviated':
+        post: !include abbreviatedReturn.raml
+
+

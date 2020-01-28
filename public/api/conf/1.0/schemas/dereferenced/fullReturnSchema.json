@@ -737,7 +737,7 @@
             "type": "number",
             "minimum": 0
         },
-        "returnContainsEstimate": {
+        "returnContainsEstimates": {
             "type": "boolean"
         },
         "groupSubjectToInterestRestrictions": {
@@ -1034,7 +1034,7 @@
         "submissionType",
         "ukCompanies",
         "groupLevelAmount",
-        "returnContainsEstimate",
+        "returnContainsEstimates",
         "groupSubjectToInterestRestrictions",
         "groupSubjectToInterestReactivation",
         "totalReactivation",

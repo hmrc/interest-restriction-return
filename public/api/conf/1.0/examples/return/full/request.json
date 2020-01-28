@@ -1,0 +1,91 @@
+{
+  "agentDetails": {
+    "agentActingOnBehalfOfCompany": true,
+    "agentName": "some agent"
+  },
+  "reportingCompany": {
+    "companyName": "some reporting company",
+    "ctutr": "1123456789",
+    "crn": "AA000200",
+    "sameAsUltimateParent": true
+  },
+  "publicInfrastructure": true,
+  "groupCompanyDetails": {
+    "totalCompanies": 1,
+    "accountingPeriod": {
+      "startDate": "2018-06-24",
+      "endDate": "2019-12-23"
+    }
+  },
+  "returnContainsEstimates": true,
+  "submissionType": "revised",
+  "revisedReturnDetails": "some details",
+  "groupLevelElections": {
+    "groupRatio": {
+      "isElected": true,
+      "groupEBITDAChargeableGains": true,
+      "groupRatioBlended": {
+        "isElected": true,
+        "investorGroups": [
+          {
+            "investorName": "some Investor"
+          }
+        ]
+      }
+    },
+    "interestAllowanceAlternativeCalculation": true,
+    "interestAllowanceNonConsolidatedInvestment": {
+      "isElected": true,
+      "nonConsolidatedInvestments": [
+        {
+          "nonConsolidatedInvestment": "some Investment"
+        }
+      ]
+    },
+    "interestAllowanceConsolidatedPartnership": {
+      "isElected": true,
+      "consolidatedPartnerships": [
+        {
+          "partnershipName": "some partner"
+        }
+      ]
+    }
+  },
+  "ukCompanies": [
+    {
+      "companyName": "Company Name Ltd",
+      "utr": "1123456789",
+      "consenting": true,
+      "netTaxInterestExpense": 0,
+      "netTaxInterestIncome": 2.22,
+      "taxEBITDA": 3.33,
+      "allocatedRestrictions": {
+        "ap1End": "2018-06-25",
+        "ap2End": "2019-06-24",
+        "ap3End": "2019-12-23",
+        "disallowanceAp1": 1.11,
+        "disallowanceAp2": 2.22,
+        "disallowanceAp3": 3.33,
+        "totalDisallowances": 6.66
+      },
+      "allocatedReactivations": {
+        "ap1NetDisallowances": 1.11,
+        "currentPeriodReactivation": 2.22
+      }
+    }
+  ],
+  "angie": 1.1,
+  "groupSubjectToInterestReactivation": true,
+  "totalReactivation": 6.66,
+  "groupLevelAmount": {
+    "interestReactivationCap": 1,
+    "interestAllowanceForward": 1,
+    "interestAllowanceForPeriod": 1,
+    "interestCapacityForPeriod": 1
+  },
+  "adjustedGroupInterest": {
+    "qngie": 100,
+    "groupEBITDA": 200,
+    "groupRatio": 50
+  }
+}
