@@ -17,10 +17,10 @@
 package v1.connectors
 
 import assets.abbreviatedReturn.AbbreviatedReturnConstants._
-import v1.connectors.HttpHelper.SubmissionResponse
-import v1.connectors.mocks.MockHttpClient
 import play.api.http.Status._
 import utils.BaseSpec
+import v1.connectors.HttpHelper.SubmissionResponse
+import v1.connectors.mocks.MockHttpClient
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
 
 class AbbreviatedReturnConnectorSpec extends MockHttpClient with BaseSpec {
@@ -36,7 +36,6 @@ class AbbreviatedReturnConnectorSpec extends MockHttpClient with BaseSpec {
     "submission is successful" should {
 
       "return a Right(SuccessResponse)" in {
-
         val connector = setup(Right(DesSuccessResponse(ackRef)))
         val result = connector.submitAbbreviatedReturn(abbreviatedReturnUltimateParentModel)
 

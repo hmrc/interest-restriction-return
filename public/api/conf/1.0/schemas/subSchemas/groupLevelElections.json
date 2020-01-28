@@ -92,10 +92,10 @@
               "partnershipName": {
                 "type": "string",
                 "minLength": 1
+              },
+              "sautr":{
+                "type": "string"
               }
-            },
-            "sautr":{
-              "type": "string"
             },
             "required": [
               "partnershipName"
