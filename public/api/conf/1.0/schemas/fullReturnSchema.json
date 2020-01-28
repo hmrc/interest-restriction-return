@@ -33,7 +33,7 @@
       "type": "number",
       "minimum": 0
     },
-    "returnContainsEstimate": {
+    "returnContainsEstimates": {
       "type": "boolean"
     },
     "groupSubjectToInterestRestrictions": {
@@ -67,13 +67,12 @@
   "required": [
     "agentDetails",
     "reportingCompany",
-    "parentCompany",
     "publicInfrastructure",
     "groupCompanyDetails",
     "submissionType",
     "ukCompanies",
     "groupLevelAmount",
-    "returnContainsEstimate",
+    "returnContainsEstimates",
     "groupSubjectToInterestRestrictions",
     "groupSubjectToInterestReactivation",
     "totalReactivation",
