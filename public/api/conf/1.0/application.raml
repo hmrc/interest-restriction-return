@@ -27,11 +27,17 @@ documentation:
 
 '/organisations/interest-restriction':
   '/reporting-company':
+    (annotations.group):
+      name: Reporting Company
+      description: !include docs/group_reportingCompany.md
     '/appoint':
         post: !include appointReportingCompany.raml
     '/revoke':
         post: !include revokeReportingCompany.raml
   '/return':
+    (annotations.group):
+        name: Return Submission
+        description: !include docs/group_return.md
     '/full':
         post: !include fullReturn.raml
     '/abbreviated':
