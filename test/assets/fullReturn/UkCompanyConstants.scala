@@ -28,6 +28,28 @@ object UkCompanyConstants extends BaseConstants {
   val netTaxInterestIncome: BigDecimal = 0
   val taxEBITDA: BigDecimal = 3.33
 
+  val ukCompanyModelMax = UkCompanyModel(
+    companyName = companyName,
+    utr = ctutr,
+    consenting = true,
+    netTaxInterestExpense = netTaxInterestExpense,
+    netTaxInterestIncome = netTaxInterestIncome,
+    taxEBITDA = taxEBITDA,
+    allocatedRestrictions = Some(allocatedRestrictionsModel),
+    allocatedReactivations = Some(allocatedReactivationsModel)
+  )
+
+  val ukCompanyJsonMax = Json.obj(
+    "companyName" -> companyName,
+    "utr" -> ctutr,
+    "consenting" -> true,
+    "netTaxInterestExpense" -> netTaxInterestExpense,
+    "netTaxInterestIncome" -> netTaxInterestIncome,
+    "taxEBITDA" -> taxEBITDA,
+    "allocatedRestrictions" -> allocatedRestrictionsJson,
+    "allocatedReactivations" -> allocatedReactivationsJson
+  )
+
   val ukCompanyModelReactivationMax = UkCompanyModel(
     companyName = companyName,
     utr = ctutr,

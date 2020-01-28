@@ -43,7 +43,7 @@ class FullReturnControllerSpec extends MockFullReturnService with MockCompaniesH
       "a valid payload is submitted" when {
 
         lazy val validJsonFakeRequest = fakeRequest
-          .withBody(fullReturnUltimateJsonMax)
+          .withBody(fullReturnUltimateParentJson)
           .withHeaders("Content-Type" -> "application/json")
 
         "a success response is returned from the companies house service with no v1.validation errors" when {
@@ -52,8 +52,8 @@ class FullReturnControllerSpec extends MockFullReturnService with MockCompaniesH
 
             "return 200 (OK)" in {
 
-              mockCompaniesHouse(fullReturnUltimateParentModelMax.ukCrns)(Right(Seq.empty))
-              mockFullReturn(fullReturnUltimateParentModelMax)(Right(DesSuccessResponse(ackRef)))
+              mockCompaniesHouse(fullReturnUltimateParentModel.ukCrns)(Right(Seq.empty))
+              mockFullReturn(fullReturnUltimateParentModel)(Right(DesSuccessResponse(ackRef)))
 
               val result = AuthorisedController.submit()(validJsonFakeRequest)
               status(result) shouldBe Status.OK
@@ -64,8 +64,8 @@ class FullReturnControllerSpec extends MockFullReturnService with MockCompaniesH
 
             "return the Error" in {
 
-              mockCompaniesHouse(fullReturnUltimateParentModelMax.ukCrns)(Right(Seq.empty))
-              mockFullReturn(fullReturnUltimateParentModelMax)(Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
+              mockCompaniesHouse(fullReturnUltimateParentModel.ukCrns)(Right(Seq.empty))
+              mockFullReturn(fullReturnUltimateParentModel)(Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
 
               val result = AuthorisedController.submit()(validJsonFakeRequest)
               status(result) shouldBe Status.INTERNAL_SERVER_ERROR
@@ -77,8 +77,8 @@ class FullReturnControllerSpec extends MockFullReturnService with MockCompaniesH
 
           "return the 400 (BAD REQUEST)" in {
 
-            mockCompaniesHouse(fullReturnUltimateParentModelMax.ukCrns)(Right(
-              fullReturnUltimateParentModelMax.ukCrns.map{
+            mockCompaniesHouse(fullReturnUltimateParentModel.ukCrns)(Right(
+              fullReturnUltimateParentModel.ukCrns.map{
                 currentCrn => ValidationErrorResponseModel(currentCrn._1.toString, Json.toJson(crn), Seq(InvalidCRN.body))
               }
             ))
@@ -92,7 +92,7 @@ class FullReturnControllerSpec extends MockFullReturnService with MockCompaniesH
 
           "return the Error" in {
 
-            mockCompaniesHouse(fullReturnUltimateParentModelMax.ukCrns)(Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
+            mockCompaniesHouse(fullReturnUltimateParentModel.ukCrns)(Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
             val result = AuthorisedController.submit()(validJsonFakeRequest)
             status(result) shouldBe Status.INTERNAL_SERVER_ERROR
           }
