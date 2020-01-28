@@ -1,4 +1,5 @@
 {
+  "description": "Details of the parent company, this can be either an ultimate parent company or a deemed parent",
   "type": "object",
   "oneOf": [
     {

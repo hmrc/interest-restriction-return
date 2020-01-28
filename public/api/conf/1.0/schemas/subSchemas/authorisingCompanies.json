@@ -11,6 +11,7 @@
         "$ref": "../definitions/definitions.json#/definitions/ctutr"
       },
       "consenting": {
+        "description": "Has the company consented to this return",
         "type": "boolean"
       }
     },

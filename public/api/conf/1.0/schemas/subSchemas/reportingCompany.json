@@ -1,4 +1,5 @@
 {
+  "description": "Details of the appointed reporting company that is submitting this return on behalf of the group",
   "type": "object",
   "properties": {
     "companyName": {
@@ -11,6 +12,7 @@
       "$ref": "../definitions/definitions.json#/definitions/crn"
     },
     "sameAsUltimateParent": {
+      "description": "Indicate whether the reporting company is the same as the ultimate parent",
       "type": "boolean"
     }
   },

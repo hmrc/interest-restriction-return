@@ -2,10 +2,12 @@
   "type": "object",
   "properties": {
     "startDate": {
+      "description": "The start date of the accounting period",
       "type": "string",
       "format": "date"
     },
     "endDate": {
+      "description": "The end date of the accounting period",
       "type": "string",
       "format": "date"
     }

@@ -2,31 +2,58 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "ctutr": {
+      "description": "Corporation Tax Unique Taxpayer Reference (CTUTR) number",
       "type": "string",
       "minLength": 10,
       "maxLength": 10,
       "pattern": "[0-9]{10}"
     },
     "sautr": {
+      "description": "Self-Assessment Unique Taxpayer Reference (SAUTR) number",
       "type": "string",
       "minLength": 10,
       "maxLength": 10,
       "pattern": "[0-9]{10}"
     },
     "companyName": {
+      "description": "Name of the company",
       "type": "string",
       "minLength": 1,
       "maxLength": 160
     },
     "crn": {
+      "description": "Company Registration Number (CRN) at Companies House for a UK Company",
       "type": "string",
       "minLength": 8,
       "maxLength": 8,
       "pattern": "[0-9]{8}|[A-Z]{2}[0-9]{6}"
     },
     "crnNonUk": {
+      "description": "Company registration number for a foreign company (Non-UK Incorporation)",
       "type": "string",
       "minLength": 1
+    },
+    "publicInfrastructure": {
+      "description": "Indicate if any of the companies has made a qualifying infrastructure company (QIC) election",
+      "type": "boolean"
+    },
+    "submissionType": {
+      "description": "Indicate whether this is the first (original) return or an amended (revised) return",
+      "type": "string",
+      "enum": [
+        "original",
+        "revised"
+      ]
+    },
+    "revisedReturnDetails": {
+      "description": "A description of why the return is being amended, this is mandatory if the submissionType is 'revised'",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+    },
+    "declaration": {
+      "description": "Declaration to confirm the data is accurate and complete",
+      "type": "boolean"
     }
   }
 }
