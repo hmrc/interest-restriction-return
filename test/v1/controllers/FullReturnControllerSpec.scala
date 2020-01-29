@@ -43,7 +43,7 @@ class FullReturnControllerSpec extends MockFullReturnService with MockCompaniesH
       "a valid payload is submitted" when {
 
         lazy val validJsonFakeRequest = fakeRequest
-          .withBody(fullReturnUltimateJson)
+          .withBody(fullReturnUltimateParentJson)
           .withHeaders("Content-Type" -> "application/json")
 
         "a success response is returned from the companies house service with no v1.validation errors" when {

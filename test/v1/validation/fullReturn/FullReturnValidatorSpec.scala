@@ -103,7 +103,7 @@ class FullReturnValidatorSpec extends BaseSpec {
       "Total Reactivations does not match the sum of the total reactivations for each company" in {
         leftSideError(fullReturnUltimateParentModel.copy(
           totalReactivation = incorrectTotalReactivation,
-          ukCompanies = Seq(ukCompanyModelMax, ukCompanyModelMax) //4.44
+          ukCompanies = Seq(ukCompanyModelReactivationMax, ukCompanyModelReactivationMax) //4.44
         ).validate).errorMessage shouldBe TotalReactivationsDoesNotMatch(incorrectTotalReactivation, currentPeriodReactivation + currentPeriodReactivation).errorMessage
       }
 
@@ -112,20 +112,20 @@ class FullReturnValidatorSpec extends BaseSpec {
         val model = fullReturnUltimateParentModel.copy(
           groupSubjectToInterestReactivation = false,
           ukCompanies = Seq(
-            ukCompanyModelMax.copy(
+            ukCompanyModelReactivationMax.copy(
               allocatedReactivations = Some(allocatedReactivationsModel)
             ),
-            ukCompanyModelMax.copy(
+            ukCompanyModelReactivationMax.copy(
               allocatedReactivations = None
             ),
-            ukCompanyModelMax.copy(
+            ukCompanyModelReactivationMax.copy(
               allocatedReactivations = Some(allocatedReactivationsModel)
             )
           )
         )
 
-        leftSideError(model.validate).errorMessage shouldBe CompaniesContainedAllocatedReactivations(ukCompanyModelMax, 0).errorMessage
-        leftSideError(model.validate, 1).errorMessage shouldBe CompaniesContainedAllocatedReactivations(ukCompanyModelMax, 1).errorMessage
+        leftSideError(model.validate).errorMessage shouldBe CompaniesContainedAllocatedReactivations(ukCompanyModelReactivationMax, 0).errorMessage
+        leftSideError(model.validate, 1).errorMessage shouldBe CompaniesContainedAllocatedReactivations(ukCompanyModelReactivationMax, 1).errorMessage
       }
 
       "Group is subject to interest reactivations but has allocated reactivations missing" in {
@@ -134,23 +134,23 @@ class FullReturnValidatorSpec extends BaseSpec {
           groupSubjectToInterestReactivation = true,
           groupSubjectToInterestRestrictions = false,
           ukCompanies = Seq(
-            ukCompanyModelMax.copy(
+            ukCompanyModelReactivationMax.copy(
               allocatedReactivations = Some(allocatedReactivationsModel)
             ),
-            ukCompanyModelMax.copy(
+            ukCompanyModelReactivationMax.copy(
               allocatedReactivations = None
             ),
-            ukCompanyModelMax.copy(
+            ukCompanyModelReactivationMax.copy(
               allocatedReactivations = Some(allocatedReactivationsModel)
             ),
-            ukCompanyModelMax.copy(
+            ukCompanyModelReactivationMax.copy(
               allocatedReactivations = None
             )
           )
         )
 
-        leftSideError(model.validate).errorMessage shouldBe MissingAllocatedReactivationsForCompanies(ukCompanyModelMax, 1).errorMessage
-        leftSideError(model.validate, 1).errorMessage shouldBe MissingAllocatedReactivationsForCompanies(ukCompanyModelMax, 3).errorMessage
+        leftSideError(model.validate).errorMessage shouldBe MissingAllocatedReactivationsForCompanies(ukCompanyModelReactivationMax, 1).errorMessage
+        leftSideError(model.validate, 1).errorMessage shouldBe MissingAllocatedReactivationsForCompanies(ukCompanyModelReactivationMax, 3).errorMessage
       }
 
       "Group is not subject to interest restrictions but has allocated restrictions supplied" in {
@@ -159,20 +159,20 @@ class FullReturnValidatorSpec extends BaseSpec {
           groupSubjectToInterestRestrictions = false,
 
           ukCompanies = Seq(
-            ukCompanyModelMax.copy(
+            ukCompanyModelReactivationMax.copy(
               allocatedRestrictions = Some(allocatedRestrictionsModel)
             ),
-            ukCompanyModelMax.copy(
+            ukCompanyModelReactivationMax.copy(
               allocatedRestrictions = None
             ),
-            ukCompanyModelMax.copy(
+            ukCompanyModelReactivationMax.copy(
               allocatedRestrictions = Some(allocatedRestrictionsModel)
             )
           )
         )
 
-        leftSideError(model.validate).errorMessage shouldBe CompaniesContainedAllocatedRestrictions(ukCompanyModelMax, 0).errorMessage
-        leftSideError(model.validate, 1).errorMessage shouldBe CompaniesContainedAllocatedRestrictions(ukCompanyModelMax, 1).errorMessage
+        leftSideError(model.validate).errorMessage shouldBe CompaniesContainedAllocatedRestrictions(ukCompanyModelReactivationMax, 0).errorMessage
+        leftSideError(model.validate, 1).errorMessage shouldBe CompaniesContainedAllocatedRestrictions(ukCompanyModelReactivationMax, 1).errorMessage
       }
 
       "Group is subject to interest restrictions but has allocated restrictions missing" in {
@@ -181,23 +181,23 @@ class FullReturnValidatorSpec extends BaseSpec {
           groupSubjectToInterestRestrictions = true,
           groupSubjectToInterestReactivation = false,
           ukCompanies = Seq(
-            ukCompanyModelMax.copy(
+            ukCompanyModelReactivationMax.copy(
               allocatedRestrictions = Some(allocatedRestrictionsModel)
             ),
-            ukCompanyModelMax.copy(
+            ukCompanyModelReactivationMax.copy(
               allocatedRestrictions = None
             ),
-            ukCompanyModelMax.copy(
+            ukCompanyModelReactivationMax.copy(
               allocatedRestrictions = Some(allocatedRestrictionsModel)
             ),
-            ukCompanyModelMax.copy(
+            ukCompanyModelReactivationMax.copy(
               allocatedRestrictions = None
             )
           )
         )
 
-        leftSideError(model.validate).errorMessage shouldBe MissingAllocatedRestrictionsForCompanies(ukCompanyModelMax, 1).errorMessage
-        leftSideError(model.validate, 1).errorMessage shouldBe MissingAllocatedRestrictionsForCompanies(ukCompanyModelMax, 3).errorMessage
+        leftSideError(model.validate).errorMessage shouldBe MissingAllocatedRestrictionsForCompanies(ukCompanyModelReactivationMax, 1).errorMessage
+        leftSideError(model.validate, 1).errorMessage shouldBe MissingAllocatedRestrictionsForCompanies(ukCompanyModelReactivationMax, 3).errorMessage
       }
 
       "Agent details are invalid" in {
@@ -230,7 +230,7 @@ class FullReturnValidatorSpec extends BaseSpec {
 
       "Uk Company details are invalid" in {
         leftSideError(fullReturnUltimateParentModel.copy(
-          ukCompanies = Seq(ukCompanyModelMax.copy(companyName = companyNameTooLong))
+          ukCompanies = Seq(ukCompanyModelReactivationMax.copy(companyName = companyNameTooLong))
         ).validate).errorMessage shouldBe CompanyNameLengthError(companyNameTooLong.name).errorMessage
       }
 

@@ -29,8 +29,8 @@ class UkCompanyModelSpec extends WordSpec with Matchers {
 
       "max values given" in {
 
-        val expectedValue = ukCompanyJsonMax
-        val actualValue = Json.toJson(ukCompanyModelMax)
+        val expectedValue = ukCompanyReactivationJsonMax
+        val actualValue = Json.toJson(ukCompanyModelReactivationMax)
 
         actualValue shouldBe expectedValue
       }
@@ -48,8 +48,8 @@ class UkCompanyModelSpec extends WordSpec with Matchers {
 
       "max values given" in {
 
-        val expectedValue = ukCompanyModelMax
-        val actualValue = ukCompanyJsonMax.as[UkCompanyModel]
+        val expectedValue = ukCompanyModelReactivationMax
+        val actualValue = ukCompanyReactivationJsonMax.as[UkCompanyModel]
 
         actualValue shouldBe expectedValue
       }
