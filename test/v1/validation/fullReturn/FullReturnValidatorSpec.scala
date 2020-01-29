@@ -84,11 +84,12 @@ class FullReturnValidatorSpec extends BaseSpec {
         leftSideError(fullReturnUltimateParentModel.copy(angie = Some(-0.01)).validate).errorMessage shouldBe NegativeAngieError(-0.01).errorMessage
       }
 
-      "Both group level interest restrictions and group level reactivtions are supplied" in {
+      "Both group level interest restrictions and group level reactivations are supplied" in {
         leftSideError(fullReturnUltimateParentModel.copy(
           groupSubjectToInterestReactivation = true,
           groupSubjectToInterestRestrictions = true
-        ).validate).errorMessage shouldBe GroupLevelInterestRestrictionsAndReactivationSupplied.errorMessage
+        ).validate).errorMessage shouldBe GroupLevelInterestRestrictionsAndReactivationSupplied(
+          fullReturnUltimateParentModel.groupSubjectToInterestReactivation, fullReturnUltimateParentModel.groupSubjectToInterestRestrictions).errorMessage
       }
 
       "Group is subject to interest reactivations and no reactivation cap is supplied" in {

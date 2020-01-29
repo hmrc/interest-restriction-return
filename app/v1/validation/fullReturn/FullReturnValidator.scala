@@ -16,7 +16,6 @@
 
 package v1.validation.fullReturn
 
-import play.api.Logger
 import play.api.libs.json.{JsPath, Json}
 import v1.models.Validation.ValidationResult
 import v1.models.fullReturn.{AdjustedGroupInterestModel, FullReturnModel, UkCompanyModel}
@@ -50,16 +49,17 @@ trait FullReturnValidator extends BaseValidation {
     if (angie >= 0) angie.validNec else NegativeAngieError(angie).invalidNec
   }
 
-  private def validateInterestReactivationCap: ValidationResult[Option[BigDecimal]] = {
-    (fullReturnModel.groupSubjectToInterestReactivation, fullReturnModel.groupLevelAmount.interestReactivationCap) match {
-      case (true, None) => InterestReactivationCapNotSupplied.invalidNec
-      case _ => fullReturnModel.groupLevelAmount.interestReactivationCap.validNec
+  private def validateNotBothRestrictionsAndReactivations: ValidationResult[Boolean] = {
+    (fullReturnModel.groupSubjectToInterestRestrictions, fullReturnModel.groupSubjectToInterestReactivation) match {
+      case (true, true) =>
+        GroupLevelInterestRestrictionsAndReactivationSupplied(
+          fullReturnModel.groupSubjectToInterestRestrictions,fullReturnModel.groupSubjectToInterestReactivation).invalidNec
+      case _ => fullReturnModel.groupSubjectToInterestRestrictions.validNec
     }
   }
 
   private def validateAllocatedRestrictions: ValidationResult[Boolean] = {
     (fullReturnModel.groupSubjectToInterestRestrictions, fullReturnModel.groupSubjectToInterestReactivation, fullReturnModel.ukCompanies.zipWithIndex) match {
-      case (true, true, _) => GroupLevelInterestRestrictionsAndReactivationSupplied.invalidNec
       case (true, false, companies) if companies.exists(_._1.allocatedRestrictions.isEmpty) => combineValidations(companies.map {
         case (company, i) => MissingAllocatedRestrictionsForCompanies(company, i).invalidNec
       }:_*)
@@ -72,7 +72,6 @@ trait FullReturnValidator extends BaseValidation {
 
   private def validateAllocatedReactivations: ValidationResult[Boolean] = {
     (fullReturnModel.groupSubjectToInterestReactivation, fullReturnModel.groupSubjectToInterestRestrictions, fullReturnModel.ukCompanies.zipWithIndex) match {
-      case (true, true, _) => GroupLevelInterestRestrictionsAndReactivationSupplied.invalidNec
       case (true, false, companies) if companies.exists(_._1.allocatedReactivations.isEmpty) => combineValidations(companies.map {
         case (company, i) => MissingAllocatedReactivationsForCompanies(company, i).invalidNec
       }:_*)
@@ -80,6 +79,13 @@ trait FullReturnValidator extends BaseValidation {
         case (company, i) => CompaniesContainedAllocatedReactivations(company, i).invalidNec
       }:_*)
       case _ => fullReturnModel.groupSubjectToInterestReactivation.validNec
+    }
+  }
+
+  private def validateInterestReactivationCap: ValidationResult[Option[BigDecimal]] = {
+    (fullReturnModel.groupSubjectToInterestReactivation, fullReturnModel.groupLevelAmount.interestReactivationCap) match {
+      case (true, None) => InterestReactivationCapNotSupplied.invalidNec
+      case _ => fullReturnModel.groupLevelAmount.interestReactivationCap.validNec
     }
   }
 
@@ -119,16 +125,17 @@ trait FullReturnValidator extends BaseValidation {
       fullReturnModel.groupLevelElections.validate(JsPath \ "groupLevelElections"),
       validatedUkCompanies,
       validateAngie,
-      validateInterestReactivationCap,
+      validateNotBothRestrictionsAndReactivations,
       validateAllocatedRestrictions,
       validateAllocatedReactivations,
+      validateInterestReactivationCap,
       validateTotalReactivations,
       validateParentCompany,
       validateRevisedReturnDetails,
       validateAdjustedNetGroupInterest,
       fullReturnModel.groupLevelAmount.validate(JsPath \ "groupLevelAmount"),
       optionValidations(fullReturnModel.adjustedGroupInterest.map(_.validate(JsPath \ "adjustedGroupInterest")))
-      ).mapN((_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_) => fullReturnModel)
+      ).mapN((_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_) => fullReturnModel)
   }
 }
 
@@ -162,10 +169,13 @@ case class NegativeAngieError(amt: BigDecimal) extends Validation {
   val value = Json.toJson(amt)
 }
 
-case object GroupLevelInterestRestrictionsAndReactivationSupplied extends Validation {
+case class GroupLevelInterestRestrictionsAndReactivationSupplied(groupSubjectToInterestRestrictions: Boolean, groupSubjectToInterestReactivation: Boolean)
+  extends Validation {
   override val errorMessage: String = "You cannot supply both a group level restriction and reactivation in the same return"
-  val path = JsPath \ "groupSubjectToInterestRestrictions"
-  val value = Json.obj()
+  val path = JsPath \ ""
+  val value = Json.toJson(
+    "groupSubjectToInterestRestrictions: " + groupSubjectToInterestRestrictions,
+    "groupSubjectToInterestReactivation: " + groupSubjectToInterestReactivation)
 }
 
 case object InterestReactivationCapNotSupplied extends Validation {
