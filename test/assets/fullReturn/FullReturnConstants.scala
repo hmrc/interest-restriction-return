@@ -157,7 +157,6 @@ object FullReturnConstants {
     adjustedGroupInterest = Some(adjustedGroupInterestModel)
   )
 
-
   // Minimum Model and Json
 
   val fullReturnModelMin: FullReturnModel = FullReturnModel(

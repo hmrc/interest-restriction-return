@@ -23,7 +23,6 @@ trait BaseConstants {
   val ctutr = UTRModel("1123456789")
   val sautr = UTRModel("1234567890")
   val invalidUtr = UTRModel("1999999999")
-
   val crn = CRNModel("12345678")
   val crnLetters = CRNModel("AB123456")
   val companyName = CompanyNameModel("Company Name ltd")
