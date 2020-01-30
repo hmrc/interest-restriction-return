@@ -35,15 +35,6 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
         validate(json) shouldBe true
       }
 
-      "Validated a successful JSON payload with NonUK Ultimate Parent company" in {
-
-        val json = Json.toJson(ParentCompany(
-          ultimateParent = Some(UltimateParent(isUk = Some(false)))
-        ))
-
-        validate(json) shouldBe true
-      }
-
       "Validated a successful JSON payload with Uk Deemed Parent company" in {
 
         val json = Json.toJson(ParentCompany(
@@ -57,7 +48,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
       "Validated a successful JSON payload with Non Uk Deemed Parent company" in {
 
         val json = Json.toJson(ParentCompany(
-          ultimateParent = None, deemedParent = Some(Seq(DeemedParent(isUk = Some(false))))
+          ultimateParent = None, deemedParent = Some(Seq(DeemedParent()))
         ))
 
         validate(json) shouldBe true
@@ -66,18 +57,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
       "Validated a successful JSON payload with 3 Uk Deemed Parent companies" in {
 
         val json = Json.toJson(ParentCompany(
-          ultimateParent = None, deemedParent = Some(Seq(
-            DeemedParent(isUk = Some(true)), DeemedParent(isUk = Some(true)), DeemedParent(isUk = Some(true))))
-        ))
-
-        validate(json) shouldBe true
-      }
-
-      "Validated a successful JSON payload with a mix of Uk and Non Uk Deemed Parent companies" in {
-
-        val json = Json.toJson(ParentCompany(
-          ultimateParent = None, deemedParent = Some(Seq(
-            DeemedParent(isUk = Some(false)), DeemedParent(isUk = Some(true)), DeemedParent(isUk = Some(false))))
+          ultimateParent = None, deemedParent = Some(Seq(DeemedParent(), DeemedParent(), DeemedParent()))
         ))
 
         validate(json) shouldBe true

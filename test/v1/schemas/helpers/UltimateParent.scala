@@ -19,8 +19,7 @@ package v1.schemas.helpers
 import play.api.libs.json.Json
 import v1.models.{CRNModel, CountryCodeModel, UTRModel}
 
-case class UltimateParent(isUk: Option[Boolean] = Some(true),
-                          companyName: Option[String] = Some("Ladon ltd"),
+case class UltimateParent(companyName: Option[String] = Some("Ladon ltd"),
                           knownAs: Option[String] = Some("TwixBar"),
                           ctutr: Option[UTRModel] = Some(UTRModel("1234567890")),
                           sautr: Option[UTRModel] = Some(UTRModel("1234567890")),

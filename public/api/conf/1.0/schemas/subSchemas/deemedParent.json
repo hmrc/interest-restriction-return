@@ -6,9 +6,6 @@
   "items": {
     "type": "object",
     "properties": {
-      "isUk": {
-        "type": "boolean"
-      },
       "companyName": {
         "$ref": "../definitions/definitions.json#/definitions/companyName"
       },
@@ -32,7 +29,6 @@
       }
     },
     "required": [
-      "isUk",
       "companyName"
     ],
     "additionalProperties": false

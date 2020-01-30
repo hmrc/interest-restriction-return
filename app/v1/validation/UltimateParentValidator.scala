@@ -27,14 +27,12 @@ trait UltimateParentValidator extends BaseValidation {
   val ultimateParentModel: UltimateParentModel
 
   private def validateUltimateParentCanNotBeUkAndNonUk(implicit path: JsPath): ValidationResult[UltimateParentModel] = {
-    val ukFlag = ultimateParentModel.isUk
     val isUk = ultimateParentModel.ctutr.isDefined || ultimateParentModel.crn.isDefined || ultimateParentModel.sautr.isDefined
     val isNonUk = ultimateParentModel.countryOfIncorporation.isDefined || ultimateParentModel.nonUkCrn.isDefined
 
-    (ukFlag, isUk, isNonUk) match {
-      case (true, true, true) => UltimateParentCannotBeUkAndNonUk(ultimateParentModel).invalidNec
-      case (true, false, true) => UltimateParentWrongDetailsError(ultimateParentModel).invalidNec
-      case (false, true, false) => UltimateParentWrongDetailsError(ultimateParentModel).invalidNec
+    (isUk, isNonUk) match {
+      case (false, false) => UltimateParentWrongDetailsError(ultimateParentModel).invalidNec
+      case (true, true) => UltimateParentCannotBeUkAndNonUk(ultimateParentModel).invalidNec
       case _ => ultimateParentModel.validNec
     }
   }
