@@ -1,14 +1,17 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
+    "description": "Provides the ability to revoke a reporting company from submitting for the group",
     "type": "object",
     "properties": {
         "agentDetails": {
             "type": "object",
             "properties": {
                 "agentActingOnBehalfOfCompany": {
+                    "description": "Indicates if an Agency is acting on behalf of the Reporting Company for the group",
                     "type": "boolean"
                 },
                 "agentName": {
+                    "description": "The name of the Agency that is acting on behalf of the company. Required if 'agentActingOnBehalfOfCompany' is 'true'",
                     "type": "string",
                     "minLength": 1,
                     "maxLength": 160
@@ -20,26 +23,31 @@
             "additionalProperties": false
         },
         "reportingCompany": {
+            "description": "Details of the appointed reporting company that is submitting this return on behalf of the group",
             "type": "object",
             "properties": {
                 "companyName": {
+                    "description": "Name of the company",
                     "type": "string",
                     "minLength": 1,
                     "maxLength": 160
                 },
                 "ctutr": {
+                    "description": "Corporation Tax Unique Taxpayer Reference (CTUTR) number",
                     "type": "string",
                     "minLength": 10,
                     "maxLength": 10,
                     "pattern": "[0-9]{10}"
                 },
                 "crn": {
+                    "description": "Company Registration Number (CRN) at Companies House for a UK Company",
                     "type": "string",
                     "minLength": 8,
                     "maxLength": 8,
                     "pattern": "[0-9]{8}|[A-Z]{2}[0-9]{6}"
                 },
                 "sameAsUltimateParent": {
+                    "description": "Indicate whether the reporting company is the same as the ultimate parent",
                     "type": "boolean"
                 }
             },
@@ -55,9 +63,11 @@
             "type": "boolean"
         },
         "companyMakingRevocation": {
+            "description": "Identity of the company that is submitting the request",
             "type": "object",
             "properties": {
                 "companyName": {
+                    "description": "Name of the company",
                     "type": "string",
                     "minLength": 1,
                     "maxLength": 160
@@ -322,16 +332,19 @@
                     ]
                 },
                 "crn": {
+                    "description": "Company registration number for a foreign company (Non-UK Incorporation)",
                     "type": "string",
                     "minLength": 1
                 },
                 "ctutr": {
+                    "description": "Corporation Tax Unique Taxpayer Reference (CTUTR) number",
                     "type": "string",
                     "minLength": 10,
                     "maxLength": 10,
                     "pattern": "[0-9]{10}"
                 },
                 "nonUkCrn": {
+                    "description": "Company registration number for a foreign company (Non-UK Incorporation)",
                     "type": "string",
                     "minLength": 1
                 }
@@ -342,34 +355,40 @@
             "additionalProperties": false
         },
         "ultimateParent": {
+            "description": "Details of the ultimate parent company",
             "type": "object",
             "properties": {
                 "isUk": {
                     "type": "boolean"
                 },
                 "companyName": {
+                    "description": "Name of the company",
                     "type": "string",
                     "minLength": 1,
                     "maxLength": 160
                 },
                 "ctutr": {
+                    "description": "Corporation Tax Unique Taxpayer Reference (CTUTR) number",
                     "type": "string",
                     "minLength": 10,
                     "maxLength": 10,
                     "pattern": "[0-9]{10}"
                 },
                 "sautr": {
+                    "description": "Self-Assessment Unique Taxpayer Reference (SAUTR) number",
                     "type": "string",
                     "minLength": 10,
                     "maxLength": 10,
                     "pattern": "[0-9]{10}"
                 },
                 "knownAs": {
+                    "description": "Name of the company",
                     "type": "string",
                     "minLength": 1,
                     "maxLength": 160
                 },
                 "crn": {
+                    "description": "Company Registration Number (CRN) at Companies House for a UK Company",
                     "type": "string",
                     "minLength": 8,
                     "maxLength": 8,
@@ -635,6 +654,7 @@
                     ]
                 },
                 "nonUkCrn": {
+                    "description": "Company registration number for a foreign company (Non-UK Incorporation)",
                     "type": "string",
                     "minLength": 1
                 }
@@ -649,10 +669,12 @@
             "type": "object",
             "properties": {
                 "startDate": {
+                    "description": "The start date of the accounting period",
                     "type": "string",
                     "format": "date"
                 },
                 "endDate": {
+                    "description": "The end date of the accounting period",
                     "type": "string",
                     "format": "date"
                 }
@@ -670,17 +692,20 @@
                 "type": "object",
                 "properties": {
                     "companyName": {
+                        "description": "Name of the company",
                         "type": "string",
                         "minLength": 1,
                         "maxLength": 160
                     },
                     "utr": {
+                        "description": "Corporation Tax Unique Taxpayer Reference (CTUTR) number",
                         "type": "string",
                         "minLength": 10,
                         "maxLength": 10,
                         "pattern": "[0-9]{10}"
                     },
                     "consenting": {
+                        "description": "Has the company consented to this return",
                         "type": "boolean"
                     }
                 },
@@ -692,6 +717,7 @@
             }
         },
         "declaration": {
+            "description": "Declaration to confirm the data is accurate and complete",
             "type": "boolean"
         }
     },
