@@ -997,9 +997,6 @@
                     "allocatedReactivations": {
                         "type": "object",
                         "properties": {
-                            "ap1NetDisallowances": {
-                                "type": "number"
-                            },
                             "currentPeriodReactivation": {
                                 "description": "Amount being reactivated for current period of account",
                                 "type": "number",
@@ -1007,7 +1004,6 @@
                             }
                         },
                         "required": [
-                            "ap1NetDisallowances",
                             "currentPeriodReactivation"
                         ],
                         "additionalProperties": false
