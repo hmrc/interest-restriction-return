@@ -19,8 +19,7 @@ package v1.models.fullReturn
 import play.api.libs.json.Json
 import v1.validation.fullReturn.AllocatedReactivationsValidator
 
-case class AllocatedReactivationsModel(ap1NetDisallowances: BigDecimal,
-                                       currentPeriodReactivation: BigDecimal) extends AllocatedReactivationsValidator {
+case class AllocatedReactivationsModel(currentPeriodReactivation: BigDecimal) extends AllocatedReactivationsValidator {
   override val allocatedReactivationsModel: AllocatedReactivationsModel = this
 }
 

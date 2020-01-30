@@ -20,11 +20,9 @@ import play.api.libs.json.Json
 
 object AllocatedReactivationsITConstants {
 
-  val ap1NetDisallowances = 1.11
   val currentPeriodReactivation = 2.22
 
   val allocatedReactivationsJson = Json.obj(
-    "ap1NetDisallowances" -> ap1NetDisallowances,
     "currentPeriodReactivation" -> currentPeriodReactivation
   )
 }

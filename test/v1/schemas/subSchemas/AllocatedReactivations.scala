@@ -36,18 +36,6 @@ class AllocatedReactivations extends BaseSchemaSpec {
 
     "Return invalid" when {
 
-      "ap1NetDisallowances" when {
-
-        "is None" in {
-
-          val json = Json.toJson(AllocatedReactivations(
-            ap1NetDisallowances = None
-          ))
-
-          validate(json) shouldBe false
-        }
-      }
-
       "currentPeriodReactivation" when {
 
         "is None" in {

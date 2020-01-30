@@ -21,17 +21,14 @@ import v1.models.fullReturn.AllocatedReactivationsModel
 
 object AllocatedReactivationsConstants {
 
-  val ap1NetDisallowances = 1.11
   val currentPeriodReactivation = 2.22
   val incorrectTotalReactivation = 10
 
   val allocatedReactivationsModel = AllocatedReactivationsModel(
-    ap1NetDisallowances = ap1NetDisallowances,
     currentPeriodReactivation = currentPeriodReactivation
   )
 
   val allocatedReactivationsJson = Json.obj(
-    "ap1NetDisallowances" -> ap1NetDisallowances,
     "currentPeriodReactivation" -> currentPeriodReactivation
   )
 }
