@@ -129,13 +129,6 @@ class UkCompanyFullSchemaSpec extends BaseSchemaSpec {
 
       "netTaxInterestExpense" when {
 
-        "is None" in {
-
-          val json = Json.toJson(Seq(UkCompanyFull(netTaxInterestExpense = None)))
-
-          validate(json) shouldBe false
-        }
-
         "is negative" in {
 
           val json = Json.toJson(Seq(UkCompanyFull(netTaxInterestExpense = Some(-1))))
@@ -145,14 +138,6 @@ class UkCompanyFullSchemaSpec extends BaseSchemaSpec {
       }
 
       "netTaxInterestIncome" when {
-
-        "is None" in {
-
-          val json = Json.toJson(Seq(UkCompanyFull(netTaxInterestIncome = None)))
-
-          validate(json) shouldBe false
-
-        }
 
         "is negative" in {
 

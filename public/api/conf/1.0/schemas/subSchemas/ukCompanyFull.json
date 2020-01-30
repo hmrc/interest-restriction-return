@@ -40,8 +40,6 @@
       "companyName",
       "ctutr",
       "consenting",
-      "netTaxInterestExpense",
-      "netTaxInterestIncome",
       "taxEBITDA"
     ],
     "additionalProperties": false
