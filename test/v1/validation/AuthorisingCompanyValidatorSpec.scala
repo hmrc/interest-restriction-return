@@ -47,7 +47,7 @@ class AuthorisingCompanyValidatorSpec extends BaseValidationSpec {
       }
 
       "UTR is invalid" in {
-        leftSideError(authorisingCompanyModel.copy(utr = invalidUtr).validate).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
+        leftSideError(authorisingCompanyModel.copy(ctutr = invalidUtr).validate).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
       }
     }
   }

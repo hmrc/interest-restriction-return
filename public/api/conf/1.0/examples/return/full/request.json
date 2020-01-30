@@ -54,7 +54,7 @@
   "ukCompanies": [
     {
       "companyName": "Company Name Ltd",
-      "utr": "1123456789",
+      "ctutr": "1123456789",
       "consenting": true,
       "netTaxInterestExpense": 0,
       "netTaxInterestIncome": 2.22,

@@ -21,7 +21,7 @@ import v1.models.{CompanyNameModel, UTRModel}
 import v1.validation.fullReturn.UkCompanyValidator
 
 case class UkCompanyModel(companyName: CompanyNameModel,
-                          utr: UTRModel,
+                          ctutr: UTRModel,
                           consenting: Boolean,
                           netTaxInterestExpense: BigDecimal,
                           netTaxInterestIncome: BigDecimal,

@@ -30,7 +30,7 @@ object UkCompanyConstants extends BaseConstants {
 
   val ukCompanyModelMax = UkCompanyModel(
     companyName = companyName,
-    utr = ctutr,
+    ctutr = ctutr,
     consenting = true,
     netTaxInterestExpense = netTaxInterestExpense,
     netTaxInterestIncome = netTaxInterestIncome,
@@ -41,7 +41,7 @@ object UkCompanyConstants extends BaseConstants {
 
   val ukCompanyJsonMax = Json.obj(
     "companyName" -> companyName,
-    "utr" -> ctutr,
+    "ctutr" -> ctutr,
     "consenting" -> true,
     "netTaxInterestExpense" -> netTaxInterestExpense,
     "netTaxInterestIncome" -> netTaxInterestIncome,
@@ -52,7 +52,7 @@ object UkCompanyConstants extends BaseConstants {
 
   val ukCompanyModelReactivationMax = UkCompanyModel(
     companyName = companyName,
-    utr = ctutr,
+    ctutr = ctutr,
     consenting = true,
     netTaxInterestExpense = netTaxInterestExpense,
     netTaxInterestIncome = netTaxInterestIncome,
@@ -63,7 +63,7 @@ object UkCompanyConstants extends BaseConstants {
 
   val ukCompanyReactivationJsonMax = Json.obj(
     "companyName" -> companyName,
-    "utr" -> ctutr,
+    "ctutr" -> ctutr,
     "consenting" -> true,
     "netTaxInterestExpense" -> netTaxInterestExpense,
     "netTaxInterestIncome" -> netTaxInterestIncome,
@@ -73,7 +73,7 @@ object UkCompanyConstants extends BaseConstants {
 
   val ukCompanyModelRestrictionMax = UkCompanyModel(
     companyName = companyName,
-    utr = ctutr,
+    ctutr = ctutr,
     consenting = true,
     netTaxInterestExpense = netTaxInterestExpense,
     netTaxInterestIncome = netTaxInterestIncome,
@@ -84,7 +84,7 @@ object UkCompanyConstants extends BaseConstants {
 
   val ukCompanyRestrictionJsonMax = Json.obj(
     "companyName" -> companyName,
-    "utr" -> ctutr,
+    "ctutr" -> ctutr,
     "consenting" -> true,
     "netTaxInterestExpense" -> netTaxInterestExpense,
     "netTaxInterestIncome" -> netTaxInterestIncome,
@@ -94,7 +94,7 @@ object UkCompanyConstants extends BaseConstants {
 
   val ukCompanyModelMin = UkCompanyModel(
     companyName = companyName,
-    utr = ctutr,
+    ctutr = ctutr,
     consenting = true,
     netTaxInterestExpense = netTaxInterestExpense,
     netTaxInterestIncome = netTaxInterestIncome,
@@ -105,7 +105,7 @@ object UkCompanyConstants extends BaseConstants {
 
   val ukCompanyJsonMin = Json.obj(
     "companyName" -> companyName,
-    "utr" -> ctutr,
+    "ctutr" -> ctutr,
     "consenting" -> true,
     "netTaxInterestExpense" -> netTaxInterestExpense,
     "netTaxInterestIncome" -> netTaxInterestIncome,

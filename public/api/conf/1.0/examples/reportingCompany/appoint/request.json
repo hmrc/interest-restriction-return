@@ -17,7 +17,7 @@
   },
   "authorisingCompanies": [{
     "companyName": "CCompany",
-    "utr": "5555555555"
+    "ctutr": "5555555555"
   }],
   "accountingPeriod": {
     "startDate": "2018-11-01",

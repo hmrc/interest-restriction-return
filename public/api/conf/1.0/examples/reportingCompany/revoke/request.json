@@ -24,7 +24,7 @@
   },
   "authorisingCompanies": [{
     "companyName": "DCompany",
-    "utr": "5555555555",
+    "ctutr": "5555555555",
     "consenting": true
 
   }],

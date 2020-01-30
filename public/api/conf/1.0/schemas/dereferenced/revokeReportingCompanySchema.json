@@ -697,7 +697,7 @@
                         "minLength": 1,
                         "maxLength": 160
                     },
-                    "utr": {
+                    "ctutr": {
                         "description": "Corporation Tax Unique Taxpayer Reference (CTUTR) number",
                         "type": "string",
                         "minLength": 10,
@@ -711,7 +711,7 @@
                 },
                 "required": [
                     "companyName",
-                    "utr"
+                    "ctutr"
                 ],
                 "additionalProperties": false
             }

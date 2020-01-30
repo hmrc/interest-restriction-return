@@ -34,7 +34,7 @@ This is a protected backend microservice that is the conduit between Public faci
 	},
     "reportingCompany": {
     	"companyName": "company name a",
-    	"utr": "1234567890",
+    	"ctutr": "1234567890",
     	"crn": "12345678",
     	"sameAsUltimateParent": true,
     	"reportingCompanyDeemed": false
@@ -42,11 +42,11 @@ This is a protected backend microservice that is the conduit between Public faci
     "authorisingCompanies": [
       {
     	"companyName": "company name b",
-    	"utr": "1234567890"
+    	"ctutr": "1234567890"
       },
       {
     	"companyName": "company name c",
-    	"utr": "1234567890"
+    	"ctutr": "1234567890"
       }
     ],
     "declaration": true
@@ -140,7 +140,7 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
     },
     "reportingCompany": {
       "companyName": "some reporting company",
-      "utr": "1234567890",
+      "ctutr": "1234567890",
       "crn": "12345678",
       "sameAsUltimateParent": true,
       "reportingCompanyDeemed": true
@@ -148,7 +148,7 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
     "isReportingCompanyRevokingItself": true,
     "companyMakingRevocation": {
       "companyName": "some company",
-      "utr": "1234567890",
+      "ctutr": "1234567890",
       "crn": "12345678",
       "countryOfIncorporation": "US"
     },
@@ -166,7 +166,7 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
     "authorisingCompanies": [
       {
         "companyName": "some authorising company",
-        "utr": "1234567890"
+        "ctutr": "1234567890"
       }
     ],
     "declaration": true
@@ -259,7 +259,7 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
      },
      "reportingCompany": {
        "companyName": "some reporting company",
-       "utr": "1234567890",
+       "ctutr": "1234567890",
        "crn": "12345678",
        "sameAsUltimateParent": true,
        "reportingCompanyDeemed": true
@@ -418,7 +418,7 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
      },
      "reportingCompany": {
        "companyName": "some reporting company",
-       "utr": "1234567890",
+       "ctutr": "1234567890",
        "crn": "12345678",
        "sameAsUltimateParent": true,
        "reportingCompanyDeemed": true
@@ -484,7 +484,7 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
      "ukCompanies": [
        {
          "companyName": "some company",
-         "utr": "1234567890",
+         "ctutr": "1234567890",
          "consenting": true,
          "netTaxInterestExpense": 1.11,
          "netTaxInterestIncome": 2.22,
