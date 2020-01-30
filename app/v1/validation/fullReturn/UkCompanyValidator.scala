@@ -59,7 +59,7 @@ trait UkCompanyValidator extends BaseValidation {
   }
 
   def validate(groupAccountingPeriod: AccountingPeriodModel)(implicit path: JsPath): ValidationResult[UkCompanyModel] =
-    (ukCompany.utr.validate(path \ "utr"),
+    (ukCompany.ctutr.validate(path \ "ctutr"),
       ukCompany.companyName.validate(path \ "companyName"),
       validateNetTaxInterestExpense,
       validateNetTaxInterestIncome,
@@ -83,6 +83,6 @@ case class NetTaxInterestIncomeError(netTaxInterestIncome: BigDecimal)(implicit 
 
 case class ExpenseAndIncomeBothNotGreaterThanZero(netTaxInterestExpense: BigDecimal,netTaxInterestIncome: BigDecimal)
                                                  (implicit val path: JsPath) extends Validation {
-  val errorMessage: String = "UK Company Model cannot contain Positive for Expense and Income fields"
-  val value = Json.toJson((netTaxInterestExpense,netTaxInterestIncome))
+  val errorMessage: String = "A company can not have both a net tax interest expense and a net tax interest income"
+  val value = Json.toJson(( "netTaxInterestExpense: " + netTaxInterestExpense, "netTaxInterestIncome: " + netTaxInterestIncome))
 }

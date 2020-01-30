@@ -75,12 +75,12 @@ class AuthorisingCompaniesSpec extends BaseSchemaSpec {
         }
       }
 
-      "utr" when {
+      "ctutr" when {
 
         s"below $utrLength" in {
 
           val json = Json.toJson(Seq(AuthorisingCompanies(
-            utr = Some(UTRModel("1" * (utrLength - 1)))
+            ctutr = Some(UTRModel("1" * (utrLength - 1)))
           )))
 
           validate(json) shouldBe false
@@ -89,7 +89,7 @@ class AuthorisingCompaniesSpec extends BaseSchemaSpec {
         s"above $utrLength" in {
 
           val json = Json.toJson(Seq(AuthorisingCompanies(
-            utr = Some(UTRModel("1" * (utrLength + 1)))
+            ctutr = Some(UTRModel("1" * (utrLength + 1)))
           )))
 
           validate(json) shouldBe false
@@ -98,7 +98,7 @@ class AuthorisingCompaniesSpec extends BaseSchemaSpec {
         "is non numeric" in {
 
           val json = Json.toJson(Seq(AuthorisingCompanies(
-            utr = Some(UTRModel("a" * (utrLength)))
+            ctutr = Some(UTRModel("a" * (utrLength)))
           )))
 
           validate(json) shouldBe false
@@ -107,7 +107,7 @@ class AuthorisingCompaniesSpec extends BaseSchemaSpec {
         "is a symbol" in {
 
           val json = Json.toJson(Seq(AuthorisingCompanies(
-            utr = Some(UTRModel("@"))
+            ctutr = Some(UTRModel("@"))
           )))
 
           validate(json) shouldBe false
@@ -116,7 +116,7 @@ class AuthorisingCompaniesSpec extends BaseSchemaSpec {
         "is not applied" in {
 
           val json = Json.toJson(Seq(AuthorisingCompanies(
-            utr = None
+            ctutr = None
           )))
 
           validate(json) shouldBe false

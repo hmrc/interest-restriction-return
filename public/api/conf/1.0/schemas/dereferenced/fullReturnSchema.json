@@ -932,7 +932,7 @@
                         "minLength": 1,
                         "maxLength": 160
                     },
-                    "utr": {
+                    "ctutr": {
                         "description": "Corporation Tax Unique Taxpayer Reference (CTUTR) number",
                         "type": "string",
                         "minLength": 10,
@@ -1023,7 +1023,7 @@
                 },
                 "required": [
                     "companyName",
-                    "utr",
+                    "ctutr",
                     "consenting",
                     "netTaxInterestExpense",
                     "netTaxInterestIncome",
@@ -1041,7 +1041,7 @@
                     "type": "number",
                     "minimum": 0
                 },
-                "interestAllowanceForward": {
+                "interestAllowanceBroughtForward": {
                     "description": "Interest Allowance Brought Forward",
                     "type": "number",
                     "minimum": 0
@@ -1059,7 +1059,7 @@
             },
             "required": [
                 "interestReactivationCap",
-                "interestAllowanceForward",
+                "interestAllowanceBroughtForward",
                 "interestAllowanceForPeriod",
                 "interestCapacityForPeriod"
             ],

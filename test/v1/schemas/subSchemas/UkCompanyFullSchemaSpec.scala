@@ -86,32 +86,32 @@ class UkCompanyFullSchemaSpec extends BaseSchemaSpec {
         }
       }
 
-      "utr" when {
+      "ctutr" when {
 
         s"below $utrLength" in {
 
-          val json = Json.toJson(Seq(UkCompanyFull(utr = Some(UTRModel("1" * (utrLength - 1))))))
+          val json = Json.toJson(Seq(UkCompanyFull(ctutr = Some(UTRModel("1" * (utrLength - 1))))))
 
           validate(json) shouldBe false
         }
 
         s"above $utrLength" in {
 
-          val json = Json.toJson(Seq(UkCompanyFull(utr = Some(UTRModel("1" * (utrLength + 1))))))
+          val json = Json.toJson(Seq(UkCompanyFull(ctutr = Some(UTRModel("1" * (utrLength + 1))))))
 
           validate(json) shouldBe false
         }
 
         "is non numeric" in {
 
-          val json = Json.toJson(Seq(UkCompanyFull(utr = Some(UTRModel("a" * utrLength)))))
+          val json = Json.toJson(Seq(UkCompanyFull(ctutr = Some(UTRModel("a" * utrLength)))))
 
           validate(json) shouldBe false
         }
 
         "is a symbol" in {
 
-          val json = Json.toJson(Seq(UkCompanyFull(utr = Some(UTRModel("@")))))
+          val json = Json.toJson(Seq(UkCompanyFull(ctutr = Some(UTRModel("@")))))
 
           validate(json) shouldBe false
         }
@@ -129,13 +129,6 @@ class UkCompanyFullSchemaSpec extends BaseSchemaSpec {
 
       "netTaxInterestExpense" when {
 
-        "is None" in {
-
-          val json = Json.toJson(Seq(UkCompanyFull(netTaxInterestExpense = None)))
-
-          validate(json) shouldBe false
-        }
-
         "is negative" in {
 
           val json = Json.toJson(Seq(UkCompanyFull(netTaxInterestExpense = Some(-1))))
@@ -145,14 +138,6 @@ class UkCompanyFullSchemaSpec extends BaseSchemaSpec {
       }
 
       "netTaxInterestIncome" when {
-
-        "is None" in {
-
-          val json = Json.toJson(Seq(UkCompanyFull(netTaxInterestIncome = None)))
-
-          validate(json) shouldBe false
-
-        }
 
         "is negative" in {
 

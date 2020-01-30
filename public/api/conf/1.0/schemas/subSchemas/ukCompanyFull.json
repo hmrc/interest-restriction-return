@@ -8,7 +8,7 @@
       "companyName": {
         "$ref": "../definitions/definitions.json#/definitions/companyName"
       },
-      "utr": {
+      "ctutr": {
         "$ref": "../definitions/definitions.json#/definitions/ctutr"
       },
       "consenting": {
@@ -38,10 +38,8 @@
     },
     "required": [
       "companyName",
-      "utr",
+      "ctutr",
       "consenting",
-      "netTaxInterestExpense",
-      "netTaxInterestIncome",
       "taxEBITDA"
     ],
     "additionalProperties": false

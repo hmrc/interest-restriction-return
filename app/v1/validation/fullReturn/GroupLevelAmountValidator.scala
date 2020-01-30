@@ -35,7 +35,7 @@ trait GroupLevelAmountValidator extends BaseValidation {
     (
       optionValidations(groupLevelAmount.interestReactivationCap.map(cap => validatePositive("interestReactivationCap", cap))),
       validatePositive("interestAllowanceForPeriod", groupLevelAmount.interestAllowanceForPeriod),
-      validatePositive("interestAllowanceForward", groupLevelAmount.interestAllowanceForward),
+      validatePositive("interestAllowanceBroughtForward", groupLevelAmount.interestAllowanceBroughtForward),
       validatePositive("interestCapacityForPeriod", groupLevelAmount.interestCapacityForPeriod)
     ).mapN((_,_,_,_) => groupLevelAmount)
 }

@@ -51,18 +51,18 @@ class GroupLevelAmountSpec extends BaseSchemaSpec {
           }
         }
 
-        "interestAllowanceForward" when {
+        "interestAllowanceBroughtForward" when {
 
           "is blank" in {
             val json = Json.toJson(GroupLevelAmount(
-              interestAllowanceForward = None
+              interestAllowanceBroughtForward = None
             ))
             validate(json) shouldBe false
           }
 
           "is a negative number" in {
             val json = Json.toJson(GroupLevelAmount(
-              interestAllowanceForward = Some(-1)
+              interestAllowanceBroughtForward = Some(-1)
             ))
             validate(json) shouldBe false
           }

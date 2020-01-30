@@ -40,9 +40,9 @@ class GroupLevelAmountValidatorSpec extends BaseSpec {
           GroupLevelAmountCannotBeNegative("interestReactivationCap", -0.1).errorMessage
       }
 
-      "interestAllowanceForward is < 0" in {
-        leftSideError(groupLevelAmountModel.copy(interestAllowanceForward = -0.1).validate).errorMessage shouldBe
-          GroupLevelAmountCannotBeNegative("interestAllowanceForward", -0.1).errorMessage
+      "interestAllowanceBroughtForward is < 0" in {
+        leftSideError(groupLevelAmountModel.copy(interestAllowanceBroughtForward = -0.1).validate).errorMessage shouldBe
+          GroupLevelAmountCannotBeNegative("interestAllowanceBroughtForward", -0.1).errorMessage
       }
 
       "interestAllowanceForPeriod is < 0" in {

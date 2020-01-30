@@ -19,7 +19,7 @@ package v1.schemas.helpers.fullReturn
 import play.api.libs.json.Json
 
 case class GroupLevelAmount(interestReactivationCap: Option[BigDecimal]= Some(125000),
-                            interestAllowanceForward: Option[BigDecimal] =Some(130000),
+                            interestAllowanceBroughtForward: Option[BigDecimal] =Some(130000),
                             interestAllowanceForPeriod: Option[BigDecimal] = Some(140000),
                             interestCapacityForPeriod: Option[BigDecimal] = Some(150000))
 
