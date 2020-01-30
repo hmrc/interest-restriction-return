@@ -1041,7 +1041,7 @@
                     "type": "number",
                     "minimum": 0
                 },
-                "interestAllowanceForward": {
+                "interestAllowanceBroughtForward": {
                     "description": "Interest Allowance Brought Forward",
                     "type": "number",
                     "minimum": 0
@@ -1059,7 +1059,7 @@
             },
             "required": [
                 "interestReactivationCap",
-                "interestAllowanceForward",
+                "interestAllowanceBroughtForward",
                 "interestAllowanceForPeriod",
                 "interestCapacityForPeriod"
             ],

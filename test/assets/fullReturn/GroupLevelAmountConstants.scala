@@ -22,20 +22,20 @@ import v1.models.fullReturn.GroupLevelAmountModel
 object GroupLevelAmountConstants {
 
   val interestReactivationCap: BigDecimal = 2.22
-  val interestAllowanceForward: BigDecimal = 3.33
+  val interestAllowanceBroughtForward: BigDecimal = 3.33
   val interestAllowanceForPeriod: BigDecimal = 4.44
   val interestCapacityForPeriod: BigDecimal = 5.55
 
   val groupLevelAmountModel = GroupLevelAmountModel(
     interestReactivationCap = Some(interestReactivationCap),
-    interestAllowanceForward = interestAllowanceForward,
+    interestAllowanceBroughtForward = interestAllowanceBroughtForward,
     interestAllowanceForPeriod = interestAllowanceForPeriod,
     interestCapacityForPeriod = interestCapacityForPeriod
   )
 
   val groupLevelAmountJson = Json.obj(
     "interestReactivationCap" -> interestReactivationCap,
-    "interestAllowanceForward" -> interestAllowanceForward,
+    "interestAllowanceBroughtForward" -> interestAllowanceBroughtForward,
     "interestAllowanceForPeriod" -> interestAllowanceForPeriod,
     "interestCapacityForPeriod" -> interestCapacityForPeriod
   )

@@ -80,7 +80,7 @@
   "totalReactivation": 6.66,
   "groupLevelAmount": {
     "interestReactivationCap": 1,
-    "interestAllowanceForward": 1,
+    "interestAllowanceBroughtForward": 1,
     "interestAllowanceForPeriod": 1,
     "interestCapacityForPeriod": 1
   },

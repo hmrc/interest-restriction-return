@@ -20,7 +20,7 @@ import play.api.libs.json.Json
 import v1.validation.fullReturn.GroupLevelAmountValidator
 
 case class GroupLevelAmountModel(interestReactivationCap: Option[BigDecimal],
-                                 interestAllowanceForward: BigDecimal,
+                                 interestAllowanceBroughtForward: BigDecimal,
                                  interestAllowanceForPeriod: BigDecimal,
                                  interestCapacityForPeriod: BigDecimal) extends GroupLevelAmountValidator {
   override val groupLevelAmount: GroupLevelAmountModel = this

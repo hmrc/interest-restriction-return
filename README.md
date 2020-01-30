@@ -497,7 +497,7 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
      "groupLevelAmount": {
        "totalDisallowedAmount": 1,
        "interestReactivationCap": 1,
-       "interestAllowanceForward": 1,
+       "interestAllowanceBroughtForward": 1,
        "interestAllowanceForPeriod": 1,
        "interestCapacityForPeriod": 1
      },
