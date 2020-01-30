@@ -19,8 +19,7 @@ package v1.models
 import play.api.libs.json.{Format, Json}
 import v1.validation.DeemedParentValidator
 
-case class DeemedParentModel(isUk: Boolean,
-                             companyName: CompanyNameModel,
+case class DeemedParentModel(companyName: CompanyNameModel,
                              knownAs: Option[String],
                              ctutr: Option[UTRModel],
                              sautr: Option[UTRModel],

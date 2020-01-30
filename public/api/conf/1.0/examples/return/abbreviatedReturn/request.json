@@ -11,7 +11,6 @@
   },
   "parentCompany" : {
     "ultimateParent" : {
-      "isUk" : true,
       "companyName" : "BCompany",
       "ctutr" : "9999999999",
       "crn" : "87654321",

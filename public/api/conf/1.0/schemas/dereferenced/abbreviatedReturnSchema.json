@@ -71,9 +71,6 @@
                             "description": "Details of the ultimate parent company",
                             "type": "object",
                             "properties": {
-                                "isUk": {
-                                    "type": "boolean"
-                                },
                                 "companyName": {
                                     "description": "Name of the company",
                                     "type": "string",
@@ -373,7 +370,6 @@
                                 }
                             },
                             "required": [
-                                "isUk",
                                 "companyName"
                             ],
                             "additionalProperties": false
@@ -395,9 +391,6 @@
                             "items": {
                                 "type": "object",
                                 "properties": {
-                                    "isUk": {
-                                        "type": "boolean"
-                                    },
                                     "companyName": {
                                         "description": "Name of the company",
                                         "type": "string",
@@ -697,7 +690,6 @@
                                     }
                                 },
                                 "required": [
-                                    "isUk",
                                     "companyName"
                                 ],
                                 "additionalProperties": false

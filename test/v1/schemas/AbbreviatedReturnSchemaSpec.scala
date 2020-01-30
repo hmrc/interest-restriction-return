@@ -36,15 +36,6 @@ class AbbreviatedReturnSchemaSpec extends BaseSchemaSpec {
         validate(json) shouldBe true
       }
 
-      "Validated a successful JSON payload with NonUK Ultimate Parent company" in {
-
-        val json = Json.toJson(AbbreviatedReturnModel(
-          parentCompany = Some(ParentCompany(Some(UltimateParent(isUk = Some(false)))))
-        ))
-
-        validate(json) shouldBe true
-      }
-
       "Validated a successful JSON payload with 3 Deemed Parent companies" in {
 
         val json = Json.toJson(AbbreviatedReturnModel(

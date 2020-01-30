@@ -22,7 +22,6 @@ import v1.models.DeemedParentModel
 object DeemedParentConstants extends BaseConstants {
 
   val deemedParentModelMax = DeemedParentModel(
-    isUk = true,
     companyName = companyName,
     knownAs = Some(knownAs),
     ctutr = Some(ctutr),
@@ -33,7 +32,6 @@ object DeemedParentConstants extends BaseConstants {
   )
 
   val deemedParentModelMin = DeemedParentModel(
-    isUk = true,
     companyName = companyName,
     knownAs = None,
     ctutr = None,
@@ -44,7 +42,6 @@ object DeemedParentConstants extends BaseConstants {
   )
 
   val deemedParentModelUkCompany = DeemedParentModel(
-    isUk = true,
     companyName = companyName,
     knownAs = Some(knownAs),
     ctutr = Some(ctutr),
@@ -55,7 +52,6 @@ object DeemedParentConstants extends BaseConstants {
   )
 
   val deemedParentModelNonUkCompany = DeemedParentModel(
-    isUk = false,
     companyName = companyName,
     knownAs = Some(knownAs),
     ctutr = None,
@@ -66,7 +62,6 @@ object DeemedParentConstants extends BaseConstants {
   )
 
   val deemedParentModelUkPartnership = DeemedParentModel(
-    isUk = true,
     companyName = companyName,
     knownAs = Some(knownAs),
     ctutr = None,
@@ -77,7 +72,6 @@ object DeemedParentConstants extends BaseConstants {
   )
 
   val deemedParentJsonMax = Json.obj(
-    "isUk" -> true,
     "companyName" -> companyName,
     "knownAs" -> knownAs,
     "ctutr" -> ctutr,
@@ -88,12 +82,10 @@ object DeemedParentConstants extends BaseConstants {
   )
 
   val deemedParentJsonMin = Json.obj(
-    "isUk" -> true,
     "companyName" -> companyName
   )
 
   val deemedParentJsonUkCompany = Json.obj(
-    "isUk" -> true,
     "companyName" -> companyName,
     "knownAs" -> knownAs,
     "ctutr" -> ctutr,
@@ -101,7 +93,6 @@ object DeemedParentConstants extends BaseConstants {
   )
 
   val deemedParentJsonNonUkCompany= Json.obj(
-    "isUk" -> false,
     "companyName" -> companyName,
     "knownAs" -> knownAs,
     "nonUkCrn" -> crn,
@@ -109,7 +100,6 @@ object DeemedParentConstants extends BaseConstants {
   )
 
   val deemedParentJsonUkPartnership = Json.obj(
-    "isUk" -> false,
     "companyName" -> companyName,
     "knownAs" -> knownAs,
     "sautr" -> sautr,

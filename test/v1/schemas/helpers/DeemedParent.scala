@@ -19,8 +19,7 @@ package v1.schemas.helpers
 import play.api.libs.json.Json
 import v1.models.{CRNModel, UTRModel}
 
-case class DeemedParent(isUk: Option[Boolean] = Some(true),
-                        companyName: Option[String] = Some("name"),
+case class DeemedParent(companyName: Option[String] = Some("name"),
                         knownAs: Option[String] = Some("efg"),
                         ctutr: Option[UTRModel] = Some(UTRModel("1111111111")),
                         sautr: Option[UTRModel] = Some(UTRModel("1111111111")),
