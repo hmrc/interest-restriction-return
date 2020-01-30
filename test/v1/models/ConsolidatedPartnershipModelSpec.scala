@@ -37,8 +37,8 @@ class ConsolidatedPartnershipModelSpec extends WordSpec with Matchers {
 
       "min values given" in {
 
-        val expectedValue = consolidatedPartnershipsModelMin
-        val actualValue = consolidatedPartnershipsJsonMin.as[ConsolidatedPartnershipModel]
+        val expectedValue = consolidatedPartnershipsJsonMin
+        val actualValue = Json.toJson(consolidatedPartnershipsModelMin)
 
         actualValue shouldBe expectedValue
       }
@@ -49,8 +49,8 @@ class ConsolidatedPartnershipModelSpec extends WordSpec with Matchers {
 
       "max values given" in {
 
-        val expectedValue = consolidatedPartnershipsJsonMax
-        val actualValue = Json.toJson(consolidatedPartnershipsModelMax)
+        val expectedValue = consolidatedPartnershipsModelMax
+        val actualValue = consolidatedPartnershipsJsonMax.as[ConsolidatedPartnershipModel]
 
         actualValue shouldBe expectedValue
       }

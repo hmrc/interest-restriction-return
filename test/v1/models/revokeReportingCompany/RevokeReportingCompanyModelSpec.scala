@@ -38,8 +38,8 @@ class RevokeReportingCompanyModelSpec extends WordSpec with Matchers with BaseCo
 
       "min values given" in {
 
-        val expectedValue = revokeReportingCompanyJsonMax
-        val actualValue = Json.toJson(revokeReportingCompanyModelMax)
+        val expectedValue = revokeReportingCompanyJsonMin
+        val actualValue = Json.toJson(revokeReportingCompanyModelMin)
 
         actualValue shouldBe expectedValue
       }
@@ -57,8 +57,8 @@ class RevokeReportingCompanyModelSpec extends WordSpec with Matchers with BaseCo
 
       "min values given" in {
 
-        val expectedValue = revokeReportingCompanyModelMax
-        val actualValue = revokeReportingCompanyJsonMax.as[RevokeReportingCompanyModel]
+        val expectedValue = revokeReportingCompanyModelMin
+        val actualValue = revokeReportingCompanyJsonMin.as[RevokeReportingCompanyModel]
 
         actualValue shouldBe expectedValue
       }
