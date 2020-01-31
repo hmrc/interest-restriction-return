@@ -145,33 +145,18 @@ class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants {
         fullReturnNetTaxExpenseModelMax.numberOfUkCompanies shouldBe 4
       }
 
-      "deriving the aggregateNetTaxInterestIncome" when {
+      "deriving the aggregateNetTaxInterest" when {
 
         "income is bigger" in {
-          fullReturnNetTaxIncomeModelMax.aggregateNetTaxInterestIncome shouldBe ((3 * netTaxInterestIncome) - netTaxInterestExpense)
+          fullReturnNetTaxIncomeModelMax.aggregateNetTaxInterest shouldBe ((3 * netTaxInterestIncome) - netTaxInterestExpense)
         }
 
         "expense is bigger" in {
-          fullReturnNetTaxExpenseModelMax.aggregateNetTaxInterestIncome shouldBe (netTaxInterestIncome - (3 * netTaxInterestExpense))
+          fullReturnNetTaxExpenseModelMax.aggregateNetTaxInterest shouldBe (netTaxInterestIncome - (3 * netTaxInterestExpense))
         }
 
         "income and expense are equal" in {
-          fullReturnModelMax.aggregateNetTaxInterestIncome shouldBe 0
-        }
-      }
-
-      "deriving the aggregateNetTaxInterestExpense" when {
-
-        "expense is bigger" in {
-          fullReturnNetTaxExpenseModelMax.aggregateNetTaxInterestExpense shouldBe ((3 * netTaxInterestExpense) - netTaxInterestIncome)
-        }
-
-        "income is bigger" in {
-          fullReturnNetTaxIncomeModelMax.aggregateNetTaxInterestExpense shouldBe (netTaxInterestExpense - (3 * netTaxInterestIncome))
-        }
-
-        "income and expense are equal" in {
-          fullReturnModelMax.aggregateNetTaxInterestExpense shouldBe 0
+          fullReturnModelMax.aggregateNetTaxInterest shouldBe 0
         }
       }
 
@@ -216,7 +201,6 @@ class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants {
         "multiple companies have a allocatedRestrictions" in {
           fullReturnNetTaxExpenseModelMax.aggregateAllocatedReactivations shouldBe Some(3 * currentPeriodReactivation)
         }
-
       }
     }
   }

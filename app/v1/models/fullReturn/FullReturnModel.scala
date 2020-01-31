@@ -58,8 +58,7 @@ case class FullReturnModel(agentDetails: AgentDetailsModel,
   }
 
   val numberOfUkCompanies: Int = ukCompanies.length
-  val aggregateNetTaxInterestIncome: BigDecimal = totalTaxInterestIncome - totalTaxInterestExpense
-  val aggregateNetTaxInterestExpense: BigDecimal = totalTaxInterestExpense - totalTaxInterestIncome
+  val aggregateNetTaxInterest: BigDecimal = totalTaxInterestIncome - totalTaxInterestExpense
   val aggregateTaxEBITDA: BigDecimal = ukCompanies.map(_.taxEBITDA).sum
   val aggregateAllocatedRestrictions: Option[BigDecimal] = oSum(ukCompanies.flatMap(_.allocatedRestrictions.flatMap(_.totalDisallowances)))
   val aggregateAllocatedReactivations: Option[BigDecimal] = oSum(ukCompanies.flatMap(_.allocatedReactivations.map(_.currentPeriodReactivation)))
@@ -69,11 +68,6 @@ case class FullReturnModel(agentDetails: AgentDetailsModel,
 object FullReturnModel {
 
   val writes: Writes[FullReturnModel] = Writes { models =>
-    val incomeOrExpense: (String, Json.JsValueWrapper) = if(models.aggregateNetTaxInterestIncome < models.aggregateNetTaxInterestExpense) {
-      "aggregateNetTaxInterestExpense" -> JsNumber(models.aggregateNetTaxInterestExpense)
-    } else {
-      "aggregateNetTaxInterestIncome" -> JsNumber(models.aggregateNetTaxInterestIncome)
-    }
 
     JsObject(Json.obj(
       "agentDetails" -> models.agentDetails,
@@ -86,7 +80,7 @@ object FullReturnModel {
       "groupLevelElections" -> models.groupLevelElections,
       "ukCompanies" -> models.ukCompanies,
       "numberOfUkCompanies" -> models.numberOfUkCompanies,
-      incomeOrExpense,
+      (if(models.aggregateNetTaxInterest >= 0) "aggregateNetTaxInterestIncome" else "aggregateNetTaxInterestExpense") -> models.aggregateNetTaxInterest.abs,
       "aggregateTaxEBITDA" -> models.aggregateTaxEBITDA,
       "aggregateAllocatedRestrictions" -> models.aggregateAllocatedRestrictions,
       "aggregateAllocatedReactivations" -> models.aggregateAllocatedReactivations,
