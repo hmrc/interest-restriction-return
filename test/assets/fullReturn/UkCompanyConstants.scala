@@ -25,7 +25,7 @@ import v1.models.fullReturn.UkCompanyModel
 object UkCompanyConstants extends BaseConstants {
 
   val netTaxInterestExpense: BigDecimal = 1.11
-  val netTaxInterestIncome: BigDecimal = 0
+  val netTaxInterestIncome: BigDecimal = 1.11
   val taxEBITDA: BigDecimal = 3.33
 
   val ukCompanyModelMax = UkCompanyModel(
@@ -33,7 +33,7 @@ object UkCompanyConstants extends BaseConstants {
     ctutr = ctutr,
     consenting = true,
     netTaxInterestExpense = netTaxInterestExpense,
-    netTaxInterestIncome = netTaxInterestIncome,
+    netTaxInterestIncome = 0,
     taxEBITDA = taxEBITDA,
     allocatedRestrictions = Some(allocatedRestrictionsModel),
     allocatedReactivations = Some(allocatedReactivationsModel)
@@ -44,7 +44,7 @@ object UkCompanyConstants extends BaseConstants {
     "ctutr" -> ctutr,
     "consenting" -> true,
     "netTaxInterestExpense" -> netTaxInterestExpense,
-    "netTaxInterestIncome" -> netTaxInterestIncome,
+    "netTaxInterestIncome" -> 0,
     "taxEBITDA" -> taxEBITDA,
     "allocatedRestrictions" -> allocatedRestrictionsJson,
     "allocatedReactivations" -> allocatedReactivationsJson
@@ -55,7 +55,7 @@ object UkCompanyConstants extends BaseConstants {
     ctutr = ctutr,
     consenting = true,
     netTaxInterestExpense = netTaxInterestExpense,
-    netTaxInterestIncome = netTaxInterestIncome,
+    netTaxInterestIncome = 0,
     taxEBITDA = taxEBITDA,
     allocatedRestrictions = None,
     allocatedReactivations = Some(allocatedReactivationsModel)
@@ -66,7 +66,7 @@ object UkCompanyConstants extends BaseConstants {
     "ctutr" -> ctutr,
     "consenting" -> true,
     "netTaxInterestExpense" -> netTaxInterestExpense,
-    "netTaxInterestIncome" -> netTaxInterestIncome,
+    "netTaxInterestIncome" -> 0,
     "taxEBITDA" -> taxEBITDA,
     "allocatedReactivations" -> allocatedReactivationsJson
   )
@@ -76,7 +76,7 @@ object UkCompanyConstants extends BaseConstants {
     ctutr = ctutr,
     consenting = true,
     netTaxInterestExpense = netTaxInterestExpense,
-    netTaxInterestIncome = netTaxInterestIncome,
+    netTaxInterestIncome = 0,
     taxEBITDA = taxEBITDA,
     allocatedRestrictions = Some(allocatedRestrictionsModel),
     allocatedReactivations = None
@@ -87,7 +87,7 @@ object UkCompanyConstants extends BaseConstants {
     "ctutr" -> ctutr,
     "consenting" -> true,
     "netTaxInterestExpense" -> netTaxInterestExpense,
-    "netTaxInterestIncome" -> netTaxInterestIncome,
+    "netTaxInterestIncome" -> 0,
     "taxEBITDA" -> taxEBITDA,
     "allocatedRestrictions" -> allocatedRestrictionsJson
   )
@@ -96,7 +96,7 @@ object UkCompanyConstants extends BaseConstants {
     companyName = companyName,
     ctutr = ctutr,
     consenting = true,
-    netTaxInterestExpense = netTaxInterestExpense,
+    netTaxInterestExpense = 0,
     netTaxInterestIncome = netTaxInterestIncome,
     taxEBITDA = taxEBITDA,
     allocatedRestrictions = None,
@@ -107,7 +107,7 @@ object UkCompanyConstants extends BaseConstants {
     "companyName" -> companyName,
     "ctutr" -> ctutr,
     "consenting" -> true,
-    "netTaxInterestExpense" -> netTaxInterestExpense,
+    "netTaxInterestExpense" -> 0,
     "netTaxInterestIncome" -> netTaxInterestIncome,
     "taxEBITDA" -> taxEBITDA
   )

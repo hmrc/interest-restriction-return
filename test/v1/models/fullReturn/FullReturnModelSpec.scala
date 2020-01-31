@@ -28,10 +28,26 @@ class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants {
 
     "correctly write to json" when {
 
-      "max values given" in {
+      "max values given without a net expense or income" in {
 
         val expectedValue = fullReturnJsonMax
         val actualValue = Json.toJson(fullReturnModelMax)
+
+        actualValue shouldBe expectedValue
+      }
+
+      "max values given with an net expense" in {
+
+        val expectedValue = fullReturnNetTaxExpenseJsonMax
+        val actualValue = Json.toJson(fullReturnNetTaxExpenseModelMax)
+
+        actualValue shouldBe expectedValue
+      }
+
+      "max values given with an a net income" in {
+
+        val expectedValue = fullReturnNetTaxIncomeJsonMax
+        val actualValue = Json.toJson(fullReturnNetTaxIncomeModelMax)
 
         actualValue shouldBe expectedValue
       }
@@ -47,10 +63,26 @@ class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants {
 
     "correctly read from Json" when {
 
-      "max values given" in {
+      "max values given withoput a net expense or income" in {
 
         val expectedValue = fullReturnModelMax
         val actualValue = fullReturnJsonMax.as[FullReturnModel]
+
+        actualValue shouldBe expectedValue
+      }
+
+      "max values given with a net expense" in {
+
+        val expectedValue = fullReturnNetTaxExpenseModelMax
+        val actualValue = fullReturnNetTaxExpenseJsonMax.as[FullReturnModel]
+
+        actualValue shouldBe expectedValue
+      }
+
+      "max values given with a net income" in {
+
+        val expectedValue = fullReturnNetTaxIncomeModelMax
+        val actualValue = fullReturnNetTaxIncomeJsonMax.as[FullReturnModel]
 
         actualValue shouldBe expectedValue
       }

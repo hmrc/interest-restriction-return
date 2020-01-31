@@ -27,6 +27,8 @@ import assets.fullReturn.UkCompanyConstants._
 import play.api.libs.json.{JsObject, Json}
 import v1.models.fullReturn.FullReturnModel
 import v1.models.{Original, Revised}
+import assets.fullReturn.AllocatedRestrictionsConstants._
+import assets.fullReturn.AllocatedReactivationsConstants._
 
 object FullReturnConstants {
 
@@ -37,16 +39,6 @@ object FullReturnConstants {
     (total, company) => total + company.currentPeriodReactivation
   }
 
-  val numberOfUkCompaniesMax: Int = 3
-  val numberOfUkCompaniesMin: Int = 1
-  val aggregateNetTaxInterestIncome: BigDecimal = 0
-  val aggregateNetTaxInterestExpense: BigDecimal = 3.33
-  val aggregateNetTaxInterestExpenseMin: BigDecimal = 1.11
-  val aggregateTaxEBITDAMax: BigDecimal = 9.99
-  val aggregateTaxEBITDAMin: BigDecimal = 3.33
-  val aggregateAllocatedRestrictions: Option[BigDecimal] = Some(19.98)
-  val aggregateAllocatedReactivations: Option[BigDecimal] = Some(6.66)
-
   val fullReturnModelMax: FullReturnModel = FullReturnModel(
     agentDetails = agentDetailsModelMax,
     reportingCompany = reportingCompanyModel,
@@ -56,7 +48,7 @@ object FullReturnConstants {
     submissionType = Revised,
     revisedReturnDetails = Some(revisedReturnDetails),
     groupLevelElections = groupLevelElectionsModelMax,
-    ukCompanies = Seq(ukCompanyModelMax, ukCompanyModelMax, ukCompanyModelMax),
+    ukCompanies = Seq(ukCompanyModelMax, ukCompanyModelMin),
     angie = Some(angie),
     returnContainsEstimates = true,
     groupSubjectToInterestRestrictions = false,
@@ -75,13 +67,98 @@ object FullReturnConstants {
     "submissionType" -> Revised,
     "revisedReturnDetails" -> revisedReturnDetails,
     "groupLevelElections" -> groupLevelElectionsJsonMax,
-    "ukCompanies" -> Seq(ukCompanyJsonMax, ukCompanyJsonMax, ukCompanyJsonMax),
-    "numberOfUkCompanies" -> numberOfUkCompaniesMax,
-    "aggregateNetTaxInterestIncome" -> aggregateNetTaxInterestIncome,
-    "aggregateNetTaxInterestExpense" -> aggregateNetTaxInterestExpense,
-    "aggregateTaxEBITDA" -> aggregateTaxEBITDAMax,
-    "aggregateAllocatedRestrictions" -> aggregateAllocatedRestrictions,
-    "aggregateAllocatedReactivations" -> aggregateAllocatedReactivations,
+    "ukCompanies" -> Seq(ukCompanyJsonMax, ukCompanyJsonMin),
+    "numberOfUkCompanies" -> 2,
+    "aggregateNetTaxInterestIncome" -> 0,
+    "aggregateTaxEBITDA" -> (2 * taxEBITDA),
+    "aggregateAllocatedRestrictions" -> totalDisallowances,
+    "aggregateAllocatedReactivations" -> currentPeriodReactivation,
+    "angie" -> angie,
+    "returnContainsEstimates" -> true,
+    "groupSubjectToInterestRestrictions" -> false,
+    "groupSubjectToInterestReactivation" -> true,
+    "totalReactivation" -> totalReactivations,
+    "groupLevelAmount" -> groupLevelAmountJson,
+    "adjustedGroupInterest" -> adjustedGroupInterestJson
+  )
+
+  val fullReturnNetTaxExpenseModelMax: FullReturnModel = FullReturnModel(
+    agentDetails = agentDetailsModelMax,
+    reportingCompany = reportingCompanyModel,
+    parentCompany = Some(parentCompanyModelUltUkCompany),
+    publicInfrastructure = true,
+    groupCompanyDetails = groupCompanyDetailsModel,
+    submissionType = Revised,
+    revisedReturnDetails = Some(revisedReturnDetails),
+    groupLevelElections = groupLevelElectionsModelMax,
+    ukCompanies = Seq(ukCompanyModelMax, ukCompanyModelMax, ukCompanyModelMax, ukCompanyModelMin),
+    angie = Some(angie),
+    returnContainsEstimates = true,
+    groupSubjectToInterestRestrictions = false,
+    groupSubjectToInterestReactivation = true,
+    totalReactivation = totalReactivations,
+    groupLevelAmount = groupLevelAmountModel,
+    adjustedGroupInterest = Some(adjustedGroupInterestModel)
+  )
+
+  val fullReturnNetTaxExpenseJsonMax: JsObject = Json.obj(
+    "agentDetails" -> agentDetailsJsonMax,
+    "reportingCompany" -> reportingCompanyJson,
+    "parentCompany" -> parentCompanyJsonUltUkCompany,
+    "publicInfrastructure" -> true,
+    "groupCompanyDetails" -> groupCompanyDetailsJson,
+    "submissionType" -> Revised,
+    "revisedReturnDetails" -> revisedReturnDetails,
+    "groupLevelElections" -> groupLevelElectionsJsonMax,
+    "ukCompanies" -> Seq(ukCompanyJsonMax, ukCompanyJsonMax, ukCompanyJsonMax, ukCompanyJsonMin),
+    "numberOfUkCompanies" -> 4,
+    "aggregateNetTaxInterestExpense" -> ((3 * netTaxInterestExpense) - netTaxInterestIncome),
+    "aggregateTaxEBITDA" -> (4 * taxEBITDA),
+    "aggregateAllocatedRestrictions" -> (3 * totalDisallowances),
+    "aggregateAllocatedReactivations" -> (3 * currentPeriodReactivation),
+    "angie" -> angie,
+    "returnContainsEstimates" -> true,
+    "groupSubjectToInterestRestrictions" -> false,
+    "groupSubjectToInterestReactivation" -> true,
+    "totalReactivation" -> totalReactivations,
+    "groupLevelAmount" -> groupLevelAmountJson,
+    "adjustedGroupInterest" -> adjustedGroupInterestJson
+  )
+
+  val fullReturnNetTaxIncomeModelMax: FullReturnModel = FullReturnModel(
+    agentDetails = agentDetailsModelMax,
+    reportingCompany = reportingCompanyModel,
+    parentCompany = Some(parentCompanyModelUltUkCompany),
+    publicInfrastructure = true,
+    groupCompanyDetails = groupCompanyDetailsModel,
+    submissionType = Revised,
+    revisedReturnDetails = Some(revisedReturnDetails),
+    groupLevelElections = groupLevelElectionsModelMax,
+    ukCompanies = Seq(ukCompanyModelMin, ukCompanyModelMin, ukCompanyModelMin, ukCompanyModelMax),
+    angie = Some(angie),
+    returnContainsEstimates = true,
+    groupSubjectToInterestRestrictions = false,
+    groupSubjectToInterestReactivation = true,
+    totalReactivation = totalReactivations,
+    groupLevelAmount = groupLevelAmountModel,
+    adjustedGroupInterest = Some(adjustedGroupInterestModel)
+  )
+
+  val fullReturnNetTaxIncomeJsonMax: JsObject = Json.obj(
+    "agentDetails" -> agentDetailsJsonMax,
+    "reportingCompany" -> reportingCompanyJson,
+    "parentCompany" -> parentCompanyJsonUltUkCompany,
+    "publicInfrastructure" -> true,
+    "groupCompanyDetails" -> groupCompanyDetailsJson,
+    "submissionType" -> Revised,
+    "revisedReturnDetails" -> revisedReturnDetails,
+    "groupLevelElections" -> groupLevelElectionsJsonMax,
+    "ukCompanies" -> Seq(ukCompanyJsonMin, ukCompanyJsonMin, ukCompanyJsonMin, ukCompanyJsonMax),
+    "numberOfUkCompanies" -> 4,
+    "aggregateNetTaxInterestIncome" -> ((3 * netTaxInterestIncome) - netTaxInterestExpense),
+    "aggregateTaxEBITDA" -> (4 * taxEBITDA),
+    "aggregateAllocatedRestrictions" -> totalDisallowances,
+    "aggregateAllocatedReactivations" -> currentPeriodReactivation,
     "angie" -> angie,
     "returnContainsEstimates" -> true,
     "groupSubjectToInterestRestrictions" -> false,
@@ -122,12 +199,11 @@ object FullReturnConstants {
     "revisedReturnDetails" -> revisedReturnDetails,
     "groupLevelElections" -> groupLevelElectionsJsonMax,
     "ukCompanies" -> Seq(ukCompanyReactivationJsonMax),
-    "numberOfUkCompanies" -> numberOfUkCompaniesMax,
-    "aggregateNetTaxInterestIncome" -> aggregateNetTaxInterestIncome,
-    "aggregateNetTaxInterestExpense" -> aggregateNetTaxInterestExpense,
-    "aggregateTaxEBITDA" -> aggregateTaxEBITDAMax,
-    "aggregateAllocatedRestrictions" -> aggregateAllocatedRestrictions,
-    "aggregateAllocatedReactivations" -> aggregateAllocatedReactivations,
+    "numberOfUkCompanies" -> 1,
+    "aggregateNetTaxInterestExpense" -> netTaxInterestExpense,
+    "aggregateTaxEBITDA" -> taxEBITDA,
+    "aggregateAllocatedRestrictions" -> totalDisallowances,
+    "aggregateAllocatedReactivations" -> currentPeriodReactivation,
     "angie" -> angie,
     "returnContainsEstimates" -> true,
     "groupSubjectToInterestRestrictions" -> false,
@@ -186,9 +262,8 @@ object FullReturnConstants {
     "submissionType" -> Original,
     "ukCompanies" -> Seq(ukCompanyJsonMin),
     "numberOfUkCompanies" -> 1,
-    "aggregateNetTaxInterestExpense" -> aggregateNetTaxInterestExpenseMin,
-    "aggregateNetTaxInterestIncome" -> aggregateNetTaxInterestIncome,
-    "aggregateTaxEBITDA" -> aggregateTaxEBITDAMin,
+    "aggregateNetTaxInterestIncome" -> netTaxInterestIncome,
+    "aggregateTaxEBITDA" -> taxEBITDA,
     "groupLevelElections" -> groupLevelElectionsJsonMin,
     "returnContainsEstimates" -> true,
     "groupSubjectToInterestRestrictions" -> false,
