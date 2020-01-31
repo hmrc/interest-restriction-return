@@ -39,17 +39,13 @@ case class FullReturnModel(agentDetails: AgentDetailsModel,
 
   override val fullReturnModel: FullReturnModel = this
 
-  val oSum: Seq[BigDecimal] => Option[BigDecimal] = {
+  private val totalTaxInterestIncome: BigDecimal = ukCompanies.map(_.netTaxInterestIncome).sum
+  private val totalTaxInterestExpense: BigDecimal = ukCompanies.map(_.netTaxInterestExpense).sum
+
+  private val oSum: Seq[BigDecimal] => Option[BigDecimal] = {
     case x if x.isEmpty => None
     case x => Some(x.sum)
   }
-
-  val numberOfUkCompanies: Int = ukCompanies.length
-  val aggregateNetTaxInterestIncome: BigDecimal = ukCompanies.map(_.netTaxInterestIncome).sum
-  val aggregateNetTaxInterestExpense: BigDecimal = ukCompanies.map(_.netTaxInterestExpense).sum
-  val aggregateTaxEBITDA: BigDecimal = ukCompanies.map(_.taxEBITDA).sum
-  val aggregateAllocatedRestrictions: Option[BigDecimal] = oSum(ukCompanies.flatMap(_.allocatedRestrictions.flatMap(_.totalDisallowances)))
-  val aggregateAllocatedReactivations: Option[BigDecimal] = oSum(ukCompanies.flatMap(_.allocatedReactivations.map(_.currentPeriodReactivation)))
 
   private val reportingCompanyCrnWithPath: (JsPath, CRNModel) = FullReturnModel.reportingCompanyCrnPath -> reportingCompany.crn
 
@@ -61,12 +57,18 @@ case class FullReturnModel(agentDetails: AgentDetailsModel,
     _.zipWithIndex.map(x => FullReturnModel.deemedParentCrnPath(x._2) -> x._1)
   }
 
+  val numberOfUkCompanies: Int = ukCompanies.length
+  val aggregateNetTaxInterest: BigDecimal = totalTaxInterestIncome - totalTaxInterestExpense
+  val aggregateTaxEBITDA: BigDecimal = ukCompanies.map(_.taxEBITDA).sum
+  val aggregateAllocatedRestrictions: Option[BigDecimal] = oSum(ukCompanies.flatMap(_.allocatedRestrictions.flatMap(_.totalDisallowances)))
+  val aggregateAllocatedReactivations: Option[BigDecimal] = oSum(ukCompanies.flatMap(_.allocatedReactivations.map(_.currentPeriodReactivation)))
   val ukCrns: Seq[(JsPath, CRNModel)] = ultimateParentCrnWithPath ++ deemedParentCrnsWithPath :+ reportingCompanyCrnWithPath
 }
 
 object FullReturnModel {
 
   val writes: Writes[FullReturnModel] = Writes { models =>
+
     JsObject(Json.obj(
       "agentDetails" -> models.agentDetails,
       "reportingCompany" -> models.reportingCompany,
@@ -78,8 +80,7 @@ object FullReturnModel {
       "groupLevelElections" -> models.groupLevelElections,
       "ukCompanies" -> models.ukCompanies,
       "numberOfUkCompanies" -> models.numberOfUkCompanies,
-      "aggregateNetTaxInterestIncome" -> models.aggregateNetTaxInterestIncome,
-      "aggregateNetTaxInterestExpense" -> models.aggregateNetTaxInterestExpense,
+      (if(models.aggregateNetTaxInterest >= 0) "aggregateNetTaxInterestIncome" else "aggregateNetTaxInterestExpense") -> models.aggregateNetTaxInterest.abs,
       "aggregateTaxEBITDA" -> models.aggregateTaxEBITDA,
       "aggregateAllocatedRestrictions" -> models.aggregateAllocatedRestrictions,
       "aggregateAllocatedReactivations" -> models.aggregateAllocatedReactivations,
