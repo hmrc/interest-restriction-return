@@ -40,6 +40,7 @@ object FullReturnConstants {
   }
 
   val fullReturnModelMax: FullReturnModel = FullReturnModel(
+    appointedReportingCompany = true,
     agentDetails = agentDetailsModelMax,
     reportingCompany = reportingCompanyModel,
     parentCompany = Some(parentCompanyModelUltUkCompany),
@@ -59,6 +60,7 @@ object FullReturnConstants {
   )
 
   val fullReturnJsonMax: JsObject = Json.obj(
+    "appointedReportingCompany" -> true,
     "agentDetails" -> agentDetailsJsonMax,
     "reportingCompany" -> reportingCompanyJson,
     "parentCompany" -> parentCompanyJsonUltUkCompany,
@@ -83,6 +85,7 @@ object FullReturnConstants {
   )
 
   val fullReturnNetTaxExpenseModelMax: FullReturnModel = FullReturnModel(
+    appointedReportingCompany = true,
     agentDetails = agentDetailsModelMax,
     reportingCompany = reportingCompanyModel,
     parentCompany = Some(parentCompanyModelUltUkCompany),
@@ -102,6 +105,7 @@ object FullReturnConstants {
   )
 
   val fullReturnNetTaxExpenseJsonMax: JsObject = Json.obj(
+    "appointedReportingCompany" -> true,
     "agentDetails" -> agentDetailsJsonMax,
     "reportingCompany" -> reportingCompanyJson,
     "parentCompany" -> parentCompanyJsonUltUkCompany,
@@ -126,6 +130,7 @@ object FullReturnConstants {
   )
 
   val fullReturnNetTaxIncomeModelMax: FullReturnModel = FullReturnModel(
+    appointedReportingCompany = true,
     agentDetails = agentDetailsModelMax,
     reportingCompany = reportingCompanyModel,
     parentCompany = Some(parentCompanyModelUltUkCompany),
@@ -145,6 +150,7 @@ object FullReturnConstants {
   )
 
   val fullReturnNetTaxIncomeJsonMax: JsObject = Json.obj(
+    "appointedReportingCompany" -> true,
     "agentDetails" -> agentDetailsJsonMax,
     "reportingCompany" -> reportingCompanyJson,
     "parentCompany" -> parentCompanyJsonUltUkCompany,
@@ -171,6 +177,7 @@ object FullReturnConstants {
   // Ultimate Model and Json
 
   val fullReturnUltimateParentModel: FullReturnModel = FullReturnModel(
+    appointedReportingCompany = true,
     agentDetails = agentDetailsModelMax,
     reportingCompany = reportingCompanyModel,
     parentCompany = Some(parentCompanyModelUltUkCompany),
@@ -190,6 +197,7 @@ object FullReturnConstants {
   )
 
   val fullReturnUltimateParentJson: JsObject = Json.obj(
+    "appointedReportingCompany" -> true,
     "agentDetails" -> agentDetailsJsonMax,
     "reportingCompany" -> reportingCompanyJson,
     "parentCompany" -> parentCompanyJsonUltUkCompany,
@@ -215,6 +223,7 @@ object FullReturnConstants {
 
   // Deemed Model and Json
   val fullReturnDeemedParentModel: FullReturnModel = FullReturnModel(
+    appointedReportingCompany = true,
     agentDetails = agentDetailsModelMax,
     reportingCompany = reportingCompanyModel,
     parentCompany = Some(parentCompanyModelDeemedMax),
@@ -236,6 +245,7 @@ object FullReturnConstants {
   // Minimum Model and Json
 
   val fullReturnModelMin: FullReturnModel = FullReturnModel(
+    appointedReportingCompany = true,
     agentDetails = agentDetailsModelMin,
     reportingCompany = reportingCompanyModel,
     parentCompany = None,
@@ -255,6 +265,7 @@ object FullReturnConstants {
   )
 
   val fullReturnJsonMin: JsObject = Json.obj(
+    "appointedReportingCompany" -> true,
     "agentDetails" -> agentDetailsJsonMin,
     "reportingCompany" -> reportingCompanyJson,
     "publicInfrastructure" -> true,

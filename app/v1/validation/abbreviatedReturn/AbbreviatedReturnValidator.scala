@@ -44,6 +44,14 @@ trait AbbreviatedReturnValidator extends BaseValidation {
     }
   }
 
+  private def validateAppointedReporter: ValidationResult[Option[String]] = {
+    (abbreviatedReturnModel.appointedReportingCompany) match {
+      case (false) => ReportingCompanyNotAppointed.invalidNec
+        //todo the revised return model is that right?
+      case _ => abbreviatedReturnModel.revisedReturnDetails.validNec
+    }
+  }
+
   def validate: ValidationResult[AbbreviatedReturnModel] = {
 
     val validatedUkCompanies =
@@ -60,9 +68,16 @@ trait AbbreviatedReturnValidator extends BaseValidation {
       optionValidations(abbreviatedReturnModel.groupLevelElections.map(_.validate(JsPath \ "groupLevelElections"))),
       validatedUkCompanies,
       validateParentCompany,
-      validateRevisedReturnDetails
-      ).mapN((_,_,_,_,_,_,_,_) => abbreviatedReturnModel)
+      validateRevisedReturnDetails,
+      validateAppointedReporter
+      ).mapN((_,_,_,_,_,_,_,_,_) => abbreviatedReturnModel)
   }
+}
+
+case object ReportingCompanyNotAppointed extends Validation {
+  val errorMessage: String = "You need to appoint a reporting company"
+  val path = JsPath \ "appointedReportingCompany"
+  val value = Json.obj()
 }
 
 case object RevisedReturnDetailsNotSupplied extends Validation {

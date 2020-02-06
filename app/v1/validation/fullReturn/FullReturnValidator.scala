@@ -109,6 +109,14 @@ trait FullReturnValidator extends BaseValidation {
     }
   }
 
+  private def validateAppointedReporter: ValidationResult[Option[String]] = {
+    (fullReturnModel.appointedReportingCompany) match {
+      case (false) => ReportingCompanyNotAppointed.invalidNec
+      //todo the revised return model is that right?
+      case _ => fullReturnModel.revisedReturnDetails.validNec
+    }
+  }
+
   def validate: ValidationResult[FullReturnModel] = {
 
     val validatedUkCompanies =
@@ -133,10 +141,17 @@ trait FullReturnValidator extends BaseValidation {
       validateParentCompany,
       validateRevisedReturnDetails,
       validateAdjustedNetGroupInterest,
+      validateAppointedReporter,
       fullReturnModel.groupLevelAmount.validate(JsPath \ "groupLevelAmount"),
       optionValidations(fullReturnModel.adjustedGroupInterest.map(_.validate(JsPath \ "adjustedGroupInterest")))
-      ).mapN((_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_) => fullReturnModel)
+      ).mapN((_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_) => fullReturnModel)
   }
+}
+
+case object ReportingCompanyNotAppointed extends Validation {
+  val errorMessage: String = "You need to appoint a reporting company"
+  val path = JsPath \ "appointedReportingCompany"
+  val value = Json.obj()
 }
 
 case object RevisedReturnDetailsNotSupplied extends Validation {

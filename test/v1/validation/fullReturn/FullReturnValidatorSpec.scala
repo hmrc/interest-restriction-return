@@ -257,6 +257,12 @@ class FullReturnValidatorSpec extends BaseSpec {
         ).validate).errorMessage shouldBe AdjustedNetGroupInterestNotSupplied.errorMessage
       }
 
+      "it is not the appointed reporting company" in {
+        leftSideError(fullReturnUltimateParentModel.copy(
+          appointedReportingCompany = false
+        ).validate).errorMessage shouldBe ReportingCompanyNotAppointed.errorMessage
+      }
+
       "Group Ratio is not Elected and Adjusted Group Interest details are supplied" in {
         leftSideError(fullReturnUltimateParentModel.copy(
           groupLevelElections = groupLevelElectionsModelMax.copy(

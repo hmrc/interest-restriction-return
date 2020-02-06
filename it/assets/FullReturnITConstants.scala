@@ -36,6 +36,7 @@ object FullReturnITConstants {
   )
 
   val fullReturnJson = Json.obj(
+    "appointedReportingCompany" -> true,
     "agentDetails" -> agentDetailsJson,
     "reportingCompany" -> reportingCompanyJson,
     "publicInfrastructure" -> true,

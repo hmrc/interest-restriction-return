@@ -20,7 +20,8 @@ import play.api.libs.json._
 import v1.models._
 import v1.validation.fullReturn.FullReturnValidator
 
-case class FullReturnModel(agentDetails: AgentDetailsModel,
+case class FullReturnModel(appointedReportingCompany: Boolean,
+                           agentDetails: AgentDetailsModel,
                            reportingCompany: ReportingCompanyModel,
                            parentCompany: Option[ParentCompanyModel],
                            publicInfrastructure: Boolean,
@@ -70,6 +71,7 @@ object FullReturnModel {
   val writes: Writes[FullReturnModel] = Writes { models =>
 
     JsObject(Json.obj(
+      "appointedReportingCompany" -> models.appointedReportingCompany,
       "agentDetails" -> models.agentDetails,
       "reportingCompany" -> models.reportingCompany,
       "parentCompany" -> models.parentCompany,

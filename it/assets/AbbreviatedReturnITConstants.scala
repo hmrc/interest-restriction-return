@@ -33,6 +33,7 @@ object AbbreviatedReturnITConstants {
   )
 
   val abbreviatedReturnJson = Json.obj(
+    "appointedReportingCompany" -> true,
     "agentDetails" -> agentDetailsJson,
     "reportingCompany" -> reportingCompanyJson,
     "publicInfrastructure" -> true,
