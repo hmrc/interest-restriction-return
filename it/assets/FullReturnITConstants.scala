@@ -50,6 +50,7 @@ object FullReturnITConstants {
     "groupSubjectToInterestRestrictions" -> false,
     "groupSubjectToInterestReactivation" -> true,
     "totalReactivation" -> 2.22,
+    "totalRestrictions" -> 0,
     "groupLevelAmount" -> groupLevelAmountJson,
     "adjustedGroupInterest" -> adjustedGroupInterestJson
   )

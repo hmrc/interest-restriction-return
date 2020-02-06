@@ -39,6 +39,10 @@ object FullReturnConstants {
     (total, company) => total + company.currentPeriodReactivation
   }
 
+  val totalRestrictions: BigDecimal = ukCompanyModelRestrictionMax.allocatedRestrictions.foldLeft[BigDecimal](0) {
+    (total, company) => total + company.totalDisallowances.getOrElse(0)
+  }
+
   val fullReturnModelMax: FullReturnModel = FullReturnModel(
     appointedReportingCompany = true,
     agentDetails = agentDetailsModelMax,
@@ -55,6 +59,7 @@ object FullReturnConstants {
     groupSubjectToInterestRestrictions = false,
     groupSubjectToInterestReactivation = true,
     totalReactivation = totalReactivations,
+    totalRestrictions = 0,
     groupLevelAmount = groupLevelAmountModel,
     adjustedGroupInterest = Some(adjustedGroupInterestModel)
   )
@@ -80,6 +85,7 @@ object FullReturnConstants {
     "groupSubjectToInterestRestrictions" -> false,
     "groupSubjectToInterestReactivation" -> true,
     "totalReactivation" -> totalReactivations,
+    "totalRestrictions" -> 0,
     "groupLevelAmount" -> groupLevelAmountJson,
     "adjustedGroupInterest" -> adjustedGroupInterestJson
   )
@@ -100,6 +106,7 @@ object FullReturnConstants {
     groupSubjectToInterestRestrictions = false,
     groupSubjectToInterestReactivation = true,
     totalReactivation = totalReactivations,
+    totalRestrictions = 0,
     groupLevelAmount = groupLevelAmountModel,
     adjustedGroupInterest = Some(adjustedGroupInterestModel)
   )
@@ -125,6 +132,7 @@ object FullReturnConstants {
     "groupSubjectToInterestRestrictions" -> false,
     "groupSubjectToInterestReactivation" -> true,
     "totalReactivation" -> totalReactivations,
+    "totalRestrictions" -> 0,
     "groupLevelAmount" -> groupLevelAmountJson,
     "adjustedGroupInterest" -> adjustedGroupInterestJson
   )
@@ -145,6 +153,7 @@ object FullReturnConstants {
     groupSubjectToInterestRestrictions = false,
     groupSubjectToInterestReactivation = true,
     totalReactivation = totalReactivations,
+    totalRestrictions = 0,
     groupLevelAmount = groupLevelAmountModel,
     adjustedGroupInterest = Some(adjustedGroupInterestModel)
   )
@@ -170,6 +179,7 @@ object FullReturnConstants {
     "groupSubjectToInterestRestrictions" -> false,
     "groupSubjectToInterestReactivation" -> true,
     "totalReactivation" -> totalReactivations,
+    "totalRestrictions" -> 0,
     "groupLevelAmount" -> groupLevelAmountJson,
     "adjustedGroupInterest" -> adjustedGroupInterestJson
   )
@@ -192,6 +202,7 @@ object FullReturnConstants {
     groupSubjectToInterestRestrictions = false,
     groupSubjectToInterestReactivation = true,
     totalReactivation = totalReactivations,
+    totalRestrictions = 0,
     groupLevelAmount = groupLevelAmountModel,
     adjustedGroupInterest = Some(adjustedGroupInterestModel)
   )
@@ -217,6 +228,7 @@ object FullReturnConstants {
     "groupSubjectToInterestRestrictions" -> false,
     "groupSubjectToInterestReactivation" -> true,
     "totalReactivation" -> totalReactivations,
+    "totalRestrictions" -> 0,
     "groupLevelAmount" -> groupLevelAmountJson,
     "adjustedGroupInterest" -> adjustedGroupInterestJson
   )
@@ -238,6 +250,7 @@ object FullReturnConstants {
     groupSubjectToInterestRestrictions = false,
     groupSubjectToInterestReactivation = true,
     totalReactivation = totalReactivations,
+    totalRestrictions = 0,
     groupLevelAmount = groupLevelAmountModel,
     adjustedGroupInterest = Some(adjustedGroupInterestModel)
   )
@@ -260,6 +273,7 @@ object FullReturnConstants {
     groupSubjectToInterestRestrictions = false,
     groupSubjectToInterestReactivation = true,
     totalReactivation = totalReactivations,
+    totalRestrictions = 0,
     groupLevelAmount = groupLevelAmountModel,
     adjustedGroupInterest = None
   )
@@ -280,6 +294,7 @@ object FullReturnConstants {
     "groupSubjectToInterestRestrictions" -> false,
     "groupSubjectToInterestReactivation" -> true,
     "totalReactivation" -> totalReactivations,
+    "totalRestrictions" -> 0,
     "groupLevelAmount" -> groupLevelAmountJson
   )
 }

@@ -101,6 +101,19 @@ trait FullReturnValidator extends BaseValidation {
     }
   }
 
+  //todo work out whats wrong with this also is test needed for the it total react or reretrict is popped
+  private def validateTotalRestrictions: ValidationResult[BigDecimal] = {
+    val restrictions: BigDecimal = fullReturnModel.totalRestrictions
+    val calculatedRestrictions: BigDecimal = fullReturnModel.ukCompanies.foldLeft[BigDecimal](0) {
+      (total, company) =>
+        total + company.allocatedRestrictions.fold[BigDecimal](0)(restrictions =>
+          restrictions.totalDisallowances.getOrElse(0))
+    }
+    if(restrictions == calculatedRestrictions) restrictions.validNec else {
+      TotalRestrictionsDoesNotMatch(restrictions, calculatedRestrictions).invalidNec
+    }
+  }
+
   private def validateAdjustedNetGroupInterest: ValidationResult[Option[AdjustedGroupInterestModel]] = {
     (fullReturnModel.groupLevelElections.groupRatio.isElected, fullReturnModel.adjustedGroupInterest) match {
       case (true, None) => AdjustedNetGroupInterestNotSupplied.invalidNec
@@ -138,6 +151,7 @@ trait FullReturnValidator extends BaseValidation {
       validateAllocatedReactivations,
       validateInterestReactivationCap,
       validateTotalReactivations,
+    //  validateTotalRestrictions,
       validateParentCompany,
       validateRevisedReturnDetails,
       validateAdjustedNetGroupInterest,
@@ -202,6 +216,12 @@ case object InterestReactivationCapNotSupplied extends Validation {
 case class TotalReactivationsDoesNotMatch(amt: BigDecimal, calculated: BigDecimal) extends Validation {
   val errorMessage: String = s"Calculated reactivations is $calculated which does not match the supplied amount of $amt"
   val path = JsPath \ "totalReactivation"
+  val value = Json.obj()
+}
+
+case class TotalRestrictionsDoesNotMatch(amt: BigDecimal, calculated: BigDecimal) extends Validation {
+  val errorMessage: String = s"Calculated restrictions is $calculated which does not match the supplied amount of $amt"
+  val path = JsPath \ "totalRestrictions"
   val value = Json.obj()
 }
 

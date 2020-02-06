@@ -35,6 +35,7 @@ case class FullReturnModel(appointedReportingCompany: Boolean,
                            groupSubjectToInterestRestrictions: Boolean,
                            groupSubjectToInterestReactivation: Boolean,
                            totalReactivation: BigDecimal,
+                           totalRestrictions: BigDecimal,
                            groupLevelAmount: GroupLevelAmountModel,
                            adjustedGroupInterest: Option[AdjustedGroupInterestModel]) extends FullReturnValidator {
 
@@ -91,6 +92,7 @@ object FullReturnModel {
       "groupSubjectToInterestRestrictions" -> models.groupSubjectToInterestRestrictions,
       "groupSubjectToInterestReactivation" -> models.groupSubjectToInterestReactivation,
       "totalReactivation" -> models.totalReactivation,
+      "totalRestrictions" -> models.totalRestrictions,
       "groupLevelAmount" -> models.groupLevelAmount,
       "adjustedGroupInterest" -> models.adjustedGroupInterest
     ).fields.filterNot(_._2 == JsNull))
