@@ -116,6 +116,10 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
           ukCompanies = Seq(ukCompanyModel.copy(companyName = companyNameTooLong))
         ).validate).errorMessage shouldBe CompanyNameLengthError(companyNameTooLong.name).errorMessage
       }
+
+      "Angie is negative" in {
+        leftSideError(abbreviatedReturnUltimateParentModel.copy(angie = Some(-0.01)).validate).errorMessage shouldBe NegativeAngieError(-0.01).errorMessage
+      }
     }
   }
 }

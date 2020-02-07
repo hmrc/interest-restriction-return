@@ -39,6 +39,7 @@ object AbbreviatedReturnITConstants {
     "publicInfrastructure" -> true,
     "groupCompanyDetails" -> groupCompanyDetailsJson,
     "submissionType" -> Revised,
+    "angie" -> 1.1,
     "revisedReturnDetails" -> "revised details",
     "groupLevelElections" -> groupLevelElectionsJson,
     "ukCompanies" -> Seq(ukCompanyJson)

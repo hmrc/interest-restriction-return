@@ -29,6 +29,7 @@ case class AbbreviatedReturnModel(appointedReportingCompany: Boolean,
                                   submissionType: SubmissionType,
                                   revisedReturnDetails: Option[String],
                                   groupLevelElections: Option[GroupLevelElectionsModel],
+                                  angie: Option[BigDecimal],
                                   ukCompanies: Seq[UkCompanyModel]) extends AbbreviatedReturnValidator {
 
   override val abbreviatedReturnModel: AbbreviatedReturnModel = this
