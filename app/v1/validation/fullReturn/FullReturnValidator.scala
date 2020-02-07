@@ -36,11 +36,11 @@ trait FullReturnValidator extends BaseValidation {
     }
   }
 
-  private def validateParentCompany: ValidationResult[Option[String]] = {
+  private def validateParentCompany: ValidationResult[Boolean] = {
     (fullReturnModel.reportingCompany.sameAsUltimateParent, fullReturnModel.parentCompany) match {
       case (true, Some(details)) => ParentCompanyDetailsSupplied(details).invalidNec
       case (false, None) => ParentCompanyDetailsNotSupplied.invalidNec
-      case _ => fullReturnModel.revisedReturnDetails.validNec
+      case _ => fullReturnModel.appointedReportingCompany.validNec
     }
   }
 
@@ -101,11 +101,29 @@ trait FullReturnValidator extends BaseValidation {
     }
   }
 
+  private def validateTotalRestrictions: ValidationResult[BigDecimal] = {
+    val restrictions: BigDecimal = fullReturnModel.totalRestrictions
+    val calculatedRestrictions: BigDecimal = fullReturnModel.ukCompanies.foldLeft[BigDecimal](0) {
+      (total, company) =>
+        total + company.allocatedRestrictions.fold[BigDecimal](0)(restrictions =>
+          restrictions.totalDisallowances.getOrElse(0))
+    }
+    if(restrictions == calculatedRestrictions) restrictions.validNec else {
+      TotalRestrictionsDoesNotMatch(restrictions, calculatedRestrictions).invalidNec
+    }
+  }
+
   private def validateAdjustedNetGroupInterest: ValidationResult[Option[AdjustedGroupInterestModel]] = {
     (fullReturnModel.groupLevelElections.groupRatio.isElected, fullReturnModel.adjustedGroupInterest) match {
       case (true, None) => AdjustedNetGroupInterestNotSupplied.invalidNec
       case (false, Some(details)) => AdjustedNetGroupInterestSupplied(details).invalidNec
       case _ => fullReturnModel.adjustedGroupInterest.validNec
+    }
+  }
+
+  private def validateAppointedReporter: ValidationResult[Boolean] = {
+    if(fullReturnModel.appointedReportingCompany) fullReturnModel.appointedReportingCompany.validNec else {
+      ReportingCompanyNotAppointed.invalidNec
     }
   }
 
@@ -130,13 +148,21 @@ trait FullReturnValidator extends BaseValidation {
       validateAllocatedReactivations,
       validateInterestReactivationCap,
       validateTotalReactivations,
+      validateTotalRestrictions,
       validateParentCompany,
       validateRevisedReturnDetails,
       validateAdjustedNetGroupInterest,
+      validateAppointedReporter,
       fullReturnModel.groupLevelAmount.validate(JsPath \ "groupLevelAmount"),
       optionValidations(fullReturnModel.adjustedGroupInterest.map(_.validate(JsPath \ "adjustedGroupInterest")))
-      ).mapN((_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_) => fullReturnModel)
+      ).mapN((_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_) => fullReturnModel)
   }
+}
+
+case object ReportingCompanyNotAppointed extends Validation {
+  val errorMessage: String = "You need to appoint a reporting company"
+  val path = JsPath \ "appointedReportingCompany"
+  val value = Json.obj()
 }
 
 case object RevisedReturnDetailsNotSupplied extends Validation {
@@ -187,6 +213,12 @@ case object InterestReactivationCapNotSupplied extends Validation {
 case class TotalReactivationsDoesNotMatch(amt: BigDecimal, calculated: BigDecimal) extends Validation {
   val errorMessage: String = s"Calculated reactivations is $calculated which does not match the supplied amount of $amt"
   val path = JsPath \ "totalReactivation"
+  val value = Json.obj()
+}
+
+case class TotalRestrictionsDoesNotMatch(amt: BigDecimal, calculated: BigDecimal) extends Validation {
+  val errorMessage: String = s"Calculated restrictions is $calculated which does not match the supplied amount of $amt"
+  val path = JsPath \ "totalRestrictions"
   val value = Json.obj()
 }
 

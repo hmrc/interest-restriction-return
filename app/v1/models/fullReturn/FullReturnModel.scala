@@ -20,7 +20,8 @@ import play.api.libs.json._
 import v1.models._
 import v1.validation.fullReturn.FullReturnValidator
 
-case class FullReturnModel(agentDetails: AgentDetailsModel,
+case class FullReturnModel(appointedReportingCompany: Boolean,
+                           agentDetails: AgentDetailsModel,
                            reportingCompany: ReportingCompanyModel,
                            parentCompany: Option[ParentCompanyModel],
                            publicInfrastructure: Boolean,
@@ -34,6 +35,7 @@ case class FullReturnModel(agentDetails: AgentDetailsModel,
                            groupSubjectToInterestRestrictions: Boolean,
                            groupSubjectToInterestReactivation: Boolean,
                            totalReactivation: BigDecimal,
+                           totalRestrictions: BigDecimal,
                            groupLevelAmount: GroupLevelAmountModel,
                            adjustedGroupInterest: Option[AdjustedGroupInterestModel]) extends FullReturnValidator {
 
@@ -70,6 +72,7 @@ object FullReturnModel {
   val writes: Writes[FullReturnModel] = Writes { models =>
 
     JsObject(Json.obj(
+      "appointedReportingCompany" -> models.appointedReportingCompany,
       "agentDetails" -> models.agentDetails,
       "reportingCompany" -> models.reportingCompany,
       "parentCompany" -> models.parentCompany,
@@ -89,6 +92,7 @@ object FullReturnModel {
       "groupSubjectToInterestRestrictions" -> models.groupSubjectToInterestRestrictions,
       "groupSubjectToInterestReactivation" -> models.groupSubjectToInterestReactivation,
       "totalReactivation" -> models.totalReactivation,
+      "totalRestrictions" -> models.totalRestrictions,
       "groupLevelAmount" -> models.groupLevelAmount,
       "adjustedGroupInterest" -> models.adjustedGroupInterest
     ).fields.filterNot(_._2 == JsNull))

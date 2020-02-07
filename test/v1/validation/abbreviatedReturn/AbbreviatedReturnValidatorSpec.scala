@@ -97,6 +97,12 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
           GroupCompanyDetailsTotalCompaniesError(0).errorMessage
       }
 
+      "it is not the appointed reporting company" in {
+        leftSideError(abbreviatedReturnUltimateParentModel.copy(
+          appointedReportingCompany = false
+        ).validate).errorMessage shouldBe ReportingCompanyNotAppointed.errorMessage
+      }
+
       "Group Level Elections are invalid" in {
         leftSideError(abbreviatedReturnUltimateParentModel.copy(
           groupLevelElections = Some(groupLevelElectionsModelMax.copy(
@@ -109,6 +115,10 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
         leftSideError(abbreviatedReturnUltimateParentModel.copy(
           ukCompanies = Seq(ukCompanyModel.copy(companyName = companyNameTooLong))
         ).validate).errorMessage shouldBe CompanyNameLengthError(companyNameTooLong.name).errorMessage
+      }
+
+      "Angie is negative" in {
+        leftSideError(abbreviatedReturnUltimateParentModel.copy(angie = Some(-0.01)).validate).errorMessage shouldBe NegativeAngieError(-0.01).errorMessage
       }
     }
   }

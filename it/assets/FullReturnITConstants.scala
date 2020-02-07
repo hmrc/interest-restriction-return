@@ -36,6 +36,7 @@ object FullReturnITConstants {
   )
 
   val fullReturnJson = Json.obj(
+    "appointedReportingCompany" -> true,
     "agentDetails" -> agentDetailsJson,
     "reportingCompany" -> reportingCompanyJson,
     "publicInfrastructure" -> true,
@@ -49,6 +50,7 @@ object FullReturnITConstants {
     "groupSubjectToInterestRestrictions" -> false,
     "groupSubjectToInterestReactivation" -> true,
     "totalReactivation" -> 2.22,
+    "totalRestrictions" -> 0,
     "groupLevelAmount" -> groupLevelAmountJson,
     "adjustedGroupInterest" -> adjustedGroupInterestJson
   )

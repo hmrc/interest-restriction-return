@@ -107,6 +107,16 @@ class FullReturnValidatorSpec extends BaseSpec {
         ).validate).errorMessage shouldBe TotalReactivationsDoesNotMatch(incorrectTotalReactivation, currentPeriodReactivation + currentPeriodReactivation).errorMessage
       }
 
+      "Total Restrictions does not match the sum of the total restrictions for each company" in {
+        leftSideError(fullReturnUltimateParentModel.copy(
+          groupSubjectToInterestReactivation = false,
+          groupSubjectToInterestRestrictions = true,
+          totalRestrictions = incorrectDisallowances,
+          totalReactivation = 0,
+          ukCompanies = Seq(ukCompanyModelRestrictionMax, ukCompanyModelRestrictionMax) //4.44
+        ).validate).errorMessage shouldBe TotalRestrictionsDoesNotMatch(incorrectDisallowances, totalDisallowances + totalDisallowances).errorMessage
+      }
+
       "Group is not subject to interest reactivations but has allocated reactivations supplied" in {
 
         val model = fullReturnUltimateParentModel.copy(
@@ -255,6 +265,12 @@ class FullReturnValidatorSpec extends BaseSpec {
         leftSideError(fullReturnUltimateParentModel.copy(
           adjustedGroupInterest = None
         ).validate).errorMessage shouldBe AdjustedNetGroupInterestNotSupplied.errorMessage
+      }
+
+      "it is not the appointed reporting company" in {
+        leftSideError(fullReturnUltimateParentModel.copy(
+          appointedReportingCompany = false
+        ).validate).errorMessage shouldBe ReportingCompanyNotAppointed.errorMessage
       }
 
       "Group Ratio is not Elected and Adjusted Group Interest details are supplied" in {

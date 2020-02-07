@@ -39,7 +39,12 @@ object FullReturnConstants {
     (total, company) => total + company.currentPeriodReactivation
   }
 
+  val totalRestrictions: BigDecimal = ukCompanyModelRestrictionMax.allocatedRestrictions.foldLeft[BigDecimal](0) {
+    (total, company) => total + company.totalDisallowances.getOrElse(0)
+  }
+
   val fullReturnModelMax: FullReturnModel = FullReturnModel(
+    appointedReportingCompany = true,
     agentDetails = agentDetailsModelMax,
     reportingCompany = reportingCompanyModel,
     parentCompany = Some(parentCompanyModelUltUkCompany),
@@ -54,11 +59,13 @@ object FullReturnConstants {
     groupSubjectToInterestRestrictions = false,
     groupSubjectToInterestReactivation = true,
     totalReactivation = totalReactivations,
+    totalRestrictions = 0,
     groupLevelAmount = groupLevelAmountModel,
     adjustedGroupInterest = Some(adjustedGroupInterestModel)
   )
 
   val fullReturnJsonMax: JsObject = Json.obj(
+    "appointedReportingCompany" -> true,
     "agentDetails" -> agentDetailsJsonMax,
     "reportingCompany" -> reportingCompanyJson,
     "parentCompany" -> parentCompanyJsonUltUkCompany,
@@ -78,11 +85,13 @@ object FullReturnConstants {
     "groupSubjectToInterestRestrictions" -> false,
     "groupSubjectToInterestReactivation" -> true,
     "totalReactivation" -> totalReactivations,
+    "totalRestrictions" -> 0,
     "groupLevelAmount" -> groupLevelAmountJson,
     "adjustedGroupInterest" -> adjustedGroupInterestJson
   )
 
   val fullReturnNetTaxExpenseModelMax: FullReturnModel = FullReturnModel(
+    appointedReportingCompany = true,
     agentDetails = agentDetailsModelMax,
     reportingCompany = reportingCompanyModel,
     parentCompany = Some(parentCompanyModelUltUkCompany),
@@ -97,11 +106,13 @@ object FullReturnConstants {
     groupSubjectToInterestRestrictions = false,
     groupSubjectToInterestReactivation = true,
     totalReactivation = totalReactivations,
+    totalRestrictions = 0,
     groupLevelAmount = groupLevelAmountModel,
     adjustedGroupInterest = Some(adjustedGroupInterestModel)
   )
 
   val fullReturnNetTaxExpenseJsonMax: JsObject = Json.obj(
+    "appointedReportingCompany" -> true,
     "agentDetails" -> agentDetailsJsonMax,
     "reportingCompany" -> reportingCompanyJson,
     "parentCompany" -> parentCompanyJsonUltUkCompany,
@@ -121,11 +132,13 @@ object FullReturnConstants {
     "groupSubjectToInterestRestrictions" -> false,
     "groupSubjectToInterestReactivation" -> true,
     "totalReactivation" -> totalReactivations,
+    "totalRestrictions" -> 0,
     "groupLevelAmount" -> groupLevelAmountJson,
     "adjustedGroupInterest" -> adjustedGroupInterestJson
   )
 
   val fullReturnNetTaxIncomeModelMax: FullReturnModel = FullReturnModel(
+    appointedReportingCompany = true,
     agentDetails = agentDetailsModelMax,
     reportingCompany = reportingCompanyModel,
     parentCompany = Some(parentCompanyModelUltUkCompany),
@@ -140,11 +153,13 @@ object FullReturnConstants {
     groupSubjectToInterestRestrictions = false,
     groupSubjectToInterestReactivation = true,
     totalReactivation = totalReactivations,
+    totalRestrictions = 0,
     groupLevelAmount = groupLevelAmountModel,
     adjustedGroupInterest = Some(adjustedGroupInterestModel)
   )
 
   val fullReturnNetTaxIncomeJsonMax: JsObject = Json.obj(
+    "appointedReportingCompany" -> true,
     "agentDetails" -> agentDetailsJsonMax,
     "reportingCompany" -> reportingCompanyJson,
     "parentCompany" -> parentCompanyJsonUltUkCompany,
@@ -164,6 +179,7 @@ object FullReturnConstants {
     "groupSubjectToInterestRestrictions" -> false,
     "groupSubjectToInterestReactivation" -> true,
     "totalReactivation" -> totalReactivations,
+    "totalRestrictions" -> 0,
     "groupLevelAmount" -> groupLevelAmountJson,
     "adjustedGroupInterest" -> adjustedGroupInterestJson
   )
@@ -171,6 +187,7 @@ object FullReturnConstants {
   // Ultimate Model and Json
 
   val fullReturnUltimateParentModel: FullReturnModel = FullReturnModel(
+    appointedReportingCompany = true,
     agentDetails = agentDetailsModelMax,
     reportingCompany = reportingCompanyModel,
     parentCompany = Some(parentCompanyModelUltUkCompany),
@@ -185,11 +202,13 @@ object FullReturnConstants {
     groupSubjectToInterestRestrictions = false,
     groupSubjectToInterestReactivation = true,
     totalReactivation = totalReactivations,
+    totalRestrictions = 0,
     groupLevelAmount = groupLevelAmountModel,
     adjustedGroupInterest = Some(adjustedGroupInterestModel)
   )
 
   val fullReturnUltimateParentJson: JsObject = Json.obj(
+    "appointedReportingCompany" -> true,
     "agentDetails" -> agentDetailsJsonMax,
     "reportingCompany" -> reportingCompanyJson,
     "parentCompany" -> parentCompanyJsonUltUkCompany,
@@ -209,12 +228,14 @@ object FullReturnConstants {
     "groupSubjectToInterestRestrictions" -> false,
     "groupSubjectToInterestReactivation" -> true,
     "totalReactivation" -> totalReactivations,
+    "totalRestrictions" -> 0,
     "groupLevelAmount" -> groupLevelAmountJson,
     "adjustedGroupInterest" -> adjustedGroupInterestJson
   )
 
   // Deemed Model and Json
   val fullReturnDeemedParentModel: FullReturnModel = FullReturnModel(
+    appointedReportingCompany = true,
     agentDetails = agentDetailsModelMax,
     reportingCompany = reportingCompanyModel,
     parentCompany = Some(parentCompanyModelDeemedMax),
@@ -229,6 +250,7 @@ object FullReturnConstants {
     groupSubjectToInterestRestrictions = false,
     groupSubjectToInterestReactivation = true,
     totalReactivation = totalReactivations,
+    totalRestrictions = 0,
     groupLevelAmount = groupLevelAmountModel,
     adjustedGroupInterest = Some(adjustedGroupInterestModel)
   )
@@ -236,6 +258,7 @@ object FullReturnConstants {
   // Minimum Model and Json
 
   val fullReturnModelMin: FullReturnModel = FullReturnModel(
+    appointedReportingCompany = true,
     agentDetails = agentDetailsModelMin,
     reportingCompany = reportingCompanyModel,
     parentCompany = None,
@@ -250,11 +273,13 @@ object FullReturnConstants {
     groupSubjectToInterestRestrictions = false,
     groupSubjectToInterestReactivation = true,
     totalReactivation = totalReactivations,
+    totalRestrictions = 0,
     groupLevelAmount = groupLevelAmountModel,
     adjustedGroupInterest = None
   )
 
   val fullReturnJsonMin: JsObject = Json.obj(
+    "appointedReportingCompany" -> true,
     "agentDetails" -> agentDetailsJsonMin,
     "reportingCompany" -> reportingCompanyJson,
     "publicInfrastructure" -> true,
@@ -269,6 +294,7 @@ object FullReturnConstants {
     "groupSubjectToInterestRestrictions" -> false,
     "groupSubjectToInterestReactivation" -> true,
     "totalReactivation" -> totalReactivations,
+    "totalRestrictions" -> 0,
     "groupLevelAmount" -> groupLevelAmountJson
   )
 }

@@ -36,11 +36,22 @@ trait AbbreviatedReturnValidator extends BaseValidation {
     }
   }
 
-  private def validateParentCompany: ValidationResult[Option[String]] = {
+  private def validateParentCompany: ValidationResult[Boolean] = {
     (abbreviatedReturnModel.reportingCompany.sameAsUltimateParent, abbreviatedReturnModel.parentCompany) match {
       case (true, Some(details)) => ParentCompanyDetailsSupplied(details).invalidNec
       case (false, None) => ParentCompanyDetailsNotSupplied.invalidNec
-      case _ => abbreviatedReturnModel.revisedReturnDetails.validNec
+      case _ => abbreviatedReturnModel.appointedReportingCompany.validNec
+    }
+  }
+
+  private def validateAngie: ValidationResult[BigDecimal] = {
+    val angie: BigDecimal = abbreviatedReturnModel.angie.getOrElse(0)
+    if (angie >= 0) angie.validNec else NegativeAngieError(angie).invalidNec
+  }
+
+  private def validateAppointedReporter: ValidationResult[Boolean] = {
+    if(abbreviatedReturnModel.appointedReportingCompany) abbreviatedReturnModel.appointedReportingCompany.validNec else {
+      ReportingCompanyNotAppointed.invalidNec
     }
   }
 
@@ -60,9 +71,17 @@ trait AbbreviatedReturnValidator extends BaseValidation {
       optionValidations(abbreviatedReturnModel.groupLevelElections.map(_.validate(JsPath \ "groupLevelElections"))),
       validatedUkCompanies,
       validateParentCompany,
-      validateRevisedReturnDetails
-      ).mapN((_,_,_,_,_,_,_,_) => abbreviatedReturnModel)
+      validateRevisedReturnDetails,
+      validateAngie,
+      validateAppointedReporter
+      ).mapN((_,_,_,_,_,_,_,_,_,_) => abbreviatedReturnModel)
   }
+}
+
+case object ReportingCompanyNotAppointed extends Validation {
+  val errorMessage: String = "You need to appoint a reporting company"
+  val path = JsPath \ "appointedReportingCompany"
+  val value = Json.obj()
 }
 
 case object RevisedReturnDetailsNotSupplied extends Validation {
@@ -93,4 +112,10 @@ case object UkCompaniesEmpty extends Validation {
   val errorMessage: String = "ukCompanies must have at least 1 UK company"
   val path = JsPath \ "ukCompanies"
   val value = Json.obj()
+}
+
+case class NegativeAngieError(amt: BigDecimal) extends Validation {
+  val errorMessage: String = "ANGIE cannot be negative"
+  val path = JsPath \ "angie"
+  val value = Json.toJson(amt)
 }

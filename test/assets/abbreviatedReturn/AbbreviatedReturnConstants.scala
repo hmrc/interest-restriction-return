@@ -29,8 +29,10 @@ import v1.models.{Original, Revised}
 object AbbreviatedReturnConstants {
 
   val ackRef = "ackRef"
+  val angie: BigDecimal = 1.11
 
   val abbreviatedReturnUltimateParentJson = Json.obj(
+    "appointedReportingCompany" -> true,
     "agentDetails" -> agentDetailsJsonMax,
     "reportingCompany" -> reportingCompanyJson,
     "publicInfrastructure" -> true,
@@ -39,10 +41,12 @@ object AbbreviatedReturnConstants {
     "submissionType" -> Revised,
     "revisedReturnDetails" -> "revised details",
     "groupLevelElections" -> groupLevelElectionsJsonMax,
+    "angie" -> angie,
     "ukCompanies" -> Seq(ukCompanyJson)
   )
 
   val abbreviatedReturnUltimateParentModel = AbbreviatedReturnModel(
+    appointedReportingCompany = true,
     agentDetails = agentDetailsModelMax,
     reportingCompany = reportingCompanyModel,
     publicInfrastructure = true,
@@ -51,10 +55,12 @@ object AbbreviatedReturnConstants {
     submissionType = Revised,
     revisedReturnDetails = Some("revised details"),
     groupLevelElections = Some(groupLevelElectionsModelMax),
+    angie = Some(angie),
     ukCompanies = Seq(ukCompanyModel)
   )
 
   val abbreviatedReturnDeemedParentJson = Json.obj(
+    "appointedReportingCompany" -> true,
     "agentDetails" -> agentDetailsJsonMax,
     "reportingCompany" -> reportingCompanyJson,
     "publicInfrastructure" -> true,
@@ -63,10 +69,12 @@ object AbbreviatedReturnConstants {
     "submissionType" -> Revised,
     "revisedReturnDetails" -> "revised details",
     "groupLevelElections" -> groupLevelElectionsJsonMax,
+    "angie" -> angie,
     "ukCompanies" -> Seq(ukCompanyJson)
   )
 
   val abbreviatedReturnDeemedParentModel = AbbreviatedReturnModel(
+    appointedReportingCompany = true,
     agentDetails = agentDetailsModelMax,
     reportingCompany = reportingCompanyModel,
     publicInfrastructure = true,
@@ -75,10 +83,12 @@ object AbbreviatedReturnConstants {
     submissionType = Revised,
     revisedReturnDetails = Some("revised details"),
     groupLevelElections = Some(groupLevelElectionsModelMax),
+    angie = Some(angie),
     ukCompanies = Seq(ukCompanyModel)
   )
 
   val abbreviatedReturnJsonMin = Json.obj(
+    "appointedReportingCompany" -> true,
     "agentDetails" -> agentDetailsJsonMin,
     "reportingCompany" -> reportingCompanyJson,
     "publicInfrastructure" -> true,
@@ -88,6 +98,7 @@ object AbbreviatedReturnConstants {
   )
 
   val abbreviatedReturnModelMin = AbbreviatedReturnModel(
+    appointedReportingCompany = true,
     agentDetails = agentDetailsModelMin,
     reportingCompany = reportingCompanyModel,
     publicInfrastructure = true,
@@ -96,6 +107,7 @@ object AbbreviatedReturnConstants {
     submissionType = Original,
     revisedReturnDetails = None,
     groupLevelElections = None,
+    angie = None,
     ukCompanies = Seq(ukCompanyModel)
   )
 }
