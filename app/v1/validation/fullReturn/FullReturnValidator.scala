@@ -122,9 +122,8 @@ trait FullReturnValidator extends BaseValidation {
   }
 
   private def validateAppointedReporter: ValidationResult[Option[String]] = {
-    (fullReturnModel.appointedReportingCompany) match {
-      case (false) => ReportingCompanyNotAppointed.invalidNec
-      case _ => fullReturnModel.revisedReturnDetails.validNec
+    if(fullReturnModel.appointedReportingCompany) fullReturnModel.revisedReturnDetails.validNec else {
+      ReportingCompanyNotAppointed.invalidNec
     }
   }
 
