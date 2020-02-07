@@ -36,11 +36,11 @@ trait AbbreviatedReturnValidator extends BaseValidation {
     }
   }
 
-  private def validateParentCompany: ValidationResult[Option[String]] = {
+  private def validateParentCompany: ValidationResult[Boolean] = {
     (abbreviatedReturnModel.reportingCompany.sameAsUltimateParent, abbreviatedReturnModel.parentCompany) match {
       case (true, Some(details)) => ParentCompanyDetailsSupplied(details).invalidNec
       case (false, None) => ParentCompanyDetailsNotSupplied.invalidNec
-      case _ => abbreviatedReturnModel.revisedReturnDetails.validNec
+      case _ => abbreviatedReturnModel.appointedReportingCompany.validNec
     }
   }
 
@@ -49,11 +49,9 @@ trait AbbreviatedReturnValidator extends BaseValidation {
     if (angie >= 0) angie.validNec else NegativeAngieError(angie).invalidNec
   }
 
-  private def validateAppointedReporter: ValidationResult[Option[String]] = {
-    (abbreviatedReturnModel.appointedReportingCompany) match {
-      case (false) => ReportingCompanyNotAppointed.invalidNec
-        //todo the revised return model is that right?
-      case _ => abbreviatedReturnModel.revisedReturnDetails.validNec
+  private def validateAppointedReporter: ValidationResult[Boolean] = {
+    if(abbreviatedReturnModel.appointedReportingCompany) abbreviatedReturnModel.appointedReportingCompany.validNec else {
+      ReportingCompanyNotAppointed.invalidNec
     }
   }
 

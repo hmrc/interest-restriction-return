@@ -36,11 +36,11 @@ trait FullReturnValidator extends BaseValidation {
     }
   }
 
-  private def validateParentCompany: ValidationResult[Option[String]] = {
+  private def validateParentCompany: ValidationResult[Boolean] = {
     (fullReturnModel.reportingCompany.sameAsUltimateParent, fullReturnModel.parentCompany) match {
       case (true, Some(details)) => ParentCompanyDetailsSupplied(details).invalidNec
       case (false, None) => ParentCompanyDetailsNotSupplied.invalidNec
-      case _ => fullReturnModel.revisedReturnDetails.validNec
+      case _ => fullReturnModel.appointedReportingCompany.validNec
     }
   }
 
@@ -121,8 +121,8 @@ trait FullReturnValidator extends BaseValidation {
     }
   }
 
-  private def validateAppointedReporter: ValidationResult[Option[String]] = {
-    if(fullReturnModel.appointedReportingCompany) fullReturnModel.revisedReturnDetails.validNec else {
+  private def validateAppointedReporter: ValidationResult[Boolean] = {
+    if(fullReturnModel.appointedReportingCompany) fullReturnModel.appointedReportingCompany.validNec else {
       ReportingCompanyNotAppointed.invalidNec
     }
   }
