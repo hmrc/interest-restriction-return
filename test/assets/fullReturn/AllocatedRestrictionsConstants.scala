@@ -33,6 +33,8 @@ object AllocatedRestrictionsConstants {
   val disallowanceAp3: BigDecimal = 3.33
   val totalDisallowances: BigDecimal = 6.66
 
+  val incorrectDisallowances: BigDecimal = 10
+
   val allocatedRestrictionsModel = AllocatedRestrictionsModel(
     ap1End = Some(ap1End),
     ap2End = Some(ap2End),

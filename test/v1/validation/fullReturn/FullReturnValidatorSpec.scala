@@ -107,6 +107,16 @@ class FullReturnValidatorSpec extends BaseSpec {
         ).validate).errorMessage shouldBe TotalReactivationsDoesNotMatch(incorrectTotalReactivation, currentPeriodReactivation + currentPeriodReactivation).errorMessage
       }
 
+      "Total Restrictions does not match the sum of the total restrictions for each company" in {
+        leftSideError(fullReturnUltimateParentModel.copy(
+          groupSubjectToInterestReactivation = false,
+          groupSubjectToInterestRestrictions = true,
+          totalRestrictions = incorrectDisallowances,
+          totalReactivation = 0,
+          ukCompanies = Seq(ukCompanyModelRestrictionMax, ukCompanyModelRestrictionMax) //4.44
+        ).validate).errorMessage shouldBe TotalRestrictionsDoesNotMatch(incorrectDisallowances, totalDisallowances + totalDisallowances).errorMessage
+      }
+
       "Group is not subject to interest reactivations but has allocated reactivations supplied" in {
 
         val model = fullReturnUltimateParentModel.copy(

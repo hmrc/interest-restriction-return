@@ -68,7 +68,7 @@ class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants {
 
     "correctly read from Json" when {
 
-      "max values given withoput a net expense or income" in {
+      "max values given without a net expense or income" in {
 
         val expectedValue = fullReturnModelMax
         val actualValue = fullReturnJsonMax.as[FullReturnModel]

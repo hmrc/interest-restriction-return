@@ -101,7 +101,6 @@ trait FullReturnValidator extends BaseValidation {
     }
   }
 
-  //todo work out whats wrong with this also is test needed for the it total react or reretrict is popped
   private def validateTotalRestrictions: ValidationResult[BigDecimal] = {
     val restrictions: BigDecimal = fullReturnModel.totalRestrictions
     val calculatedRestrictions: BigDecimal = fullReturnModel.ukCompanies.foldLeft[BigDecimal](0) {
@@ -125,7 +124,6 @@ trait FullReturnValidator extends BaseValidation {
   private def validateAppointedReporter: ValidationResult[Option[String]] = {
     (fullReturnModel.appointedReportingCompany) match {
       case (false) => ReportingCompanyNotAppointed.invalidNec
-      //todo the revised return model is that right?
       case _ => fullReturnModel.revisedReturnDetails.validNec
     }
   }
@@ -151,14 +149,14 @@ trait FullReturnValidator extends BaseValidation {
       validateAllocatedReactivations,
       validateInterestReactivationCap,
       validateTotalReactivations,
-    //  validateTotalRestrictions,
+      validateTotalRestrictions,
       validateParentCompany,
       validateRevisedReturnDetails,
       validateAdjustedNetGroupInterest,
       validateAppointedReporter,
       fullReturnModel.groupLevelAmount.validate(JsPath \ "groupLevelAmount"),
       optionValidations(fullReturnModel.adjustedGroupInterest.map(_.validate(JsPath \ "adjustedGroupInterest")))
-      ).mapN((_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_) => fullReturnModel)
+      ).mapN((_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_) => fullReturnModel)
   }
 }
 
