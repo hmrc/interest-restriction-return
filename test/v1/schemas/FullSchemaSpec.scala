@@ -217,6 +217,25 @@ class FullSchemaSpec extends BaseSchemaSpec {
         }
       }
 
+      "totalRestrictions" when {
+
+        "is None" in {
+
+          val json = Json.toJson(FullReturnModel(
+            totalRestrictions = None))
+
+          validate(json) shouldBe false
+        }
+
+        "is less than 0" in {
+
+          val json = Json.toJson(FullReturnModel(
+            totalRestrictions = Some(-0.01)))
+
+          validate(json) shouldBe false
+        }
+      }
+
     }
   }
 }
