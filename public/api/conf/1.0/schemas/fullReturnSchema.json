@@ -57,6 +57,11 @@
       "description": "Total of all allocated reactivations for each UK company",
       "type": "number",
       "minimum": 0
+    },
+    "totalRestrictions": {
+      "description": "Total of all allocated restrictions for each UK company",
+      "type": "number",
+      "minimum": 0
     }
   },
   "required": [
@@ -71,6 +76,7 @@
     "groupSubjectToInterestRestrictions",
     "groupSubjectToInterestReactivation",
     "totalReactivation",
+    "totalRestrictions",
     "groupLevelElections"
   ],
   "additionalProperties": false
