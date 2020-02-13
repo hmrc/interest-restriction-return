@@ -3,10 +3,6 @@
     "description": "Provides the ability to submit a full Interest Restriction Return (IRR) for the group",
     "type": "object",
     "properties": {
-        "appointedReportingCompany": {
-            "description": "Indicates if a reporting company has been appointed",
-            "type": "boolean"
-        },
         "agentDetails": {
             "type": "object",
             "properties": {
@@ -22,7 +18,6 @@
                 }
             },
             "required": [
-                "appointedReportingCompany",
                 "agentActingOnBehalfOfCompany"
             ],
             "additionalProperties": false
@@ -1018,8 +1013,6 @@
                     "companyName",
                     "ctutr",
                     "consenting",
-                    "netTaxInterestExpense",
-                    "netTaxInterestIncome",
                     "taxEBITDA"
                 ],
                 "additionalProperties": false

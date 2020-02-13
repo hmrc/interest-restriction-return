@@ -3,10 +3,6 @@
     "description": "Provides the ability to submit an abbreviated Interest Restriction Return (IRR) for the group",
     "type": "object",
     "properties": {
-        "appointedReportingCompany": {
-            "description": "Indicates if a reporting company has been appointed",
-            "type": "boolean"
-        },
         "agentDetails": {
             "description": "If an Agent is submitting this return on behalf of the reporting company and group details are supplied here",
             "type": "object",
