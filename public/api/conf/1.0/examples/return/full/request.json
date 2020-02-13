@@ -77,6 +77,7 @@
   "groupSubjectToInterestRestrictions": false,
   "groupSubjectToInterestReactivation": true,
   "totalReactivation": 6.66,
+  "totalRestrictions": 0,
   "groupLevelAmount": {
     "interestReactivationCap": 1,
     "interestAllowanceBroughtForward": 1,

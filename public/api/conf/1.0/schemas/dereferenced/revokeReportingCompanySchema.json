@@ -713,7 +713,7 @@
             }
         },
         "declaration": {
-            "description": "Declaration to confirm the data is accurate and complete",
+            "description": "Declaration to confirm the listed companies constitute at least 50% of the eligible companies",
             "type": "boolean"
         }
     },
