@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package models
+package v1.models
 
 import assets.GroupLevelElectionsConstants._
 import org.scalatest.{Matchers, WordSpec}

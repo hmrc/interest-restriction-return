@@ -28,7 +28,7 @@ class InvestorGroupValidatorSpec extends BaseValidationSpec {
     "Return valid" when {
 
       "isElected is true and no investor names given" in {
-        val model = investorGroupsModel.copy(investorName)
+        val model = investorGroupsModel.copy(groupName)
         model.validate.toEither.right.get shouldBe model
       }
     }
@@ -37,14 +37,14 @@ class InvestorGroupValidatorSpec extends BaseValidationSpec {
 
       "Investor Name" when {
         "Investor name is greater than 32767" in {
-          val model = investorGroupsModel.copy(investorName = "a" * (32767 + 1))
+          val model = investorGroupsModel.copy(groupName = "a" * (32767 + 1))
 
-          model.validate.toEither.left.get.head.errorMessage shouldBe InvestorNameError(investorName).errorMessage
+          model.validate.toEither.left.get.head.errorMessage shouldBe InvestorNameError(groupName).errorMessage
         }
 
         "isElected is true and no investor names given" in {
-          val model = investorGroupsModel.copy(investorName = "")
-          model.validate.toEither.left.get.head.errorMessage shouldBe InvestorNameError(investorName).errorMessage
+          val model = investorGroupsModel.copy(groupName = "")
+          model.validate.toEither.left.get.head.errorMessage shouldBe InvestorNameError(groupName).errorMessage
         }
       }
     }

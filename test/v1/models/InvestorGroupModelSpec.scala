@@ -14,30 +14,36 @@
  * limitations under the License.
  */
 
-package assets
+package v1.models
 
 import assets.InvestorGroupConstants._
+import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
-import v1.models.{GroupRatioBlendedModel, InvestorGroupModel}
 
-object GroupRatioBlendedConstants {
+class InvestorGroupModelSpec extends WordSpec with Matchers {
 
-  val groupRatioBlendedModelMax = GroupRatioBlendedModel(
-    isElected = true,
-    investorGroups = Some(Seq(InvestorGroupModel(groupName)))
-  )
+  "InvestorGroupModel" must {
 
-  val groupRatioBlendedJsonMax = Json.obj(
-    "isElected" -> true,
-    "investorGroups" -> Seq(InvestorGroupModel(groupName))
-  )
+    "correctly write to json" when {
 
-  val groupRatioBlendedModelMin = GroupRatioBlendedModel(
-    isElected = false,
-    investorGroups = None
-  )
+      "no elections are provided" in {
 
-  val groupRatioBlendedJsonMin = Json.obj(
-    "isElected" -> false
-  )
+        val expectedValue = investorGroupsJsonMin
+        val actualValue = Json.toJson(investorGroupsModelMin)
+
+        actualValue shouldBe expectedValue
+      }
+    }
+
+    "correctly read from Json" when {
+
+      "max values given" in {
+
+        val expectedValue = groupLevelElectionsModelMax
+        val actualValue = groupLevelElectionsJsonMax.as[GroupLevelElectionsModel]
+
+        actualValue shouldBe expectedValue
+      }
+    }
+  }
 }

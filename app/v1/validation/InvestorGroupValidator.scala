@@ -27,10 +27,10 @@ trait InvestorGroupValidator extends BaseValidation {
   val investorGroupModel: InvestorGroupModel
 
   private def validateInvestorName(implicit path: JsPath): ValidationResult[String] = {
-    if (investorGroupModel.investorName.length >= 1 && investorGroupModel.investorName.length <= 32767) {
-      investorGroupModel.investorName.validNec
+    if (investorGroupModel.groupName.length >= 1 && investorGroupModel.groupName.length <= 32767) {
+      investorGroupModel.groupName.validNec
     } else {
-      InvestorNameError(investorGroupModel.investorName).invalidNec
+      InvestorNameError(investorGroupModel.groupName).invalidNec
     }
   }
 

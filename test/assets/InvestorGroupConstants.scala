@@ -16,13 +16,52 @@
 
 package assets
 
-import v1.models.InvestorGroupModel
+import play.api.libs.json.Json
+import v1.models.{Elections, InvestorGroupModel}
 
-object InvestorGroupConstants {
+object InvestorGroupConstants extends Elections {
 
-  val investorName = "some Investor"
-
-  val investorGroupsModel = InvestorGroupModel(
-    investorName = investorName
+  val groupName = "some investor group"
+  val groupRatioElectionList = allValues.toList
+  val fixedRatioElectionList = fixedRatioValues.toList
+  val allValuesJson = Seq(
+    GroupRatioBlended.toString,
+    GroupEBITDA.toString,
+    InterestAllowanceAlternativeCalculation.toString,
+    InterestAllowanceNonConsolidatedInvestment.toString,
+    InterestAllowanceConsolidatedPartnership.toString
   )
+  val fixedRatioValuesJson = Seq(
+    InterestAllowanceAlternativeCalculation.toString,
+    InterestAllowanceNonConsolidatedInvestment.toString,
+    InterestAllowanceConsolidatedPartnership.toString
+  )
+
+  val investorGroupsGroupRatioModel = InvestorGroupModel(
+    groupName = groupName,
+    elections = Some(groupRatioElectionList)
+  )
+
+  val investorGroupsFixedRatioModel = InvestorGroupModel(
+    groupName = groupName,
+    elections = Some(fixedRatioElectionList)
+  )
+
+  val investorGroupsModelMin = InvestorGroupModel(
+    groupName = groupName,
+    elections = None
+  )
+
+  val investorGroupsJsonMin = Json.obj(
+    "groupName" -> groupName
+  )
+
+  val investorGroupsGroupRatioJson = Json.obj(
+    "groupName" -> groupName,
+    "elections" -> allValuesJson
+  )
+  val investorGroupsFixedRatioJson = Json.obj(
+    "groupName" -> fixedRatioValuesJson
+  )
+
 }
