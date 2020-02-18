@@ -22,16 +22,18 @@ import v1.models.{Elections, InvestorGroupModel}
 object InvestorGroupConstants extends Elections {
 
   val groupName = "some investor group"
+
   val groupRatioElectionList = allValues.toList
   val fixedRatioElectionList = fixedRatioValues.toList
-  val allValuesJson = Seq(
+
+  val allValuesJson = Json.arr(
     GroupRatioBlended.toString,
     GroupEBITDA.toString,
     InterestAllowanceAlternativeCalculation.toString,
     InterestAllowanceNonConsolidatedInvestment.toString,
     InterestAllowanceConsolidatedPartnership.toString
   )
-  val fixedRatioValuesJson = Seq(
+  val fixedRatioValuesJson = Json.arr(
     InterestAllowanceAlternativeCalculation.toString,
     InterestAllowanceNonConsolidatedInvestment.toString,
     InterestAllowanceConsolidatedPartnership.toString
@@ -60,8 +62,10 @@ object InvestorGroupConstants extends Elections {
     "groupName" -> groupName,
     "elections" -> allValuesJson
   )
+
   val investorGroupsFixedRatioJson = Json.obj(
-    "groupName" -> fixedRatioValuesJson
+    "groupName" -> groupName,
+    "elections" -> fixedRatioValuesJson
   )
 
 }

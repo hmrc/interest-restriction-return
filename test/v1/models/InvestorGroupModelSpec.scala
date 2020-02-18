@@ -24,7 +24,7 @@ class InvestorGroupModelSpec extends WordSpec with Matchers {
 
   "InvestorGroupModel" must {
 
-    "correctly write to json" when {
+    "correctly write (serialise) to json" when {
 
       "no elections are provided" in {
 
@@ -33,14 +33,46 @@ class InvestorGroupModelSpec extends WordSpec with Matchers {
 
         actualValue shouldBe expectedValue
       }
+
+      "fixed ratio elections are given" in {
+
+        val expectedValue = investorGroupsFixedRatioJson
+        val actualValue = Json.toJson(investorGroupsFixedRatioModel)
+
+        actualValue shouldBe expectedValue
+      }
+
+      "Group ratio elections are given" in {
+
+        val expectedValue = investorGroupsGroupRatioJson
+        val actualValue = Json.toJson(investorGroupsGroupRatioModel)
+
+        actualValue shouldBe expectedValue
+      }
     }
 
-    "correctly read from Json" when {
+    "correctly read (deserialise) from json" when {
 
-      "max values given" in {
+      "no elections are provided" in {
 
-        val expectedValue = groupLevelElectionsModelMax
-        val actualValue = groupLevelElectionsJsonMax.as[GroupLevelElectionsModel]
+        val expectedValue = investorGroupsModelMin
+        val actualValue = investorGroupsJsonMin.as[InvestorGroupModel]
+
+        actualValue shouldBe expectedValue
+      }
+
+      "fixed ratio elections are given" in {
+
+        val expectedValue = investorGroupsFixedRatioModel
+        val actualValue = investorGroupsFixedRatioJson.as[InvestorGroupModel]
+
+        actualValue shouldBe expectedValue
+      }
+
+      "Group ratio elections are given" in {
+
+        val expectedValue = investorGroupsGroupRatioModel
+        val actualValue = investorGroupsGroupRatioJson.as[InvestorGroupModel]
 
         actualValue shouldBe expectedValue
       }

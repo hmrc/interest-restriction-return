@@ -18,6 +18,7 @@ package v1.validation
 
 import play.api.libs.json.JsPath
 import v1.models.{GroupRatioBlendedModel, InvestorGroupModel}
+import assets.InvestorGroupConstants._
 
 class GroupRatioBlendedValidatorSpec extends BaseValidationSpec {
 
@@ -28,7 +29,7 @@ class GroupRatioBlendedValidatorSpec extends BaseValidationSpec {
     "Return valid" when {
 
       "isElected is true and a Seq of investor group given" in {
-        val model = GroupRatioBlendedModel(isElected = true, investorGroups = Some(Seq(InvestorGroupModel(companyName.name))))
+        val model = GroupRatioBlendedModel(isElected = true, investorGroups = Some(Seq(investorGroupsGroupRatioModel)))
         rightSide(model.validate) shouldBe model
       }
 
@@ -46,12 +47,12 @@ class GroupRatioBlendedValidatorSpec extends BaseValidationSpec {
     "Return invalid" when {
 
       "isElected is false and some investor group are given" in {
-        val model = GroupRatioBlendedModel(isElected = false, investorGroups = Some(Seq(InvestorGroupModel(companyName.name))))
+        val model = GroupRatioBlendedModel(isElected = false, investorGroups = Some(Seq(investorGroupsGroupRatioModel)))
         leftSideError(model.validate).errorMessage shouldBe GroupRatioBlendedNotElectedError(model).errorMessage
       }
 
       "investorGroup contains v1.validation errors" in {
-        val model = GroupRatioBlendedModel(isElected = true, investorGroups = Some(Seq(InvestorGroupModel(""))))
+        val model = GroupRatioBlendedModel(isElected = true, investorGroups = Some(Seq(investorGroupsModelMin.copy(groupName = ""))))
         leftSideError(model.validate).errorMessage shouldBe InvestorNameError("").errorMessage
       }
     }
