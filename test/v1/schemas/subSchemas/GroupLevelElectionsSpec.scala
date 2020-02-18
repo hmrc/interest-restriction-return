@@ -38,14 +38,6 @@ class GroupLevelElectionsSpec extends BaseSchemaSpec {
         validate(json) shouldBe true
       }
 
-      "investor groups when" in {
-
-        val json = Json.toJson(FullReturnModel(angie = None))
-
-        validate(json) shouldBe true
-
-      }
-
     }
 
     "return invalid" when {
@@ -121,11 +113,6 @@ class GroupLevelElectionsSpec extends BaseSchemaSpec {
 
               }
             }
-
-
-
-
-            a
 
             "contains an empty seq" in {
 

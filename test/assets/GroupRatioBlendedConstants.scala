@@ -29,7 +29,7 @@ object GroupRatioBlendedConstants {
 
   val groupRatioBlendedJsonMax = Json.obj(
     "isElected" -> true,
-    "investorGroups" -> Seq(investorGroupsGroupRatioJson, investorGroupsFixedRatioJson)
+    "investorGroups" -> Json.arr(investorGroupsGroupRatioJson, investorGroupsFixedRatioJson)
   )
 
   val groupRatioBlendedModelMin = GroupRatioBlendedModel(

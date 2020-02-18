@@ -17,8 +17,9 @@
 package v1.schemas.helpers
 
 import play.api.libs.json.Json
+import v1.models.Elections
 
-case class InvestorGroup(groupName: Option[String] = Some("Group"))
+case class InvestorGroup(groupName: Option[String] = Some("Group"), elections: Option[Seq[Elections]] = None)
 
 object InvestorGroup {
   implicit val writes = Json.writes[InvestorGroup]

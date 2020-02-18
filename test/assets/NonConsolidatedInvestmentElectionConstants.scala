@@ -29,7 +29,7 @@ object NonConsolidatedInvestmentElectionConstants {
 
   val nonConsolidatedInvestmentJsonMax = Json.obj(
     "isElected" -> true,
-    "nonConsolidatedInvestments" -> Seq(nonConsolidatedJson)
+    "nonConsolidatedInvestments" -> Json.arr(nonConsolidatedJson)
   )
 
   val nonConsolidatedInvestmentModelMin = NonConsolidatedInvestmentElectionModel(

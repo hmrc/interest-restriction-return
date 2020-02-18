@@ -16,9 +16,12 @@
 
 package v1.models
 
-import play.api.libs.json.{JsPath, JsString, Reads, Writes}
+import play.api.libs.json.Format
+import utils.enums.Enums
 
-trait Elections {
+sealed trait Elections
+
+object Elections {
 
   case object GroupRatioBlended extends WithName("groupRatioBlended") with Elections
   case object GroupEBITDA extends WithName("groupEBITDA") with Elections
@@ -39,20 +42,7 @@ trait Elections {
     InterestAllowanceNonConsolidatedInvestment,
     InterestAllowanceConsolidatedPartnership
   )
-}
 
-object Elections extends Elections {
-
-  def apply(value: String): Elections = value match {
-    case GroupRatioBlended.toString => GroupRatioBlended
-    case GroupEBITDA.toString => GroupEBITDA
-    case InterestAllowanceAlternativeCalculation.toString => InterestAllowanceAlternativeCalculation
-    case InterestAllowanceNonConsolidatedInvestment.toString => InterestAllowanceNonConsolidatedInvestment
-    case InterestAllowanceConsolidatedPartnership.toString => InterestAllowanceConsolidatedPartnership
-  }
-
-  implicit val writes: Writes[Elections] = Writes { model => JsString(model.toString) }
-
-  implicit val reads: Reads[Elections] = JsPath.read[String] map apply
+  implicit val format: Format[Elections] = Enums.format[Elections]
 
 }

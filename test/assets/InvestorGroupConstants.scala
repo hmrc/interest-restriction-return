@@ -16,10 +16,11 @@
 
 package assets
 
-import play.api.libs.json.Json
-import v1.models.{Elections, InvestorGroupModel}
+import play.api.libs.json.{JsString, Json}
+import v1.models.Elections._
+import v1.models.InvestorGroupModel
 
-object InvestorGroupConstants extends Elections {
+object InvestorGroupConstants {
 
   val groupName = "some investor group"
 
@@ -27,16 +28,16 @@ object InvestorGroupConstants extends Elections {
   val fixedRatioElectionList = fixedRatioValues.toList
 
   val allValuesJson = Json.arr(
-    GroupRatioBlended.toString,
-    GroupEBITDA.toString,
-    InterestAllowanceAlternativeCalculation.toString,
-    InterestAllowanceNonConsolidatedInvestment.toString,
-    InterestAllowanceConsolidatedPartnership.toString
+    JsString(GroupRatioBlended.toString),
+    JsString(GroupEBITDA.toString),
+    JsString(InterestAllowanceAlternativeCalculation.toString),
+    JsString(InterestAllowanceNonConsolidatedInvestment.toString),
+    JsString(InterestAllowanceConsolidatedPartnership.toString)
   )
   val fixedRatioValuesJson = Json.arr(
-    InterestAllowanceAlternativeCalculation.toString,
-    InterestAllowanceNonConsolidatedInvestment.toString,
-    InterestAllowanceConsolidatedPartnership.toString
+    JsString(InterestAllowanceAlternativeCalculation.toString),
+    JsString(InterestAllowanceNonConsolidatedInvestment.toString),
+    JsString(InterestAllowanceConsolidatedPartnership.toString)
   )
 
   val investorGroupsGroupRatioModel = InvestorGroupModel(
