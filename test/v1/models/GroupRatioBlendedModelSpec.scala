@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package models
+package v1.models
 
 import assets.GroupRatioBlendedConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
-import v1.models.GroupRatioBlendedModel
 
 class GroupRatioBlendedModelSpec extends WordSpec with Matchers {
 

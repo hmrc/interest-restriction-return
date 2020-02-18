@@ -16,13 +16,57 @@
 
 package assets
 
+import play.api.libs.json.{JsString, Json}
+import v1.models.Elections._
 import v1.models.InvestorGroupModel
 
 object InvestorGroupConstants {
 
-  val investorName = "some Investor"
+  val groupName = "some investor group"
 
-  val investorGroupsModel = InvestorGroupModel(
-    investorName = investorName
+  val groupRatioElectionList = allValues.toList
+  val fixedRatioElectionList = fixedRatioValues.toList
+
+  val allValuesJson = Json.arr(
+    JsString(GroupRatioBlended.toString),
+    JsString(GroupEBITDA.toString),
+    JsString(InterestAllowanceAlternativeCalculation.toString),
+    JsString(InterestAllowanceNonConsolidatedInvestment.toString),
+    JsString(InterestAllowanceConsolidatedPartnership.toString)
   )
+  val fixedRatioValuesJson = Json.arr(
+    JsString(InterestAllowanceAlternativeCalculation.toString),
+    JsString(InterestAllowanceNonConsolidatedInvestment.toString),
+    JsString(InterestAllowanceConsolidatedPartnership.toString)
+  )
+
+  val investorGroupsGroupRatioModel = InvestorGroupModel(
+    groupName = groupName,
+    elections = Some(groupRatioElectionList)
+  )
+
+  val investorGroupsFixedRatioModel = InvestorGroupModel(
+    groupName = groupName,
+    elections = Some(fixedRatioElectionList)
+  )
+
+  val investorGroupsModelMin = InvestorGroupModel(
+    groupName = groupName,
+    elections = None
+  )
+
+  val investorGroupsJsonMin = Json.obj(
+    "groupName" -> groupName
+  )
+
+  val investorGroupsGroupRatioJson = Json.obj(
+    "groupName" -> groupName,
+    "elections" -> allValuesJson
+  )
+
+  val investorGroupsFixedRatioJson = Json.obj(
+    "groupName" -> groupName,
+    "elections" -> fixedRatioValuesJson
+  )
+
 }

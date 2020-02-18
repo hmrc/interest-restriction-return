@@ -20,7 +20,9 @@ import play.api.libs.json._
 import v1.validation.InvestorGroupValidator
 
 
-case class InvestorGroupModel(investorName: String) extends InvestorGroupValidator
+case class InvestorGroupModel(groupName: String,
+                              elections: Option[List[Elections]]
+                             ) extends InvestorGroupValidator
 {
   override val investorGroupModel = this
 }

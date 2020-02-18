@@ -27,6 +27,21 @@
                     "description": "Name of the investor group",
                     "type": "string",
                     "minLength": 1
+                  },
+                  "elections": {
+                    "description": "The elections made by this investor group",
+                    "type": "array",
+                    "maxItems": 5,
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "groupRatioBlended",
+                        "groupEBITDA",
+                        "interestAllowanceAlternativeCalculation",
+                        "interestAllowanceNonConsolidatedInvestment",
+                        "interestAllowanceConsolidatedPartnership"
+                      ]
+                    }
                   }
                 },
                 "required": [
