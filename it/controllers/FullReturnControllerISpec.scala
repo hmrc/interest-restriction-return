@@ -18,7 +18,7 @@ package controllers
 
 import assets.FullReturnITConstants._
 import play.api.http.Status._
-import stubs.{AuthStub, CompaniesHouseStub, DESStub}
+import stubs.{AuthStub, DESStub}
 import utils.{CreateRequestHelper, CustomMatchers, IntegrationSpecBase}
 
 
@@ -28,69 +28,30 @@ class FullReturnControllerISpec extends IntegrationSpecBase with CreateRequestHe
 
     "user is authenticated" when {
 
-      "companies house validates the CRN" should {
+      "request is successfully processed by DES" should {
 
-        "request is successfully processed by DES" should {
-
-          "should return OK (200) with the correct body" in {
-
-            AuthStub.authorised()
-            CompaniesHouseStub.checkCrn(OK)
-            DESStub.fullReturnSuccess(fullReturnDesSuccessJson)
-
-            val res = postRequest("/return/full", fullReturnJson)
-
-            whenReady(res) { result =>
-              result should have(
-                httpStatus(OK),
-                jsonBodyAs(fullReturnDesSuccessJson)
-              )
-            }
-          }
-        }
-
-        "error is returned from DES" should {
-
-          "should return the error" in {
-
-            AuthStub.authorised()
-            CompaniesHouseStub.checkCrn(OK)
-            DESStub.fullReturnError
-
-            val res = postRequest("/return/full", fullReturnJson)
-
-            whenReady(res) { result =>
-              result should have(
-                httpStatus(INTERNAL_SERVER_ERROR)
-              )
-            }
-          }
-        }
-      }
-
-      "companies house returns invalid for the CRN" should {
-
-        "should return BAD_REQUEST (400) with the correct body" in {
+        "should return OK (200) with the correct body" in {
 
           AuthStub.authorised()
-          CompaniesHouseStub.checkCrn(BAD_REQUEST)
+          DESStub.fullReturnSuccess(fullReturnDesSuccessJson)
 
           val res = postRequest("/return/full", fullReturnJson)
 
           whenReady(res) { result =>
             result should have(
-              httpStatus(BAD_REQUEST)
+              httpStatus(OK),
+              jsonBodyAs(fullReturnDesSuccessJson)
             )
           }
         }
       }
 
-      "request is successfully processed by Companies House" should {
+      "error is returned from DES" should {
 
-        "should return INTERNAL_SERVER_ERROR (500) with the correct body" in {
+        "should return the error" in {
 
           AuthStub.authorised()
-          CompaniesHouseStub.checkCrn(INTERNAL_SERVER_ERROR)
+          DESStub.fullReturnError
 
           val res = postRequest("/return/full", fullReturnJson)
 

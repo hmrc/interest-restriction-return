@@ -17,9 +17,9 @@
 package v1.schemas.subSchemas
 
 import play.api.libs.json.{JsValue, Json}
+import v1.models.{CountryCodeModel, UTRModel}
 import v1.schemas.BaseSchemaSpec
 import v1.schemas.helpers._
-import v1.models.{CRNModel, CountryCodeModel, UTRModel}
 
 class UltimateParentCompanySchemaSpec extends BaseSchemaSpec {
 
@@ -32,27 +32,6 @@ class UltimateParentCompanySchemaSpec extends BaseSchemaSpec {
       "Validated a successful JSON payload with Ultimate Parent Company" in {
 
         val json = Json.toJson(UltimateParent())
-
-        validate(json) shouldBe true
-      }
-
-      "crn is None" in {
-
-        val json = Json.toJson(UltimateParent(crn = None))
-
-        validate(json) shouldBe true
-      }
-
-      "Non Uk crn is None" in {
-
-        val json = Json.toJson(UltimateParent(nonUkCrn = None))
-
-        validate(json) shouldBe true
-      }
-
-      "KnownAs is None" in {
-
-        val json = Json.toJson(UltimateParent(knownAs = None))
 
         validate(json) shouldBe true
       }
@@ -129,53 +108,6 @@ class UltimateParentCompanySchemaSpec extends BaseSchemaSpec {
         }
       }
 
-      "crn" when {
-
-        s"below $crnLength" in {
-
-          val json = Json.toJson(UltimateParent(crn = Some(CRNModel(("1" * (crnLength - 1))))))
-
-          validate(json) shouldBe false
-        }
-
-        s"above $crnLength" in {
-
-          val json = Json.toJson(UltimateParent(crn = Some(CRNModel(("1" * (crnLength + 1))))))
-
-          validate(json) shouldBe false
-        }
-
-        "starts with 1 letter" in {
-          val json = Json.toJson(UltimateParent(crn = Some(CRNModel(("A" + ("1" * (crnLength - 1)))))))
-
-          validate(json) shouldBe false
-        }
-
-        "starts with 3 letters" in {
-          val json = Json.toJson(UltimateParent(crn = Some(CRNModel(("AAA" + ("1" * (crnLength - 3)))))))
-
-          validate(json) shouldBe false
-
-        }
-      }
-
-      "knownAs" when {
-
-        "knownAs is empty" in {
-
-          val json = Json.toJson(UltimateParent(knownAs = Some("")))
-
-          validate(json) shouldBe false
-        }
-
-        s"is longer than $maxCompanyNameLength characters" in {
-
-          val json = Json.toJson(UltimateParent(knownAs = Some("A" * (maxCompanyNameLength + 1))))
-
-          validate(json) shouldBe false
-        }
-      }
-
       "countryOfIncorporation" when {
 
         "is only one letter" in {
@@ -199,16 +131,6 @@ class UltimateParentCompanySchemaSpec extends BaseSchemaSpec {
         "contains a symbol" in {
 
           val json = Json.toJson(UltimateParent(countryOfIncorporation = Some(CountryCodeModel("A@"))))
-          validate(json) shouldBe false
-        }
-      }
-
-      "Non Uk crn" when {
-
-        s"is empty" in {
-
-          val json = Json.toJson(UltimateParent(nonUkCrn = Some((""))))
-
           validate(json) shouldBe false
         }
       }

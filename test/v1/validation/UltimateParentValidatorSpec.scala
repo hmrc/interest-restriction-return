@@ -41,23 +41,6 @@ class UltimateParentValidatorSpec extends BaseSpec {
 
         rightSide(model.validate) shouldBe model
       }
-
-      "knownAs" when {
-
-        "is not supplied" in {
-          val model = ultimateParentModelNonUkCompany.copy(
-            knownAs = None)
-
-          rightSide(model.validate) shouldBe model
-        }
-
-        "is empty" in {
-          val model = ultimateParentModelNonUkCompany.copy(
-            knownAs = Some(""))
-
-          rightSide(model.validate) shouldBe model
-        }
-      }
     }
 
     "Return invalid" when {
@@ -87,13 +70,6 @@ class UltimateParentValidatorSpec extends BaseSpec {
           ctutr = Some(invalidUtr))
 
         leftSideError(model.validate).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
-      }
-
-      "CRN is invalid" in {
-        val model = ultimateParentModelUkCompany.copy(
-          crn = Some(invalidCrn))
-
-        leftSideError(model.validate).errorMessage shouldBe CRNFormatCheck(invalidCrn).errorMessage
       }
 
       "CountryOfIncorporation is invalid" in {

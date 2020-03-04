@@ -27,8 +27,8 @@ trait DeemedParentValidator extends BaseValidation {
   val deemedParentModel: DeemedParentModel
 
   private def validateDeemedParentCanNotBeUkAndNonUk(implicit path: JsPath): ValidationResult[DeemedParentModel] = {
-    val isUk = deemedParentModel.ctutr.isDefined || deemedParentModel.crn.isDefined || deemedParentModel.sautr.isDefined
-    val isNonUk = deemedParentModel.countryOfIncorporation.isDefined || deemedParentModel.nonUkCrn.isDefined
+    val isUk = deemedParentModel.ctutr.isDefined || deemedParentModel.sautr.isDefined
+    val isNonUk = deemedParentModel.countryOfIncorporation.isDefined
 
     (isUk, isNonUk) match {
       case (false, false) => DeemedParentWrongDetailsError(deemedParentModel).invalidNec

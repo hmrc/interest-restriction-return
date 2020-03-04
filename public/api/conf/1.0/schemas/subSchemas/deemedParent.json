@@ -1,15 +1,12 @@
 {
   "description": "Details of the deemed parent companies",
   "type": "array",
-  "minItems": 1,
+  "minItems": 2,
   "maxItems": 3,
   "items": {
     "type": "object",
     "properties": {
       "companyName": {
-        "$ref": "../definitions/definitions.json#/definitions/companyName"
-      },
-      "knownAs": {
         "$ref": "../definitions/definitions.json#/definitions/companyName"
       },
       "ctutr": {
@@ -18,14 +15,8 @@
       "sautr": {
         "$ref": "../definitions/definitions.json#/definitions/sautr"
       },
-      "crn": {
-        "$ref": "../definitions/definitions.json#/definitions/crn"
-      },
       "countryOfIncorporation": {
         "$ref": "../definitions/countrycodes.json#/definitions/countryCode"
-      },
-      "nonUkCrn": {
-        "$ref": "../definitions/definitions.json#/definitions/crnNonUk"
       }
     },
     "required": [

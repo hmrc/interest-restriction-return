@@ -17,9 +17,9 @@
 package v1.schemas.subSchemas
 
 import play.api.libs.json.{JsValue, Json}
+import v1.models.UTRModel
 import v1.schemas.BaseSchemaSpec
-import v1.schemas.helpers.{IdentityOfCompanySubmitting, UltimateParent}
-import v1.models.{CRNModel, UTRModel}
+import v1.schemas.helpers.IdentityOfCompanySubmitting
 
 class IdentityOfCompanySubmittingSchemaSpec extends BaseSchemaSpec {
 
@@ -94,19 +94,6 @@ class IdentityOfCompanySubmittingSchemaSpec extends BaseSchemaSpec {
         }
       }
 
-      "crn" when {
-
-        s"is empty" in {
-
-          val json = Json.toJson(IdentityOfCompanySubmitting(
-            crn = Some(CRNModel(""))
-          ))
-
-          validate(json) shouldBe false
-        }
-      }
-
-
       "countryOfIncorporation" when {
 
         "is only one letter" in {
@@ -138,15 +125,6 @@ class IdentityOfCompanySubmittingSchemaSpec extends BaseSchemaSpec {
           val json = Json.toJson(IdentityOfCompanySubmitting(
             countryOfIncorporation = Some("A@")
           ))
-          validate(json) shouldBe false
-        }
-      }
-      "Non Uk crn" when {
-
-        s"is empty" in {
-
-          val json = Json.toJson(UltimateParent(nonUkCrn = Some((""))))
-
           validate(json) shouldBe false
         }
       }

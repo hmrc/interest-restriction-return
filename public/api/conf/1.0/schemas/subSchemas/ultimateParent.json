@@ -11,17 +11,8 @@
     "sautr": {
       "$ref": "../definitions/definitions.json#/definitions/sautr"
     },
-    "knownAs": {
-      "$ref": "../definitions/definitions.json#/definitions/companyName"
-    },
-    "crn": {
-      "$ref": "../definitions/definitions.json#/definitions/crn"
-    },
     "countryOfIncorporation": {
       "$ref": "../definitions/countrycodes.json#/definitions/countryCode"
-    },
-    "nonUkCrn": {
-      "$ref": "../definitions/definitions.json#/definitions/crnNonUk"
     }
   },
   "required": [

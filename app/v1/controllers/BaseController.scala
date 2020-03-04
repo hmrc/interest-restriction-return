@@ -23,10 +23,9 @@ import play.api.mvc.{Request, Result}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.controller.BackendBaseController
 import v1.models.Validation.ValidationResult
-import v1.models.requests.IdentifierRequest
-import v1.models.CRNModel
 import v1.models.errors.ValidationErrorResponseModel
-import v1.services.{CompaniesHouseService, Submission}
+import v1.models.requests.IdentifierRequest
+import v1.services.Submission
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
@@ -44,22 +43,16 @@ trait BaseController extends BackendBaseController {
       case Failure(e) => Future.successful(BadRequest(s"Could not parse body due to ${e.getMessage}"))
     }
 
-  def handleValidation[T](validationModel: ValidationResult[T], crns: Seq[(JsPath, CRNModel)], service: Submission[T],
-                          companiesHouseService: CompaniesHouseService, controllerName: String)
-                         (implicit hc: HeaderCarrier,identifierRequest: IdentifierRequest[JsValue]): Future[Result] = {
+  def handleValidation[T](validationModel: ValidationResult[T], service: Submission[T], controllerName: String)
+                         (implicit hc: HeaderCarrier, identifierRequest: IdentifierRequest[JsValue]): Future[Result] = {
     validationModel match {
       case Invalid(e) =>
         Logger.debug(s"[$controllerName][submit] Business Rule Errors: ${Json.toJson(ValidationErrorResponseModel(e))}")
         Future.successful(BadRequest(Json.toJson(ValidationErrorResponseModel(e))))
       case Valid(model) =>
-        companiesHouseService.invalidCRNs(crns).flatMap {
-          case Left(err) => Future.successful(Status(err.status)(err.body))
-          case Right(invalidCrns) if invalidCrns.nonEmpty => Future.successful(BadRequest(Json.toJson(invalidCrns)))
-          case _ =>
-            service.submit(model).map {
-              case Left(err) => Status(err.status)(err.body)
-              case Right(response) => Ok(Json.toJson(response))
-            }
+        service.submit(model).map {
+          case Left(err) => Status(err.status)(err.body)
+          case Right(response) => Ok(Json.toJson(response))
         }
     }
   }

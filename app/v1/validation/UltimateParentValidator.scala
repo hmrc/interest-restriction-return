@@ -27,8 +27,8 @@ trait UltimateParentValidator extends BaseValidation {
   val ultimateParentModel: UltimateParentModel
 
   private def validateUltimateParentCanNotBeUkAndNonUk(implicit path: JsPath): ValidationResult[UltimateParentModel] = {
-    val isUk = ultimateParentModel.ctutr.isDefined || ultimateParentModel.crn.isDefined || ultimateParentModel.sautr.isDefined
-    val isNonUk = ultimateParentModel.countryOfIncorporation.isDefined || ultimateParentModel.nonUkCrn.isDefined
+    val isUk = ultimateParentModel.ctutr.isDefined || ultimateParentModel.sautr.isDefined
+    val isNonUk = ultimateParentModel.countryOfIncorporation.isDefined
 
     (isUk, isNonUk) match {
       case (false, false) => UltimateParentWrongDetailsError(ultimateParentModel).invalidNec
@@ -51,9 +51,8 @@ trait UltimateParentValidator extends BaseValidation {
       validateCorrectUTRSupplied,
       ultimateParentModel.companyName.validate(path \ "companyName"),
       optionValidations(ultimateParentModel.ctutr.map(_.validate(path \ "ctutr"))),
-      optionValidations(ultimateParentModel.crn.map(_.validate(path \ "crn"))),
       optionValidations(ultimateParentModel.countryOfIncorporation.map(_.validate(path \ "countryOfIncorporation")))
-    ).mapN((_, _, _, _, _, _) => ultimateParentModel)
+    ).mapN((_, _, _, _, _) => ultimateParentModel)
 }
 
 case class UltimateParentCannotBeUkAndNonUk(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {

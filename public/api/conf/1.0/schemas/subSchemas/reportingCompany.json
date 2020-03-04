@@ -8,9 +8,6 @@
     "ctutr": {
       "$ref": "../definitions/definitions.json#/definitions/ctutr"
     },
-    "crn": {
-      "$ref": "../definitions/definitions.json#/definitions/crn"
-    },
     "sameAsUltimateParent": {
       "description": "Indicate whether the reporting company is the same as the ultimate parent",
       "type": "boolean"
@@ -19,7 +16,6 @@
   "required": [
     "companyName",
     "ctutr",
-    "crn",
     "sameAsUltimateParent"
   ],
   "additionalProperties": false

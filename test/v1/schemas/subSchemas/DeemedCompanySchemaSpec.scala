@@ -17,9 +17,9 @@
 package v1.schemas.subSchemas
 
 import play.api.libs.json.{JsValue, Json}
+import v1.models.UTRModel
 import v1.schemas.BaseSchemaSpec
 import v1.schemas.helpers._
-import v1.models.{CRNModel, UTRModel}
 
 class DeemedCompanySchemaSpec extends BaseSchemaSpec {
 
@@ -29,14 +29,7 @@ class DeemedCompanySchemaSpec extends BaseSchemaSpec {
 
     "Return valid" when {
 
-      "Validated a successful JSON payload with one deemed parent" in {
-
-        val json = Json.toJson(Seq(DeemedParent()))
-
-        validate(json) shouldBe true
-      }
-
-      "Validated a successful JSON payload with two deemed parents" in {
+      "Validated a successful JSON payload with min two deemed parents" in {
 
         val json = Json.toJson(Seq(DeemedParent(), DeemedParent()))
 
@@ -115,48 +108,6 @@ class DeemedCompanySchemaSpec extends BaseSchemaSpec {
 
           val json = Json.toJson(Seq(DeemedParent(
             ctutr = Some(UTRModel("@"))
-          )))
-
-          validate(json) shouldBe false
-        }
-      }
-
-      "crn" when {
-
-        s"below $crnLength" in {
-
-          val json = Json.toJson(Seq(DeemedParent(
-            crn = Some(CRNModel("1" * (crnLength - 1)))
-          )))
-
-          validate(json) shouldBe false
-        }
-
-        s"above $crnLength" in {
-
-          val json = Json.toJson(Seq(DeemedParent(
-            crn = Some(CRNModel("1" * (crnLength + 1)))
-          )))
-
-          validate(json) shouldBe false
-        }
-      }
-
-      "knownAs" when {
-
-        "knownAs is empty" in {
-
-          val json = Json.toJson(Seq(DeemedParent(
-            knownAs = Some("")
-          )))
-
-          validate(json) shouldBe false
-        }
-
-        s"is longer than $maxCompanyNameLength characters" in {
-
-          val json = Json.toJson(Seq(DeemedParent(
-            knownAs = Some("A" * (maxCompanyNameLength + 1))
           )))
 
           validate(json) shouldBe false

@@ -20,12 +20,10 @@ import play.api.libs.json.{Format, Json}
 import v1.validation.DeemedParentValidator
 
 case class DeemedParentModel(companyName: CompanyNameModel,
-                             knownAs: Option[String],
                              ctutr: Option[UTRModel],
                              sautr: Option[UTRModel],
-                             crn: Option[CRNModel],
-                             countryOfIncorporation: Option[CountryCodeModel],
-                             nonUkCrn: Option[String])
+                             countryOfIncorporation: Option[CountryCodeModel]
+                            )
   extends DeemedParentValidator {
   override val deemedParentModel: DeemedParentModel = this
 }

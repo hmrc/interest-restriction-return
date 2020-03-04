@@ -27,8 +27,8 @@ trait IdentityOfCompanySubmittingValidator extends BaseValidation {
   val identityOfCompanySubmitting: IdentityOfCompanySubmittingModel
 
   private def validateIdentityOfCompanySubmitting(implicit path: JsPath): ValidationResult[IdentityOfCompanySubmittingModel] = {
-    val isUk = identityOfCompanySubmitting.ctutr.isDefined || identityOfCompanySubmitting.crn.isDefined
-    val isNonUk = identityOfCompanySubmitting.countryOfIncorporation.isDefined || identityOfCompanySubmitting.nonUkCrn.isDefined
+    val isUk = identityOfCompanySubmitting.ctutr.isDefined
+    val isNonUk = identityOfCompanySubmitting.countryOfIncorporation.isDefined
 
     if(isUk && isNonUk) {
       CannotBeUkAndNonUk(identityOfCompanySubmitting).invalidNec
@@ -41,9 +41,8 @@ trait IdentityOfCompanySubmittingValidator extends BaseValidation {
     (validateIdentityOfCompanySubmitting,
       identityOfCompanySubmitting.companyName.validate(path \ "companyName"),
       optionValidations(identityOfCompanySubmitting.ctutr.map(_.validate(path \ "ctutr"))),
-      optionValidations(identityOfCompanySubmitting.crn.map(_.validate(path \ "crn"))),
       optionValidations(identityOfCompanySubmitting.countryOfIncorporation.map(_.validate(path \ "countryOfIncorporation")))
-      ).mapN((_,_,_,_,_) => identityOfCompanySubmitting)
+      ).mapN((_,_,_,_) => identityOfCompanySubmitting)
 }
 
 case class CannotBeUkAndNonUk(companySubmitting: IdentityOfCompanySubmittingModel)(implicit val path: JsPath) extends Validation {

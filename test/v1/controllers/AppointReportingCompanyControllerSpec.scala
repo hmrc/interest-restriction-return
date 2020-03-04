@@ -21,11 +21,11 @@ import v1.connectors.{DesSuccessResponse, InvalidCRN, UnexpectedFailure}
 import play.api.http.Status
 import play.api.libs.json.Json
 import play.api.test.{FakeRequest, Helpers}
-import v1.services.mocks.{MockAppointReportingCompanyService, MockCompaniesHouseService}
+import v1.services.mocks.MockAppointReportingCompanyService
 import utils.BaseSpec
 import v1.models.errors.ValidationErrorResponseModel
 
-class AppointReportingCompanyControllerSpec extends MockAppointReportingCompanyService with MockCompaniesHouseService with BaseSpec {
+class AppointReportingCompanyControllerSpec extends MockAppointReportingCompanyService with BaseSpec {
 
   override lazy val fakeRequest = FakeRequest("POST", "/interest-restriction-return/reporting-company/appoint")
 
@@ -36,7 +36,6 @@ class AppointReportingCompanyControllerSpec extends MockAppointReportingCompanyS
       object AuthorisedController extends AppointReportingCompanyController(
         authAction = AuthorisedAction,
         appointReportingCompanyService = mockAppointReportingCompanyService,
-        companiesHouseService = mockCompaniesHouseService,
         controllerComponents = Helpers.stubControllerComponents()
       )
 
@@ -52,7 +51,6 @@ class AppointReportingCompanyControllerSpec extends MockAppointReportingCompanyS
 
             "return 200 (OK)" in {
 
-              mockCompaniesHouse(appointReportingCompanyModelMax.ukCrns)(Right(Seq.empty))
               mockAppointReportingCompany(appointReportingCompanyModelMax)(Right(DesSuccessResponse(ackRef)))
 
               val result = AuthorisedController.appoint()(validJsonFakeRequest)
@@ -64,37 +62,11 @@ class AppointReportingCompanyControllerSpec extends MockAppointReportingCompanyS
 
             "return the Error" in {
 
-              mockCompaniesHouse(appointReportingCompanyModelMax.ukCrns)(Right(Seq.empty))
               mockAppointReportingCompany(appointReportingCompanyModelMax)(Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
 
               val result = AuthorisedController.appoint()(validJsonFakeRequest)
               status(result) shouldBe Status.INTERNAL_SERVER_ERROR
             }
-          }
-        }
-
-        "a success response is returned from the companies house service with v1.validation errors" when {
-
-          "return the 400 (BAD REQUEST)" in {
-
-            mockCompaniesHouse(appointReportingCompanyModelMax.ukCrns)(Right(
-              appointReportingCompanyModelMax.ukCrns.map{
-                currentCrn => ValidationErrorResponseModel(currentCrn._1.toString, Json.toJson(crn), Seq(InvalidCRN.body))
-              }
-            ))
-
-            val result = AuthorisedController.appoint()(validJsonFakeRequest)
-            status(result) shouldBe Status.BAD_REQUEST
-          }
-        }
-
-        "a error response is returned from the companies house service" when {
-
-          "return the Error" in {
-
-            mockCompaniesHouse(appointReportingCompanyModelMax.ukCrns)(Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
-            val result = AuthorisedController.appoint()(validJsonFakeRequest)
-            status(result) shouldBe Status.INTERNAL_SERVER_ERROR
           }
         }
       }
@@ -120,7 +92,6 @@ class AppointReportingCompanyControllerSpec extends MockAppointReportingCompanyS
         object UnauthorisedController extends AppointReportingCompanyController(
           authAction = UnauthorisedAction,
           appointReportingCompanyService = mockAppointReportingCompanyService,
-          companiesHouseService = mockCompaniesHouseService,
           controllerComponents = Helpers.stubControllerComponents()
         )
 

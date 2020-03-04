@@ -17,7 +17,7 @@
 package assets
 
 import play.api.libs.json.Json
-import v1.models.IdentityOfCompanySubmittingModel
+import v1.models.{CountryCodeModel, IdentityOfCompanySubmittingModel}
 
 object IdentityOfCompanySubmittingConstants extends BaseConstants {
 
@@ -25,16 +25,19 @@ object IdentityOfCompanySubmittingConstants extends BaseConstants {
 
   val identityOfCompanySubmittingJsonMax = Json.obj(
     "companyName" -> companyName,
-    "ctutr" -> ctutr,
-    "crn" -> crn
+    "ctutr" -> ctutr
   )
 
   val identityOfCompanySubmittingModelMax = IdentityOfCompanySubmittingModel(
     companyName = companyName,
     ctutr = Some(ctutr),
-    crn = Some(crn),
-    countryOfIncorporation = None,
-    nonUkCrn = None
+    countryOfIncorporation = None
+  )
+
+  val identityOfCompanySubmittingModelNonUk = IdentityOfCompanySubmittingModel(
+    companyName = companyName,
+    ctutr = None,
+    countryOfIncorporation = Some(CountryCodeModel(countryCode))
   )
 
   val identityOfCompanySubmittingJsonMin = Json.obj(
@@ -44,8 +47,6 @@ object IdentityOfCompanySubmittingConstants extends BaseConstants {
   val identityOfCompanySubmittingModelMin = IdentityOfCompanySubmittingModel(
     companyName = companyName,
     ctutr = None,
-    crn = None,
-    countryOfIncorporation = None,
-    nonUkCrn = None
+    countryOfIncorporation = None
   )
 }

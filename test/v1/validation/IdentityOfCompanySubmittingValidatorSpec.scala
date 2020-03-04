@@ -29,10 +29,7 @@ class IdentityOfCompanySubmittingValidatorSpec extends BaseSpec {
     "Return valid" when {
 
       "Valid UK fields are populated" in {
-        val model = identityOfCompanySubmittingModelMax.copy(
-          nonUkCrn = None,
-          countryOfIncorporation = None
-        )
+        val model = identityOfCompanySubmittingModelMax
 
         rightSide(model.validate) shouldBe model
       }
@@ -40,8 +37,8 @@ class IdentityOfCompanySubmittingValidatorSpec extends BaseSpec {
       "Valid NonUk fields are populated" in {
 
         val model = identityOfCompanySubmittingModelMax.copy(
-          crn = None,
-          ctutr = None
+          ctutr = None,
+          countryOfIncorporation = Some(nonUkCountryCode)
         )
 
         rightSide(model.validate) shouldBe model
@@ -52,35 +49,21 @@ class IdentityOfCompanySubmittingValidatorSpec extends BaseSpec {
 
       "Uk and NonUK fields are populated" in {
 
-        val model = identityOfCompanySubmittingModelMax.copy(
-          nonUkCrn = Some("1234567"),
-          countryOfIncorporation = Some(nonUkCountryCode)
-        )
+        val model = identityOfCompanySubmittingModelMax.copy(countryOfIncorporation = Some(nonUkCountryCode))
 
         leftSideError(model.validate).errorMessage shouldBe CannotBeUkAndNonUk(model).errorMessage
       }
 
       "CTUTR is invalid" in {
         val model = identityOfCompanySubmittingModelMax.copy(
-          nonUkCrn = None,
           countryOfIncorporation = None,
           ctutr = Some(invalidUtr))
 
         leftSideError(model.validate).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
       }
 
-      "CRN is invalid" in {
-        val model = identityOfCompanySubmittingModelMax.copy(
-          nonUkCrn = None,
-          countryOfIncorporation = None,
-          crn = Some(invalidCrn))
-
-        leftSideError(model.validate).errorMessage shouldBe CRNFormatCheck(invalidCrn).errorMessage
-      }
-
       "CountryOfIncorporation is invalid" in {
         val model = identityOfCompanySubmittingModelMax.copy(
-          crn = None,
           ctutr = None,
           countryOfIncorporation = Some(invalidCountryCode))
 

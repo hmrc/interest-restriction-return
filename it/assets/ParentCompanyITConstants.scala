@@ -7,7 +7,7 @@ import play.api.libs.json.Json
 object ParentCompanyITConstants {
 
   val parentCompanyJson = Json.obj(
-    "ultimateParent" -> ultimateParentJson,
-    "deemedParent" -> Seq(deemedParentJson)
+    //"ultimateParent" -> ultimateParentJson,
+    "deemedParent" -> Seq(deemedParentJson, deemedParentJson)
   )
 }

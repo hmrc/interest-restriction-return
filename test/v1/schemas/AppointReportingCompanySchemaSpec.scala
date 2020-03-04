@@ -16,10 +16,9 @@
 
 package v1.schemas
 
-import helpers._
 import play.api.libs.json.{JsValue, Json}
+import v1.schemas.helpers._
 import v1.schemas.helpers.appointReportingCompany.AppointReportingCompanyModel
-import v1.models.CRNModel
 
 class AppointReportingCompanySchemaSpec extends BaseSchemaSpec {
 
@@ -32,15 +31,6 @@ class AppointReportingCompanySchemaSpec extends BaseSchemaSpec {
       "Validated a successful JSON payload" in {
 
         val json = Json.toJson(AppointReportingCompanyModel())
-        validate(json) shouldBe true
-      }
-
-      " crn is two characters and six numbers" in {
-
-        val json = Json.toJson(AppointReportingCompanyModel(
-          reportingCompany = Some(ReportingCompany(crn = Some(CRNModel("AA111111"))))
-        ))
-
         validate(json) shouldBe true
       }
 

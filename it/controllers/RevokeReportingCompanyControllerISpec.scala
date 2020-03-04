@@ -28,71 +28,30 @@ class RevokeReportingCompanyControllerISpec extends IntegrationSpecBase with Cre
 
     "user is authenticated" when {
 
-      "companies house validates the CRN" should {
+      "request is successfully processed by DES" should {
 
-        "request is successfully processed by DES" should {
-
-          "should return OK (200) with the correct body" in {
-
-            AuthStub.authorised()
-            CompaniesHouseStub.checkCrn(OK)
-            DESStub.revokeReportingCompanySuccess(revokeReportingCompanyDesSuccessJson)
-
-            val res = postRequest("/reporting-company/revoke", revokeReportingCompanyJson)
-
-            whenReady(res) { result =>
-              result should have(
-                httpStatus(OK),
-                jsonBodyAs(revokeReportingCompanyDesSuccessJson)
-              )
-            }
-          }
-        }
-
-        "error is returned from DES" should {
-
-          "should return the error" in {
-
-            AuthStub.authorised()
-            CompaniesHouseStub.checkCrn(OK)
-            DESStub.revokeReportingCompanyError
-
-            val res = postRequest("/reporting-company/revoke", revokeReportingCompanyJson)
-
-            whenReady(res) { result =>
-              result should have(
-                httpStatus(INTERNAL_SERVER_ERROR)
-              )
-            }
-          }
-        }
-      }
-
-      "companies house returns invalid for the CRN" should {
-
-        "should return BAD_REQUEST (400) with the correct body" in {
+        "should return OK (200) with the correct body" in {
 
           AuthStub.authorised()
-          CompaniesHouseStub.checkCrn(BAD_REQUEST)
           DESStub.revokeReportingCompanySuccess(revokeReportingCompanyDesSuccessJson)
 
           val res = postRequest("/reporting-company/revoke", revokeReportingCompanyJson)
 
           whenReady(res) { result =>
             result should have(
-              httpStatus(BAD_REQUEST)
+              httpStatus(OK),
+              jsonBodyAs(revokeReportingCompanyDesSuccessJson)
             )
           }
         }
       }
 
-      "request is successfully processed by Companies House" should {
+      "error is returned from DES" should {
 
-        "should return INTERNAL_SERVER_ERROR (500) with the correct body" in {
+        "should return the error" in {
 
           AuthStub.authorised()
-          CompaniesHouseStub.checkCrn(INTERNAL_SERVER_ERROR)
-          DESStub.revokeReportingCompanySuccess(revokeReportingCompanyDesSuccessJson)
+          DESStub.revokeReportingCompanyError
 
           val res = postRequest("/reporting-company/revoke", revokeReportingCompanyJson)
 
@@ -110,7 +69,6 @@ class RevokeReportingCompanyControllerISpec extends IntegrationSpecBase with Cre
       "should return UNAUTHORISED (401)" in {
 
         AuthStub.unauthorised()
-
         val res = postRequest("/reporting-company/revoke", revokeReportingCompanyJson)
 
         whenReady(res) { result =>

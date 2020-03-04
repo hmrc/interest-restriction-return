@@ -63,30 +63,5 @@ class RevokeReportingCompanyModelSpec extends WordSpec with Matchers with BaseCo
         actualValue shouldBe expectedValue
       }
     }
-
-    "correctly collect all of the ukCrns" when {
-
-      "max crns given" in {
-
-        val expectedValue = Seq(
-          RevokeReportingCompanyModel.reportingCompanyCrnPath -> crn,
-          RevokeReportingCompanyModel.ultimateParentCrnPath -> crnLetters
-        )
-
-        val actualValue = revokeReportingCompanyModelMax.ukCrns
-
-        actualValue shouldBe expectedValue
-      }
-
-      "min crns given" in {
-
-        val expectedValue = Seq(
-          RevokeReportingCompanyModel.reportingCompanyCrnPath -> crn
-        )
-        val actualValue = revokeReportingCompanyModelMin.ukCrns
-
-        actualValue shouldBe expectedValue
-      }
-    }
   }
 }

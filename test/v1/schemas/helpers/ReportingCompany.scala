@@ -17,11 +17,10 @@
 package v1.schemas.helpers
 
 import play.api.libs.json.Json
-import v1.models.{CRNModel, UTRModel}
+import v1.models.UTRModel
 
 case class ReportingCompany(companyName: Option[String] = Some("MIB Ltd"),
                             ctutr: Option[UTRModel] = Some(UTRModel("1234567890")),
-                            crn: Option[CRNModel] = Some(CRNModel("AB123456")),
                             sameAsUltimateParent: Option[Boolean] = Some(false)
                            )
 
