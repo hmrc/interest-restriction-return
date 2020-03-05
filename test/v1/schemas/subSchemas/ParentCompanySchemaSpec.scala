@@ -52,7 +52,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
       "Validated a successful JSON payload with Non Uk Deemed Parent company" in {
 
         val json = Json.toJson(ParentCompany(
-          ultimateParent = None, deemedParent = Some(Seq(DeemedParent(ctutr = None, sautr = None), nonUkDeemedParent))
+          ultimateParent = None, deemedParent = Some(Seq(nonUkDeemedParent, nonUkDeemedParent))
         ))
 
         validate(json) shouldBe true
