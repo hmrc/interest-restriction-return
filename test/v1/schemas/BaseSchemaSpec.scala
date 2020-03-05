@@ -28,7 +28,6 @@ trait BaseSchemaSpec extends WordSpec with Matchers with GuiceOneAppPerSuite wit
   val maxDescriptionLength = 2000
   val maxCompanyNameLength = 160
   val utrLength = 10
-  val crnLength = 8
   val electString = "elect"
   val revokeString = "revoke"
   val ctutrFake = Some(UTRModel("1111111111"))

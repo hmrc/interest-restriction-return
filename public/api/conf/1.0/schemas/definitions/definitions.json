@@ -21,18 +21,6 @@
       "minLength": 1,
       "maxLength": 160
     },
-    "crn": {
-      "description": "Company Registration Number (CRN) at Companies House for a UK Company",
-      "type": "string",
-      "minLength": 8,
-      "maxLength": 8,
-      "pattern": "[0-9]{8}|[A-Z]{2}[0-9]{6}"
-    },
-    "crnNonUk": {
-      "description": "Company registration number for a foreign company (Non-UK Incorporation)",
-      "type": "string",
-      "minLength": 1
-    },
     "publicInfrastructure": {
       "description": "Indicate if any of the companies has made a qualifying infrastructure company (QIC) election",
       "type": "boolean"

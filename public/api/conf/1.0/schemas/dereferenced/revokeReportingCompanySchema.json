@@ -39,13 +39,6 @@
                     "maxLength": 10,
                     "pattern": "[0-9]{10}"
                 },
-                "crn": {
-                    "description": "Company Registration Number (CRN) at Companies House for a UK Company",
-                    "type": "string",
-                    "minLength": 8,
-                    "maxLength": 8,
-                    "pattern": "[0-9]{8}|[A-Z]{2}[0-9]{6}"
-                },
                 "sameAsUltimateParent": {
                     "description": "Indicate whether the reporting company is the same as the ultimate parent",
                     "type": "boolean"
@@ -54,7 +47,6 @@
             "required": [
                 "companyName",
                 "ctutr",
-                "crn",
                 "sameAsUltimateParent"
             ],
             "additionalProperties": false
@@ -331,11 +323,6 @@
                         "ZW"
                     ]
                 },
-                "crn": {
-                    "description": "Company registration number for a foreign company (Non-UK Incorporation)",
-                    "type": "string",
-                    "minLength": 1
-                },
                 "ctutr": {
                     "description": "Corporation Tax Unique Taxpayer Reference (CTUTR) number",
                     "type": "string",
@@ -377,19 +364,6 @@
                     "minLength": 10,
                     "maxLength": 10,
                     "pattern": "[0-9]{10}"
-                },
-                "knownAs": {
-                    "description": "Name of the company",
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 160
-                },
-                "crn": {
-                    "description": "Company Registration Number (CRN) at Companies House for a UK Company",
-                    "type": "string",
-                    "minLength": 8,
-                    "maxLength": 8,
-                    "pattern": "[0-9]{8}|[A-Z]{2}[0-9]{6}"
                 },
                 "countryOfIncorporation": {
                     "type": "string",
@@ -649,11 +623,6 @@
                         "ZM",
                         "ZW"
                     ]
-                },
-                "nonUkCrn": {
-                    "description": "Company registration number for a foreign company (Non-UK Incorporation)",
-                    "type": "string",
-                    "minLength": 1
                 }
             },
             "required": [

@@ -6,20 +6,17 @@
   "reportingCompany": {
     "companyName": "ACompany",
     "ctutr": "1123456789",
-    "crn": "12345678",
+
     "sameAsUltimateParent": true
   },
   "isReportingCompanyRevokingItself":false,
   "companyMakingRevocation": {
     "companyName": "BCompany",
-    "ctutr": "9999999999",
-    "crn": "87654321"
+    "ctutr": "9999999999"
   },
   "ultimateParent": {
     "companyName": "CCompany",
-    "knownAs": "something",
-    "ctutr": "1123456789",
-    "crn": "AB123456"
+    "ctutr": "1123456789"
   },
   "authorisingCompanies": [{
     "companyName": "DCompany",

@@ -6,15 +6,12 @@
   "reportingCompany" : {
     "companyName" : "ACompany",
     "ctutr" : "1123456789",
-    "crn" : "12345678",
     "sameAsUltimateParent" : false
   },
   "parentCompany" : {
     "ultimateParent" : {
       "companyName" : "BCompany",
       "ctutr" : "9999999999",
-      "crn" : "87654321",
-      "knownAs" : "BCompany Known As"
     }
   },
   "publicInfrastructure" : true,
