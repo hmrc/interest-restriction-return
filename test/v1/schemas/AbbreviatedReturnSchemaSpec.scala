@@ -25,6 +25,8 @@ class AbbreviatedReturnSchemaSpec extends BaseSchemaSpec {
 
   def validate(json: JsValue): Boolean = validateJson("abbreviatedReturnSchema.json", "1.0", json)
 
+  val ukDeemedParent = DeemedParent(sautr = None, countryOfIncorporation = None)
+
   "AbbreviatedReturn Json Schema" should {
 
     "Return valid" when {
@@ -39,10 +41,8 @@ class AbbreviatedReturnSchemaSpec extends BaseSchemaSpec {
       "Validated a successful JSON payload with 3 Deemed Parent companies" in {
 
         val json = Json.toJson(AbbreviatedReturnModel(
-          parentCompany = Some(ParentCompany(ultimateParent = None, deemedParent = Some(Seq(
-            DeemedParent(), DeemedParent(), DeemedParent()
+          parentCompany = Some(ParentCompany(ultimateParent = None, deemedParent = Some(Seq(ukDeemedParent, ukDeemedParent, ukDeemedParent))
           ))))
-        ))
 
         validate(json) shouldBe true
       }
@@ -68,10 +68,7 @@ class AbbreviatedReturnSchemaSpec extends BaseSchemaSpec {
       "Validated a successful JSON payload groupEBITDAChargeableGains is None" in {
 
         val json = Json.toJson(AbbreviatedReturnModel(
-          groupLevelElections = Some(GroupLevelElections(
-            groupRatio = Some(GroupRatio(
-              groupEBITDAChargeableGains = None
-            ))
+          groupLevelElections = Some(GroupLevelElections(groupRatio = Some(GroupRatio(groupEBITDAChargeableGains = None))
           ))))
 
         validate(json) shouldBe true
