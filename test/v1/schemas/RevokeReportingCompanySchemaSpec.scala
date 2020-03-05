@@ -17,7 +17,7 @@
 package v1.schemas
 
 import play.api.libs.json.{JsValue, Json}
-import v1.schemas.helpers.AccountingPeriod
+import v1.schemas.helpers.{AccountingPeriod, IdentityOfCompanySubmitting}
 import v1.schemas.helpers.revokeReportingCompany.RevokeReportingCompanyModel
 
 class RevokeReportingCompanySchemaSpec extends BaseSchemaSpec {

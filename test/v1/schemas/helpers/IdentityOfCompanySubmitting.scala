@@ -17,11 +17,11 @@
 package v1.schemas.helpers
 
 import play.api.libs.json.Json
-import v1.models.UTRModel
+import v1.models.{CountryCodeModel, UTRModel}
 
 case class IdentityOfCompanySubmitting(companyName: Option[String] = Some("identity of an Appointing Company"),
                                        ctutr: Option[UTRModel] = Some(UTRModel("1234567890")),
-                                       countryOfIncorporation: Option[String] = Some("US")
+                                       countryOfIncorporation: Option[CountryCodeModel] = None
                                       )
 
 object IdentityOfCompanySubmitting {

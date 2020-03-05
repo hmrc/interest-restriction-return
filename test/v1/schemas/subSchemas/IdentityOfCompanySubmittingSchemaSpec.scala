@@ -17,7 +17,7 @@
 package v1.schemas.subSchemas
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.UTRModel
+import v1.models.{CountryCodeModel, UTRModel}
 import v1.schemas.BaseSchemaSpec
 import v1.schemas.helpers.IdentityOfCompanySubmitting
 
@@ -99,7 +99,7 @@ class IdentityOfCompanySubmittingSchemaSpec extends BaseSchemaSpec {
         "is only one letter" in {
 
           val json = Json.toJson(IdentityOfCompanySubmitting(
-            countryOfIncorporation = Some("A")
+            countryOfIncorporation = Some(CountryCodeModel("A"))
           ))
           validate(json) shouldBe false
         }
@@ -107,7 +107,7 @@ class IdentityOfCompanySubmittingSchemaSpec extends BaseSchemaSpec {
         "is three letters" in {
 
           val json = Json.toJson(IdentityOfCompanySubmitting(
-            countryOfIncorporation = Some("AAA")
+            countryOfIncorporation = Some(CountryCodeModel("AAA"))
           ))
           validate(json) shouldBe false
         }
@@ -115,7 +115,7 @@ class IdentityOfCompanySubmittingSchemaSpec extends BaseSchemaSpec {
         "contains a number" in {
 
           val json = Json.toJson(IdentityOfCompanySubmitting(
-            countryOfIncorporation = Some("A1")
+            countryOfIncorporation = Some(CountryCodeModel("A1"))
           ))
           validate(json) shouldBe false
         }
@@ -123,11 +123,46 @@ class IdentityOfCompanySubmittingSchemaSpec extends BaseSchemaSpec {
         "contains a symbol" in {
 
           val json = Json.toJson(IdentityOfCompanySubmitting(
-            countryOfIncorporation = Some("A@")
+            countryOfIncorporation = Some(CountryCodeModel("A@"))
           ))
           validate(json) shouldBe false
         }
       }
+
+      "Wrong schema supplied" when {
+
+        "both ctutr and countryOfIncorporation are supplied" in {
+
+          val json = Json.toJson(IdentityOfCompanySubmitting(companyName = Some("mike ltd"), ctutr = ctutrFake, countryOfIncorporation = nonUKCountryCode))
+
+          validate(json) shouldBe false
+        }
+
+        "is three letters" in {
+
+          val json = Json.toJson(IdentityOfCompanySubmitting(
+            countryOfIncorporation = Some(CountryCodeModel("AAA"))
+          ))
+          validate(json) shouldBe false
+        }
+
+        "contains a number" in {
+
+          val json = Json.toJson(IdentityOfCompanySubmitting(
+            countryOfIncorporation = Some(CountryCodeModel("A1"))
+          ))
+          validate(json) shouldBe false
+        }
+
+        "contains a symbol" in {
+
+          val json = Json.toJson(IdentityOfCompanySubmitting(
+            countryOfIncorporation = Some(CountryCodeModel("A@"))
+          ))
+          validate(json) shouldBe false
+        }
+      }
+
     }
   }
 }

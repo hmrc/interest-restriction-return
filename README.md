@@ -140,7 +140,6 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
     "reportingCompany": {
       "companyName": "some reporting company",
       "ctutr": "1234567890",
-      
       "sameAsUltimateParent": true,
       "reportingCompanyDeemed": true
     },
@@ -148,7 +147,6 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
     "companyMakingRevocation": {
       "companyName": "some company",
       "ctutr": "1234567890",
-      
       "countryOfIncorporation": "US"
     },
     "ultimateParent": {
@@ -414,17 +412,14 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
        "reportingCompanyDeemed": true
      },
      "parentCompany": {
-       "ultimateParent": {
-         "registeredCompanyName": "some company",
-         "ctutr": "1234567890",
-         "sautr": "other reference"
-       },
        "deemedParent": [
          {
            "companyName": "some company ltd",
-           "ctutr": "1234567890",
-           "countryOfIncorporation": "US",
            "sautr": "9876543210"
+         },
+         {
+           "companyName": "some company ltd",
+           "countryOfIncorporation": "US"
          }
        ]
      },
