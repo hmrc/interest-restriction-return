@@ -35,7 +35,4 @@ case class AppointReportingCompanyModel(agentDetails: AgentDetailsModel,
 object AppointReportingCompanyModel{
 
   implicit val format = Json.format[AppointReportingCompanyModel]
-
-  val ultimateParentCrnPath: JsPath = JsPath \ "ultimateParentCompany" \ "crn"
-  val identityOfAppointingCompanyCrnPath: JsPath = JsPath \ "identityOfAppointingCompany" \ "crn"
 }

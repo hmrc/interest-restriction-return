@@ -38,7 +38,4 @@ case class AbbreviatedReturnModel(appointedReportingCompany: Boolean,
 object AbbreviatedReturnModel{
 
   implicit val format = Json.format[AbbreviatedReturnModel]
-
-  val ultimateParentCrnPath: JsPath = JsPath \ "parentCompany" \ "ultimateParent" \ "crn"
-  def deemedParentCrnPath(i: Int): JsPath = JsPath \ "parentCompany" \ s"deemedParent[$i]" \ "crn"
 }

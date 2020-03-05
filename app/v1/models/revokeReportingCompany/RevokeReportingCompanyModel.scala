@@ -34,7 +34,4 @@ case class RevokeReportingCompanyModel(agentDetails: AgentDetailsModel,
 
 object RevokeReportingCompanyModel {
   implicit val format = Json.format[RevokeReportingCompanyModel]
-
-  val ultimateParentCrnPath: JsPath = JsPath \ "ultimateParentCompany" \ "crn"
-  val identityOfAppointingCompanyCrnPath: JsPath = JsPath \ "identityOfAppointingCompany" \ "crn"
 }
