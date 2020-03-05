@@ -24,7 +24,7 @@ case class AppointReportingCompanyModel(agentDetails: Option[AgentDetails] = Som
                                         authorisingCompanies: Option[Seq[AuthorisingCompanies]] = Some(Seq(AuthorisingCompanies())),
                                         isReportingCompanyAppointingItself: Option[Boolean] = Some(true),
                                         identityOfAppointingCompany: Option[IdentityOfCompanySubmitting] = Some(IdentityOfCompanySubmitting()),
-                                        ultimateParentCompany: Option[UltimateParent] = Some(UltimateParent()),
+                                        ultimateParentCompany: Option[UltimateParent] = Some(UltimateParent(sautr = None, countryOfIncorporation = None)),
                                         accountingPeriod: Option[AccountingPeriod] = Some(AccountingPeriod()),
                                         declaration: Option[Boolean] = Some(true)
                                        )
