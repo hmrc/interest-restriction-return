@@ -33,21 +33,6 @@
           "taxEBITDA": {
             "description": "Earnings Before Interest, Tax, Depreciation and Amortization (EBITDA) amount",
             "type": "number"
-          },
-          "if": {
-            "properties": {
-              "netTaxInterestIncome": {
-                "type": "null"
-              }
-            },
-            "required": [
-              "netTaxInterestExpense"
-            ]
-          },
-          "then": {
-            "required": [
-              "allocatedRestrictions"
-            ]
           }
         },
         "required": [
@@ -55,7 +40,9 @@
           "ctutr",
           "consenting",
           "taxEBITDA",
-          "netTaxInterestExpense"
+          "netTaxInterestExpense",
+          "netTaxInterestIncome",
+          "allocatedRestrictions"
 
         ],
         "dependencies": {

@@ -18,8 +18,8 @@ package v1.schemas.helpers
 
 import play.api.libs.json.Json
 
-case class AccountingPeriod(startDate: Option[String] = Some("1111-11-11"),
-                            endDate: Option[String] = Some("1111-11-11"))
+case class AccountingPeriod(startDate: Option[String] = Some("1911-12-31"),
+                            endDate: Option[String] = Some("1912-02-29"))
 
 object AccountingPeriod {
   implicit val writes = Json.writes[AccountingPeriod]
