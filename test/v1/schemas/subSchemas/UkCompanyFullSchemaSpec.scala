@@ -17,14 +17,19 @@
 package v1.schemas.subSchemas
 
 import play.api.libs.json.{JsValue, Json}
-import v1.schemas.BaseSchemaSpec
-import v1.schemas.helpers.fullReturn.UkCompanyFull
 import v1.models.UTRModel
+import v1.schemas.BaseSchemaSpec
+import v1.schemas.helpers.fullReturn.{AllocatedRestrictions, UkCompanyFull}
 
 class UkCompanyFullSchemaSpec extends BaseSchemaSpec {
 
   def validate(json: JsValue): Boolean =
     validateJson("subSchemas/ukCompanyFull.json", "1.0", json)
+
+  val restrictionModelIncomeZero = UkCompanyFull(netTaxInterestIncome = Some(0), allocatedReactivations = None)
+  val restrictionModelIncomeNone = UkCompanyFull(netTaxInterestIncome = None, allocatedReactivations = None)
+  val reactivationsUkCompanyModel = UkCompanyFull(netTaxInterestExpense = None, netTaxInterestIncome = Some(1000000), allocatedRestrictions = None)
+
 
   "UkCompanyFull JSON schema" should {
 
@@ -32,30 +37,23 @@ class UkCompanyFullSchemaSpec extends BaseSchemaSpec {
 
       "valid JSON data is submitted" in {
 
-        val json = Json.toJson(Seq(UkCompanyFull()))
+        val json = Json.toJson(Seq(restrictionModelIncomeZero))
 
         validate(json) shouldBe true
       }
 
-      "allocated restrictions" when {
+      "valid Json data for allocated restrictions" in {
 
-        "is None" in {
+        val json = Json.toJson(Seq(restrictionModelIncomeZero))
 
-          val json = Json.toJson(Seq(UkCompanyFull(allocatedRestrictions = None)))
-
-          validate(json) shouldBe true
-        }
+        validate(json) shouldBe true
       }
 
-      "allocated reactivations" when {
+      "valid Json data for allocated reactivations" in {
 
-        "is None" in {
+        val json = Json.toJson(Seq(reactivationsUkCompanyModel))
 
-          val json = Json.toJson(Seq(UkCompanyFull(allocatedReactivations = None)))
-
-          validate(json) shouldBe true
-        }
-
+        validate(json) shouldBe true
 
       }
     }
@@ -155,6 +153,31 @@ class UkCompanyFullSchemaSpec extends BaseSchemaSpec {
 
           validate(json) shouldBe false
         }
+      }
+
+      "invalid Json data for allocated restrictions" when {
+
+        "netTaxIncome is supplied" in {
+
+          val json = Json.toJson(Seq(restrictionModelIncomeZero.copy(netTaxInterestIncome = Some(100))))
+
+          validate(json) shouldBe false
+        }
+
+        "netTaxExpense is not supplied" in {
+
+          val json = Json.toJson(Seq(restrictionModelIncomeZero.copy(netTaxInterestExpense = None)))
+
+          validate(json) shouldBe false
+        }
+      }
+
+      "invalid Json data for allocated reactivations" in {
+
+        val json = Json.toJson(Seq(reactivationsUkCompanyModel.copy(allocatedRestrictions = Some(AllocatedRestrictions()))))
+
+        validate(json) shouldBe false
+
       }
     }
   }

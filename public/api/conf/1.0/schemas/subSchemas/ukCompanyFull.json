@@ -4,44 +4,114 @@
   "minItems": 1,
   "items": {
     "type": "object",
-    "properties": {
-      "companyName": {
-        "$ref": "../definitions/definitions.json#/definitions/companyName"
+    "oneOf": [
+      {
+        "properties": {
+          "companyName": {
+            "$ref": "../definitions/definitions.json#/definitions/companyName"
+          },
+          "ctutr": {
+            "$ref": "../definitions/definitions.json#/definitions/ctutr"
+          },
+          "consenting": {
+            "description": "Indicate whether the reporting company is the same as the ultimate parent",
+            "type": "boolean"
+          },
+          "netTaxInterestExpense": {
+            "description": "The Net Tax Interest Expense amount",
+            "type": "number",
+            "minimum": 0
+          },
+          "netTaxInterestIncome": {
+            "description": "The Net Tax Interest Income amount",
+            "type": "number",
+            "minimum": 0
+          },
+          "allocatedRestrictions": {
+            "$ref": "allocatedRestrictions.json"
+          },
+          "taxEBITDA": {
+            "description": "Earnings Before Interest, Tax, Depreciation and Amortization (EBITDA) amount",
+            "type": "number"
+          },
+          "if": {
+            "properties": {
+              "netTaxInterestIncome": {
+                "type": "null"
+              }
+            },
+            "required": [
+              "netTaxInterestExpense"
+            ]
+          },
+          "then": {
+            "required": [
+              "allocatedRestrictions"
+            ]
+          }
+        },
+        "required": [
+          "companyName",
+          "ctutr",
+          "consenting",
+          "taxEBITDA",
+          "netTaxInterestExpense"
+
+        ],
+        "dependencies": {
+          "allocatedRestrictions": {
+            "properties": {
+              "netTaxInterestIncome": {
+                "description": "The Net Tax Interest Income amount",
+                "type": "number",
+                "maximum": 0
+              }
+            },
+            "required": ["netTaxInterestIncome"]
+          }
+        },
+        "additionalProperties": false
       },
-      "ctutr": {
-        "$ref": "../definitions/definitions.json#/definitions/ctutr"
-      },
-      "consenting": {
-        "description": "Indicate whether the reporting company is the same as the ultimate parent",
-        "type": "boolean"
-      },
-      "netTaxInterestExpense": {
-        "description": "The Net Tax Interest Expense amount",
-        "type": "number",
-        "minimum": 0
-      },
-      "netTaxInterestIncome": {
-        "description": "The Net Tax Interest Income amount",
-        "type": "number",
-        "minimum": 0
-      },
-      "taxEBITDA": {
-        "description": "Earnings Before Interest, Tax, Depreciation and Amortization (EBITDA) amount",
-        "type": "number"
-      },
-      "allocatedRestrictions": {
-        "$ref": "allocatedRestrictions.json"
-      },
-      "allocatedReactivations": {
-        "$ref": "allocatedReactivations.json"
+      {
+        "properties": {
+          "companyName": {
+            "$ref": "../definitions/definitions.json#/definitions/companyName"
+          },
+          "ctutr": {
+            "$ref": "../definitions/definitions.json#/definitions/ctutr"
+          },
+          "consenting": {
+            "description": "Indicate whether the reporting company is the same as the ultimate parent",
+            "type": "boolean"
+          },
+          "netTaxInterestExpense": {
+            "description": "The Net Tax Interest Expense amount",
+            "type": "number",
+            "minimum": 0
+          },
+          "netTaxInterestIncome": {
+            "description": "The Net Tax Interest Income amount",
+            "type": "number",
+            "minimum": 0
+          },
+          "allocatedReactivations": {
+            "$ref": "allocatedReactivations.json"
+          },
+          "taxEBITDA": {
+            "description": "Earnings Before Interest, Tax, Depreciation and Amortization (EBITDA) amount",
+            "type": "number"
+          }
+        },
+        "required": [
+          "companyName",
+          "ctutr",
+          "consenting",
+          "taxEBITDA",
+          "netTaxInterestIncome",
+          "allocatedReactivations"
+        ],
+        "additionalProperties": false
       }
-    },
-    "required": [
-      "companyName",
-      "ctutr",
-      "consenting",
-      "taxEBITDA"
-    ],
-    "additionalProperties": false
+    ]
   }
 }

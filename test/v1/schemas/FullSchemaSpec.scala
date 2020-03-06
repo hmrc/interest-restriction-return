@@ -17,9 +17,11 @@
 package v1.schemas
 
 import play.api.libs.json.{JsValue, Json}
-import v1.schemas.helpers.fullReturn.FullReturnModel
+import v1.schemas.helpers.fullReturn.{FullReturnModel, UkCompanyFull}
 
 class FullSchemaSpec extends BaseSchemaSpec {
+
+  val validFullReturn = FullReturnModel(ukCompanies = Some(Seq(UkCompanyFull(allocatedReactivations = None))))
 
   def validate(json: JsValue): Boolean = validateJson("fullReturnSchema.json", "1.0", json)
 
@@ -29,14 +31,14 @@ class FullSchemaSpec extends BaseSchemaSpec {
 
       "Validated a successful JSON received" in {
 
-        val json = Json.toJson(FullReturnModel())
+        val json = Json.toJson(validFullReturn)
 
         validate(json) shouldBe true
       }
 
       "ANGIE is None" in {
 
-          val json = Json.toJson(FullReturnModel(angie = None))
+          val json = Json.toJson(validFullReturn.copy(angie = None))
 
           validate(json) shouldBe true
         }
@@ -44,21 +46,21 @@ class FullSchemaSpec extends BaseSchemaSpec {
 
       "Revised Return Details is None" in {
 
-        val json = Json.toJson(FullReturnModel(revisedReturnDetails = None))
+        val json = Json.toJson(validFullReturn.copy(revisedReturnDetails = None))
 
         validate(json) shouldBe true
       }
 
       "adjustedGroupInterest is None" in {
 
-        val json = Json.toJson(FullReturnModel(adjustedGroupInterest = None))
+        val json = Json.toJson(validFullReturn.copy(adjustedGroupInterest = None))
 
         validate(json) shouldBe true
       }
 
       "parentCompany is empty" in {
 
-        val json = Json.toJson(FullReturnModel(parentCompany = None))
+        val json = Json.toJson(validFullReturn.copy(parentCompany = None))
 
         validate(json) shouldBe true
       }
