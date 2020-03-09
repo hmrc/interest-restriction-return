@@ -109,9 +109,9 @@ class DeemedCompanySchemaSpec extends BaseSchemaSpec {
 
         "is a symbol" in {
 
-          val json = Json.toJson(Seq(ukDeemedParent.copy(ctutr = Some(UTRModel("@")))),
+          val json = Json.toJson(Seq(ukDeemedParent.copy(ctutr = Some(UTRModel("@"))),
                                      ukDeemedParent.copy(ctutr = Some(UTRModel("@")))
-          )
+          ))
 
           validate(json) shouldBe false
         }
