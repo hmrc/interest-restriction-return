@@ -59,8 +59,8 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
 
         leftSideErrorLength(testingModel.validate) shouldBe 1
 
-        leftSideError(testingModel.validate).errorMessage shouldBe
-          UltimateParentCompanyIsSuppliedRevoke(revokeReportingCompanyModelMax.ultimateParent.get).errorMessage
+        leftSideError(testingModel.validate).message shouldBe
+          UltimateParentCompanyIsSuppliedRevoke(revokeReportingCompanyModelMax.ultimateParent.get).message
       }
 
       "a company submitting on behalf doesn't supply their company details" in {
@@ -69,7 +69,7 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
 
         leftSideErrorLength(testModel.validate) shouldBe 1
 
-        leftSideError(testModel.validate).errorMessage shouldBe CompanyMakingAppointmentMustSupplyDetails.errorMessage
+        leftSideError(testModel.validate).message shouldBe CompanyMakingAppointmentMustSupplyDetails.message
       }
 
       "the declaration hasn't been declared" in {
@@ -77,8 +77,8 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
 
         leftSideErrorLength(testModel.validate) shouldBe 1
 
-        leftSideError(testModel.validate).errorMessage shouldBe
-          DeclaredFiftyPercentOfEligibleCompanies(declaration = false).errorMessage
+        leftSideError(testModel.validate).message shouldBe
+          DeclaredFiftyPercentOfEligibleCompanies(declaration = false).message
       }
 
       "the declaration hasn't been declared and the company is revoking itself but still supplies revoking company details" in {
@@ -86,11 +86,11 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
 
         leftSideErrorLength(testModel.validate) shouldBe 2
 
-        leftSideError(testModel.validate,1).errorMessage shouldBe
-          DeclaredFiftyPercentOfEligibleCompanies(declaration = false).errorMessage
+        leftSideError(testModel.validate,1).message shouldBe
+          DeclaredFiftyPercentOfEligibleCompanies(declaration = false).message
 
-        leftSideError(testModel.validate).errorMessage shouldBe
-          DetailsNotNeededIfCompanyRevokingItself(identityOfCompanySubmittingModelMax).errorMessage
+        leftSideError(testModel.validate).message shouldBe
+          DetailsNotNeededIfCompanyRevokingItself(identityOfCompanySubmittingModelMax).message
       }
 
       "a Company revokes itself but still supplies the revoking company details" in {
@@ -99,8 +99,8 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
 
         leftSideErrorLength(testModel.validate) shouldBe 1
 
-        leftSideError(testModel.validate).errorMessage shouldBe
-          DetailsNotNeededIfCompanyRevokingItself(identityOfCompanySubmittingModelMax).errorMessage
+        leftSideError(testModel.validate).message shouldBe
+          DetailsNotNeededIfCompanyRevokingItself(identityOfCompanySubmittingModelMax).message
       }
     }
 

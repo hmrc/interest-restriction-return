@@ -39,20 +39,20 @@ class ReportingCompanyValidatorSpec extends BaseSpec {
       "Company name" when {
 
         "Company name is empty" in {
-          leftSideError(reportingCompanyModel.copy(companyName = CompanyNameModel("")).validate).errorMessage shouldBe CompanyNameLengthError("").errorMessage
+          leftSideError(reportingCompanyModel.copy(companyName = CompanyNameModel("")).validate).message shouldBe CompanyNameLengthError("").message
         }
 
         s"Company name is longer that ${companyNameMaxLength}" in {
-          leftSideError(reportingCompanyModel.copy(companyName = companyNameTooLong).validate).errorMessage shouldBe CompanyNameLengthError("a" * (companyNameMaxLength + 1)).errorMessage
+          leftSideError(reportingCompanyModel.copy(companyName = companyNameTooLong).validate).message shouldBe CompanyNameLengthError("a" * (companyNameMaxLength + 1)).message
         }
       }
 
       "CTUTR is invalid" in {
-        leftSideError(reportingCompanyModel.copy(ctutr = invalidUtr).validate).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
+        leftSideError(reportingCompanyModel.copy(ctutr = invalidUtr).validate).message shouldBe UTRChecksumError(invalidUtr).message
       }
 
       "CRN is invalid" in {
-        leftSideError(reportingCompanyModel.copy(crn = invalidCrn).validate).errorMessage shouldBe CRNFormatCheck(invalidCrn).errorMessage
+        leftSideError(reportingCompanyModel.copy(crn = invalidCrn).validate).message shouldBe CRNFormatCheck(invalidCrn).message
       }
     }
   }

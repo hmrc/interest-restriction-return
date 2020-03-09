@@ -52,22 +52,22 @@ trait NonConsolidatedInvestmentElectionValidator extends BaseValidation {
 
 case class NonConsolidatedInvestmentSupplied(nonConsolidatedInvestmentElectionModel: NonConsolidatedInvestmentElectionModel)
                                             (implicit val topPath: JsPath) extends Validation {
-  val errorMessage: String = "You can only provide non-consolidated investments if non-consolidated election is made"
+  val code = UNEXPECTED_FIELD
+  val message: String = "You can only provide non-consolidated investments if non-consolidated election is made"
   val path = topPath \ "nonConsolidatedInvestments"
-  val value = Json.toJson(nonConsolidatedInvestmentElectionModel)
 }
 
 case class NonConsolidatedInvestmentNotSupplied(nonConsolidatedInvestmentElectionModel: NonConsolidatedInvestmentElectionModel)
                                                (implicit val topPath: JsPath) extends Validation {
-  val errorMessage: String = "You must provide non-consolidated investments if non-consolidated election is made"
+  val code = MISSING_FIELD
+  val message: String = "You must provide non-consolidated investments if non-consolidated election is made"
   val path = topPath \ "nonConsolidatedInvestments"
-  val value = Json.toJson(nonConsolidatedInvestmentElectionModel)
 }
 
 case class NonConsolidatedInvestmentEmpty(implicit val topPath: JsPath) extends Validation {
-  val errorMessage: String = "nonConsolidatedInvestments must contain at least 1 value if supplied"
+  val code = MISSING_FIELD
+  val message: String = "nonConsolidatedInvestments must contain at least 1 value if supplied"
   val path = topPath \ "nonConsolidatedInvestments"
-  val value = Json.obj()
 }
 
 

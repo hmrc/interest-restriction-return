@@ -53,22 +53,22 @@ trait UltimateParentValidator extends BaseValidation {
       optionValidations(ultimateParentModel.ctutr.map(_.validate(path \ "ctutr"))),
       optionValidations(ultimateParentModel.crn.map(_.validate(path \ "crn"))),
       optionValidations(ultimateParentModel.countryOfIncorporation.map(_.validate(path \ "countryOfIncorporation")))
-    ).mapN((_, _, _, _, _, _) => ultimateParentModel)
+      ).mapN((_, _, _, _, _, _) => ultimateParentModel)
 }
 
 case class UltimateParentCannotBeUkAndNonUk(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {
-  val errorMessage: String = "Ultimate Parent Company Model cannot contain data for UK and NonUK fields"
-  val value = Json.toJson(model)
+  val code = UNEXPECTED_FIELD
+  val message: String = "Ultimate Parent Company Model cannot contain data for UK and NonUK fields"
 }
 
 case class UltimateParentUTRSuppliedError(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {
-  val errorMessage: String = "both ctutr and sautr cannot be supplied simultaneously for Uk Ultimate Parent"
-  val value = Json.toJson(model)
+  val code = MISSING_FIELD
+  val message: String = "both ctutr and sautr cannot be supplied simultaneously for Uk Ultimate Parent"
 }
 
 case class UltimateParentWrongDetailsError(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {
-  val errorMessage: String = "you have given the wrong details for the type of ultimate parent you have tried to supply"
-  val value = Json.toJson(model)
+  val code = UNEXPECTED_FIELD
+  val message: String = "you have given the wrong details for the type of ultimate parent you have tried to supply"
 }
 
 

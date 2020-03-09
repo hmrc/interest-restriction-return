@@ -49,7 +49,7 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
         leftSideError(abbreviatedReturnUltimateParentModel.copy(
           submissionType = Original,
           revisedReturnDetails = Some("Revision")
-        ).validate).errorMessage shouldBe RevisedReturnDetailsSupplied("Revision").errorMessage
+        ).validate).message shouldBe RevisedReturnDetailsSupplied("Revision").message
       }
 
       "Return type is Revised and no details for a revision are supplied" in {
@@ -57,7 +57,7 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
         leftSideError(abbreviatedReturnUltimateParentModel.copy(
           submissionType = Revised,
           revisedReturnDetails = None
-        ).validate).errorMessage shouldBe RevisedReturnDetailsNotSupplied.errorMessage
+        ).validate).message shouldBe RevisedReturnDetailsNotSupplied.message
       }
 
       "Reporting Company is the same as UPC but Parent Details are supplied" in {
@@ -65,7 +65,7 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
         leftSideError(abbreviatedReturnUltimateParentModel.copy(
           reportingCompany = reportingCompanyModel.copy(sameAsUltimateParent = true),
           parentCompany = Some(parentCompanyModelUltUkCompany)
-        ).validate).errorMessage shouldBe ParentCompanyDetailsSupplied(parentCompanyModelUltUkCompany).errorMessage
+        ).validate).message shouldBe ParentCompanyDetailsSupplied(parentCompanyModelUltUkCompany).message
       }
 
       "Reporting Company is not the same as UPC and UPC is not supplied" in {
@@ -73,34 +73,34 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
         leftSideError(abbreviatedReturnUltimateParentModel.copy(
           reportingCompany = reportingCompanyModel,
           parentCompany = None
-        ).validate).errorMessage shouldBe ParentCompanyDetailsNotSupplied.errorMessage
+        ).validate).message shouldBe ParentCompanyDetailsNotSupplied.message
       }
 
       "Agent details are invalid" in {
-        leftSideError(abbreviatedReturnUltimateParentModel.copy(agentDetails = agentDetailsModelMax.copy(agentName = None)).validate).errorMessage shouldBe
-          AgentNameNotSuppliedError().errorMessage
+        leftSideError(abbreviatedReturnUltimateParentModel.copy(agentDetails = agentDetailsModelMax.copy(agentName = None)).validate).message shouldBe
+          AgentNameNotSuppliedError().message
       }
 
       "Reporting Company details are invalid" in {
         leftSideError(abbreviatedReturnUltimateParentModel.copy(
           reportingCompany = reportingCompanyModel.copy(
-            companyName = companyNameTooLong)).validate).errorMessage shouldBe CompanyNameLengthError(companyNameTooLong.name).errorMessage
+            companyName = companyNameTooLong)).validate).message shouldBe CompanyNameLengthError(companyNameTooLong.name).message
       }
 
       "Parent Company is invalid" in {
-        leftSideError(abbreviatedReturnUltimateParentModel.copy(parentCompany = Some(parentCompanyModelMax)).validate).errorMessage shouldBe
-          ParentCompanyCanNotBeUltimateAndDeemed(parentCompanyModelMax).errorMessage
+        leftSideError(abbreviatedReturnUltimateParentModel.copy(parentCompany = Some(parentCompanyModelMax)).validate).message shouldBe
+          ParentCompanyCanNotBeUltimateAndDeemed(parentCompanyModelMax).message
       }
 
       "Group Company Details are invalid" in {
-        leftSideError(abbreviatedReturnUltimateParentModel.copy(groupCompanyDetails = groupCompanyDetailsModel.copy(totalCompanies = 0)).validate).errorMessage shouldBe
-          GroupCompanyDetailsTotalCompaniesError(0).errorMessage
+        leftSideError(abbreviatedReturnUltimateParentModel.copy(groupCompanyDetails = groupCompanyDetailsModel.copy(totalCompanies = 0)).validate).message shouldBe
+          GroupCompanyDetailsTotalCompaniesError(0).message
       }
 
       "it is not the appointed reporting company" in {
         leftSideError(abbreviatedReturnUltimateParentModel.copy(
           appointedReportingCompany = false
-        ).validate).errorMessage shouldBe ReportingCompanyNotAppointed.errorMessage
+        ).validate).message shouldBe ReportingCompanyNotAppointed.message
       }
 
       "Group Level Elections are invalid" in {
@@ -108,17 +108,17 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
           groupLevelElections = Some(groupLevelElectionsModelMax.copy(
             groupRatio = groupRatioModelMin.copy(groupEBITDAChargeableGains = Some(true))
           )
-        )).validate).errorMessage shouldBe GroupEBITDASupplied(Some(true)).errorMessage
+        )).validate).message shouldBe GroupEBITDASupplied(Some(true)).message
       }
 
       "Uk Company details are invalid" in {
         leftSideError(abbreviatedReturnUltimateParentModel.copy(
           ukCompanies = Seq(ukCompanyModel.copy(companyName = companyNameTooLong))
-        ).validate).errorMessage shouldBe CompanyNameLengthError(companyNameTooLong.name).errorMessage
+        ).validate).message shouldBe CompanyNameLengthError(companyNameTooLong.name).message
       }
 
       "Angie is negative" in {
-        leftSideError(abbreviatedReturnUltimateParentModel.copy(angie = Some(-0.01)).validate).errorMessage shouldBe NegativeAngieError(-0.01).errorMessage
+        leftSideError(abbreviatedReturnUltimateParentModel.copy(angie = Some(-0.01)).validate).message shouldBe NegativeAngieError(-0.01).message
       }
     }
   }

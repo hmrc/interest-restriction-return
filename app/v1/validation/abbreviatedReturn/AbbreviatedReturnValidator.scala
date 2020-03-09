@@ -20,7 +20,7 @@ import play.api.libs.json.{JsPath, Json}
 import v1.models.Validation.ValidationResult
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
 import v1.models.{Original, ParentCompanyModel, Revised, Validation}
-import v1.validation.BaseValidation
+import v1.validation._
 
 trait AbbreviatedReturnValidator extends BaseValidation {
 
@@ -79,43 +79,43 @@ trait AbbreviatedReturnValidator extends BaseValidation {
 }
 
 case object ReportingCompanyNotAppointed extends Validation {
-  val errorMessage: String = "You need to appoint a reporting company"
+  val code = APPOINT_REPORTING_COMPANY
+  val message: String = "You need to appoint a reporting company"
   val path = JsPath \ "appointedReportingCompany"
-  val value = Json.obj()
 }
 
 case object RevisedReturnDetailsNotSupplied extends Validation {
-  val errorMessage: String = "A description of the amendments made to the return must be supplied if this is a revised return"
+  val code = MISSING_FIELD
+  val message: String = "A description of the amendments made to the return must be supplied if this is a revised return"
   val path = JsPath \ "revisedReturnDetails"
-  val value = Json.obj()
 }
 
 case class RevisedReturnDetailsSupplied(details: String) extends Validation {
-  val errorMessage: String = "A description of the amendments made to the return cannot be supplied if this is an original return"
+  val code = UNEXPECTED_FIELD
+  val message: String = "A description of the amendments made to the return cannot be supplied if this is an original return"
   val path = JsPath \ "revisedReturnDetails"
-  val value = Json.toJson(details)
 }
 
 case object ParentCompanyDetailsNotSupplied extends Validation {
-  val errorMessage: String = "Parent Company is required if the Reporting Company is not the same as the Ultimate Parent"
+  val code = MISSING_FIELD
+  val message: String = "Parent Company is required if the Reporting Company is not the same as the Ultimate Parent"
   val path = JsPath \ "parentCompany"
-  val value = Json.obj()
 }
 
 case class ParentCompanyDetailsSupplied(parentCompany: ParentCompanyModel) extends Validation {
-  val errorMessage: String = "Parent Company should not be supplied as the parent is the same as the Reporting Company"
+  val code = UNEXPECTED_FIELD
+  val message: String = "Parent Company should not be supplied as the parent is the same as the Reporting Company"
   val path = JsPath \ "parentCompany"
-  val value = Json.toJson(parentCompany)
 }
 
 case object UkCompaniesEmpty extends Validation {
-  val errorMessage: String = "ukCompanies must have at least 1 UK company"
+  val code = MISSING_FIELD
+  val message: String = "ukCompanies must have at least 1 UK company"
   val path = JsPath \ "ukCompanies"
-  val value = Json.obj()
 }
 
 case class NegativeAngieError(amt: BigDecimal) extends Validation {
-  val errorMessage: String = "ANGIE cannot be negative"
+  val code = NEGATIVE_AMOUNT
+  val message: String = "ANGIE cannot be negative"
   val path = JsPath \ "angie"
-  val value = Json.toJson(amt)
 }

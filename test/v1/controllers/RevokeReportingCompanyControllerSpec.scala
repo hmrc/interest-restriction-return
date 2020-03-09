@@ -24,6 +24,7 @@ import play.api.test.{FakeRequest, Helpers}
 import v1.services.mocks.{MockCompaniesHouseService, MockRevokeReportingCompanyService}
 import utils.BaseSpec
 import v1.models.errors.ValidationErrorResponseModel
+import v1.validation.INVALID_CRN
 
 class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanyService with MockCompaniesHouseService with BaseSpec {
 
@@ -81,7 +82,7 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
 
             mockCompaniesHouse(revokeReportingCompanyModelMax.ukCrns)(Right(
               revokeReportingCompanyModelMax.ukCrns.map{
-                currentCrn => ValidationErrorResponseModel(currentCrn._1.toString, Json.toJson(crn), Seq(InvalidCRN.body))
+                currentCrn => ValidationErrorResponseModel(INVALID_CRN, currentCrn._1, Seq(InvalidCRN.body))
               }
             ))
 

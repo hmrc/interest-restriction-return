@@ -19,30 +19,44 @@ package v1.models.errors
 import cats.data.NonEmptyChain
 import play.api.libs.json._
 import v1.models.Validation
+import v1.validation._
 
-case class ValidationErrorResponseModel(field: String, value: JsValue = Json.obj(), errors: Seq[String])
+case class ValidationErrorResponseModel(code: ErrorCode, path: JsPath, errors: Seq[String])
+case class MultiValidationErrorResponseModel(code: ErrorCode, message: String, errors: Seq[ValidationErrorResponseModel])
+object MultiValidationErrorResponseModel {
+  implicit val writes: Writes[MultiValidationErrorResponseModel] = Json.writes[MultiValidationErrorResponseModel]
+}
 
 object ValidationErrorResponseModel {
-  implicit val writes: Writes[ValidationErrorResponseModel] = Writes { models =>
-    JsObject(Json.obj("field" -> models.field.toString(),
-      "value" -> models.value,
-      "errors" -> models.errors
+  implicit val writes: Writes[ValidationErrorResponseModel] = Writes { model =>
+    JsObject(Json.obj(
+      "code" -> model.code.toString,
+      "path" -> model.path.toString,
+      "errors" -> model.errors
     ).fields.filterNot(_._2 == Json.obj()).toMap)
   }
 
-  def apply(errors: Seq[(JsPath, Seq[JsonValidationError])]): Seq[ValidationErrorResponseModel] = {
-    errors.map {
-      case (field, errs) => ValidationErrorResponseModel(field = field.toString, errors = errs.flatMap(_.messages))
-    }
-  }
+  def apply(errors: Seq[(JsPath, Seq[JsonValidationError])]): MultiValidationErrorResponseModel =
+    MultiValidationErrorResponseModel(
+      code = BAD_REQUEST,
+      message = "The request contained JSON validation errors",
+      errors.map {
+        case (field, errs) => ValidationErrorResponseModel(INVALID_JSON, field, errors = errs.flatMap(_.messages))
+      }
+    )
 
-  def apply(errors: NonEmptyChain[Validation]): Seq[ValidationErrorResponseModel] = {
-    errors.toChain.toList.map(errs => ValidationErrorResponseModel(
-      field = errs.path.toString,
-      errors = errs.errorMessage.split("\\|"),
-      value = errs.value
-    ))
-  }
+  def apply(errors: NonEmptyChain[Validation]): MultiValidationErrorResponseModel =
+    MultiValidationErrorResponseModel(
+      code = BAD_REQUEST,
+      message = "The request did not pass business rule validation checks, errors are listed below",
+      errors = errors.toChain.toList.map(errs =>
+        ValidationErrorResponseModel(
+          code = errs.code,
+          path = errs.path,
+          errors = errs.message.split("\\|")
+        )
+      )
+    )
 }
 
 

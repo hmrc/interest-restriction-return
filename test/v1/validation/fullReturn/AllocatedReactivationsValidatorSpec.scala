@@ -42,8 +42,8 @@ class AllocatedReactivationsValidatorSpec extends BaseSpec {
     "Return invalid" when {
 
       "currentPeriodReactivation is < 0" in {
-        leftSideError(allocatedReactivationsModel.copy(currentPeriodReactivation = -1).validate).errorMessage shouldBe
-          AllocatedReactivationsCannotBeNegative(-1).errorMessage
+        leftSideError(allocatedReactivationsModel.copy(currentPeriodReactivation = -1).validate).message shouldBe
+          AllocatedReactivationsCannotBeNegative(-1).message
       }
     }
   }

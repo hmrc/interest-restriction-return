@@ -24,6 +24,7 @@ import play.api.test.{FakeRequest, Helpers}
 import v1.services.mocks.{MockAbbreviatedReturnService, MockCompaniesHouseService}
 import utils.BaseSpec
 import v1.models.errors.ValidationErrorResponseModel
+import v1.validation.INVALID_CRN
 
 class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with MockCompaniesHouseService with BaseSpec {
 
@@ -77,7 +78,7 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
 
             mockCompaniesHouse(abbreviatedReturnUltimateParentModel.ukCrns)(Right(
               abbreviatedReturnUltimateParentModel.ukCrns.map{
-                currentCrn => ValidationErrorResponseModel(currentCrn._1.toString, Json.toJson(crn), Seq(InvalidCRN.body))
+                currentCrn => ValidationErrorResponseModel(INVALID_CRN, currentCrn._1, Seq(InvalidCRN.body))
               }
             ))
 

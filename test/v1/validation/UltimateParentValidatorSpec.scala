@@ -66,19 +66,19 @@ class UltimateParentValidatorSpec extends BaseSpec {
 
         val model = ultimateParentModelMax
 
-        leftSideError(model.validate).errorMessage shouldBe UltimateParentCannotBeUkAndNonUk(model).errorMessage
+        leftSideError(model.validate).message shouldBe UltimateParentCannotBeUkAndNonUk(model).message
       }
 
       "Company name" when {
 
         "Company name is empty" in {
           val model = ultimateParentModelUkCompany.copy(companyName = CompanyNameModel(""))
-          leftSideError(model.validate).errorMessage shouldBe CompanyNameLengthError("").errorMessage
+          leftSideError(model.validate).message shouldBe CompanyNameLengthError("").message
         }
 
         s"Company name is longer that ${companyNameMaxLength}" in {
           val model = ultimateParentModelUkCompany.copy(companyName = companyNameTooLong)
-          leftSideError(model.validate).errorMessage shouldBe CompanyNameLengthError("a" * (companyNameMaxLength + 1)).errorMessage
+          leftSideError(model.validate).message shouldBe CompanyNameLengthError("a" * (companyNameMaxLength + 1)).message
         }
       }
 
@@ -86,28 +86,28 @@ class UltimateParentValidatorSpec extends BaseSpec {
         val model = ultimateParentModelUkCompany.copy(
           ctutr = Some(invalidUtr))
 
-        leftSideError(model.validate).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
+        leftSideError(model.validate).message shouldBe UTRChecksumError(invalidUtr).message
       }
 
       "CRN is invalid" in {
         val model = ultimateParentModelUkCompany.copy(
           crn = Some(invalidCrn))
 
-        leftSideError(model.validate).errorMessage shouldBe CRNFormatCheck(invalidCrn).errorMessage
+        leftSideError(model.validate).message shouldBe CRNFormatCheck(invalidCrn).message
       }
 
       "CountryOfIncorporation is invalid" in {
         val model = ultimateParentModelNonUkCompany.copy(
           countryOfIncorporation = Some(invalidCountryCode))
 
-        leftSideError(model.validate).errorMessage shouldBe CountryCodeValueError(invalidCountryCode).errorMessage
+        leftSideError(model.validate).message shouldBe CountryCodeValueError(invalidCountryCode).message
       }
 
       "Both versions of UTR are supplied for Uk Company" in {
         val model = ultimateParentModelUkCompany.copy(
           sautr = Some(sautr))
 
-        leftSideError(model.validate).errorMessage shouldBe UltimateParentUTRSuppliedError(model).errorMessage
+        leftSideError(model.validate).message shouldBe UltimateParentUTRSuppliedError(model).message
       }
     }
   }

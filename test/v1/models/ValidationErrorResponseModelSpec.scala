@@ -18,7 +18,8 @@ package models
 
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json._
-import v1.models.errors.ValidationErrorResponseModel
+import v1.models.errors.{MultiValidationErrorResponseModel, ValidationErrorResponseModel}
+import v1.validation.{BAD_REQUEST, INVALID_JSON}
 
 class ValidationErrorResponseModelSpec extends WordSpec with Matchers {
 
@@ -28,17 +29,28 @@ class ValidationErrorResponseModelSpec extends WordSpec with Matchers {
 
     "be successfully constructed given a sequence of Json validation errors" in {
 
-      val expected = Seq(ValidationErrorResponseModel(field = "/FOO", errors = Seq("BAR", "Snakes", "bye", "hello")))
+      val expected = MultiValidationErrorResponseModel(
+        code = BAD_REQUEST,
+        message = "The request contained JSON validation errors",
+        errors = Seq(
+          ValidationErrorResponseModel(INVALID_JSON, path = JsPath \ "FOO", errors = Seq("BAR", "Snakes", "bye", "hello"))
+        )
+      )
 
       ValidationErrorResponseModel(errors) shouldBe expected
     }
 
     "serialise to Json correctly" in {
 
-      val expected = Json.arr(Json.obj(
-        "field" -> "/FOO",
-        "errors" -> Json.arr("BAR", "Snakes", "bye", "hello")
-      ))
+      val expected = Json.obj(
+        "code" -> BAD_REQUEST.toString,
+        "message" -> "The request contained JSON validation errors",
+        "errors" -> Json.arr(Json.obj(
+          "code" -> INVALID_JSON.toString,
+          "path" -> "/FOO",
+          "errors" -> Json.arr("BAR", "Snakes", "bye", "hello")
+        ))
+      )
 
       Json.toJson(ValidationErrorResponseModel(errors)) shouldBe expected
     }

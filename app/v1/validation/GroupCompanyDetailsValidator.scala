@@ -43,8 +43,8 @@ trait GroupCompanyDetailsValidator extends BaseValidation {
 }
 
 case class GroupCompanyDetailsTotalCompaniesError(totalCompanies: Int)(implicit topPath: JsPath) extends Validation {
+  val code = NEGATIVE_AMOUNT
   val path = topPath \ "totalCompanies"
-  val errorMessage: String =
+  val message: String =
     s"totalCompanies is ${totalCompanies} but it must be greater than 0 and less than ${Constants.intMax}"
-  val value = Json.toJson(totalCompanies)
-}
+  }

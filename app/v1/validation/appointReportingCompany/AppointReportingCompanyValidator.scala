@@ -20,7 +20,7 @@ import play.api.libs.json.{JsPath, Json}
 import v1.models.Validation.ValidationResult
 import v1.models.appointReportingCompany.AppointReportingCompanyModel
 import v1.models.{IdentityOfCompanySubmittingModel, UltimateParentModel, Validation}
-import v1.validation.BaseValidation
+import v1.validation._
 
 trait AppointReportingCompanyValidator extends BaseValidation {
 
@@ -65,28 +65,28 @@ trait AppointReportingCompanyValidator extends BaseValidation {
 }
 
 case object IdentityOfAppointingCompanyIsNotSupplied extends Validation {
-  val errorMessage: String = "Identity of Appointing Company must be supplied if it is not the same as the reporting company or agent"
+  val code = MISSING_FIELD
+  val message: String = "Identity of Appointing Company must be supplied if it is not the same as the reporting company or agent"
   val path = JsPath \ "identifyOfAppointingCompany"
-  val value = Json.obj()
-}
+  }
 
 case class IdentityOfAppointingCompanyIsSupplied(identityOfCompanySubmittingModel: IdentityOfCompanySubmittingModel) extends Validation {
-  val errorMessage: String = "Identity of Appointing Company must not be supplied if it is the same as the reporting company or agent"
+  val code = UNEXPECTED_FIELD
+  val message: String = "Identity of Appointing Company must not be supplied if it is the same as the reporting company or agent"
   val path = JsPath \ "identifyOfAppointingCompany"
-  val value = Json.toJson(identityOfCompanySubmittingModel)
-}
+  }
 
 case class UltimateParentCompanyIsSupplied(ultimateParentModel: UltimateParentModel) extends Validation {
-  val errorMessage: String = "Ultimate Parent Company must not be supplied if it is the same as the reporting company"
+  val code = UNEXPECTED_FIELD
+  val message: String = "Ultimate Parent Company must not be supplied if it is the same as the reporting company"
   val path = JsPath \ "ultimateParentCompany"
-  val value = Json.toJson(ultimateParentModel)
-}
+  }
 
 case object AuthorisingCompaniesEmpty extends Validation {
-  val errorMessage: String = "authorisingCompanies must have at least 1 authorising company"
+  val code = MISSING_FIELD
+  val message: String = "authorisingCompanies must have at least 1 authorising company"
   val path = JsPath \ "authorisingCompanies"
-  val value = Json.obj()
-}
+  }
 
 
 

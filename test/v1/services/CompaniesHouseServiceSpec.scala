@@ -23,6 +23,7 @@ import v1.connectors.mocks.MockCompaniesHouseConnector
 import v1.connectors.{InvalidCRN, UnexpectedFailure, ValidCRN}
 import v1.models.CRNModel
 import v1.models.errors.ValidationErrorResponseModel
+import v1.validation.INVALID_CRN
 
 class CompaniesHouseServiceSpec extends MockCompaniesHouseConnector with BaseSpec {
 
@@ -68,7 +69,7 @@ class CompaniesHouseServiceSpec extends MockCompaniesHouseConnector with BaseSpe
         mockValidateCRN(crn)(Left(InvalidCRN))
 
         val actualResult = TestCompaniesHouseService.invalidCRNs(Seq(JsPath \ "crn" -> crn))
-        val expectedResult = Right(Seq(ValidationErrorResponseModel(jsPath.toString, Json.toJson(crn), Seq(InvalidCRN.body))))
+        val expectedResult = Right(Seq(ValidationErrorResponseModel(INVALID_CRN, jsPath, Seq(InvalidCRN.body))))
 
         await(actualResult) shouldBe expectedResult
       }

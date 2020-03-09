@@ -36,23 +36,23 @@ class GroupLevelAmountValidatorSpec extends BaseSpec {
     "Return invalid" when {
 
       "interestReactivationCap is < 0" in {
-        leftSideError(groupLevelAmountModel.copy(interestReactivationCap = Some(-0.1)).validate).errorMessage shouldBe
-          GroupLevelAmountCannotBeNegative("interestReactivationCap", -0.1).errorMessage
+        leftSideError(groupLevelAmountModel.copy(interestReactivationCap = Some(-0.1)).validate).message shouldBe
+          GroupLevelAmountCannotBeNegative("interestReactivationCap", -0.1).message
       }
 
       "interestAllowanceBroughtForward is < 0" in {
-        leftSideError(groupLevelAmountModel.copy(interestAllowanceBroughtForward = -0.1).validate).errorMessage shouldBe
-          GroupLevelAmountCannotBeNegative("interestAllowanceBroughtForward", -0.1).errorMessage
+        leftSideError(groupLevelAmountModel.copy(interestAllowanceBroughtForward = -0.1).validate).message shouldBe
+          GroupLevelAmountCannotBeNegative("interestAllowanceBroughtForward", -0.1).message
       }
 
       "interestAllowanceForPeriod is < 0" in {
-        leftSideError(groupLevelAmountModel.copy(interestAllowanceForPeriod = -0.1).validate).errorMessage shouldBe
-          GroupLevelAmountCannotBeNegative("interestAllowanceForPeriod", -0.1).errorMessage
+        leftSideError(groupLevelAmountModel.copy(interestAllowanceForPeriod = -0.1).validate).message shouldBe
+          GroupLevelAmountCannotBeNegative("interestAllowanceForPeriod", -0.1).message
       }
 
       "interestCapacityForPeriod is < 0" in {
-        leftSideError(groupLevelAmountModel.copy(interestCapacityForPeriod = -0.1).validate).errorMessage shouldBe
-          GroupLevelAmountCannotBeNegative("interestCapacityForPeriod", -0.1).errorMessage
+        leftSideError(groupLevelAmountModel.copy(interestCapacityForPeriod = -0.1).validate).message shouldBe
+          GroupLevelAmountCannotBeNegative("interestCapacityForPeriod", -0.1).message
       }
     }
   }

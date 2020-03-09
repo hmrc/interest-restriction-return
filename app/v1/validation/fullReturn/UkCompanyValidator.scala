@@ -20,7 +20,7 @@ import play.api.libs.json.{JsPath, Json}
 import v1.models.Validation.ValidationResult
 import v1.models.fullReturn.UkCompanyModel
 import v1.models.{AccountingPeriodModel, Validation}
-import v1.validation.BaseValidation
+import v1.validation._
 
 trait UkCompanyValidator extends BaseValidation {
 
@@ -31,8 +31,8 @@ trait UkCompanyValidator extends BaseValidation {
   private def validateNetTaxInterestExpense(implicit path: JsPath): ValidationResult[BigDecimal] = {
     val expense = ukCompany.netTaxInterestExpense
     if(expense < 0) {
-    NetTaxInterestExpenseError(ukCompany.netTaxInterestExpense).invalidNec
-        } else {
+      NetTaxInterestExpenseError(ukCompany.netTaxInterestExpense).invalidNec
+    } else {
       ukCompany.netTaxInterestExpense.validNec
     }
   }
@@ -53,9 +53,9 @@ trait UkCompanyValidator extends BaseValidation {
     if(expense != 0 && income != 0) {
       ExpenseAndIncomeBothNotGreaterThanZero(ukCompany.netTaxInterestExpense, ukCompany.netTaxInterestIncome).invalidNec
     } else
-      {
-        ukCompany.netTaxInterestIncome.validNec
-      }
+    {
+      ukCompany.netTaxInterestIncome.validNec
+    }
   }
 
   def validate(groupAccountingPeriod: AccountingPeriodModel)(implicit path: JsPath): ValidationResult[UkCompanyModel] =
@@ -70,19 +70,19 @@ trait UkCompanyValidator extends BaseValidation {
 }
 
 case class NetTaxInterestExpenseError(netTaxInterestExpense: BigDecimal)(implicit topPath: JsPath) extends Validation {
+  val code = NEGATIVE_AMOUNT
   val path = topPath \ "netTaxInterestExpense"
-  val errorMessage: String = "The supplied Net Tax Interest Expense is Negative, which it can not be."
-  val value = Json.toJson(netTaxInterestExpense)
+  val message: String = "The supplied Net Tax Interest Expense is Negative, which it can not be."
 }
 
 case class NetTaxInterestIncomeError(netTaxInterestIncome: BigDecimal)(implicit topPath: JsPath) extends Validation {
+  val code = NEGATIVE_AMOUNT
   val path = topPath \ "netTaxInterestIncome"
-  val errorMessage: String = "The supplied Net Tax Interest Income is Negative, which it can not be."
-  val value = Json.toJson(netTaxInterestIncome)
+  val message: String = "The supplied Net Tax Interest Income is Negative, which it can not be."
 }
 
-case class ExpenseAndIncomeBothNotGreaterThanZero(netTaxInterestExpense: BigDecimal,netTaxInterestIncome: BigDecimal)
-                                                 (implicit val path: JsPath) extends Validation {
-  val errorMessage: String = "A company can not have both a net tax interest expense and a net tax interest income"
-  val value = Json.toJson(( "netTaxInterestExpense: " + netTaxInterestExpense, "netTaxInterestIncome: " + netTaxInterestIncome))
+case class ExpenseAndIncomeBothNotGreaterThanZero(netTaxInterestExpense: BigDecimal,
+                                                  netTaxInterestIncome: BigDecimal)(implicit val path: JsPath) extends Validation {
+  val code = INVALID_AMOUNT
+  val message: String = "A company can not have both a net tax interest expense and a net tax interest income"
 }

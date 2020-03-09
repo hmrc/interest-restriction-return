@@ -45,12 +45,12 @@ class InvestorGroupValidatorSpec extends BaseValidationSpec {
         "Investor name is greater than 32767" in {
           val model = investorGroupsGroupRatioModel.copy(groupName = "a" * (32767 + 1))
 
-          model.validate.toEither.left.get.head.errorMessage shouldBe InvestorNameError(groupName).errorMessage
+          model.validate.toEither.left.get.head.message shouldBe InvestorNameError(groupName).message
         }
 
         "investor name is blank" in {
           val model = investorGroupsGroupRatioModel.copy(groupName = "")
-          model.validate.toEither.left.get.head.errorMessage shouldBe InvestorNameError(groupName).errorMessage
+          model.validate.toEither.left.get.head.message shouldBe InvestorNameError(groupName).message
         }
       }
     }

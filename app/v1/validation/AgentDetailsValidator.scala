@@ -44,19 +44,19 @@ trait AgentDetailsValidator extends BaseValidation {
 }
 
 case class AgentNameLengthError(name: String)(implicit topPath: JsPath) extends Validation {
-  val errorMessage: String = "Agent name must be between 1-160 characters if supplied"
+  val code = INVALID_LENGTH
+  val message: String = "Agent name must be between 1-160 characters if supplied"
   val path = topPath \ "agentName"
-  val value = JsString(name)
 }
 
 case class AgentNameNotSuppliedError(implicit topPath: JsPath) extends Validation {
-  val errorMessage: String = "Agent name must be supplied if agent is acting on behalf of company"
+  val code = MISSING_FIELD
+  val message: String = "Agent name must be supplied if agent is acting on behalf of company"
   val path = topPath \ "agentName"
-  val value = Json.obj()
 }
 
 case class AgentNameSuppliedError(name: String)(implicit topPath: JsPath) extends Validation {
-  val errorMessage: String = "Agent name must not be supplied if agent is not acting on behalf of company"
+  val code = UNEXPECTED_FIELD
+  val message: String = "Agent name must not be supplied if agent is not acting on behalf of company"
   val path = topPath \ "agentName"
-  val value = JsString(name)
 }

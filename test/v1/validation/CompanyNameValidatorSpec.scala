@@ -33,7 +33,7 @@ class CompanyNameValidatorSpec extends WordSpec with Matchers {
         val model = CompanyNameModel(
           name = ""
         )
-        model.validate.toEither.left.get.head.errorMessage shouldBe CompanyNameLengthError(model.name).errorMessage
+        model.validate.toEither.left.get.head.message shouldBe CompanyNameLengthError(model.name).message
       }
 
       "company name is above the maximum length" in {
@@ -41,7 +41,7 @@ class CompanyNameValidatorSpec extends WordSpec with Matchers {
         val model = CompanyNameModel(
           name = "a" * 161
         )
-        model.validate.toEither.left.get.head.errorMessage shouldBe CompanyNameLengthError(model.name).errorMessage
+        model.validate.toEither.left.get.head.message shouldBe CompanyNameLengthError(model.name).message
       }
     }
   }

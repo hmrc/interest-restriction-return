@@ -20,7 +20,7 @@ import play.api.libs.json.{JsPath, Json}
 import v1.models.Validation
 import v1.models.Validation.ValidationResult
 import v1.models.fullReturn.GroupLevelAmountModel
-import v1.validation.BaseValidation
+import v1.validation._
 
 trait GroupLevelAmountValidator extends BaseValidation {
 
@@ -41,7 +41,7 @@ trait GroupLevelAmountValidator extends BaseValidation {
 }
 
 case class GroupLevelAmountCannotBeNegative(field: String, amt: BigDecimal)(implicit topPath: JsPath) extends Validation {
+  val code = NEGATIVE_AMOUNT
   val path = topPath \ "field"
-  val errorMessage: String = s"$field cannot be negative"
-  val value = Json.toJson(amt)
-}
+  val message: String = s"$field cannot be negative"
+  }

@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import play.api.libs.json.{JsPath, Json}
+import play.api.libs.json.JsPath
 import v1.models.Validation.ValidationResult
 import v1.models.{CRNModel, Validation}
 
@@ -36,6 +36,6 @@ trait CRNValidator extends BaseValidation {
 }
 
 case class CRNFormatCheck(crnValue: CRNModel)(implicit val path: JsPath) extends Validation {
-  val errorMessage: String = "CRN supplied is incorrect format. CRN should be 8 numbers or 2 letters and 6 numbers"
-  val value = Json.toJson(crnValue)
+  val code = INVALID_CRN
+  val message: String = "CRN supplied is incorrect format. CRN should be 8 numbers or 2 letters and 6 numbers"
 }

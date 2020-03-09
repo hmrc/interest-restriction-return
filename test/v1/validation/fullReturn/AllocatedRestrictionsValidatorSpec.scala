@@ -97,7 +97,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
             totalDisallowances = Some(totalDisallowances)
           )
 
-          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionNotSupplied(1).errorMessage
+          leftSideError(model.validate(groupAccountingPeriod)).message shouldBe AllocatedRestrictionNotSupplied(1).message
         }
 
         "is supplied with no date" in {
@@ -107,7 +107,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
             totalDisallowances = Some(totalDisallowances)
           )
 
-          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionSupplied(1).errorMessage
+          leftSideError(model.validate(groupAccountingPeriod)).message shouldBe AllocatedRestrictionSupplied(1).message
         }
 
         "is supplied with negative amount" in {
@@ -118,7 +118,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
             totalDisallowances = Some(totalDisallowances)
           )
 
-          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionNegative(1, -1).errorMessage
+          leftSideError(model.validate(groupAccountingPeriod)).message shouldBe AllocatedRestrictionNegative(1, -1).message
         }
 
         "is supplied with a date that is equal to Group Accounting Period start date" in {
@@ -129,8 +129,8 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
             totalDisallowances = Some(totalDisallowances)
           )
 
-          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe
-            Ap1NotAfterGroupStartDate(groupAccountingPeriod.startDate, groupAccountingPeriod.startDate).errorMessage
+          leftSideError(model.validate(groupAccountingPeriod)).message shouldBe
+            Ap1NotAfterGroupStartDate(groupAccountingPeriod.startDate, groupAccountingPeriod.startDate).message
         }
 
         "is supplied with a date that is less than Group Accounting Period start date" in {
@@ -141,8 +141,8 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
             totalDisallowances = Some(totalDisallowances)
           )
 
-          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe
-            Ap1NotAfterGroupStartDate(groupAccountingPeriod.startDate.minusDays(1), groupAccountingPeriod.startDate).errorMessage
+          leftSideError(model.validate(groupAccountingPeriod)).message shouldBe
+            Ap1NotAfterGroupStartDate(groupAccountingPeriod.startDate.minusDays(1), groupAccountingPeriod.startDate).message
         }
       }
 
@@ -155,7 +155,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
             totalDisallowances = Some(totalDisallowances)
           )
 
-          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionNotSupplied(2).errorMessage
+          leftSideError(model.validate(groupAccountingPeriod)).message shouldBe AllocatedRestrictionNotSupplied(2).message
         }
 
         "is supplied with no date" in {
@@ -165,7 +165,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
             totalDisallowances = Some(totalDisallowances)
           )
 
-          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionSupplied(2).errorMessage
+          leftSideError(model.validate(groupAccountingPeriod)).message shouldBe AllocatedRestrictionSupplied(2).message
         }
 
         "is supplied with negative amount" in {
@@ -176,7 +176,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
             totalDisallowances = Some(totalDisallowances)
           )
 
-          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionNegative(2, -1).errorMessage
+          leftSideError(model.validate(groupAccountingPeriod)).message shouldBe AllocatedRestrictionNegative(2, -1).message
         }
 
         "is supplied without Ap1" in {
@@ -187,7 +187,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
             totalDisallowances = Some(totalDisallowances)
           )
 
-          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionLaterPeriodSupplied(2).errorMessage
+          leftSideError(model.validate(groupAccountingPeriod)).message shouldBe AllocatedRestrictionLaterPeriodSupplied(2).message
         }
 
         "is supplied with a date equal to Ap1" in {
@@ -200,7 +200,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
             totalDisallowances = Some(totalDisallowances)
           )
 
-          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionDateBeforePrevious(2).errorMessage
+          leftSideError(model.validate(groupAccountingPeriod)).message shouldBe AllocatedRestrictionDateBeforePrevious(2).message
         }
 
         "is supplied with a date less than Ap1" in {
@@ -213,7 +213,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
             totalDisallowances = Some(totalDisallowances)
           )
 
-          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionDateBeforePrevious(2).errorMessage
+          leftSideError(model.validate(groupAccountingPeriod)).message shouldBe AllocatedRestrictionDateBeforePrevious(2).message
         }
       }
 
@@ -226,7 +226,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
             totalDisallowances = Some(totalDisallowances)
           )
 
-          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionNotSupplied(3).errorMessage
+          leftSideError(model.validate(groupAccountingPeriod)).message shouldBe AllocatedRestrictionNotSupplied(3).message
         }
 
         "is supplied with no date" in {
@@ -236,7 +236,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
             totalDisallowances = Some(totalDisallowances)
           )
 
-          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionSupplied(3).errorMessage
+          leftSideError(model.validate(groupAccountingPeriod)).message shouldBe AllocatedRestrictionSupplied(3).message
         }
 
         "is supplied with negative amount" in {
@@ -247,7 +247,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
             totalDisallowances = Some(totalDisallowances)
           )
 
-          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionNegative(3, -1).errorMessage
+          leftSideError(model.validate(groupAccountingPeriod)).message shouldBe AllocatedRestrictionNegative(3, -1).message
         }
 
         "is supplied without Ap1 and Ap2" in {
@@ -258,7 +258,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
             totalDisallowances = Some(totalDisallowances)
           )
 
-          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionLaterPeriodSupplied(3).errorMessage
+          leftSideError(model.validate(groupAccountingPeriod)).message shouldBe AllocatedRestrictionLaterPeriodSupplied(3).message
         }
 
         "is supplied without Ap2" in {
@@ -271,7 +271,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
             totalDisallowances = Some(totalDisallowances)
           )
 
-          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionLaterPeriodSupplied(3).errorMessage
+          leftSideError(model.validate(groupAccountingPeriod)).message shouldBe AllocatedRestrictionLaterPeriodSupplied(3).message
         }
 
         "is supplied with a date equal to Ap2" in {
@@ -286,7 +286,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
             totalDisallowances = Some(totalDisallowances)
           )
 
-          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionDateBeforePrevious(3).errorMessage
+          leftSideError(model.validate(groupAccountingPeriod)).message shouldBe AllocatedRestrictionDateBeforePrevious(3).message
         }
 
         "is supplied with a date less than Ap2" in {
@@ -301,7 +301,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
             totalDisallowances = Some(totalDisallowances)
           )
 
-          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionDateBeforePrevious(3).errorMessage
+          leftSideError(model.validate(groupAccountingPeriod)).message shouldBe AllocatedRestrictionDateBeforePrevious(3).message
         }
 
         "is supplied with a date less than Group Accounting Period end" in {
@@ -316,8 +316,8 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
             totalDisallowances = Some(totalDisallowances)
           )
 
-          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe
-            Ap3BeforeGroupEndDate(groupAccountingPeriod.endDate.minusDays(1), groupAccountingPeriod.endDate).errorMessage
+          leftSideError(model.validate(groupAccountingPeriod)).message shouldBe
+            Ap3BeforeGroupEndDate(groupAccountingPeriod.endDate.minusDays(1), groupAccountingPeriod.endDate).message
         }
       }
 
@@ -330,7 +330,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
             disallowanceAp1 = Some(disallowanceAp1)
           )
 
-          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionTotalNotSupplied().errorMessage
+          leftSideError(model.validate(groupAccountingPeriod)).message shouldBe AllocatedRestrictionTotalNotSupplied().message
         }
 
         "is not supplied when Ap1 & Ap2 is" in {
@@ -342,7 +342,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
             disallowanceAp2 = Some(disallowanceAp2)
           )
 
-          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionTotalNotSupplied().errorMessage
+          leftSideError(model.validate(groupAccountingPeriod)).message shouldBe AllocatedRestrictionTotalNotSupplied().message
         }
 
         "is not supplied when Ap1, Ap2 & Ap3 is" in {
@@ -356,7 +356,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
             disallowanceAp3 = Some(disallowanceAp3)
           )
 
-          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionTotalNotSupplied().errorMessage
+          leftSideError(model.validate(groupAccountingPeriod)).message shouldBe AllocatedRestrictionTotalNotSupplied().message
         }
 
         "is negative" in {
@@ -367,7 +367,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
             totalDisallowances = Some(-1)
           )
 
-          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionTotalNegative(-1).errorMessage
+          leftSideError(model.validate(groupAccountingPeriod)).message shouldBe AllocatedRestrictionTotalNegative(-1).message
         }
 
         "does not match the calculated total" in {
@@ -378,7 +378,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
             totalDisallowances = Some(1)
           )
 
-          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionTotalDoesNotMatch(1, disallowanceAp1).errorMessage
+          leftSideError(model.validate(groupAccountingPeriod)).message shouldBe AllocatedRestrictionTotalDoesNotMatch(1, disallowanceAp1).message
         }
       }
     }

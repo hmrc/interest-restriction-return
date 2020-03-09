@@ -57,18 +57,18 @@ trait DeemedParentValidator extends BaseValidation {
 }
 
 case class DeemedParentCannotBeUkAndNonUk(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
-  val errorMessage: String = "Deemed Parent Company Model cannot contain data for UK and NonUK fields"
-  val value = Json.toJson(model)
+  val code = UNEXPECTED_FIELD
+  val message: String = "Deemed Parent Company Model cannot contain data for UK and NonUK fields"
 }
 
 case class DeemedParentUTRSuppliedError(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
-  val errorMessage: String = "both ctutr and sautr cannot be supplied simultaneously for Uk Deemed Parent"
-  val value = Json.toJson(model)
+  val code = UNEXPECTED_FIELD
+  val message: String = "both ctutr and sautr cannot be supplied simultaneously for Uk Deemed Parent"
 }
 
 case class DeemedParentWrongDetailsError(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
-  val errorMessage: String = "you have given the wrong details for the type of deemed parent you have tried to supply"
-  val value = Json.toJson(model)
+  val code = UNEXPECTED_FIELD
+  val message: String = "you have given the wrong details for the type of deemed parent you have tried to supply"
 }
 
 

@@ -40,9 +40,9 @@ trait PartnershipValidator extends BaseValidation {
 }
 
 case class PartnershipNameError(partnershipName: String)(implicit val topPath: JsPath) extends Validation {
-  val errorMessage: String = "Partnership Names must be between 1 and 32767 characters"
+  val code = INVALID_LENGTH
+  val message: String = "Partnership Names must be between 1 and 32767 characters"
   val path = topPath \ "investorGroups"
-  val value = Json.toJson(partnershipName)
 }
 
 

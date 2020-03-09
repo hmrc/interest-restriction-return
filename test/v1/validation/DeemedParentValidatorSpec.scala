@@ -32,7 +32,7 @@ class DeemedParentValidatorSpec extends BaseSpec {
 
         val model = deemedParentModelMax
 
-        leftSideError(model.validate).errorMessage shouldBe DeemedParentCannotBeUkAndNonUk(model).errorMessage
+        leftSideError(model.validate).message shouldBe DeemedParentCannotBeUkAndNonUk(model).message
       }
     }
 
@@ -58,7 +58,7 @@ class DeemedParentValidatorSpec extends BaseSpec {
       val model = deemedParentModelUkCompany.copy(
         sautr = Some(sautr))
 
-      leftSideError(model.validate).errorMessage shouldBe DeemedParentUTRSuppliedError(model).errorMessage
+      leftSideError(model.validate).message shouldBe DeemedParentUTRSuppliedError(model).message
     }
   }
 }

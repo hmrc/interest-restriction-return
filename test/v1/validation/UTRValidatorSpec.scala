@@ -28,7 +28,7 @@ class UTRValidatorSpec extends BaseSpec {
 
     "UTR is supplied and fails Check Sum" in {
       val model  = UTRModel("1234567890")
-      leftSideError(model.validate).errorMessage shouldBe UTRChecksumError(model).errorMessage
+      leftSideError(model.validate).message shouldBe UTRChecksumError(model).message
     }
 
     "UTR is supplied and passes Check Sum" in {

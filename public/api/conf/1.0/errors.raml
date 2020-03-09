@@ -3,15 +3,25 @@
 uses:
   types: https://developer.service.hmrc.gov.uk/api-documentation/assets/common/modules/types.raml
 
-# Example for when we start using errors
-#traits:
-#  apiServiceError:
-#    responses:
-#      500:
-#        body:
-#          application/json:
-#            type: types.errorResponse
-#            example:
-#              description: When there is an internal error within the service
-#              value:
-#                code: INTERNAL_SERVER_ERROR
+traits:
+  apiServiceError:
+    responses:
+      500:
+        body:
+          application/json:
+            type: types.errorResponse
+            example:
+              description: When there is an unexpected internal error within the service
+              value:
+                code: INTERNAL_SERVER_ERROR
+  validationError:
+    responses:
+      400:
+        body:
+          application/json:
+            type: types.errorResponse
+            example:
+              description: When the json received in the request does not pass the validation or business rules
+              value:
+                code: BAD_REQUEST
+

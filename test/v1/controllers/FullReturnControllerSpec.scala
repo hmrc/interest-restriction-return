@@ -24,6 +24,7 @@ import play.api.test.{FakeRequest, Helpers}
 import v1.services.mocks.{MockCompaniesHouseService, MockFullReturnService}
 import utils.BaseSpec
 import v1.models.errors.ValidationErrorResponseModel
+import v1.validation.INVALID_CRN
 
 class FullReturnControllerSpec extends MockFullReturnService with MockCompaniesHouseService with BaseSpec {
 
@@ -79,7 +80,7 @@ class FullReturnControllerSpec extends MockFullReturnService with MockCompaniesH
 
             mockCompaniesHouse(fullReturnUltimateParentModel.ukCrns)(Right(
               fullReturnUltimateParentModel.ukCrns.map{
-                currentCrn => ValidationErrorResponseModel(currentCrn._1.toString, Json.toJson(crn), Seq(InvalidCRN.body))
+                currentCrn => ValidationErrorResponseModel(INVALID_CRN, currentCrn._1, Seq(InvalidCRN.body))
               }
             ))
 

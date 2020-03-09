@@ -50,7 +50,7 @@ class GroupLevelElectionValidatorSpec extends BaseValidationSpec {
           )
         )
 
-        leftSideError(model.validate).errorMessage shouldBe GroupEBITDASupplied(model.groupRatio.groupEBITDAChargeableGains).errorMessage
+        leftSideError(model.validate).message shouldBe GroupEBITDASupplied(model.groupRatio.groupEBITDAChargeableGains).message
       }
 
       "interestAllowanceNonConsolidatedInvestment has errors" in {
@@ -61,7 +61,7 @@ class GroupLevelElectionValidatorSpec extends BaseValidationSpec {
           )
         )
 
-        leftSideError(model.validate).errorMessage shouldBe NonConsolidatedInvestmentNameError("").errorMessage
+        leftSideError(model.validate).message shouldBe NonConsolidatedInvestmentNameError("").message
       }
 
       "interestAllowanceConsolidatedPartnership has errors" in {
@@ -72,7 +72,7 @@ class GroupLevelElectionValidatorSpec extends BaseValidationSpec {
           )
         )
 
-        leftSideError(model.validate).errorMessage shouldBe PartnershipNameError("").errorMessage
+        leftSideError(model.validate).message shouldBe PartnershipNameError("").message
       }
     }
   }

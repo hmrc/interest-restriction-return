@@ -31,7 +31,7 @@ class ParentCompanyValidatorSpec extends BaseValidationSpec {
 
         val model = parentCompanyModelMax
 
-        leftSideError(model.validate).errorMessage shouldBe ParentCompanyCanNotBeUltimateAndDeemed(model).errorMessage
+        leftSideError(model.validate).message shouldBe ParentCompanyCanNotBeUltimateAndDeemed(model).message
       }
     }
 

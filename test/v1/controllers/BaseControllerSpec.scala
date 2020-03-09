@@ -23,6 +23,7 @@ import play.api.test.Helpers
 import utils.BaseSpec
 import play.api.mvc.Results.Ok
 import v1.models.errors.ValidationErrorResponseModel
+import v1.validation.{BAD_REQUEST, INVALID_JSON}
 
 import scala.concurrent.Future
 
@@ -61,12 +62,19 @@ class BaseControllerSpec extends BaseSpec {
           _ => Future.successful(Ok("Success"))
         )(invalidJsonRequest, implicitly, implicitly)
 
-        await(jsonBodyOf(actual)) shouldBe Json.arr(
+        await(jsonBodyOf(actual)) shouldBe
           Json.obj(
-            "field" -> "/y",
-            "errors" -> Json.arr("error.path.missing")
+            "code" -> BAD_REQUEST.toString,
+            "message" -> "The request contained JSON validation errors",
+            "errors" ->
+              Json.arr(
+                Json.obj(
+                  "code" -> INVALID_JSON.toString,
+                  "path" -> "/y",
+                  "errors" -> Json.arr("error.path.missing")
+                )
+              )
           )
-        )
       }
     }
   }

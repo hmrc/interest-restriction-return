@@ -33,9 +33,9 @@ trait BaseValidation {
       case errors => {
         val validations = errors.flatMap(_.toList)
         new Validation {
-          override val errorMessage: String = validations.map(_.errorMessage).mkString("|")
+          override val code: ErrorCode = validations.head.code
+          override val message: String = validations.map(_.message).mkString("|")
           override val path: JsPath = validations.head.path
-          override val value: JsValue = validations.head.value
         }.invalidNec
       }
     }

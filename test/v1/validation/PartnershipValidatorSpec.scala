@@ -39,12 +39,12 @@ class PartnershipValidatorSpec extends BaseValidationSpec {
         "is greater than 32767" in {
           val model = partnershipModel.copy(partnershipName = "a" * (32767 + 1))
 
-          model.validate.toEither.left.get.head.errorMessage shouldBe PartnershipNameError(partnerName).errorMessage
+          model.validate.toEither.left.get.head.message shouldBe PartnershipNameError(partnerName).message
         }
 
         "isElected is true and partnership names are given" in {
           val model = partnershipModel.copy(partnershipName = "")
-          model.validate.toEither.left.get.head.errorMessage shouldBe PartnershipNameError(partnerName).errorMessage
+          model.validate.toEither.left.get.head.message shouldBe PartnershipNameError(partnerName).message
         }
       }
     }

@@ -20,7 +20,7 @@ import play.api.libs.json.{JsBoolean, JsPath, Json}
 import v1.models.Validation.ValidationResult
 import v1.models.revokeReportingCompany.RevokeReportingCompanyModel
 import v1.models.{IdentityOfCompanySubmittingModel, UltimateParentModel, Validation}
-import v1.validation.BaseValidation
+import v1.validation._
 
 trait RevokeReportingCompanyValidator extends BaseValidation {
 
@@ -75,30 +75,30 @@ trait RevokeReportingCompanyValidator extends BaseValidation {
 }
 
 case object CompanyMakingAppointmentMustSupplyDetails extends Validation {
-  val errorMessage: String = "companyMakingRevocation must be supplied when isReportingCompanyRevokingItself is false"
+  val code = MISSING_FIELD
+  val message: String = "companyMakingRevocation must be supplied when isReportingCompanyRevokingItself is false"
   val path = JsPath \ "companyMakingRevocation"
-  val value = Json.obj()
 }
 
 case class DeclaredFiftyPercentOfEligibleCompanies(declaration: Boolean)(implicit val path: JsPath) extends Validation {
-  val errorMessage: String = "The declaration that the listed companies constitute at least 50% of the eligible companies must be true"
-  val value = JsBoolean(declaration)
+  val code = COMPANIES_DECLARATION
+  val message: String = "The declaration that the listed companies constitute at least 50% of the eligible companies must be true"
 }
 
 case class DetailsNotNeededIfCompanyRevokingItself(companyMakingRevocation: IdentityOfCompanySubmittingModel)(implicit val path: JsPath) extends Validation {
-  val errorMessage: String = "If the reporting company is submitting this revocation, the identity of company making revocation is not needed."
-  val value = Json.toJson(companyMakingRevocation)
+  val code = UNEXPECTED_FIELD
+  val message: String = "If the reporting company is submitting this revocation, the identity of company making revocation is not needed."
 }
 
 //TODO identify common messages and move
 case class UltimateParentCompanyIsSuppliedRevoke(ultimateParentModel: UltimateParentModel) extends Validation {
-  val errorMessage: String = "Ultimate Parent Company must not be supplied if it is the same as the reporting company"
+  val code = UNEXPECTED_FIELD
+  val message: String = "Ultimate Parent Company must not be supplied if it is the same as the reporting company"
   val path = JsPath \ "ultimateParentCompany"
-  val value = Json.toJson(ultimateParentModel)
 }
 
 case object AuthorisingCompaniesEmpty extends Validation {
-  val errorMessage: String = "authorisingCompanies must have at least 1 authorising company"
+  val code = MISSING_FIELD
+  val message: String = "authorisingCompanies must have at least 1 authorising company"
   val path = JsPath \ "authorisingCompanies"
-  val value = Json.obj()
 }

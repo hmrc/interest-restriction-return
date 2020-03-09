@@ -45,16 +45,16 @@ class GroupCompanyDetailsValidatorSpec extends BaseSpec {
     "Return invalid" when {
 
       "Total companies is < 0" in {
-        leftSideError(groupCompanyDetailsModel.copy(totalCompanies = -1).validate).errorMessage shouldBe GroupCompanyDetailsTotalCompaniesError(-1).errorMessage
+        leftSideError(groupCompanyDetailsModel.copy(totalCompanies = -1).validate).message shouldBe GroupCompanyDetailsTotalCompaniesError(-1).message
       }
 
       "Total companies is == 0" in {
-        leftSideError(groupCompanyDetailsModel.copy(totalCompanies = 0).validate).errorMessage shouldBe GroupCompanyDetailsTotalCompaniesError(0).errorMessage
+        leftSideError(groupCompanyDetailsModel.copy(totalCompanies = 0).validate).message shouldBe GroupCompanyDetailsTotalCompaniesError(0).message
       }
 
       "Total companies is == IntMax(16)+1" in {
-        leftSideError(groupCompanyDetailsModel.copy(totalCompanies = Constants.intMax + 1).validate).errorMessage shouldBe
-          GroupCompanyDetailsTotalCompaniesError(Constants.intMax + 1).errorMessage
+        leftSideError(groupCompanyDetailsModel.copy(totalCompanies = Constants.intMax + 1).validate).message shouldBe
+          GroupCompanyDetailsTotalCompaniesError(Constants.intMax + 1).message
       }
 
       "Accounting Period is invalid" in {
@@ -62,8 +62,8 @@ class GroupCompanyDetailsValidatorSpec extends BaseSpec {
         val startDate = LocalDate.now().minusMonths(20)
         val endDate = LocalDate.now().minusDays(1)
 
-        leftSideError(groupCompanyDetailsModel.copy(accountingPeriod = AccountingPeriodModel(startDate, endDate)).validate).errorMessage shouldBe
-          AccountingPeriod18MonthsMax(endDate).errorMessage
+        leftSideError(groupCompanyDetailsModel.copy(accountingPeriod = AccountingPeriodModel(startDate, endDate)).validate).message shouldBe
+          AccountingPeriod18MonthsMax(endDate).message
       }
     }
   }

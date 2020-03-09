@@ -36,12 +36,12 @@ class UkCompanyValidatorSpec extends BaseValidationSpec {
     "Return invalid" when {
 
       "CTUTR is invalid" in {
-        leftSideError(ukCompanyModel.copy(ctutr = invalidUtr).validate).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
+        leftSideError(ukCompanyModel.copy(ctutr = invalidUtr).validate).message shouldBe UTRChecksumError(invalidUtr).message
       }
 
       "CompanyName is invalid" in {
-        leftSideError(ukCompanyModel.copy(companyName = companyNameTooLong).validate).errorMessage shouldBe
-          CompanyNameLengthError(companyNameTooLong.name).errorMessage
+        leftSideError(ukCompanyModel.copy(companyName = companyNameTooLong).validate).message shouldBe
+          CompanyNameLengthError(companyNameTooLong.name).message
       }
     }
   }

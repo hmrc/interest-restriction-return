@@ -57,7 +57,7 @@ class IdentityOfCompanySubmittingValidatorSpec extends BaseSpec {
           countryOfIncorporation = Some(nonUkCountryCode)
         )
 
-        leftSideError(model.validate).errorMessage shouldBe CannotBeUkAndNonUk(model).errorMessage
+        leftSideError(model.validate).message shouldBe CannotBeUkAndNonUk(model).message
       }
 
       "CTUTR is invalid" in {
@@ -66,7 +66,7 @@ class IdentityOfCompanySubmittingValidatorSpec extends BaseSpec {
           countryOfIncorporation = None,
           ctutr = Some(invalidUtr))
 
-        leftSideError(model.validate).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
+        leftSideError(model.validate).message shouldBe UTRChecksumError(invalidUtr).message
       }
 
       "CRN is invalid" in {
@@ -75,7 +75,7 @@ class IdentityOfCompanySubmittingValidatorSpec extends BaseSpec {
           countryOfIncorporation = None,
           crn = Some(invalidCrn))
 
-        leftSideError(model.validate).errorMessage shouldBe CRNFormatCheck(invalidCrn).errorMessage
+        leftSideError(model.validate).message shouldBe CRNFormatCheck(invalidCrn).message
       }
 
       "CountryOfIncorporation is invalid" in {
@@ -84,7 +84,7 @@ class IdentityOfCompanySubmittingValidatorSpec extends BaseSpec {
           ctutr = None,
           countryOfIncorporation = Some(invalidCountryCode))
 
-        leftSideError(model.validate).errorMessage shouldBe CountryCodeValueError(invalidCountryCode).errorMessage
+        leftSideError(model.validate).message shouldBe CountryCodeValueError(invalidCountryCode).message
       }
     }
   }

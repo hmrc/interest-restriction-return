@@ -28,16 +28,16 @@ class BaseValidationSpec extends WordSpec with Matchers with BaseSpec {
   implicit val topPath = JsPath \ "path"
 
   case class TestError(implicit topPath: JsPath) extends Validation {
-    val errorMessage: String = "error"
+    val code = MISSING_FIELD
+    val message: String = "error"
     val path = topPath \ "path"
-    val value = JsString("bad")
-  }
+    }
 
   case class TestError1(implicit topPath: JsPath) extends Validation {
-    val errorMessage: String = "error1"
+    val code = MISSING_FIELD
+    val message: String = "error1"
     val path = topPath \ "path1"
-    val value = JsString("bad1")
-  }
+    }
 
   val baseValidation = new BaseValidation {}
 
@@ -53,7 +53,7 @@ class BaseValidationSpec extends WordSpec with Matchers with BaseSpec {
 
       val result = baseValidation.combineValidationsForField(TestError().invalidNec,TestError1().invalidNec)
 
-      leftSideError(result).errorMessage shouldBe "error|error1"
+      leftSideError(result).message shouldBe "error|error1"
     }
   }
 
@@ -69,8 +69,8 @@ class BaseValidationSpec extends WordSpec with Matchers with BaseSpec {
 
       val result = baseValidation.combineValidations(TestError().invalidNec,TestError1().invalidNec)
 
-      leftSideError(result).errorMessage shouldBe "error"
-      leftSideError(result,1).errorMessage shouldBe "error1"
+      leftSideError(result).message shouldBe "error"
+      leftSideError(result,1).message shouldBe "error1"
     }
   }
 
@@ -93,9 +93,9 @@ class BaseValidationSpec extends WordSpec with Matchers with BaseSpec {
 
       val result = baseValidation.optionValidations(Some(TestError().invalidNec),Some(TestError1().invalidNec),Some(TestError1().invalidNec))
 
-      leftSideError(result).errorMessage shouldBe "error"
-      leftSideError(result,1).errorMessage shouldBe "error1"
-      leftSideError(result,2).errorMessage shouldBe "error1"
+      leftSideError(result).message shouldBe "error"
+      leftSideError(result,1).message shouldBe "error1"
+      leftSideError(result,2).message shouldBe "error1"
     }
 
     "return Right(None) if there are no valids or invalids" in {

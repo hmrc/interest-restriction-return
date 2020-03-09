@@ -42,7 +42,7 @@ class AccountingPeriodValidatorSpec extends BaseSpec {
         val model = accountingPeriodModel.copy(
           startDate = startDate
         )
-        leftSideError(model.validate).errorMessage shouldBe StartDateCannotBeInFuture(startDate).errorMessage
+        leftSideError(model.validate).message shouldBe StartDateCannotBeInFuture(startDate).message
       }
 
       "End date is before start date" in {
@@ -51,7 +51,7 @@ class AccountingPeriodValidatorSpec extends BaseSpec {
         val model = accountingPeriodModel.copy(
           endDate = endDate
         )
-        leftSideError(model.validate).errorMessage shouldBe EndDateAfterStartDate(endDate).errorMessage
+        leftSideError(model.validate).message shouldBe EndDateAfterStartDate(endDate).message
       }
 
       "End date is equal to start date" in {
@@ -59,7 +59,7 @@ class AccountingPeriodValidatorSpec extends BaseSpec {
         val model = accountingPeriodModel.copy(
           endDate = startDate
         )
-        leftSideError(model.validate).errorMessage shouldBe EndDateAfterStartDate(endDate).errorMessage
+        leftSideError(model.validate).message shouldBe EndDateAfterStartDate(endDate).message
       }
 
       "Accounting period is greater than or equal to 18 months" in {
@@ -70,7 +70,7 @@ class AccountingPeriodValidatorSpec extends BaseSpec {
           startDate = startDate,
           endDate = endDate
         )
-        leftSideError(model.validate).errorMessage shouldBe AccountingPeriod18MonthsMax(endDate).errorMessage
+        leftSideError(model.validate).message shouldBe AccountingPeriod18MonthsMax(endDate).message
       }
       "End date is in the future" in {
 
@@ -79,7 +79,7 @@ class AccountingPeriodValidatorSpec extends BaseSpec {
           startDate = LocalDate.now().minusMonths(12),
           endDate = endDate
         )
-        leftSideError(model.validate).errorMessage shouldBe EndDateCannotBeInTheFuture(endDate).errorMessage
+        leftSideError(model.validate).message shouldBe EndDateCannotBeInTheFuture(endDate).message
       }
     }
   }

@@ -20,7 +20,7 @@ import play.api.libs.json.{JsPath, Json}
 import v1.models.Validation
 import v1.models.Validation.ValidationResult
 import v1.models.fullReturn.AllocatedReactivationsModel
-import v1.validation.BaseValidation
+import v1.validation._
 
 trait AllocatedReactivationsValidator extends BaseValidation {
 
@@ -39,7 +39,7 @@ trait AllocatedReactivationsValidator extends BaseValidation {
 }
 
 case class AllocatedReactivationsCannotBeNegative(currentPeriodReactivation: BigDecimal)(implicit topPath: JsPath) extends Validation {
+  val code = NEGATIVE_AMOUNT
   val path = topPath \ "currentPeriodReactivation"
-  val errorMessage: String = s"currentPeriodReactivation cannot be negative"
-  val value = Json.toJson(currentPeriodReactivation)
+  val message: String = s"currentPeriodReactivation cannot be negative"
 }

@@ -47,12 +47,12 @@ trait CountryCodeValidator extends BaseValidation {
 }
 
 case class CountryCodeValueError(countryCode: CountryCodeModel)(implicit val path: JsPath) extends Validation {
-  val errorMessage: String = s"Country code ${countryCode.code} is not a valid country code"
-  val value = Json.toJson(countryCode)
+  val code = INVALID_COUNTRY_CODE
+  val message: String = s"Country code ${countryCode.code} is not a valid country code"
 }
 
 case class CountryCodeLengthError(countryCode: CountryCodeModel)(implicit val path: JsPath) extends Validation {
-  val errorMessage: String =
+  val code = INVALID_LENGTH
+  val message: String =
     s"UTR is ${countryCode.code.length} character${if (countryCode.code.length != 1) "s" else ""} long and should be ${Constants.countryCodeLength}"
-  val value = Json.toJson(countryCode)
 }

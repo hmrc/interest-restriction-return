@@ -39,12 +39,12 @@ class NonConsolidatedInvestmentValidatorSpec extends BaseValidationSpec {
         "is greater than 32767" in {
           val model = nonConsolidatedModel.copy(nonConsolidatedInvestment = "a" * (32767 + 1))
 
-          model.validate.toEither.left.get.head.errorMessage shouldBe NonConsolidatedInvestmentNameError(investmentName).errorMessage
+          model.validate.toEither.left.get.head.message shouldBe NonConsolidatedInvestmentNameError(investmentName).message
         }
 
         "isElected is true and no investment names are given" in {
           val model = nonConsolidatedModel.copy(nonConsolidatedInvestment = "")
-          model.validate.toEither.left.get.head.errorMessage shouldBe NonConsolidatedInvestmentNameError(investmentName).errorMessage
+          model.validate.toEither.left.get.head.message shouldBe NonConsolidatedInvestmentNameError(investmentName).message
         }
       }
     }

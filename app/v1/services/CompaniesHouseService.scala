@@ -23,6 +23,7 @@ import v1.connectors.{CompaniesHouseConnector, UnexpectedFailure}
 import v1.models.requests.IdentifierRequest
 import v1.models.CRNModel
 import v1.models.errors.ValidationErrorResponseModel
+import v1.validation.INVALID_CRN
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -41,7 +42,7 @@ class CompaniesHouseService @Inject()(companiesHouseConnector: CompaniesHouseCon
         case Left(err) =>
           invalidCRNs(
             crns.tail,
-            errors :+ ValidationErrorResponseModel(crns.head._1.toString, Json.toJson(crns.head._2), Seq(err.body))
+            errors :+ ValidationErrorResponseModel(INVALID_CRN, crns.head._1, Seq(err.body))
           )
         case _ =>
           invalidCRNs(crns.tail, errors)

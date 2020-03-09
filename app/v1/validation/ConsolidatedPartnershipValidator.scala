@@ -51,24 +51,19 @@ trait ConsolidatedPartnershipValidator extends BaseValidation {
 }
 
 case class ConsolidatedPartnershipsSupplied(consolidatedPartnershipModel: ConsolidatedPartnershipModel)(implicit val topPath: JsPath) extends Validation {
-  val errorMessage: String = "Consolidated Partnership is not elected, unable to supply partnership names"
+  val code = UNEXPECTED_FIELD
+  val message: String = "Consolidated Partnership is not elected, unable to supply partnership names"
   val path = topPath \ "consolidatedPartnership"
-  val value = Json.toJson(consolidatedPartnershipModel)
 }
 
 case class ConsolidatedPartnershipsNotSupplied(consolidatedPartnershipModel: ConsolidatedPartnershipModel)(implicit val topPath: JsPath) extends Validation {
-  val errorMessage: String = "Consolidated Partnership is elected, must supply partnership names"
+  val code = MISSING_FIELD
+  val message: String = "Consolidated Partnership is elected, must supply partnership names"
   val path = topPath \ "consolidatedPartnership"
-  val value = Json.toJson(consolidatedPartnershipModel)
 }
 
 case class ConsolidatedPartnershipsEmpty(implicit val topPath: JsPath) extends Validation {
-  val errorMessage: String = "consolidatedPartnership must have at least 1 partnership"
+  val code = MISSING_FIELD
+  val message: String = "consolidatedPartnership must have at least 1 partnership"
   val path = topPath \ "consolidatedPartnership"
-  val value = Json.obj()
 }
-
-
-
-
-

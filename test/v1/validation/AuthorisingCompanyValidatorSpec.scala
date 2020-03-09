@@ -38,16 +38,16 @@ class AuthorisingCompanyValidatorSpec extends BaseValidationSpec {
       "Company name" when {
 
         "Company name is empty" in {
-          leftSideError(authorisingCompanyModel.copy(companyName = CompanyNameModel("")).validate).errorMessage shouldBe CompanyNameLengthError("").errorMessage
+          leftSideError(authorisingCompanyModel.copy(companyName = CompanyNameModel("")).validate).message shouldBe CompanyNameLengthError("").message
         }
 
         s"Company name is longer that ${companyNameMaxLength}" in {
-          leftSideError(authorisingCompanyModel.copy(companyName = companyNameTooLong).validate).errorMessage shouldBe CompanyNameLengthError("a" * (companyNameMaxLength + 1)).errorMessage
+          leftSideError(authorisingCompanyModel.copy(companyName = companyNameTooLong).validate).message shouldBe CompanyNameLengthError("a" * (companyNameMaxLength + 1)).message
         }
       }
 
       "UTR is invalid" in {
-        leftSideError(authorisingCompanyModel.copy(ctutr = invalidUtr).validate).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
+        leftSideError(authorisingCompanyModel.copy(ctutr = invalidUtr).validate).message shouldBe UTRChecksumError(invalidUtr).message
       }
     }
   }

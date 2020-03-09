@@ -45,7 +45,7 @@ class NonConsolidatedInvestmentElectionValidatorSpec extends BaseValidationSpec 
 
       "isElected is true and no investments are given" in {
         val model = NonConsolidatedInvestmentElectionModel(isElected = true, nonConsolidatedInvestments = None)
-        leftSideError(model.validate).errorMessage shouldBe NonConsolidatedInvestmentNotSupplied(model).errorMessage
+        leftSideError(model.validate).message shouldBe NonConsolidatedInvestmentNotSupplied(model).message
       }
 
       "isElected is false and some investments are given" in {
@@ -53,7 +53,7 @@ class NonConsolidatedInvestmentElectionValidatorSpec extends BaseValidationSpec 
           isElected = false,
           nonConsolidatedInvestments = Some(Seq(NonConsolidatedInvestmentModel("Big Bucks 1")))
         )
-        leftSideError(model.validate).errorMessage shouldBe NonConsolidatedInvestmentSupplied(model).errorMessage
+        leftSideError(model.validate).message shouldBe NonConsolidatedInvestmentSupplied(model).message
       }
 
       "nonConsolidatedInvestments is invalid" in {
@@ -62,7 +62,7 @@ class NonConsolidatedInvestmentElectionValidatorSpec extends BaseValidationSpec 
           nonConsolidatedInvestments = Some(Seq(NonConsolidatedInvestmentModel("")))
         )
 
-        leftSideError(model.validate).errorMessage shouldBe NonConsolidatedInvestmentNameError("").errorMessage
+        leftSideError(model.validate).message shouldBe NonConsolidatedInvestmentNameError("").message
       }
     }
   }

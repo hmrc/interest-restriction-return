@@ -48,12 +48,12 @@ class GroupRatioBlendedValidatorSpec extends BaseValidationSpec {
 
       "isElected is false and some investor group are given" in {
         val model = GroupRatioBlendedModel(isElected = false, investorGroups = Some(Seq(investorGroupsGroupRatioModel)))
-        leftSideError(model.validate).errorMessage shouldBe GroupRatioBlendedNotElectedError(model).errorMessage
+        leftSideError(model.validate).message shouldBe GroupRatioBlendedNotElectedError(model).message
       }
 
       "investorGroup contains v1.validation errors" in {
         val model = GroupRatioBlendedModel(isElected = true, investorGroups = Some(Seq(investorGroupsModelMin.copy(groupName = ""))))
-        leftSideError(model.validate).errorMessage shouldBe InvestorNameError("").errorMessage
+        leftSideError(model.validate).message shouldBe InvestorNameError("").message
       }
     }
   }

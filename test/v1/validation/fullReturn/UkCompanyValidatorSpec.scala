@@ -43,24 +43,24 @@ class UkCompanyValidatorSpec extends BaseValidationSpec {
     "Return invalid" when {
 
       "CTUTR is invalid" in {
-        leftSideError(ukCompanyModelReactivationMax.copy(ctutr = invalidUtr).validate(groupAccountingPeriod)).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
+        leftSideError(ukCompanyModelReactivationMax.copy(ctutr = invalidUtr).validate(groupAccountingPeriod)).message shouldBe UTRChecksumError(invalidUtr).message
       }
 
       "CompanyName is invalid" in {
-        leftSideError(ukCompanyModelReactivationMax.copy(companyName = companyNameTooLong).validate(groupAccountingPeriod)).errorMessage shouldBe
-          CompanyNameLengthError(companyNameTooLong.name).errorMessage
+        leftSideError(ukCompanyModelReactivationMax.copy(companyName = companyNameTooLong).validate(groupAccountingPeriod)).message shouldBe
+          CompanyNameLengthError(companyNameTooLong.name).message
       }
 
       "netTaxInterestExpense is < 0" in {
-        leftSideError(ukCompanyModelReactivationMax.copy(netTaxInterestExpense = -1).validate(groupAccountingPeriod)).errorMessage shouldBe NetTaxInterestExpenseError(-1).errorMessage
+        leftSideError(ukCompanyModelReactivationMax.copy(netTaxInterestExpense = -1).validate(groupAccountingPeriod)).message shouldBe NetTaxInterestExpenseError(-1).message
       }
 
       "netTaxInterestIncomes is < 0" in {
-        leftSideError(ukCompanyModelReactivationMax.copy(netTaxInterestIncome = -1).validate(groupAccountingPeriod)).errorMessage shouldBe NetTaxInterestIncomeError(-1).errorMessage
+        leftSideError(ukCompanyModelReactivationMax.copy(netTaxInterestIncome = -1).validate(groupAccountingPeriod)).message shouldBe NetTaxInterestIncomeError(-1).message
       }
 
       "ExpenseAndIncomeBothNotGreaterThanZero where both values are > 0" in {
-        leftSideError(ukCompanyModelReactivationMax.copy(netTaxInterestExpense = 20.00,netTaxInterestIncome = 30.00).validate(groupAccountingPeriod)).errorMessage shouldBe ExpenseAndIncomeBothNotGreaterThanZero(20.00,30.00).errorMessage
+        leftSideError(ukCompanyModelReactivationMax.copy(netTaxInterestExpense = 20.00,netTaxInterestIncome = 30.00).validate(groupAccountingPeriod)).message shouldBe ExpenseAndIncomeBothNotGreaterThanZero(20.00,30.00).message
       }
 
     }

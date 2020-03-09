@@ -37,29 +37,29 @@ class AgentDetailsValidatorSpec extends BaseSpec {
 
     "passed true and Some name (with incorrect name length) should not succeed" in {
       val model = AgentDetailsModel(true, Some(""))
-      leftSideError(model.validate).errorMessage shouldBe AgentNameLengthError("").errorMessage
+      leftSideError(model.validate).message shouldBe AgentNameLengthError("").message
     }
 
     "passed false and Some name (with correct name length) should not succeed" in {
       val model = AgentDetailsModel(false, Some("Yangksy"))
-      leftSideError(model.validate).errorMessage shouldBe AgentNameSuppliedError("Yangksy").errorMessage
+      leftSideError(model.validate).message shouldBe AgentNameSuppliedError("Yangksy").message
 
     }
 
     "passed false and Some name (with incorrect name length) should not succeed with 2 errors" in {
       val model = AgentDetailsModel(false , Some(""))
-      leftSideError(model.validate).errorMessage shouldBe
-        errorMessages(AgentNameLengthError("").errorMessage, AgentNameSuppliedError("").errorMessage)
+      leftSideError(model.validate).message shouldBe
+        errorMessages(AgentNameLengthError("").message, AgentNameSuppliedError("").message)
     }
 
     "passed true and None should not succeed" in {
       val model = AgentDetailsModel(true, None)
-      leftSideError(model.validate).errorMessage shouldBe AgentNameNotSuppliedError().errorMessage
+      leftSideError(model.validate).message shouldBe AgentNameNotSuppliedError().message
     }
 
     "passed true and Some name (with incorrect name length > maxLength) should not succeed" in {
       val model = AgentDetailsModel(true, Some("a" * 180))
-      leftSideError(model.validate).errorMessage shouldBe AgentNameLengthError("a" * 180).errorMessage
+      leftSideError(model.validate).message shouldBe AgentNameLengthError("a" * 180).message
     }
 
   }

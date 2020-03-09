@@ -143,7 +143,7 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
           val model = adjustedGroupInterestModel.copy(
             groupRatio = groupRatio
           )
-          leftSideError(model.validate).errorMessage shouldBe GroupRatioError(groupRatio).errorMessage
+          leftSideError(model.validate).message shouldBe GroupRatioError(groupRatio).message
         }
 
         "is greater than 100" in {
@@ -152,7 +152,7 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
           val model = adjustedGroupInterestModel.copy(
             groupRatio = groupRatio
           )
-          leftSideError(model.validate).errorMessage shouldBe GroupRatioError(groupRatio).errorMessage
+          leftSideError(model.validate).message shouldBe GroupRatioError(groupRatio).message
         }
 
         "has more than two decimal places" in {
@@ -167,7 +167,7 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
             groupEBITDA = groupEBITDA,
             groupRatio = groupRatio
           )
-          leftSideError(model.validate).errorMessage shouldBe GroupRatioError(groupRatio).errorMessage
+          leftSideError(model.validate).message shouldBe GroupRatioError(groupRatio).message
         }
 
         "is less than the calculated groupRatio" in {
@@ -176,7 +176,7 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
           val model = adjustedGroupInterestModel.copy(
             groupRatio = groupRatio
           )
-          leftSideError(model.validate).errorMessage shouldBe GroupRatioCalculationError(model).errorMessage
+          leftSideError(model.validate).message shouldBe GroupRatioCalculationError(model).message
 
         }
       }

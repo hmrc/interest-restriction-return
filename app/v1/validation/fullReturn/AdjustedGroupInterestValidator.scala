@@ -21,7 +21,7 @@ import play.api.libs.json.{JsPath, Json}
 import v1.models.Validation
 import v1.models.Validation.ValidationResult
 import v1.models.fullReturn.AdjustedGroupInterestModel
-import v1.validation.BaseValidation
+import v1.validation._
 
 import scala.math.BigDecimal
 import scala.math.BigDecimal.RoundingMode
@@ -64,30 +64,27 @@ trait AdjustedGroupInterestValidator extends BaseValidation {
 }
 
 case class GroupRatioError(groupRatio: BigDecimal)(implicit topPath: JsPath) extends Validation {
-  val errorMessage: String = "Group Ratio must be between 0 and 100%, and to two decimal places"
+  val code = INVALID_PERCENTAGE
+  val message: String = "Group Ratio must be between 0 and 100%, and to two decimal places"
   val path = topPath \ "groupRatio"
-  val value = Json.toJson(groupRatio)
 }
 
 case class GroupRatioCalculationError(details: AdjustedGroupInterestModel)(implicit topPath: JsPath) extends Validation {
-
-  val errorMessage: String = s"The value for Group Ratio Percent you provided ${details.groupRatio}, " +
+  val code = MISMATCHED_AMOUNT
+  val message: String = s"The value for Group Ratio Percent you provided ${details.groupRatio}, " +
     s"does not match the value calculated from the provided QNGIE (${details.qngie}) and group-EBITDA ${details.groupEBITDA}, " +
     s"${((details.qngie / details.groupEBITDA) * 100).setScale(2, RoundingMode.HALF_UP).min(100)}"
   val path = topPath \ "groupEBITDA"
-  val value = Json.toJson(details)
 }
 
 case class NegativeOrZeroGroupEBITDAError(groupRatio: BigDecimal)(implicit topPath: JsPath) extends Validation {
-
-  val errorMessage: String = "If group-EBITDA is negative or zero, groupRatio must be set to 100"
+  val code = INVALID_PERCENTAGE
+  val message: String = "If group-EBITDA is negative or zero, groupRatio must be set to 100"
   val path = topPath \ "groupEBITDA"
-  val value = Json.toJson(groupRatio)
 }
 
 case class NegativeOrZeroGroupRatioError(groupRatio: BigDecimal)(implicit topPath: JsPath) extends Validation {
-
-  val errorMessage: String = "If group ratio calculation is negative then group ratio should be 100%"
+  val code = INVALID_PERCENTAGE
+  val message: String = "If group ratio calculation is negative then group ratio should be 100%"
   val path = topPath \ "groupRatio"
-  val value = Json.toJson(groupRatio)
 }
