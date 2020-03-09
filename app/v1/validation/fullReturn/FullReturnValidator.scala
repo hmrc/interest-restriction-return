@@ -53,7 +53,7 @@ trait FullReturnValidator extends BaseValidation {
     (fullReturnModel.groupSubjectToInterestRestrictions, fullReturnModel.groupSubjectToInterestReactivation) match {
       case (true, true) =>
         GroupLevelInterestRestrictionsAndReactivationSupplied(
-          fullReturnModel.groupSubjectToInterestRestrictions,fullReturnModel.groupSubjectToInterestReactivation).invalidNec
+          fullReturnModel.groupSubjectToInterestRestrictions, fullReturnModel.groupSubjectToInterestReactivation).invalidNec
       case _ => fullReturnModel.groupSubjectToInterestRestrictions.validNec
     }
   }
@@ -62,10 +62,10 @@ trait FullReturnValidator extends BaseValidation {
     (fullReturnModel.groupSubjectToInterestRestrictions, fullReturnModel.groupSubjectToInterestReactivation, fullReturnModel.ukCompanies.zipWithIndex) match {
       case (true, false, companies) if companies.exists(_._1.allocatedRestrictions.isEmpty) => combineValidations(companies.map {
         case (company, i) => MissingAllocatedRestrictionsForCompanies(company, i).invalidNec
-      }:_*)
+      }: _*)
       case (false, true, companies) if companies.exists(_._1.allocatedRestrictions.nonEmpty) => combineValidations(companies.map {
         case (company, i) => CompaniesContainedAllocatedRestrictions(company, i).invalidNec
-      }:_*)
+      }: _*)
       case _ => fullReturnModel.groupSubjectToInterestRestrictions.validNec
     }
   }
@@ -74,10 +74,10 @@ trait FullReturnValidator extends BaseValidation {
     (fullReturnModel.groupSubjectToInterestReactivation, fullReturnModel.groupSubjectToInterestRestrictions, fullReturnModel.ukCompanies.zipWithIndex) match {
       case (true, false, companies) if companies.exists(_._1.allocatedReactivations.isEmpty) => combineValidations(companies.map {
         case (company, i) => MissingAllocatedReactivationsForCompanies(company, i).invalidNec
-      }:_*)
+      }: _*)
       case (false, _, companies) if companies.exists(_._1.allocatedReactivations.nonEmpty) => combineValidations(companies.map {
         case (company, i) => CompaniesContainedAllocatedReactivations(company, i).invalidNec
-      }:_*)
+      }: _*)
       case _ => fullReturnModel.groupSubjectToInterestReactivation.validNec
     }
   }
@@ -96,8 +96,22 @@ trait FullReturnValidator extends BaseValidation {
         total + company.allocatedReactivations.fold[BigDecimal](0)(reactivations =>
           reactivations.currentPeriodReactivation)
     }
-    if(reactivations == calculatedReactivations) reactivations.validNec else {
+    if (reactivations == calculatedReactivations) reactivations.validNec else {
       TotalReactivationsDoesNotMatch(reactivations, calculatedReactivations).invalidNec
+    }
+  }
+
+  private def validateTotalReactivationsNotGreaterThanCapacity: ValidationResult[BigDecimal] = {
+    val capacity: BigDecimal = fullReturnModel.groupLevelAmount.interestReactivationCap.getOrElse(0)
+    val calculatedReactivations: BigDecimal = fullReturnModel.ukCompanies.foldLeft[BigDecimal](0) {
+      (total, company) =>
+        total + company.allocatedReactivations.fold[BigDecimal](0)(reactivations =>
+          reactivations.currentPeriodReactivation)
+    }
+    if (calculatedReactivations > capacity) {
+      TotalReactivationsNotGreaterThanCapacity(calculatedReactivations, capacity).invalidNec
+    } else {
+      calculatedReactivations.validNec
     }
   }
 
@@ -108,7 +122,7 @@ trait FullReturnValidator extends BaseValidation {
         total + company.allocatedRestrictions.fold[BigDecimal](0)(restrictions =>
           restrictions.totalDisallowances.getOrElse(0))
     }
-    if(restrictions == calculatedRestrictions) restrictions.validNec else {
+    if (restrictions == calculatedRestrictions) restrictions.validNec else {
       TotalRestrictionsDoesNotMatch(restrictions, calculatedRestrictions).invalidNec
     }
   }
@@ -122,7 +136,7 @@ trait FullReturnValidator extends BaseValidation {
   }
 
   private def validateAppointedReporter: ValidationResult[Boolean] = {
-    if(fullReturnModel.appointedReportingCompany) fullReturnModel.appointedReportingCompany.validNec else {
+    if (fullReturnModel.appointedReportingCompany) fullReturnModel.appointedReportingCompany.validNec else {
       ReportingCompanyNotAppointed.invalidNec
     }
   }
@@ -130,10 +144,10 @@ trait FullReturnValidator extends BaseValidation {
   def validate: ValidationResult[FullReturnModel] = {
 
     val validatedUkCompanies =
-      if(fullReturnModel.ukCompanies.isEmpty) UkCompaniesEmpty.invalidNec else {
+      if (fullReturnModel.ukCompanies.isEmpty) UkCompaniesEmpty.invalidNec else {
         combineValidations(fullReturnModel.ukCompanies.zipWithIndex.map {
           case (a, i) => a.validate(fullReturnModel.groupCompanyDetails.accountingPeriod)(JsPath \ s"ukCompanies[$i]")
-        }:_*)
+        }: _*)
       }
 
     (fullReturnModel.agentDetails.validate(JsPath \ "agentDetails"),
@@ -148,6 +162,7 @@ trait FullReturnValidator extends BaseValidation {
       validateAllocatedReactivations,
       validateInterestReactivationCap,
       validateTotalReactivations,
+      validateTotalReactivationsNotGreaterThanCapacity,
       validateTotalRestrictions,
       validateParentCompany,
       validateRevisedReturnDetails,
@@ -155,7 +170,7 @@ trait FullReturnValidator extends BaseValidation {
       validateAppointedReporter,
       fullReturnModel.groupLevelAmount.validate(JsPath \ "groupLevelAmount"),
       optionValidations(fullReturnModel.adjustedGroupInterest.map(_.validate(JsPath \ "adjustedGroupInterest")))
-      ).mapN((_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_) => fullReturnModel)
+      ).mapN((_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) => fullReturnModel)
   }
 }
 
@@ -213,6 +228,12 @@ case object InterestReactivationCapNotSupplied extends Validation {
 case class TotalReactivationsDoesNotMatch(amt: BigDecimal, calculated: BigDecimal) extends Validation {
   val errorMessage: String = s"Calculated reactivations is $calculated which does not match the supplied amount of $amt"
   val path = JsPath \ "totalReactivation"
+  val value = Json.obj()
+}
+
+case class TotalReactivationsNotGreaterThanCapacity(calculated: BigDecimal, capacity: BigDecimal) extends Validation {
+  val errorMessage: String = s"Calculated Total Reactivations: $calculated cannot not be greater than Reactivations Capacity: $capacity"
+  val path = JsPath \ "totalReactivation" \ "interestReactivationCap"
   val value = Json.obj()
 }
 

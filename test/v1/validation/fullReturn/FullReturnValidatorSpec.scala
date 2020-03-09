@@ -30,6 +30,7 @@ import assets.fullReturn.GroupLevelAmountConstants._
 import assets.fullReturn.UkCompanyConstants._
 import play.api.libs.json.JsPath
 import utils.BaseSpec
+import v1.models.fullReturn.GroupLevelAmountModel
 import v1.models.{Original, Revised}
 import v1.validation._
 
@@ -161,6 +162,33 @@ class FullReturnValidatorSpec extends BaseSpec {
 
         leftSideError(model.validate).errorMessage shouldBe MissingAllocatedReactivationsForCompanies(ukCompanyModelReactivationMax, 1).errorMessage
         leftSideError(model.validate, 1).errorMessage shouldBe MissingAllocatedReactivationsForCompanies(ukCompanyModelReactivationMax, 3).errorMessage
+      }
+
+      "Group is subject to interest reactivations but total reactivation is greater than the reactivations capacity" in {
+
+        val model = fullReturnUltimateParentModel.copy(
+          groupSubjectToInterestReactivation = true,
+          groupSubjectToInterestRestrictions = false,
+          ukCompanies = Seq(
+            ukCompanyModelReactivationMax.copy(
+              allocatedReactivations = Some(allocatedReactivationsModel.copy(currentPeriodReactivation = 9001.00))
+            ),
+            ukCompanyModelReactivationMax.copy(
+              allocatedReactivations = Some(allocatedReactivationsModel.copy(currentPeriodReactivation = 9001.00))
+            ),
+            ukCompanyModelReactivationMax.copy(
+              allocatedReactivations = Some(allocatedReactivationsModel.copy(currentPeriodReactivation = 9001.00))
+            ),
+            ukCompanyModelReactivationMax.copy(
+              allocatedReactivations = Some(allocatedReactivationsModel.copy(currentPeriodReactivation = 9001.00))
+            )
+          ),
+          totalReactivation = 36004.0,
+          groupLevelAmount = groupLevelAmountModel.copy(interestReactivationCap = Some(2.22))
+        )
+
+        leftSideError(model.validate).errorMessage shouldBe
+          TotalReactivationsNotGreaterThanCapacity(36004.0, fullReturnUltimateParentModel.groupLevelAmount.interestReactivationCap.getOrElse(0)).errorMessage
       }
 
       "Group is not subject to interest restrictions but has allocated restrictions supplied" in {
