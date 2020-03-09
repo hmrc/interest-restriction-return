@@ -30,7 +30,6 @@ import assets.fullReturn.GroupLevelAmountConstants._
 import assets.fullReturn.UkCompanyConstants._
 import play.api.libs.json.JsPath
 import utils.BaseSpec
-import v1.models.fullReturn.GroupLevelAmountModel
 import v1.models.{Original, Revised}
 import v1.validation._
 
@@ -183,13 +182,14 @@ class FullReturnValidatorSpec extends BaseSpec {
               allocatedReactivations = Some(allocatedReactivationsModel.copy(currentPeriodReactivation = 9001.00))
             )
           ),
-          totalReactivation = 36004.0,
+          totalReactivation = 36004.0, //to get pass the TotalReactivationsDoesNotMatch validation
           groupLevelAmount = groupLevelAmountModel.copy(interestReactivationCap = Some(2.22))
         )
 
         leftSideError(model.validate).errorMessage shouldBe
           TotalReactivationsNotGreaterThanCapacity(36004.0, fullReturnUltimateParentModel.groupLevelAmount.interestReactivationCap.getOrElse(0)).errorMessage
-      }
+      }  //36004.0 is the calculated value of all 4 companies and should not be greater than 2.22 (the reactivation cap)
+
 
       "Group is not subject to interest restrictions but has allocated restrictions supplied" in {
 
