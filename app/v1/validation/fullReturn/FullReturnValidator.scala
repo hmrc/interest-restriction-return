@@ -127,6 +127,17 @@ trait FullReturnValidator extends BaseValidation {
     }
   }
 
+  private def validateNoTotalIncomeWhenRestriction: ValidationResult[BigDecimal] = {
+    val aggregateNetTaxInterest: BigDecimal = fullReturnModel.aggregateNetTaxInterest
+    val subjectRestrictions: Boolean = fullReturnModel.groupSubjectToInterestRestrictions
+
+    if (aggregateNetTaxInterest > 0 && subjectRestrictions) {
+      NoTotalIncomeWhenSubjectToRestriction(aggregateNetTaxInterest, subjectRestrictions).invalidNec
+    } else {
+      aggregateNetTaxInterest.validNec
+    }
+  }
+
   private def validateAdjustedNetGroupInterest: ValidationResult[Option[AdjustedGroupInterestModel]] = {
     (fullReturnModel.groupLevelElections.groupRatio.isElected, fullReturnModel.adjustedGroupInterest) match {
       case (true, None) => AdjustedNetGroupInterestNotSupplied.invalidNec
@@ -164,13 +175,14 @@ trait FullReturnValidator extends BaseValidation {
       validateTotalReactivations,
       validateTotalReactivationsNotGreaterThanCapacity,
       validateTotalRestrictions,
+      validateNoTotalIncomeWhenRestriction,
       validateParentCompany,
       validateRevisedReturnDetails,
       validateAdjustedNetGroupInterest,
       validateAppointedReporter,
       fullReturnModel.groupLevelAmount.validate(JsPath \ "groupLevelAmount"),
       optionValidations(fullReturnModel.adjustedGroupInterest.map(_.validate(JsPath \ "adjustedGroupInterest")))
-      ).mapN((_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) => fullReturnModel)
+      ).mapN((_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) => fullReturnModel)
   }
 }
 
@@ -239,6 +251,12 @@ case class TotalReactivationsNotGreaterThanCapacity(calculated: BigDecimal, capa
 
 case class TotalRestrictionsDoesNotMatch(amt: BigDecimal, calculated: BigDecimal) extends Validation {
   val errorMessage: String = s"Calculated restrictions is $calculated which does not match the supplied amount of $amt"
+  val path = JsPath \ "totalRestrictions"
+  val value = Json.obj()
+}
+
+case class NoTotalIncomeWhenSubjectToRestriction(totalTaxInterest: BigDecimal, subjectRestrictions: Boolean) extends Validation {
+  val errorMessage: String = s"You cannot have a calculated totalTaxInterest: $totalTaxInterest when there the  full return is subjectToRestriction: ${subjectRestrictions.toString}"
   val path = JsPath \ "totalRestrictions"
   val value = Json.obj()
 }

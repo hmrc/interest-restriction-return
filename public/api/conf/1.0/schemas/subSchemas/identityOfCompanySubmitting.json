@@ -1,36 +1,19 @@
 {
   "description": "Identity of the company that is submitting the request",
   "type": "object",
-  "oneOf": [
-    {
-      "properties": {
-        "companyName": {
-          "$ref": "../definitions/definitions.json#/definitions/companyName"
-        },
-        "countryOfIncorporation": {
-          "$ref": "../definitions/countrycodes.json#/definitions/countryCode"
-        }
-      },
-      "required": [
-        "companyName",
-        "countryOfIncorporation"
-      ],
-      "additionalProperties": false
+  "properties": {
+    "companyName": {
+      "$ref": "../definitions/definitions.json#/definitions/companyName"
     },
-    {
-      "properties": {
-        "companyName": {
-          "$ref": "../definitions/definitions.json#/definitions/companyName"
-        },
-        "ctutr": {
-          "$ref": "../definitions/definitions.json#/definitions/ctutr"
-        }
-      },
-      "required": [
-        "companyName",
-        "ctutr"
-      ],
-      "additionalProperties": false
+    "countryOfIncorporation": {
+      "$ref": "../definitions/countrycodes.json#/definitions/countryCode"
+    },
+    "ctutr": {
+      "$ref": "../definitions/definitions.json#/definitions/ctutr"
     }
-  ]
+  },
+  "required": [
+    "companyName"
+  ],
+  "additionalProperties": false
 }

@@ -5,52 +5,23 @@
   "maxItems": 3,
   "items": {
     "type": "object",
-    "oneOf": [
-      {
         "properties": {
           "companyName": {
             "$ref": "../definitions/definitions.json#/definitions/companyName"
           },
           "ctutr": {
             "$ref": "../definitions/definitions.json#/definitions/ctutr"
-          }
-        },
-        "required": [
-          "companyName",
-          "ctutr"
-        ],
-        "additionalProperties": false
-      },
-      {
-        "properties": {
-          "companyName": {
-            "$ref": "../definitions/definitions.json#/definitions/companyName"
           },
           "sautr": {
             "$ref": "../definitions/definitions.json#/definitions/sautr"
-          }
-        },
-        "required": [
-          "companyName",
-          "sautr"
-        ],
-        "additionalProperties": false
-      },
-      {
-        "properties": {
-          "companyName": {
-            "$ref": "../definitions/definitions.json#/definitions/companyName"
           },
           "countryOfIncorporation": {
             "$ref": "../definitions/countrycodes.json#/definitions/countryCode"
           }
         },
         "required": [
-          "companyName",
-          "countryOfIncorporation"
+          "companyName"
         ],
         "additionalProperties": false
-      }
-    ]
   }
 }

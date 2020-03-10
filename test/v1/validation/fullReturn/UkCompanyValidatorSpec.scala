@@ -16,8 +16,6 @@
 
 package v1.validation.fullReturn
 
-import assets.fullReturn.AllocatedReactivationsConstants._
-import v1.models.fullReturn.AllocatedRestrictionsModel
 import assets.fullReturn.AllocatedRestrictionsConstants._
 import assets.fullReturn.UkCompanyConstants._
 import play.api.libs.json.JsPath

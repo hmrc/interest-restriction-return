@@ -329,11 +329,6 @@
                     "minLength": 10,
                     "maxLength": 10,
                     "pattern": "[0-9]{10}"
-                },
-                "nonUkCrn": {
-                    "description": "Company registration number for a foreign company (Non-UK Incorporation)",
-                    "type": "string",
-                    "minLength": 1
                 }
             },
             "required": [

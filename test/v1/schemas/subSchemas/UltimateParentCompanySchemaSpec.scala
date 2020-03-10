@@ -138,28 +138,6 @@ class UltimateParentCompanySchemaSpec extends BaseSchemaSpec {
           validate(json) shouldBe false
         }
       }
-
-      "Validated a unsuccessful JSON payload for a UK Ultimate Parent Company with a ctutr & sautr" in {
-
-        val json = Json.toJson(ukUltimateParent.copy(sautr = sautrFake))
-
-        validate(json) shouldBe false
-      }
-
-      "Validated a unsuccessful JSON payload for a Non UK Ultimate Parent Company with a ctutr" in {
-
-        val json = Json.toJson(nonUkUltimateParent.copy(sautr = sautrFake))
-
-        validate(json) shouldBe false
-      }
-
-      "Validated a unsuccessful JSON payload for a Non UK Ultimate Parent Company with a sautr" in {
-
-        val json = Json.toJson(nonUkUltimateParent.copy(ctutr = ctutrFake))
-
-        validate(json) shouldBe false
-      }
-
     }
   }
 }

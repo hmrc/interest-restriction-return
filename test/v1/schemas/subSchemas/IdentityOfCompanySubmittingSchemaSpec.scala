@@ -131,13 +131,6 @@ class IdentityOfCompanySubmittingSchemaSpec extends BaseSchemaSpec {
 
       "Wrong schema supplied" when {
 
-        "both ctutr and countryOfIncorporation are supplied" in {
-
-          val json = Json.toJson(IdentityOfCompanySubmitting(companyName = Some("mike ltd"), ctutr = ctutrFake, countryOfIncorporation = nonUKCountryCode))
-
-          validate(json) shouldBe false
-        }
-
         "is three letters" in {
 
           val json = Json.toJson(IdentityOfCompanySubmitting(
@@ -162,7 +155,6 @@ class IdentityOfCompanySubmittingSchemaSpec extends BaseSchemaSpec {
           validate(json) shouldBe false
         }
       }
-
     }
   }
 }

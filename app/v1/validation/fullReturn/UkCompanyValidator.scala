@@ -18,7 +18,7 @@ package v1.validation.fullReturn
 
 import play.api.libs.json.{JsPath, Json}
 import v1.models.Validation.ValidationResult
-import v1.models.fullReturn.{AllocatedRestrictionsModel, UkCompanyModel}
+import v1.models.fullReturn.UkCompanyModel
 import v1.models.{AccountingPeriodModel, Validation}
 import v1.validation.BaseValidation
 
@@ -69,6 +69,19 @@ trait UkCompanyValidator extends BaseValidation {
     }
   }
 
+  private def validateNoTotalNetTaxInterestIncomeDuringRestriction(implicit path: JsPath): ValidationResult[BigDecimal] = {
+    val netTaxIncome: BigDecimal = ukCompany.netTaxInterestIncome
+    val restrictionApplied: BigDecimal = ukCompany.allocatedRestrictions.fold[BigDecimal](0) {
+      restriction => restriction.totalDisallowances.getOrElse(0)
+    }
+    if (netTaxIncome > 0 && restrictionApplied > 0) {
+      NoTotalNetTaxInterestIncomeDuringRestriction(netTaxIncome).invalidNec
+    } else {
+      netTaxIncome.validNec
+
+    }
+  }
+
   def validate(groupAccountingPeriod: AccountingPeriodModel)(implicit path: JsPath): ValidationResult[UkCompanyModel] =
     (ukCompany.ctutr.validate(path \ "ctutr"),
       ukCompany.companyName.validate(path \ "companyName"),
@@ -76,9 +89,10 @@ trait UkCompanyValidator extends BaseValidation {
       validateNetTaxInterestIncome,
       validateExpenseAndIncomeBothNotGreaterThanZero,
       validateRestrictionNotGreaterThanExpense,
+      validateNoTotalNetTaxInterestIncomeDuringRestriction,
       optionValidations(ukCompany.allocatedRestrictions.map(_.validate(groupAccountingPeriod)(path \ "allocatedRestrictions"))),
       optionValidations(ukCompany.allocatedReactivations.map(_.validate(path \ "allocatedReactivations")))
-      ).mapN((_, _, _, _, _, _, _, _) => ukCompany)
+      ).mapN((_, _, _, _, _, _, _, _, _) => ukCompany)
 }
 
 case class NetTaxInterestExpenseError(netTaxInterestExpense: BigDecimal)(implicit topPath: JsPath) extends Validation {
@@ -99,6 +113,11 @@ case class ExpenseAndIncomeBothNotGreaterThanZero(netTaxInterestExpense: BigDeci
 }
 
 case class RestrictionNotGreaterThanExpense(netTaxInterestExpense: BigDecimal, allocatedRestriction: BigDecimal)(implicit val path: JsPath) extends Validation {
-  val errorMessage: String = "A company can not have a allocated restriction greater than it's net tax total expense"
+  val errorMessage: String = "A company can not have a allocated restriction greater than it's net tax expense"
   val value = Json.toJson(("netTaxInterestExpense: " + netTaxInterestExpense, "allocatedRestriction: " + allocatedRestriction))
+}
+
+case class NoTotalNetTaxInterestIncomeDuringRestriction(netTaxIncome:BigDecimal)(implicit val path: JsPath) extends Validation {
+  val errorMessage: String = s"You cannot have a Net Tax Interest Income when you apply a restriction"
+  val value = Json.obj()
 }

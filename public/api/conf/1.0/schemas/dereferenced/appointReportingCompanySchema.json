@@ -649,11 +649,6 @@
                         "ZM",
                         "ZW"
                     ]
-                },
-                "nonUkCrn": {
-                    "description": "Company registration number for a foreign company (Non-UK Incorporation)",
-                    "type": "string",
-                    "minLength": 1
                 }
             },
             "required": [

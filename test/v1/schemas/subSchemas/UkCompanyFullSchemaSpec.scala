@@ -28,7 +28,7 @@ class UkCompanyFullSchemaSpec extends BaseSchemaSpec {
 
   val validRestrictionModelIncomeZero = UkCompanyFull(netTaxInterestIncome = Some(0), allocatedReactivations = None)
   val invalidRestrictionModelIncomeNone = UkCompanyFull(netTaxInterestIncome = None, allocatedReactivations = None)
-  val validReactivationsUkCompanyModel = UkCompanyFull(netTaxInterestExpense = None, netTaxInterestIncome = Some(1000000), allocatedRestrictions = None)
+  val validReactivationsUkCompanyModel = UkCompanyFull(netTaxInterestExpense = Some(0), netTaxInterestIncome = Some(1000000), allocatedRestrictions = None)
 
 
   "UkCompanyFull JSON schema" should {
