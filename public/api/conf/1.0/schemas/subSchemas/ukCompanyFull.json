@@ -44,20 +44,6 @@
       "netTaxInterestExpense",
       "netTaxInterestIncome"
     ],
-    "dependencies": {
-      "allocatedRestrictions": {
-        "properties": {
-          "netTaxInterestIncome": {
-            "description": "The Net Tax Interest Income amount",
-            "type": "number",
-            "maximum": 0
-          }
-        },
-        "required": [
-          "netTaxInterestIncome"
-        ]
-      }
-    },
     "additionalProperties": false
   }
 }
