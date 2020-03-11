@@ -161,47 +161,7 @@ class UkCompanyFullSchemaSpec extends BaseSchemaSpec {
           validate(json) shouldBe false
         }
       }
-
-      "invalid Json data for allocated restrictions" when {
-
-        "netTaxIncome is greater than 0" in {
-
-          val json = Json.toJson(Seq(validRestrictionModelIncomeZero.copy(netTaxInterestIncome = Some(100)))
-          )
-
-          validate(json) shouldBe false
-        }
-
-        "netTaxExpense is not supplied" in {
-
-          val json = Json.toJson(Seq(validRestrictionModelIncomeZero.copy(netTaxInterestExpense = None)))
-
-          validate(json) shouldBe false
-        }
-
-        "netTaxExpense is not supplied and Reactivation is present" in {
-
-          val json = Json.toJson(Seq(validRestrictionModelIncomeZero.copy(netTaxInterestExpense = None, allocatedReactivations = Some(AllocatedReactivations()))
-          ))
-
-          validate(json) shouldBe false
-        }
-
-        "netTaxIncome is None" in {
-
-          val json = Json.toJson(Seq(invalidRestrictionModelIncomeNone.copy(netTaxInterestExpense = None)))
-
-          validate(json) shouldBe false
-        }
-      }
-
-      "invalid Json data for allocated reactivations" in {
-
-        val json = Json.toJson(Seq(validReactivationsUkCompanyModel.copy(allocatedRestrictions = Some(AllocatedRestrictions()))))
-
-        validate(json) shouldBe false
-
-      }
     }
   }
 }
+
