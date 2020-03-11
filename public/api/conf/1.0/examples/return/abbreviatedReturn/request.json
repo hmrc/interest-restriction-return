@@ -11,7 +11,7 @@
   "parentCompany" : {
     "ultimateParent" : {
       "companyName" : "BCompany",
-      "ctutr" : "9999999999",
+      "ctutr" : "9999999999"
     }
   },
   "publicInfrastructure" : true,
