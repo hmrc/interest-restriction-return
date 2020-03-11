@@ -359,7 +359,7 @@
                         "deemedParent": {
                             "description": "Details of the deemed parent companies",
                             "type": "array",
-                            "minItems": 1,
+                            "minItems": 2,
                             "maxItems": 3,
                             "items": {
                                 "type": "object",
@@ -759,6 +759,21 @@
                                                 "description": "Name of the investor group",
                                                 "type": "string",
                                                 "minLength": 1
+                                            },
+                                            "elections": {
+                                                "description": "The elections made by this investor group",
+                                                "type": "array",
+                                                "maxItems": 5,
+                                                "items": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "groupRatioBlended",
+                                                        "groupEBITDA",
+                                                        "interestAllowanceAlternativeCalculation",
+                                                        "interestAllowanceNonConsolidatedInvestment",
+                                                        "interestAllowanceConsolidatedPartnership"
+                                                    ]
+                                                }
                                             }
                                         },
                                         "required": [
@@ -901,10 +916,6 @@
                         "type": "number",
                         "minimum": 0
                     },
-                    "taxEBITDA": {
-                        "description": "Earnings Before Interest, Tax, Depreciation and Amortization (EBITDA) amount",
-                        "type": "number"
-                    },
                     "allocatedRestrictions": {
                         "type": "object",
                         "properties": {
@@ -963,13 +974,19 @@
                             "currentPeriodReactivation"
                         ],
                         "additionalProperties": false
+                    },
+                    "taxEBITDA": {
+                        "description": "Earnings Before Interest, Tax, Depreciation and Amortization (EBITDA) amount",
+                        "type": "number"
                     }
                 },
                 "required": [
                     "companyName",
                     "ctutr",
                     "consenting",
-                    "taxEBITDA"
+                    "taxEBITDA",
+                    "netTaxInterestExpense",
+                    "netTaxInterestIncome"
                 ],
                 "additionalProperties": false
             }
