@@ -25,23 +25,26 @@
         "type": "number",
         "minimum": 0
       },
-      "taxEBITDA": {
-        "description": "Earnings Before Interest, Tax, Depreciation and Amortization (EBITDA) amount",
-        "type": "number"
-      },
       "allocatedRestrictions": {
         "$ref": "allocatedRestrictions.json"
       },
       "allocatedReactivations": {
         "$ref": "allocatedReactivations.json"
+      },
+      "taxEBITDA": {
+        "description": "Earnings Before Interest, Tax, Depreciation and Amortization (EBITDA) amount",
+        "type": "number"
       }
     },
     "required": [
       "companyName",
       "ctutr",
       "consenting",
-      "taxEBITDA"
+      "taxEBITDA",
+      "netTaxInterestExpense",
+      "netTaxInterestIncome"
     ],
     "additionalProperties": false
   }
 }
+

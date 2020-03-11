@@ -8,6 +8,6 @@ object ParentCompanyITConstants {
 
   val parentCompanyJson = Json.obj(
     "ultimateParent" -> ultimateParentJson,
-    "deemedParent" -> Seq(deemedParentJson)
+    "deemedParent" -> Seq(deemedParentJson, deemedParentJson)
   )
 }

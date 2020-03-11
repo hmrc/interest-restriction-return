@@ -63,42 +63,5 @@ class AbbreviatedReturnModelSpec extends WordSpec with Matchers with BaseConstan
         actualValue shouldBe expectedValue
       }
     }
-
-    "correctly collect all of the ukCrns" when {
-
-      "ultimate parent crn is given" in {
-
-        val expectedValue = Seq(
-          AbbreviatedReturnModel.ultimateParentCrnPath -> crnLetters,
-          AbbreviatedReturnModel.reportingCompanyCrnPath -> crn
-        )
-        val actualValue = abbreviatedReturnUltimateParentModel.ukCrns
-
-        actualValue shouldBe expectedValue
-      }
-
-      "deemed parent crn is given" in {
-
-        val expectedValue = Seq(
-          AbbreviatedReturnModel.deemedParentCrnPath(0) -> crn,
-          AbbreviatedReturnModel.deemedParentCrnPath(1) -> crn,
-          AbbreviatedReturnModel.deemedParentCrnPath(2) -> crn,
-          AbbreviatedReturnModel.reportingCompanyCrnPath -> crn
-        )
-        val actualValue = abbreviatedReturnDeemedParentModel.ukCrns
-
-        actualValue shouldBe expectedValue
-      }
-
-      "min crns given" in {
-
-        val expectedValue = Seq(
-          AbbreviatedReturnModel.reportingCompanyCrnPath -> crn
-        )
-        val actualValue = abbreviatedReturnModelMin.ukCrns
-
-        actualValue shouldBe expectedValue
-      }
-    }
   }
 }

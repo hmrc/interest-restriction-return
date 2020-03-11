@@ -49,22 +49,11 @@ case class FullReturnModel(appointedReportingCompany: Boolean,
     case x => Some(x.sum)
   }
 
-  private val reportingCompanyCrnWithPath: (JsPath, CRNModel) = FullReturnModel.reportingCompanyCrnPath -> reportingCompany.crn
-
-  private val ultimateParentCrnWithPath: Seq[(JsPath, CRNModel)] = parentCompany.flatMap(_.ultimateUkCrns).fold[Seq[(JsPath, CRNModel)]](Seq()) {
-    crn => Seq(FullReturnModel.ultimateParentCrnPath -> crn)
-  }
-
-  private val deemedParentCrnsWithPath: Seq[(JsPath, CRNModel)] = parentCompany.flatMap(_.deemedUkCrns).fold[Seq[(JsPath, CRNModel)]](Seq()) {
-    _.zipWithIndex.map(x => FullReturnModel.deemedParentCrnPath(x._2) -> x._1)
-  }
-
   val numberOfUkCompanies: Int = ukCompanies.length
   val aggregateNetTaxInterest: BigDecimal = totalTaxInterestIncome - totalTaxInterestExpense
   val aggregateTaxEBITDA: BigDecimal = ukCompanies.map(_.taxEBITDA).sum
   val aggregateAllocatedRestrictions: Option[BigDecimal] = oSum(ukCompanies.flatMap(_.allocatedRestrictions.flatMap(_.totalDisallowances)))
   val aggregateAllocatedReactivations: Option[BigDecimal] = oSum(ukCompanies.flatMap(_.allocatedReactivations.map(_.currentPeriodReactivation)))
-  val ukCrns: Seq[(JsPath, CRNModel)] = ultimateParentCrnWithPath ++ deemedParentCrnsWithPath :+ reportingCompanyCrnWithPath
 }
 
 object FullReturnModel {
@@ -99,9 +88,4 @@ object FullReturnModel {
   }
 
   implicit val format: Format[FullReturnModel] = Format[FullReturnModel](Json.reads[FullReturnModel], writes)
-
-  val reportingCompanyCrnPath: JsPath = JsPath \ "reportingCompany" \ "crn"
-  val ultimateParentCrnPath: JsPath = JsPath \ "parentCompany" \ "ultimateParent" \ "crn"
-
-  def deemedParentCrnPath(i: Int): JsPath = JsPath \ "parentCompany" \ s"deemedParent[$i]" \ "crn"
 }

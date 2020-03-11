@@ -45,6 +45,16 @@ object AllocatedRestrictionsConstants {
     totalDisallowances = Some(totalDisallowances)
   )
 
+  val zeroAllocatedRestrictionsModel = AllocatedRestrictionsModel(
+    ap1End = Some(ap1End),
+    ap2End = None,
+    ap3End = None,
+    disallowanceAp1 = Some(0),
+    disallowanceAp2 = None,
+    disallowanceAp3 = None,
+    totalDisallowances = Some(0)
+  )
+
   val allocatedRestrictionsJson = Json.obj(
     "ap1End" -> ap1End,
     "ap2End" -> ap2End,

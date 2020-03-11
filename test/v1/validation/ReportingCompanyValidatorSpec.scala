@@ -50,10 +50,6 @@ class ReportingCompanyValidatorSpec extends BaseSpec {
       "CTUTR is invalid" in {
         leftSideError(reportingCompanyModel.copy(ctutr = invalidUtr).validate).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
       }
-
-      "CRN is invalid" in {
-        leftSideError(reportingCompanyModel.copy(crn = invalidCrn).validate).errorMessage shouldBe CRNFormatCheck(invalidCrn).errorMessage
-      }
     }
   }
 }

@@ -6,7 +6,6 @@
   "reportingCompany": {
     "companyName": "some reporting company",
     "ctutr": "1123456789",
-    "crn": "AA000200",
     "sameAsUltimateParent": true
   },
   "publicInfrastructure": true,

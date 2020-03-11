@@ -23,7 +23,7 @@ case class RevokeReportingCompanyModel(agentDetails: Option[AgentDetails] = Some
                                        reportingCompany: Option[ReportingCompany] = Some(ReportingCompany()),
                                        isReportingCompanyRevokingItself: Option[Boolean] = Some(true),
                                        companyMakingRevocation: Option[IdentityOfCompanySubmitting] = Some(IdentityOfCompanySubmitting()),
-                                       ultimateParent: Option[UltimateParent] = Some(UltimateParent()),
+                                       ultimateParent: Option[UltimateParent] = Some(UltimateParent(sautr = None, countryOfIncorporation = None)),
                                        accountingPeriod: Option[AccountingPeriod] = Some(AccountingPeriod()),
                                        authorisingCompanies: Option[Seq[AuthorisingCompanies]] = Some(Seq(AuthorisingCompanies())),
                                        declaration: Option[Boolean] = Some(true))

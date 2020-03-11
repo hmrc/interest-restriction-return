@@ -24,6 +24,10 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
 
   def validate(json: JsValue): Boolean = validateJson("subSchemas/parentCompany.json", "1.0", json)
 
+  val ukDeemedParent = DeemedParent(sautr = None, countryOfIncorporation = None)
+  val ukPartnershipDeemedParent = DeemedParent(ctutr = None, countryOfIncorporation = None)
+  val nonUkDeemedParent = DeemedParent(ctutr = None, sautr = None)
+
   "ParentCompany Json Schema" should {
 
     "Return valid" when {
@@ -35,10 +39,10 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
         validate(json) shouldBe true
       }
 
-      "Validated a successful JSON payload with Uk Deemed Parent company" in {
+      "Validated a successful JSON payload with minimum of 2 Uk Deemed Parent company" in {
 
         val json = Json.toJson(ParentCompany(
-          ultimateParent = None, deemedParent = Some(Seq(DeemedParent()))
+          ultimateParent = None, deemedParent = Some(Seq(ukDeemedParent, nonUkDeemedParent))
         ))
 
         validate(json) shouldBe true
@@ -48,7 +52,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
       "Validated a successful JSON payload with Non Uk Deemed Parent company" in {
 
         val json = Json.toJson(ParentCompany(
-          ultimateParent = None, deemedParent = Some(Seq(DeemedParent()))
+          ultimateParent = None, deemedParent = Some(Seq(nonUkDeemedParent, nonUkDeemedParent))
         ))
 
         validate(json) shouldBe true
@@ -57,73 +61,32 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
       "Validated a successful JSON payload with 3 Uk Deemed Parent companies" in {
 
         val json = Json.toJson(ParentCompany(
-          ultimateParent = None, deemedParent = Some(Seq(DeemedParent(), DeemedParent(), DeemedParent()))
+          ultimateParent = None, deemedParent = Some(Seq(ukDeemedParent, ukPartnershipDeemedParent, nonUkDeemedParent))
         ))
 
         validate(json) shouldBe true
       }
 
-      "Validated a successful JSON with a Deemed Parent company with no ctutr" in {
+      "Validated a successful JSON with 3 Non-Uk Deemed Parent Company" in {
 
-        val json = Json.toJson(ParentCompany(
-          ultimateParent = None, Some(Seq(
-            DeemedParent(ctutr = None)))
+        val json = Json.toJson(ParentCompany(ultimateParent = None, Some(Seq(nonUkDeemedParent, nonUkDeemedParent, nonUkDeemedParent))
         ))
 
         validate(json) shouldBe true
       }
 
-      "Validated a successful JSON with a Deemed Parent company with no sautr" in {
+      "Validated a successful JSON with 3 Uk Deemed Parent Partnerships" in {
 
-        val json = Json.toJson(ParentCompany(
-          ultimateParent = None, Some(Seq(DeemedParent(sautr = None)))
+        val json = Json.toJson(ParentCompany(ultimateParent = None, Some(Seq(ukPartnershipDeemedParent, ukPartnershipDeemedParent, ukPartnershipDeemedParent))
         ))
 
         validate(json) shouldBe true
       }
-
-      "Validated a successful JSON payload when Deemed Parent knownAs is none" in {
-
-        val json = Json.toJson(ParentCompany(
-          ultimateParent = None,
-          deemedParent = Some(Seq(DeemedParent(knownAs = None)))
-        ))
-
-        validate(json) shouldBe true
-      }
-
-      "Validated a successful JSON payload when Ultimate Parent ctutr is none" in {
-
-        val json = Json.toJson(ParentCompany(
-          ultimateParent = Some(UltimateParent(ctutr = None))
-        ))
-
-        validate(json) shouldBe true
-      }
-
-      "Validated a successful JSON payload when Ultimate Parent sautr is none" in {
-
-        val json = Json.toJson(ParentCompany(
-          ultimateParent = Some(UltimateParent(sautr = None))
-        ))
-
-        validate(json) shouldBe true
-      }
-
-      "Validated a successful JSON payload when Ultimate Parent knownAs is none" in {
-
-        val json = Json.toJson(ParentCompany(
-          ultimateParent = Some(UltimateParent(knownAs = None))
-        ))
-
-        validate(json) shouldBe true
-      }
-
     }
 
     "Return invalid" when {
 
-      "deemed parents and ultimate parent is None" in {
+      "Deemed Parents and Ultimate Parent are None" in {
 
         val json = Json.toJson(ParentCompany(
           ultimateParent = None, deemedParent = None
@@ -132,7 +95,7 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
         validate(json) shouldBe false
       }
 
-      "deemed parents is an empty list and ultimate parent is None" in {
+      "Deemed parents is an empty list and Ultimate Parent are None" in {
 
         val json = Json.toJson(ParentCompany(
           ultimateParent = None, deemedParent = Some(Seq.empty))
@@ -141,12 +104,22 @@ class ParentCompanySchemaSpec extends BaseSchemaSpec {
         validate(json) shouldBe false
       }
 
-      "more than 3 deemed parents and ultimate parent is None" in {
+      "more than 3 Deemed Parents and Ultimate Parent are None" in {
 
         val json = Json.toJson(ParentCompany(
           ultimateParent = None,
-          Some(Seq(DeemedParent(), DeemedParent(), DeemedParent(), DeemedParent())))
-        )
+          Some(Seq(ukDeemedParent, ukDeemedParent, ukDeemedParent, ukDeemedParent)
+          )))
+
+        validate(json) shouldBe false
+      }
+
+      "less than 2 Deemed Parents and Ultimate Parent is None" in {
+
+        val json = Json.toJson(ParentCompany(
+          ultimateParent = None,
+          Some(Seq(ukDeemedParent)
+          )))
 
         validate(json) shouldBe false
       }

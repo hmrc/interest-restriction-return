@@ -35,7 +35,6 @@ This is a protected backend microservice that is the conduit between Public faci
     "reportingCompany": {
     	"companyName": "company name a",
     	"ctutr": "1234567890",
-    	"crn": "12345678",
     	"sameAsUltimateParent": true,
     	"reportingCompanyDeemed": false
     },
@@ -141,7 +140,6 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
     "reportingCompany": {
       "companyName": "some reporting company",
       "ctutr": "1234567890",
-      "crn": "12345678",
       "sameAsUltimateParent": true,
       "reportingCompanyDeemed": true
     },
@@ -149,15 +147,11 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
     "companyMakingRevocation": {
       "companyName": "some company",
       "ctutr": "1234567890",
-      "crn": "12345678",
       "countryOfIncorporation": "US"
     },
     "ultimateParent": {
       "registeredCompanyName": "some company",
-      "ctutr": "1234567890",
-      "crn": "12345678",
-      "knownAs": "something",
-      "sautr": "other reference"
+      "ctutr": "1234567890"
     },
     "accountingPeriod": {
       "startDate": "2019-05-01",
@@ -260,25 +254,19 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
      "reportingCompany": {
        "companyName": "some reporting company",
        "ctutr": "1234567890",
-       "crn": "12345678",
        "sameAsUltimateParent": true,
        "reportingCompanyDeemed": true
      },
      "parentCompany": {
        "ultimateParent": {
          "registeredCompanyName": "some company",
-         "ctutr": "1234567890",
-         "crn": "12345678",
-         "knownAs": "something",
-         "sautr": "other reference"
+         "ctutr": "1234567890"
        },
        "deemedParent": [
          {
            "companyName": "some company ltd",
            "ctutr": "1234567890",
-           "knownAs": "some company",
            "countryOfIncorporation": "US",
-           "crn": "12345678",
            "sautr": "9876543210"
          }
        ]
@@ -419,26 +407,19 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
      "reportingCompany": {
        "companyName": "some reporting company",
        "ctutr": "1234567890",
-       "crn": "12345678",
+       
        "sameAsUltimateParent": true,
        "reportingCompanyDeemed": true
      },
      "parentCompany": {
-       "ultimateParent": {
-         "registeredCompanyName": "some company",
-         "ctutr": "1234567890",
-         "crn": "12345678",
-         "knownAs": "something",
-         "sautr": "other reference"
-       },
        "deemedParent": [
          {
            "companyName": "some company ltd",
-           "ctutr": "1234567890",
-           "knownAs": "some company",
-           "countryOfIncorporation": "US",
-           "crn": "12345678",
            "sautr": "9876543210"
+         },
+         {
+           "companyName": "some company ltd",
+           "countryOfIncorporation": "US"
          }
        ]
      },

@@ -17,14 +17,19 @@
 package v1.schemas.subSchemas
 
 import play.api.libs.json.{JsValue, Json}
-import v1.schemas.BaseSchemaSpec
-import v1.schemas.helpers.fullReturn.UkCompanyFull
 import v1.models.UTRModel
+import v1.schemas.BaseSchemaSpec
+import v1.schemas.helpers.fullReturn._
 
 class UkCompanyFullSchemaSpec extends BaseSchemaSpec {
 
   def validate(json: JsValue): Boolean =
     validateJson("subSchemas/ukCompanyFull.json", "1.0", json)
+
+  val validRestrictionModelIncomeZero = UkCompanyFull(netTaxInterestIncome = Some(0), allocatedReactivations = None)
+  val invalidRestrictionModelIncomeNone = UkCompanyFull(netTaxInterestIncome = None, allocatedReactivations = None)
+  val validReactivationsUkCompanyModel = UkCompanyFull(netTaxInterestExpense = Some(0), netTaxInterestIncome = Some(1000000), allocatedRestrictions = None)
+
 
   "UkCompanyFull JSON schema" should {
 
@@ -32,31 +37,31 @@ class UkCompanyFullSchemaSpec extends BaseSchemaSpec {
 
       "valid JSON data is submitted" in {
 
-        val json = Json.toJson(Seq(UkCompanyFull()))
+        val json = Json.toJson(Seq(validRestrictionModelIncomeZero))
 
         validate(json) shouldBe true
       }
 
-      "allocated restrictions" when {
+      "valid Json data for allocated restrictions" in {
 
-        "is None" in {
+        val json = Json.toJson(Seq(validRestrictionModelIncomeZero))
 
-          val json = Json.toJson(Seq(UkCompanyFull(allocatedRestrictions = None)))
-
-          validate(json) shouldBe true
-        }
+        validate(json) shouldBe true
       }
 
-      "allocated reactivations" when {
+      "valid Json data for allocated reactivations" in {
 
-        "is None" in {
+        val json = Json.toJson(Seq(validReactivationsUkCompanyModel))
 
-          val json = Json.toJson(Seq(UkCompanyFull(allocatedReactivations = None)))
+        validate(json) shouldBe true
 
-          validate(json) shouldBe true
-        }
+      }
 
+      "valid Json data for allocated restrictions when netTaxIncome = 0" in {
 
+        val json = Json.toJson(Seq(invalidRestrictionModelIncomeNone.copy(netTaxInterestIncome = Some(0))))
+
+        validate(json) shouldBe true
       }
     }
 
@@ -66,21 +71,21 @@ class UkCompanyFullSchemaSpec extends BaseSchemaSpec {
 
         "is empty" in {
 
-          val json = Json.toJson(Seq(UkCompanyFull(companyName = Some(""))))
+          val json = Json.toJson(Seq(validRestrictionModelIncomeZero.copy(companyName = Some(""))))
 
           validate(json) shouldBe false
         }
 
         s"is over $maxCompanyNameLength" in {
 
-          val json = Json.toJson(Seq(UkCompanyFull(companyName = Some("A" * (maxCompanyNameLength + 1)))))
+          val json = Json.toJson(Seq(validRestrictionModelIncomeZero.copy(companyName = Some("A" * (maxCompanyNameLength + 1)))))
 
           validate(json) shouldBe false
         }
 
         "is None" in {
 
-          val json = Json.toJson(Seq(UkCompanyFull(companyName = None)))
+          val json = Json.toJson(Seq(validRestrictionModelIncomeZero.copy(companyName = None)))
 
           validate(json) shouldBe false
         }
@@ -90,28 +95,28 @@ class UkCompanyFullSchemaSpec extends BaseSchemaSpec {
 
         s"below $utrLength" in {
 
-          val json = Json.toJson(Seq(UkCompanyFull(ctutr = Some(UTRModel("1" * (utrLength - 1))))))
+          val json = Json.toJson(Seq(validRestrictionModelIncomeZero.copy(ctutr = Some(UTRModel("1" * (utrLength - 1))))))
 
           validate(json) shouldBe false
         }
 
         s"above $utrLength" in {
 
-          val json = Json.toJson(Seq(UkCompanyFull(ctutr = Some(UTRModel("1" * (utrLength + 1))))))
+          val json = Json.toJson(Seq(validRestrictionModelIncomeZero.copy(ctutr = Some(UTRModel("1" * (utrLength + 1))))))
 
           validate(json) shouldBe false
         }
 
         "is non numeric" in {
 
-          val json = Json.toJson(Seq(UkCompanyFull(ctutr = Some(UTRModel("a" * utrLength)))))
+          val json = Json.toJson(Seq(validRestrictionModelIncomeZero.copy(ctutr = Some(UTRModel("a" * utrLength)))))
 
           validate(json) shouldBe false
         }
 
         "is a symbol" in {
 
-          val json = Json.toJson(Seq(UkCompanyFull(ctutr = Some(UTRModel("@")))))
+          val json = Json.toJson(Seq(validRestrictionModelIncomeZero.copy(ctutr = Some(UTRModel("@")))))
 
           validate(json) shouldBe false
         }
@@ -121,7 +126,7 @@ class UkCompanyFullSchemaSpec extends BaseSchemaSpec {
 
         "is blank" in {
 
-          val json = Json.toJson(Seq(UkCompanyFull(consenting = None)))
+          val json = Json.toJson(Seq(validRestrictionModelIncomeZero.copy(consenting = None)))
 
           validate(json) shouldBe false
         }
@@ -131,7 +136,7 @@ class UkCompanyFullSchemaSpec extends BaseSchemaSpec {
 
         "is negative" in {
 
-          val json = Json.toJson(Seq(UkCompanyFull(netTaxInterestExpense = Some(-1))))
+          val json = Json.toJson(Seq(validRestrictionModelIncomeZero.copy(netTaxInterestExpense = Some(-1))))
 
           validate(json) shouldBe false
         }
@@ -141,7 +146,7 @@ class UkCompanyFullSchemaSpec extends BaseSchemaSpec {
 
         "is negative" in {
 
-          val json = Json.toJson(Seq(UkCompanyFull(netTaxInterestIncome = Some(-1))))
+          val json = Json.toJson(Seq(validReactivationsUkCompanyModel.copy(netTaxInterestIncome = Some(-1))))
 
           validate(json) shouldBe false
         }
@@ -151,7 +156,7 @@ class UkCompanyFullSchemaSpec extends BaseSchemaSpec {
 
         "is None" in {
 
-          val json = Json.toJson(Seq(UkCompanyFull(taxEBITDA = None)))
+          val json = Json.toJson(Seq(validRestrictionModelIncomeZero.copy(taxEBITDA = None)))
 
           validate(json) shouldBe false
         }
@@ -159,3 +164,4 @@ class UkCompanyFullSchemaSpec extends BaseSchemaSpec {
     }
   }
 }
+

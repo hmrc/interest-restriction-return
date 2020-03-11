@@ -18,7 +18,7 @@ package controllers
 
 import assets.AbbreviatedReturnITConstants._
 import play.api.http.Status._
-import stubs.{AuthStub, CompaniesHouseStub, DESStub}
+import stubs.{AuthStub, DESStub}
 import utils.{CreateRequestHelper, CustomMatchers, IntegrationSpecBase}
 
 
@@ -28,69 +28,30 @@ class AbbreviatedReturnControllerISpec extends IntegrationSpecBase with CreateRe
 
     "user is authenticated" when {
 
-      "companies house validates the CRN" should {
+      "request is successfully processed by DES" should {
 
-        "request is successfully processed by DES" should {
-
-          "return OK (200) with the correct body" in {
-
-            AuthStub.authorised()
-            CompaniesHouseStub.checkCrn(OK)
-            DESStub.abbreviatedReturnSuccess(abbreviatedReturnDesSuccessJson)
-
-            val res = postRequest("/return/abbreviated", abbreviatedReturnJson)
-
-            whenReady(res) { result =>
-              result should have(
-                httpStatus(OK),
-                jsonBodyAs(abbreviatedReturnDesSuccessJson)
-              )
-            }
-          }
-        }
-
-        "error is returned from DES" should {
-
-          "should return the error" in {
-
-            AuthStub.authorised()
-            CompaniesHouseStub.checkCrn(OK)
-            DESStub.abbreviatedReturnError
-
-            val res = postRequest("/return/abbreviated", abbreviatedReturnJson)
-
-            whenReady(res) { result =>
-              result should have(
-                httpStatus(INTERNAL_SERVER_ERROR)
-              )
-            }
-          }
-        }
-      }
-
-      "companies house returns invalid for the CRN" should {
-
-        "return BAD_REQUEST (400) with the correct body" in {
+        "return OK (200) with the correct body" in {
 
           AuthStub.authorised()
-          CompaniesHouseStub.checkCrn(BAD_REQUEST)
+          DESStub.abbreviatedReturnSuccess(abbreviatedReturnDesSuccessJson)
 
           val res = postRequest("/return/abbreviated", abbreviatedReturnJson)
 
           whenReady(res) { result =>
             result should have(
-              httpStatus(BAD_REQUEST)
+              httpStatus(OK),
+              jsonBodyAs(abbreviatedReturnDesSuccessJson)
             )
           }
         }
       }
 
-      "request is successfully processed by Companies House" should {
+      "error is returned from DES" should {
 
-        "return INTERNAL_SERVER_ERROR (500) with the correct body" in {
+        "should return the error" in {
 
           AuthStub.authorised()
-          CompaniesHouseStub.checkCrn(INTERNAL_SERVER_ERROR)
+          DESStub.abbreviatedReturnError
 
           val res = postRequest("/return/abbreviated", abbreviatedReturnJson)
 

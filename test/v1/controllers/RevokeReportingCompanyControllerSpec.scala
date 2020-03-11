@@ -21,11 +21,11 @@ import v1.connectors.{DesSuccessResponse, InvalidCRN, UnexpectedFailure}
 import play.api.http.Status
 import play.api.libs.json.Json
 import play.api.test.{FakeRequest, Helpers}
-import v1.services.mocks.{MockCompaniesHouseService, MockRevokeReportingCompanyService}
+import v1.services.mocks.MockRevokeReportingCompanyService
 import utils.BaseSpec
 import v1.models.errors.ValidationErrorResponseModel
 
-class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanyService with MockCompaniesHouseService with BaseSpec {
+class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanyService with BaseSpec {
 
   override lazy val fakeRequest = FakeRequest("POST", "/interest-restriction-return/reporting-company/revoke")
 
@@ -36,7 +36,6 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
       object AuthorisedController extends RevokeReportingCompanyController(
         authAction = AuthorisedAction,
         revokeReportingCompanyService = mockRevokeReportingCompanyService,
-        companiesHouseService = mockCompaniesHouseService,
         controllerComponents = Helpers.stubControllerComponents()
       )
 
@@ -52,7 +51,6 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
 
             "return 200 (OK)" in {
 
-              mockCompaniesHouse(revokeReportingCompanyModelMax.ukCrns)(Right(Seq.empty))
               mockRevokeReportingCompany(revokeReportingCompanyModelMax)(Right(DesSuccessResponse(ackRef)))
 
               val result = AuthorisedController.revoke()(validJsonFakeRequest)
@@ -64,7 +62,6 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
 
             "return the Error" in {
 
-              mockCompaniesHouse(revokeReportingCompanyModelMax.ukCrns)(Right(Seq.empty))
               mockRevokeReportingCompany(revokeReportingCompanyModelMax)(Left(
                 UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err"))
               )
@@ -72,31 +69,6 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
               val result = AuthorisedController.revoke()(validJsonFakeRequest)
               status(result) shouldBe Status.INTERNAL_SERVER_ERROR
             }
-          }
-        }
-
-        "a success response is returned from the companies house service with validation errors" when {
-
-          "return the 400 (BAD REQUEST)" in {
-
-            mockCompaniesHouse(revokeReportingCompanyModelMax.ukCrns)(Right(
-              revokeReportingCompanyModelMax.ukCrns.map{
-                currentCrn => ValidationErrorResponseModel(currentCrn._1.toString, Json.toJson(crn), Seq(InvalidCRN.body))
-              }
-            ))
-
-            val result = AuthorisedController.revoke()(validJsonFakeRequest)
-            status(result) shouldBe Status.BAD_REQUEST
-          }
-        }
-
-        "a error response is returned from the companies house service" when {
-
-          "return the Error" in {
-
-            mockCompaniesHouse(revokeReportingCompanyModelMax.ukCrns)(Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
-            val result = AuthorisedController.revoke()(validJsonFakeRequest)
-            status(result) shouldBe Status.INTERNAL_SERVER_ERROR
           }
         }
       }
@@ -122,7 +94,6 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
         object UnauthorisedController extends RevokeReportingCompanyController(
           authAction = UnauthorisedAction,
           revokeReportingCompanyService = mockRevokeReportingCompanyService,
-          companiesHouseService = mockCompaniesHouseService,
           controllerComponents = Helpers.stubControllerComponents()
         )
 

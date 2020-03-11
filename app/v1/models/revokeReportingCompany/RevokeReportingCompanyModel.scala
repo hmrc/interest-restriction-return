@@ -30,18 +30,8 @@ case class RevokeReportingCompanyModel(agentDetails: AgentDetailsModel,
                                        declaration: Boolean) extends RevokeReportingCompanyValidator {
 
   override val revokeReportingCompanyModel: RevokeReportingCompanyModel = this
-
-  val ukCrns: Seq[(JsPath, CRNModel)] = Seq(
-    Some(RevokeReportingCompanyModel.reportingCompanyCrnPath -> reportingCompany.crn),
-    ultimateParent.flatMap(_.crn.map(crn => RevokeReportingCompanyModel.ultimateParentCrnPath -> crn)),
-    companyMakingRevocation.flatMap(_.crn.map(crn => RevokeReportingCompanyModel.identityOfAppointingCompanyCrnPath -> crn))
-  ).flatten
 }
 
 object RevokeReportingCompanyModel {
   implicit val format = Json.format[RevokeReportingCompanyModel]
-
-  val reportingCompanyCrnPath: JsPath = JsPath \ "reportingCompany" \ "crn"
-  val ultimateParentCrnPath: JsPath = JsPath \ "ultimateParentCompany" \ "crn"
-  val identityOfAppointingCompanyCrnPath: JsPath = JsPath \ "identityOfAppointingCompany" \ "crn"
 }

@@ -42,32 +42,33 @@ class UltimateParentValidatorSpec extends BaseSpec {
         rightSide(model.validate) shouldBe model
       }
 
-      "knownAs" when {
 
-        "is not supplied" in {
-          val model = ultimateParentModelNonUkCompany.copy(
-            knownAs = None)
+      "UK Company Details Supplied" in {
 
-          rightSide(model.validate) shouldBe model
-        }
+        val model = ultimateParentModelUkCompany
 
-        "is empty" in {
-          val model = ultimateParentModelNonUkCompany.copy(
-            knownAs = Some(""))
-
-          rightSide(model.validate) shouldBe model
-        }
+        rightSide(model.validate) shouldBe model
       }
+
+
+      "UK Partnership Details Supplied" in {
+
+        val model = ultimateParentModelUkPartnership
+
+        rightSide(model.validate) shouldBe model
+      }
+
+
+      "NonUK Company Details Supplied" in {
+
+        val model = ultimateParentModelNonUkCompany
+
+        rightSide(model.validate) shouldBe model
+      }
+
     }
 
     "Return invalid" when {
-
-      "Uk and NonUK fields are populated" in {
-
-        val model = ultimateParentModelMax
-
-        leftSideError(model.validate).errorMessage shouldBe UltimateParentCannotBeUkAndNonUk(model).errorMessage
-      }
 
       "Company name" when {
 
@@ -76,7 +77,9 @@ class UltimateParentValidatorSpec extends BaseSpec {
           leftSideError(model.validate).errorMessage shouldBe CompanyNameLengthError("").errorMessage
         }
 
-        s"Company name is longer that ${companyNameMaxLength}" in {
+        s"Company name is longer that ${
+          companyNameMaxLength
+        }" in {
           val model = ultimateParentModelUkCompany.copy(companyName = companyNameTooLong)
           leftSideError(model.validate).errorMessage shouldBe CompanyNameLengthError("a" * (companyNameMaxLength + 1)).errorMessage
         }
@@ -89,25 +92,38 @@ class UltimateParentValidatorSpec extends BaseSpec {
         leftSideError(model.validate).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
       }
 
-      "CRN is invalid" in {
-        val model = ultimateParentModelUkCompany.copy(
-          crn = Some(invalidCrn))
-
-        leftSideError(model.validate).errorMessage shouldBe CRNFormatCheck(invalidCrn).errorMessage
-      }
-
       "CountryOfIncorporation is invalid" in {
+
         val model = ultimateParentModelNonUkCompany.copy(
           countryOfIncorporation = Some(invalidCountryCode))
 
         leftSideError(model.validate).errorMessage shouldBe CountryCodeValueError(invalidCountryCode).errorMessage
       }
 
-      "Both versions of UTR are supplied for Uk Company" in {
-        val model = ultimateParentModelUkCompany.copy(
-          sautr = Some(sautr))
+      "wrong models given" when {
 
-        leftSideError(model.validate).errorMessage shouldBe UltimateParentUTRSuppliedError(model).errorMessage
+        "Both UK Company and Partnership Details Supplied" in {
+
+          val model = ultimateParentModelUkCompany.copy(sautr = Some(sautr))
+
+          leftSideError(model.validate).errorMessage shouldBe WrongUltimateParentIsUkCompanyAndPartnership(model).errorMessage
+        }
+
+
+        "Both UK Company and NonUK Details Supplied" in {
+
+          val model = ultimateParentModelUkCompany.copy(countryOfIncorporation = Some(nonUkCountryCode))
+
+          leftSideError(model.validate).errorMessage shouldBe WrongUltimateParentIsUKCompanyAndNonUK(model).errorMessage
+        }
+
+
+        "Both UK Partnership and NonUk Details Supplied" in {
+
+          val model = ultimateParentModelUkPartnership.copy(countryOfIncorporation = Some(nonUkCountryCode))
+
+          leftSideError(model.validate).errorMessage shouldBe WrongUltimateParentIsUkPartnershipAndNonUKCompany(model).errorMessage
+        }
       }
     }
   }

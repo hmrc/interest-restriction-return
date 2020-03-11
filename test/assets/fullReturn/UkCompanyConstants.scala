@@ -24,8 +24,8 @@ import v1.models.fullReturn.UkCompanyModel
 
 object UkCompanyConstants extends BaseConstants {
 
-  val netTaxInterestExpense: BigDecimal = 1.11
-  val netTaxInterestIncome: BigDecimal = 1.11
+  val netTaxInterestExpense: BigDecimal = 20.11
+  val netTaxInterestIncome: BigDecimal = 20.11
   val taxEBITDA: BigDecimal = 3.33
 
   val ukCompanyModelMax = UkCompanyModel(

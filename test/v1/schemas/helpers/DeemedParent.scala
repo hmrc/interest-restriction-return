@@ -17,15 +17,12 @@
 package v1.schemas.helpers
 
 import play.api.libs.json.Json
-import v1.models.{CRNModel, UTRModel}
+import v1.models.UTRModel
 
 case class DeemedParent(companyName: Option[String] = Some("name"),
-                        knownAs: Option[String] = Some("efg"),
                         ctutr: Option[UTRModel] = Some(UTRModel("1111111111")),
                         sautr: Option[UTRModel] = Some(UTRModel("1111111111")),
-                        crn: Option[CRNModel] = Some(CRNModel("AB123456")),
-                        countryOfIncorporation: Option[String] = Some("US"),
-                        nonUkCrn: Option[String] = Some("12345678")
+                        countryOfIncorporation: Option[String] = Some("US")
                        )
 
 object DeemedParent {

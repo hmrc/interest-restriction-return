@@ -31,9 +31,7 @@ object AppointReportingCompanyITConstants {
   val appointReportingCompanyJson = Json.obj(
     "agentDetails" -> agentDetailsJson,
     "reportingCompany" -> reportingCompanyJson,
-    "authorisingCompanies" -> Json.arr(
-      authorisingCompanyJson
-    ),
+    "authorisingCompanies" -> Json.arr(authorisingCompanyJson),
     "isReportingCompanyAppointingItself" -> false,
     "identityOfAppointingCompany" -> identityOfCompanySubmittingJson,
     "accountingPeriod" -> accountingPeriodJson,

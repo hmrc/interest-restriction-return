@@ -21,21 +21,18 @@ import play.api.libs.json.JsValue
 import play.api.mvc.{Action, ControllerComponents}
 import v1.controllers.actions.AuthAction
 import v1.models.fullReturn.FullReturnModel
-import v1.services.{CompaniesHouseService, FullReturnService}
+import v1.services.FullReturnService
 
 @Singleton()
 class FullReturnController @Inject()(authAction: AuthAction,
                                      fullReturnService: FullReturnService,
-                                     companiesHouseService: CompaniesHouseService,
                                      override val controllerComponents: ControllerComponents) extends BaseController {
 
   def submit(): Action[JsValue] = authAction.async(parse.json) { implicit request =>
     withJsonBody[FullReturnModel] { fullReturnModel =>
       handleValidation(
         validationModel = fullReturnModel.validate,
-        crns = fullReturnModel.ukCrns,
         service = fullReturnService,
-        companiesHouseService = companiesHouseService,
         controllerName = "FullReturnController"
       )
     }

@@ -23,6 +23,7 @@ import assets.GroupLevelAmountITConstants.groupLevelAmountJson
 import assets.GroupLevelElectionsITConstants.groupLevelElectionsJson
 import assets.ReportingCompanyITConstants._
 import assets.UkCompanyITConstants.ukCompanyFullJson
+import assets.ParentCompanyITConstants.parentCompanyJson
 import play.api.libs.json.Json
 import v1.models.Revised
 

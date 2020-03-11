@@ -49,6 +49,7 @@ trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with Mate
   object UnauthorisedAction extends Unauthorised(new MissingBearerToken, bodyParsers)
 
   def rightSide[A](validationResult: ValidationResult[A]): A = validationResult.toEither.right.get
+
   def leftSideError[A](validationResult: ValidationResult[A], position: Int = 0): Validation = {
     validationResult.toEither.left.get.toChain.toList(position)
   }

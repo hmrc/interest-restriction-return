@@ -17,56 +17,39 @@
 package v1.schemas.subSchemas
 
 import play.api.libs.json.{JsValue, Json}
+import v1.models.{CountryCodeModel, UTRModel}
 import v1.schemas.BaseSchemaSpec
 import v1.schemas.helpers._
-import v1.models.{CRNModel, CountryCodeModel, UTRModel}
 
 class UltimateParentCompanySchemaSpec extends BaseSchemaSpec {
 
   def validate(json: JsValue): Boolean = validateJson("subSchemas/ultimateParent.json", "1.0", json)
 
+  val ukUltimateParent = UltimateParent(sautr = None, countryOfIncorporation = None)
+  val ukPartnershipUltimateParent = UltimateParent(ctutr = None, countryOfIncorporation = None)
+  val nonUkUltimateParent = UltimateParent(ctutr = None, sautr = None)
+
   "UltimateParent Json Schema" should {
 
     "Return valid" when {
 
-      "Validated a successful JSON payload with Ultimate Parent Company" in {
+      "Validated a successful JSON payload with a Uk Ultimate Parent Company" in {
 
-        val json = Json.toJson(UltimateParent())
-
-        validate(json) shouldBe true
-      }
-
-      "crn is None" in {
-
-        val json = Json.toJson(UltimateParent(crn = None))
+        val json = Json.toJson(ukUltimateParent)
 
         validate(json) shouldBe true
       }
 
-      "Non Uk crn is None" in {
+      "Validated a successful JSON payload with a Uk Ultimate Parent Partnership" in {
 
-        val json = Json.toJson(UltimateParent(nonUkCrn = None))
-
-        validate(json) shouldBe true
-      }
-
-      "KnownAs is None" in {
-
-        val json = Json.toJson(UltimateParent(knownAs = None))
+        val json = Json.toJson(ukPartnershipUltimateParent)
 
         validate(json) shouldBe true
       }
 
-      "Country Of Incorporation is None" in {
+      "Validated a successful JSON payload with a Non Uk Ultimate Parent Company" in {
 
-        val json = Json.toJson(UltimateParent(countryOfIncorporation = None))
-
-        validate(json) shouldBe true
-      }
-
-      "ctutr is None" in {
-
-        val json = Json.toJson(UltimateParent(ctutr = None))
+        val json = Json.toJson(nonUkUltimateParent)
 
         validate(json) shouldBe true
       }
@@ -78,21 +61,21 @@ class UltimateParentCompanySchemaSpec extends BaseSchemaSpec {
 
         "is None" in {
 
-          val json = Json.toJson(UltimateParent(companyName = None))
+          val json = Json.toJson(ukUltimateParent.copy(companyName = None))
 
           validate(json) shouldBe false
         }
 
         s"is empty" in {
 
-          val json = Json.toJson(UltimateParent(companyName = Some("")))
+          val json = Json.toJson(ukUltimateParent.copy(companyName = Some("")))
 
           validate(json) shouldBe false
         }
 
         s"is longer than $maxCompanyNameLength characters" in {
 
-          val json = Json.toJson(UltimateParent(companyName = Some("A" * (maxCompanyNameLength + 1))))
+          val json = Json.toJson(ukUltimateParent.copy(companyName = Some("A" * (maxCompanyNameLength + 1))))
 
           validate(json) shouldBe false
         }
@@ -102,75 +85,28 @@ class UltimateParentCompanySchemaSpec extends BaseSchemaSpec {
 
         s"below $utrLength" in {
 
-          val json = Json.toJson(UltimateParent(ctutr = Some(UTRModel("1" * (utrLength - 1)))))
+          val json = Json.toJson(ukUltimateParent.copy(ctutr = Some(UTRModel("1" * (utrLength - 1)))))
 
           validate(json) shouldBe false
         }
 
         s"above $utrLength" in {
 
-          val json = Json.toJson(UltimateParent(ctutr = Some(UTRModel("1" * (utrLength + 1)))))
+          val json = Json.toJson(ukUltimateParent.copy(ctutr = Some(UTRModel("1" * (utrLength + 1)))))
 
           validate(json) shouldBe false
         }
 
         "is non numeric" in {
 
-          val json = Json.toJson(UltimateParent(ctutr = Some(UTRModel("a" * utrLength))))
+          val json = Json.toJson(ukUltimateParent.copy(ctutr = Some(UTRModel("a" * utrLength))))
 
           validate(json) shouldBe false
         }
 
         "is a symbol" in {
 
-          val json = Json.toJson(UltimateParent(ctutr = Some(UTRModel("@" * utrLength))))
-
-          validate(json) shouldBe false
-        }
-      }
-
-      "crn" when {
-
-        s"below $crnLength" in {
-
-          val json = Json.toJson(UltimateParent(crn = Some(CRNModel(("1" * (crnLength - 1))))))
-
-          validate(json) shouldBe false
-        }
-
-        s"above $crnLength" in {
-
-          val json = Json.toJson(UltimateParent(crn = Some(CRNModel(("1" * (crnLength + 1))))))
-
-          validate(json) shouldBe false
-        }
-
-        "starts with 1 letter" in {
-          val json = Json.toJson(UltimateParent(crn = Some(CRNModel(("A" + ("1" * (crnLength - 1)))))))
-
-          validate(json) shouldBe false
-        }
-
-        "starts with 3 letters" in {
-          val json = Json.toJson(UltimateParent(crn = Some(CRNModel(("AAA" + ("1" * (crnLength - 3)))))))
-
-          validate(json) shouldBe false
-
-        }
-      }
-
-      "knownAs" when {
-
-        "knownAs is empty" in {
-
-          val json = Json.toJson(UltimateParent(knownAs = Some("")))
-
-          validate(json) shouldBe false
-        }
-
-        s"is longer than $maxCompanyNameLength characters" in {
-
-          val json = Json.toJson(UltimateParent(knownAs = Some("A" * (maxCompanyNameLength + 1))))
+          val json = Json.toJson(ukUltimateParent.copy(ctutr = Some(UTRModel("@" * utrLength))))
 
           validate(json) shouldBe false
         }
@@ -180,35 +116,25 @@ class UltimateParentCompanySchemaSpec extends BaseSchemaSpec {
 
         "is only one letter" in {
 
-          val json = Json.toJson(UltimateParent(countryOfIncorporation = Some(CountryCodeModel("A"))))
+          val json = Json.toJson(nonUkUltimateParent.copy(countryOfIncorporation = Some(CountryCodeModel("A"))))
           validate(json) shouldBe false
         }
 
         "is three letters" in {
 
-          val json = Json.toJson(UltimateParent(countryOfIncorporation = Some(CountryCodeModel("AAA"))))
+          val json = Json.toJson(nonUkUltimateParent.copy(countryOfIncorporation = Some(CountryCodeModel("AAA"))))
           validate(json) shouldBe false
         }
 
         "contains a number" in {
 
-          val json = Json.toJson(UltimateParent(countryOfIncorporation = Some(CountryCodeModel("A1"))))
+          val json = Json.toJson(nonUkUltimateParent.copy(countryOfIncorporation = Some(CountryCodeModel("A1"))))
           validate(json) shouldBe false
         }
 
         "contains a symbol" in {
 
-          val json = Json.toJson(UltimateParent(countryOfIncorporation = Some(CountryCodeModel("A@"))))
-          validate(json) shouldBe false
-        }
-      }
-
-      "Non Uk crn" when {
-
-        s"is empty" in {
-
-          val json = Json.toJson(UltimateParent(nonUkCrn = Some((""))))
-
+          val json = Json.toJson(nonUkUltimateParent.copy(countryOfIncorporation = Some(CountryCodeModel("A@"))))
           validate(json) shouldBe false
         }
       }

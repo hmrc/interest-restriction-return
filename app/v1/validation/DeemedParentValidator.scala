@@ -26,50 +26,48 @@ trait DeemedParentValidator extends BaseValidation {
 
   val deemedParentModel: DeemedParentModel
 
-  private def validateDeemedParentCanNotBeUkAndNonUk(implicit path: JsPath): ValidationResult[DeemedParentModel] = {
-    val isUk = deemedParentModel.ctutr.isDefined || deemedParentModel.crn.isDefined || deemedParentModel.sautr.isDefined
-    val isNonUk = deemedParentModel.countryOfIncorporation.isDefined || deemedParentModel.nonUkCrn.isDefined
-
-    (isUk, isNonUk) match {
-      case (false, false) => DeemedParentWrongDetailsError(deemedParentModel).invalidNec
-      case (true, true) => DeemedParentCannotBeUkAndNonUk(deemedParentModel).invalidNec
-      case _ => deemedParentModel.validNec
-    }
-  }
-
-  private def validateCorrectUTRSupplied(implicit path: JsPath): ValidationResult[DeemedParentModel] = {
+  private def validateCorrectCompanyDetailsSupplied(implicit path: JsPath): ValidationResult[DeemedParentModel] = {
     val ctutr = deemedParentModel.ctutr.isDefined
     val sautr = deemedParentModel.sautr.isDefined
-
-    (ctutr, sautr) match {
-      case (true, true) => DeemedParentUTRSuppliedError(deemedParentModel).invalidNec
-      case _ => deemedParentModel.validNec
-    }
+    val countryCode = deemedParentModel.countryOfIncorporation.isDefined
+  (ctutr, sautr, countryCode) match {
+    case (true, true, true) => DeemedParentWrongDetailsSuppliedError(deemedParentModel).invalidNec
+    case (true, true, false) => WrongDeemedParentIsUkCompanyAndPartnership(deemedParentModel).invalidNec
+    case (true, false, true) => WrongDeemedParentIsUKCompanyAndNonUK(deemedParentModel).invalidNec
+    case (false, true, true) => WrongDeemedParentIsUkPartnershipAndNonUKCompany(deemedParentModel).invalidNec
+    case _ => deemedParentModel.validNec
   }
+}
 
   def validate(implicit path: JsPath): ValidationResult[DeemedParentModel] =
-    (validateDeemedParentCanNotBeUkAndNonUk,
-      validateCorrectUTRSupplied,
+    (validateCorrectCompanyDetailsSupplied,
       deemedParentModel.companyName.validate(path \ "companyName"),
       optionValidations(deemedParentModel.ctutr.map(_.validate(path \ "ctutr"))),
       optionValidations(deemedParentModel.countryOfIncorporation.map(_.validate(path \ "countryOfIncorporation")))
-      ).mapN((_,_,_,_,_) => deemedParentModel)
+      ).mapN((_,_,_,_) => deemedParentModel)
 }
 
-case class DeemedParentCannotBeUkAndNonUk(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
-  val errorMessage: String = "Deemed Parent Company Model cannot contain data for UK and NonUK fields"
+
+case class DeemedParentWrongDetailsSuppliedError(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
+  val errorMessage: String = "you have given the details for all three ultimate parents please give correct details"
   val value = Json.toJson(model)
 }
 
-case class DeemedParentUTRSuppliedError(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
-  val errorMessage: String = "both ctutr and sautr cannot be supplied simultaneously for Uk Deemed Parent"
+case class WrongDeemedParentIsUkCompanyAndPartnership(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
+  val errorMessage: String = "you have given details for a UK Company and Partnership"
   val value = Json.toJson(model)
 }
 
-case class DeemedParentWrongDetailsError(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
-  val errorMessage: String = "you have given the wrong details for the type of deemed parent you have tried to supply"
+case class WrongDeemedParentIsUkPartnershipAndNonUKCompany(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
+  val errorMessage: String = "you have given details for a UK Partnership and NonUK Company"
   val value = Json.toJson(model)
 }
+
+case class WrongDeemedParentIsUKCompanyAndNonUK(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
+  val errorMessage: String = "you have given details for a UK and Non UK Company"
+  val value = Json.toJson(model)
+}
+
 
 
 

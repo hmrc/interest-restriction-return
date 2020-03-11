@@ -26,52 +26,47 @@ trait UltimateParentValidator extends BaseValidation {
 
   val ultimateParentModel: UltimateParentModel
 
-  private def validateUltimateParentCanNotBeUkAndNonUk(implicit path: JsPath): ValidationResult[UltimateParentModel] = {
-    val isUk = ultimateParentModel.ctutr.isDefined || ultimateParentModel.crn.isDefined || ultimateParentModel.sautr.isDefined
-    val isNonUk = ultimateParentModel.countryOfIncorporation.isDefined || ultimateParentModel.nonUkCrn.isDefined
-
-    (isUk, isNonUk) match {
-      case (false, false) => UltimateParentWrongDetailsError(ultimateParentModel).invalidNec
-      case (true, true) => UltimateParentCannotBeUkAndNonUk(ultimateParentModel).invalidNec
-      case _ => ultimateParentModel.validNec
-    }
-  }
-
-  private def validateCorrectUTRSupplied(implicit path: JsPath): ValidationResult[UltimateParentModel] = {
+  private def validateCorrectCompanyDetailsSupplied(implicit path: JsPath): ValidationResult[UltimateParentModel] = {
     val ctutr = ultimateParentModel.ctutr.isDefined
     val sautr = ultimateParentModel.sautr.isDefined
-    (ctutr, sautr) match {
-      case (true, true) => UltimateParentUTRSuppliedError(ultimateParentModel).invalidNec
+    val countryCode = ultimateParentModel.countryOfIncorporation.isDefined
+
+    (ctutr, sautr, countryCode) match {
+      case (true, true, true) => UltimateParentWrongDetailsSuppliedError(ultimateParentModel).invalidNec
+      case (true, true, false) => WrongUltimateParentIsUkCompanyAndPartnership(ultimateParentModel).invalidNec
+      case (true, false, true) => WrongUltimateParentIsUKCompanyAndNonUK(ultimateParentModel).invalidNec
+      case (false, true, true) => WrongUltimateParentIsUkPartnershipAndNonUKCompany(ultimateParentModel).invalidNec
       case _ => ultimateParentModel.validNec
     }
   }
 
   def validate(implicit path: JsPath): ValidationResult[UltimateParentModel] =
-    (validateUltimateParentCanNotBeUkAndNonUk,
-      validateCorrectUTRSupplied,
+    (validateCorrectCompanyDetailsSupplied,
       ultimateParentModel.companyName.validate(path \ "companyName"),
       optionValidations(ultimateParentModel.ctutr.map(_.validate(path \ "ctutr"))),
-      optionValidations(ultimateParentModel.crn.map(_.validate(path \ "crn"))),
       optionValidations(ultimateParentModel.countryOfIncorporation.map(_.validate(path \ "countryOfIncorporation")))
-    ).mapN((_, _, _, _, _, _) => ultimateParentModel)
+    ).mapN((_, _, _, _) => ultimateParentModel)
 }
 
-case class UltimateParentCannotBeUkAndNonUk(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {
-  val errorMessage: String = "Ultimate Parent Company Model cannot contain data for UK and NonUK fields"
+case class UltimateParentWrongDetailsSuppliedError(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {
+  val errorMessage: String = "you have given the details for all three ultimate parents please give correct details"
   val value = Json.toJson(model)
 }
 
-case class UltimateParentUTRSuppliedError(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {
-  val errorMessage: String = "both ctutr and sautr cannot be supplied simultaneously for Uk Ultimate Parent"
+case class WrongUltimateParentIsUkCompanyAndPartnership(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {
+  val errorMessage: String = "you have given details for a UK Company and Partnership"
   val value = Json.toJson(model)
 }
 
-case class UltimateParentWrongDetailsError(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {
-  val errorMessage: String = "you have given the wrong details for the type of ultimate parent you have tried to supply"
+case class WrongUltimateParentIsUkPartnershipAndNonUKCompany(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {
+  val errorMessage: String = "you have given details for a UK Partnership and NonUK Company"
   val value = Json.toJson(model)
 }
 
-
+case class WrongUltimateParentIsUKCompanyAndNonUK(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {
+  val errorMessage: String = "you have given details for a UK and Non UK Company"
+  val value = Json.toJson(model)
+}
 
 
 

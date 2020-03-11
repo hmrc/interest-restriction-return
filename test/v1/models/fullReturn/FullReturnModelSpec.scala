@@ -101,43 +101,6 @@ class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants {
       }
     }
 
-    "correctly collect all of the ukCrns" when {
-
-      "ultimate parent crn is given" in {
-
-        val expectedValue = Seq(
-          FullReturnModel.ultimateParentCrnPath -> crnLetters,
-          FullReturnModel.reportingCompanyCrnPath -> crn
-        )
-        val actualValue = fullReturnUltimateParentModel.ukCrns
-
-        actualValue shouldBe expectedValue
-      }
-
-      "deemed parent crn is given" in {
-
-        val expectedValue = Seq(
-          FullReturnModel.deemedParentCrnPath(0) -> crn,
-          FullReturnModel.deemedParentCrnPath(1) -> crn,
-          FullReturnModel.deemedParentCrnPath(2) -> crn,
-          FullReturnModel.reportingCompanyCrnPath -> crn
-        )
-        val actualValue = fullReturnDeemedParentModel.ukCrns
-
-        actualValue shouldBe expectedValue
-      }
-
-      "min crns given" in {
-
-        val expectedValue = Seq(
-          FullReturnModel.reportingCompanyCrnPath -> crn
-        )
-        val actualValue = fullReturnModelMin.ukCrns
-
-        actualValue shouldBe expectedValue
-      }
-    }
-
     "derive the correct derived values" when {
 
       "deriving the numberOfUkCompanies when given one or multiple companies" in {

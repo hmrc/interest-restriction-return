@@ -6,14 +6,13 @@
   "reportingCompany": {
     "companyName": "ACompany",
     "ctutr": "1123456789",
-    "crn": "12345678",
+
     "sameAsUltimateParent": true
   },
   "isReportingCompanyAppointingItself":false,
   "identityOfAppointingCompany": {
     "companyName": "BCompany",
-    "ctutr": "9999999999",
-    "crn": "87654321"
+    "ctutr": "9999999999"
   },
   "authorisingCompanies": [{
     "companyName": "CCompany",

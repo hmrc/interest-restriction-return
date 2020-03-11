@@ -16,7 +16,7 @@
 
 package v1.validation.fullReturn
 
-import assets.fullReturn.AllocatedRestrictionsConstants.{ap1End, ap3End}
+import assets.fullReturn.AllocatedRestrictionsConstants._
 import assets.fullReturn.UkCompanyConstants._
 import play.api.libs.json.JsPath
 import v1.models.AccountingPeriodModel
@@ -31,12 +31,18 @@ class UkCompanyValidatorSpec extends BaseValidationSpec {
     endDate = ap3End
   )
 
+  val allocatedRestriction = Some(allocatedRestrictionsModel.copy(disallowanceAp1 = Some(10),disallowanceAp2 = Some(10), disallowanceAp3 = Some(10.01), totalDisallowances = Some(30.01)))
+
   "Full UK Company Validation" should {
 
     "Return valid" when {
 
-      "a valid Full UK Company model is validated" in {
+      "a valid Full Reactivation UK Company model is validated" in {
         rightSide(ukCompanyModelReactivationMax.validate(groupAccountingPeriod)) shouldBe ukCompanyModelReactivationMax
+      }
+
+      "a valid Full Restriction UK Company model is validated" in {
+        rightSide(ukCompanyModelRestrictionMax.validate(groupAccountingPeriod)) shouldBe ukCompanyModelRestrictionMax
       }
     }
 
@@ -63,6 +69,9 @@ class UkCompanyValidatorSpec extends BaseValidationSpec {
         leftSideError(ukCompanyModelReactivationMax.copy(netTaxInterestExpense = 20.00,netTaxInterestIncome = 30.00).validate(groupAccountingPeriod)).errorMessage shouldBe ExpenseAndIncomeBothNotGreaterThanZero(20.00,30.00).errorMessage
       }
 
+      "RestrictionNotGreaterThanExpense where restriction values > expense" in {
+        leftSideError(ukCompanyModelRestrictionMax.copy(netTaxInterestExpense = 20.00, allocatedRestrictions = allocatedRestriction).validate(groupAccountingPeriod)).errorMessage shouldBe RestrictionNotGreaterThanExpense(20.00,30.01).errorMessage
+      }
     }
   }
 }
