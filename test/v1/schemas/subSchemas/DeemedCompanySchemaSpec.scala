@@ -155,6 +155,21 @@ class DeemedCompanySchemaSpec extends BaseSchemaSpec {
           validate(json) shouldBe false
         }
       }
+
+      "Validated a unsuccessful JSON payload with only 1 deemed parent" in {
+
+        val json = Json.toJson(Seq(ukDeemedParent))
+
+        validate(json) shouldBe false
+      }
+
+      "Validated a unsuccessful JSON payload with more than 3 deemed parent" in {
+
+        val json = Json.toJson(Seq(ukDeemedParent, ukDeemedParent, ukDeemedParent, ukDeemedParent))
+
+        validate(json) shouldBe false
+      }
+
     }
   }
 }

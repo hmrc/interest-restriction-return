@@ -29,15 +29,15 @@ class ParentCompanyModelSpec extends WordSpec with Matchers {
 
       "max values given" in {
 
-        val expectedValue = parentCompanyJsonMax
-        val actualValue = Json.toJson(parentCompanyModelMax)
+        val expectedValue = parentCompanyJsonDeemedUkCompany
+        val actualValue = Json.toJson(parentCompanyModelDeemedUkCompany)
 
         actualValue shouldBe expectedValue
       }
 
       "min values given" in {
 
-        val expectedValue = Json.obj()
+        val expectedValue = parentCompanyJsonMin
         val actualValue = Json.toJson(parentCompanyModelMin)
 
         actualValue shouldBe expectedValue
@@ -48,8 +48,8 @@ class ParentCompanyModelSpec extends WordSpec with Matchers {
 
       "max values given" in {
 
-        val expectedValue = parentCompanyModelMax
-        val actualValue = parentCompanyJsonMax.as[ParentCompanyModel]
+        val expectedValue = parentCompanyModelDeemedUkCompany
+        val actualValue = parentCompanyJsonDeemedUkCompany.as[ParentCompanyModel]
 
         actualValue shouldBe expectedValue
       }
@@ -57,7 +57,7 @@ class ParentCompanyModelSpec extends WordSpec with Matchers {
       "min values given" in {
 
         val expectedValue = parentCompanyModelMin
-        val actualValue = Json.obj().as[ParentCompanyModel]
+        val actualValue = parentCompanyJsonDeemedMin.as[ParentCompanyModel]
 
         actualValue shouldBe expectedValue
       }

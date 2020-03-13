@@ -25,12 +25,12 @@ object ParentCompanyConstants {
 
   val parentCompanyModelMax = ParentCompanyModel(
     ultimateParent = Some(ultimateParentModelMax),
-    deemedParent = Some(Seq(deemedParentModelMax))
+    deemedParent = Some(Seq(deemedParentModelMax, deemedParentModelMax))
   )
 
   val parentCompanyModelMin = ParentCompanyModel(
     ultimateParent = None,
-    deemedParent = None
+    deemedParent = Some(Seq(deemedParentModelMin, deemedParentModelMin))
   )
 
   val parentCompanyModelUltMax = ParentCompanyModel(
@@ -55,7 +55,7 @@ object ParentCompanyConstants {
 
   val parentCompanyModelDeemedMin = ParentCompanyModel(
     ultimateParent = None,
-    deemedParent = Some(Seq(deemedParentModelUkCompany))
+    deemedParent = Some(Seq(deemedParentModelUkCompany, deemedParentModelUkCompany))
   )
 
   val parentCompanyModelDeemedMax = ParentCompanyModel(
@@ -69,7 +69,7 @@ object ParentCompanyConstants {
 
   val parentCompanyModelDeemedUkCompany = ParentCompanyModel(
     ultimateParent = None,
-    deemedParent = Some(Seq(deemedParentModelUkCompany))
+    deemedParent = Some(Seq(deemedParentModelUkCompany, deemedParentModelUkCompany))
   )
 
   val parentCompanyModelDeemedNonUkCompany = ParentCompanyModel(
@@ -87,7 +87,9 @@ object ParentCompanyConstants {
     "deemedParent" -> Seq(deemedParentJsonMax)
   )
 
-  val parentCompanyJsonMin = Json.obj()
+  val parentCompanyJsonMin = Json.obj(
+  "deemedParent" -> Seq(deemedParentJsonMin, deemedParentJsonMin)
+  )
 
   val parentCompanyJsonUltMax= Json.obj(
     "ultimateParent" -> ultimateParentJsonMax
@@ -106,7 +108,7 @@ object ParentCompanyConstants {
   )
 
   val parentCompanyJsonDeemedMin = Json.obj(
-    "deemedParent" -> Seq(deemedParentJsonMax)
+    "deemedParent" -> Seq(deemedParentJsonMin, deemedParentJsonMin)
   )
 
   val parentCompanyJsonDeemedMax = Json.obj(
@@ -118,7 +120,7 @@ object ParentCompanyConstants {
   )
 
   val parentCompanyJsonDeemedUkCompany = Json.obj(
-    "deemedParent" -> Seq(deemedParentJsonUkCompany)
+    "deemedParent" -> Seq(deemedParentJsonUkCompany, deemedParentJsonUkCompany)
   )
 
   val parentCompanyJsonDeemedNonUkCompany = Json.obj(

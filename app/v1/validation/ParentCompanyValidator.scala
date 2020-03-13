@@ -30,26 +30,36 @@ trait ParentCompanyValidator extends BaseValidation {
     val isUltimate = parentCompanyModel.ultimateParent.isDefined
     val isDeemed = parentCompanyModel.deemedParent.isDefined
 
-    if(isUltimate && isDeemed) {
+    if (isUltimate && isDeemed) {
       ParentCompanyCanNotBeUltimateAndDeemed(parentCompanyModel).invalidNec
     } else {
       parentCompanyModel.validNec
     }
   }
 
+  private def validateOnlyTwoOrThreeDeemedParents(implicit path: JsPath): ValidationResult[ParentCompanyModel] = {
+    val numOfDeemedParent = parentCompanyModel.deemedParent.fold(0) { x => x.length }
+    numOfDeemedParent match {
+      case x if x > 3 => MaxThreeDeemedParents(parentCompanyModel).invalidNec
+      case x if x == 1 => MinTwoDeemedParents(parentCompanyModel).invalidNec
+      case _ =>  parentCompanyModel.validNec
+    }
+  }
+
   def validate(implicit path: JsPath): ValidationResult[ParentCompanyModel] = {
 
     val validatedDeemedParent = parentCompanyModel.deemedParent.map(deemedParents =>
-      if(deemedParents.isEmpty) DeemedParentsEmpty().invalidNec else {
+      if (deemedParents.isEmpty) DeemedParentsEmpty().invalidNec else {
         combineValidations(deemedParents.zipWithIndex.map {
           case (x, i) => x.validate(path \ s"deemedParent[$i]")
         }: _*)
       })
 
     (validateParentCompanyCanNotBeUltimateAndDeemed,
+      validateOnlyTwoOrThreeDeemedParents,
       optionValidations(parentCompanyModel.ultimateParent.map(_.validate(path \ "ultimateParent"))),
       optionValidations(validatedDeemedParent)
-    ).mapN((_, _, _) => parentCompanyModel)
+      ).mapN((_, _, _, _) => parentCompanyModel)
   }
 }
 
@@ -64,6 +74,17 @@ case class DeemedParentsEmpty(implicit topPath: JsPath) extends Validation {
   val value = Json.obj()
 }
 
+case class MinTwoDeemedParents(model: ParentCompanyModel)(implicit topPath: JsPath) extends Validation {
+  val errorMessage: String = "Min number of deemed Parent can only be two"
+  val path = topPath \ "deemedParent"
+  val value = Json.obj()
+}
+
+case class MaxThreeDeemedParents(model: ParentCompanyModel)(implicit topPath: JsPath) extends Validation {
+  val errorMessage: String = "Max number of deemed Parents can only be three"
+  val path = topPath \ "deemedParent"
+  val value = Json.obj()
+}
 
 
 

@@ -30,21 +30,22 @@ trait DeemedParentValidator extends BaseValidation {
     val ctutr = deemedParentModel.ctutr.isDefined
     val sautr = deemedParentModel.sautr.isDefined
     val countryCode = deemedParentModel.countryOfIncorporation.isDefined
-  (ctutr, sautr, countryCode) match {
-    case (true, true, true) => DeemedParentWrongDetailsSuppliedError(deemedParentModel).invalidNec
-    case (true, true, false) => WrongDeemedParentIsUkCompanyAndPartnership(deemedParentModel).invalidNec
-    case (true, false, true) => WrongDeemedParentIsUKCompanyAndNonUK(deemedParentModel).invalidNec
-    case (false, true, true) => WrongDeemedParentIsUkPartnershipAndNonUKCompany(deemedParentModel).invalidNec
-    case _ => deemedParentModel.validNec
+    (ctutr, sautr, countryCode) match {
+      case (true, true, true) => DeemedParentWrongDetailsSuppliedError(deemedParentModel).invalidNec
+      case (true, true, false) => WrongDeemedParentIsUkCompanyAndPartnership(deemedParentModel).invalidNec
+      case (true, false, true) => WrongDeemedParentIsUKCompanyAndNonUK(deemedParentModel).invalidNec
+      case (false, true, true) => WrongDeemedParentIsUkPartnershipAndNonUKCompany(deemedParentModel).invalidNec
+      case _ => deemedParentModel.validNec
+    }
   }
-}
+
 
   def validate(implicit path: JsPath): ValidationResult[DeemedParentModel] =
     (validateCorrectCompanyDetailsSupplied,
       deemedParentModel.companyName.validate(path \ "companyName"),
       optionValidations(deemedParentModel.ctutr.map(_.validate(path \ "ctutr"))),
       optionValidations(deemedParentModel.countryOfIncorporation.map(_.validate(path \ "countryOfIncorporation")))
-      ).mapN((_,_,_,_) => deemedParentModel)
+      ).mapN((_, _, _, _) => deemedParentModel)
 }
 
 

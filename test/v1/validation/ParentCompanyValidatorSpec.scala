@@ -16,6 +16,7 @@
 
 package v1.validation
 
+import assets.DeemedParentConstants.deemedParentModelUkCompany
 import assets.ParentCompanyConstants._
 import play.api.libs.json.JsPath
 
@@ -35,22 +36,40 @@ class ParentCompanyValidatorSpec extends BaseValidationSpec {
       }
     }
 
-      "Ultimate fields are populated" should {
+    "Ultimate fields are populated" should {
 
-        "Return valid" in {
-          val model = parentCompanyModelUltMax
+      "Return valid" in {
+        val model = parentCompanyModelUltMax
 
-          rightSide(model.validate) shouldBe model
-        }
-      }
-
-      "Deemed fields are populated" should {
-
-        "Return valid" in {
-          val model = parentCompanyModelDeemedMin
-
-          rightSide(model.validate) shouldBe model
-        }
+        rightSide(model.validate) shouldBe model
       }
     }
+
+    "Deemed fields are populated" should {
+
+      "Return valid" in {
+        val model = parentCompanyModelDeemedMin
+
+        rightSide(model.validate) shouldBe model
+      }
+    }
+
+    "Deemed fields are populated" should {
+
+      "Return invalid if more than 3 deemed Parents" in {
+
+        val model = parentCompanyModelDeemedMin.copy(deemedParent = Some(Seq(deemedParentModelUkCompany, deemedParentModelUkCompany, deemedParentModelUkCompany, deemedParentModelUkCompany)))
+
+        leftSideError(model.parentCompanyModel.validate).errorMessage shouldBe MaxThreeDeemedParents(model).errorMessage
+      }
+
+      "Return invalid if less than 2 deemed Parents" in {
+
+        val model = parentCompanyModelDeemedMin.copy(deemedParent = Some(Seq(deemedParentModelUkCompany)))
+
+        leftSideError(model.parentCompanyModel.validate).errorMessage shouldBe MinTwoDeemedParents(model).errorMessage
+      }
+    }
+
   }
+}
