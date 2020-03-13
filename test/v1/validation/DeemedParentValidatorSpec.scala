@@ -125,6 +125,8 @@ class DeemedParentValidatorSpec extends BaseSpec {
           leftSideError(model.validate).errorMessage shouldBe WrongDeemedParentIsUkPartnershipAndNonUKCompany(model).errorMessage
         }
       }
+
+
     }
   }
 
