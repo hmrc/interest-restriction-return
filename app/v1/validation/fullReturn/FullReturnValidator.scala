@@ -305,13 +305,7 @@ case class AdjustedNetGroupInterestSupplied(details: AdjustedGroupInterestModel)
 }
 
 case class AggInterestNegativeAndReactivation(totalTaxInterest: BigDecimal, subjectRestrictions: Boolean) extends Validation {
-  val errorMessage: String = s"You cannot have a expense totalTaxInterest: ${totalTaxInterest.abs} when there the full return is subjectToReactivation: ${subjectRestrictions.toString}"
-  val path = JsPath \ "totalRestrictions"
-  val value = Json.obj()
-}
-
-case class ReactivationCapAndNotSubjectToReactivation() extends Validation {
-  val errorMessage: String = s"When the full return SubjectToReactivation is FALSE. You should not supply a ReactivationCapacity"
+  val errorMessage: String = s"You cannot have a expense totalTaxInterest: ${totalTaxInterest.abs} when the full return is subjectToReactivation: ${subjectRestrictions.toString}"
   val path = JsPath \ "totalRestrictions"
   val value = Json.obj()
 }
