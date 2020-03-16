@@ -130,11 +130,8 @@ trait FullReturnValidator extends BaseValidation {
   private def validateAggInterestAndReallocationOrRestrictionStatus: ValidationResult[BigDecimal] = {
     val aggregateNetTaxInterest: BigDecimal = fullReturnModel.aggregateNetTaxInterest
     val subjectRestrictions: Boolean = fullReturnModel.groupSubjectToInterestRestrictions
-    val subjectReactivation: Boolean = fullReturnModel.groupSubjectToInterestReactivation
 
-    if(aggregateNetTaxInterest < 0 && subjectReactivation) {
-      AggInterestNegativeAndReactivation(aggregateNetTaxInterest, subjectReactivation).invalidNec
-    } else if(aggregateNetTaxInterest > 0 && subjectRestrictions) {
+    if (aggregateNetTaxInterest > 0 && subjectRestrictions) {
       AggInterestPositiveAndRestriction(aggregateNetTaxInterest, subjectRestrictions).invalidNec
     } else {
       aggregateNetTaxInterest.validNec
@@ -304,10 +301,4 @@ case class AdjustedNetGroupInterestSupplied(details: AdjustedGroupInterestModel)
   val errorMessage: String = "Adjusted Group Interest should not be supplied as Group Ratio is not elected"
   val path = JsPath \ "adjustedGroupInterest"
   val value = Json.toJson(details)
-}
-
-case class AggInterestNegativeAndReactivation(totalTaxInterest: BigDecimal, subjectRestrictions: Boolean) extends Validation {
-  val errorMessage: String = s"You cannot have a expense totalTaxInterest: ${totalTaxInterest.abs} when the full return is subjectToReactivation: ${subjectRestrictions.toString}"
-  val path = JsPath \ "totalRestrictions"
-  val value = Json.obj()
 }
