@@ -28,12 +28,12 @@ object AllocatedRestrictionsConstants {
   val ap2End: LocalDate = startDate.plusMonths(12)
   val ap3End: LocalDate = endDate
 
-  val disallowanceAp1: BigDecimal = 1.11
-  val disallowanceAp2: BigDecimal = 2.22
-  val disallowanceAp3: BigDecimal = 3.33
-  val totalDisallowances: BigDecimal = 6.66
+  val disallowanceAp1: BigDecimal = 1.00
+  val disallowanceAp2: BigDecimal = 2.00
+  val disallowanceAp3: BigDecimal = 3.00
+  val totalDisallowances: BigDecimal = 6.00
 
-  val incorrectDisallowances: BigDecimal = 10
+  val incorrectDisallowances: BigDecimal = 10.00
 
   val allocatedRestrictionsModel = AllocatedRestrictionsModel(
     ap1End = Some(ap1End),

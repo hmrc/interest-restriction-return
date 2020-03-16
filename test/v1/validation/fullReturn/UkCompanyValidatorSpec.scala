@@ -38,7 +38,9 @@ class UkCompanyValidatorSpec extends BaseValidationSpec {
     "Return valid" when {
 
       "a valid Full Reactivation UK Company model is validated" in {
-        rightSide(ukCompanyModelReactivationMax.validate(groupAccountingPeriod)) shouldBe ukCompanyModelReactivationMax
+        val model =  ukCompanyModelReactivationMax
+
+        rightSide(model.validate(groupAccountingPeriod)) shouldBe model
       }
 
       "a valid Full Restriction UK Company model is validated" in {

@@ -30,7 +30,6 @@ import assets.fullReturn.GroupLevelAmountConstants._
 import assets.fullReturn.UkCompanyConstants._
 import play.api.libs.json.JsPath
 import utils.BaseSpec
-import v1.models.fullReturn.AllocatedRestrictionsModel
 import v1.models.{Original, Revised}
 import v1.validation._
 
@@ -43,7 +42,10 @@ class FullReturnValidatorSpec extends BaseSpec {
     "Return valid" when {
 
       "a valid Full Return is supplied" in {
-        rightSide(fullReturnUltimateParentModel.validate) shouldBe fullReturnUltimateParentModel
+
+        val model = fullReturnUltimateParentModel
+
+        rightSide(model.validate) shouldBe model
       }
     }
 
@@ -184,20 +186,20 @@ class FullReturnValidatorSpec extends BaseSpec {
             )
           ),
           totalReactivation = 36004.0, //to get pass the TotalReactivationsDoesNotMatch validation
-          groupLevelAmount = groupLevelAmountModel.copy(interestReactivationCap = Some(2.22))
+          groupLevelAmount = groupLevelAmountModel
         )
 
         leftSideError(model.validate).errorMessage shouldBe
           TotalReactivationsNotGreaterThanCapacity(36004.0, fullReturnUltimateParentModel.groupLevelAmount.interestReactivationCap.getOrElse(0)).errorMessage
-      }  //36004.0 is the calculated value of all 4 companies and should not be greater than 2.22 (the reactivation cap)
+      } //36004.0 is the calculated value of all 4 companies and should not be greater than 2.22 (the reactivation cap)
 
-      "Group is subject to restrictions but total net tax interest is present" in {
+      "Group is subject to restrictions but total net tax interest is income" in {
 
         val model = fullReturnUltimateParentModel.copy(
           groupSubjectToInterestReactivation = false,
           groupSubjectToInterestRestrictions = true,
           totalReactivation = 0,
-          totalRestrictions = 13.32,
+          totalRestrictions = 12,
           ukCompanies = Seq(
             ukCompanyModelRestrictionMax.copy(
               netTaxInterestExpense = 0,
@@ -210,8 +212,8 @@ class FullReturnValidatorSpec extends BaseSpec {
         )
 
         leftSideError(model.validate).errorMessage shouldBe
-          NoTotalIncomeWhenSubjectToRestriction(9999959.78, true).errorMessage
-      }  //36004.0 is the calculated value of all 4 companies and should not be greater than 2.22 (the reactivation cap)
+          AggInterestPositiveAndRestriction(9999960.00, true).errorMessage
+      }
 
 
       "Group is not subject to interest restrictions but has allocated restrictions supplied" in {
@@ -220,13 +222,13 @@ class FullReturnValidatorSpec extends BaseSpec {
           groupSubjectToInterestRestrictions = false,
 
           ukCompanies = Seq(
-            ukCompanyModelReactivationMax.copy(
+            ukCompanyModelRestrictionMax.copy(
               allocatedRestrictions = Some(allocatedRestrictionsModel)
             ),
-            ukCompanyModelReactivationMax.copy(
+            ukCompanyModelRestrictionMax.copy(
               allocatedRestrictions = None
             ),
-            ukCompanyModelReactivationMax.copy(
+            ukCompanyModelRestrictionMax.copy(
               allocatedRestrictions = Some(allocatedRestrictionsModel)
             )
           )
@@ -242,16 +244,16 @@ class FullReturnValidatorSpec extends BaseSpec {
           groupSubjectToInterestRestrictions = true,
           groupSubjectToInterestReactivation = false,
           ukCompanies = Seq(
-            ukCompanyModelReactivationMax.copy(
+            ukCompanyModelRestrictionMax.copy(
               allocatedRestrictions = Some(allocatedRestrictionsModel)
             ),
-            ukCompanyModelReactivationMax.copy(
+            ukCompanyModelRestrictionMax.copy(
               allocatedRestrictions = None
             ),
-            ukCompanyModelReactivationMax.copy(
+            ukCompanyModelRestrictionMax.copy(
               allocatedRestrictions = Some(allocatedRestrictionsModel)
             ),
-            ukCompanyModelReactivationMax.copy(
+            ukCompanyModelRestrictionMax.copy(
               allocatedRestrictions = None
             )
           )
@@ -334,4 +336,5 @@ class FullReturnValidatorSpec extends BaseSpec {
       }
     }
   }
+
 }
