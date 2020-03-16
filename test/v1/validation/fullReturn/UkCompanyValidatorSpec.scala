@@ -41,8 +41,6 @@ class UkCompanyValidatorSpec extends BaseValidationSpec {
         val model =  ukCompanyModelReactivationMax
 
         rightSide(model.validate(groupAccountingPeriod)) shouldBe model
-        //leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
-
       }
 
       "a valid Full Restriction UK Company model is validated" in {

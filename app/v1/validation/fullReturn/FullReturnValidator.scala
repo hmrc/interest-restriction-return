@@ -132,10 +132,12 @@ trait FullReturnValidator extends BaseValidation {
     val subjectRestrictions: Boolean = fullReturnModel.groupSubjectToInterestRestrictions
     val subjectReactivation: Boolean = fullReturnModel.groupSubjectToInterestReactivation
 
-    (aggregateNetTaxInterest, subjectRestrictions, subjectReactivation) match {
-      case (x, y, z) if x < 0 && !y && z => AggInterestNegativeAndReactivation(aggregateNetTaxInterest, subjectReactivation).invalidNec
-      case (x, y, z) if x > 0 && y && !z => AggInterestPositiveAndRestriction(aggregateNetTaxInterest, subjectRestrictions).invalidNec
-      case _ => aggregateNetTaxInterest.validNec
+    if(aggregateNetTaxInterest < 0 && subjectReactivation) {
+      AggInterestNegativeAndReactivation(aggregateNetTaxInterest, subjectReactivation).invalidNec
+    } else if(aggregateNetTaxInterest > 0 && subjectRestrictions) {
+      AggInterestPositiveAndRestriction(aggregateNetTaxInterest, subjectRestrictions).invalidNec
+    } else {
+      aggregateNetTaxInterest.validNec
     }
   }
 
