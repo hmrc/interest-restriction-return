@@ -139,17 +139,6 @@ trait FullReturnValidator extends BaseValidation {
     }
   }
 
-  private def validateReactivationCapOnlyIfSubjectReactivation: ValidationResult[Boolean] = {
-    val subjectReactivation: Boolean = fullReturnModel.groupSubjectToInterestReactivation
-    val reactivationCap:Boolean = fullReturnModel.groupLevelAmount.interestReactivationCap.isDefined
-
-    (subjectReactivation, reactivationCap) match {
-      case (true, true) => reactivationCap.validNec
-      case _ => ReactivationCapAndNotSubjectToReactivation().invalidNec
-    }
-  }
-
-
   private def validateAdjustedNetGroupInterest: ValidationResult[Option[AdjustedGroupInterestModel]] = {
     (fullReturnModel.groupLevelElections.groupRatio.isElected, fullReturnModel.adjustedGroupInterest) match {
       case (true, None) => AdjustedNetGroupInterestNotSupplied.invalidNec
@@ -188,14 +177,13 @@ trait FullReturnValidator extends BaseValidation {
       validateTotalReactivationsNotGreaterThanCapacity,
       validateTotalRestrictions,
       validateAggInterestAndReallocationOrRestrictionStatus,
-      validateReactivationCapOnlyIfSubjectReactivation,
       validateParentCompany,
       validateRevisedReturnDetails,
       validateAdjustedNetGroupInterest,
       validateAppointedReporter,
       fullReturnModel.groupLevelAmount.validate(JsPath \ "groupLevelAmount"),
       optionValidations(fullReturnModel.adjustedGroupInterest.map(_.validate(JsPath \ "adjustedGroupInterest")))
-      ).mapN((_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) => fullReturnModel)
+      ).mapN((_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) => fullReturnModel)
   }
 }
 
