@@ -32,6 +32,11 @@ import assets.fullReturn.AllocatedReactivationsConstants._
 
 object FullReturnConstants {
 
+  private val oSum: Seq[BigDecimal] => Option[BigDecimal] = {
+    case x if x.isEmpty => None
+    case x => Some(x.sum)
+  }
+
   val ackRef = "ackRef"
   val revisedReturnDetails = "some details"
   val angie: BigDecimal = 1.11
@@ -42,6 +47,8 @@ object FullReturnConstants {
   val totalRestrictions: BigDecimal = ukCompanyModelRestrictionMax.allocatedRestrictions.foldLeft[BigDecimal](0) {
     (total, company) => total + company.totalDisallowances.getOrElse(0)
   }
+
+  //These models do not pass validation. The ones that do start at Ultimate Parent
 
   val fullReturnModelMax: FullReturnModel = FullReturnModel(
     appointedReportingCompany = true,
@@ -84,7 +91,7 @@ object FullReturnConstants {
     "returnContainsEstimates" -> true,
     "groupSubjectToInterestRestrictions" -> false,
     "groupSubjectToInterestReactivation" -> true,
-    "totalReactivation" -> totalReactivations,
+    "totalReactivation" -> fullReturnModelMax.aggregateAllocatedReactivations.getOrElse[BigDecimal](0),
     "totalRestrictions" -> 0,
     "groupLevelAmount" -> groupLevelAmountJson,
     "adjustedGroupInterest" -> adjustedGroupInterestJson
@@ -184,7 +191,7 @@ object FullReturnConstants {
     "adjustedGroupInterest" -> adjustedGroupInterestJson
   )
 
-  // Ultimate Model and Json
+  // Ultimate Parent Model and Json.
 
   val fullReturnUltimateParentModel: FullReturnModel = FullReturnModel(
     appointedReportingCompany = true,
@@ -196,14 +203,14 @@ object FullReturnConstants {
     submissionType = Revised,
     revisedReturnDetails = Some(revisedReturnDetails),
     groupLevelElections = groupLevelElectionsModelMax,
-    ukCompanies = Seq(ukCompanyModelReactivationMax),
+    ukCompanies = Seq(ukCompanyModelReactivationMax, ukCompanyModelReactivationMax), // Net Tax Income =  2 * £30 = £60.00
     angie = Some(angie),
     returnContainsEstimates = true,
     groupSubjectToInterestRestrictions = false,
     groupSubjectToInterestReactivation = true,
-    totalReactivation = totalReactivations,
+    totalReactivation = totalReactivations * 2,
     totalRestrictions = 0,
-    groupLevelAmount = groupLevelAmountModel,
+    groupLevelAmount = groupLevelAmountModel,  //Reactivation Capactiy = £300
     adjustedGroupInterest = Some(adjustedGroupInterestModel)
   )
 
@@ -217,8 +224,8 @@ object FullReturnConstants {
     "submissionType" -> Revised,
     "revisedReturnDetails" -> revisedReturnDetails,
     "groupLevelElections" -> groupLevelElectionsJsonMax,
-    "ukCompanies" -> Seq(ukCompanyReactivationJsonMax),
-    "numberOfUkCompanies" -> 1,
+    "ukCompanies" -> Seq(ukCompanyReactivationJsonMax, ukCompanyReactivationJsonMax),
+    "numberOfUkCompanies" -> 2,
     "aggregateNetTaxInterestExpense" -> netTaxInterestExpense,
     "aggregateTaxEBITDA" -> taxEBITDA,
     "aggregateAllocatedRestrictions" -> totalDisallowances,
@@ -227,7 +234,7 @@ object FullReturnConstants {
     "returnContainsEstimates" -> true,
     "groupSubjectToInterestRestrictions" -> false,
     "groupSubjectToInterestReactivation" -> true,
-    "totalReactivation" -> totalReactivations,
+    "totalReactivation" -> totalReactivations * 2,
     "totalRestrictions" -> 0,
     "groupLevelAmount" -> groupLevelAmountJson,
     "adjustedGroupInterest" -> adjustedGroupInterestJson

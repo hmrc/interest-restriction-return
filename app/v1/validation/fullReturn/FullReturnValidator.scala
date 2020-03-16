@@ -127,16 +127,28 @@ trait FullReturnValidator extends BaseValidation {
     }
   }
 
-  private def validateNoTotalIncomeWhenRestriction: ValidationResult[BigDecimal] = {
+  private def validateAggInterestAndReallocationOrRestrictionStatus: ValidationResult[BigDecimal] = {
     val aggregateNetTaxInterest: BigDecimal = fullReturnModel.aggregateNetTaxInterest
     val subjectRestrictions: Boolean = fullReturnModel.groupSubjectToInterestRestrictions
+    val subjectReactivation: Boolean = fullReturnModel.groupSubjectToInterestReactivation
 
-    if (aggregateNetTaxInterest > 0 && subjectRestrictions) {
-      NoTotalIncomeWhenSubjectToRestriction(aggregateNetTaxInterest, subjectRestrictions).invalidNec
-    } else {
-      aggregateNetTaxInterest.validNec
+    (aggregateNetTaxInterest, subjectRestrictions, subjectReactivation) match {
+      case (x, y, z) if x < 0 && !y && z => AggInterestNegativeAndReactivation(aggregateNetTaxInterest, subjectReactivation).invalidNec
+      case (x, y, z) if x > 0 && y && !z => AggInterestPositiveAndRestriction(aggregateNetTaxInterest, subjectRestrictions).invalidNec
+      case _ => aggregateNetTaxInterest.validNec
     }
   }
+
+  private def validateReactivationCapOnlyIfSubjectReactivation: ValidationResult[Boolean] = {
+    val subjectReactivation: Boolean = fullReturnModel.groupSubjectToInterestReactivation
+    val reactivationCap:Boolean = fullReturnModel.groupLevelAmount.interestReactivationCap.isDefined
+
+    (subjectReactivation, reactivationCap) match {
+      case (true, true) => reactivationCap.validNec
+      case _ => ReactivationCapAndNotSubjectToReactivation().invalidNec
+    }
+  }
+
 
   private def validateAdjustedNetGroupInterest: ValidationResult[Option[AdjustedGroupInterestModel]] = {
     (fullReturnModel.groupLevelElections.groupRatio.isElected, fullReturnModel.adjustedGroupInterest) match {
@@ -175,14 +187,15 @@ trait FullReturnValidator extends BaseValidation {
       validateTotalReactivations,
       validateTotalReactivationsNotGreaterThanCapacity,
       validateTotalRestrictions,
-      validateNoTotalIncomeWhenRestriction,
+      validateAggInterestAndReallocationOrRestrictionStatus,
+      validateReactivationCapOnlyIfSubjectReactivation,
       validateParentCompany,
       validateRevisedReturnDetails,
       validateAdjustedNetGroupInterest,
       validateAppointedReporter,
       fullReturnModel.groupLevelAmount.validate(JsPath \ "groupLevelAmount"),
       optionValidations(fullReturnModel.adjustedGroupInterest.map(_.validate(JsPath \ "adjustedGroupInterest")))
-      ).mapN((_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) => fullReturnModel)
+      ).mapN((_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) => fullReturnModel)
   }
 }
 
@@ -255,8 +268,8 @@ case class TotalRestrictionsDoesNotMatch(amt: BigDecimal, calculated: BigDecimal
   val value = Json.obj()
 }
 
-case class NoTotalIncomeWhenSubjectToRestriction(totalTaxInterest: BigDecimal, subjectRestrictions: Boolean) extends Validation {
-  val errorMessage: String = s"You cannot have a calculated totalTaxInterest: $totalTaxInterest when there the  full return is subjectToRestriction: ${subjectRestrictions.toString}"
+case class AggInterestPositiveAndRestriction(totalTaxInterest: BigDecimal, subjectRestrictions: Boolean) extends Validation {
+  val errorMessage: String = s"You cannot have a calculated totalTaxInterest: ${totalTaxInterest.abs} when there the  full return is subjectToRestriction: ${subjectRestrictions.toString}"
   val path = JsPath \ "totalRestrictions"
   val value = Json.obj()
 }
@@ -303,5 +316,14 @@ case class AdjustedNetGroupInterestSupplied(details: AdjustedGroupInterestModel)
   val value = Json.toJson(details)
 }
 
+case class AggInterestNegativeAndReactivation(totalTaxInterest: BigDecimal, subjectRestrictions: Boolean) extends Validation {
+  val errorMessage: String = s"You cannot have a expense totalTaxInterest: ${totalTaxInterest.abs} when there the full return is subjectToReactivation: ${subjectRestrictions.toString}"
+  val path = JsPath \ "totalRestrictions"
+  val value = Json.obj()
+}
 
-
+case class ReactivationCapAndNotSubjectToReactivation() extends Validation {
+  val errorMessage: String = s"When the full return SubjectToReactivation is FALSE. You should not supply a ReactivationCapacity"
+  val path = JsPath \ "totalRestrictions"
+  val value = Json.obj()
+}

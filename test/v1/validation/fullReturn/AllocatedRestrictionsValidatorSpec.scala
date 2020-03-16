@@ -375,10 +375,10 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
           val model = restrictionModel.copy(
             ap1End = Some(ap1End),
             disallowanceAp1 = Some(disallowanceAp1),
-            totalDisallowances = Some(1)
+            totalDisallowances = Some(totalDisallowances)
           )
 
-          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionTotalDoesNotMatch(1, disallowanceAp1).errorMessage
+          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionTotalDoesNotMatch(totalDisallowances, disallowanceAp1).errorMessage
         }
       }
     }

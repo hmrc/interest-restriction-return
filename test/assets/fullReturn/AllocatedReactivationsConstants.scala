@@ -21,7 +21,7 @@ import v1.models.fullReturn.AllocatedReactivationsModel
 
 object AllocatedReactivationsConstants {
 
-  val currentPeriodReactivation = 2.22
+  val currentPeriodReactivation = 2.00
   val incorrectTotalReactivation = 10
 
   val allocatedReactivationsModel = AllocatedReactivationsModel(

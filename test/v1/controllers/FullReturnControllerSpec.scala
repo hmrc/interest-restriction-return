@@ -17,13 +17,12 @@
 package v1.controllers
 
 import assets.fullReturn.FullReturnConstants._
-import v1.connectors.{DesSuccessResponse, InvalidCRN, UnexpectedFailure}
 import play.api.http.Status
 import play.api.libs.json.Json
 import play.api.test.{FakeRequest, Helpers}
-import v1.services.mocks.MockFullReturnService
 import utils.BaseSpec
-import v1.models.errors.ValidationErrorResponseModel
+import v1.connectors.{DesSuccessResponse, UnexpectedFailure}
+import v1.services.mocks.MockFullReturnService
 
 class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
 

@@ -24,9 +24,9 @@ import v1.models.fullReturn.UkCompanyModel
 
 object UkCompanyConstants extends BaseConstants {
 
-  val netTaxInterestExpense: BigDecimal = 20.11
-  val netTaxInterestIncome: BigDecimal = 20.11
-  val taxEBITDA: BigDecimal = 3.33
+  val netTaxInterestExpense: BigDecimal = 20.00
+  val netTaxInterestIncome: BigDecimal = 50.00
+  val taxEBITDA: BigDecimal = 5.00
 
   val ukCompanyModelMax = UkCompanyModel(
     companyName = companyName,
@@ -54,19 +54,19 @@ object UkCompanyConstants extends BaseConstants {
     companyName = companyName,
     ctutr = ctutr,
     consenting = true,
-    netTaxInterestExpense = netTaxInterestExpense,
-    netTaxInterestIncome = 0,
+    netTaxInterestExpense = 0,
+    netTaxInterestIncome = netTaxInterestIncome,  // £50
     taxEBITDA = taxEBITDA,
     allocatedRestrictions = None,
-    allocatedReactivations = Some(allocatedReactivationsModel)
+    allocatedReactivations = Some(allocatedReactivationsModel)  // £2.00
   )
 
   val ukCompanyReactivationJsonMax = Json.obj(
     "companyName" -> companyName,
     "ctutr" -> ctutr,
     "consenting" -> true,
-    "netTaxInterestExpense" -> netTaxInterestExpense,
-    "netTaxInterestIncome" -> 0,
+    "netTaxInterestExpense" -> 0,
+    "netTaxInterestIncome" -> netTaxInterestIncome,
     "taxEBITDA" -> taxEBITDA,
     "allocatedReactivations" -> allocatedReactivationsJson
   )
