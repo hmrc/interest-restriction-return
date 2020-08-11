@@ -737,12 +737,17 @@
                     "consenting": {
                         "description": "Indicate whether the reporting company is the same as the ultimate parent",
                         "type": "boolean"
-                    }
+                    },
+                    "qicElection": {
+                        "description": "Indicate whether the company is accessing the Public Infrastructure Rules",
+                        "type": "boolean"
+                    },
                 },
                 "required": [
                     "companyName",
                     "ctutr",
-                    "consenting"
+                    "consenting",
+                    "qicElection"
                 ],
                 "additionalProperties": false
             }

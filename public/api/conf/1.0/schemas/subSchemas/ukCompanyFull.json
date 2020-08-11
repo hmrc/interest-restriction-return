@@ -6,13 +6,17 @@
     "type": "object",
     "properties": {
       "companyName": {
-        "$ref": "../definitions/definitions.json#/definitions/companyName"
+        "$ref": "../definitions/definitions.json#/definitions/ukCompanyNameType"
       },
-      "ctutr": {
-        "$ref": "../definitions/definitions.json#/definitions/ctutr"
+      "utr": {
+        "$ref": "../definitions/definitions.json#/definitions/utrType"
       },
       "consenting": {
         "description": "Indicate whether the reporting company is the same as the ultimate parent",
+        "type": "boolean"
+      },
+      "qicElection": {
+        "description": "Indicate whether the UK Company participated in a QIC election",
         "type": "boolean"
       },
       "netTaxInterestExpense": {
@@ -38,8 +42,9 @@
     },
     "required": [
       "companyName",
-      "ctutr",
+      "utr",
       "consenting",
+      "qicElection",
       "taxEBITDA",
       "netTaxInterestExpense",
       "netTaxInterestIncome"

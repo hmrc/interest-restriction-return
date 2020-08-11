@@ -20,8 +20,10 @@ import play.api.libs.json.Json
 import v1.models.UTRModel
 
 case class UKCompanies(companyName: Option[String] = Some("name"),
-                       ctutr: Option[UTRModel] = Some(UTRModel("1111111111")),
-                       consenting: Option[Boolean] = Some(true))
+                       utr: Option[UTRModel] = Some(UTRModel("1111111111")),
+                       consenting: Option[Boolean] = Some(true),
+                       qicElection: Option[Boolean] = Some(true)
+                      )
 
 object UKCompanies {
   implicit val writes = Json.writes[UKCompanies]

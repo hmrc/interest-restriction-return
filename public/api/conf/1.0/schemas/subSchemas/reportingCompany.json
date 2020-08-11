@@ -1,22 +1,22 @@
 {
-  "description": "Details of the appointed reporting company that is submitting this return on behalf of the group",
+  "description": "Required. The details of the reporting company",
   "type": "object",
-  "properties": {
-    "companyName": {
-      "$ref": "../definitions/definitions.json#/definitions/companyName"
-    },
-    "ctutr": {
-      "$ref": "../definitions/definitions.json#/definitions/ctutr"
-    },
-    "sameAsUltimateParent": {
-      "description": "Indicate whether the reporting company is the same as the ultimate parent",
-      "type": "boolean"
-    }
-  },
+  "additionalProperties": false,
   "required": [
     "companyName",
     "ctutr",
     "sameAsUltimateParent"
   ],
-  "additionalProperties": false
+  "properties": {
+    "companyName": {
+      "$ref": "../definitions/definitions.json#/definitions/ukCompanyNameType"
+    },
+    "ctutr": {
+      "$ref": "../definitions/definitions.json#/definitions/utrType"
+    },
+    "sameAsUltimateParent": {
+      "description": "Indicate whether the reporting company is the same as the ultimate parent",
+      "type": "boolean"
+    }
+  }
 }

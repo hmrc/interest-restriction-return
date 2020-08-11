@@ -22,16 +22,21 @@
       "$ref": "definitions/definitions.json#/definitions/submissionType"
     },
     "revisedReturnDetails": {
-      "$ref": "definitions/definitions.json#/definitions/revisedReturnDetails"
+      "$ref": "definitions/definitions.json#/definitions/explanatoryNotesShort"
     },
     "angie": {
       "description": "Adjusted Net Group-Interest Expense (ANGIE) amount",
-      "type": "number",
-      "minimum": 0
+      "$ref": "definitions/definitions.json#/definitions/angie"
     },
     "returnContainsEstimates": {
       "description": "Indicator for whether the return contains figures which are estimated",
       "type": "boolean"
+    },
+    "groupEstimateReason": {
+      "$ref": "definitions/definitions.json#/definitions/explanatoryNotesLong"
+    },
+    "companiesEstimateReason": {
+      "$ref": "definitions/definitions.json#/definitions/explanatoryNotesLong"
     },
     "groupSubjectToInterestRestrictions": {
       "description": "Indicator for whether the group is subject to interest restrictions",
@@ -40,6 +45,9 @@
     "groupSubjectToInterestReactivation": {
       "description": "Indicator for whether the group is subject to interest reactivations",
       "type": "boolean"
+    },
+    "revisedReturnDifferences": {
+      "$ref": "#/definitions/explanatoryNotesShort"
     },
     "groupLevelElections": {
       "$ref": "subSchemas/groupLevelElections.json"
@@ -56,12 +64,14 @@
     "totalReactivation": {
       "description": "Total of all allocated reactivations for each UK company",
       "type": "number",
-      "minimum": 0
+      "minimum": 0,
+      "multipleOf": 0.01
     },
     "totalRestrictions": {
       "description": "Total of all allocated restrictions for each UK company",
       "type": "number",
-      "minimum": 0
+      "minimum": 0,
+      "multipleOf": 0.01
     }
   },
   "required": [
@@ -78,6 +88,5 @@
     "totalReactivation",
     "totalRestrictions",
     "groupLevelElections"
-  ],
-  "additionalProperties": false
+  ]
 }

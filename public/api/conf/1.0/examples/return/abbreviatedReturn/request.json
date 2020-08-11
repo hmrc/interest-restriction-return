@@ -65,17 +65,20 @@
   },
   "ukCompanies" : [{
     "companyName" : "ACompany",
-    "ctutr" : "1123456789",
-    "consenting" : true
+    "utr" : "1123456789",
+    "consenting" : true,
+    "qicElection" : false
   },
   {
     "companyName" : "BCompany",
-    "ctutr" : "9999999999",
-    "consenting" : true
+    "utr" : "9999999999",
+    "consenting" : true,
+    "qicElection" : false
   },
   {
     "companyName" : "CCompany",
-    "ctutr" : "2222222222",
-    "consenting" : false
+    "utr" : "2222222222",
+    "consenting" : false,
+    "qicElection" : true
   }]
 }

@@ -1,14 +1,17 @@
 {
+  "description": "Required. The details of the authorising companies",
   "type": "array",
   "minItems": 1,
+  "uniqueItems": true,
   "items": {
     "type": "object",
+    "additionalProperties": false,
     "properties": {
       "companyName": {
-        "$ref": "../definitions/definitions.json#/definitions/companyName"
+        "$ref": "../definitions/definitions.json#/definitions/ukCompanyNameType"
       },
-      "ctutr": {
-        "$ref": "../definitions/definitions.json#/definitions/ctutr"
+      "utr": {
+        "$ref": "../definitions/definitions.json#/definitions/utrType"
       },
       "consenting": {
         "description": "Has the company consented to this return",
@@ -17,8 +20,7 @@
     },
     "required": [
       "companyName",
-      "ctutr"
-    ],
-    "additionalProperties": false
+      "utr"
+    ]
   }
 }

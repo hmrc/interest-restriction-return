@@ -91,32 +91,32 @@ class UkCompanyFullSchemaSpec extends BaseSchemaSpec {
         }
       }
 
-      "ctutr" when {
+      "utr" when {
 
         s"below $utrLength" in {
 
-          val json = Json.toJson(Seq(validRestrictionModelIncomeZero.copy(ctutr = Some(UTRModel("1" * (utrLength - 1))))))
+          val json = Json.toJson(Seq(validRestrictionModelIncomeZero.copy(utr = Some(UTRModel("1" * (utrLength - 1))))))
 
           validate(json) shouldBe false
         }
 
         s"above $utrLength" in {
 
-          val json = Json.toJson(Seq(validRestrictionModelIncomeZero.copy(ctutr = Some(UTRModel("1" * (utrLength + 1))))))
+          val json = Json.toJson(Seq(validRestrictionModelIncomeZero.copy(utr = Some(UTRModel("1" * (utrLength + 1))))))
 
           validate(json) shouldBe false
         }
 
         "is non numeric" in {
 
-          val json = Json.toJson(Seq(validRestrictionModelIncomeZero.copy(ctutr = Some(UTRModel("a" * utrLength)))))
+          val json = Json.toJson(Seq(validRestrictionModelIncomeZero.copy(utr = Some(UTRModel("a" * utrLength)))))
 
           validate(json) shouldBe false
         }
 
         "is a symbol" in {
 
-          val json = Json.toJson(Seq(validRestrictionModelIncomeZero.copy(ctutr = Some(UTRModel("@")))))
+          val json = Json.toJson(Seq(validRestrictionModelIncomeZero.copy(utr = Some(UTRModel("@")))))
 
           validate(json) shouldBe false
         }
@@ -127,6 +127,16 @@ class UkCompanyFullSchemaSpec extends BaseSchemaSpec {
         "is blank" in {
 
           val json = Json.toJson(Seq(validRestrictionModelIncomeZero.copy(consenting = None)))
+
+          validate(json) shouldBe false
+        }
+      }
+
+      "qicElection" when {
+
+        "is blank" in {
+
+          val json = Json.toJson(Seq(validRestrictionModelIncomeZero.copy(qicElection = None)))
 
           validate(json) shouldBe false
         }

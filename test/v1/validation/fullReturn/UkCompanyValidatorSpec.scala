@@ -51,7 +51,7 @@ class UkCompanyValidatorSpec extends BaseValidationSpec {
     "Return invalid" when {
 
       "CTUTR is invalid" in {
-        leftSideError(ukCompanyModelReactivationMax.copy(ctutr = invalidUtr).validate(groupAccountingPeriod)).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
+        leftSideError(ukCompanyModelReactivationMax.copy(utr = invalidUtr).validate(groupAccountingPeriod)).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
       }
 
       "CompanyName is invalid" in {
