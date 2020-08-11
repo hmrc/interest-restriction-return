@@ -28,6 +28,6 @@ trait AuthorisingCompanyValidator extends BaseValidation {
 
   def validate(implicit path: JsPath): ValidationResult[AuthorisingCompanyModel] =
     (authorisingCompanyModel.companyName.validate(path \ "companyName"),
-      authorisingCompanyModel.ctutr.validate(path \ "ctutr")
+      authorisingCompanyModel.utr.validate(path \ "utr")
       ).mapN((_,_) => authorisingCompanyModel)
 }

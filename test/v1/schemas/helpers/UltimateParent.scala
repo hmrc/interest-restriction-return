@@ -20,6 +20,7 @@ import play.api.libs.json.Json
 import v1.models.{CountryCodeModel, UTRModel}
 
 case class UltimateParent(companyName: Option[String] = Some("Ladon ltd"),
+                          isUk: Option[Boolean] = Some(true),
                           ctutr: Option[UTRModel] = Some(UTRModel("1234567890")),
                           sautr: Option[UTRModel] = Some(UTRModel("1234567890")),
                           countryOfIncorporation: Option[CountryCodeModel] = Some(CountryCodeModel("US"))

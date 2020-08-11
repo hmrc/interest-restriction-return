@@ -20,7 +20,7 @@ import play.api.libs.json.Json
 import v1.models.UTRModel
 
 case class AuthorisingCompanies(companyName: Option[String] = Some("cde ltd"),
-                                ctutr: Option[UTRModel] = Some(UTRModel("1234567890")),
+                                utr: Option[UTRModel] = Some(UTRModel("1234567890")),
                                 consenting: Option[Boolean] = Some(true))
 
 object AuthorisingCompanies {

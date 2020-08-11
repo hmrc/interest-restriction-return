@@ -15,7 +15,7 @@
     "isReportingCompanyAppointingItself": {
       "type": "boolean"
     },
-    "identityOfAppointingCompany":{
+    "identityOfAppointingCompany": {
       "$ref": "subSchemas/identityOfCompanySubmitting.json"
     },
     "ultimateParentCompany": {

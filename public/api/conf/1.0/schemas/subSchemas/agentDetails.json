@@ -1,19 +1,16 @@
 {
-    "type": "object",
-    "properties": {
-      "agentActingOnBehalfOfCompany": {
-        "description": "Indicates if an Agency is acting on behalf of the Reporting Company for the group",
-        "type": "boolean"
-      },
-      "agentName": {
-        "description": "The name of the Agency that is acting on behalf of the company. Required if 'agentActingOnBehalfOfCompany' is 'true'",
-        "type": "string",
-        "minLength": 1,
-        "maxLength": 160
-      }
+  "description": "Required. If the agent is acting on behalf of the reporting company then the agent's name should be provided",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "agentActingOnBehalfOfCompany"
+  ],
+  "properties": {
+    "agentActingOnBehalfOfCompany": {
+      "type": "boolean"
     },
-    "required": [
-      "agentActingOnBehalfOfCompany"
-    ],
-    "additionalProperties": false
+    "agentName": {
+      "$ref": "../definitions/definitions.json#/definitions/ukCompanyNameType"
+    }
+  }
 }
