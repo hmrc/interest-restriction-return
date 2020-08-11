@@ -23,7 +23,10 @@
       "$ref": "definitions/definitions.json#/definitions/submissionType"
     },
     "revisedReturnDetails": {
-      "$ref": "definitions/definitions.json#/definitions/revisedReturnDetails"
+      "$ref": "definitions/definitions.json#/definitions/explanatoryNotesShort"
+    },
+    "angie": {
+      "$ref": "definitions/definitions.json#/definitions/angie"
     },
     "ukCompanies": {
       "$ref": "subSchemas/ukCompanies.json"

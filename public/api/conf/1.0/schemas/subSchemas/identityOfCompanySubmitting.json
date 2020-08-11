@@ -1,19 +1,22 @@
 {
-  "description": "Identity of the company that is submitting the request",
+  "description": "Optional. The details of the appointing company",
   "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "companyName"
+  ],
   "properties": {
     "companyName": {
-      "$ref": "../definitions/definitions.json#/definitions/companyName"
+      "$ref": "../definitions/definitions.json#/definitions/globalCompanyNameType"
     },
     "countryOfIncorporation": {
       "$ref": "../definitions/countrycodes.json#/definitions/countryCode"
     },
     "ctutr": {
-      "$ref": "../definitions/definitions.json#/definitions/ctutr"
+      "$ref": "../definitions/definitions.json#/definitions/utrType"
+    },
+    "legalEntityIdentifier": {
+      "$ref": "../definitions/definitions.json#/definitions/legalEntityIdentifierType"
     }
-  },
-  "required": [
-    "companyName"
-  ],
-  "additionalProperties": false
+  }
 }

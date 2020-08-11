@@ -21,8 +21,10 @@ import v1.models.{CompanyNameModel, UTRModel}
 import v1.validation.abbreviatedReturn.UkCompanyValidator
 
 case class UkCompanyModel(companyName: CompanyNameModel,
-                          ctutr: UTRModel,
-                          consenting: Boolean) extends UkCompanyValidator {
+                          utr: UTRModel,
+                          consenting: Boolean,
+                          qicElection: Boolean
+                         ) extends UkCompanyValidator {
   override val ukCompany: UkCompanyModel = this
 }
 

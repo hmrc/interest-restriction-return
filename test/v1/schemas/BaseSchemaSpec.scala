@@ -25,7 +25,7 @@ import v1.models.{CountryCodeModel, UTRModel}
 trait BaseSchemaSpec extends WordSpec with Matchers with GuiceOneAppPerSuite with SchemaValidation {
 
   val maxAgentNameLength = 160
-  val maxDescriptionLength = 2000
+  val maxDescriptionLength = 5000
   val maxCompanyNameLength = 160
   val utrLength = 10
   val electString = "elect"

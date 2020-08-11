@@ -1,20 +1,19 @@
 {
+  "description": "Required.",
   "type": "object",
-  "properties": {
-    "startDate": {
-      "description": "The start date of the accounting period",
-      "type": "string",
-      "format": "date"
-    },
-    "endDate": {
-      "description": "The end date of the accounting period",
-      "type": "string",
-      "format": "date"
-    }
-  },
+  "additionalProperties": false,
   "required": [
     "startDate",
     "endDate"
   ],
-  "additionalProperties": false
+  "properties": {
+    "startDate": {
+      "description": "The start date of the accounting period",
+      "$ref": "../definitions/definitions.json#/definitions/dateType"
+    },
+    "endDate": {
+      "description": "The end date of the accounting period",
+      "$ref": "../definitions/definitions.json#/definitions/dateType"
+    }
+  }
 }

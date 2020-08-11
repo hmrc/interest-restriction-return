@@ -53,8 +53,9 @@
   "ukCompanies": [
     {
       "companyName": "Company Name Ltd",
-      "ctutr": "1123456789",
+      "utr": "1123456789",
       "consenting": true,
+      "qicElection": true,
       "netTaxInterestExpense": 0,
       "netTaxInterestIncome": 2.22,
       "taxEBITDA": 3.33,

@@ -65,39 +65,39 @@ class UkCompaniesSchemaSpec extends BaseSchemaSpec {
         }
       }
 
-      "ctutr" when {
+      "utr" when {
 
         "is empty" in {
 
-          val json = Json.toJson(Seq(UKCompanies(ctutr = None)))
+          val json = Json.toJson(Seq(UKCompanies(utr = None)))
 
           validate(json) shouldBe false
         }
 
         s"below $utrLength" in {
 
-          val json = Json.toJson(Seq(UKCompanies(ctutr = Some(UTRModel("1" * (utrLength - 1))))))
+          val json = Json.toJson(Seq(UKCompanies(utr = Some(UTRModel("1" * (utrLength - 1))))))
 
           validate(json) shouldBe false
         }
 
         s"above $utrLength" in {
 
-          val json = Json.toJson(Seq(UKCompanies(ctutr = Some(UTRModel("1" * (utrLength + 1))))))
+          val json = Json.toJson(Seq(UKCompanies(utr = Some(UTRModel("1" * (utrLength + 1))))))
 
           validate(json) shouldBe false
         }
 
         "is non numeric" in {
 
-          val json = Json.toJson(Seq(UKCompanies(ctutr = Some(UTRModel("a" * utrLength)))))
+          val json = Json.toJson(Seq(UKCompanies(utr = Some(UTRModel("a" * utrLength)))))
 
           validate(json) shouldBe false
         }
 
         "is a symbol" in {
 
-          val json = Json.toJson(Seq(UKCompanies(ctutr = Some(UTRModel("@")))))
+          val json = Json.toJson(Seq(UKCompanies(utr = Some(UTRModel("@")))))
 
           validate(json) shouldBe false
         }
@@ -108,6 +108,16 @@ class UkCompaniesSchemaSpec extends BaseSchemaSpec {
         "is empty" in {
 
           val json = Json.toJson(Seq(UKCompanies(consenting = None)))
+
+          validate(json) shouldBe false
+        }
+      }
+
+      "qicElection" when {
+
+        "is empty" in {
+
+          val json = Json.toJson(Seq(UKCompanies(qicElection = None)))
 
           validate(json) shouldBe false
         }

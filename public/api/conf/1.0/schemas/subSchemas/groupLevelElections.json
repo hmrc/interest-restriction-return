@@ -1,16 +1,30 @@
 {
   "description": "Details of the calculation elections made by the group",
   "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "groupRatio",
+    "interestAllowanceAlternativeCalculation",
+    "interestAllowanceNonConsolidatedInvestment",
+    "interestAllowanceConsolidatedPartnership"
+  ],
   "properties": {
     "groupRatio": {
+      "description": "Required.",
       "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "isElected"
+      ],
       "properties": {
         "isElected": {
           "description": "Indicate if the group has elected to use the group ratio calculation. If this is false then fixed ratio is used",
           "type": "boolean"
         },
         "groupRatioBlended": {
+          "description": "Optional.",
           "type": "object",
+          "additionalProperties": false,
           "properties": {
             "isElected": {
               "description": "Indicate if the group has elected to use the group ratio blended calculation. Can only be elected if group ratio is elected",
@@ -22,56 +36,39 @@
               "minItems": 1,
               "items": {
                 "type": "object",
+                "additionalProperties": false,
                 "properties": {
                   "groupName": {
-                    "description": "Name of the investor group",
-                    "type": "string",
-                    "minLength": 1
-                  },
-                  "elections": {
-                    "description": "The elections made by this investor group",
-                    "type": "array",
-                    "maxItems": 5,
-                    "items": {
-                      "type": "string",
-                      "enum": [
-                        "groupRatioBlended",
-                        "groupEBITDA",
-                        "interestAllowanceAlternativeCalculation",
-                        "interestAllowanceNonConsolidatedInvestment",
-                        "interestAllowanceConsolidatedPartnership"
-                      ]
-                    }
+                    "$ref": "../definitions/definitions.json#/definitions/globalCompanyNameType"
                   }
                 },
                 "required": [
                   "groupName"
-                ],
-                "additionalProperties": false
+                ]
               }
             }
           },
           "required": [
             "isElected"
-          ],
-          "additionalProperties": false
+          ]
         },
         "groupEBITDAChargeableGains": {
           "description": "Indicate if the group has elected to use the group EBITDA chargeable gains election. Can only be elected if group ratio is elected",
           "type": "boolean"
         }
-      },
-      "required": [
-        "isElected"
-      ],
-      "additionalProperties": false
+      }
     },
     "interestAllowanceAlternativeCalculation": {
       "description": "Indicate if the group has elected to use the Interest Allowance Alternative Calculation election",
       "type": "boolean"
     },
     "interestAllowanceNonConsolidatedInvestment": {
+      "description": "Required.",
       "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "isElected"
+      ],
       "properties": {
         "isElected": {
           "description": "Indicate if the group has elected to use the Interest Allowance Non-Consolidated Investment election",
@@ -83,27 +80,27 @@
           "minItems": 1,
           "items": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "investmentName": {
-                "description": "Investor name",
-                "type": "string",
-                "minLength": 1
+                "description": "Investment name",
+                "$ref": "../definitions/definitions.json#/definitions/explanatoryNotesShort"
               }
             },
             "required": [
               "investmentName"
-            ],
-            "additionalProperties": false
+            ]
           }
         }
-      },
+      }
+    },
+    "interestAllowanceConsolidatedPartnership": {
+      "description": "Required.",
+      "type": "object",
+      "additionalProperties": false,
       "required": [
         "isElected"
       ],
-      "additionalProperties": false
-    },
-    "interestAllowanceConsolidatedPartnership": {
-      "type": "object",
       "properties": {
         "isElected": {
           "description": "Indicate if the group has elected to use the Interest Allowance Consolidated Partnership election",
@@ -115,34 +112,22 @@
           "minItems": 1,
           "items": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "partnershipName": {
                 "description": "Partnership name",
-                "type": "string",
-                "minLength": 1
+                "$ref": "../definitions/definitions.json#/definitions/globalCompanyNameType"
               },
               "sautr": {
-                "$ref": "../definitions/definitions.json#/definitions/sautr"
+                "$ref": "../definitions/definitions.json#/definitions/utrType"
               }
             },
             "required": [
               "partnershipName"
-            ],
-            "additionalProperties": false
+            ]
           }
         }
-      },
-      "required": [
-        "isElected"
-      ],
-      "additionalProperties": false
+      }
     }
-  },
-  "required": [
-    "groupRatio",
-    "interestAllowanceAlternativeCalculation",
-    "interestAllowanceNonConsolidatedInvestment",
-    "interestAllowanceConsolidatedPartnership"
-  ],
-  "additionalProperties": false
+  }
 }

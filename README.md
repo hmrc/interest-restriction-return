@@ -313,8 +313,9 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
      "ukCompanies": [
        {
          "companyName": "some company",
-         "ctutr": "1234567890",
-         "consenting": true
+         "utr": "1234567890",
+         "consenting": true,
+         "qicElection": false
        }
      ]
    }
@@ -465,8 +466,9 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
      "ukCompanies": [
        {
          "companyName": "some company",
-         "ctutr": "1234567890",
+         "utr": "1234567890",
          "consenting": true,
+         "qicElection": false,
          "netTaxInterestExpense": 1.11,
          "netTaxInterestIncome": 2.22,
          "taxEBITDA": 3.33

@@ -3,18 +3,15 @@
   "properties": {
     "ap1EndDate": {
       "description": "End date for the first Accounting Period apportioned dissallowances",
-      "type": "string",
-      "format": "date"
+      "$ref": "../definitions/definitions.json#/definitions/dateType"
     },
     "ap2EndDate": {
       "description": "End date for the second Accounting Period apportioned dissallowances, if applicable. If supplied must be after ap1EndDate",
-      "type": "string",
-      "format": "date"
+      "$ref": "../definitions/definitions.json#/definitions/dateType"
     },
     "ap3EndDate": {
       "description": "End date for the third Accounting Period apportioned dissallowances, if applicable. If supplied must be after ap2EndDate",
-      "type": "string",
-      "format": "date"
+      "$ref": "../definitions/definitions.json#/definitions/dateType"
     },
     "disallowanceAp1": {
       "description": "Amount for the first Accounting Period apportioned dissallowances, must be supplied if ap1EndDate is supplied",

@@ -22,6 +22,7 @@ import v1.models.UTRModel
 case class DeemedParent(companyName: Option[String] = Some("name"),
                         ctutr: Option[UTRModel] = Some(UTRModel("1111111111")),
                         sautr: Option[UTRModel] = Some(UTRModel("1111111111")),
+                        isUk: Option[Boolean] = Some(false),
                         countryOfIncorporation: Option[String] = Some("US")
                        )
 

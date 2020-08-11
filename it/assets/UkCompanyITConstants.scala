@@ -28,14 +28,16 @@ object UkCompanyITConstants extends BaseITConstants {
 
   val ukCompanyJson = Json.obj(
     "companyName" -> companyName,
-    "ctutr" -> ctutr,
-    "consenting" -> true
+    "utr" -> ctutr,
+    "consenting" -> true,
+    "qicElection" -> false
   )
 
   val ukCompanyFullJson = Json.obj(
     "companyName" -> companyName,
-    "ctutr" -> ctutr,
+    "utr" -> ctutr,
     "consenting" -> true,
+    "qicElection" -> false,
     "netTaxInterestExpense" -> netTaxInterestExpense,
     "netTaxInterestIncome" -> netTaxInterestIncome,
     "taxEBITDA" -> taxEBITDA,
