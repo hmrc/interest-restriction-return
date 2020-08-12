@@ -16,6 +16,7 @@
   },
   "ultimateParent": {
     "companyName": "CCompany",
+    "isUk": true,
     "ctutr": "1123456789"
   },
   "authorisingCompanies": [{
