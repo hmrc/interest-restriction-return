@@ -903,7 +903,11 @@
                         "pattern": "[0-9]{10}"
                     },
                     "consenting": {
-                        "description": "Indicate whether the reporting company is the same as the ultimate parent",
+                        "description": "Indicate whether the company consenting to the return",
+                        "type": "boolean"
+                    },
+                    "qicElection": {
+                        "description": "Indicate whether the company is accessing the Public Infrastructure Rules",
                         "type": "boolean"
                     },
                     "netTaxInterestExpense": {
@@ -984,6 +988,7 @@
                     "companyName",
                     "ctutr",
                     "consenting",
+                    "qicElection",
                     "taxEBITDA",
                     "netTaxInterestExpense",
                     "netTaxInterestIncome"

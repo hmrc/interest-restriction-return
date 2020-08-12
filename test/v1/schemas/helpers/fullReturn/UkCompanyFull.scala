@@ -20,8 +20,9 @@ import play.api.libs.json.Json
 import v1.models.UTRModel
 
 case class UkCompanyFull(companyName: Option[String] = Some("ABC Ltd"),
-                         ctutr: Option[UTRModel] = Some(UTRModel("1234567890")),
+                         utr: Option[UTRModel] = Some(UTRModel("1234567890")),
                          consenting: Option[Boolean] = Some(true),
+                         qicElection: Option[Boolean] = Some(true),
                          netTaxInterestExpense: Option[BigDecimal] = Some(56000),
                          netTaxInterestIncome: Option[BigDecimal] = Some(0),
                          taxEBITDA: Option[BigDecimal] = Some(26500),

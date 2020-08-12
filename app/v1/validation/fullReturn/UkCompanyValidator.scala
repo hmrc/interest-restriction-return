@@ -83,7 +83,7 @@ trait UkCompanyValidator extends BaseValidation {
   }
 
   def validate(groupAccountingPeriod: AccountingPeriodModel)(implicit path: JsPath): ValidationResult[UkCompanyModel] =
-    (ukCompany.ctutr.validate(path \ "ctutr"),
+    (ukCompany.utr.validate(path \ "utr"),
       ukCompany.companyName.validate(path \ "companyName"),
       validateNetTaxInterestExpense,
       validateNetTaxInterestIncome,

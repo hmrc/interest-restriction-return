@@ -6,20 +6,31 @@
   "items": {
     "type": "object",
         "properties": {
+          "isUk": {
+            "description": "Required.",
+            "type": "boolean"
+          },
           "companyName": {
-            "$ref": "../definitions/definitions.json#/definitions/companyName"
+            "$ref": "../definitions/definitions.json#/definitions/globalCompanyNameType"
           },
           "ctutr": {
-            "$ref": "../definitions/definitions.json#/definitions/ctutr"
+            "$ref": "../definitions/definitions.json#/definitions/utrType"
           },
           "sautr": {
-            "$ref": "../definitions/definitions.json#/definitions/sautr"
+            "$ref": "../definitions/definitions.json#/definitions/utrType"
+          },
+          "knownAs": {
+            "$ref": "../definitions/definitions.json#/definitions/globalCompanyNameType"
           },
           "countryOfIncorporation": {
             "$ref": "../definitions/countrycodes.json#/definitions/countryCode"
+          },
+          "legalEntityIdentifier": {
+            "$ref": "../definitions/definitions.json#/definitions/legalEntityIdentifierType"
           }
         },
         "required": [
+          "isUk",
           "companyName"
         ],
         "additionalProperties": false

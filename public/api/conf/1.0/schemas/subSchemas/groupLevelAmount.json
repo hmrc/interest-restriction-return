@@ -1,33 +1,37 @@
 {
   "description": "Group level amounts",
   "type": "object",
-  "properties": {
-    "interestReactivationCap": {
-      "description": "Interest Reactivation Cap",
-      "type": "number",
-      "minimum": 0
-    },
-    "interestAllowanceBroughtForward": {
-      "description": "Interest Allowance Brought Forward",
-      "type": "number",
-      "minimum": 0
-    },
-    "interestAllowanceForPeriod": {
-      "description": "Interest Allowance used for this period",
-      "type": "number",
-      "minimum": 0
-    },
-    "interestCapacityForPeriod": {
-      "description": "Interest Capacity for period to carry forward for future period",
-      "type": "number",
-      "minimum": 0
-    }
-  },
+  "additionalProperties": false,
   "required": [
     "interestReactivationCap",
     "interestAllowanceBroughtForward",
     "interestAllowanceForPeriod",
     "interestCapacityForPeriod"
   ],
-  "additionalProperties": false
+  "properties": {
+    "interestReactivationCap": {
+      "description": "Interest Reactivation Cap",
+      "type": "number",
+      "minimum": 0,
+      "multipleOf": 0.01
+    },
+    "interestAllowanceBroughtForward": {
+      "description": "Interest Allowance Brought Forward",
+      "type": "number",
+      "minimum": 0,
+      "multipleOf": 0.01
+    },
+    "interestAllowanceForPeriod": {
+      "description": "Interest Allowance used for this period",
+      "type": "number",
+      "minimum": 0,
+      "multipleOf": 0.01
+    },
+    "interestCapacityForPeriod": {
+      "description": "Interest Capacity for period to carry forward for future period",
+      "type": "number",
+      "minimum": 0,
+      "multipleOf": 0.01
+    }
+  }
 }

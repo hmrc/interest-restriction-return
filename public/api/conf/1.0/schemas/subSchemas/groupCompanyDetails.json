@@ -1,6 +1,11 @@
 {
-  "description": "Details about the group",
+  "description": "Required. Details of the group company.",
   "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "totalCompanies",
+    "accountingPeriod"
+  ],
   "properties": {
     "totalCompanies": {
       "description": "Total number of companies within the worldwide group",
@@ -11,10 +16,5 @@
       "description": "The worldwide groups accounting period",
       "$ref": "accountingPeriod.json"
     }
-  },
-  "required": [
-    "totalCompanies",
-    "accountingPeriod"
-  ],
-  "additionalProperties": false
+  }
 }
