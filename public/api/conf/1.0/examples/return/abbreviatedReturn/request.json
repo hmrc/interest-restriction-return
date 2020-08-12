@@ -11,6 +11,7 @@
   "parentCompany" : {
     "ultimateParent" : {
       "companyName" : "BCompany",
+      "isUk": true,
       "ctutr" : "9999999999"
     }
   },
