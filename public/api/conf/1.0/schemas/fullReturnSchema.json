@@ -47,7 +47,7 @@
       "type": "boolean"
     },
     "revisedReturnDifferences": {
-      "$ref": "#/definitions/explanatoryNotesShort"
+      "$ref": "definitions/definitions.json#/definitions/explanatoryNotesShort"
     },
     "groupLevelElections": {
       "$ref": "subSchemas/groupLevelElections.json"
