@@ -40,6 +40,21 @@
                 "properties": {
                   "groupName": {
                     "$ref": "../definitions/definitions.json#/definitions/globalCompanyNameType"
+                  },
+                  "elections": {
+                    "description": "The elections made by this investor group",
+                    "type": "array",
+                    "maxItems": 5,
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "groupRatioBlended",
+                        "groupEBITDA",
+                        "interestAllowanceAlternativeCalculation",
+                        "interestAllowanceNonConsolidatedInvestment",
+                        "interestAllowanceConsolidatedPartnership"
+                      ]
+                    }
                   }
                 },
                 "required": [
