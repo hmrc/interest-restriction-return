@@ -1,0 +1,22 @@
+{
+  "scopes": [
+    {
+      "key": "write:interest-restriction-return",
+      "name": "Write Interest Restriction Return",
+      "description": "Write Interest Restriction Return"
+    }
+  ],
+  "api": {
+    "name": "Interest Restriction Return",
+    "description": "An API allowing entities with interest restrictions to appoint, revoke, and submit returns to the HMRC.",
+    "context": "organisations/interest-restriction",
+    "categories": ["CORPORATION_TAX"],
+    "versions": [
+      {
+        "version": "1.0",
+        "status": "BETA"
+      }
+    ]
+  }
+}
+
