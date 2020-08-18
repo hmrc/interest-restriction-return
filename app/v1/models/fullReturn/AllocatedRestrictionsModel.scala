@@ -21,9 +21,9 @@ import java.time.LocalDate
 import play.api.libs.json.Json
 import v1.validation.fullReturn.AllocatedRestrictionsValidator
 
-case class AllocatedRestrictionsModel(ap1End: Option[LocalDate],
-                                      ap2End: Option[LocalDate],
-                                      ap3End: Option[LocalDate],
+case class AllocatedRestrictionsModel(ap1EndDate: Option[LocalDate],
+                                      ap2EndDate: Option[LocalDate],
+                                      ap3EndDate: Option[LocalDate],
                                       disallowanceAp1: Option[BigDecimal],
                                       disallowanceAp2: Option[BigDecimal],
                                       disallowanceAp3: Option[BigDecimal],

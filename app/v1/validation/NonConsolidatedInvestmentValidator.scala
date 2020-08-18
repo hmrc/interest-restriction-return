@@ -27,10 +27,10 @@ trait NonConsolidatedInvestmentValidator extends BaseValidation {
   val nonConsolidatedInvestmentModel: NonConsolidatedInvestmentModel
 
   private def validateInvestmentName(implicit path: JsPath): ValidationResult[String] = {
-    if (nonConsolidatedInvestmentModel.nonConsolidatedInvestment.length >= 1 && nonConsolidatedInvestmentModel.nonConsolidatedInvestment.length <= 32767) {
-      nonConsolidatedInvestmentModel.nonConsolidatedInvestment.validNec
+    if (nonConsolidatedInvestmentModel.investmentName.length >= 1 && nonConsolidatedInvestmentModel.investmentName.length <= 32767) {
+      nonConsolidatedInvestmentModel.investmentName.validNec
     } else {
-      NonConsolidatedInvestmentNameError(nonConsolidatedInvestmentModel.nonConsolidatedInvestment).invalidNec
+      NonConsolidatedInvestmentNameError(nonConsolidatedInvestmentModel.investmentName).invalidNec
     }
   }
 
@@ -39,10 +39,10 @@ trait NonConsolidatedInvestmentValidator extends BaseValidation {
   }
 }
 
-case class NonConsolidatedInvestmentNameError(nonConsolidatedInvestment: String)(implicit val topPath: JsPath) extends Validation {
+case class NonConsolidatedInvestmentNameError(investmentName: String)(implicit val topPath: JsPath) extends Validation {
   val errorMessage: String = "NonConsolidatedInvestment names must be between 1 and 32767 characters"
   val path = topPath \ "investorGroups"
-  val value = Json.toJson(nonConsolidatedInvestment)
+  val value = Json.toJson(investmentName)
 }
 
 

@@ -28,7 +28,7 @@ class NonConsolidatedInvestmentValidatorSpec extends BaseValidationSpec {
     "Return valid" when {
 
       "isElected is true and no investment names are given" in {
-        val model = nonConsolidatedModel.copy(nonConsolidatedInvestment = investmentName)
+        val model = nonConsolidatedModel.copy(investmentName = investmentName)
         model.validate.toEither.right.get shouldBe model
       }
     }
@@ -37,13 +37,13 @@ class NonConsolidatedInvestmentValidatorSpec extends BaseValidationSpec {
 
       "Investment Name" when {
         "is greater than 32767" in {
-          val model = nonConsolidatedModel.copy(nonConsolidatedInvestment = "a" * (32767 + 1))
+          val model = nonConsolidatedModel.copy(investmentName = "a" * (32767 + 1))
 
           model.validate.toEither.left.get.head.errorMessage shouldBe NonConsolidatedInvestmentNameError(investmentName).errorMessage
         }
 
         "isElected is true and no investment names are given" in {
-          val model = nonConsolidatedModel.copy(nonConsolidatedInvestment = "")
+          val model = nonConsolidatedModel.copy(investmentName = "")
           model.validate.toEither.left.get.head.errorMessage shouldBe NonConsolidatedInvestmentNameError(investmentName).errorMessage
         }
       }

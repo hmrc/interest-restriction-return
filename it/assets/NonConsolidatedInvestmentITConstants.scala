@@ -23,6 +23,6 @@ object NonConsolidatedInvestmentITConstants {
   val investmentName = "some Investment"
 
   val nonConsolidatedJson = Json.obj(
-    "nonConsolidatedInvestment" -> investmentName
+    "investmentName" -> investmentName
   )
 }

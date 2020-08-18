@@ -24,10 +24,10 @@ object NonConsolidatedInvestmentConstants {
   val investmentName = "some Investment"
 
   val nonConsolidatedModel = NonConsolidatedInvestmentModel(
-    nonConsolidatedInvestment = investmentName
+    investmentName = investmentName
   )
 
   val nonConsolidatedJson = Json.obj(
-    "nonConsolidatedInvestment" -> investmentName
+    "investmentName" -> investmentName
   )
 }
