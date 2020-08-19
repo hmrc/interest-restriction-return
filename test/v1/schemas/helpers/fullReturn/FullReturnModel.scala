@@ -18,7 +18,8 @@ package v1.schemas.helpers.fullReturn
 import play.api.libs.json.Json
 import v1.schemas.helpers._
 
-case class FullReturnModel(agentDetails: Option[AgentDetails] = Some(AgentDetails()),
+case class FullReturnModel(appointedReportingCompany: Option[Boolean] = Some(true),
+                           agentDetails: Option[AgentDetails] = Some(AgentDetails()),
                            reportingCompany: Option[ReportingCompany] = Some(ReportingCompany()),
                            parentCompany: Option[ParentCompany] = Some(ParentCompany()),
                            publicInfrastructure: Option[Boolean] = Some(true),

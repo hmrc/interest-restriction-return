@@ -19,7 +19,8 @@ package v1.schemas.helpers.abbreviatedReturn
 import play.api.libs.json.Json
 import v1.schemas.helpers._
 
-case class AbbreviatedReturnModel(agentDetails: Option[AgentDetails] = Some(AgentDetails()),
+case class AbbreviatedReturnModel(appointedReportingCompany: Option[Boolean] = Some(true),
+                                  agentDetails: Option[AgentDetails] = Some(AgentDetails()),
                                   reportingCompany: Option[ReportingCompany] = Some(ReportingCompany()),
                                   parentCompany: Option[ParentCompany] = Some(ParentCompany()),
                                   publicInfrastructure: Option[Boolean] = Some(false),
