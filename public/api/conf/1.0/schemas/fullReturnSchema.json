@@ -3,6 +3,9 @@
   "description": "Provides the ability to submit a full Interest Restriction Return (IRR) for the group",
   "type": "object",
   "properties": {
+    "appointedReportingCompany": {
+      "type": "boolean"
+    },
     "agentDetails": {
       "$ref": "subSchemas/agentDetails.json"
     },
@@ -75,6 +78,7 @@
     }
   },
   "required": [
+    "appointedReportingCompany",
     "agentDetails",
     "reportingCompany",
     "publicInfrastructure",
