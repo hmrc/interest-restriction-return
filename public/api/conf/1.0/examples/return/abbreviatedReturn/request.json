@@ -1,4 +1,5 @@
 {
+  "appointedReportingCompany" : true,
   "agentDetails" : {
     "agentActingOnBehalfOfCompany" : true,
     "agentName" : "AAgent"
@@ -34,12 +35,12 @@
         "investorGroups" : [{
           "groupName" : "AInvestor"
         },
-        {
-          "groupName" : "BInvestor"
-        },
-        {
-          "groupName" : "CInvestor"
-        }]
+          {
+            "groupName" : "BInvestor"
+          },
+          {
+            "groupName" : "CInvestor"
+          }]
       }
     },
     "interestAllowanceAlternativeCalculation" : true,
@@ -48,9 +49,9 @@
       "nonConsolidatedInvestments" : [{
         "investmentName" : "AInvestment"
       },
-      {
-        "investmentName" : "BInvestment"
-      }]
+        {
+          "investmentName" : "BInvestment"
+        }]
     },
     "interestAllowanceConsolidatedPartnership" : {
       "isElected" : true,
@@ -58,10 +59,10 @@
         "partnershipName" : "APartnership",
         "sautr" : "1234567890"
       },
-      {
-        "partnershipName" : "BPartnership",
-        "sautr" : "1111111111"
-      }]
+        {
+          "partnershipName" : "BPartnership",
+          "sautr" : "1111111111"
+        }]
     }
   },
   "ukCompanies" : [{
@@ -70,16 +71,16 @@
     "consenting" : true,
     "qicElection" : false
   },
-  {
-    "companyName" : "BCompany",
-    "utr" : "9999999999",
-    "consenting" : true,
-    "qicElection" : false
-  },
-  {
-    "companyName" : "CCompany",
-    "utr" : "2222222222",
-    "consenting" : false,
-    "qicElection" : true
-  }]
+    {
+      "companyName" : "BCompany",
+      "utr" : "9999999999",
+      "consenting" : true,
+      "qicElection" : false
+    },
+    {
+      "companyName" : "CCompany",
+      "utr" : "2222222222",
+      "consenting" : false,
+      "qicElection" : true
+    }]
 }

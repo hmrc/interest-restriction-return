@@ -7,7 +7,7 @@
     "companyName": "ACompany",
     "ctutr": "1123456789",
 
-    "sameAsUltimateParent": true
+    "sameAsUltimateParent": false
   },
   "isReportingCompanyRevokingItself":false,
   "companyMakingRevocation": {
