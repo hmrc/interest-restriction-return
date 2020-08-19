@@ -24,9 +24,9 @@ import v1.models.fullReturn.AllocatedRestrictionsModel
 
 object AllocatedRestrictionsConstants {
 
-  val ap1End: LocalDate = startDate.plusDays(1)
-  val ap2End: LocalDate = startDate.plusMonths(12)
-  val ap3End: LocalDate = endDate
+  val ap1EndDate: LocalDate = startDate.plusDays(1)
+  val ap2EndDate: LocalDate = startDate.plusMonths(12)
+  val ap3EndDate: LocalDate = endDate
 
   val disallowanceAp1: BigDecimal = 1.00
   val disallowanceAp2: BigDecimal = 2.00
@@ -36,9 +36,9 @@ object AllocatedRestrictionsConstants {
   val incorrectDisallowances: BigDecimal = 10.00
 
   val allocatedRestrictionsModel = AllocatedRestrictionsModel(
-    ap1End = Some(ap1End),
-    ap2End = Some(ap2End),
-    ap3End = Some(ap3End),
+    ap1EndDate = Some(ap1EndDate),
+    ap2EndDate = Some(ap2EndDate),
+    ap3EndDate = Some(ap3EndDate),
     disallowanceAp1 = Some(disallowanceAp1),
     disallowanceAp2 = Some(disallowanceAp2),
     disallowanceAp3 = Some(disallowanceAp3),
@@ -46,9 +46,9 @@ object AllocatedRestrictionsConstants {
   )
 
   val zeroAllocatedRestrictionsModel = AllocatedRestrictionsModel(
-    ap1End = Some(ap1End),
-    ap2End = None,
-    ap3End = None,
+    ap1EndDate = Some(ap1EndDate),
+    ap2EndDate = None,
+    ap3EndDate = None,
     disallowanceAp1 = Some(0),
     disallowanceAp2 = None,
     disallowanceAp3 = None,
@@ -56,9 +56,9 @@ object AllocatedRestrictionsConstants {
   )
 
   val allocatedRestrictionsJson = Json.obj(
-    "ap1End" -> ap1End,
-    "ap2End" -> ap2End,
-    "ap3End" -> ap3End,
+    "ap1EndDate" -> ap1EndDate,
+    "ap2EndDate" -> ap2EndDate,
+    "ap3EndDate" -> ap3EndDate,
     "disallowanceAp1" -> disallowanceAp1,
     "disallowanceAp2" -> disallowanceAp2,
     "disallowanceAp3" -> disallowanceAp3,

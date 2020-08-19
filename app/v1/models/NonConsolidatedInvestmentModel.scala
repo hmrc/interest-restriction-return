@@ -20,7 +20,7 @@ import play.api.libs.json.Json
 import v1.validation.NonConsolidatedInvestmentValidator
 
 
-case class NonConsolidatedInvestmentModel(nonConsolidatedInvestment: String) extends NonConsolidatedInvestmentValidator {
+case class NonConsolidatedInvestmentModel(investmentName: String) extends NonConsolidatedInvestmentValidator {
   override val nonConsolidatedInvestmentModel = this
 }
 

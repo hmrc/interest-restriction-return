@@ -20,6 +20,7 @@ import play.api.libs.json.{Format, Json}
 import v1.validation.UltimateParentValidator
 
 case class UltimateParentModel(companyName: CompanyNameModel,
+                               isUk: Boolean,
                                ctutr: Option[UTRModel],
                                sautr: Option[UTRModel],
                                countryOfIncorporation: Option[CountryCodeModel]

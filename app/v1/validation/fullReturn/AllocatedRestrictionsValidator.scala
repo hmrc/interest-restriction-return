@@ -43,12 +43,12 @@ trait AllocatedRestrictionsValidator extends BaseValidation {
   }
 
   def validateAp1(groupStartDate: LocalDate)(implicit topPath: JsPath): ValidationResult[Option[LocalDate]] =
-    allocatedRestrictionsModel.ap1End.fold[ValidationResult[Option[LocalDate]]](None.validNec)(ap1 =>
+    allocatedRestrictionsModel.ap1EndDate.fold[ValidationResult[Option[LocalDate]]](None.validNec)(ap1 =>
       if(ap1.isAfter(groupStartDate)) Some(ap1).validNec else Ap1NotAfterGroupStartDate(ap1, groupStartDate).invalidNec
     )
 
   def validateAp2(implicit topPath: JsPath): ValidationResult[Option[LocalDate]] =
-    (allocatedRestrictionsModel.ap1End, allocatedRestrictionsModel.ap2End) match {
+    (allocatedRestrictionsModel.ap1EndDate, allocatedRestrictionsModel.ap2EndDate) match {
       case (optAp1, Some(ap2)) =>
         optAp1.fold[ValidationResult[Option[LocalDate]]](AllocatedRestrictionLaterPeriodSupplied(2).invalidNec)(ap1 =>
           if (!ap2.isAfter(ap1)) AllocatedRestrictionDateBeforePrevious(2).invalidNec else Some(ap2).validNec
@@ -57,7 +57,7 @@ trait AllocatedRestrictionsValidator extends BaseValidation {
     }
 
   def validateAp3(groupEndDate: LocalDate)(implicit topPath: JsPath): ValidationResult[Option[LocalDate]] =
-    (allocatedRestrictionsModel.ap1End, allocatedRestrictionsModel.ap2End, allocatedRestrictionsModel.ap3End) match {
+    (allocatedRestrictionsModel.ap1EndDate, allocatedRestrictionsModel.ap2EndDate, allocatedRestrictionsModel.ap3EndDate) match {
       case (None, _, Some(_)) | (_, None, Some(_)) => AllocatedRestrictionLaterPeriodSupplied(3).invalidNec
       case (_, Some(ap2), Some(ap3)) => combineValidationsForField(
         if (!ap3.isAfter(ap2)) AllocatedRestrictionDateBeforePrevious(3).invalidNec else Some(ap3).validNec,
@@ -92,9 +92,9 @@ trait AllocatedRestrictionsValidator extends BaseValidation {
   }
 
   def validate(groupAccountingPeriod: AccountingPeriodModel)(implicit path: JsPath): ValidationResult[AllocatedRestrictionsModel] =
-    (apRestrictionValidator(allocatedRestrictionsModel.ap1End, allocatedRestrictionsModel.disallowanceAp1, 1),
-      apRestrictionValidator(allocatedRestrictionsModel.ap2End, allocatedRestrictionsModel.disallowanceAp2, 2),
-      apRestrictionValidator(allocatedRestrictionsModel.ap3End, allocatedRestrictionsModel.disallowanceAp3, 3),
+    (apRestrictionValidator(allocatedRestrictionsModel.ap1EndDate, allocatedRestrictionsModel.disallowanceAp1, 1),
+      apRestrictionValidator(allocatedRestrictionsModel.ap2EndDate, allocatedRestrictionsModel.disallowanceAp2, 2),
+      apRestrictionValidator(allocatedRestrictionsModel.ap3EndDate, allocatedRestrictionsModel.disallowanceAp3, 3),
       validateAp1(groupAccountingPeriod.startDate),
       validateAp2,
       validateAp3(groupAccountingPeriod.endDate),
@@ -144,19 +144,19 @@ case class AllocatedRestrictionTotalDoesNotMatch(amt: BigDecimal, calculatedAmt:
 }
 
 case class AllocatedRestrictionDateBeforePrevious(i: Int)(implicit topPath: JsPath) extends Validation {
-  val path = topPath \ s"ap${i}End"
-  val errorMessage: String = s"ap${i}End cannot be equal to or before ap${i-1}End"
+  val path = topPath \ s"ap${i}EndDate"
+  val errorMessage: String = s"ap${i}End cannot be equal to or before ap${i-1}EndDate"
   val value = Json.obj()
 }
 
 case class Ap1NotAfterGroupStartDate(ap1Date: LocalDate, groupStartDate: LocalDate)(implicit topPath: JsPath) extends Validation {
-  val path = topPath \ "ap1End"
-  val errorMessage: String = s"ap1End ($ap1Date) must be after the group accounting period start date ($groupStartDate)"
-  val value = Json.obj("ap1End" -> ap1Date, "groupStartDate" -> groupStartDate)
+  val path = topPath \ "ap1EndDate"
+  val errorMessage: String = s"ap1EndDate ($ap1Date) must be after the group accounting period start date ($groupStartDate)"
+  val value = Json.obj("ap1EndDate" -> ap1Date, "groupStartDate" -> groupStartDate)
 }
 
 case class Ap3BeforeGroupEndDate(ap3Date: LocalDate, groupEndDate: LocalDate)(implicit topPath: JsPath) extends Validation {
-  val path = topPath \ "ap3End"
-  val errorMessage: String = s"ap3End ($ap3Date) is before the group accounting period end date ($groupEndDate)"
-  val value = Json.obj("ap3End" -> ap3Date, "groupEndDate" -> groupEndDate)
+  val path = topPath \ "ap3EndDate"
+  val errorMessage: String = s"ap3EndDate ($ap3Date) is before the group accounting period end date ($groupEndDate)"
+  val value = Json.obj("ap3EndDate" -> ap3Date, "groupEndDate" -> groupEndDate)
 }

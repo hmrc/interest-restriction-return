@@ -27,8 +27,8 @@ class UkCompanyValidatorSpec extends BaseValidationSpec {
   implicit val path = JsPath \ "some" \ "path"
 
   val groupAccountingPeriod = AccountingPeriodModel(
-    startDate = ap1End.minusDays(1),
-    endDate = ap3End
+    startDate = ap1EndDate.minusDays(1),
+    endDate = ap3EndDate
   )
 
   val allocatedRestriction = Some(allocatedRestrictionsModel.copy(disallowanceAp1 = Some(10),disallowanceAp2 = Some(10), disallowanceAp3 = Some(10.01), totalDisallowances = Some(30.01)))

@@ -23,9 +23,9 @@ import assets.AccountingPeriodITConstants._
 
 object AllocatedRestrictionsITConstants {
 
-  val ap1End: LocalDate = startDate.plusDays(1)
-  val ap2End: LocalDate = startDate.plusMonths(12)
-  val ap3End: LocalDate = endDate
+  val ap1EndDate: LocalDate = startDate.plusDays(1)
+  val ap2EndDate: LocalDate = startDate.plusMonths(12)
+  val ap3EndDate: LocalDate = endDate
 
   val disallowanceAp1: BigDecimal = 1.11
   val disallowanceAp2: BigDecimal = 2.22
@@ -33,9 +33,9 @@ object AllocatedRestrictionsITConstants {
   val totalDisallowances: BigDecimal = 6.66
 
   val allocatedRestrictionsJson = Json.obj(
-    "ap1End" -> ap1End,
-    "ap2End" -> ap2End,
-    "ap3End" -> ap3End,
+    "ap1EndDate" -> ap1EndDate,
+    "ap2EndDate" -> ap2EndDate,
+    "ap3EndDate" -> ap3EndDate,
     "disallowanceAp1" -> disallowanceAp1,
     "disallowanceAp2" -> disallowanceAp2,
     "disallowanceAp3" -> disallowanceAp3,

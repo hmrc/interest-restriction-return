@@ -23,6 +23,7 @@ object DeemedParentConstants extends BaseConstants {
 
   val deemedParentModelMax = DeemedParentModel(
     companyName = companyName,
+    isUk = true,
     ctutr = Some(ctutr),
     sautr = Some(sautr),
     countryOfIncorporation = Some(nonUkCountryCode)
@@ -30,6 +31,7 @@ object DeemedParentConstants extends BaseConstants {
 
   val deemedParentModelMin = DeemedParentModel(
     companyName = companyName,
+    isUk = true,
     ctutr = None,
     sautr = None,
     countryOfIncorporation = None
@@ -37,6 +39,7 @@ object DeemedParentConstants extends BaseConstants {
 
   val deemedParentModelUkCompany = DeemedParentModel(
     companyName = companyName,
+    isUk = true,
     ctutr = Some(ctutr),
     sautr = None,
     countryOfIncorporation = None
@@ -44,6 +47,7 @@ object DeemedParentConstants extends BaseConstants {
 
   val deemedParentModelNonUkCompany = DeemedParentModel(
     companyName = companyName,
+    isUk = true,
     ctutr = None,
     sautr = None,
     countryOfIncorporation = Some(nonUkCountryCode)
@@ -51,6 +55,7 @@ object DeemedParentConstants extends BaseConstants {
 
   val deemedParentModelUkPartnership = DeemedParentModel(
     companyName = companyName,
+    isUk = true,
     ctutr = None,
     sautr = Some(sautr),
     countryOfIncorporation = None
@@ -58,27 +63,32 @@ object DeemedParentConstants extends BaseConstants {
 
   val deemedParentJsonMax = Json.obj(
     "companyName" -> companyName,
+    "isUk" -> true,
     "ctutr" -> ctutr,
     "sautr" -> sautr,
     "countryOfIncorporation" -> Some(nonUkCountryCode)
   )
 
   val deemedParentJsonMin = Json.obj(
-    "companyName" -> companyName
+    "companyName" -> companyName,
+     "isUk" -> true
   )
 
   val deemedParentJsonUkCompany = Json.obj(
     "companyName" -> companyName,
+    "isUk" -> true,
     "ctutr" -> ctutr
   )
 
   val deemedParentJsonNonUkCompany= Json.obj(
     "companyName" -> companyName,
+    "isUk" -> true,
     "countryOfIncorporation" -> nonUkCountryCode
   )
 
   val deemedParentJsonUkPartnership = Json.obj(
     "companyName" -> companyName,
+    "isUk" -> true,
     "sautr" -> sautr
   )
 }
