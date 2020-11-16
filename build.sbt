@@ -36,7 +36,6 @@ lazy val scoverageSettings = {
 }
 
 lazy val testSettings: Seq[Def.Setting[_]] = Seq(
-  //parallelExecution := false,
   fork        := true,
   javaOptions ++= Seq(
     "-Dconfig.resource=test.application.conf"
