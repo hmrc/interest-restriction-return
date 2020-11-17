@@ -9,6 +9,8 @@ resolvers += "emueller-bintray" at "http://dl.bintray.com/emueller/maven"
 
 scalacOptions += "-Ypartial-unification"
 
+scalaVersion := "2.12.12"
+
 lazy val microservice = Project(appName, file("."))
   .enablePlugins(play.sbt.PlayScala, SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin, SbtArtifactory)
   .settings(
