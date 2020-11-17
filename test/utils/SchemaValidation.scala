@@ -41,7 +41,7 @@ trait SchemaValidation {
     val jsonParser = jsonFactory.createParser(json.toString)
     val jsonNode: JsonNode = jsonMapper.readTree(jsonParser)
     val result: ProcessingReport = loadRequestSchema(schemaName, schemaVersion).validate(jsonNode)
-    if(!result.isSuccess) Logger.error(result.toString)
+    if(!result.isSuccess) Logger.info(result.toString)
     result.isSuccess
   }
 }
