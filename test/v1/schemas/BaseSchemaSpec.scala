@@ -18,11 +18,12 @@ package v1.schemas
 
 import org.scalatest.{Matchers, WordSpec}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api.Logging
 import utils.SchemaValidation
 import v1.models.{CountryCodeModel, UTRModel}
 
 //noinspection ScalaStyle
-trait BaseSchemaSpec extends WordSpec with Matchers with GuiceOneAppPerSuite with SchemaValidation {
+trait BaseSchemaSpec extends WordSpec with Matchers with GuiceOneAppPerSuite with SchemaValidation with Logging {
 
   val maxAgentNameLength = 160
   val maxDescriptionLength = 5000

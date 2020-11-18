@@ -18,10 +18,10 @@ package v1.connectors
 
 import config.AppConfig
 import javax.inject.Inject
-import play.api.Logger
+import play.api.Logging
 import play.api.libs.json.Json
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.bootstrap.http.HttpClient
+import uk.gov.hmrc.http.HttpClient
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.httpParsers.AppointReportingCompanyHttpParser.AppointReportingCompanyReads
 import v1.models.appointReportingCompany.AppointReportingCompanyModel
@@ -30,16 +30,16 @@ import v1.models.requests.IdentifierRequest
 import scala.concurrent.{ExecutionContext, Future}
 
 class AppointReportingCompanyConnector @Inject()(httpClient: HttpClient,
-                                                 implicit val appConfig: AppConfig) extends DesBaseConnector {
+                                                 implicit val appConfig: AppConfig) extends DesBaseConnector with Logging {
 
   private[connectors] lazy val appointUrl = s"${appConfig.desUrl}/interest-restriction/reporting-company/appoint"
 
   def appoint(appointReportingCompanyModel: AppointReportingCompanyModel)
              (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
 
-    Logger.debug(s"[AppointReportingCompanyConnector][appoint] URL: $appointUrl")
-    Logger.debug(s"[AppointReportingCompanyConnector][appoint] Headers: ${desHc.headers}")
-    Logger.debug(s"[AppointReportingCompanyConnector][appoint] Body: \n\n ${Json.toJson(appointReportingCompanyModel)}")
+    logger.debug(s"[AppointReportingCompanyConnector][appoint] URL: $appointUrl")
+    logger.debug(s"[AppointReportingCompanyConnector][appoint] Headers: ${desHc.headers}")
+    logger.debug(s"[AppointReportingCompanyConnector][appoint] Body: \n\n ${Json.toJson(appointReportingCompanyModel)}")
 
     httpClient.POST(appointUrl, appointReportingCompanyModel)(AppointReportingCompanyModel.format, AppointReportingCompanyReads, desHc, ec)
   }

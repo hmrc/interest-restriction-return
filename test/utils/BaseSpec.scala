@@ -21,7 +21,7 @@ import config.AppConfig
 import org.scalatest.Matchers
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.mvc.BodyParsers
-import play.api.test.{DefaultAwaitTimeout, FakeRequest, FutureAwaits}
+import play.api.test.FakeRequest
 import uk.gov.hmrc.auth.core.MissingBearerToken
 import uk.gov.hmrc.auth.core.retrieve.Credentials
 import uk.gov.hmrc.http.HeaderCarrier

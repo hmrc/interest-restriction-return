@@ -17,11 +17,11 @@
 package v1.controllers
 
 import cats.data.Validated.{Invalid, Valid}
-import play.api.Logger
+import play.api.Logging
 import play.api.libs.json._
 import play.api.mvc.{Request, Result}
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.bootstrap.controller.BackendBaseController
+import uk.gov.hmrc.play.bootstrap.backend.controller.BackendBaseController
 import v1.models.Validation.ValidationResult
 import v1.models.errors.ValidationErrorResponseModel
 import v1.models.requests.IdentifierRequest
@@ -30,7 +30,7 @@ import v1.services.Submission
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
 
-trait BaseController extends BackendBaseController {
+trait BaseController extends BackendBaseController with Logging {
 
   implicit val ec: ExecutionContext = controllerComponents.executionContext
 
@@ -38,7 +38,7 @@ trait BaseController extends BackendBaseController {
     Try(request.body.validate[T]) match {
       case Success(JsSuccess(payload, _)) => f(payload)
       case Success(JsError(errs)) =>
-        Logger.debug(request.body.toString())
+        logger.debug(request.body.toString())
         Future.successful(BadRequest(Json.toJson(ValidationErrorResponseModel(errs))))
       case Failure(e) => Future.successful(BadRequest(s"Could not parse body due to ${e.getMessage}"))
     }
@@ -47,7 +47,7 @@ trait BaseController extends BackendBaseController {
                          (implicit hc: HeaderCarrier, identifierRequest: IdentifierRequest[JsValue]): Future[Result] = {
     validationModel match {
       case Invalid(e) =>
-        Logger.debug(s"[$controllerName][submit] Business Rule Errors: ${Json.toJson(ValidationErrorResponseModel(e))}")
+        logger.debug(s"[$controllerName][submit] Business Rule Errors: ${Json.toJson(ValidationErrorResponseModel(e))}")
         Future.successful(BadRequest(Json.toJson(ValidationErrorResponseModel(e))))
       case Valid(model) =>
         service.submit(model).map {

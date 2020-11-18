@@ -18,14 +18,15 @@ package utils
 
 import java.io.File
 
-import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import com.github.fge.jsonschema.core.report.ProcessingReport
 import com.github.fge.jsonschema.main.{JsonSchema, JsonSchemaFactory}
-import play.api.Logger
+import play.api.Logging
 import play.api.libs.json.JsValue
 
 trait SchemaValidation {
+
+  _: Logging =>
 
   private[utils] final lazy val jsonMapper = new ObjectMapper()
   private[utils] final lazy val jsonFactory = jsonMapper.getFactory
@@ -37,11 +38,11 @@ trait SchemaValidation {
   }
 
   def validateJson(schemaName: String, schemaVersion: String, json: JsValue): Boolean = {
-    Logger.debug(s"Json to validate: $json")
+    logger.debug(s"Json to validate: $json")
     val jsonParser = jsonFactory.createParser(json.toString)
     val jsonNode: JsonNode = jsonMapper.readTree(jsonParser)
     val result: ProcessingReport = loadRequestSchema(schemaName, schemaVersion).validate(jsonNode)
-    if(!result.isSuccess) Logger.error(result.toString)
+    if(!result.isSuccess) logger.info(result.toString)
     result.isSuccess
   }
 }

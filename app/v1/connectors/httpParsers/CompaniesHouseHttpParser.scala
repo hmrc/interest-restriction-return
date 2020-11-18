@@ -18,26 +18,26 @@ package v1.connectors.httpParsers
 
 import v1.connectors.HttpHelper.CompaniesHouseResponse
 import v1.connectors.{HttpErrorMessages, InvalidCRN, UnexpectedFailure, ValidCRN}
-import play.api.Logger
+import play.api.Logging
 import play.api.http.Status._
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
 object CompaniesHouseHttpParser {
 
-  implicit object CompaniesHouseReads extends HttpReads[CompaniesHouseResponse] {
+  implicit object CompaniesHouseReads extends HttpReads[CompaniesHouseResponse] with Logging {
 
     override def read(method: String, url: String, response: HttpResponse): CompaniesHouseResponse = {
       response.status match {
         case OK =>
-          Logger.debug("[CompaniesHouseHttpParser][read]: Status OK")
-          Logger.debug(s"[CompaniesHouseHttpParser][read]: Json Response: ${response.body}")
+          logger.debug("[CompaniesHouseHttpParser][read]: Status OK")
+          logger.debug(s"[CompaniesHouseHttpParser][read]: Json Response: ${response.body}")
           Right(ValidCRN)
         case NOT_FOUND =>
-          Logger.debug("[CompaniesHouseHttpParser][read]: Status NOT FOUND")
-          Logger.debug(s"[CompaniesHouseHttpParser][read]: Json Response: ${response.body}")
+          logger.debug("[CompaniesHouseHttpParser][read]: Status NOT FOUND")
+          logger.debug(s"[CompaniesHouseHttpParser][read]: Json Response: ${response.body}")
           Left(InvalidCRN)
         case status =>
-          Logger.warn(s"[CompaniesHouseReads][read]: Unexpected response, status $status returned")
+          logger.warn(s"[CompaniesHouseReads][read]: Unexpected response, status $status returned")
           Left(UnexpectedFailure(response.status,s"Status ${response.status} ${HttpErrorMessages.CRN_UNEXPECTED_ERROR}"))
       }
     }
