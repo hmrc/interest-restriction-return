@@ -5,7 +5,7 @@ import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin.publishingSettings
 
 val appName = "interest-restriction-return"
 
-resolvers += "emueller-bintray" at "http://dl.bintray.com/emueller/maven"
+resolvers += "emueller-bintray" at "https://dl.bintray.com/emueller/maven"
 
 scalacOptions += "-Ypartial-unification"
 
