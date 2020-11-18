@@ -34,8 +34,6 @@ import uk.gov.hmrc.play.bootstrap.config.HttpAuditEvent
 import utils.{BaseSpec, ErrorHandler}
 import v1.models.errors.{InvalidAcceptHeaderError, UnsupportedVersionError}
 
-import scala.concurrent.ExecutionContext.Implicits.global
-
 class VersionRoutingRequestHandlerSpec extends BaseSpec with Matchers with MockFactory with Inside with MockAppConfig {
   test =>
 
