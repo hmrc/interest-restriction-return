@@ -18,7 +18,6 @@ package routing
 
 import com.typesafe.config.ConfigFactory
 import mocks.MockAppConfig
-import org.scalamock.handlers.CallHandler1
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{Inside, Matchers}
 import play.api.Configuration
@@ -63,16 +62,18 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Matchers with MockF
         |version-2.enabled = true
       """.stripMargin))))
 
+    val actionBuilder = DefaultActionBuilder(stubBodyParser(AnyContentAsEmpty))
     //noinspection ScalaDeprecation
     val requestHandler: VersionRoutingRequestHandler =
-      new VersionRoutingRequestHandler(routingMap, errorHandler, httpConfiguration, mockAppConfig, filters, Action)
+      new VersionRoutingRequestHandler(routingMap, errorHandler, httpConfiguration, mockAppConfig, filters, actionBuilder)
 
-    def stubHandling(router: Router, path: String)(handler: Option[Handler]): CallHandler1[RequestHeader, Option[Handler]] =
-      (router.handlerFor _)
-        .expects(where { r: RequestHeader =>
-          r.path == path
-        })
-        .returns(handler)
+    def stubHandling(router: Router, validPaths: List[String])(handler: Handler) = {
+      val routes: Router.Routes = { case rh: RequestHeader if validPaths.contains(rh.path) => handler}
+
+      (router.routes _)
+        .expects()
+        .returning(routes)
+    }
 
     def buildRequest(path: String): RequestHeader =
       acceptHeader
@@ -98,7 +99,7 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Matchers with MockF
 
     "return 406" in new Test {
       val handler: Handler = mock[Handler]
-      stubHandling(defaultRouter, "path")(None)
+      stubHandling(defaultRouter, List())(handler)
 
       val request: RequestHeader = buildRequest("path")
       inside(requestHandler.routeRequest(request)) {
@@ -127,7 +128,7 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Matchers with MockF
 
     "return 404" in new Test {
       val handler: Handler = mock[Handler]
-      stubHandling(defaultRouter, "path")(None)
+      stubHandling(defaultRouter, List())(handler)
 
       private val request = buildRequest("path")
 
@@ -148,7 +149,7 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Matchers with MockF
       "return 404 Not Found" in new Test {
         val handler: Handler = mock[Handler]
 
-        stubHandling(defaultRouter, "path")(None)
+        stubHandling(defaultRouter, List())(handler)
 
         private val request = buildRequest("path")
         inside(requestHandler.routeRequest(request)) {
@@ -168,7 +169,7 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Matchers with MockF
       "handler found" should {
         "use it" in new Test {
           val handler: Handler = mock[Handler]
-          stubHandling(router, "path/")(Some(handler))
+          stubHandling(router, List("path/"))(handler).once()
 
           requestHandler.routeRequest(buildRequest("path/")) shouldBe Some(handler)
         }
@@ -177,10 +178,7 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Matchers with MockF
       "handler not found" should {
         "try without the trailing slash" in new Test {
           val handler: Handler = mock[Handler]
-          inSequence {
-            stubHandling(router, "path/")(None)
-            stubHandling(router, "path")(Some(handler))
-          }
+          stubHandling(router, List("path"))(handler).twice()
 
           requestHandler.routeRequest(buildRequest("path/")) shouldBe Some(handler)
         }
@@ -194,9 +192,8 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Matchers with MockF
         "use it" in new Test {
           val handler: Handler = mock[Handler]
 
-          stubHandling(defaultRouter, "path/")(None)
-          stubHandling(defaultRouter, "path")(None)
-          stubHandling(router, "path/")(Some(handler))
+          stubHandling(defaultRouter, List())(handler).twice()
+          stubHandling(router, List("path/"))(handler).once()
 
           requestHandler.routeRequest(buildRequest("path/")) shouldBe Some(handler)
         }
@@ -206,12 +203,8 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Matchers with MockF
         "try without the trailing slash" in new Test {
           val handler: Handler = mock[Handler]
 
-          stubHandling(defaultRouter, "path/")(None)
-          stubHandling(defaultRouter, "path")(None)
-          inSequence {
-            stubHandling(router, "path/")(None)
-            stubHandling(router, "path")(Some(handler))
-          }
+          stubHandling(defaultRouter, List())(handler).twice()
+          stubHandling(router, List("path"))(handler).twice()
 
           requestHandler.routeRequest(buildRequest("path/")) shouldBe Some(handler)
         }

@@ -35,7 +35,12 @@ class VersionRoutingRequestHandler @Inject()(versionRoutingMap: VersionRoutingMa
                                              config: AppConfig,
                                              filters: HttpFilters,
                                              action: DefaultActionBuilder)
-    extends DefaultHttpRequestHandler(new DefaultWebCommands, None, versionRoutingMap.defaultRouter, errorHandler, httpConfiguration, filters.filters) with Logging {
+    extends DefaultHttpRequestHandler(new DefaultWebCommands,
+                                      None,
+                                      versionRoutingMap.defaultRouter,
+                                      errorHandler,
+                                      httpConfiguration,
+                                      filters.filters) with Logging {
 
   private val featureSwitch = FeatureSwitch(config.featureSwitch)
 
@@ -66,7 +71,7 @@ class VersionRoutingRequestHandler @Inject()(versionRoutingMap: VersionRoutingMa
     documentHandler orElse apiHandler
   }
 
-  private def routeWith(router: Router)(request: RequestHeader) =
+  private def routeWith(router: Router)(request: RequestHeader): Option[Handler] =
     router
       .handlerFor(request)
       .orElse {
