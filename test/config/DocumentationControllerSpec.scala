@@ -19,15 +19,14 @@ package config
 import play.api.test.Helpers._
 import com.typesafe.config.ConfigFactory
 import controllers.Assets
-import definition.{Definition, ApiDefinitionFactory}
-import definition.Definition._
+import definition.ApiDefinitionFactory
 import mocks.MockAppConfig
 import play.api.Configuration
 import utils.BaseSpec
 import play.api.http.{DefaultHttpErrorHandler, HttpErrorConfig, Status}
 import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.libs.json.Json
 import play.api.mvc.{ControllerComponents, Result}
-import play.libs.Json
 
 import scala.concurrent.Future
 
@@ -38,8 +37,7 @@ class DocumentationControllerSpec extends BaseSpec  {
 
   "definition" must {
     "return the definition file" in {
-      val expected: Definition = selfAssessmentApiDefinition.definition
-      val expectedJson  = Json.toJson(expected)
+      val expectedJson  = Json.toJson(selfAssessmentApiDefinition.definition)
       val result: Future[Result] = controller.definition()(fakeRequest)
       status(result) shouldBe Status.OK
       contentAsJson(result) shouldBe expectedJson
