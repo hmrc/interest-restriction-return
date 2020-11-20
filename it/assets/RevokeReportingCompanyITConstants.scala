@@ -20,7 +20,6 @@ import assets.AccountingPeriodITConstants._
 import assets.AgentDetailsITConstants._
 import assets.AuthorisingCompanyITConstants._
 import assets.ReportingCompanyITConstants._
-import assets.UltimateParentITConstants._
 import play.api.libs.json.Json
 
 object RevokeReportingCompanyITConstants {
