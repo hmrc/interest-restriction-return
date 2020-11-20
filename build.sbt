@@ -5,7 +5,7 @@ import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin.publishingSettings
 
 val appName = "interest-restriction-return"
 
-resolvers += "emueller-bintray" at "http://dl.bintray.com/emueller/maven"
+resolvers += "emueller-bintray" at "https://dl.bintray.com/emueller/maven"
 
 scalacOptions += "-Ypartial-unification"
 
@@ -13,6 +13,7 @@ scalaVersion := "2.12.12"
 
 lazy val microservice = Project(appName, file("."))
   .enablePlugins(play.sbt.PlayScala, SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin, SbtArtifactory)
+  .disablePlugins(JUnitXmlReportPlugin) //Required to prevent https://github.com/scalatest/scalatest/issues/1427  
   .settings(
     majorVersion                     := 0,
     scalaVersion                     := "2.12.12",
