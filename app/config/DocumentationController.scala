@@ -27,31 +27,19 @@ import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 @Singleton
 class DocumentationController @Inject()(selfAssessmentApiDefinition: ApiDefinitionFactory,
                                         cc: ControllerComponents, assets: Assets, errorHandler: HttpErrorHandler)
-  extends HmrcDocumentationController(cc,assets , errorHandler ) {
+  extends BackendController(cc) {
 
-  override def definition(): Action[AnyContent] = Action {
+  def definition(): Action[AnyContent] = Action {
     Ok(Json.toJson(selfAssessmentApiDefinition.definition))
   }
 
-  def raml(version: String, file: String): Action[AnyContent] = {
+  def raml(version: String, file: String): Action[AnyContent] =
     assets.at(s"/public/api/conf/$version", file)
-  }
-}
-
-
-/* TODO: This class exists as a placeholder for uk.gov.hmrc.api.controllers.DocumentationController
-    until the play-hmrc-api library gets upgraded to support Play 27*/
-
-class HmrcDocumentationController(cc: ControllerComponents,
-                                  assets: Assets,
-                                  errorHandler: HttpErrorHandler) extends BackendController(cc) {
 
   def documentation(version: String, endpointName: String): Action[AnyContent] =
     assets.at(s"/public/api/documentation/$version", s"${endpointName.replaceAll(" ", "-")}.xml")
 
-  def definition(): Action[AnyContent] =
-    assets.at(s"/public/api", "definition.json")
-
   def conf(version: String, file: String): Action[AnyContent] =
     assets.at(s"/public/api/conf/$version", file)
+
 }
