@@ -18,16 +18,16 @@ package v1.connectors.httpParsers
 
 import assets.abbreviatedReturn.AbbreviatedReturnConstants.ackRef
 import v1.connectors.httpParsers.AbbreviatedReturnHttpParser.AbbreviatedReturnReads
-import v1.connectors.{InvalidSuccessResponse, DesSuccessResponse, UnexpectedFailure}
+import v1.connectors.{DesSuccessResponse, InvalidSuccessResponse, UnexpectedFailure}
 import org.scalatest.{Matchers, WordSpec}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.http.Status
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.http.HttpResponse
 
 class AbbreviatedReturnHttpParserSpec extends WordSpec with Matchers with GuiceOneAppPerSuite  {
 
-  val ackRefResponse = Json.obj("acknowledgementReference" -> ackRef)
+  val ackRefResponse: JsValue = Json.obj("acknowledgementReference" -> ackRef)
 
   "AbbreviatedReturnHttpParser.AbbreviatedReturnReads" when {
 
@@ -36,7 +36,7 @@ class AbbreviatedReturnHttpParserSpec extends WordSpec with Matchers with GuiceO
       "return a Right containing an acknowledgementReference" in {
 
         val expectedResult = Right(DesSuccessResponse(ackRef))
-        val actualResult = AbbreviatedReturnReads.read("", "", HttpResponse(Status.OK, Some(ackRefResponse)))
+        val actualResult = AbbreviatedReturnReads.read("", "", HttpResponse(Status.OK, ackRefResponse, Map.empty[String,Seq[String]]))
 
         actualResult shouldBe expectedResult
       }
@@ -47,7 +47,7 @@ class AbbreviatedReturnHttpParserSpec extends WordSpec with Matchers with GuiceO
       "return a Left(InvalidSuccessResponse)" in {
 
         val expectedResult = Left(InvalidSuccessResponse)
-        val actualResult = AbbreviatedReturnReads.read("", "", HttpResponse(Status.OK, Some(Json.obj())))
+        val actualResult = AbbreviatedReturnReads.read("", "", HttpResponse(Status.OK, Json.obj(), Map.empty[String,Seq[String]]))
 
         actualResult shouldBe expectedResult
       }
@@ -62,7 +62,7 @@ class AbbreviatedReturnHttpParserSpec extends WordSpec with Matchers with GuiceO
           Status.INTERNAL_SERVER_ERROR,
           s"Status ${Status.INTERNAL_SERVER_ERROR} Error returned when trying to submit abbreviated return"
         ))
-        val actualResult = AbbreviatedReturnReads.read("", "", HttpResponse(Status.INTERNAL_SERVER_ERROR))
+        val actualResult = AbbreviatedReturnReads.read("", "", HttpResponse(Status.INTERNAL_SERVER_ERROR, Json.obj(), Map.empty[String,Seq[String]]))
 
         actualResult shouldBe expectedResult
       }

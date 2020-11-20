@@ -36,7 +36,7 @@ class FullReturnHttpParserSpec extends WordSpec with Matchers with GuiceOneAppPe
       "return a Right containing an acknowledgementReference" in {
 
         val expectedResult = Right(DesSuccessResponse(ackRef))
-        val actualResult = FullReturnReads.read("", "", HttpResponse(Status.OK, Some(ackRefResponse)))
+        val actualResult = FullReturnReads.read("", "", HttpResponse(Status.OK, ackRefResponse, Map.empty[String,Seq[String]]))
 
         actualResult shouldBe expectedResult
       }
@@ -47,7 +47,7 @@ class FullReturnHttpParserSpec extends WordSpec with Matchers with GuiceOneAppPe
       "return a Left(InvalidSuccessResponse)" in {
 
         val expectedResult = Left(InvalidSuccessResponse)
-        val actualResult = FullReturnReads.read("", "", HttpResponse(Status.OK, Some(Json.obj())))
+        val actualResult = FullReturnReads.read("", "", HttpResponse(Status.OK, Json.obj(), Map.empty[String,Seq[String]]))
 
         actualResult shouldBe expectedResult
       }
@@ -60,7 +60,7 @@ class FullReturnHttpParserSpec extends WordSpec with Matchers with GuiceOneAppPe
           Status.INTERNAL_SERVER_ERROR,
           s"Status ${Status.INTERNAL_SERVER_ERROR} Error returned when trying to submit a full return"
         ))
-        val actualResult = FullReturnReads.read("", "", HttpResponse(Status.INTERNAL_SERVER_ERROR))
+        val actualResult = FullReturnReads.read("", "", HttpResponse(Status.INTERNAL_SERVER_ERROR, Json.obj(), Map.empty[String,Seq[String]]))
 
         actualResult shouldBe expectedResult
       }

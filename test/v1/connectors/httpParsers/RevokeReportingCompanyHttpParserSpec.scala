@@ -36,7 +36,7 @@ class RevokeReportingCompanyHttpParserSpec extends WordSpec with Matchers with G
       "return a Right containing an acknowledgementReference" in {
 
         val expectedResult = Right(DesSuccessResponse(ackRef))
-        val actualResult = RevokeReportingCompanyReads.read("", "", HttpResponse(Status.OK, Some(ackRefResponse)))
+        val actualResult = RevokeReportingCompanyReads.read("", "", HttpResponse(Status.OK, ackRefResponse, Map.empty[String,Seq[String]]))
 
         actualResult shouldBe expectedResult
       }
@@ -47,7 +47,7 @@ class RevokeReportingCompanyHttpParserSpec extends WordSpec with Matchers with G
       "return a Left(InvalidSuccessResponse)" in {
 
         val expectedResult = Left(InvalidSuccessResponse)
-        val actualResult = RevokeReportingCompanyReads.read("", "", HttpResponse(Status.OK, Some(Json.obj())))
+        val actualResult = RevokeReportingCompanyReads.read("", "", HttpResponse(Status.OK, Json.obj(), Map.empty[String,Seq[String]]))
 
         actualResult shouldBe expectedResult
       }
@@ -62,7 +62,7 @@ class RevokeReportingCompanyHttpParserSpec extends WordSpec with Matchers with G
           Status.INTERNAL_SERVER_ERROR,
           s"Status ${Status.INTERNAL_SERVER_ERROR} Error returned when trying to revoke a reporting company"
         ))
-        val actualResult = RevokeReportingCompanyReads.read("", "", HttpResponse(Status.INTERNAL_SERVER_ERROR))
+        val actualResult = RevokeReportingCompanyReads.read("", "", HttpResponse(Status.INTERNAL_SERVER_ERROR, Json.obj(), Map.empty[String,Seq[String]]))
 
         actualResult shouldBe expectedResult
       }

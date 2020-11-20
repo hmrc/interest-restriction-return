@@ -27,16 +27,16 @@ class BaseValidationSpec extends WordSpec with Matchers with BaseSpec {
 
   implicit val topPath = JsPath \ "path"
 
-  case class TestError(implicit topPath: JsPath) extends Validation {
+  case class TestError()(implicit topPath: JsPath) extends Validation {
     val errorMessage: String = "error"
-    val path = topPath \ "path"
-    val value = JsString("bad")
+    val path: JsPath = topPath \ "path"
+    val value: JsString = JsString("bad")
   }
 
-  case class TestError1(implicit topPath: JsPath) extends Validation {
+  case class TestError1()(implicit topPath: JsPath) extends Validation {
     val errorMessage: String = "error1"
-    val path = topPath \ "path1"
-    val value = JsString("bad1")
+    val path: JsPath = topPath \ "path1"
+    val value: JsString = JsString("bad1")
   }
 
   val baseValidation = new BaseValidation {}

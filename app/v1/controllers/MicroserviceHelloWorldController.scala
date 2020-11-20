@@ -26,7 +26,7 @@ import scala.concurrent.Future
 class MicroserviceHelloWorldController @Inject()(authAction: AuthAction,
                                                  override val controllerComponents: ControllerComponents) extends BaseController {
 
-  def hello(): Action[AnyContent] = authAction.async { implicit request =>
+  def hello(): Action[AnyContent] = authAction.async { _ =>
     Future.successful(Ok("Hello world"))
   }
 }

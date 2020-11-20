@@ -17,11 +17,9 @@
 package models
 
 import assets.AgentDetailsConstants._
-import cats.data.Validated.{Invalid, Valid}
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 import v1.models.AgentDetailsModel
-import v1.validation.{AgentNameLengthError, AgentNameNotSuppliedError, AgentNameSuppliedError}
 
 class AgentDetailsModelSpec extends WordSpec with Matchers {
 

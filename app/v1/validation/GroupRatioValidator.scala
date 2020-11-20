@@ -55,7 +55,7 @@ case class GroupRatioBlendedSupplied(groupRatio: GroupRatioModel)(implicit val t
   val value = Json.toJson(groupRatio)
 }
 
-case class GroupRatioBlendedNotSupplied(implicit val topPath: JsPath) extends Validation {
+case class GroupRatioBlendedNotSupplied()(implicit val topPath: JsPath) extends Validation {
   val errorMessage: String = "Group Ratio is elected, must supply GroupRatioBlended Election"
   val path = topPath \ "groupRatioBlended"
   val value = Json.obj()
@@ -67,7 +67,7 @@ case class GroupEBITDASupplied(ebitdaElect: Option[Boolean])(implicit topPath: J
   val value = Json.toJson(ebitdaElect)
 }
 
-case class GroupEBITDANotSupplied(implicit topPath: JsPath) extends Validation {
+case class GroupEBITDANotSupplied()(implicit topPath: JsPath) extends Validation {
   val errorMessage: String = "Group Ratio is elected, must provide groupEBITDAChargeableGains Election"
   val path = topPath \ "groupEBITDAChargeableGains"
   val value = Json.obj()

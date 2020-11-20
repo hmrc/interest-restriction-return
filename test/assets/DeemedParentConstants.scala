@@ -17,7 +17,7 @@
 package assets
 
 import play.api.libs.json.Json
-import v1.models.{CountryCodeModel, DeemedParentModel}
+import v1.models.DeemedParentModel
 
 object DeemedParentConstants extends BaseConstants {
 

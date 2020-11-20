@@ -36,7 +36,7 @@ class AppointReportingCompanyHttpParserSpec extends WordSpec with Matchers with 
       "return a Right containing an acknowledgementReference" in {
 
         val expectedResult = Right(DesSuccessResponse(ackRef))
-        val actualResult = AppointReportingCompanyReads.read("", "", HttpResponse(Status.OK, Some(ackRefResponse)))
+        val actualResult = AppointReportingCompanyReads.read("", "", HttpResponse(Status.OK, ackRefResponse, Map.empty[String,Seq[String]]))
 
         actualResult shouldBe expectedResult
       }
@@ -47,7 +47,7 @@ class AppointReportingCompanyHttpParserSpec extends WordSpec with Matchers with 
       "return a Left(InvalidSuccessResponse)" in {
 
         val expectedResult = Left(InvalidSuccessResponse)
-        val actualResult = AppointReportingCompanyReads.read("", "", HttpResponse(Status.OK, Some(Json.obj())))
+        val actualResult = AppointReportingCompanyReads.read("", "", HttpResponse(Status.OK, Json.obj(), Map.empty[String,Seq[String]]))
 
         actualResult shouldBe expectedResult
       }
@@ -62,7 +62,7 @@ class AppointReportingCompanyHttpParserSpec extends WordSpec with Matchers with 
           Status.INTERNAL_SERVER_ERROR,
           s"Status ${Status.INTERNAL_SERVER_ERROR} Error returned when trying to appoint a reporting company"
         ))
-        val actualResult = AppointReportingCompanyReads.read("", "", HttpResponse(Status.INTERNAL_SERVER_ERROR))
+        val actualResult = AppointReportingCompanyReads.read("", "", HttpResponse(Status.INTERNAL_SERVER_ERROR, Json.obj(), Map.empty[String,Seq[String]]))
 
         actualResult shouldBe expectedResult
       }

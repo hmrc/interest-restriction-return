@@ -17,13 +17,12 @@
 package v1.controllers
 
 import assets.revokeReportingCompany.RevokeReportingCompanyConstants._
-import v1.connectors.{DesSuccessResponse, InvalidCRN, UnexpectedFailure}
+import v1.connectors.{DesSuccessResponse, UnexpectedFailure}
 import play.api.http.Status
 import play.api.libs.json.Json
 import play.api.test.{FakeRequest, Helpers}
 import v1.services.mocks.MockRevokeReportingCompanyService
 import utils.BaseSpec
-import v1.models.errors.ValidationErrorResponseModel
 
 class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanyService with BaseSpec {
 

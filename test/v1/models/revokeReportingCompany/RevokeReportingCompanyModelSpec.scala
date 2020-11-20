@@ -16,7 +16,6 @@
 
 package models.revokeReportingCompany
 import assets.BaseConstants
-import assets.appointReportingCompany.AppointReportingCompanyConstants.{appointReportingCompanyModelMax, appointReportingCompanyModelMin}
 import assets.revokeReportingCompany.RevokeReportingCompanyConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json

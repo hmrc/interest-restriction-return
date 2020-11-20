@@ -26,6 +26,7 @@ lazy val microservice = Project(appName, file("."))
   .configs(IntegrationTest)
   .settings(integrationTestSettings(): _*)
   .settings(resolvers += Resolver.jcenterRepo)
+  .settings(playRoutesSettings)
 
 
 lazy val scoverageSettings = {
@@ -45,4 +46,9 @@ lazy val testSettings: Seq[Def.Setting[_]] = Seq(
     "-Dconfig.resource=test.application.conf"
   )
 )
+
+lazy val playRoutesSettings = {
+  import play.sbt.routes.RoutesKeys
+  RoutesKeys.routesImport := Seq.empty
+}
 

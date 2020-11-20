@@ -64,7 +64,7 @@ case class NonConsolidatedInvestmentNotSupplied(nonConsolidatedInvestmentElectio
   val value = Json.toJson(nonConsolidatedInvestmentElectionModel)
 }
 
-case class NonConsolidatedInvestmentEmpty(implicit val topPath: JsPath) extends Validation {
+case class NonConsolidatedInvestmentEmpty()(implicit val topPath: JsPath) extends Validation {
   val errorMessage: String = "nonConsolidatedInvestments must contain at least 1 value if supplied"
   val path = topPath \ "nonConsolidatedInvestments"
   val value = Json.obj()
