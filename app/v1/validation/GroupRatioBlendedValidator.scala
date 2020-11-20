@@ -56,7 +56,7 @@ case class GroupRatioBlendedNotElectedError(groupRatioBlended: GroupRatioBlended
   val value = Json.toJson(groupRatioBlended)
 }
 
-case class InvestorGroupsEmpty(implicit val topPath: JsPath) extends Validation {
+case class InvestorGroupsEmpty()(implicit val topPath: JsPath) extends Validation {
   val errorMessage: String = "investorGroups must have at least 1 investor if supplied"
   val path = topPath \ "investorGroups"
   val value = Json.obj()

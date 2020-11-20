@@ -4,7 +4,7 @@ import org.scalatestplus.play.ServerProvider
 import play.api.Application
 import play.api.http.HeaderNames.ACCEPT
 import play.api.libs.json.JsValue
-import play.api.libs.ws.{DefaultWSCookie, WSClient, WSRequest, WSResponse}
+import play.api.libs.ws.{DefaultWSCookie, WSClient, WSResponse}
 
 import scala.concurrent.Future
 import scala.concurrent.duration.{Duration, FiniteDuration, SECONDS}

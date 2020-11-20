@@ -19,7 +19,6 @@ package v1.models
 import assets.GroupLevelElectionsConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
-import v1.models.GroupLevelElectionsModel
 
 class GroupLevelElectionsModelSpec extends WordSpec with Matchers {
 

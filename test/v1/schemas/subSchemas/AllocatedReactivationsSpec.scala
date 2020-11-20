@@ -20,7 +20,7 @@ import play.api.libs.json.{JsValue, Json}
 import v1.schemas.BaseSchemaSpec
 import v1.schemas.helpers.fullReturn.AllocatedReactivations
 
-class AllocatedReactivations extends BaseSchemaSpec {
+class AllocatedReactivationsSpec extends BaseSchemaSpec {
 
   def validate(json: JsValue): Boolean = validateJson("subSchemas/allocatedReactivations.json", "1.0", json)
 

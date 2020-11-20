@@ -17,7 +17,7 @@
 package v1.validation
 
 import play.api.libs.json.JsPath
-import v1.models.{GroupRatioBlendedModel, InvestorGroupModel}
+import v1.models.GroupRatioBlendedModel
 import assets.InvestorGroupConstants._
 
 class GroupRatioBlendedValidatorSpec extends BaseValidationSpec {

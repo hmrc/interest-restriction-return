@@ -16,7 +16,7 @@
 
 package v1.models.abbreviatedReturn
 
-import play.api.libs.json.{JsPath, Json}
+import play.api.libs.json.Json
 import v1.models._
 import v1.validation.abbreviatedReturn.AbbreviatedReturnValidator
 

@@ -125,7 +125,7 @@ case class AllocatedRestrictionNegative(i: Int, amt: BigDecimal)(implicit topPat
   val value = Json.obj()
 }
 
-case class AllocatedRestrictionTotalNotSupplied(implicit topPath: JsPath) extends Validation {
+case class AllocatedRestrictionTotalNotSupplied()(implicit topPath: JsPath) extends Validation {
   val path = topPath \ "totalDisallowances"
   val errorMessage: String = "totalDisallowances must be supplied if restrictions are supplied"
   val value = Json.obj()

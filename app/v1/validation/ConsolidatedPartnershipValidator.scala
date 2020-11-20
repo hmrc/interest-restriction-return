@@ -62,7 +62,7 @@ case class ConsolidatedPartnershipsNotSupplied(consolidatedPartnershipModel: Con
   val value = Json.toJson(consolidatedPartnershipModel)
 }
 
-case class ConsolidatedPartnershipsEmpty(implicit val topPath: JsPath) extends Validation {
+case class ConsolidatedPartnershipsEmpty()(implicit val topPath: JsPath) extends Validation {
   val errorMessage: String = "consolidatedPartnership must have at least 1 partnership"
   val path = topPath \ "consolidatedPartnership"
   val value = Json.obj()

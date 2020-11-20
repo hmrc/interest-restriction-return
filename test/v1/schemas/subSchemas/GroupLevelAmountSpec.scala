@@ -18,7 +18,7 @@ package v1.schemas.subSchemas
 
 import play.api.libs.json.{JsValue, Json}
 import v1.schemas.BaseSchemaSpec
-import v1.schemas.helpers.fullReturn.{AdjustedGroupInterest, GroupLevelAmount}
+import v1.schemas.helpers.fullReturn.GroupLevelAmount
 
 class GroupLevelAmountSpec extends BaseSchemaSpec {
 

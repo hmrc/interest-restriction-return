@@ -17,13 +17,12 @@
 package v1.controllers
 
 import assets.abbreviatedReturn.AbbreviatedReturnConstants._
-import v1.connectors.{DesSuccessResponse, InvalidCRN, UnexpectedFailure}
+import v1.connectors.{DesSuccessResponse, UnexpectedFailure}
 import play.api.http.Status
 import play.api.libs.json.Json
 import play.api.test.{FakeRequest, Helpers}
 import v1.services.mocks.MockAbbreviatedReturnService
 import utils.BaseSpec
-import v1.models.errors.ValidationErrorResponseModel
 
 class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with BaseSpec {
 

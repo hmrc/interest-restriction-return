@@ -18,7 +18,6 @@ package v1.schemas.subSchemas
 
 import play.api.libs.json.{JsValue, Json}
 import v1.schemas.BaseSchemaSpec
-import v1.schemas.helpers._
 import v1.schemas.helpers.abbreviatedReturn.UKCompanies
 import v1.models.UTRModel
 

@@ -226,9 +226,9 @@ case class GroupLevelInterestRestrictionsAndReactivationSupplied(groupSubjectToI
   extends Validation {
   override val errorMessage: String = "You cannot supply both a group level restriction and reactivation in the same return"
   val path = JsPath \ ""
-  val value = Json.toJson(
+  val value = Json.toJson((
     "groupSubjectToInterestRestrictions: " + groupSubjectToInterestRestrictions,
-    "groupSubjectToInterestReactivation: " + groupSubjectToInterestReactivation)
+    "groupSubjectToInterestReactivation: " + groupSubjectToInterestReactivation))
 }
 
 case object InterestReactivationCapNotSupplied extends Validation {

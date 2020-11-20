@@ -32,11 +32,6 @@ import assets.fullReturn.AllocatedReactivationsConstants._
 
 object FullReturnConstants {
 
-  private val oSum: Seq[BigDecimal] => Option[BigDecimal] = {
-    case x if x.isEmpty => None
-    case x => Some(x.sum)
-  }
-
   val ackRef = "ackRef"
   val revisedReturnDetails = "some details"
   val angie: BigDecimal = 1.11

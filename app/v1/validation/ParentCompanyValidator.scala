@@ -68,7 +68,7 @@ case class ParentCompanyCanNotBeUltimateAndDeemed(model: ParentCompanyModel)(imp
   val value = Json.toJson(model)
 }
 
-case class DeemedParentsEmpty(implicit topPath: JsPath) extends Validation {
+case class DeemedParentsEmpty()(implicit topPath: JsPath) extends Validation {
   val errorMessage: String = "deemedParent must have at least 1 deemed parent if supplied"
   val path = topPath \ "deemedParent"
   val value = Json.obj()

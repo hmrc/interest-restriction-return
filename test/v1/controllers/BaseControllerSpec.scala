@@ -17,12 +17,11 @@
 package v1.controllers
 
 import javax.inject.Inject
-import play.api.libs.json.{Format, JsPath, Json, JsonValidationError}
+import play.api.libs.json.{Format, Json}
 import play.api.mvc._
 import play.api.test.Helpers
 import utils.BaseSpec
 import play.api.mvc.Results.Ok
-import v1.models.errors.ValidationErrorResponseModel
 
 import scala.concurrent.Future
 
