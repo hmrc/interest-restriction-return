@@ -18,10 +18,10 @@ package v1.connectors
 
 import config.AppConfig
 import javax.inject.Inject
-import play.api.Logger
+import play.api.Logging
 import play.api.libs.json.Json
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.bootstrap.http.HttpClient
+import uk.gov.hmrc.http.HttpClient
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.httpParsers.FullReturnHttpParser.FullReturnReads
 import v1.models.fullReturn.FullReturnModel
@@ -30,16 +30,16 @@ import v1.models.requests.IdentifierRequest
 import scala.concurrent.{ExecutionContext, Future}
 
 class FullReturnConnector @Inject()(httpClient: HttpClient,
-                                    implicit val appConfig: AppConfig) extends DesBaseConnector {
+                                    implicit val appConfig: AppConfig) extends DesBaseConnector with Logging {
 
   private[connectors] lazy val fullReturnUrl = s"${appConfig.desUrl}/interest-restriction/return/full"
 
   def submit(fullReturnModel: FullReturnModel)
              (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
 
-    Logger.debug(s"[FullReturnConnector][submit] URL: $fullReturnUrl")
-    Logger.debug(s"[FullReturnConnector][submit] Headers: ${desHc.headers}")
-    Logger.debug(s"[FullReturnConnector][submit] Body: \n\n ${Json.toJson(fullReturnModel)}")
+    logger.debug(s"[FullReturnConnector][submit] URL: $fullReturnUrl")
+    logger.debug(s"[FullReturnConnector][submit] Headers: ${desHc.headers}")
+    logger.debug(s"[FullReturnConnector][submit] Body: \n\n ${Json.toJson(fullReturnModel)}")
 
     httpClient.POST(fullReturnUrl, fullReturnModel)(FullReturnModel.format, FullReturnReads, desHc, ec)
   }

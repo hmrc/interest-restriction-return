@@ -18,10 +18,10 @@ package v1.connectors
 
 import config.AppConfig
 import javax.inject.Inject
-import play.api.Logger
+import play.api.Logging
 import play.api.libs.json.Json
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.bootstrap.http.HttpClient
+import uk.gov.hmrc.http.HttpClient
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.httpParsers.AbbreviatedReturnHttpParser.AbbreviatedReturnReads
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
@@ -30,16 +30,16 @@ import v1.models.requests.IdentifierRequest
 import scala.concurrent.{ExecutionContext, Future}
 
 class AbbreviatedReturnConnector @Inject()(httpClient: HttpClient,
-                                           implicit val appConfig: AppConfig) extends DesBaseConnector {
+                                           implicit val appConfig: AppConfig) extends DesBaseConnector with Logging {
 
   private[connectors] lazy val abbreviatedReturnUrl = s"${appConfig.desUrl}/interest-restriction/return/abbreviated"
 
   def submitAbbreviatedReturn(abbreviatedReturnModel: AbbreviatedReturnModel)
                              (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
 
-    Logger.debug(s"[AbbreviatedReturnConnector][submitAbbreviatedReturn] URL: $abbreviatedReturnUrl")
-    Logger.debug(s"[AbbreviatedReturnConnector][submitAbbreviatedReturn] Headers: ${desHc.headers}")
-    Logger.debug(s"[AbbreviatedReturnConnector][submitAbbreviatedReturn] Body: \n\n ${Json.toJson(abbreviatedReturnModel)}")
+    logger.debug(s"[AbbreviatedReturnConnector][submitAbbreviatedReturn] URL: $abbreviatedReturnUrl")
+    logger.debug(s"[AbbreviatedReturnConnector][submitAbbreviatedReturn] Headers: ${desHc.headers}")
+    logger.debug(s"[AbbreviatedReturnConnector][submitAbbreviatedReturn] Body: \n\n ${Json.toJson(abbreviatedReturnModel)}")
 
     httpClient.POST(abbreviatedReturnUrl, abbreviatedReturnModel)(AbbreviatedReturnModel.format, AbbreviatedReturnReads, desHc, ec)
   }

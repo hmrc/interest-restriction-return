@@ -19,11 +19,12 @@ package routing
 import config.{AppConfig, FeatureSwitch}
 import definition.Versions
 import javax.inject.{Inject, Singleton}
-import play.api.Logger
+import play.api.Logging
 import play.api.http.{DefaultHttpRequestHandler, HttpConfiguration, HttpFilters}
 import play.api.libs.json.Json
 import play.api.mvc.{DefaultActionBuilder, Handler, RequestHeader, Results}
 import play.api.routing.Router
+import play.core.DefaultWebCommands
 import utils.ErrorHandler
 import v1.models.errors.{InvalidAcceptHeaderError, UnsupportedVersionError}
 
@@ -34,7 +35,12 @@ class VersionRoutingRequestHandler @Inject()(versionRoutingMap: VersionRoutingMa
                                              config: AppConfig,
                                              filters: HttpFilters,
                                              action: DefaultActionBuilder)
-    extends DefaultHttpRequestHandler(versionRoutingMap.defaultRouter, errorHandler, httpConfiguration, filters) {
+    extends DefaultHttpRequestHandler(new DefaultWebCommands,
+                                      None,
+                                      versionRoutingMap.defaultRouter,
+                                      errorHandler,
+                                      httpConfiguration,
+                                      filters.filters) with Logging {
 
   private val featureSwitch = FeatureSwitch(config.featureSwitch)
 
@@ -50,13 +56,13 @@ class VersionRoutingRequestHandler @Inject()(versionRoutingMap: VersionRoutingMa
       case Some(version) =>
         versionRoutingMap.versionRouter(version) match {
           case Some(versionRouter) if featureSwitch.isVersionEnabled(version) =>
-            Logger.debug(s"[VersionRoutingRequestHandler][routeRequest] apiHandler. Routing with version: $version")
+            logger.debug(s"[VersionRoutingRequestHandler][routeRequest] apiHandler. Routing with version: $version")
             routeWith(versionRouter)(request)
           case Some(_) =>
-            Logger.debug(s"[VersionRoutingRequestHandler][routeRequest] apiHandler. Version: $version is not enabled")
+            logger.debug(s"[VersionRoutingRequestHandler][routeRequest] apiHandler. Version: $version is not enabled")
             Some(unsupportedVersionAction)
           case None =>
-            Logger.debug(s"[VersionRoutingRequestHandler][routeRequest] apiHandler. No mapping found in router for version: $version")
+            logger.debug(s"[VersionRoutingRequestHandler][routeRequest] apiHandler. No mapping found in router for version: $version")
             Some(unsupportedVersionAction)
         }
       case None => Some(invalidAcceptHeaderError)
@@ -65,7 +71,7 @@ class VersionRoutingRequestHandler @Inject()(versionRoutingMap: VersionRoutingMa
     documentHandler orElse apiHandler
   }
 
-  private def routeWith(router: Router)(request: RequestHeader) =
+  private def routeWith(router: Router)(request: RequestHeader): Option[Handler] =
     router
       .handlerFor(request)
       .orElse {
