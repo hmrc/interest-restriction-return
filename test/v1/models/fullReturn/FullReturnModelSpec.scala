@@ -21,11 +21,10 @@ import assets.fullReturn.AllocatedReactivationsConstants._
 import assets.BaseConstants
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
+import play.api.libs.json.JsObject
 import v1.models.fullReturn.FullReturnModel
 import assets.fullReturn.FullReturnConstants._
 import assets.fullReturn.UkCompanyConstants._
-
-
 
 class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants {
 
@@ -35,7 +34,7 @@ class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants {
 
       "max values given with an net expense" in {
 
-        val expectedValue = fullReturnNetTaxExpenseJsonMax
+        val expectedValue = withoutAppointedReportingCompany(fullReturnNetTaxExpenseJsonMax)
         val actualValue = Json.toJson(fullReturnNetTaxExpenseModelMax)
 
         actualValue shouldBe expectedValue
@@ -43,7 +42,7 @@ class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants {
 
       "max values given with an a net income" in {
 
-        val expectedValue = fullReturnNetTaxIncomeJsonMax
+        val expectedValue = withoutAppointedReportingCompany(fullReturnNetTaxIncomeJsonMax)
         val actualValue = Json.toJson(fullReturnNetTaxIncomeModelMax)
 
         actualValue shouldBe expectedValue
@@ -51,10 +50,19 @@ class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants {
 
       "min values given" in {
 
-        val expectedValue = fullReturnJsonMin
+        val expectedValue = withoutAppointedReportingCompany(fullReturnJsonMin)
         val actualValue = Json.toJson(fullReturnModelMin)
 
         actualValue shouldBe expectedValue
+      }
+
+    }
+
+    "not pass the appointedReportingCompany boolean" when {
+      "writing json" in {
+        val parsedJson: JsObject = Json.toJson(fullReturnModelMin).as[JsObject]
+        val appointedReportingCompanyOption: Option[Boolean] = (parsedJson \ "appointedReportingCompany").asOpt[Boolean]
+        appointedReportingCompanyOption shouldBe None
       }
     }
 
@@ -162,4 +170,7 @@ class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants {
       }
     }
   }
+
+  def withoutAppointedReportingCompany(json: JsObject): JsObject = json - "appointedReportingCompany"
+
 }
