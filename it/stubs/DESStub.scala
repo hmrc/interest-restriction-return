@@ -30,25 +30,25 @@ object DESStub extends WireMockMethods {
 
 
   def appointReportingCompanySuccess(response: JsValue): StubMapping =
-    when(method = POST, uri = appointReportingCompanyDesUrl).thenReturn(status = OK, body = response)
+    when(method = POST, uri = appointReportingCompanyDesUrl).thenReturn(status = CREATED, body = response)
 
   def appointReportingCompanyError: StubMapping =
     when(method = POST, uri = appointReportingCompanyDesUrl).thenReturn(status = INTERNAL_SERVER_ERROR)
 
   def revokeReportingCompanySuccess(response: JsValue): StubMapping =
-    when(method = POST, uri = revokeReportingCompanyDesUrl).thenReturn(status = OK, body = response)
+    when(method = POST, uri = revokeReportingCompanyDesUrl).thenReturn(status = CREATED, body = response)
 
   def revokeReportingCompanyError: StubMapping =
     when(method = POST, uri = revokeReportingCompanyDesUrl).thenReturn(status = INTERNAL_SERVER_ERROR)
 
   def abbreviatedReturnSuccess(response: JsValue): StubMapping =
-    when(method = POST, uri = abbreviatedReturnDesUrl).thenReturn(status = OK, body = response)
+    when(method = POST, uri = abbreviatedReturnDesUrl).thenReturn(status = CREATED, body = response)
 
   def abbreviatedReturnError: StubMapping =
     when(method = POST, uri = abbreviatedReturnDesUrl).thenReturn(status = INTERNAL_SERVER_ERROR)
 
   def fullReturnSuccess(response: JsValue): StubMapping =
-    when(method = POST, uri = fullReturnDesUrl).thenReturn(status = OK, body = response)
+    when(method = POST, uri = fullReturnDesUrl).thenReturn(status = CREATED, body = response)
 
   def fullReturnError: StubMapping =
     when(method = POST, uri = fullReturnDesUrl).thenReturn(status = INTERNAL_SERVER_ERROR)

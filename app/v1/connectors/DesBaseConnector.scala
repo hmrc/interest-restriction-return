@@ -19,7 +19,7 @@ package v1.connectors
 import config.AppConfig
 import v1.connectors.HttpHelper.SubmissionResponse
 import play.api.Logging
-import play.api.http.Status.OK
+import play.api.http.Status.CREATED
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import uk.gov.hmrc.http.logging.Authorization
 import v1.models.requests.IdentifierRequest
@@ -34,8 +34,8 @@ trait DesBaseConnector {
 
   def handleHttpResponse(response: HttpResponse, parserName: String, unexpectedErrorMessage: String): SubmissionResponse = {
     response.status match {
-      case OK =>
-        logger.debug(s"[$parserName][read]: Status OK")
+      case CREATED =>
+        logger.debug(s"[$parserName][read]: Status CREATED")
         logger.debug(s"[$parserName][read]: Json Response: ${response.json}")
         response.json.validate[DesSuccessResponse](DesSuccessResponse.fmt).fold(
           invalid => {
