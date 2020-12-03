@@ -28,7 +28,7 @@ class RevokeReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec {
   "RevokeReportingCompanyConnector.revoke" when {
 
     def setup(response: SubmissionResponse): RevokeReportingCompanyConnector = {
-      val desUrl = "http://localhost:9262/interest-restriction/reporting-company/revoke"
+      val desUrl = "http://localhost:9262/organisations/interest-restrictions-return/revoke"
       mockHttpPost[RevokeReportingCompanyModel, Either[ErrorResponse, DesSuccessResponse]](desUrl, revokeReportingCompanyModelMax)(response)
       new RevokeReportingCompanyConnector(mockHttpClient, appConfig)
     }

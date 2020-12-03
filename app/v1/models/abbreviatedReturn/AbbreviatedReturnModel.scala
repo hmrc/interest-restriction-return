@@ -16,7 +16,7 @@
 
 package v1.models.abbreviatedReturn
 
-import play.api.libs.json.Json
+import play.api.libs.json._
 import v1.models._
 import v1.validation.abbreviatedReturn.AbbreviatedReturnValidator
 
@@ -35,7 +35,23 @@ case class AbbreviatedReturnModel(appointedReportingCompany: Boolean,
   override val abbreviatedReturnModel: AbbreviatedReturnModel = this
 }
 
-object AbbreviatedReturnModel{
+object AbbreviatedReturnModel {
 
-  implicit val format = Json.format[AbbreviatedReturnModel]
+  val writes: Writes[AbbreviatedReturnModel] = Writes { models =>
+
+    JsObject(Json.obj(
+      "agentDetails" -> models.agentDetails,
+      "reportingCompany" -> models.reportingCompany,
+      "parentCompany" -> models.parentCompany,
+      "publicInfrastructure" -> models.publicInfrastructure,
+      "groupCompanyDetails" -> models.groupCompanyDetails,
+      "submissionType" -> models.submissionType,
+      "revisedReturnDetails" -> models.revisedReturnDetails,
+      "groupLevelElections" -> models.groupLevelElections,
+      "angie" -> models.angie,
+      "ukCompanies" -> models.ukCompanies
+    ).fields.filterNot(_._2 == JsNull))
+  }
+
+  implicit val format = Format[AbbreviatedReturnModel](Json.reads[AbbreviatedReturnModel], writes)
 }

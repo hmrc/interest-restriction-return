@@ -28,7 +28,7 @@ class AppointReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec 
   "AppointReportingCompanyConnector.appoint" when {
 
     def setup(response: SubmissionResponse): AppointReportingCompanyConnector = {
-      val desUrl = "http://localhost:9262/interest-restriction/reporting-company/appoint"
+      val desUrl = "http://localhost:9262/organisations/interest-restrictions-return/appoint"
       mockHttpPost[AppointReportingCompanyModel, Either[ErrorResponse, DesSuccessResponse]](desUrl, appointReportingCompanyModelMax)(response)
       new AppointReportingCompanyConnector(mockHttpClient, appConfig)
     }
