@@ -31,23 +31,23 @@ class AbbreviatedReturnHttpParserSpec extends WordSpec with Matchers with GuiceO
 
   "AbbreviatedReturnHttpParser.AbbreviatedReturnReads" when {
 
-    "given an (200) with a valid ackRef response" should {
+    "given an (201) with a valid ackRef response" should {
 
       "return a Right containing an acknowledgementReference" in {
 
         val expectedResult = Right(DesSuccessResponse(ackRef))
-        val actualResult = AbbreviatedReturnReads.read("", "", HttpResponse(Status.OK, ackRefResponse, Map.empty[String,Seq[String]]))
+        val actualResult = AbbreviatedReturnReads.read("", "", HttpResponse(Status.CREATED, ackRefResponse, Map.empty[String,Seq[String]]))
 
         actualResult shouldBe expectedResult
       }
     }
 
-    "given an (200) with an invalid ackRef response" should {
+    "given an (201) with an invalid ackRef response" should {
 
       "return a Left(InvalidSuccessResponse)" in {
 
         val expectedResult = Left(InvalidSuccessResponse)
-        val actualResult = AbbreviatedReturnReads.read("", "", HttpResponse(Status.OK, Json.obj(), Map.empty[String,Seq[String]]))
+        val actualResult = AbbreviatedReturnReads.read("", "", HttpResponse(Status.CREATED, Json.obj(), Map.empty[String,Seq[String]]))
 
         actualResult shouldBe expectedResult
       }
