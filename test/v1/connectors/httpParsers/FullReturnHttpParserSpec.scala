@@ -58,10 +58,9 @@ class FullReturnHttpParserSpec extends WordSpec with Matchers with GuiceOneAppPe
 
         val expectedResult = Left(UnexpectedFailure(
           Status.INTERNAL_SERVER_ERROR,
-          """{
-            |  "test" : "test"
-            |}""".stripMargin        ))
-        val actualResult = FullReturnReads.read("", "", HttpResponse(Status.INTERNAL_SERVER_ERROR, Json.obj("test"->"test"), Map.empty[String,Seq[String]]))
+          s"Status ${Status.INTERNAL_SERVER_ERROR} Error returned when trying to submit a full return"
+        ))
+        val actualResult = FullReturnReads.read("", "", HttpResponse(Status.INTERNAL_SERVER_ERROR, Json.obj(), Map.empty[String,Seq[String]]))
 
         actualResult shouldBe expectedResult
       }

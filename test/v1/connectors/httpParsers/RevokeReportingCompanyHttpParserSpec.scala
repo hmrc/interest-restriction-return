@@ -60,11 +60,9 @@ class RevokeReportingCompanyHttpParserSpec extends WordSpec with Matchers with G
 
         val expectedResult = Left(UnexpectedFailure(
           Status.INTERNAL_SERVER_ERROR,
-          """{
-            |  "test" : "test"
-            |}""".stripMargin
+          s"Status ${Status.INTERNAL_SERVER_ERROR} Error returned when trying to revoke a reporting company"
         ))
-        val actualResult = RevokeReportingCompanyReads.read("", "", HttpResponse(Status.INTERNAL_SERVER_ERROR, Json.obj("test"->"test"), Map.empty[String,Seq[String]]))
+        val actualResult = RevokeReportingCompanyReads.read("", "", HttpResponse(Status.INTERNAL_SERVER_ERROR, Json.obj(), Map.empty[String,Seq[String]]))
 
         actualResult shouldBe expectedResult
       }
