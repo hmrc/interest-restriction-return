@@ -35,7 +35,7 @@ trait AppConfig {
 @Singleton
 class AppConfigImpl @Inject()(val servicesConfig: ServicesConfig, configuration: Configuration) extends AppConfig {
 
-  lazy val desUrl: String = servicesConfig.getString("microservice.services.des.url")
+  lazy val desUrl: String = servicesConfig.baseUrl("des")
   lazy val desAuthorisationToken: String = s"Bearer ${servicesConfig.getString("microservice.services.des.authorisation-token")}"
   lazy val desEnvironmentHeader: (String, String) = "Environment" -> servicesConfig.getString("microservice.services.des.environment")
 
