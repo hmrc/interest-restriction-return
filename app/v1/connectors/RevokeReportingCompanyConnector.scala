@@ -32,7 +32,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class RevokeReportingCompanyConnector @Inject()(httpClient: HttpClient,
                                                 implicit val appConfig: AppConfig) extends DesBaseConnector with Logging {
 
-  private[connectors] lazy val revokeUrl = s"${appConfig.desUrl}/interest-restriction/reporting-company/revoke"
+  private[connectors] lazy val revokeUrl = s"${appConfig.desUrl}/organisations/interest-restrictions-return/revoke"
 
   def revoke(revokeReportingCompanyModel: RevokeReportingCompanyModel)
              (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {

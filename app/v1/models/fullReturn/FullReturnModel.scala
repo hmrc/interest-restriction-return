@@ -61,7 +61,6 @@ object FullReturnModel {
   val writes: Writes[FullReturnModel] = Writes { models =>
 
     JsObject(Json.obj(
-      "appointedReportingCompany" -> models.appointedReportingCompany,
       "agentDetails" -> models.agentDetails,
       "reportingCompany" -> models.reportingCompany,
       "parentCompany" -> models.parentCompany,

@@ -20,6 +20,7 @@ import assets.BaseConstants
 import assets.abbreviatedReturn.AbbreviatedReturnConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
+import play.api.libs.json.JsObject
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
 
 class AbbreviatedReturnModelSpec extends WordSpec with Matchers with BaseConstants {
@@ -30,7 +31,7 @@ class AbbreviatedReturnModelSpec extends WordSpec with Matchers with BaseConstan
 
       "max values given" in {
 
-        val expectedValue = abbreviatedReturnUltimateParentJson
+        val expectedValue = withoutAppointedReportingCompany(abbreviatedReturnUltimateParentJson)
         val actualValue = Json.toJson(abbreviatedReturnUltimateParentModel)
 
         actualValue shouldBe expectedValue
@@ -38,10 +39,18 @@ class AbbreviatedReturnModelSpec extends WordSpec with Matchers with BaseConstan
 
       "min values given" in {
 
-        val expectedValue = abbreviatedReturnJsonMin
+        val expectedValue = withoutAppointedReportingCompany(abbreviatedReturnJsonMin)
         val actualValue = Json.toJson(abbreviatedReturnModelMin)
 
         actualValue shouldBe expectedValue
+      }
+    }
+
+    "not pass the appointedReportingCompany boolean" when {
+      "writing json" in {
+        val parsedJson: JsObject = Json.toJson(abbreviatedReturnUltimateParentModel).as[JsObject]
+        val appointedReportingCompanyOption: Option[Boolean] = (parsedJson \ "appointedReportingCompany").asOpt[Boolean]
+        appointedReportingCompanyOption shouldBe None
       }
     }
 
@@ -64,4 +73,7 @@ class AbbreviatedReturnModelSpec extends WordSpec with Matchers with BaseConstan
       }
     }
   }
+
+  def withoutAppointedReportingCompany(json: JsObject): JsObject = json - "appointedReportingCompany"
+
 }

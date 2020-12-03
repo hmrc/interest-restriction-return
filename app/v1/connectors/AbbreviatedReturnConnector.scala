@@ -32,7 +32,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class AbbreviatedReturnConnector @Inject()(httpClient: HttpClient,
                                            implicit val appConfig: AppConfig) extends DesBaseConnector with Logging {
 
-  private[connectors] lazy val abbreviatedReturnUrl = s"${appConfig.desUrl}/interest-restriction/return/abbreviated"
+  private[connectors] lazy val abbreviatedReturnUrl = s"${appConfig.desUrl}/organisations/interest-restrictions-return/abbreviated"
 
   def submitAbbreviatedReturn(abbreviatedReturnModel: AbbreviatedReturnModel)
                              (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {

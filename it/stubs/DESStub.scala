@@ -23,9 +23,9 @@ import utils.WireMockMethods
 
 object DESStub extends WireMockMethods {
 
-  private val appointReportingCompanyDesUrl = s"/interest-restriction/reporting-company/appoint"
-  private val revokeReportingCompanyDesUrl = s"/interest-restriction/reporting-company/revoke"
-  private val abbreviatedReturnDesUrl = s"/interest-restriction/return/abbreviated"
+  private val appointReportingCompanyDesUrl = s"/organisations/interest-restrictions-return/appoint"
+  private val revokeReportingCompanyDesUrl = s"/organisations/interest-restrictions-return/revoke"
+  private val abbreviatedReturnDesUrl = s"/organisations/interest-restrictions-return/abbreviated"
   private val fullReturnDesUrl = s"/organisations/interest-restrictions-return/full"
 
 
