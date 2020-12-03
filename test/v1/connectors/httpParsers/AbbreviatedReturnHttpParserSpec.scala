@@ -60,9 +60,11 @@ class AbbreviatedReturnHttpParserSpec extends WordSpec with Matchers with GuiceO
 
         val expectedResult = Left(UnexpectedFailure(
           Status.INTERNAL_SERVER_ERROR,
-          s"Status ${Status.INTERNAL_SERVER_ERROR} Error returned when trying to submit abbreviated return"
+          """{
+            |  "test" : "test"
+            |}""".stripMargin
         ))
-        val actualResult = AbbreviatedReturnReads.read("", "", HttpResponse(Status.INTERNAL_SERVER_ERROR, Json.obj(), Map.empty[String,Seq[String]]))
+        val actualResult = AbbreviatedReturnReads.read("", "", HttpResponse(Status.INTERNAL_SERVER_ERROR, Json.obj("test" -> "test"), Map.empty[String,Seq[String]]))
 
         actualResult shouldBe expectedResult
       }

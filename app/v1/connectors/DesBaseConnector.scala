@@ -45,8 +45,8 @@ trait DesBaseConnector {
           valid => Right(valid)
         )
       case status =>
-        logger.warn(s"[$parserName][read]: Unexpected response, status $status returned")
-        Left(UnexpectedFailure(response.status,s"Status ${response.status} $unexpectedErrorMessage"))
+        logger.warn(s"[$parserName][read]: Unexpected response, status $status returned with body ${response.body}")
+        Left(UnexpectedFailure(response.status,response.body))
     }
   }
 }
