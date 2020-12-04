@@ -16,8 +16,6 @@
 
 package models.fullReturn
 
-import assets.fullReturn.AllocatedRestrictionsConstants._
-import assets.fullReturn.AllocatedReactivationsConstants._
 import assets.BaseConstants
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
@@ -101,74 +99,24 @@ class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants {
       }
     }
 
-    "derive the correct derived values" when {
+    "deriving the aggregateNetTaxInterest" when {
 
-      "deriving the numberOfUkCompanies when given one or multiple companies" in {
-        fullReturnModelMin.numberOfUkCompanies shouldBe 1
-        fullReturnNetTaxExpenseModelMax.numberOfUkCompanies shouldBe 4
+      "income is bigger" in {
+        fullReturnNetTaxIncomeModelMax.aggregateNetTaxInterest shouldBe ((3 * netTaxInterestIncome) - netTaxInterestExpense)
       }
 
-      "deriving the aggregateNetTaxInterest" when {
-
-        "income is bigger" in {
-          fullReturnNetTaxIncomeModelMax.aggregateNetTaxInterest shouldBe ((3 * netTaxInterestIncome) - netTaxInterestExpense)
-        }
-
-        "expense is bigger" in {
-          fullReturnNetTaxExpenseModelMax.aggregateNetTaxInterest shouldBe (netTaxInterestIncome - (3 * netTaxInterestExpense))
-        }
-
-        "income and expense are equal" in {
-
-          val fullReturnModel = fullReturnModelMax.copy(ukCompanies = Seq(ukCompanyModelMax, ukCompanyModelMin.copy(netTaxInterestIncome = 20.00)))
-
-          fullReturnModel.aggregateNetTaxInterest shouldBe 0
-        }
+      "expense is bigger" in {
+        fullReturnNetTaxExpenseModelMax.aggregateNetTaxInterest shouldBe (netTaxInterestIncome - (3 * netTaxInterestExpense))
       }
 
-      "deriving the aggregateTaxEBITDA" when {
+      "income and expense are equal" in {
 
-        "one company has a taxEBITDA" in {
-          fullReturnModelMin.aggregateTaxEBITDA shouldBe taxEBITDA
-        }
+        val fullReturnModel = fullReturnModelMax.copy(ukCompanies = Seq(ukCompanyModelMax, ukCompanyModelMin.copy(netTaxInterestIncome = 20.00)))
 
-        "multiple companies have a taxEBITDA" in {
-          fullReturnModelMax.aggregateTaxEBITDA shouldBe (2 * taxEBITDA)
-        }
-      }
-
-      "deriving the aggregateAllocatedRestrictions" when {
-
-        "no companies have a allocatedRestrictions" in {
-          fullReturnModelMin.aggregateAllocatedRestrictions shouldBe None
-        }
-
-        "one company has a allocatedRestrictions" in {
-          fullReturnModelMax.aggregateAllocatedRestrictions shouldBe Some(totalDisallowances)
-
-        }
-
-        "multiple companies have a allocatedRestrictions" in {
-          fullReturnNetTaxExpenseModelMax.aggregateAllocatedRestrictions shouldBe Some(3 * totalDisallowances)
-        }
-      }
-
-      "deriving the aggregateAllocatedReactivations" when {
-
-        "no companies have a allocatedRestrictions" in {
-          fullReturnModelMin.aggregateAllocatedReactivations shouldBe None
-        }
-
-        "one company has a allocatedRestrictions" in {
-          fullReturnModelMax.aggregateAllocatedReactivations shouldBe Some(currentPeriodReactivation)
-
-        }
-
-        "multiple companies have a allocatedRestrictions" in {
-          fullReturnNetTaxExpenseModelMax.aggregateAllocatedReactivations shouldBe Some(3 * currentPeriodReactivation)
-        }
+        fullReturnModel.aggregateNetTaxInterest shouldBe 0
       }
     }
+      
   }
 
   def withoutAppointedReportingCompany(json: JsObject): JsObject = json - "appointedReportingCompany"

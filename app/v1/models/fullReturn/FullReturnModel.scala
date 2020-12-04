@@ -43,17 +43,7 @@ case class FullReturnModel(appointedReportingCompany: Boolean,
 
   private val totalTaxInterestIncome: BigDecimal = ukCompanies.map(_.netTaxInterestIncome).sum
   private val totalTaxInterestExpense: BigDecimal = ukCompanies.map(_.netTaxInterestExpense).sum
-
-  private val oSum: Seq[BigDecimal] => Option[BigDecimal] = {
-    case x if x.isEmpty => None
-    case x => Some(x.sum)
-  }
-
-  val numberOfUkCompanies: Int = ukCompanies.length
   val aggregateNetTaxInterest: BigDecimal = totalTaxInterestIncome - totalTaxInterestExpense
-  val aggregateTaxEBITDA: BigDecimal = ukCompanies.map(_.taxEBITDA).sum
-  val aggregateAllocatedRestrictions: Option[BigDecimal] = oSum(ukCompanies.flatMap(_.allocatedRestrictions.flatMap(_.totalDisallowances)))
-  val aggregateAllocatedReactivations: Option[BigDecimal] = oSum(ukCompanies.flatMap(_.allocatedReactivations.map(_.currentPeriodReactivation)))
 }
 
 object FullReturnModel {
@@ -70,11 +60,6 @@ object FullReturnModel {
       "revisedReturnDetails" -> models.revisedReturnDetails,
       "groupLevelElections" -> models.groupLevelElections,
       "ukCompanies" -> models.ukCompanies,
-      "numberOfUkCompanies" -> models.numberOfUkCompanies,
-      (if(models.aggregateNetTaxInterest >= 0) "aggregateNetTaxInterestIncome" else "aggregateNetTaxInterestExpense") -> models.aggregateNetTaxInterest.abs,
-      "aggregateTaxEBITDA" -> models.aggregateTaxEBITDA,
-      "aggregateAllocatedRestrictions" -> models.aggregateAllocatedRestrictions,
-      "aggregateAllocatedReactivations" -> models.aggregateAllocatedReactivations,
       "angie" -> models.angie,
       "returnContainsEstimates" -> models.returnContainsEstimates,
       "groupSubjectToInterestRestrictions" -> models.groupSubjectToInterestRestrictions,
