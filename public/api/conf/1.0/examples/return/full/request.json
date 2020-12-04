@@ -79,11 +79,6 @@
       "currentPeriodReactivation": 2
     }
   }],
-  "numberOfUkCompanies": 2,
-  "aggregateNetTaxInterestExpense": 20,
-  "aggregateTaxEBITDA": 5,
-  "aggregateAllocatedRestrictions": 6,
-  "aggregateAllocatedReactivations": 2,
   "angie": 1.11,
   "returnContainsEstimates": true,
   "groupSubjectToInterestRestrictions": false,

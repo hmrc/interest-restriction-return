@@ -27,8 +27,6 @@ import assets.fullReturn.UkCompanyConstants._
 import play.api.libs.json.{JsObject, Json}
 import v1.models.fullReturn.FullReturnModel
 import v1.models.{Original, Revised}
-import assets.fullReturn.AllocatedRestrictionsConstants._
-import assets.fullReturn.AllocatedReactivationsConstants._
 
 object FullReturnConstants {
 
@@ -77,16 +75,11 @@ object FullReturnConstants {
     "revisedReturnDetails" -> revisedReturnDetails,
     "groupLevelElections" -> groupLevelElectionsJsonMax,
     "ukCompanies" -> Seq(ukCompanyJsonMax, ukCompanyJsonMin),
-    "numberOfUkCompanies" -> 2,
-    "aggregateNetTaxInterestIncome" -> 0,
-    "aggregateTaxEBITDA" -> (2 * taxEBITDA),
-    "aggregateAllocatedRestrictions" -> totalDisallowances,
-    "aggregateAllocatedReactivations" -> currentPeriodReactivation,
     "angie" -> angie,
     "returnContainsEstimates" -> true,
     "groupSubjectToInterestRestrictions" -> false,
     "groupSubjectToInterestReactivation" -> true,
-    "totalReactivation" -> fullReturnModelMax.aggregateAllocatedReactivations.getOrElse[BigDecimal](0),
+    "totalReactivation" -> fullReturnModelMax.totalReactivation,
     "totalRestrictions" -> 0,
     "groupLevelAmount" -> groupLevelAmountJson,
     "adjustedGroupInterest" -> adjustedGroupInterestJson
@@ -124,11 +117,6 @@ object FullReturnConstants {
     "revisedReturnDetails" -> revisedReturnDetails,
     "groupLevelElections" -> groupLevelElectionsJsonMax,
     "ukCompanies" -> Seq(ukCompanyJsonMax, ukCompanyJsonMax, ukCompanyJsonMax, ukCompanyJsonMin),
-    "numberOfUkCompanies" -> 4,
-    "aggregateNetTaxInterestExpense" -> ((3 * netTaxInterestExpense) - netTaxInterestIncome),
-    "aggregateTaxEBITDA" -> (4 * taxEBITDA),
-    "aggregateAllocatedRestrictions" -> (3 * totalDisallowances),
-    "aggregateAllocatedReactivations" -> (3 * currentPeriodReactivation),
     "angie" -> angie,
     "returnContainsEstimates" -> true,
     "groupSubjectToInterestRestrictions" -> false,
@@ -171,11 +159,6 @@ object FullReturnConstants {
     "revisedReturnDetails" -> revisedReturnDetails,
     "groupLevelElections" -> groupLevelElectionsJsonMax,
     "ukCompanies" -> Seq(ukCompanyJsonMin, ukCompanyJsonMin, ukCompanyJsonMin, ukCompanyJsonMax),
-    "numberOfUkCompanies" -> 4,
-    "aggregateNetTaxInterestIncome" -> ((3 * netTaxInterestIncome) - netTaxInterestExpense),
-    "aggregateTaxEBITDA" -> (4 * taxEBITDA),
-    "aggregateAllocatedRestrictions" -> totalDisallowances,
-    "aggregateAllocatedReactivations" -> currentPeriodReactivation,
     "angie" -> angie,
     "returnContainsEstimates" -> true,
     "groupSubjectToInterestRestrictions" -> false,
@@ -220,11 +203,6 @@ object FullReturnConstants {
     "revisedReturnDetails" -> revisedReturnDetails,
     "groupLevelElections" -> groupLevelElectionsJsonMax,
     "ukCompanies" -> Seq(ukCompanyReactivationJsonMax, ukCompanyReactivationJsonMax),
-    "numberOfUkCompanies" -> 2,
-    "aggregateNetTaxInterestExpense" -> netTaxInterestExpense,
-    "aggregateTaxEBITDA" -> taxEBITDA,
-    "aggregateAllocatedRestrictions" -> totalDisallowances,
-    "aggregateAllocatedReactivations" -> currentPeriodReactivation,
     "angie" -> angie,
     "returnContainsEstimates" -> true,
     "groupSubjectToInterestRestrictions" -> false,
@@ -288,9 +266,6 @@ object FullReturnConstants {
     "groupCompanyDetails" -> groupCompanyDetailsJson,
     "submissionType" -> Original,
     "ukCompanies" -> Seq(ukCompanyJsonMin),
-    "numberOfUkCompanies" -> 1,
-    "aggregateNetTaxInterestIncome" -> netTaxInterestIncome,
-    "aggregateTaxEBITDA" -> taxEBITDA,
     "groupLevelElections" -> groupLevelElectionsJsonMin,
     "returnContainsEstimates" -> true,
     "groupSubjectToInterestRestrictions" -> false,
