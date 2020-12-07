@@ -45,7 +45,7 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
       "a revoking company is the same as the ultimate parent, and ultimate parent was not supplied, " in {
         val testingModel = revokeReportingCompanyModelMax.copy(
           reportingCompany = revokeReportingCompanyModelMax.reportingCompany.copy(sameAsUltimateParent = true),
-          ultimateParent = None)
+          ultimateParentCompany = None)
 
         rightSide(testingModel.validate) shouldBe testingModel
       }
@@ -60,7 +60,7 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
         leftSideErrorLength(testingModel.validate) shouldBe 1
 
         leftSideError(testingModel.validate).errorMessage shouldBe
-          UltimateParentCompanyIsSuppliedRevoke(revokeReportingCompanyModelMax.ultimateParent.get).errorMessage
+          UltimateParentCompanyIsSuppliedRevoke(revokeReportingCompanyModelMax.ultimateParentCompany.get).errorMessage
       }
 
       "a company submitting on behalf doesn't supply their company details" in {
