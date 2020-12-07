@@ -14,7 +14,7 @@
     "companyName": "BCompany",
     "ctutr": "9999999999"
   },
-  "ultimateParent": {
+  "ultimateParentCompany": {
     "companyName": "CCompany",
     "isUk": true,
     "ctutr": "1123456789"
