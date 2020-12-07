@@ -24,7 +24,7 @@ case class RevokeReportingCompanyModel(agentDetails: AgentDetailsModel,
                                        reportingCompany: ReportingCompanyModel,
                                        isReportingCompanyRevokingItself: Boolean,
                                        companyMakingRevocation: Option[IdentityOfCompanySubmittingModel],
-                                       ultimateParent: Option[UltimateParentModel],
+                                       ultimateParentCompany: Option[UltimateParentModel],
                                        accountingPeriod: AccountingPeriodModel,
                                        authorisingCompanies: Seq[AuthorisingCompanyModel],
                                        declaration: Boolean) extends RevokeReportingCompanyValidator {

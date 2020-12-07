@@ -46,9 +46,9 @@ trait RevokeReportingCompanyValidator extends BaseValidation {
   }
 
   private def validateUltimateParentCompany: ValidationResult[Option[UltimateParentModel]] = {
-    (revokeReportingCompanyModel.reportingCompany.sameAsUltimateParent, revokeReportingCompanyModel.ultimateParent) match {
+    (revokeReportingCompanyModel.reportingCompany.sameAsUltimateParent, revokeReportingCompanyModel.ultimateParentCompany) match {
       case (true, Some(parent)) => UltimateParentCompanyIsSuppliedRevoke(parent).invalidNec
-      case _ => revokeReportingCompanyModel.ultimateParent.validNec
+      case _ => revokeReportingCompanyModel.ultimateParentCompany.validNec
     }
   }
 
@@ -66,7 +66,7 @@ trait RevokeReportingCompanyValidator extends BaseValidation {
       validateReportingCompanyRevokeItself(JsPath \ "isReportingCompanyRevokingItself"),
       optionValidations(revokeReportingCompanyModel.companyMakingRevocation.map(_.validate(JsPath \ "companyMakingRevocation"))),
       validateUltimateParentCompany,
-      optionValidations(revokeReportingCompanyModel.ultimateParent.map(_.validate(JsPath \ "ultimateParent"))),
+      optionValidations(revokeReportingCompanyModel.ultimateParentCompany.map(_.validate(JsPath \ "ultimateParentCompany"))),
       revokeReportingCompanyModel.accountingPeriod.validate(JsPath \ "accountingPeriod"),
       validatedAuthorisingCompanies,
       validateDeclaration(JsPath \ "declaration")

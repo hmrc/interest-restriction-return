@@ -15,7 +15,7 @@
     "companyMakingRevocation" : {
       "$ref": "subSchemas/identityOfCompanySubmitting.json"
     },
-    "ultimateParent": {
+    "ultimateParentCompany": {
       "$ref": "subSchemas/ultimateParent.json"
     },
     "accountingPeriod": {

@@ -38,7 +38,7 @@ class RevokeReportingCompanySchemaSpec extends BaseSchemaSpec {
 
         val json = Json.toJson(RevokeReportingCompanyModel(
           companyMakingRevocation = None,
-          ultimateParent = None
+          ultimateParentCompany = None
         ))
         validate(json) shouldBe true
       }
