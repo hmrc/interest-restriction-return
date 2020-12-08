@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.desValidation
+package v1.validation
 
 import org.scalatest._
 import matchers._
@@ -25,13 +25,10 @@ import play.api.libs.json.JsValue
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import com.github.fge.jsonschema.core.report.ProcessingReport
 import com.github.fge.jsonschema.main.{JsonSchema, JsonSchemaFactory}
-import play.api.Logging
 import play.api.libs.json.JsValue
 import java.io.File
 
 trait ValidationMatchers {
-
-  _: Logging =>
 
   def validationsMatch(ourValidation: Validated[_, _], jsonSchemaValidation: Validated[_, _]): Boolean = (ourValidation, jsonSchemaValidation) match {
     case (Invalid(_), _) => true
@@ -67,7 +64,6 @@ trait ValidationMatchers {
   }
 
   def validateJson(schemaName: String, schemaVersion: String, json: JsValue): Validated[String, JsValue] = {
-    logger.debug(s"Json to validate: $json")
     val jsonParser = jsonFactory.createParser(json.toString)
     val jsonNode: JsonNode = jsonMapper.readTree(jsonParser)
     val result: ProcessingReport = loadRequestSchema(schemaName, schemaVersion).validate(jsonNode)

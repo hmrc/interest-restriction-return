@@ -28,14 +28,17 @@ import assets.fullReturn.AllocatedRestrictionsConstants._
 import assets.fullReturn.FullReturnConstants._
 import assets.fullReturn.GroupLevelAmountConstants._
 import assets.fullReturn.UkCompanyConstants._
-import play.api.libs.json.JsPath
+import play.api.libs.json.{Json, JsPath}
 import utils.BaseSpec
-import v1.models.{Original, Revised}
+import v1.models.{Original, Revised, CompanyNameModel}
 import v1.validation._
 
-class FullReturnValidatorSpec extends BaseSpec {
+class FullReturnValidatorSpec extends BaseSpec with ValidationMatchers {
 
   implicit val path = JsPath \ "some" \ "path"
+  val JSON_SCHEMA = "submit_full_irr.json"
+  val VERSION = "v1"
+
 
   "FullReturnValidator" should {
 
@@ -46,6 +49,7 @@ class FullReturnValidatorSpec extends BaseSpec {
         val model = fullReturnUltimateParentModel
 
         rightSide(model.validate) shouldBe model
+        model.validate should coverSchemaValidation(JSON_SCHEMA, VERSION, Json.toJson(model))
       }
     }
 
@@ -334,7 +338,20 @@ class FullReturnValidatorSpec extends BaseSpec {
           adjustedGroupInterest = Some(adjustedGroupInterestModel)
         ).validate).errorMessage shouldBe AdjustedNetGroupInterestSupplied(adjustedGroupInterestModel).errorMessage
       }
+
     }
+
+    "Match schema validation" when {
+
+      "a company name is invalid" in {
+        val invalidName = "New!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is 160 characters no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
+        val invalidNameModel = CompanyNameModel(invalidName)
+        val model = fullReturnUltimateParentModel.copy(ukCompanies = Seq(ukCompanyModelReactivationMax.copy(companyName = invalidNameModel), ukCompanyModelReactivationMax))
+        model.validate should coverSchemaValidation(JSON_SCHEMA, VERSION, Json.toJson(model))
+        leftSideError(model.validate).errorMessage shouldBe CompanyNameCharactersError(invalidName).errorMessage
+      }
+    }
+    
   }
 
 }
