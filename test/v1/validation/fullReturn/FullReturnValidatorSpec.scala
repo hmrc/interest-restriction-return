@@ -343,13 +343,29 @@ class FullReturnValidatorSpec extends BaseSpec with ValidationMatchers {
 
     "Match schema validation" when {
 
+      val invalidName = "New!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is 160 characters no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
+      val invalidNameModel = CompanyNameModel(invalidName)  
+
       "a company name is invalid" in {
-        val invalidName = "New!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is 160 characters no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
-        val invalidNameModel = CompanyNameModel(invalidName)
         val model = fullReturnUltimateParentModel.copy(ukCompanies = Seq(ukCompanyModelReactivationMax.copy(companyName = invalidNameModel), ukCompanyModelReactivationMax))
         model.validate should coverSchemaValidation(JSON_SCHEMA, VERSION, Json.toJson(model))
         leftSideError(model.validate).errorMessage shouldBe CompanyNameCharactersError(invalidName).errorMessage
       }
+
+      "agent name is invalid" in {
+        val agentDetails = fullReturnUltimateParentModel.agentDetails.copy(agentName = Some(invalidName))
+        val model = fullReturnUltimateParentModel.copy(agentDetails = agentDetails)
+        model.validate should coverSchemaValidation(JSON_SCHEMA, VERSION, Json.toJson(model))
+        leftSideError(model.validate).errorMessage shouldBe AgentNameCharactersError(invalidName).errorMessage
+      }  
+
+      "reporting company name is invalid" in {
+        val reportingCompany = fullReturnUltimateParentModel.reportingCompany.copy(companyName = invalidNameModel)
+        val model = fullReturnUltimateParentModel.copy(reportingCompany = reportingCompany)
+        model.validate should coverSchemaValidation(JSON_SCHEMA, VERSION, Json.toJson(model))
+        leftSideError(model.validate).errorMessage shouldBe CompanyNameCharactersError(invalidName).errorMessage
+      }  
+
     }
     
   }

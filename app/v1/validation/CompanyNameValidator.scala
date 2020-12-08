@@ -42,10 +42,8 @@ trait CompanyNameValidator extends BaseValidation {
     }
   }
 
-
   def validate(implicit path: JsPath): ValidationResult[CompanyNameModel] =
     (validateCompanyNameLength, validateCompanyNameCharacters).mapN((_, _) => companyNameModel)
-    //(validateCompanyNameLength).map(_ => companyNameModel)
 }
 
 case class CompanyNameLengthError(name: String)(implicit val path: JsPath) extends Validation {
