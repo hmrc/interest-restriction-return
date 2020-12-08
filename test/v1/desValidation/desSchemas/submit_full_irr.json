@@ -1,0 +1,890 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "agentDetails": {
+      "description": "Required. If the agent is acting on behalf of the reporting company then the agent's name should be provided",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "agentActingOnBehalfOfCompany"
+      ],
+      "properties": {
+        "agentActingOnBehalfOfCompany": {
+          "description": "Required.",
+          "type": "boolean"
+        },
+        "agentName": {
+          "$ref": "#/definitions/ukCompanyNameType"
+        }
+      }
+    },
+    "reportingCompany": {
+      "description": "Required. The details of the reporting company",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "companyName",
+        "ctutr",
+        "sameAsUltimateParent"
+      ],
+      "properties": {
+        "companyName": {
+          "$ref": "#/definitions/ukCompanyNameType"
+        },
+        "ctutr": {
+          "$ref": "#/definitions/utrType"
+        },
+        "sameAsUltimateParent": {
+          "description": "Required.",
+          "type": "boolean"
+        }
+      }
+    },
+    "parentCompany": {
+      "description": "Optional. The details of the ultimate parent company or deemed parent companies",
+      "oneOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "ultimateParent": {
+              "$ref": "#/definitions/parentType"
+            }
+          },
+          "required": [
+            "ultimateParent"
+          ]
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "deemedParent": {
+              "description": "Required. The details of the deemed parent company or companies",
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 3,
+              "items": {
+                "$ref": "#/definitions/parentType"
+              }
+            }
+          },
+          "required": [
+            "deemedParent"
+          ]
+        }
+      ],
+      "type": "object"
+    },
+    "publicInfrastructure": {
+      "description": "Required.",
+      "type": "boolean"
+    },
+    "groupCompanyDetails": {
+      "description": "Required. Details of the group company.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "totalCompanies",
+        "accountingPeriod"
+      ],
+      "properties": {
+        "totalCompanies": {
+          "description": "Required.",
+          "type": "integer",
+          "minimum": 1
+        },
+        "accountingPeriod": {
+          "description": "Required.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "startDate",
+            "endDate"
+          ],
+          "properties": {
+            "startDate": {
+              "$ref": "#/definitions/dateType"
+            },
+            "endDate": {
+              "$ref": "#/definitions/dateType"
+            }
+          }
+        }
+      }
+    },
+    "submissionType": {
+      "description": "Required.",
+      "type": "string",
+      "enum": [
+        "original",
+        "revised"
+      ]
+    },
+    "revisedReturnDetails": {
+      "$ref": "#/definitions/explanatoryNotesShort"
+    },
+    "angie": {
+      "description": "Optional.",
+      "type": "number",
+      "minimum": 0,
+      "multipleOf": 0.01
+    },
+    "returnContainsEstimates": {
+      "description": "Required.",
+      "type": "boolean"
+    },
+    "groupEstimateReason": {
+      "$ref": "#/definitions/explanatoryNotesLong"
+    },
+    "companiesEstimateReason": {
+      "$ref": "#/definitions/explanatoryNotesLong"
+    },
+    "groupSubjectToInterestRestrictions": {
+      "description": "Required.",
+      "type": "boolean"
+    },
+    "groupSubjectToInterestReactivation": {
+      "description": "Required.",
+      "type": "boolean"
+    },
+    "revisedReturnDifferences": {
+      "$ref": "#/definitions/explanatoryNotesShort"
+    },
+    "groupLevelElections": {
+      "description": "Required.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "groupRatio",
+        "interestAllowanceAlternativeCalculation",
+        "interestAllowanceNonConsolidatedInvestment",
+        "interestAllowanceConsolidatedPartnership"
+      ],
+      "properties": {
+        "groupRatio": {
+          "description": "Required.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "isElected"
+          ],
+          "properties": {
+            "isElected": {
+              "description": "Required.",
+              "type": "boolean"
+            },
+            "groupRatioBlended": {
+              "description": "Optional.",
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "isElected": {
+                  "description": "Required.",
+                  "type": "boolean"
+                },
+                "investorGroups": {
+                  "description": "Optional. An array of group company names.",
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "groupName": {
+                        "$ref": "#/definitions/globalCompanyNameType"
+                      },
+                      "elections": {
+                        "description": "The elections made by this investor group",
+                        "type": "array",
+                        "maxItems": 5,
+                        "items": {
+                          "type": "string",
+                          "enum": [
+                            "groupRatioBlended",
+                            "groupEBITDA",
+                            "interestAllowanceAlternativeCalculation",
+                            "interestAllowanceNonConsolidatedInvestment",
+                            "interestAllowanceConsolidatedPartnership"
+                          ]
+                        }
+                      }
+                    },
+                    "required": [
+                      "groupName"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "isElected"
+              ]
+            },
+            "groupEBITDAChargeableGains": {
+              "description": "Optional.",
+              "type": "boolean"
+            }
+          }
+        },
+        "interestAllowanceAlternativeCalculation": {
+          "description": "Required.",
+          "type": "boolean"
+        },
+        "interestAllowanceNonConsolidatedInvestment": {
+          "description": "Required.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "isElected"
+          ],
+          "properties": {
+            "isElected": {
+              "description": "Required.",
+              "type": "boolean"
+            },
+            "nonConsolidatedInvestments": {
+              "description": "Optional.",
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "investmentName": {
+                    "$ref": "#/definitions/explanatoryNotesShort"
+                  }
+                },
+                "required": [
+                  "investmentName"
+                ]
+              }
+            }
+          }
+        },
+        "interestAllowanceConsolidatedPartnership": {
+          "description": "Required.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "isElected"
+          ],
+          "properties": {
+            "isElected": {
+              "description": "Required.",
+              "type": "boolean"
+            },
+            "consolidatedPartnerships": {
+              "description": "Optional.",
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "partnershipName": {
+                    "$ref": "#/definitions/globalCompanyNameType"
+                  },
+                  "sautr": {
+                    "$ref": "#/definitions/utrType"
+                  }
+                },
+                "required": [
+                  "partnershipName"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "ukCompanies": {
+      "description": "Required.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "companyName",
+          "utr",
+          "consenting",
+          "qicElection",
+          "netTaxInterestExpense",
+          "netTaxInterestIncome",
+          "taxEBITDA"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "companyName": {
+            "$ref": "#/definitions/ukCompanyNameType"
+          },
+          "companyEstimateReason": {
+            "$ref": "#/definitions/explanatoryNotesShort"
+          },
+          "utr": {
+            "$ref": "#/definitions/utrType"
+          },
+          "consenting": {
+            "description": "Required.",
+            "type": "boolean"
+          },
+          "qicElection": {
+            "description": "Required.",
+            "type": "boolean"
+          },
+          "netTaxInterestExpense": {
+            "description": "Required.",
+            "type": "number",
+            "minimum": 0,
+            "multipleOf": 0.01
+          },
+          "netTaxInterestIncome": {
+            "description": "Required.",
+            "type": "number",
+            "minimum": 0,
+            "multipleOf": 0.01
+          },
+          "taxEBITDA": {
+            "description": "Required.",
+            "type": "number",
+            "multipleOf": 0.01
+          },
+          "allocatedRestrictions": {
+            "description": "Optional.",
+            "type": "object",
+            "required": [
+              "ap1EndDate",
+              "totalDisallowances"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "ap1EndDate": {
+                "$ref": "#/definitions/dateType"
+              },
+              "ap2EndDate": {
+                "$ref": "#/definitions/dateType"
+              },
+              "ap3EndDate": {
+                "$ref": "#/definitions/dateType"
+              },
+              "disallowanceAp1": {
+                "description": "Optional.",
+                "type": "number",
+                "minimum": 0,
+                "multipleOf": 0.01
+              },
+              "disallowanceAp2": {
+                "description": "Optional.",
+                "type": "number",
+                "minimum": 0,
+                "multipleOf": 0.01
+              },
+              "disallowanceAp3": {
+                "description": "Optional.",
+                "type": "number",
+                "minimum": 0,
+                "multipleOf": 0.01
+              },
+              "totalDisallowances": {
+                "description": "Required.",
+                "type": "number",
+                "minimum": 0,
+                "multipleOf": 0.01
+              }
+            }
+          },
+          "allocatedReactivations": {
+            "description": "Optional.",
+            "type": "object",
+            "required": [
+              "currentPeriodReactivation"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "currentPeriodReactivation": {
+                "description": "Required.",
+                "type": "number",
+                "minimum": 0,
+                "multipleOf": 0.01
+              }
+            }
+          }
+        }
+      }
+    },
+    "groupLevelAmount": {
+      "description": "Required.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "interestReactivationCap",
+        "interestAllowanceBroughtForward",
+        "interestAllowanceForPeriod",
+        "interestCapacityForPeriod"
+      ],
+      "properties": {
+        "interestReactivationCap": {
+          "description": "Required.",
+          "type": "number",
+          "minimum": 0,
+          "multipleOf": 0.01
+        },
+        "interestAllowanceBroughtForward": {
+          "description": "Required.",
+          "type": "number",
+          "minimum": 0,
+          "multipleOf": 0.01
+        },
+        "interestAllowanceForPeriod": {
+          "description": "Required.",
+          "type": "number",
+          "minimum": 0,
+          "multipleOf": 0.01
+        },
+        "interestCapacityForPeriod": {
+          "description": "Required.",
+          "type": "number",
+          "minimum": 0,
+          "multipleOf": 0.01
+        }
+      }
+    },
+    "adjustedGroupInterest": {
+      "description": "Optional.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "qngie": {
+          "description": "Required.",
+          "type": "number",
+          "minimum": 0,
+          "multipleOf": 0.01
+        },
+        "groupEBITDA": {
+          "description": "Required.",
+          "type": "number",
+          "multipleOf": 0.01
+        },
+        "groupRatio": {
+          "description": "Required. A percentage to 5 decimal places.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "multipleOf": 0.00001
+        }
+      },
+      "required": [
+        "qngie",
+        "groupEBITDA",
+        "groupRatio"
+      ]
+    },
+    "totalReactivation": {
+      "description": "Required.",
+      "type": "number",
+      "minimum": 0,
+      "multipleOf": 0.01
+    },
+    "totalRestrictions": {
+      "description": "Total of all allocated restrictions for each UK company",
+      "type": "number",
+      "minimum": 0,
+      "multipleOf": 0.01
+    }
+  },
+  "required": [
+    "agentDetails",
+    "reportingCompany",
+    "publicInfrastructure",
+    "groupCompanyDetails",
+    "submissionType",
+    "returnContainsEstimates",
+    "groupSubjectToInterestRestrictions",
+    "groupSubjectToInterestReactivation",
+    "groupLevelElections",
+    "ukCompanies",
+    "groupLevelAmount",
+    "totalReactivation",
+    "totalRestrictions"
+  ],
+  "definitions" : {
+    "ukCompanyNameType": {
+      "description": "Allow Unicode blocks Basic Latin (Space to Tilde), printable Latin-1 Supplement (¡ to ÿ), and all of Latin Extended-A and Latin Extended-B and IP Extensions (Ā to ʯ), all the Latin Extended Additional characters (Ḁ to ỿ), General Punctuation characters Hyphen to Horizontal Bar (‐ to ―), General Punctuation characters (‘ to ‟), Currency Symbol characters (₠ to ₿), Letterlike Symbols Å and K",
+      "type": "string",
+      "pattern": "^[ -~¡-ÿĀ-ʯḀ-ỿ‐-―‘-‟₠-₿ÅK]{1,160}$"
+    },
+    "globalCompanyNameType": {
+      "type": "string",
+      "description": "Allow Unicode blocks Basic Latin (Space to Tilde), printable Latin-1 Supplement (¡ to ÿ), and all of Latin Extended-A and Latin Extended-B and IP Extensions (Ā to ʯ), all the Latin Extended Additional characters (Ḁ to ỿ), General Punctuation characters Hyphen to Horizontal Bar (‐ to ―), General Punctuation characters (‘ to ‟), Currency Symbol characters (₠ to ₿), Letterlike Symbols Å and K",
+      "pattern": "^[ -~¡-ÿĀ-ʯḀ-ỿ‐-―‘-‟₠-₿ÅK]{1,160}$"
+    },
+    "utrType": {
+      "description": "A UTR of 10 numeric characters",
+      "type": "string",
+      "pattern": "^[0-9]{10}$"
+    },
+    "legalEntityIdentifierType": {
+      "type": "string",
+      "description": "A Legal Entity Identifier (LEI); format is as per the ISO 17442 standard - 18 uppercase alphabetic or numeric characters followed by 2 numeric characters",
+      "pattern": "^[0-9A-Z]{18}[0-9]{2}$",
+      "title": ""
+    },
+    "explanatoryNotesShort": {
+      "description": "",
+      "type": "string",
+      "pattern": "^[ -~¢-¥©®±×÷‐₠-₿−-∝≈≠≣-≥]{1,5000}$",
+      "title": ""
+    },
+    "explanatoryNotesLong": {
+      "description": "",
+      "type": "string",
+      "pattern": "^[ -~¢-¥©®±×÷‐₠-₿−-∝≈≠≣-≥]{1,10000}$"
+    },
+    "dateType": {
+      "description": "Format YYYY-MM-DD in the range 1900-01-01 to 2099-12-31 accommodating leap years",
+      "type": "string",
+      "pattern": "^(((19|20)([2468][048]|[13579][26]|0[48])|2000)[-]02[-]29|((19|20)[0-9]{2}[-](0[469]|11)[-](0[1-9]|1[0-9]|2[0-9]|30)|(19|20)[0-9]{2}[-](0[13578]|1[02])[-](0[1-9]|[12][0-9]|3[01])|(19|20)[0-9]{2}[-]02[-](0[1-9]|1[0-9]|2[0-8])))$"
+    },
+    "parentType": {
+      "description": "Required. The details of the ultimate parent company",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "isUk": {
+          "description": "Required.",
+          "type": "boolean"
+        },
+        "companyName": {
+          "$ref": "#/definitions/globalCompanyNameType"
+        },
+        "ctutr": {
+          "$ref": "#/definitions/utrType"
+        },
+        "sautr": {
+          "$ref": "#/definitions/utrType"
+        },
+        "knownAs": {
+          "$ref": "#/definitions/globalCompanyNameType"
+        },
+        "countryOfIncorporation": {
+          "$ref": "#/definitions/countryCodesType"
+        },
+        "legalEntityIdentifier": {
+          "$ref": "#/definitions/legalEntityIdentifierType"
+        }
+      },
+      "required": [
+        "isUk",
+        "companyName"
+      ]
+    },
+    "countryCodesType": {
+      "description": "List of ISO 3166-1 2 Alpha Country Codes",
+      "type": "string",
+      "enum": [
+        "AD",
+        "AE",
+        "AF",
+        "AG",
+        "AI",
+        "AL",
+        "AM",
+        "AN",
+        "AO",
+        "AQ",
+        "AR",
+        "AS",
+        "AT",
+        "AU",
+        "AW",
+        "AX",
+        "AZ",
+        "BA",
+        "BB",
+        "BD",
+        "BE",
+        "BF",
+        "BG",
+        "BH",
+        "BI",
+        "BJ",
+        "BM",
+        "BN",
+        "BO",
+        "BQ",
+        "BR",
+        "BS",
+        "BT",
+        "BV",
+        "BW",
+        "BY",
+        "BZ",
+        "CA",
+        "CC",
+        "CD",
+        "CF",
+        "CG",
+        "CH",
+        "CI",
+        "CK",
+        "CL",
+        "CM",
+        "CN",
+        "CO",
+        "CR",
+        "CS",
+        "CU",
+        "CV",
+        "CW",
+        "CX",
+        "CY",
+        "CZ",
+        "DD",
+        "DE",
+        "DJ",
+        "DK",
+        "DM",
+        "DO",
+        "DZ",
+        "EC",
+        "EE",
+        "EG",
+        "EH",
+        "ER",
+        "ES",
+        "ET",
+        "EU",
+        "FI",
+        "FJ",
+        "FK",
+        "FM",
+        "FO",
+        "FR",
+        "GA",
+        "GD",
+        "GE",
+        "GF",
+        "GG",
+        "GH",
+        "GI",
+        "GL",
+        "GM",
+        "GN",
+        "GP",
+        "GQ",
+        "GR",
+        "GS",
+        "GT",
+        "GU",
+        "GW",
+        "GY",
+        "HK",
+        "HM",
+        "HN",
+        "HR",
+        "HT",
+        "HU",
+        "ID",
+        "IE",
+        "IL",
+        "IM",
+        "IN",
+        "IO",
+        "IQ",
+        "IR",
+        "IS",
+        "IT",
+        "JE",
+        "JM",
+        "JO",
+        "JP",
+        "KE",
+        "KG",
+        "KH",
+        "KI",
+        "KM",
+        "KN",
+        "KP",
+        "KR",
+        "KW",
+        "KY",
+        "KZ",
+        "LA",
+        "LB",
+        "LC",
+        "LI",
+        "LK",
+        "LR",
+        "LS",
+        "LT",
+        "LU",
+        "LV",
+        "LY",
+        "MA",
+        "MC",
+        "MD",
+        "ME",
+        "MF",
+        "MG",
+        "MH",
+        "MK",
+        "ML",
+        "MM",
+        "MN",
+        "MO",
+        "MP",
+        "MQ",
+        "MR",
+        "MS",
+        "MT",
+        "MU",
+        "MV",
+        "MW",
+        "MX",
+        "MY",
+        "MZ",
+        "NA",
+        "NC",
+        "NE",
+        "NF",
+        "NG",
+        "NI",
+        "NL",
+        "NO",
+        "NP",
+        "NR",
+        "NT",
+        "NU",
+        "NZ",
+        "OM",
+        "PA",
+        "PE",
+        "PF",
+        "PG",
+        "PH",
+        "PK",
+        "PL",
+        "PM",
+        "PN",
+        "PR",
+        "PS",
+        "PT",
+        "PW",
+        "PY",
+        "QA",
+        "RE",
+        "RO",
+        "RS",
+        "RU",
+        "RW",
+        "SA",
+        "SB",
+        "SC",
+        "SD",
+        "SE",
+        "SG",
+        "SH",
+        "SI",
+        "SJ",
+        "SK",
+        "SL",
+        "SM",
+        "SN",
+        "SO",
+        "SR",
+        "SS",
+        "ST",
+        "SV",
+        "SX",
+        "SY",
+        "SZ",
+        "TC",
+        "TD",
+        "TF",
+        "TG",
+        "TH",
+        "TJ",
+        "TK",
+        "TL",
+        "TM",
+        "TN",
+        "TO",
+        "TP",
+        "TR",
+        "TT",
+        "TV",
+        "TW",
+        "TZ",
+        "UA",
+        "UG",
+        "UK",
+        "UM",
+        "UN",
+        "US",
+        "UY",
+        "UZ",
+        "VA",
+        "VC",
+        "VE",
+        "VG",
+        "VI",
+        "VN",
+        "VU",
+        "WF",
+        "WS",
+        "YE",
+        "YT",
+        "ZA",
+        "ZM",
+        "ZW"
+      ]
+    },
+    "errorResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "failures"
+      ],
+      "properties": {
+        "failures": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "code",
+              "reason"
+            ],
+            "properties": {
+              "code": {
+                "description": "Keys for all the errors returned",
+                "type": "string",
+                "pattern": "^[A-Z0-9_-]{1,160}$"
+              },
+              "reason": {
+                "description": "A simple description for the failure",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160
+              }
+            }
+          }
+        }
+      }
+    },
+    "response": {
+      "type": "object",
+      "properties": {
+        "acknowledgementReference": {
+          "type": "string",
+          "description": "A reference for the stored record",
+          "minLength": 4,
+          "maxLength": 36
+        }
+      },
+      "required": [
+        "acknowledgementReference"
+      ]
+    }
+  }
+}
