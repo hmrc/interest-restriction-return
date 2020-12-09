@@ -25,7 +25,7 @@ trait InvestorGroupValidator extends BaseValidation {
   val investorGroupModel: InvestorGroupModel
 
   def validate(implicit path: JsPath): ValidationResult[InvestorGroupModel] = {
-    investorGroupModel.groupName.validate.map(_ => investorGroupModel)
+    investorGroupModel.groupName.validate(path \ "groupName").map(_ => investorGroupModel)
   }
 }
 

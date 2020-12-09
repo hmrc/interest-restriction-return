@@ -25,7 +25,7 @@ trait PartnershipValidator extends BaseValidation {
   val partnershipModel: PartnershipModel
 
   def validate(implicit path: JsPath): ValidationResult[PartnershipModel] = {
-    partnershipModel.partnershipName.validate.map(_ => partnershipModel)
+    partnershipModel.partnershipName.validate(path \ "partnershipName").map(_ => partnershipModel)
   }
 }
 

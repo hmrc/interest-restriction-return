@@ -36,9 +36,6 @@ import v1.validation._
 class FullReturnValidatorSpec extends BaseSpec {
 
   implicit val path = JsPath \ "some" \ "path"
-  val JSON_SCHEMA = "submit_full_irr.json"
-  val VERSION = "v1"
-
 
   "FullReturnValidator" should {
 
