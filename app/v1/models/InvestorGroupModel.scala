@@ -20,7 +20,7 @@ import play.api.libs.json._
 import v1.validation.InvestorGroupValidator
 
 
-case class InvestorGroupModel(groupName: String,
+case class InvestorGroupModel(groupName: CompanyNameModel,
                               elections: Option[List[Elections]]
                              ) extends InvestorGroupValidator
 {

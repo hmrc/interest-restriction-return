@@ -28,12 +28,12 @@ import assets.fullReturn.AllocatedRestrictionsConstants._
 import assets.fullReturn.FullReturnConstants._
 import assets.fullReturn.GroupLevelAmountConstants._
 import assets.fullReturn.UkCompanyConstants._
-import play.api.libs.json.{Json, JsPath}
+import play.api.libs.json.JsPath
 import utils.BaseSpec
-import v1.models.{Original, Revised, CompanyNameModel}
+import v1.models.{Original, Revised}
 import v1.validation._
 
-class FullReturnValidatorSpec extends BaseSpec with ValidationMatchers {
+class FullReturnValidatorSpec extends BaseSpec {
 
   implicit val path = JsPath \ "some" \ "path"
   val JSON_SCHEMA = "submit_full_irr.json"
@@ -49,7 +49,6 @@ class FullReturnValidatorSpec extends BaseSpec with ValidationMatchers {
         val model = fullReturnUltimateParentModel
 
         rightSide(model.validate) shouldBe model
-        model.validate should coverSchemaValidation(JSON_SCHEMA, VERSION, Json.toJson(model))
       }
     }
 
@@ -338,33 +337,6 @@ class FullReturnValidatorSpec extends BaseSpec with ValidationMatchers {
           adjustedGroupInterest = Some(adjustedGroupInterestModel)
         ).validate).errorMessage shouldBe AdjustedNetGroupInterestSupplied(adjustedGroupInterestModel).errorMessage
       }
-
-    }
-
-    "Match schema validation" when {
-
-      val invalidName = "New!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is 160 characters no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
-      val invalidNameModel = CompanyNameModel(invalidName)  
-
-      "a company name is invalid" in {
-        val model = fullReturnUltimateParentModel.copy(ukCompanies = Seq(ukCompanyModelReactivationMax.copy(companyName = invalidNameModel), ukCompanyModelReactivationMax))
-        model.validate should coverSchemaValidation(JSON_SCHEMA, VERSION, Json.toJson(model))
-        leftSideError(model.validate).errorMessage shouldBe CompanyNameCharactersError(invalidName).errorMessage
-      }
-
-      "agent name is invalid" in {
-        val agentDetails = fullReturnUltimateParentModel.agentDetails.copy(agentName = Some(invalidName))
-        val model = fullReturnUltimateParentModel.copy(agentDetails = agentDetails)
-        model.validate should coverSchemaValidation(JSON_SCHEMA, VERSION, Json.toJson(model))
-        leftSideError(model.validate).errorMessage shouldBe AgentNameCharactersError(invalidName).errorMessage
-      }  
-
-      "reporting company name is invalid" in {
-        val reportingCompany = fullReturnUltimateParentModel.reportingCompany.copy(companyName = invalidNameModel)
-        val model = fullReturnUltimateParentModel.copy(reportingCompany = reportingCompany)
-        model.validate should coverSchemaValidation(JSON_SCHEMA, VERSION, Json.toJson(model))
-        leftSideError(model.validate).errorMessage shouldBe CompanyNameCharactersError(invalidName).errorMessage
-      }  
 
     }
     

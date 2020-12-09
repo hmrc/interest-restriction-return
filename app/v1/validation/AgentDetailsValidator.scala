@@ -46,7 +46,7 @@ trait AgentDetailsValidator extends BaseValidation {
   }
 
   private def validateAgentNameCharacters(agentName: String)(implicit topPath: JsPath): ValidationResult[Option[String]] = {
-    val regex = "^[ -~¡-ÿĀ-ʯḀ-ỿ‐-―‘-‟₠-₿ÅK]{1,160}$".r
+    val regex = "^[ -~¡-ÿĀ-ʯḀ-ỿ‐-―‘-‟₠-₿ÅK]*$".r
     regex.findFirstIn(agentName) match {
       case Some(_) => Some(agentName).validNec
       case None => AgentNameCharactersError(agentName).invalidNec

@@ -14,21 +14,8 @@
  * limitations under the License.
  */
 
-package v1.validation
+object SchemaValidationHelper {
+  
+  val NAME_CHARACTER_REGEX = "^[ -~¡-ÿĀ-ʯḀ-ỿ‐-―‘-‟₠-₿ÅK]*$"
 
-import play.api.libs.json.JsPath
-import v1.models.Validation.ValidationResult
-import v1.models.InvestorGroupModel
-
-trait InvestorGroupValidator extends BaseValidation {
-
-  val investorGroupModel: InvestorGroupModel
-
-  def validate(implicit path: JsPath): ValidationResult[InvestorGroupModel] = {
-    investorGroupModel.groupName.validate.map(_ => investorGroupModel)
-  }
 }
-
-
-
-

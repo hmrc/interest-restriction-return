@@ -18,7 +18,7 @@ package assets
 
 import play.api.libs.json.{JsString, Json}
 import v1.models.Elections._
-import v1.models.InvestorGroupModel
+import v1.models.{InvestorGroupModel, CompanyNameModel}
 
 object InvestorGroupConstants {
 
@@ -41,17 +41,17 @@ object InvestorGroupConstants {
   )
 
   val investorGroupsGroupRatioModel = InvestorGroupModel(
-    groupName = groupName,
+    groupName = CompanyNameModel(groupName),
     elections = Some(groupRatioElectionList)
   )
 
   val investorGroupsFixedRatioModel = InvestorGroupModel(
-    groupName = groupName,
+    groupName = CompanyNameModel(groupName),
     elections = Some(fixedRatioElectionList)
   )
 
   val investorGroupsModelMin = InvestorGroupModel(
-    groupName = groupName,
+    groupName = CompanyNameModel(groupName),
     elections = None
   )
 

@@ -35,7 +35,7 @@ trait CompanyNameValidator extends BaseValidation {
   }
 
   private def validateCompanyNameCharacters(implicit topPath: JsPath): ValidationResult[String] = {
-    val regex = "^[ -~¡-ÿĀ-ʯḀ-ỿ‐-―‘-‟₠-₿ÅK]{1,160}$".r
+    val regex = "^[ -~¡-ÿĀ-ʯḀ-ỿ‐-―‘-‟₠-₿ÅK]*$".r
     regex.findFirstIn(companyNameModel.name) match {
       case Some(_) => companyNameModel.name.validNec
       case None => CompanyNameCharactersError(companyNameModel.name).invalidNec

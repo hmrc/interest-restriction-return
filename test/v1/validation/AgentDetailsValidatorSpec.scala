@@ -62,5 +62,11 @@ class AgentDetailsValidatorSpec extends BaseSpec {
       leftSideError(model.validate).errorMessage shouldBe AgentNameLengthError("a" * 180).errorMessage
     }
 
+    "passed true and Some name with invalid characters should not succeed" in {
+      val invalidName = "New!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is 160 characters no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
+      val model = AgentDetailsModel(true, Some(invalidName))
+      leftSideError(model.validate).errorMessage shouldBe AgentNameCharactersError(invalidName).errorMessage
+    }
+
   }
 }

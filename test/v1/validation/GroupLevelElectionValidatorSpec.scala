@@ -21,7 +21,7 @@ import assets.GroupLevelElectionsConstants._
 import assets.GroupRatioConstants._
 import assets.NonConsolidatedInvestmentElectionConstants._
 import play.api.libs.json.JsPath
-import v1.models.{NonConsolidatedInvestmentModel, PartnershipModel, UTRModel}
+import v1.models.{NonConsolidatedInvestmentModel, PartnershipModel, UTRModel, CompanyNameModel}
 
 class GroupLevelElectionValidatorSpec extends BaseValidationSpec {
 
@@ -68,11 +68,11 @@ class GroupLevelElectionValidatorSpec extends BaseValidationSpec {
         val model = groupLevelElectionsModelMax.copy(
           interestAllowanceConsolidatedPartnership = consolidatedPartnershipsModelMax.copy(
             isElected = true,
-            consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = "", sautr = Some(sautrFake))))
+            consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = CompanyNameModel(""), sautr = Some(sautrFake))))
           )
         )
 
-        leftSideError(model.validate).errorMessage shouldBe PartnershipNameError("").errorMessage
+        leftSideError(model.validate).errorMessage shouldBe CompanyNameLengthError("").errorMessage
       }
     }
   }

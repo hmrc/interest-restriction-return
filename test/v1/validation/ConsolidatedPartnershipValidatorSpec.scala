@@ -17,7 +17,7 @@
 package v1.validation
 
 import play.api.libs.json.JsPath
-import v1.models.{ConsolidatedPartnershipModel, PartnershipModel, UTRModel}
+import v1.models.{ConsolidatedPartnershipModel, PartnershipModel, UTRModel, CompanyNameModel}
 
 class ConsolidatedPartnershipValidatorSpec extends BaseValidationSpec {
 
@@ -29,7 +29,7 @@ class ConsolidatedPartnershipValidatorSpec extends BaseValidationSpec {
     "Return valid" when {
 
       "isElected is true and a Seq of partnerships are given" in {
-        val model = ConsolidatedPartnershipModel(isElected = true, consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = "Partner 1",sautr = Some(sautrFake)))))
+        val model = ConsolidatedPartnershipModel(isElected = true, consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = CompanyNameModel("Partner 1"), sautr = Some(sautrFake)))))
         rightSide(model.validate) shouldBe model
       }
 
@@ -47,13 +47,13 @@ class ConsolidatedPartnershipValidatorSpec extends BaseValidationSpec {
       }
 
       "isElected is false and some partnerships are given" in {
-        val model = ConsolidatedPartnershipModel(isElected = false, consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = "Partner 1", sautr = Some(sautrFake)))))
+        val model = ConsolidatedPartnershipModel(isElected = false, consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = CompanyNameModel("Partner 1"), sautr = Some(sautrFake)))))
         leftSideError(model.validate).errorMessage shouldBe ConsolidatedPartnershipsSupplied(model).errorMessage
       }
 
       "consolidatedPartnerships is invalid" in {
-        val model = ConsolidatedPartnershipModel(isElected = true, consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = "", sautr = Some(sautrFake)))))
-        leftSideError(model.validate).errorMessage shouldBe PartnershipNameError("").errorMessage
+        val model = ConsolidatedPartnershipModel(isElected = true, consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = CompanyNameModel(""), sautr = Some(sautrFake)))))
+        leftSideError(model.validate).errorMessage shouldBe CompanyNameLengthError("").errorMessage
       }
     }
   }

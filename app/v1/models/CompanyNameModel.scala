@@ -20,7 +20,7 @@ import play.api.libs.json.{JsPath, JsString, Reads, Writes}
 import v1.validation.CompanyNameValidator
 
 
-case class CompanyNameModel(name: String) extends CompanyNameValidator{
+case class CompanyNameModel(name: String) extends CompanyNameValidator {
   override val companyNameModel: CompanyNameModel = this
 }
 

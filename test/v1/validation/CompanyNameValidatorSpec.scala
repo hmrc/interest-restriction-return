@@ -24,9 +24,9 @@ class CompanyNameValidatorSpec extends WordSpec with Matchers {
 
   implicit val path = JsPath \ "some" \ "path"
 
-  "Company Name Validation" when {
+  "Company Name Validation" should {
 
-    "invalid" when {
+    "return invalid" when {
 
       "company name is below the minimum length" in {
 
@@ -42,6 +42,12 @@ class CompanyNameValidatorSpec extends WordSpec with Matchers {
           name = "a" * 161
         )
         model.validate.toEither.left.get.head.errorMessage shouldBe CompanyNameLengthError(model.name).errorMessage
+      }
+
+      "company name contains an invalid character" in {
+        val invalidName = "New!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is 160 characters no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
+        val model = CompanyNameModel(invalidName)
+        model.validate.toEither.left.get.head.errorMessage shouldBe CompanyNameCharactersError(model.name).errorMessage
       }
     }
   }

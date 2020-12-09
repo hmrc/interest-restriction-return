@@ -16,33 +16,17 @@
 
 package v1.validation
 
-import play.api.libs.json.{JsPath, Json}
+import play.api.libs.json.JsPath
 import v1.models.Validation.ValidationResult
-import v1.models.{PartnershipModel, Validation}
+import v1.models.{PartnershipModel}
 
 trait PartnershipValidator extends BaseValidation {
 
-  import cats.implicits._
-
   val partnershipModel: PartnershipModel
 
-  private def validatePartnershipName(implicit path: JsPath): ValidationResult[String] = {
-    if (partnershipModel.partnershipName.length >= 1 && partnershipModel.partnershipName.length <= 32767) {
-      partnershipModel.partnershipName.validNec
-    } else {
-      PartnershipNameError(partnershipModel.partnershipName).invalidNec
-    }
-  }
-
   def validate(implicit path: JsPath): ValidationResult[PartnershipModel] = {
-    validatePartnershipName.map(_ => partnershipModel)
+    partnershipModel.partnershipName.validate.map(_ => partnershipModel)
   }
-}
-
-case class PartnershipNameError(partnershipName: String)(implicit val topPath: JsPath) extends Validation {
-  val errorMessage: String = "Partnership Names must be between 1 and 32767 characters"
-  val path = topPath \ "investorGroups"
-  val value = Json.toJson(partnershipName)
 }
 
 
