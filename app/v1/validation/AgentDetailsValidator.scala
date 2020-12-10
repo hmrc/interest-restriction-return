@@ -37,7 +37,20 @@ trait AgentDetailsValidator extends BaseValidation {
       case _ => agentDetailsModel.agentName.validNec
     }
 
-    combineValidationsForField(lengthCheck, suppliedCheck)
+    val characterCheck = agentDetailsModel.agentName match {
+      case Some(name) => validateAgentNameCharacters(name)
+      case None => agentDetailsModel.agentName.validNec
+    }
+
+    combineValidationsForField(lengthCheck, suppliedCheck, characterCheck)
+  }
+
+  private def validateAgentNameCharacters(agentName: String)(implicit topPath: JsPath): ValidationResult[Option[String]] = {
+    val regex = "^[ -~¡-ÿĀ-ʯḀ-ỿ‐-―‘-‟₠-₿ÅK]*$".r
+    regex.findFirstIn(agentName) match {
+      case Some(_) => Some(agentName).validNec
+      case None => AgentNameCharactersError(agentName).invalidNec
+    }
   }
 
   def validate(implicit path: JsPath): ValidationResult[AgentDetailsModel] = validateAgentName.map(_ => agentDetailsModel)
@@ -59,4 +72,9 @@ case class AgentNameSuppliedError(name: String)(implicit topPath: JsPath) extend
   val errorMessage: String = "Agent name must not be supplied if agent is not acting on behalf of company"
   val path: JsPath = topPath \ "agentName"
   val value: JsString = JsString(name)
+}
+
+case class AgentNameCharactersError(name: String)(implicit val path: JsPath) extends Validation {
+  val errorMessage: String = s"Agent name contains invalid characters."
+  val value = JsString(name)
 }

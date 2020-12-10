@@ -16,35 +16,18 @@
 
 package v1.validation
 
-import play.api.libs.json.{JsPath, Json}
+import play.api.libs.json.JsPath
 import v1.models.Validation.ValidationResult
-import v1.models.{InvestorGroupModel, Validation}
+import v1.models.InvestorGroupModel
 
 trait InvestorGroupValidator extends BaseValidation {
 
-  import cats.implicits._
-
   val investorGroupModel: InvestorGroupModel
 
-  private def validateInvestorName(implicit path: JsPath): ValidationResult[String] = {
-    if (investorGroupModel.groupName.length >= 1 && investorGroupModel.groupName.length <= 32767) {
-      investorGroupModel.groupName.validNec
-    } else {
-      InvestorNameError(investorGroupModel.groupName).invalidNec
-    }
-  }
-
   def validate(implicit path: JsPath): ValidationResult[InvestorGroupModel] = {
-    validateInvestorName.map(_ => investorGroupModel)
+    investorGroupModel.groupName.validate(path \ "groupName").map(_ => investorGroupModel)
   }
 }
-
-case class InvestorNameError(investorName: String)(implicit val topPath: JsPath) extends Validation {
-  val errorMessage: String = "Investor Names must be between 1 and 32767 characters"
-  val path = topPath \ "investorGroups"
-  val value = Json.toJson(investorName)
-}
-
 
 
 

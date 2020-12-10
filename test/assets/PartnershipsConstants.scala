@@ -17,14 +17,14 @@
 package assets
 
 import play.api.libs.json.Json
-import v1.models.PartnershipModel
+import v1.models.{PartnershipModel, CompanyNameModel}
 
 object PartnershipsConstants extends  BaseConstants {
 
   val partnerName = "some partner"
 
   val partnershipModel = PartnershipModel(
-    partnershipName = partnerName,
+    partnershipName = CompanyNameModel(partnerName),
     sautr = Some(sautr)
   )
 

@@ -334,7 +334,9 @@ class FullReturnValidatorSpec extends BaseSpec {
           adjustedGroupInterest = Some(adjustedGroupInterestModel)
         ).validate).errorMessage shouldBe AdjustedNetGroupInterestSupplied(adjustedGroupInterestModel).errorMessage
       }
+
     }
+    
   }
 
 }
