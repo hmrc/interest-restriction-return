@@ -204,6 +204,18 @@ case class RevisedReturnDetailsSupplied(details: String) extends Validation {
   val value = Json.toJson(details)
 }
 
+case class RevisedReturnDetailsLengthError(details: String) extends Validation {
+  val errorMessage: String = s"The revised return details are ${name.length} characters long and should be between 1 and 5000 characters"
+  val path = JsPath \ "revisedReturnDetails"
+  val value = Json.toJson(details)
+}
+
+case class RevisedReturnDetailsCharacterError(details: String) extends Validation {
+  val errorMessage: String = "The revised return details contain invalid characters"
+  val path = JsPath \ "revisedReturnDetails"
+  val value = Json.toJson(details)
+}
+
 case object ParentCompanyDetailsNotSupplied extends Validation {
   val errorMessage: String = "Parent Company is required if the Reporting Company is not the same as the Ultimate Parent"
   val path = JsPath \ "parentCompany"

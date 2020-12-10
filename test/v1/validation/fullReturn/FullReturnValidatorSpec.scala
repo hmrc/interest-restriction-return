@@ -334,6 +334,30 @@ class FullReturnValidatorSpec extends BaseSpec {
           adjustedGroupInterest = Some(adjustedGroupInterestModel)
         ).validate).errorMessage shouldBe AdjustedNetGroupInterestSupplied(adjustedGroupInterestModel).errorMessage
       }
+
+      "Return type is Revised and the revised return details are less than 1 character long" in {
+
+        leftSideError(fullReturnUltimateParentModel.copy(
+          submissionType = Revised,
+          revisedReturnDetails = Some("")
+        ).validate).errorMessage shouldBe RevisedReturnDetailsLengthError.errorMessage
+      }
+
+      "Return type is Revised and the revised return details are more than 5000 character longs" in {
+
+        leftSideError(fullReturnUltimateParentModel.copy(
+          submissionType = Revised,
+          revisedReturnDetails = Some("a" * 5001)
+        ).validate).errorMessage shouldBe RevisedReturnDetailsLengthError.errorMessage
+      }
+
+      "Return type is Revised and the revised return details contains invalid characters" in {
+
+        leftSideError(fullReturnUltimateParentModel.copy(
+          submissionType = Revised,
+          revisedReturnDetails = None
+        ).validate).errorMessage shouldBe RevisedReturnDetailsLengthError.errorMessage
+      }
     }
   }
 
