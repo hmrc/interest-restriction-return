@@ -18,6 +18,7 @@ package v1.validation
 
 import assets.PartnershipsConstants._
 import play.api.libs.json.JsPath
+import v1.models.CompanyNameModel
 
 class PartnershipValidatorSpec extends BaseValidationSpec {
 
@@ -28,7 +29,7 @@ class PartnershipValidatorSpec extends BaseValidationSpec {
     "Return valid" when {
 
       "isElected is true and no partnership names are given" in {
-        val model = partnershipModel.copy(partnerName)
+        val model = partnershipModel.copy(CompanyNameModel(partnerName))
         model.validate.toEither.right.get shouldBe model
       }
     }
@@ -36,15 +37,15 @@ class PartnershipValidatorSpec extends BaseValidationSpec {
     "Return invalid" when {
 
       "Partnership Name" when {
-        "is greater than 32767" in {
-          val model = partnershipModel.copy(partnershipName = "a" * (32767 + 1))
+        "is greater than 160" in {
+          val model = partnershipModel.copy(partnershipName = CompanyNameModel("a" * (32767 + 1)))
 
-          model.validate.toEither.left.get.head.errorMessage shouldBe PartnershipNameError(partnerName).errorMessage
+          model.validate.toEither.left.get.head.errorMessage shouldBe CompanyNameLengthError("a" * (32767 + 1)).errorMessage
         }
 
         "isElected is true and partnership names are given" in {
-          val model = partnershipModel.copy(partnershipName = "")
-          model.validate.toEither.left.get.head.errorMessage shouldBe PartnershipNameError(partnerName).errorMessage
+          val model = partnershipModel.copy(partnershipName = CompanyNameModel(""))
+          model.validate.toEither.left.get.head.errorMessage shouldBe CompanyNameLengthError("").errorMessage
         }
       }
     }

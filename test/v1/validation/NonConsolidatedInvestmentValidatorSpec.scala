@@ -36,15 +36,22 @@ class NonConsolidatedInvestmentValidatorSpec extends BaseValidationSpec {
     "Return invalid" when {
 
       "Investment Name" when {
-        "is greater than 32767" in {
+        "is greater than 5000" in {
           val model = nonConsolidatedModel.copy(investmentName = "a" * (32767 + 1))
 
-          model.validate.toEither.left.get.head.errorMessage shouldBe NonConsolidatedInvestmentNameError(investmentName).errorMessage
+          model.validate.toEither.left.get.head.errorMessage shouldBe NonConsolidatedInvestmentNameLengthError("a" * (32767 + 1)).errorMessage
+        }
+
+        "contains invalid characters" in {
+          val name = "New!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is 160 characters no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
+          val model = nonConsolidatedModel.copy(investmentName = name)
+
+          model.validate.toEither.left.get.head.errorMessage shouldBe NonConsolidatedInvestmentNameCharacterError(investmentName).errorMessage
         }
 
         "isElected is true and no investment names are given" in {
           val model = nonConsolidatedModel.copy(investmentName = "")
-          model.validate.toEither.left.get.head.errorMessage shouldBe NonConsolidatedInvestmentNameError(investmentName).errorMessage
+          model.validate.toEither.left.get.head.errorMessage shouldBe NonConsolidatedInvestmentNameLengthError("").errorMessage
         }
       }
     }

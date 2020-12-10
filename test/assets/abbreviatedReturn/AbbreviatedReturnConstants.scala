@@ -24,7 +24,7 @@ import assets.ReportingCompanyConstants._
 import assets.abbreviatedReturn.UkCompanyConstants._
 import play.api.libs.json.Json
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
-import v1.models.{Original, Revised}
+import v1.models.{Original, Revised, RevisedReturnDetailsModel}
 
 object AbbreviatedReturnConstants {
 
@@ -53,7 +53,7 @@ object AbbreviatedReturnConstants {
     parentCompany = Some(parentCompanyModelUltUkCompany),
     groupCompanyDetails = groupCompanyDetailsModel,
     submissionType = Revised,
-    revisedReturnDetails = Some("revised details"),
+    revisedReturnDetails = Some(RevisedReturnDetailsModel("revised details")),
     groupLevelElections = Some(groupLevelElectionsModelMax),
     angie = Some(angie),
     ukCompanies = Seq(ukCompanyModel)
@@ -81,7 +81,7 @@ object AbbreviatedReturnConstants {
     parentCompany = Some(parentCompanyModelDeemedMax),
     groupCompanyDetails = groupCompanyDetailsModel,
     submissionType = Revised,
-    revisedReturnDetails = Some("revised details"),
+    revisedReturnDetails = Some(RevisedReturnDetailsModel("revised details")),
     groupLevelElections = Some(groupLevelElectionsModelMax),
     angie = Some(angie),
     ukCompanies = Seq(ukCompanyModel)
