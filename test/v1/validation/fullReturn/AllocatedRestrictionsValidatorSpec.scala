@@ -121,6 +121,17 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
           leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionNegative(1, -1).errorMessage
         }
 
+        "is supplied with >2 decimal places" in {
+
+          val model = restrictionModel.copy(
+            ap1EndDate = Some(ap1EndDate),
+            disallowanceAp1 = Some(1.111),
+            totalDisallowances = Some(totalDisallowances)
+          )
+
+          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionDecimalError(1, 1.111).errorMessage
+        }
+
         "is supplied with a date that is equal to Group Accounting Period start date" in {
 
           val model = restrictionModel.copy(
@@ -177,6 +188,17 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
           )
 
           leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionNegative(2, -1).errorMessage
+        }
+
+        "is supplied with >2 decimal places" in {
+
+          val model = restrictionModel.copy(
+            ap2EndDate = Some(ap2EndDate),
+            disallowanceAp2 = Some(1.111),
+            totalDisallowances = Some(totalDisallowances)
+          )
+
+          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionDecimalError(2, 1.111).errorMessage
         }
 
         "is supplied without Ap1" in {
@@ -248,6 +270,17 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
           )
 
           leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionNegative(3, -1).errorMessage
+        }
+
+        "is supplied with >2 decimal places" in {
+
+          val model = restrictionModel.copy(
+            ap3EndDate = Some(ap3EndDate),
+            disallowanceAp3 = Some(1.111),
+            totalDisallowances = Some(totalDisallowances)
+          )
+
+          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionDecimalError(3, 1.111).errorMessage
         }
 
         "is supplied without Ap1 and Ap2" in {
@@ -368,6 +401,17 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
           )
 
           leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionTotalNegative(-1).errorMessage
+        }
+
+        "is >2 decimal places" in {
+
+          val model = restrictionModel.copy(
+            ap1EndDate = Some(ap1EndDate),
+            disallowanceAp1 = Some(disallowanceAp1),
+            totalDisallowances = Some(1.111)
+          )
+
+          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionTotalDecimalError(1.111).errorMessage
         }
 
         "does not match the calculated total" in {

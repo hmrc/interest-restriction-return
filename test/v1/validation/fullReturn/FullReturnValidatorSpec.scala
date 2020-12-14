@@ -110,6 +110,13 @@ class FullReturnValidatorSpec extends BaseSpec {
         ).validate).errorMessage shouldBe TotalReactivationsDoesNotMatch(incorrectTotalReactivation, currentPeriodReactivation + currentPeriodReactivation).errorMessage
       }
 
+      "Total Reactivations greater than 2 decimal places" in {
+        leftSideError(fullReturnUltimateParentModel.copy(
+          totalReactivation = 1.111,
+          ukCompanies = Seq(ukCompanyModelReactivationMax, ukCompanyModelReactivationMax) //4.44
+        ).validate).errorMessage shouldBe TotalReactivationsDecimalError(incorrectTotalReactivation).errorMessage
+      }
+
       "Total Restrictions does not match the sum of the total restrictions for each company" in {
         leftSideError(fullReturnUltimateParentModel.copy(
           groupSubjectToInterestReactivation = false,
@@ -118,6 +125,16 @@ class FullReturnValidatorSpec extends BaseSpec {
           totalReactivation = 0,
           ukCompanies = Seq(ukCompanyModelRestrictionMax, ukCompanyModelRestrictionMax) //4.44
         ).validate).errorMessage shouldBe TotalRestrictionsDoesNotMatch(incorrectDisallowances, totalDisallowances + totalDisallowances).errorMessage
+      }
+
+      "Total Restrictions greater than 2 decimal places" in {
+        leftSideError(fullReturnUltimateParentModel.copy(
+          groupSubjectToInterestReactivation = false,
+          groupSubjectToInterestRestrictions = true,
+          totalRestrictions = 1.111,
+          totalReactivation = 0,
+          ukCompanies = Seq(ukCompanyModelRestrictionMax, ukCompanyModelRestrictionMax) //4.44
+        ).validate).errorMessage shouldBe TotalRestrictionsDecimalError(incorrectDisallowances).errorMessage
       }
 
       "Group is not subject to interest reactivations but has allocated reactivations supplied" in {

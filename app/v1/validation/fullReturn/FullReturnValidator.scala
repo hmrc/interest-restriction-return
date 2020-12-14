@@ -96,8 +96,10 @@ trait FullReturnValidator extends BaseValidation {
         total + company.allocatedReactivations.fold[BigDecimal](0)(reactivations =>
           reactivations.currentPeriodReactivation)
     }
-    if (reactivations == calculatedReactivations) reactivations.validNec else {
-      TotalReactivationsDoesNotMatch(reactivations, calculatedReactivations).invalidNec
+    (reactivations, calculatedReactivations) match {
+      case (r, _) if r % 0.01 != 0 => TotalReactivationsDecimalError(reactivations).invalidNec
+      case (r, cr) if r != cr => TotalReactivationsDoesNotMatch(reactivations, calculatedReactivations).invalidNec
+      case (_, _) => reactivations.validNec
     }
   }
 
@@ -122,9 +124,12 @@ trait FullReturnValidator extends BaseValidation {
         total + company.allocatedRestrictions.fold[BigDecimal](0)(restrictions =>
           restrictions.totalDisallowances.getOrElse(0))
     }
-    if (restrictions == calculatedRestrictions) restrictions.validNec else {
-      TotalRestrictionsDoesNotMatch(restrictions, calculatedRestrictions).invalidNec
+    (restrictions, calculatedRestrictions) match {
+      case (r, _) if r % 0.01 != 0 => TotalRestrictionsDecimalError(restrictions).invalidNec
+      case (r, cr) if r != cr => TotalRestrictionsDoesNotMatch(restrictions, calculatedRestrictions).invalidNec
+      case (_, _) => restrictions.validNec
     }
+
   }
 
   private def validateAggInterestAndReallocationOrRestrictionStatus: ValidationResult[BigDecimal] = {
@@ -237,6 +242,12 @@ case object InterestReactivationCapNotSupplied extends Validation {
   val value = Json.obj()
 }
 
+case class TotalReactivationsDecimalError(amt: BigDecimal) extends Validation {
+  val errorMessage: String = s"totalReactivation has greater than the allowed 2 decimal places."
+  val path = JsPath \ "totalReactivation"
+  val value = Json.obj()
+}
+
 case class TotalReactivationsDoesNotMatch(amt: BigDecimal, calculated: BigDecimal) extends Validation {
   val errorMessage: String = s"Calculated reactivations is $calculated which does not match the supplied amount of $amt"
   val path = JsPath \ "totalReactivation"
@@ -246,6 +257,12 @@ case class TotalReactivationsDoesNotMatch(amt: BigDecimal, calculated: BigDecima
 case class TotalReactivationsNotGreaterThanCapacity(calculated: BigDecimal, capacity: BigDecimal) extends Validation {
   val errorMessage: String = s"Calculated Total Reactivations: $calculated cannot not be greater than Reactivations Capacity: $capacity"
   val path = JsPath \ "totalReactivation" \ "interestReactivationCap"
+  val value = Json.obj()
+}
+
+case class TotalRestrictionsDecimalError(amt: BigDecimal) extends Validation {
+  val errorMessage: String = s"totalRestrictions has greater than the allowed 2 decimal places."
+  val path = JsPath \ "totalRestrictions"
   val value = Json.obj()
 }
 

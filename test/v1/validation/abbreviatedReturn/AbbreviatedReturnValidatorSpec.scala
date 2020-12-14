@@ -120,6 +120,10 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
       "Angie is negative" in {
         leftSideError(abbreviatedReturnUltimateParentModel.copy(angie = Some(-0.01)).validate).errorMessage shouldBe NegativeAngieError(-0.01).errorMessage
       }
+
+      "Angie has greater than two decimal places" in {
+        leftSideError(abbreviatedReturnUltimateParentModel.copy(angie = Some(1.011)).validate).errorMessage shouldBe AngieDecimalError(1.011).errorMessage
+      }
     }
   }
 }

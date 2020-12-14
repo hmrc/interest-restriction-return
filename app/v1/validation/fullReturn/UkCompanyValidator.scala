@@ -37,10 +37,28 @@ trait UkCompanyValidator extends BaseValidation {
     }
   }
 
+  private def validateNetTaxInterestExpenseDecimalPlaces(implicit path: JsPath): ValidationResult[BigDecimal] = {
+    val income = ukCompany.netTaxInterestExpense
+    if (income % 0.01 != 0) {
+      NetTaxInterestExpenseDecimalError(ukCompany.netTaxInterestExpense).invalidNec
+    } else {
+      ukCompany.netTaxInterestExpense.validNec
+    }
+  }
+
   private def validateNetTaxInterestIncome(implicit path: JsPath): ValidationResult[BigDecimal] = {
     val income = ukCompany.netTaxInterestIncome
     if (income < 0) {
       NetTaxInterestIncomeError(ukCompany.netTaxInterestIncome).invalidNec
+    } else {
+      ukCompany.netTaxInterestIncome.validNec
+    }
+  }
+
+  private def validateNetTaxInterestIncomeDecimalPlaces(implicit path: JsPath): ValidationResult[BigDecimal] = {
+    val income = ukCompany.netTaxInterestIncome
+    if (income % 0.01 != 0) {
+      NetTaxInterestIncomeDecimalError(ukCompany.netTaxInterestIncome).invalidNec
     } else {
       ukCompany.netTaxInterestIncome.validNec
     }
@@ -82,17 +100,29 @@ trait UkCompanyValidator extends BaseValidation {
     }
   }
 
+  private def validateTaxEBITDADecimalPlaces(implicit path: JsPath): ValidationResult[BigDecimal] = {
+    val income = ukCompany.taxEBITDA
+    if (income % 0.01 != 0) {
+      TaxEBITDADecimalError(ukCompany.taxEBITDA).invalidNec
+    } else {
+      ukCompany.taxEBITDA.validNec
+    }
+  }
+
   def validate(groupAccountingPeriod: AccountingPeriodModel)(implicit path: JsPath): ValidationResult[UkCompanyModel] =
     (ukCompany.utr.validate(path \ "utr"),
       ukCompany.companyName.validate(path \ "companyName"),
       validateNetTaxInterestExpense,
+      validateNetTaxInterestExpenseDecimalPlaces,
       validateNetTaxInterestIncome,
+      validateNetTaxInterestIncomeDecimalPlaces,
       validateExpenseAndIncomeBothNotGreaterThanZero,
       validateRestrictionNotGreaterThanExpense,
       validateNoTotalNetTaxInterestIncomeDuringRestriction,
       optionValidations(ukCompany.allocatedRestrictions.map(_.validate(groupAccountingPeriod)(path \ "allocatedRestrictions"))),
-      optionValidations(ukCompany.allocatedReactivations.map(_.validate(path \ "allocatedReactivations")))
-      ).mapN((_, _, _, _, _, _, _, _, _) => ukCompany)
+      optionValidations(ukCompany.allocatedReactivations.map(_.validate(path \ "allocatedReactivations"))),
+      validateTaxEBITDADecimalPlaces
+      ).mapN((_, _, _, _, _, _, _, _, _, _, _, _) => ukCompany)
 }
 
 case class NetTaxInterestExpenseError(netTaxInterestExpense: BigDecimal)(implicit topPath: JsPath) extends Validation {
@@ -101,9 +131,21 @@ case class NetTaxInterestExpenseError(netTaxInterestExpense: BigDecimal)(implici
   val value = Json.toJson(netTaxInterestExpense)
 }
 
+case class NetTaxInterestExpenseDecimalError(netTaxInterestExpense: BigDecimal)(implicit topPath: JsPath) extends Validation {
+  val path = topPath \ "netTaxInterestExpense"
+  val errorMessage: String = "The supplied Net Tax Interest Expense has greater than the allowed 2 decimal places."
+  val value = Json.toJson(netTaxInterestExpense)
+}
+
 case class NetTaxInterestIncomeError(netTaxInterestIncome: BigDecimal)(implicit topPath: JsPath) extends Validation {
   val path = topPath \ "netTaxInterestIncome"
   val errorMessage: String = "The supplied Net Tax Interest Income is Negative, which it can not be."
+  val value = Json.toJson(netTaxInterestIncome)
+}
+
+case class NetTaxInterestIncomeDecimalError(netTaxInterestIncome: BigDecimal)(implicit topPath: JsPath) extends Validation {
+  val path = topPath \ "netTaxInterestIncome"
+  val errorMessage: String = "The supplied Net Tax Interest Income has greater than the allowed 2 decimal places."
   val value = Json.toJson(netTaxInterestIncome)
 }
 
@@ -119,5 +161,10 @@ case class RestrictionNotGreaterThanExpense(netTaxInterestExpense: BigDecimal, a
 
 case class NoTotalNetTaxInterestIncomeDuringRestriction(netTaxIncome:BigDecimal)(implicit val path: JsPath) extends Validation {
   val errorMessage: String = s"You cannot have a Net Tax Interest Income when you apply a restriction"
+  val value = Json.obj()
+}
+
+case class TaxEBITDADecimalError(netTaxIncome:BigDecimal)(implicit val path: JsPath) extends Validation {
+  val errorMessage: String = s"The supplied Tax EBITDA has greater than the allowed 2 decimal places."
   val value = Json.obj()
 }

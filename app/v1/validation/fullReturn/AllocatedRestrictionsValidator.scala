@@ -38,6 +38,7 @@ trait AllocatedRestrictionsValidator extends BaseValidation {
       case (Some(_), None) => AllocatedRestrictionNotSupplied(i).invalidNec
       case (None, Some(_)) => AllocatedRestrictionSupplied(i).invalidNec
       case (Some(_), Some(amt)) if amt < 0 => AllocatedRestrictionNegative(i, amt).invalidNec
+      case (Some(_), Some(amt)) if amt % 0.01 != 0 => AllocatedRestrictionDecimalError(i, amt).invalidNec
       case _ => period.validNec
     }
   }
@@ -83,6 +84,8 @@ trait AllocatedRestrictionsValidator extends BaseValidation {
       val totalDisallowances: BigDecimal = allocatedRestrictionsModel.totalDisallowances.getOrElse(0)
       if (totalDisallowances < 0) {
         AllocatedRestrictionTotalNegative(totalDisallowances).invalidNec
+      } else if(totalDisallowances % 0.01 != 0) {
+        AllocatedRestrictionTotalDecimalError(totalDisallowances).invalidNec
       } else if(totalDisallowances != totalDisallowancesCalculated) {
         AllocatedRestrictionTotalDoesNotMatch(totalDisallowances, totalDisallowancesCalculated).invalidNec
       } else {
@@ -125,6 +128,12 @@ case class AllocatedRestrictionNegative(i: Int, amt: BigDecimal)(implicit topPat
   val value = Json.obj()
 }
 
+case class AllocatedRestrictionDecimalError(i: Int, amt: BigDecimal)(implicit topPath: JsPath) extends Validation {
+  val path = topPath \ s"disallowanceAp$i"
+  val errorMessage: String = s"disallowanceAp$i has greater than the allowed 2 decimal places."
+  val value = Json.obj()
+}
+
 case class AllocatedRestrictionTotalNotSupplied()(implicit topPath: JsPath) extends Validation {
   val path = topPath \ "totalDisallowances"
   val errorMessage: String = "totalDisallowances must be supplied if restrictions are supplied"
@@ -134,6 +143,12 @@ case class AllocatedRestrictionTotalNotSupplied()(implicit topPath: JsPath) exte
 case class AllocatedRestrictionTotalNegative(amt: BigDecimal)(implicit topPath: JsPath) extends Validation {
   val path = topPath \ "totalDisallowances"
   val errorMessage: String = "totalDisallowances cannot be negative"
+  val value = Json.obj()
+}
+
+case class AllocatedRestrictionTotalDecimalError(amt: BigDecimal)(implicit topPath: JsPath) extends Validation {
+  val path = topPath \ "totalDisallowances"
+  val errorMessage: String = "totalDisallowances has greater than the allowed 2 decimal places."
   val value = Json.obj()
 }
 

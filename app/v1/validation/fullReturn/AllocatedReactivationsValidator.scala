@@ -32,6 +32,8 @@ trait AllocatedReactivationsValidator extends BaseValidation {
     val reactivations = allocatedReactivationsModel.currentPeriodReactivation
     if(reactivations < 0) {
       AllocatedReactivationsCannotBeNegative(reactivations).invalidNec
+    } else if(reactivations % 0.01 != 0) {
+      AllocatedReactivationsDecimalError(reactivations).invalidNec
     } else {
       reactivations.validNec
     }
@@ -41,5 +43,11 @@ trait AllocatedReactivationsValidator extends BaseValidation {
 case class AllocatedReactivationsCannotBeNegative(currentPeriodReactivation: BigDecimal)(implicit topPath: JsPath) extends Validation {
   val path = topPath \ "currentPeriodReactivation"
   val errorMessage: String = s"currentPeriodReactivation cannot be negative"
+  val value = Json.toJson(currentPeriodReactivation)
+}
+
+case class AllocatedReactivationsDecimalError(currentPeriodReactivation: BigDecimal)(implicit topPath: JsPath) extends Validation {
+  val path = topPath \ "currentPeriodReactivation"
+  val errorMessage: String = s"currentPeriodReactivation is only allowed to be two decimal places"
   val value = Json.toJson(currentPeriodReactivation)
 }

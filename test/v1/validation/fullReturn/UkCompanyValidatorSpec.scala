@@ -63,8 +63,16 @@ class UkCompanyValidatorSpec extends BaseValidationSpec {
         leftSideError(ukCompanyModelReactivationMax.copy(netTaxInterestExpense = -1).validate(groupAccountingPeriod)).errorMessage shouldBe NetTaxInterestExpenseError(-1).errorMessage
       }
 
+      "netTaxInterestExpense is >2 DP" in {
+        leftSideError(ukCompanyModelReactivationMax.copy(netTaxInterestExpense = 2.222, netTaxInterestIncome = 0).validate(groupAccountingPeriod)).errorMessage shouldBe NetTaxInterestExpenseDecimalError(2.222).errorMessage
+      }
+
       "netTaxInterestIncomes is < 0" in {
         leftSideError(ukCompanyModelReactivationMax.copy(netTaxInterestIncome = -1).validate(groupAccountingPeriod)).errorMessage shouldBe NetTaxInterestIncomeError(-1).errorMessage
+      }
+
+      "netTaxInterestIncome is >2 DP" in {
+        leftSideError(ukCompanyModelReactivationMax.copy(netTaxInterestIncome = 2.222).validate(groupAccountingPeriod)).errorMessage shouldBe NetTaxInterestIncomeDecimalError(2.222).errorMessage
       }
 
       "ExpenseAndIncomeBothNotGreaterThanZero where both values are > 0" in {
@@ -73,6 +81,10 @@ class UkCompanyValidatorSpec extends BaseValidationSpec {
 
       "RestrictionNotGreaterThanExpense where restriction values > expense" in {
         leftSideError(ukCompanyModelRestrictionMax.copy(netTaxInterestExpense = 20.00, allocatedRestrictions = allocatedRestriction).validate(groupAccountingPeriod)).errorMessage shouldBe RestrictionNotGreaterThanExpense(20.00,30.01).errorMessage
+      }
+
+      "taxEBITDA is >2 DP" in {
+        leftSideError(ukCompanyModelReactivationMax.copy(taxEBITDA = 2.222).validate(groupAccountingPeriod)).errorMessage shouldBe TaxEBITDADecimalError(2.222).errorMessage
       }
     }
   }
