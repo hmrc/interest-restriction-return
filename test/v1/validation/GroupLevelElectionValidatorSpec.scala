@@ -61,7 +61,7 @@ class GroupLevelElectionValidatorSpec extends BaseValidationSpec {
           )
         )
 
-        leftSideError(model.validate).errorMessage shouldBe NonConsolidatedInvestmentNameError("").errorMessage
+        leftSideError(model.validate).errorMessage shouldBe NonConsolidatedInvestmentNameLengthError("").errorMessage
       }
 
       "interestAllowanceConsolidatedPartnership has errors" in {

@@ -26,12 +26,12 @@ import assets.fullReturn.GroupLevelAmountConstants._
 import assets.fullReturn.UkCompanyConstants._
 import play.api.libs.json.{JsObject, Json}
 import v1.models.fullReturn.FullReturnModel
-import v1.models.{Original, Revised}
+import v1.models.{Original, Revised, RevisedReturnDetailsModel}
 
 object FullReturnConstants {
 
   val ackRef = "ackRef"
-  val revisedReturnDetails = "some details"
+  val revisedReturnDetails = RevisedReturnDetailsModel("some details")
   val angie: BigDecimal = 1.11
   val totalReactivations: BigDecimal = ukCompanyModelReactivationMax.allocatedReactivations.foldLeft[BigDecimal](0) {
     (total, company) => total + company.currentPeriodReactivation

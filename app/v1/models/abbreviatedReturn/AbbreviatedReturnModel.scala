@@ -27,7 +27,7 @@ case class AbbreviatedReturnModel(appointedReportingCompany: Boolean,
                                   publicInfrastructure: Boolean,
                                   groupCompanyDetails: GroupCompanyDetailsModel,
                                   submissionType: SubmissionType,
-                                  revisedReturnDetails: Option[String],
+                                  revisedReturnDetails: Option[RevisedReturnDetailsModel],
                                   groupLevelElections: Option[GroupLevelElectionsModel],
                                   angie: Option[BigDecimal],
                                   ukCompanies: Seq[UkCompanyModel]) extends AbbreviatedReturnValidator {

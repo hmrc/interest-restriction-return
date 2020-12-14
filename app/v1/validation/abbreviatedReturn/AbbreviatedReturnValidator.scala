@@ -28,10 +28,11 @@ trait AbbreviatedReturnValidator extends BaseValidation {
 
   val abbreviatedReturnModel: AbbreviatedReturnModel
 
-  private def validateRevisedReturnDetails: ValidationResult[Option[String]] = {
+  private def validateRevisedReturnDetails: ValidationResult[_] = {
     (abbreviatedReturnModel.submissionType, abbreviatedReturnModel.revisedReturnDetails) match {
-      case (Original, Some(details)) => RevisedReturnDetailsSupplied(details).invalidNec
+      case (Original, Some(details)) => RevisedReturnDetailsSupplied(details.details).invalidNec
       case (Revised, None) => RevisedReturnDetailsNotSupplied.invalidNec
+      case (Revised, Some(details)) => details.validate(JsPath)
       case _ => abbreviatedReturnModel.revisedReturnDetails.validNec
     }
   }

@@ -19,7 +19,7 @@ package v1.validation.fullReturn
 import play.api.libs.json.{JsPath, Json}
 import v1.models.Validation.ValidationResult
 import v1.models.fullReturn.{AdjustedGroupInterestModel, FullReturnModel, UkCompanyModel}
-import v1.models.{Original, ParentCompanyModel, Revised, Validation}
+import v1.models.{Original, ParentCompanyModel, Revised, RevisedReturnDetailsModel, Validation}
 import v1.validation.BaseValidation
 
 trait FullReturnValidator extends BaseValidation {
@@ -28,10 +28,11 @@ trait FullReturnValidator extends BaseValidation {
 
   val fullReturnModel: FullReturnModel
 
-  private def validateRevisedReturnDetails: ValidationResult[Option[String]] = {
+  private def validateRevisedReturnDetails: ValidationResult[_] = {
     (fullReturnModel.submissionType, fullReturnModel.revisedReturnDetails) match {
       case (Original, Some(details)) => RevisedReturnDetailsSupplied(details).invalidNec
       case (Revised, None) => RevisedReturnDetailsNotSupplied.invalidNec
+      case (Revised, Some(details)) => details.validate(JsPath)
       case _ => fullReturnModel.revisedReturnDetails.validNec
     }
   }
@@ -203,7 +204,7 @@ case object RevisedReturnDetailsNotSupplied extends Validation {
   val value = Json.obj()
 }
 
-case class RevisedReturnDetailsSupplied(details: String) extends Validation {
+case class RevisedReturnDetailsSupplied(details: RevisedReturnDetailsModel) extends Validation {
   val errorMessage: String = "A description of the amendments made to the return cannot be supplied if this is an original return"
   val path = JsPath \ "revisedReturnDetails"
   val value = Json.toJson(details)

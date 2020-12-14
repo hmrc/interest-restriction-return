@@ -26,7 +26,7 @@ import assets.abbreviatedReturn.AbbreviatedReturnConstants._
 import assets.abbreviatedReturn.UkCompanyConstants._
 import play.api.libs.json.JsPath
 import utils.BaseSpec
-import v1.models.{Original, Revised}
+import v1.models.{Original, Revised, RevisedReturnDetailsModel}
 import v1.validation._
 
 class AbbreviatedReturnValidatorSpec extends BaseSpec {
@@ -48,7 +48,7 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
 
         leftSideError(abbreviatedReturnUltimateParentModel.copy(
           submissionType = Original,
-          revisedReturnDetails = Some("Revision")
+          revisedReturnDetails = Some(RevisedReturnDetailsModel("Revision"))
         ).validate).errorMessage shouldBe RevisedReturnDetailsSupplied("Revision").errorMessage
       }
 
@@ -123,6 +123,30 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
 
       "Angie has greater than two decimal places" in {
         leftSideError(abbreviatedReturnUltimateParentModel.copy(angie = Some(1.011)).validate).errorMessage shouldBe AngieDecimalError(1.011).errorMessage
+      }
+
+      "Return type is Revised and the revised return details are less than 1 character long" in {
+
+        leftSideError(abbreviatedReturnUltimateParentModel.copy(
+          submissionType = Revised,
+          revisedReturnDetails = Some(RevisedReturnDetailsModel(""))
+        ).validate).errorMessage shouldBe RevisedReturnDetailsLengthError("").errorMessage
+      }
+
+      "Return type is Revised and the revised return details are more than 5000 character longs" in {
+
+        leftSideError(abbreviatedReturnUltimateParentModel.copy(
+          submissionType = Revised,
+          revisedReturnDetails = Some(RevisedReturnDetailsModel("a" * 5001))
+        ).validate).errorMessage shouldBe RevisedReturnDetailsLengthError("a" * 5001).errorMessage
+      }
+
+      "Return type is Revised and the revised return details contains invalid characters" in {
+        val returnDetails = "New!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is 160 characters no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
+        leftSideError(abbreviatedReturnUltimateParentModel.copy(
+          submissionType = Revised,
+          revisedReturnDetails = Some(RevisedReturnDetailsModel(returnDetails))
+        ).validate).errorMessage shouldBe RevisedReturnDetailsCharacterError(returnDetails).errorMessage
       }
     }
   }
