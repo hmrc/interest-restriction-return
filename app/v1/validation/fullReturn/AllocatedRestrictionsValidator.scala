@@ -131,7 +131,7 @@ case class AllocatedRestrictionNegative(i: Int, amt: BigDecimal)(implicit topPat
 case class AllocatedRestrictionDecimalError(i: Int, amt: BigDecimal)(implicit topPath: JsPath) extends Validation {
   val path = topPath \ s"disallowanceAp$i"
   val errorMessage: String = s"disallowanceAp$i has greater than the allowed 2 decimal places."
-  val value = Json.obj()
+  val value = Json.toJson(amt)
 }
 
 case class AllocatedRestrictionTotalNotSupplied()(implicit topPath: JsPath) extends Validation {
@@ -149,7 +149,7 @@ case class AllocatedRestrictionTotalNegative(amt: BigDecimal)(implicit topPath: 
 case class AllocatedRestrictionTotalDecimalError(amt: BigDecimal)(implicit topPath: JsPath) extends Validation {
   val path = topPath \ "totalDisallowances"
   val errorMessage: String = "totalDisallowances has greater than the allowed 2 decimal places."
-  val value = Json.obj()
+  val value = Json.toJson(amt)
 }
 
 case class AllocatedRestrictionTotalDoesNotMatch(amt: BigDecimal, calculatedAmt: BigDecimal)(implicit topPath: JsPath) extends Validation {
