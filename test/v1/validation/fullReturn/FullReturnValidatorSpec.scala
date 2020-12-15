@@ -87,6 +87,10 @@ class FullReturnValidatorSpec extends BaseSpec {
         leftSideError(fullReturnUltimateParentModel.copy(angie = Some(-0.01)).validate).errorMessage shouldBe NegativeAngieError(-0.01).errorMessage
       }
 
+      "Angie is greater than 2 decimal places" in {
+        leftSideError(fullReturnUltimateParentModel.copy(angie = Some(1.111)).validate).errorMessage shouldBe AngieDecimalError(1.111).errorMessage
+      }
+
       "Both group level interest restrictions and group level reactivations are supplied" in {
         leftSideError(fullReturnUltimateParentModel.copy(
           groupSubjectToInterestReactivation = true,
