@@ -17,7 +17,7 @@ This is a protected backend microservice that is the conduit between Public faci
 
 ### Appoint a Reporting Company
 
-**URL:** `/interest-restriction-return/reporting-company/appoint`
+**URL:** `/reporting-company/appoint`
 
 **Method:** `POST`
 
@@ -122,7 +122,7 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
 ### Revoke a Reporting Company
 
 
-**URL:** `/interest-restriction-return/reporting-company/revoke`
+**URL:** `/reporting-company/revoke`
 
 **Method:** `POST`
 
@@ -236,7 +236,7 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
 
 ### Submit an Abbreviated Interest Restriction Return
 
-**URL:** `/interest-restriction-return/return/abbreviated`
+**URL:** `/return/abbreviated`
 
 **Method:** `POST`
 
@@ -390,7 +390,7 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
 
 ### Submit a Full Interest Restriction Return
 
-**URL:** `/interest-restriction-return/return/full`
+**URL:** `/return/full`
 
 **Method:** `POST`
 
