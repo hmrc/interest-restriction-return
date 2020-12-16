@@ -164,7 +164,8 @@ case class NoTotalNetTaxInterestIncomeDuringRestriction(netTaxIncome:BigDecimal)
   val value = Json.obj()
 }
 
-case class TaxEBITDADecimalError(netTaxIncome:BigDecimal)(implicit val path: JsPath) extends Validation {
+case class TaxEBITDADecimalError(netTaxIncome:BigDecimal)(implicit val topPath: JsPath) extends Validation {
+  val path = topPath \ "EBITDA"
   val errorMessage: String = s"The supplied Tax EBITDA has greater than the allowed 2 decimal places."
-  val value = Json.obj()
+  val value = Json.toJson(netTaxIncome)
 }

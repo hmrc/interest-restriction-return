@@ -48,13 +48,13 @@ trait GroupLevelAmountValidator extends BaseValidation {
 }
 
 case class GroupLevelAmountCannotBeNegative(field: String, amt: BigDecimal)(implicit topPath: JsPath) extends Validation {
-  val path = topPath \ "field"
+  val path = topPath \ s"$field"
   val errorMessage: String = s"$field cannot be negative"
   val value = Json.toJson(amt)
 }
 
 case class GroupLevelAmountDecimalError(field: String, amt: BigDecimal)(implicit topPath: JsPath) extends Validation {
-  val path = topPath \ "field"
+  val path = topPath \ s"$field"
   val errorMessage: String = s"$field has greater than the allowed 2 decimal places."
   val value = Json.toJson(amt)
 }

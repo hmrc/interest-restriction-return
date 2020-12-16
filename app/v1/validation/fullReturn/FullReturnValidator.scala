@@ -256,7 +256,7 @@ case object InterestReactivationCapNotSupplied extends Validation {
 case class TotalReactivationsDecimalError(amt: BigDecimal) extends Validation {
   val errorMessage: String = s"totalReactivation has greater than the allowed 2 decimal places."
   val path = JsPath \ "totalReactivation"
-  val value = Json.obj()
+  val value = Json.toJson(amt)
 }
 
 case class TotalReactivationsDoesNotMatch(amt: BigDecimal, calculated: BigDecimal) extends Validation {
@@ -274,7 +274,7 @@ case class TotalReactivationsNotGreaterThanCapacity(calculated: BigDecimal, capa
 case class TotalRestrictionsDecimalError(amt: BigDecimal) extends Validation {
   val errorMessage: String = s"totalRestrictions has greater than the allowed 2 decimal places."
   val path = JsPath \ "totalRestrictions"
-  val value = Json.obj()
+  val value = Json.toJson(amt)
 }
 
 case class TotalRestrictionsDoesNotMatch(amt: BigDecimal, calculated: BigDecimal) extends Validation {
