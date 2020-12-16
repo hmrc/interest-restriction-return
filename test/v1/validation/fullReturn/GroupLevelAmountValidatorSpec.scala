@@ -40,9 +40,19 @@ class GroupLevelAmountValidatorSpec extends BaseSpec {
           GroupLevelAmountCannotBeNegative("interestReactivationCap", -0.1).errorMessage
       }
 
+      "interestReactivationCap is >2 decimal places" in {
+        leftSideError(groupLevelAmountModel.copy(interestReactivationCap = Some(1.111)).validate).errorMessage shouldBe
+          GroupLevelAmountDecimalError("interestReactivationCap", 1.111).errorMessage
+      }
+
       "interestAllowanceBroughtForward is < 0" in {
         leftSideError(groupLevelAmountModel.copy(interestAllowanceBroughtForward = -0.1).validate).errorMessage shouldBe
           GroupLevelAmountCannotBeNegative("interestAllowanceBroughtForward", -0.1).errorMessage
+      }
+
+      "interestAllowanceBroughtForward is >2 decimal places" in {
+        leftSideError(groupLevelAmountModel.copy(interestAllowanceBroughtForward = 1.111).validate).errorMessage shouldBe
+          GroupLevelAmountDecimalError("interestAllowanceBroughtForward", 1.111).errorMessage
       }
 
       "interestAllowanceForPeriod is < 0" in {
@@ -50,9 +60,19 @@ class GroupLevelAmountValidatorSpec extends BaseSpec {
           GroupLevelAmountCannotBeNegative("interestAllowanceForPeriod", -0.1).errorMessage
       }
 
+      "interestAllowanceForPeriod is >2 decimal places" in {
+        leftSideError(groupLevelAmountModel.copy(interestAllowanceForPeriod = 1.111).validate).errorMessage shouldBe
+          GroupLevelAmountDecimalError("interestAllowanceForPeriod", 1.111).errorMessage
+      }
+
       "interestCapacityForPeriod is < 0" in {
         leftSideError(groupLevelAmountModel.copy(interestCapacityForPeriod = -0.1).validate).errorMessage shouldBe
           GroupLevelAmountCannotBeNegative("interestCapacityForPeriod", -0.1).errorMessage
+      }
+
+      "interestCapacityForPeriod is >2 decimal places" in {
+        leftSideError(groupLevelAmountModel.copy(interestCapacityForPeriod = 1.111).validate).errorMessage shouldBe
+          GroupLevelAmountDecimalError("interestCapacityForPeriod", 1.111).errorMessage
       }
     }
   }

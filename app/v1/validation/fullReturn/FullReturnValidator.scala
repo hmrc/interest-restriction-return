@@ -47,7 +47,11 @@ trait FullReturnValidator extends BaseValidation {
 
   private def validateAngie: ValidationResult[BigDecimal] = {
     val angie: BigDecimal = fullReturnModel.angie.getOrElse(0)
-    if (angie >= 0) angie.validNec else NegativeAngieError(angie).invalidNec
+    angie match {
+      case a if a < 0 => NegativeAngieError(angie).invalidNec
+      case a if a % 0.01 != 0 => AngieDecimalError(angie).invalidNec
+      case _ => angie.validNec
+    }
   }
 
   private def validateNotBothRestrictionsAndReactivations: ValidationResult[Boolean] = {
@@ -97,8 +101,10 @@ trait FullReturnValidator extends BaseValidation {
         total + company.allocatedReactivations.fold[BigDecimal](0)(reactivations =>
           reactivations.currentPeriodReactivation)
     }
-    if (reactivations == calculatedReactivations) reactivations.validNec else {
-      TotalReactivationsDoesNotMatch(reactivations, calculatedReactivations).invalidNec
+    (reactivations, calculatedReactivations) match {
+      case (r, _) if r % 0.01 != 0 => TotalReactivationsDecimalError(reactivations).invalidNec
+      case (r, cr) if r != cr => TotalReactivationsDoesNotMatch(reactivations, calculatedReactivations).invalidNec
+      case (_, _) => reactivations.validNec
     }
   }
 
@@ -123,9 +129,12 @@ trait FullReturnValidator extends BaseValidation {
         total + company.allocatedRestrictions.fold[BigDecimal](0)(restrictions =>
           restrictions.totalDisallowances.getOrElse(0))
     }
-    if (restrictions == calculatedRestrictions) restrictions.validNec else {
-      TotalRestrictionsDoesNotMatch(restrictions, calculatedRestrictions).invalidNec
+    (restrictions, calculatedRestrictions) match {
+      case (r, _) if r % 0.01 != 0 => TotalRestrictionsDecimalError(restrictions).invalidNec
+      case (r, cr) if r != cr => TotalRestrictionsDoesNotMatch(restrictions, calculatedRestrictions).invalidNec
+      case (_, _) => restrictions.validNec
     }
+
   }
 
   private def validateAggInterestAndReallocationOrRestrictionStatus: ValidationResult[BigDecimal] = {
@@ -223,6 +232,12 @@ case class NegativeAngieError(amt: BigDecimal) extends Validation {
   val value = Json.toJson(amt)
 }
 
+case class AngieDecimalError(amt: BigDecimal) extends Validation {
+  val errorMessage: String = "ANGIE has greater than the allowed 2 decimal places."
+  val path = JsPath \ "angie"
+  val value = Json.toJson(amt)
+}
+
 case class GroupLevelInterestRestrictionsAndReactivationSupplied(groupSubjectToInterestRestrictions: Boolean, groupSubjectToInterestReactivation: Boolean)
   extends Validation {
   override val errorMessage: String = "You cannot supply both a group level restriction and reactivation in the same return"
@@ -238,6 +253,12 @@ case object InterestReactivationCapNotSupplied extends Validation {
   val value = Json.obj()
 }
 
+case class TotalReactivationsDecimalError(amt: BigDecimal) extends Validation {
+  val errorMessage: String = s"totalReactivation has greater than the allowed 2 decimal places."
+  val path = JsPath \ "totalReactivation"
+  val value = Json.toJson(amt)
+}
+
 case class TotalReactivationsDoesNotMatch(amt: BigDecimal, calculated: BigDecimal) extends Validation {
   val errorMessage: String = s"Calculated reactivations is $calculated which does not match the supplied amount of $amt"
   val path = JsPath \ "totalReactivation"
@@ -248,6 +269,12 @@ case class TotalReactivationsNotGreaterThanCapacity(calculated: BigDecimal, capa
   val errorMessage: String = s"Calculated Total Reactivations: $calculated cannot not be greater than Reactivations Capacity: $capacity"
   val path = JsPath \ "totalReactivation" \ "interestReactivationCap"
   val value = Json.obj()
+}
+
+case class TotalRestrictionsDecimalError(amt: BigDecimal) extends Validation {
+  val errorMessage: String = s"totalRestrictions has greater than the allowed 2 decimal places."
+  val path = JsPath \ "totalRestrictions"
+  val value = Json.toJson(amt)
 }
 
 case class TotalRestrictionsDoesNotMatch(amt: BigDecimal, calculated: BigDecimal) extends Validation {
