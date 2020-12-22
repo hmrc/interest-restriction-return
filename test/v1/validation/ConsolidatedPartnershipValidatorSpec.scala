@@ -21,7 +21,7 @@ import v1.models.{ConsolidatedPartnershipModel, PartnershipModel, UTRModel, Comp
 
 class ConsolidatedPartnershipValidatorSpec extends BaseValidationSpec {
 
-  val sautrFake = UTRModel("1234567890")
+  val sautrFake = UTRModel("1123456789")
 
   implicit val path = JsPath \ "some" \ "path"
 

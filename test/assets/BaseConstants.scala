@@ -21,7 +21,7 @@ import v1.models.{CompanyNameModel, CountryCodeModel, UTRModel}
 trait BaseConstants {
 
   val ctutr = UTRModel("1123456789")
-  val sautr = UTRModel("1234567890")
+  val sautr = UTRModel("1123456789")
   val invalidUtr = UTRModel("1999999999")
   val companyName = CompanyNameModel("Company Name ltd")
   val companyNameMaxLength = 160
