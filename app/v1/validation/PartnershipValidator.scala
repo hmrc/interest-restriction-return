@@ -27,7 +27,7 @@ trait PartnershipValidator extends BaseValidation {
 
   def validateSautr(implicit path: JsPath): ValidationResult[_] = {
     partnershipModel.sautr match {
-      case Some(utr) => utr.validate
+      case Some(utr) => utr.validate(path \ "sautr")
       case None => partnershipModel.validNec
     }
   }
