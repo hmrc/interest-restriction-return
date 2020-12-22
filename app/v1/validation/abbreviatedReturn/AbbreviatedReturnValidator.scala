@@ -28,10 +28,11 @@ trait AbbreviatedReturnValidator extends BaseValidation {
 
   val abbreviatedReturnModel: AbbreviatedReturnModel
 
-  private def validateRevisedReturnDetails: ValidationResult[Option[String]] = {
+  private def validateRevisedReturnDetails: ValidationResult[_] = {
     (abbreviatedReturnModel.submissionType, abbreviatedReturnModel.revisedReturnDetails) match {
-      case (Original, Some(details)) => RevisedReturnDetailsSupplied(details).invalidNec
+      case (Original, Some(details)) => RevisedReturnDetailsSupplied(details.details).invalidNec
       case (Revised, None) => RevisedReturnDetailsNotSupplied.invalidNec
+      case (Revised, Some(details)) => details.validate(JsPath)
       case _ => abbreviatedReturnModel.revisedReturnDetails.validNec
     }
   }
@@ -46,7 +47,11 @@ trait AbbreviatedReturnValidator extends BaseValidation {
 
   private def validateAngie: ValidationResult[BigDecimal] = {
     val angie: BigDecimal = abbreviatedReturnModel.angie.getOrElse(0)
-    if (angie >= 0) angie.validNec else NegativeAngieError(angie).invalidNec
+    angie match {
+      case a if a < 0 => NegativeAngieError(angie).invalidNec
+      case a if a % 0.01 != 0 =>AngieDecimalError(angie).invalidNec
+      case _ => angie.validNec
+    }
   }
 
   private def validateAppointedReporter: ValidationResult[Boolean] = {
@@ -116,6 +121,12 @@ case object UkCompaniesEmpty extends Validation {
 
 case class NegativeAngieError(amt: BigDecimal) extends Validation {
   val errorMessage: String = "ANGIE cannot be negative"
+  val path = JsPath \ "angie"
+  val value = Json.toJson(amt)
+}
+
+case class AngieDecimalError(amt: BigDecimal) extends Validation {
+  val errorMessage: String = "ANGIE has greater than the allowed 2 decimal places."
   val path = JsPath \ "angie"
   val value = Json.toJson(amt)
 }

@@ -45,6 +45,11 @@ class AllocatedReactivationsValidatorSpec extends BaseSpec {
         leftSideError(allocatedReactivationsModel.copy(currentPeriodReactivation = -1).validate).errorMessage shouldBe
           AllocatedReactivationsCannotBeNegative(-1).errorMessage
       }
+
+      "currentPeriodReactivation is >2 decimal places" in {
+        leftSideError(allocatedReactivationsModel.copy(currentPeriodReactivation = 1.111).validate).errorMessage shouldBe
+          AllocatedReactivationsDecimalError(1.111).errorMessage
+      }
     }
   }
 }

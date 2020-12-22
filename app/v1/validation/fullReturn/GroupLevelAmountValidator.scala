@@ -31,17 +31,30 @@ trait GroupLevelAmountValidator extends BaseValidation {
   private def validatePositive(field: String, amt: BigDecimal)(implicit topPath: JsPath): ValidationResult[BigDecimal] =
     if(amt < 0) GroupLevelAmountCannotBeNegative(field, amt).invalidNec else amt.validNec
 
+  private def validateDecimalPlaces(field: String, amt: BigDecimal)(implicit topPath: JsPath): ValidationResult[BigDecimal] =
+    if(amt % 0.01 != 0) GroupLevelAmountDecimalError(field, amt).invalidNec else amt.validNec
+
   def validate(implicit path: JsPath): ValidationResult[GroupLevelAmountModel] =
     (
       optionValidations(groupLevelAmount.interestReactivationCap.map(cap => validatePositive("interestReactivationCap", cap))),
+      optionValidations(groupLevelAmount.interestReactivationCap.map(cap => validateDecimalPlaces("interestReactivationCap", cap))),
       validatePositive("interestAllowanceForPeriod", groupLevelAmount.interestAllowanceForPeriod),
       validatePositive("interestAllowanceBroughtForward", groupLevelAmount.interestAllowanceBroughtForward),
-      validatePositive("interestCapacityForPeriod", groupLevelAmount.interestCapacityForPeriod)
-    ).mapN((_,_,_,_) => groupLevelAmount)
+      validatePositive("interestCapacityForPeriod", groupLevelAmount.interestCapacityForPeriod),
+      validateDecimalPlaces("interestAllowanceForPeriod", groupLevelAmount.interestAllowanceForPeriod),
+      validateDecimalPlaces("interestAllowanceBroughtForward", groupLevelAmount.interestAllowanceBroughtForward),
+      validateDecimalPlaces("interestCapacityForPeriod", groupLevelAmount.interestCapacityForPeriod)
+    ).mapN((_,_,_,_,_,_,_,_) => groupLevelAmount)
 }
 
 case class GroupLevelAmountCannotBeNegative(field: String, amt: BigDecimal)(implicit topPath: JsPath) extends Validation {
-  val path = topPath \ field
+  val path = topPath \ s"$field"
   val errorMessage: String = s"$field cannot be negative"
+  val value = Json.toJson(amt)
+}
+
+case class GroupLevelAmountDecimalError(field: String, amt: BigDecimal)(implicit topPath: JsPath) extends Validation {
+  val path = topPath \ s"$field"
+  val errorMessage: String = s"$field has greater than the allowed 2 decimal places."
   val value = Json.toJson(amt)
 }

@@ -41,10 +41,20 @@ class GroupLevelAmountValidatorSpec extends BaseSpec {
         result.path shouldBe path \ "interestReactivationCap"
       }
 
+      "interestReactivationCap is >2 decimal places" in {
+        leftSideError(groupLevelAmountModel.copy(interestReactivationCap = Some(1.111)).validate).errorMessage shouldBe
+          GroupLevelAmountDecimalError("interestReactivationCap", 1.111).errorMessage
+      }
+
       "interestAllowanceBroughtForward is < 0" in {
         val result = leftSideError(groupLevelAmountModel.copy(interestAllowanceBroughtForward = -0.1).validate)
         result.errorMessage shouldBe GroupLevelAmountCannotBeNegative("interestAllowanceBroughtForward", -0.1).errorMessage
         result.path shouldBe path \ "interestAllowanceBroughtForward"
+      }
+
+      "interestAllowanceBroughtForward is >2 decimal places" in {
+        leftSideError(groupLevelAmountModel.copy(interestAllowanceBroughtForward = 1.111).validate).errorMessage shouldBe
+          GroupLevelAmountDecimalError("interestAllowanceBroughtForward", 1.111).errorMessage
       }
 
       "interestAllowanceForPeriod is < 0" in {
@@ -53,10 +63,20 @@ class GroupLevelAmountValidatorSpec extends BaseSpec {
         result.path shouldBe path \ "interestAllowanceForPeriod"
       }
 
+      "interestAllowanceForPeriod is >2 decimal places" in {
+        leftSideError(groupLevelAmountModel.copy(interestAllowanceForPeriod = 1.111).validate).errorMessage shouldBe
+          GroupLevelAmountDecimalError("interestAllowanceForPeriod", 1.111).errorMessage
+      }
+
       "interestCapacityForPeriod is < 0" in {
         val result = leftSideError(groupLevelAmountModel.copy(interestCapacityForPeriod = -0.1).validate)
         result.errorMessage shouldBe GroupLevelAmountCannotBeNegative("interestCapacityForPeriod", -0.1).errorMessage
         result.path shouldBe path \ "interestCapacityForPeriod"
+      }
+
+      "interestCapacityForPeriod is >2 decimal places" in {
+        leftSideError(groupLevelAmountModel.copy(interestCapacityForPeriod = 1.111).validate).errorMessage shouldBe
+          GroupLevelAmountDecimalError("interestCapacityForPeriod", 1.111).errorMessage
       }
     }
   }

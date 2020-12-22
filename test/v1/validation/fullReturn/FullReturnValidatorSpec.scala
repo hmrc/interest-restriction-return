@@ -30,7 +30,7 @@ import assets.fullReturn.GroupLevelAmountConstants._
 import assets.fullReturn.UkCompanyConstants._
 import play.api.libs.json.JsPath
 import utils.BaseSpec
-import v1.models.{Original, Revised}
+import v1.models.{Original, Revised, RevisedReturnDetailsModel}
 import v1.validation._
 
 class FullReturnValidatorSpec extends BaseSpec {
@@ -55,8 +55,8 @@ class FullReturnValidatorSpec extends BaseSpec {
 
         leftSideError(fullReturnUltimateParentModel.copy(
           submissionType = Original,
-          revisedReturnDetails = Some("Revision")
-        ).validate).errorMessage shouldBe RevisedReturnDetailsSupplied("Revision").errorMessage
+          revisedReturnDetails = Some(RevisedReturnDetailsModel("Revision"))
+        ).validate).errorMessage shouldBe RevisedReturnDetailsSupplied(RevisedReturnDetailsModel("Revision")).errorMessage
       }
 
       "Return type is Revised and no details for a revision are supplied" in {
@@ -87,6 +87,10 @@ class FullReturnValidatorSpec extends BaseSpec {
         leftSideError(fullReturnUltimateParentModel.copy(angie = Some(-0.01)).validate).errorMessage shouldBe NegativeAngieError(-0.01).errorMessage
       }
 
+      "Angie is greater than 2 decimal places" in {
+        leftSideError(fullReturnUltimateParentModel.copy(angie = Some(1.111)).validate).errorMessage shouldBe AngieDecimalError(1.111).errorMessage
+      }
+
       "Both group level interest restrictions and group level reactivations are supplied" in {
         leftSideError(fullReturnUltimateParentModel.copy(
           groupSubjectToInterestReactivation = true,
@@ -110,6 +114,13 @@ class FullReturnValidatorSpec extends BaseSpec {
         ).validate).errorMessage shouldBe TotalReactivationsDoesNotMatch(incorrectTotalReactivation, currentPeriodReactivation + currentPeriodReactivation).errorMessage
       }
 
+      "Total Reactivations greater than 2 decimal places" in {
+        leftSideError(fullReturnUltimateParentModel.copy(
+          totalReactivation = 1.111,
+          ukCompanies = Seq(ukCompanyModelReactivationMax, ukCompanyModelReactivationMax) //4.44
+        ).validate).errorMessage shouldBe TotalReactivationsDecimalError(incorrectTotalReactivation).errorMessage
+      }
+
       "Total Restrictions does not match the sum of the total restrictions for each company" in {
         leftSideError(fullReturnUltimateParentModel.copy(
           groupSubjectToInterestReactivation = false,
@@ -118,6 +129,16 @@ class FullReturnValidatorSpec extends BaseSpec {
           totalReactivation = 0,
           ukCompanies = Seq(ukCompanyModelRestrictionMax, ukCompanyModelRestrictionMax) //4.44
         ).validate).errorMessage shouldBe TotalRestrictionsDoesNotMatch(incorrectDisallowances, totalDisallowances + totalDisallowances).errorMessage
+      }
+
+      "Total Restrictions greater than 2 decimal places" in {
+        leftSideError(fullReturnUltimateParentModel.copy(
+          groupSubjectToInterestReactivation = false,
+          groupSubjectToInterestRestrictions = true,
+          totalRestrictions = 1.111,
+          totalReactivation = 0,
+          ukCompanies = Seq(ukCompanyModelRestrictionMax, ukCompanyModelRestrictionMax) //4.44
+        ).validate).errorMessage shouldBe TotalRestrictionsDecimalError(incorrectDisallowances).errorMessage
       }
 
       "Group is not subject to interest reactivations but has allocated reactivations supplied" in {
@@ -333,6 +354,30 @@ class FullReturnValidatorSpec extends BaseSpec {
           ),
           adjustedGroupInterest = Some(adjustedGroupInterestModel)
         ).validate).errorMessage shouldBe AdjustedNetGroupInterestSupplied(adjustedGroupInterestModel).errorMessage
+      }
+
+      "Return type is Revised and the revised return details are less than 1 character long" in {
+
+        leftSideError(fullReturnUltimateParentModel.copy(
+          submissionType = Revised,
+          revisedReturnDetails = Some(RevisedReturnDetailsModel(""))
+        ).validate).errorMessage shouldBe RevisedReturnDetailsLengthError("").errorMessage
+      }
+
+      "Return type is Revised and the revised return details are more than 5000 character longs" in {
+
+        leftSideError(fullReturnUltimateParentModel.copy(
+          submissionType = Revised,
+          revisedReturnDetails = Some(RevisedReturnDetailsModel("a" * 5001))
+        ).validate).errorMessage shouldBe RevisedReturnDetailsLengthError("a" * 5001).errorMessage
+      }
+
+      "Return type is Revised and the revised return details contains invalid characters" in {
+        val returnDetails = "New!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is 160 characters no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
+        leftSideError(fullReturnUltimateParentModel.copy(
+          submissionType = Revised,
+          revisedReturnDetails = Some(RevisedReturnDetailsModel(returnDetails))
+        ).validate).errorMessage shouldBe RevisedReturnDetailsCharacterError(returnDetails).errorMessage
       }
 
     }

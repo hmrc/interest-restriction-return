@@ -62,7 +62,7 @@ class NonConsolidatedInvestmentElectionValidatorSpec extends BaseValidationSpec 
           nonConsolidatedInvestments = Some(Seq(NonConsolidatedInvestmentModel("")))
         )
 
-        leftSideError(model.validate).errorMessage shouldBe NonConsolidatedInvestmentNameError("").errorMessage
+        leftSideError(model.validate).errorMessage shouldBe NonConsolidatedInvestmentNameLengthError("").errorMessage
       }
     }
   }
