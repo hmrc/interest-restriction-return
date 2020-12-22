@@ -26,11 +26,28 @@ class AccountingPeriodValidatorSpec extends BaseSpec {
 
   implicit val path = JsPath \ "some" \ "path"
 
+  val minimumStartDate = LocalDate.parse("2016-10-01")
+
   "Accounting Period Validation" when {
 
     "Return Valid" when {
       "Start date is in the past" in {
         rightSide(accountingPeriodModel.validate) shouldBe accountingPeriodModel
+      }
+
+      "Start date is on 2016/10/01" in {
+        val model = accountingPeriodModel.copy(startDate = minimumStartDate, endDate = minimumStartDate.plusMonths(1L))
+        rightSide(model.validate) shouldBe model
+      }
+
+      "End date is in the future" in {
+
+        val endDate = LocalDate.now().plusDays(1)
+        val model = accountingPeriodModel.copy(
+          startDate = LocalDate.now().minusMonths(12),
+          endDate = endDate
+        )
+        rightSide(model.validate) shouldBe model
       }
     }
 
@@ -72,14 +89,14 @@ class AccountingPeriodValidatorSpec extends BaseSpec {
         )
         leftSideError(model.validate).errorMessage shouldBe AccountingPeriod18MonthsMax(endDate).errorMessage
       }
-      "End date is in the future" in {
 
-        val endDate = LocalDate.now().plusDays(1)
+      "Start date is before minimum" in {
+        val startDate = minimumStartDate.minusDays(1L)
         val model = accountingPeriodModel.copy(
-          startDate = LocalDate.now().minusMonths(12),
-          endDate = endDate
+          startDate = startDate,
+          endDate = startDate.plusMonths(1L)
         )
-        leftSideError(model.validate).errorMessage shouldBe EndDateCannotBeInTheFuture(endDate).errorMessage
+        leftSideError(model.validate).errorMessage shouldBe StartDateCannotBeBeforeMinimum(startDate).errorMessage
       }
     }
   }
