@@ -19,7 +19,6 @@ package v1.validation
 import play.api.libs.json.{JsPath, Json}
 import v1.models.Validation.ValidationResult
 import v1.models.{RevisedReturnDetailsModel, Validation}
-import v1.validation.BaseValidation
 
 trait RevisedReturnDetailsValidator extends BaseValidation {
 

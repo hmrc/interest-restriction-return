@@ -16,7 +16,6 @@
 
 package v1.validation.fullReturn
 
-import config.Constants.maxTwoDecimalsRegex
 import play.api.libs.json.{JsPath, Json}
 import v1.models.Validation
 import v1.models.Validation.ValidationResult
