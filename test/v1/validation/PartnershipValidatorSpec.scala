@@ -18,7 +18,7 @@ package v1.validation
 
 import assets.PartnershipsConstants._
 import play.api.libs.json.JsPath
-import v1.models.CompanyNameModel
+import v1.models.{CompanyNameModel, UTRModel}
 
 class PartnershipValidatorSpec extends BaseValidationSpec {
 
@@ -46,6 +46,15 @@ class PartnershipValidatorSpec extends BaseValidationSpec {
         "isElected is true and partnership names are given" in {
           val model = partnershipModel.copy(partnershipName = CompanyNameModel(""))
           model.validate.toEither.left.get.head.errorMessage shouldBe CompanyNameLengthError("").errorMessage
+        }
+
+      }
+
+      "sautr" when {
+        "is populated and invalid" in {
+          val utr = UTRModel("11234567890")
+          val model = partnershipModel.copy(sautr = Some(utr))
+          model.validate.toEither.left.get.head.errorMessage shouldBe UTRLengthError(utr).errorMessage
         }
       }
     }
