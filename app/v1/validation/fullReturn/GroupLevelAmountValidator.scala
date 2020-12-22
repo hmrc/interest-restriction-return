@@ -41,7 +41,7 @@ trait GroupLevelAmountValidator extends BaseValidation {
 }
 
 case class GroupLevelAmountCannotBeNegative(field: String, amt: BigDecimal)(implicit topPath: JsPath) extends Validation {
-  val path = topPath \ "field"
+  val path = topPath \ field
   val errorMessage: String = s"$field cannot be negative"
   val value = Json.toJson(amt)
 }
