@@ -42,6 +42,11 @@ class RevisedReturnDetailsValidatorSpec extends BaseSpec {
         val returnDetails = "New!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is 160 characters no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
         leftSideError(RevisedReturnDetailsModel(returnDetails).validate).errorMessage shouldBe RevisedReturnDetailsCharacterError(returnDetails).errorMessage
       }
+
+      "Return type is Revised and the revised return details contain an end of line character" in {
+        val returnDetails = "\n"
+        leftSideError(RevisedReturnDetailsModel(returnDetails).validate).errorMessage shouldBe RevisedReturnDetailsCharacterError(returnDetails).errorMessage
+      }
     }
   }
 

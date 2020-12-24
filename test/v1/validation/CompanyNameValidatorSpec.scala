@@ -49,6 +49,12 @@ class CompanyNameValidatorSpec extends WordSpec with Matchers {
         val model = CompanyNameModel(invalidName)
         model.validate.toEither.left.get.head.errorMessage shouldBe CompanyNameCharactersError(model.name).errorMessage
       }
+
+      "company name contains an end of line" in {
+        val model = CompanyNameModel("1111\n222222")
+        model.validate.toEither.left.get.head.errorMessage shouldBe CompanyNameCharactersError(model.name).errorMessage
+      }
+
     }
   }
 }

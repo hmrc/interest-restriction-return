@@ -16,12 +16,12 @@
 
 package v1.models
 
-import play.api.libs.json.{JsPath, JsString, Reads, Writes}
+import play.api.libs.json.{JsPath, Reads, Writes, JsString}
 import v1.validation.CompanyNameValidator
-
+import utils.ReadStringWithTrim.stringReads
 
 case class CompanyNameModel(name: String) extends CompanyNameValidator {
-  override val companyNameModel: CompanyNameModel = this
+  val companyNameModel = this
 }
 
 object CompanyNameModel {
@@ -33,3 +33,4 @@ object CompanyNameModel {
   }
 
 }
+

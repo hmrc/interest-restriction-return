@@ -41,4 +41,10 @@ object AgentDetailsConstants {
     agentActingOnBehalfOfCompany = false,
     agentName = None
   )
+
+  val agentDetailsJsonWhitespaceName = Json.obj(
+    "agentActingOnBehalfOfCompany" -> true,
+    "agentName" -> " some agent "
+  )
+
 }

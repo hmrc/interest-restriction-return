@@ -16,17 +16,18 @@
 
 package v1.models
 
-import play.api.libs.json.Json
-import v1.validation.AgentDetailsValidator
-import utils.ReadStringWithTrim.stringReads
+import org.scalatest.{Matchers, WordSpec}
+import play.api.libs.json.JsString
 
-case class AgentDetailsModel(agentActingOnBehalfOfCompany: Boolean,
-                             agentName: Option[String]) extends AgentDetailsValidator {
-  override val agentDetailsModel = this
-}
+class RevisedReturnDetailsModelSpec extends WordSpec with Matchers {
+  "RevisedReturnDetailsModel" should {
+    "trim the whitespace in the name" in {
 
-object AgentDetailsModel {
+    val expectedValue = RevisedReturnDetailsModel("Some details")
+    val json = JsString(" Some details ")
+    val actualValue = json.as[RevisedReturnDetailsModel]
 
-  implicit val format = Json.format[AgentDetailsModel]
-
+    actualValue shouldBe expectedValue
+    }
+  }
 }

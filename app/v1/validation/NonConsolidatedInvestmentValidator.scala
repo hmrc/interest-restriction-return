@@ -36,9 +36,9 @@ trait NonConsolidatedInvestmentValidator extends BaseValidation {
 
   private def validateCompanyNameCharacters(implicit path: JsPath): ValidationResult[String] = {
     val regex = "^[ -~¢-¥©®±×÷‐₠-₿−-∝≈≠≣-≥]*$".r
-    regex.findFirstIn(nonConsolidatedInvestmentModel.investmentName) match {
-      case Some(_) => nonConsolidatedInvestmentModel.investmentName.validNec
-      case None => NonConsolidatedInvestmentNameCharacterError(nonConsolidatedInvestmentModel.investmentName).invalidNec
+    nonConsolidatedInvestmentModel.investmentName match {
+      case regex(_ *) => nonConsolidatedInvestmentModel.investmentName.validNec
+      case _ => NonConsolidatedInvestmentNameCharacterError(nonConsolidatedInvestmentModel.investmentName).invalidNec
     }
   }
 

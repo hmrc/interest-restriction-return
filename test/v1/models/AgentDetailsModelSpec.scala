@@ -61,6 +61,18 @@ class AgentDetailsModelSpec extends WordSpec with Matchers {
 
         actualValue shouldBe expectedValue
       }
+
     }
+
+    "trim the name where it is populated" when {
+
+      "max values given" in {
+
+        val expectedValue = agentDetailsModelMax
+        val actualValue = agentDetailsJsonWhitespaceName.as[AgentDetailsModel]
+
+        actualValue shouldBe expectedValue
+      }   
+    } 
   }
 }

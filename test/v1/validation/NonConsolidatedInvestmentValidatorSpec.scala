@@ -49,6 +49,14 @@ class NonConsolidatedInvestmentValidatorSpec extends BaseValidationSpec {
           model.validate.toEither.left.get.head.errorMessage shouldBe NonConsolidatedInvestmentNameCharacterError(investmentName).errorMessage
         }
 
+        "contains an end of line" in {
+          val name = "\n"
+          val model = nonConsolidatedModel.copy(investmentName = name)
+
+          model.validate.toEither.left.get.head.errorMessage shouldBe NonConsolidatedInvestmentNameCharacterError(investmentName).errorMessage
+        }
+
+
         "isElected is true and no investment names are given" in {
           val model = nonConsolidatedModel.copy(investmentName = "")
           model.validate.toEither.left.get.head.errorMessage shouldBe NonConsolidatedInvestmentNameLengthError("").errorMessage

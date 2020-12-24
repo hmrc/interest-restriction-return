@@ -30,7 +30,10 @@ trait RevisedReturnDetailsValidator extends BaseValidation {
 
   private def revisedReturnDetailsHasValidCharacters: Boolean = {
     val regex = "^[ -~¢-¥©®±×÷‐₠-₿−-∝≈≠≣-≥]*$".r
-    regex.findFirstIn(revisedReturnDetailsModel.details).isDefined
+    revisedReturnDetailsModel.details match {
+      case regex(_ *) => true
+      case _ => false
+    }
   }
 
   def validate(implicit path: JsPath): ValidationResult[RevisedReturnDetailsModel] = {

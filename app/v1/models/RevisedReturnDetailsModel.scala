@@ -18,7 +18,7 @@ package v1.models
 
 import play.api.libs.json.{JsPath, JsString, Reads, Writes}
 import v1.validation.RevisedReturnDetailsValidator
-
+import utils.ReadStringWithTrim.stringReads
 
 case class RevisedReturnDetailsModel(details: String) extends RevisedReturnDetailsValidator {
   override val revisedReturnDetailsModel: RevisedReturnDetailsModel = this
