@@ -34,22 +34,32 @@ trait AdjustedGroupInterestValidator extends BaseValidation {
   private def validateGroupRatio(implicit path: JsPath): ValidationResult[BigDecimal] = {
     val isBetween0And100 = adjustedGroupInterestModel.groupRatio >= 0 && adjustedGroupInterestModel.groupRatio <= 100
 
-    if (isBetween0And100) {
-      adjustedGroupInterestModel.groupRatio.validNec
+    adjustedGroupInterestModel.groupRatio match {
+      case _ if !isBetween0And100 => GroupRatioError(adjustedGroupInterestModel.groupRatio).invalidNec
+      case groupRatio if groupRatio % 0.00001 != 0 => GroupRatioDecimalError(groupRatio).invalidNec
+      case _ => adjustedGroupInterestModel.groupRatio.validNec
+    }
+  }
+
+  private def validateQngie(implicit path: JsPath): ValidationResult[BigDecimal] = {
+    if (adjustedGroupInterestModel.qngie % 0.01 != 0) {
+      QngieDecimalError(adjustedGroupInterestModel.qngie).invalidNec
     } else {
-      GroupRatioError(adjustedGroupInterestModel.groupRatio).invalidNec
+      adjustedGroupInterestModel.qngie.validNec
+    }
+  }
+
+  private def validateGroupEBITDA(implicit path: JsPath): ValidationResult[BigDecimal] = {
+    if (adjustedGroupInterestModel.groupEBITDA % 0.01 != 0) {
+      GroupEBITDADecimalError(adjustedGroupInterestModel.groupEBITDA).invalidNec
+    } else {
+      adjustedGroupInterestModel.groupEBITDA.validNec
     }
   }
 
   private def validateGroupRatioCalculation(implicit path: JsPath): ValidationResult[BigDecimal] = {
 
     (adjustedGroupInterestModel.qngie, adjustedGroupInterestModel.groupEBITDA, adjustedGroupInterestModel.groupRatio) match {
-      case (qngie, _, _) if qngie % 0.01 != 0 =>
-        QngieDecimalError(qngie).invalidNec
-      case (_, groupEBITDA, _) if groupEBITDA % 0.01 != 0 =>
-        GroupEBITDADecimalError(groupEBITDA).invalidNec
-      case (_, _, groupRatio) if groupRatio % 0.00001 != 0 =>
-        GroupRatioDecimalError(groupRatio).invalidNec
       case (_, groupEBITDA, groupRatio) if groupEBITDA <= 0 && groupRatio == 100 =>
         adjustedGroupInterestModel.groupRatio.validNec
       case (_, groupEBITDA, groupRatio) if groupEBITDA <= 0 && groupRatio != 100 =>
@@ -63,8 +73,10 @@ trait AdjustedGroupInterestValidator extends BaseValidation {
   }
 
   def validate(implicit path: JsPath): ValidationResult[AdjustedGroupInterestModel] =
-    (validateGroupRatio,
-      validateGroupRatioCalculation).mapN((_, _) => adjustedGroupInterestModel)
+    (validateGroupRatio, 
+      validateQngie, 
+      validateGroupEBITDA,
+      validateGroupRatioCalculation).mapN((_, _, _, _) => adjustedGroupInterestModel)
 }
 
 case class QngieDecimalError(qngie: BigDecimal)(implicit topPath: JsPath) extends Validation {
