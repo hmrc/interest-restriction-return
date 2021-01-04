@@ -14,19 +14,17 @@
  * limitations under the License.
  */
 
-package v1.models
+package utils
 
-import play.api.libs.json.Json
-import v1.validation.AgentDetailsValidator
-import utils.ReadStringWithTrim.stringReads
+import play.api.libs.json._
 
-case class AgentDetailsModel(agentActingOnBehalfOfCompany: Boolean,
-                             agentName: Option[String]) extends AgentDetailsValidator {
-  override val agentDetailsModel = this
+object ReadStringWithTrim {
+
+  object Reads extends DefaultReads
+
+  implicit val stringReads: Reads[String] = new Reads[String] {
+    def reads(js: JsValue): JsResult[String] = Reads.StringReads.reads(js).map(_.trim)
+  }
+  
 }
 
-object AgentDetailsModel {
-
-  implicit val format = Json.format[AgentDetailsModel]
-
-}

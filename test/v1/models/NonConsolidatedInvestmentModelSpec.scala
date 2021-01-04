@@ -16,17 +16,17 @@
 
 package v1.models
 
-import play.api.libs.json.Json
-import v1.validation.AgentDetailsValidator
-import utils.ReadStringWithTrim.stringReads
+import assets.NonConsolidatedInvestmentConstants._
+import org.scalatest.{Matchers, WordSpec}
 
-case class AgentDetailsModel(agentActingOnBehalfOfCompany: Boolean,
-                             agentName: Option[String]) extends AgentDetailsValidator {
-  override val agentDetailsModel = this
-}
+class NonConsolidatedInvestmentModelSpec extends WordSpec with Matchers {
+  "NonConsolidatedInvestmentModel" should {
+    "trim the whitespace in the name" in {
 
-object AgentDetailsModel {
+    val expectedValue = nonConsolidatedModel
+    val actualValue = nonConsolidatedJsonWhitespace.as[NonConsolidatedInvestmentModel]
 
-  implicit val format = Json.format[AgentDetailsModel]
-
+    actualValue shouldBe expectedValue
+    }
+  }
 }

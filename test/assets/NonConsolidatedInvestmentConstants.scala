@@ -30,4 +30,8 @@ object NonConsolidatedInvestmentConstants {
   val nonConsolidatedJson = Json.obj(
     "investmentName" -> investmentName
   )
+
+  val nonConsolidatedJsonWhitespace = Json.obj(
+    "investmentName" -> " some Investment "
+  )
 }
