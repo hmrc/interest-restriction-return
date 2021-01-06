@@ -20,6 +20,7 @@ import assets.fullReturn.AdjustedGroupInterestConstants._
 import play.api.libs.json.JsPath
 import utils.BaseSpec
 import v1.validation.BaseValidationSpec
+import cats.data.NonEmptyChain
 
 class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpec {
 
@@ -212,6 +213,37 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
 
         }
       }
+
+      "All fields fail validation" in {
+        val qngie = 5.0122
+        val groupEBITDA = 8.888
+        val groupRatio = 0.621234
+
+        val model = adjustedGroupInterestModel.copy(
+
+          qngie = qngie,
+          groupEBITDA = groupEBITDA,
+          groupRatio = groupRatio
+        )
+        val expectedErrors = NonEmptyChain(GroupRatioDecimalError(0.621234), QngieDecimalError(5.0122), GroupEBITDADecimalError(8.888), GroupRatioCalculationError(model))
+        model.validate.toEither shouldBe Left(expectedErrors)
+      }
+
+      "Multiple fields fail validation" in {
+        val qngie = 5.0122
+        val groupEBITDA = 8.88
+        val groupRatio = 0.621234
+
+        val model = adjustedGroupInterestModel.copy(
+
+          qngie = qngie,
+          groupEBITDA = groupEBITDA,
+          groupRatio = groupRatio
+        )
+        val expectedErrors = NonEmptyChain(GroupRatioDecimalError(0.621234), QngieDecimalError(5.0122), GroupRatioCalculationError(model))
+        model.validate.toEither shouldBe Left(expectedErrors)
+      }
+
     }
   }
 }
