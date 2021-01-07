@@ -52,33 +52,35 @@
       "isElected": true,
       "consolidatedPartnerships": [{
         "partnershipName": "some partner",
-        "sautr": "1234567890"
+        "sautr": "1123456789"
       }]
     }
   },
-  "ukCompanies": [{
-    "companyName": "Company Name ltd",
-    "utr": "1123456789",
-    "consenting": true,
-    "qicElection": true,
-    "netTaxInterestExpense": 0,
-    "netTaxInterestIncome": 50,
-    "taxEBITDA": 5,
-    "allocatedReactivations": {
-      "currentPeriodReactivation": 2
+  "ukCompanies": [
+    {
+      "companyName": "Company Name ltd",
+      "utr": "1123456789",
+      "consenting": true,
+      "qicElection": true,
+      "netTaxInterestExpense": 0,
+      "netTaxInterestIncome": 50,
+      "taxEBITDA": 5,
+      "allocatedReactivations": {
+        "currentPeriodReactivation": 2
+      }
+    },{
+      "companyName": "Company Name ltd",
+      "utr": "1123456789",
+      "consenting": true,
+      "qicElection": true,
+      "netTaxInterestExpense": 0,
+      "netTaxInterestIncome": 50,
+      "taxEBITDA": 5,
+      "allocatedReactivations": {
+        "currentPeriodReactivation": 2
+      }
     }
-  }, {
-    "companyName": "Company Name ltd",
-    "utr": "1123456789",
-    "consenting": true,
-    "qicElection": true,
-    "netTaxInterestExpense": 0,
-    "netTaxInterestIncome": 50,
-    "taxEBITDA": 5,
-    "allocatedReactivations": {
-      "currentPeriodReactivation": 2
-    }
-  }],
+  ],
   "angie": 1.11,
   "returnContainsEstimates": true,
   "groupSubjectToInterestRestrictions": false,

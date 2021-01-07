@@ -3,15 +3,80 @@
 uses:
   types: https://developer.service.hmrc.gov.uk/api-documentation/assets/common/modules/types.raml
 
-# Example for when we start using errors
-#traits:
-#  apiServiceError:
-#    responses:
-#      500:
-#        body:
-#          application/json:
-#            type: types.errorResponse
-#            example:
-#              description: When there is an internal error within the service
-#              value:
-#                code: INTERNAL_SERVER_ERROR
+traits:
+  notFound:
+    responses:
+      404:
+        body:
+          application/json:
+            type: types.errorResponse
+            example:
+              description: Matching resource not found.
+              value:
+                code: MATCHING_RESOURCE_NOT_FOUND
+
+  downstreamError:
+    responses:
+      500:
+        body:
+          application/json:
+            type: types.errorResponse
+            example:
+              description: An internal server error occurred.
+              value:
+                code: INTERNAL_SERVER_ERROR
+
+  badRequest:
+    responses:
+      400:
+        body:
+          application/json:
+            type: types.errorResponse
+            example:
+              description: Invalid request.
+              value:
+                code: INVALID_REQUEST
+
+  invalidBodyType:
+    responses:
+      400:
+        body:
+          application/json:
+            type: types.errorResponse
+            example:
+              description: Expecting text/json or application/json body.
+              value:
+                code: INVALID_BODY_TYPE
+
+  unauthorised:
+    responses:
+      401:
+        body:
+          application/json:
+            type: types.errorResponse
+            example:
+              description: The client and/or agent is not authorised.
+              value:
+                code: CLIENT_OR_AGENT_NOT_AUTHORISED    
+
+  invalidAcceptHeader:
+    responses:
+      406:
+        body:
+          application/json:
+            type: types.errorResponse
+            example:
+              description: The accept header is missing or invalid.
+              value:
+                code: ACCEPT_HEADER_INVALID   
+
+  unsupportedVersion:
+    responses:
+      404:
+        body:
+          application/json:
+            type: types.errorResponse
+            example:
+              description: The requested resource could not be found.
+              value:
+                code: NOT_FOUND       
