@@ -34,18 +34,18 @@ This is a protected backend microservice that is the conduit between Public faci
 	},
     "reportingCompany": {
     	"companyName": "company name a",
-    	"ctutr": "1234567890",
+      "ctutr": "1123456789",
     	"sameAsUltimateParent": true,
     	"reportingCompanyDeemed": false
     },
     "authorisingCompanies": [
       {
     	"companyName": "company name b",
-    	"ctutr": "1234567890"
+      "ctutr": "1123456789"
       },
       {
     	"companyName": "company name c",
-    	"ctutr": "1234567890"
+      "ctutr": "1123456789"
       }
     ],
     "declaration": true
@@ -139,19 +139,19 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
     },
     "reportingCompany": {
       "companyName": "some reporting company",
-      "ctutr": "1234567890",
+      "ctutr": "1123456789",
       "sameAsUltimateParent": true,
       "reportingCompanyDeemed": true
     },
     "isReportingCompanyRevokingItself": true,
     "companyMakingRevocation": {
       "companyName": "some company",
-      "ctutr": "1234567890",
+      "ctutr": "1123456789",
       "countryOfIncorporation": "US"
     },
     "ultimateParent": {
       "registeredCompanyName": "some company",
-      "ctutr": "1234567890"
+      "ctutr": "1123456789"
     },
     "accountingPeriod": {
       "startDate": "2019-05-01",
@@ -160,7 +160,8 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
     "authorisingCompanies": [
       {
         "companyName": "some authorising company",
-        "ctutr": "1234567890"
+        "ctutr": "1123456789
+"
       }
     ],
     "declaration": true
@@ -253,19 +254,22 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
      },
      "reportingCompany": {
        "companyName": "some reporting company",
-       "ctutr": "1234567890",
+       "ctutr": "1123456789
+",
        "sameAsUltimateParent": true,
        "reportingCompanyDeemed": true
      },
      "parentCompany": {
        "ultimateParent": {
          "registeredCompanyName": "some company",
-         "ctutr": "1234567890"
+         "ctutr": "1123456789
+  "
        },
        "deemedParent": [
          {
            "companyName": "some company ltd",
-           "ctutr": "1234567890",
+           "ctutr": "1123456789
+    ",
            "countryOfIncorporation": "US",
            "sautr": "9876543210"
          }
@@ -313,7 +317,8 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
      "ukCompanies": [
        {
          "companyName": "some company",
-         "utr": "1234567890",
+         "utr": "1123456789
+  ",
          "consenting": true,
          "qicElection": false
        }
@@ -407,7 +412,8 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
      },
      "reportingCompany": {
        "companyName": "some reporting company",
-       "ctutr": "1234567890",
+       "ctutr": "1123456789
+",
        
        "sameAsUltimateParent": true,
        "reportingCompanyDeemed": true
@@ -466,7 +472,8 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
      "ukCompanies": [
        {
          "companyName": "some company",
-         "utr": "1234567890",
+         "utr": "1123456789
+  ",
          "consenting": true,
          "qicElection": false,
          "netTaxInterestExpense": 1.11,

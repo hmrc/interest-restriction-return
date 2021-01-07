@@ -13,7 +13,7 @@
     "ultimateParent" : {
       "companyName" : "BCompany",
       "isUk": true,
-      "ctutr" : "9999999999"
+      "ctutr" : "1123456789"
     }
   },
   "publicInfrastructure" : true,
@@ -57,29 +57,29 @@
       "isElected" : true,
       "consolidatedPartnerships" : [{
         "partnershipName" : "APartnership",
-        "sautr" : "1234567890"
+        "sautr" : "1123456789"
       },
-        {
-          "partnershipName" : "BPartnership",
-          "sautr" : "1111111111"
-        }]
+      {
+        "partnershipName" : "BPartnership",
+        "sautr" : "1123456789"
+      }]
     }
   },
   "ukCompanies" : [{
-    "companyName" : "ACompany",
-    "utr" : "1123456789",
-    "consenting" : true,
-    "qicElection" : false
-  },
+      "companyName" : "ACompany",
+      "utr" : "1123456789",
+      "consenting" : true,
+      "qicElection" : false
+    },
     {
       "companyName" : "BCompany",
-      "utr" : "9999999999",
+      "utr" : "1123456789",
       "consenting" : true,
       "qicElection" : false
     },
     {
       "companyName" : "CCompany",
-      "utr" : "2222222222",
+      "utr" : "1123456789",
       "consenting" : false,
       "qicElection" : true
     }]
