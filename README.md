@@ -160,8 +160,7 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
     "authorisingCompanies": [
       {
         "companyName": "some authorising company",
-        "ctutr": "1123456789
-"
+        "ctutr": "1123456789"
       }
     ],
     "declaration": true
@@ -254,22 +253,19 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
      },
      "reportingCompany": {
        "companyName": "some reporting company",
-       "ctutr": "1123456789
-",
+       "ctutr": "1123456789",
        "sameAsUltimateParent": true,
        "reportingCompanyDeemed": true
      },
      "parentCompany": {
        "ultimateParent": {
          "registeredCompanyName": "some company",
-         "ctutr": "1123456789
-  "
+         "ctutr": "1123456789"
        },
        "deemedParent": [
          {
            "companyName": "some company ltd",
-           "ctutr": "1123456789
-    ",
+           "ctutr": "1123456789",
            "countryOfIncorporation": "US",
            "sautr": "9876543210"
          }
@@ -317,8 +313,7 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
      "ukCompanies": [
        {
          "companyName": "some company",
-         "utr": "1123456789
-  ",
+         "utr": "1123456789",
          "consenting": true,
          "qicElection": false
        }
@@ -412,8 +407,7 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
      },
      "reportingCompany": {
        "companyName": "some reporting company",
-       "ctutr": "1123456789
-",
+       "ctutr": "1123456789",
        
        "sameAsUltimateParent": true,
        "reportingCompanyDeemed": true
@@ -472,8 +466,7 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
      "ukCompanies": [
        {
          "companyName": "some company",
-         "utr": "1123456789
-  ",
+         "utr": "1123456789",
          "consenting": true,
          "qicElection": false,
          "netTaxInterestExpense": 1.11,
