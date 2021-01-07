@@ -34,18 +34,18 @@ This is a protected backend microservice that is the conduit between Public faci
 	},
     "reportingCompany": {
     	"companyName": "company name a",
-      "ctutr": "1123456789",
+    	"ctutr": "1123456789",
     	"sameAsUltimateParent": true,
     	"reportingCompanyDeemed": false
     },
     "authorisingCompanies": [
       {
     	"companyName": "company name b",
-      "ctutr": "1123456789"
+    	"ctutr": "1123456789"
       },
       {
     	"companyName": "company name c",
-      "ctutr": "1123456789"
+    	"ctutr": "1123456789"
       }
     ],
     "declaration": true
