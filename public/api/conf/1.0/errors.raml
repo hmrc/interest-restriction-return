@@ -14,7 +14,6 @@ traits:
               description: Matching resource not found.
               value:
                 code: MATCHING_RESOURCE_NOT_FOUND
-
   downstreamError:
     responses:
       500:
@@ -25,7 +24,6 @@ traits:
               description: An internal server error occurred.
               value:
                 code: INTERNAL_SERVER_ERROR
-
   badRequest:
     responses:
       400:
@@ -36,7 +34,6 @@ traits:
               description: Invalid request.
               value:
                 code: INVALID_REQUEST
-
   invalidBodyType:
     responses:
       400:
@@ -47,7 +44,6 @@ traits:
               description: Expecting text/json or application/json body.
               value:
                 code: INVALID_BODY_TYPE
-
   unauthorised:
     responses:
       401:
@@ -58,7 +54,6 @@ traits:
               description: The client and/or agent is not authorised.
               value:
                 code: CLIENT_OR_AGENT_NOT_AUTHORISED    
-
   invalidAcceptHeader:
     responses:
       406:
@@ -69,7 +64,6 @@ traits:
               description: The accept header is missing or invalid.
               value:
                 code: ACCEPT_HEADER_INVALID   
-
   unsupportedVersion:
     responses:
       404:
