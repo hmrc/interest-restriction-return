@@ -594,24 +594,66 @@ traits:
               description: "ap3EndDate ([AP3 END DATE]) is before the group accounting period end date ([GROUP END DATE])"
               value:
                 code: INVALID_REQUEST
-  groupLevelAmountCannotBeNegative:
+  interestAllowanceForPeriodCannotBeNegative:
     responses:
       400:
         body:
           application/json:
             type: types.errorResponse
             example:
-              description: "[FIELD] cannot be negative"
+              description: "interestAllowanceForPeriod cannot be negative"
               value:
                 code: INVALID_REQUEST
-  groupLevelAmountDecimalError:
+
+  interestAllowanceBroughtForwardCannotBeNegative:
     responses:
       400:
         body:
           application/json:
             type: types.errorResponse
             example:
-              description: "[FIELD] has greater than the allowed 2 decimal places."
+              description: "interestAllowanceBroughtForward cannot be negative"
+              value:
+                code: INVALID_REQUEST
+
+  interestCapacityForPeriodCannotBeNegative:
+    responses:
+      400:
+        body:
+          application/json:
+            type: types.errorResponse
+            example:
+              description: "interestCapacityForPeriod cannot be negative"
+              value:
+                code: INVALID_REQUEST
+  interestAllowanceForPeriodDecimalError:
+    responses:
+      400:
+        body:
+          application/json:
+            type: types.errorResponse
+            example:
+              description: "interestAllowanceForPeriod has greater than the allowed 2 decimal places."
+              value:
+                code: INVALID_REQUEST
+  interestAllowanceBroughtForwardDecimalError:
+    responses:
+      400:
+        body:
+          application/json:
+            type: types.errorResponse
+            example:
+              description: "interestAllowanceBroughtForward has greater than the allowed 2 decimal places."
+              value:
+                code: INVALID_REQUEST
+  interestCapacityForPeriodDecimalError:
+    responses:
+      400:
+        body:
+          application/json:
+            type: types.errorResponse
+            example:
+              description: "interestCapacityForPeriod has greater than the allowed 2 decimal places."
               value:
                 code: INVALID_REQUEST
   countryCodeValueError:
