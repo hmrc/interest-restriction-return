@@ -204,26 +204,6 @@ traits:
               description: "A description of the amendments made to the return cannot be supplied if this is an original return"
               value:
                 code: INVALID_REQUEST
-  parentCompanyDetailsNotSupplied:
-    responses:
-      400:
-        body:
-          application/json:
-            type: types.errorResponse
-            example:
-              description: "Parent Company is required if the Reporting Company is not the same as the Ultimate Parent"
-              value:
-                code: INVALID_REQUEST
-  parentCompanyDetailsSupplied:
-    responses:
-      400:
-        body:
-          application/json:
-            type: types.errorResponse
-            example:
-              description: "Parent Company should not be supplied as the parent is the same as the Reporting Company"
-              value:
-                code: INVALID_REQUEST
   negativeAngieError:
     responses:
       400:
@@ -362,16 +342,6 @@ traits:
             type: types.errorResponse
             example:
               description: "Allocated Reactivations cannot be supplied for this UK Company when the group is not subject to Interest Reactivation"
-              value:
-                code: INVALID_REQUEST
-  ukCompaniesEmpty:
-    responses:
-      400:
-        body:
-          application/json:
-            type: types.errorResponse
-            example:
-              description: "ukCompanies must have at least 1 UK company"
               value:
                 code: INVALID_REQUEST
   adjustedNetGroupInterestNotSupplied:
@@ -986,36 +956,6 @@ traits:
               description: "The end date must be less than 18 months after the start date"
               value:
                 code: INVALID_REQUEST
-  reportingCompanyNotAppointed:
-    responses:
-      400:
-        body:
-          application/json:
-            type: types.errorResponse
-            example:
-              description: "You need to appoint a reporting company"
-              value:
-                code: INVALID_REQUEST
-  revisedReturnDetailsNotSupplied:
-    responses:
-      400:
-        body:
-          application/json:
-            type: types.errorResponse
-            example:
-              description: "A description of the amendments made to the return must be supplied if this is a revised return"
-              value:
-                code: INVALID_REQUEST
-  revisedReturnDetailsSupplied:
-    responses:
-      400:
-        body:
-          application/json:
-            type: types.errorResponse
-            example:
-              description: "A description of the amendments made to the return cannot be supplied if this is an original return"
-              value:
-                code: INVALID_REQUEST
   parentCompanyDetailsNotSupplied:
     responses:
       400:
@@ -1044,26 +984,6 @@ traits:
             type: types.errorResponse
             example:
               description: "ukCompanies must have at least 1 UK company"
-              value:
-                code: INVALID_REQUEST
-  negativeAngieError:
-    responses:
-      400:
-        body:
-          application/json:
-            type: types.errorResponse
-            example:
-              description: "ANGIE cannot be negative"
-              value:
-                code: INVALID_REQUEST
-  angieDecimalError:
-    responses:
-      400:
-        body:
-          application/json:
-            type: types.errorResponse
-            example:
-              description: "ANGIE has greater than the allowed 2 decimal places."
               value:
                 code: INVALID_REQUEST
   companyMakingAppointmentMustSupplyDetails:
