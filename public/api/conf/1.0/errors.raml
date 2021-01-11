@@ -1026,16 +1026,6 @@ traits:
               description: "Ultimate Parent Company must not be supplied if it is the same as the reporting company"
               value:
                 code: INVALID_REQUEST
-  authorisingCompaniesEmpty:
-    responses:
-      400:
-        body:
-          application/json:
-            type: types.errorResponse
-            example:
-              description: "authorisingCompanies must have at least 1 authorising company"
-              value:
-                code: INVALID_REQUEST
   groupCompanyDetailsTotalCompaniesError:
     responses:
       400:
