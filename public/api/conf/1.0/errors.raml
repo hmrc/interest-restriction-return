@@ -83,18 +83,7 @@ traits:
             example:
               description: Identity of company submitting cannot contain data for UK and NonUK field
               value:
-                code: INVALID_REQUEST
-  incorrectOrEmptyBody:
-    responses:
-      400:
-        body:
-          application/json:
-            type: types.errorResponse
-            examples:
-              incorrectOrEmptyBody:
-                description: An empty or non-matching body was submitted
-                value:
-                  code: RULE_INCORRECT_OR_EMPTY_BODY_SUBMITTED                  
+                code: INVALID_REQUEST          
   qngieDecimalError:
     responses:
       400:
