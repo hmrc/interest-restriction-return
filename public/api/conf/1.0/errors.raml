@@ -80,11 +80,21 @@ traits:
         body:
           application/json:
             type: types.errorResponse
+            example:
+              description: Identity of company submitting cannot contain data for UK and NonUK field
+              value:
+                code: INVALID_REQUEST
+  incorrectOrEmptyBody:
+    responses:
+      400:
+        body:
+          application/json:
+            type: types.errorResponse
             examples:
-              cannotBeUkAndNonUk:
-                description: "Identity of company submitting cannot contain data for UK and NonUK field"
+              incorrectOrEmptyBody:
+                description: An empty or non-matching body was submitted
                 value:
-                  code: INVALID_REQUEST
+                  code: RULE_INCORRECT_OR_EMPTY_BODY_SUBMITTED                  
   qngieDecimalError:
     responses:
       400:
@@ -92,7 +102,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "qngie has greater than the allowed 2 decimal places."
+              description: qngie has greater than the allowed 2 decimal places.
               value:
                 code: INVALID_REQUEST
   groupEBITDADecimalError:
@@ -102,7 +112,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "groupEBITDA has greater than the allowed 2 decimal places."
+              description: groupEBITDA has greater than the allowed 2 decimal places.
               value:
                 code: INVALID_REQUEST
   groupRatioDecimalError:
@@ -112,7 +122,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "groupRatio has greater than the allowed 5 decimal places."
+              description: groupRatio has greater than the allowed 5 decimal places.
               value:
                 code: INVALID_REQUEST
   groupRatioError:
@@ -122,7 +132,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Group Ratio must be between 0 and 100%"
+              description: Group Ratio must be between 0 and 100%
               value:
                 code: INVALID_REQUEST
   groupRatioCalculationError:
@@ -132,7 +142,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "The value for Group Ratio Percent you provided [GROUP RATIO], does not match the value calculated from the provided QNGIE ([QNGIE]) and group-EBITDA [GROUP EBITDA], [CALCULATED GROUP RATIO]"
+              description: 'The value for Group Ratio Percent you provided [GROUP RATIO], does not match the value calculated from the provided QNGIE ([QNGIE]) and group-EBITDA [GROUP EBITDA], [CALCULATED GROUP RATIO]'
               value:
                 code: INVALID_REQUEST
   negativeOrZeroGroupEBITDAError:
@@ -142,7 +152,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "If group-EBITDA is negative or zero, groupRatio must be set to 100"
+              description: If group-EBITDA is negative or zero, groupRatio must be set to 100
               value:
                 code: INVALID_REQUEST
   negativeOrZeroGroupRatioError:
@@ -152,7 +162,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "If group ratio calculation is negative then group ratio should be 100%"
+              description: If group ratio calculation is negative then group ratio should be 100%
               value:
                 code: INVALID_REQUEST
   allocatedReactivationsCannotBeNegative:
@@ -162,7 +172,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "currentPeriodReactivation cannot be negative"
+              description: currentPeriodReactivation cannot be negative
               value:
                 code: INVALID_REQUEST
   allocatedReactivationsDecimalError:
@@ -172,7 +182,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "currentPeriodReactivation is only allowed to be two decimal place"
+              description: currentPeriodReactivation is only allowed to be two decimal place
               value:
                 code: INVALID_REQUEST
   reportingCompanyNotAppointed:
@@ -182,7 +192,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "You need to appoint a reporting company"
+              description: You need to appoint a reporting company
               value:
                 code: INVALID_REQUEST
   revisedReturnDetailsNotSupplied:
@@ -192,7 +202,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "A description of the amendments made to the return must be supplied if this is a revised return"
+              description: A description of the amendments made to the return must be supplied if this is a revised return
               value:
                 code: INVALID_REQUEST
   revisedReturnDetailsSupplied:
@@ -202,7 +212,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "A description of the amendments made to the return cannot be supplied if this is an original return"
+              description: A description of the amendments made to the return cannot be supplied if this is an original return
               value:
                 code: INVALID_REQUEST
   negativeAngieError:
@@ -212,7 +222,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "ANGIE cannot be negative"
+              description: ANGIE cannot be negative
               value:
                 code: INVALID_REQUEST
   angieDecimalError:
@@ -222,7 +232,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "ANGIE has greater than the allowed 2 decimal places."
+              description: ANGIE has greater than the allowed 2 decimal places.
               value:
                 code: INVALID_REQUEST
   groupLevelInterestRestrictionsAndReactivationSupplied:
@@ -232,7 +242,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "You cannot supply both a group level restriction and reactivation in the same return"
+              description: You cannot supply both a group level restriction and reactivation in the same return
               value:
                 code: INVALID_REQUEST
   interestReactivationCapNotSupplied:
@@ -242,7 +252,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Interest Reactivation Cap is required if the group is subject to interest reactivation"
+              description: Interest Reactivation Cap is required if the group is subject to interest reactivation
               value:
                 code: INVALID_REQUEST
   totalReactivationsDecimalError:
@@ -252,7 +262,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "totalReactivation has greater than the allowed 2 decimal places."
+              description: totalReactivation has greater than the allowed 2 decimal places.
               value:
                 code: INVALID_REQUEST
   totalReactivationsDoesNotMatch:
@@ -262,7 +272,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Calculated reactivations is [CALCULATED AMOUNT] which does not match the supplied amount of [TOTAL REACTIVATIONS]"
+              description: 'Calculated reactivations is [CALCULATED AMOUNT] which does not match the supplied amount of [TOTAL REACTIVATIONS]'
               value:
                 code: INVALID_REQUEST
   totalReactivationsNotGreaterThanCapacity:
@@ -272,7 +282,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Calculated Total Reactivations: [CALCULATED AMOUNT] cannot not be greater than Reactivations Capacity: [INTEREST REACTIVATION CAPACITY]"
+              description: 'Calculated Total Reactivations: [CALCULATED AMOUNT] cannot not be greater than Reactivations Capacity: [INTEREST REACTIVATION CAPACITY]'
               value:
                 code: INVALID_REQUEST
   totalRestrictionsDecimalError:
@@ -282,7 +292,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "totalRestrictions has greater than the allowed 2 decimal places."
+              description: totalRestrictions has greater than the allowed 2 decimal places.
               value:
                 code: INVALID_REQUEST
   totalRestrictionsDoesNotMatch:
@@ -292,7 +302,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Calculated restrictions is [CALCULATED AMOUNT] which does not match the supplied amount of [TOTAL RESTRICTIONS]"
+              description: 'Calculated restrictions is [CALCULATED AMOUNT] which does not match the supplied amount of [TOTAL RESTRICTIONS]'
               value:
                 code: INVALID_REQUEST
   aggInterestPositiveAndRestriction:
@@ -302,7 +312,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "You cannot have a calculated totalTaxInterest: [TOTAL TAX INTEREST] when there the  full return is subjectToRestriction: [SUBJECT TO RESTRICTION]"
+              description: 'You cannot have a calculated totalTaxInterest: [TOTAL TAX INTEREST] when there the  full return is subjectToRestriction: [SUBJECT TO RESTRICTION]'
               value:
                 code: INVALID_REQUEST
   missingAllocatedRestrictionsForCompanies:
@@ -312,7 +322,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Allocated Restrictions must be supplied for this UK Company when the group is subject to Interest Restriction"
+              description: Allocated Restrictions must be supplied for this UK Company when the group is subject to Interest Restriction
               value:
                 code: INVALID_REQUEST
   companiesContainedAllocatedRestrictions:
@@ -322,7 +332,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Allocated Restrictions cannot be supplied for this UK Company when the group is not subject to Interest Restriction"
+              description: Allocated Restrictions cannot be supplied for this UK Company when the group is not subject to Interest Restriction
               value:
                 code: INVALID_REQUEST
   missingAllocatedReactivationsForCompanies:
@@ -332,7 +342,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Allocated Reactivations must be supplied for this UK Company when the group is subject to Interest Reactivation"
+              description: Allocated Reactivations must be supplied for this UK Company when the group is subject to Interest Reactivation
               value:
                 code: INVALID_REQUEST
   companiesContainedAllocatedReactivations:
@@ -342,7 +352,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Allocated Reactivations cannot be supplied for this UK Company when the group is not subject to Interest Reactivation"
+              description: Allocated Reactivations cannot be supplied for this UK Company when the group is not subject to Interest Reactivation
               value:
                 code: INVALID_REQUEST
   adjustedNetGroupInterestNotSupplied:
@@ -352,7 +362,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Adjusted Group Interest is required when Group Ratio is elected"
+              description: Adjusted Group Interest is required when Group Ratio is elected
               value:
                 code: INVALID_REQUEST
   adjustedNetGroupInterestSupplied:
@@ -362,7 +372,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Adjusted Group Interest should not be supplied as Group Ratio is not elected"
+              description: Adjusted Group Interest should not be supplied as Group Ratio is not elected
               value:
                 code: INVALID_REQUEST
   netTaxInterestExpenseError:
@@ -372,7 +382,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "The supplied Net Tax Interest Expense is Negative, which it can not be."
+              description: The supplied Net Tax Interest Expense is Negative, which it can not be.
               value:
                 code: INVALID_REQUEST
   netTaxInterestExpenseDecimalError:
@@ -382,7 +392,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "The supplied Net Tax Interest Expense has greater than the allowed 2 decimal places."
+              description: The supplied Net Tax Interest Expense has greater than the allowed 2 decimal places.
               value:
                 code: INVALID_REQUEST
   netTaxInterestIncomeError:
@@ -392,7 +402,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "The supplied Net Tax Interest Income is Negative, which it can not be."
+              description: The supplied Net Tax Interest Income is Negative, which it can not be.
               value:
                 code: INVALID_REQUEST
   netTaxInterestIncomeDecimalError:
@@ -402,7 +412,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "The supplied Net Tax Interest Income has greater than the allowed 2 decimal places."
+              description: The supplied Net Tax Interest Income has greater than the allowed 2 decimal places.
               value:
                 code: INVALID_REQUEST
   expenseAndIncomeBothNotGreaterThanZero:
@@ -412,7 +422,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "A company can not have both a net tax interest expense and a net tax interest income"
+              description: A company can not have both a net tax interest expense and a net tax interest income
               value:
                 code: INVALID_REQUEST
   restrictionNotGreaterThanExpense:
@@ -422,7 +432,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "A company can not have a allocated restriction greater than it's net tax expense"
+              description: A company can not have a allocated restriction greater than its net tax expense
               value:
                 code: INVALID_REQUEST
   noTotalNetTaxInterestIncomeDuringRestriction:
@@ -432,7 +442,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "You cannot have a Net Tax Interest Income when you apply a restriction"
+              description: You cannot have a Net Tax Interest Income when you apply a restriction
               value:
                 code: INVALID_REQUEST
   taxEBITDADecimalError:
@@ -442,7 +452,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "The supplied Tax EBITDA has greater than the allowed 2 decimal places."
+              description: The supplied Tax EBITDA has greater than the allowed 2 decimal places.
               value:
                 code: INVALID_REQUEST
   allocatedRestrictionNotSupplied:
@@ -452,7 +462,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "disallowanceAp[INDEX] must have a value when ap[INDEX]End is supplied"
+              description: disallowanceAp[INDEX] must have a value when ap[INDEX]End is supplied
               value:
                 code: INVALID_REQUEST
   allocatedRestrictionSupplied:
@@ -462,7 +472,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "disallowanceAp[INDEX] cannot have a value when no ap[INDEX]End is supplied"
+              description: disallowanceAp[INDEX] cannot have a value when no ap[INDEX]End is supplied
               value:
                 code: INVALID_REQUEST
   allocatedRestrictionLaterPeriodSupplied:
@@ -472,7 +482,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "ap[INDEX]End cannot be supplied as a previous period is missing"
+              description: ap[INDEX]End cannot be supplied as a previous period is missing
               value:
                 code: INVALID_REQUEST
   allocatedRestrictionNegative:
@@ -482,7 +492,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "disallowanceAp[INDEX] cannot be negative"
+              description: disallowanceAp[INDEX] cannot be negative
               value:
                 code: INVALID_REQUEST
   allocatedRestrictionDecimalError:
@@ -492,7 +502,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "disallowanceAp[INDEX] has greater than the allowed 2 decimal places."
+              description: disallowanceAp[INDEX] has greater than the allowed 2 decimal places.
               value:
                 code: INVALID_REQUEST
   allocatedRestrictionTotalNotSupplied:
@@ -502,7 +512,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "totalDisallowances must be supplied if restrictions are supplied"
+              description: totalDisallowances must be supplied if restrictions are supplied
               value:
                 code: INVALID_REQUEST
   allocatedRestrictionTotalNegative:
@@ -512,7 +522,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "totalDisallowances cannot be negative"
+              description: totalDisallowances cannot be negative
               value:
                 code: INVALID_REQUEST
   allocatedRestrictionTotalDecimalError:
@@ -522,7 +532,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "totalDisallowances has greater than the allowed 2 decimal places."
+              description: totalDisallowances has greater than the allowed 2 decimal places.
               value:
                 code: INVALID_REQUEST
   allocatedRestrictionTotalDoesNotMatch:
@@ -532,7 +542,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "The totalDisallowances was [CALCULATED AMOUNT] which does not match the supplied amount of [TOTAL DISALLOWANCES]"
+              description: The totalDisallowances was [CALCULATED AMOUNT] which does not match the supplied amount of [TOTAL DISALLOWANCES]
               value:
                 code: INVALID_REQUEST
   allocatedRestrictionDateBeforePrevious:
@@ -542,7 +552,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "ap[INDEX]End cannot be equal to or before ap[INDEX - 1]EndDate"
+              description: ap[INDEX]End cannot be equal to or before ap[INDEX - 1]EndDate
               value:
                 code: INVALID_REQUEST
   ap1NotAfterGroupStartDate:
@@ -552,7 +562,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "ap1EndDate ([AP1 END DATE]) must be after the group accounting period start date ([GROUP START DATE])"
+              description: ap1EndDate ([AP1 END DATE]) must be after the group accounting period start date ([GROUP START DATE])
               value:
                 code: INVALID_REQUEST
   ap3BeforeGroupEndDate:
@@ -562,7 +572,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "ap3EndDate ([AP3 END DATE]) is before the group accounting period end date ([GROUP END DATE])"
+              description: ap3EndDate ([AP3 END DATE]) is before the group accounting period end date ([GROUP END DATE])
               value:
                 code: INVALID_REQUEST
   interestAllowanceForPeriodCannotBeNegative:
@@ -572,7 +582,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "interestAllowanceForPeriod cannot be negative"
+              description: interestAllowanceForPeriod cannot be negative
               value:
                 code: INVALID_REQUEST
 
@@ -583,7 +593,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "interestAllowanceBroughtForward cannot be negative"
+              description: interestAllowanceBroughtForward cannot be negative
               value:
                 code: INVALID_REQUEST
 
@@ -594,7 +604,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "interestCapacityForPeriod cannot be negative"
+              description: interestCapacityForPeriod cannot be negative
               value:
                 code: INVALID_REQUEST
   interestAllowanceForPeriodDecimalError:
@@ -604,7 +614,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "interestAllowanceForPeriod has greater than the allowed 2 decimal places."
+              description: interestAllowanceForPeriod has greater than the allowed 2 decimal places.
               value:
                 code: INVALID_REQUEST
   interestAllowanceBroughtForwardDecimalError:
@@ -614,7 +624,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "interestAllowanceBroughtForward has greater than the allowed 2 decimal places."
+              description: interestAllowanceBroughtForward has greater than the allowed 2 decimal places.
               value:
                 code: INVALID_REQUEST
   interestCapacityForPeriodDecimalError:
@@ -624,7 +634,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "interestCapacityForPeriod has greater than the allowed 2 decimal places."
+              description: interestCapacityForPeriod has greater than the allowed 2 decimal places.
               value:
                 code: INVALID_REQUEST
   countryCodeValueError:
@@ -634,7 +644,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Country code [COUNTRY CODE] is not a valid country code"
+              description: Country code [COUNTRY CODE] is not a valid country code
               value:
                 code: INVALID_REQUEST
   countryCodeLengthError:
@@ -644,7 +654,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "UTR is [LENGTH] characters long and should be 2"
+              description: UTR is [LENGTH] characters long and should be 2
               value:
                 code: INVALID_REQUEST
   consolidatedPartnershipsSupplied:
@@ -654,7 +664,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Consolidated Partnership is not elected, unable to supply partnership name"
+              description: Consolidated Partnership is not elected, unable to supply partnership name
               value:
                 code: INVALID_REQUEST
   consolidatedPartnershipsNotSupplied:
@@ -664,7 +674,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Consolidated Partnership is elected, must supply partnership name"
+              description: Consolidated Partnership is elected, must supply partnership name
               value:
                 code: INVALID_REQUEST
   consolidatedPartnershipsEmpty:
@@ -674,7 +684,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "consolidatedPartnership must have at least 1 partnership"
+              description: consolidatedPartnership must have at least 1 partnership
               value:
                 code: INVALID_REQUEST
   identityOfAppointingCompanyIsNotSupplied:
@@ -684,7 +694,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Identity of Appointing Company must be supplied if it is not the same as the reporting company or agent"
+              description: Identity of Appointing Company must be supplied if it is not the same as the reporting company or agent
               value:
                 code: INVALID_REQUEST
   identityOfAppointingCompanyIsSupplied:
@@ -694,7 +704,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Identity of Appointing Company must not be supplied if it is the same as the reporting company or agent"
+              description: Identity of Appointing Company must not be supplied if it is the same as the reporting company or agent
               value:
                 code: INVALID_REQUEST
   ultimateParentCompanyIsSupplied:
@@ -704,7 +714,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Ultimate Parent Company must not be supplied if it is the same as the reporting company"
+              description: Ultimate Parent Company must not be supplied if it is the same as the reporting company
               value:
                 code: INVALID_REQUEST
   authorisingCompaniesEmpty:
@@ -714,7 +724,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "authorisingCompanies must have at least 1 authorising company"
+              description: authorisingCompanies must have at least 1 authorising company
               value:
                 code: INVALID_REQUEST
   parentCompanyCanNotBeUltimateAndDeemed:
@@ -724,7 +734,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Parent Company Model cannot contain data for Ultimate and Deemed field"
+              description: Parent Company Model cannot contain data for Ultimate and Deemed field
               value:
                 code: INVALID_REQUEST
   deemedParentsEmpty:
@@ -734,7 +744,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "deemedParent must have at least 1 deemed parent if supplied"
+              description: deemedParent must have at least 1 deemed parent if supplied
               value:
                 code: INVALID_REQUEST
   minTwoDeemedParents:
@@ -744,7 +754,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Min number of deemed Parent can only be two"
+              description: Min number of deemed Parent can only be two
               value:
                 code: INVALID_REQUEST
   maxThreeDeemedParents:
@@ -754,7 +764,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Max number of deemed Parents can only be three"
+              description: Max number of deemed Parents can only be three
               value:
                 code: INVALID_REQUEST
   ultimateParentWrongDetailsSuppliedError:
@@ -764,7 +774,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "you have given the details for all three ultimate parents please give correct detail"
+              description: you have given the details for all three ultimate parents please give correct detail
               value:
                 code: INVALID_REQUEST
   wrongUltimateParentIsUkCompanyAndPartnership:
@@ -774,7 +784,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "you have given details for a UK Company and Partnership"
+              description: you have given details for a UK Company and Partnership
               value:
                 code: INVALID_REQUEST
   wrongUltimateParentIsUkPartnershipAndNonUKCompany:
@@ -784,7 +794,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "you have given details for a UK Partnership and NonUK Company"
+              description: you have given details for a UK Partnership and NonUK Company
               value:
                 code: INVALID_REQUEST
   wrongUltimateParentIsUKCompanyAndNonUK:
@@ -794,7 +804,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "you have given details for a UK and Non UK Company"
+              description: you have given details for a UK and Non UK Company
               value:
                 code: INVALID_REQUEST
   nonConsolidatedInvestmentNameLengthError:
@@ -804,7 +814,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Investment name is [LENGTH] characters long and should be between 1 and 5000 character"
+              description: Investment name is [LENGTH] characters long and should be between 1 and 5000 character
               value:
                 code: INVALID_REQUEST
   nonConsolidatedInvestmentNameCharacterError:
@@ -814,7 +824,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Investment name contains invalid character"
+              description: Investment name contains invalid character
               value:
                 code: INVALID_REQUEST
   deemedParentWrongDetailsSuppliedError:
@@ -824,7 +834,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "you have given the details for all three ultimate parents please give correct detail"
+              description: you have given the details for all three ultimate parents please give correct detail
               value:
                 code: INVALID_REQUEST
   wrongDeemedParentIsUkCompanyAndPartnership:
@@ -834,7 +844,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "you have given details for a UK Company and Partnership"
+              description: you have given details for a UK Company and Partnership
               value:
                 code: INVALID_REQUEST
   wrongDeemedParentIsUkPartnershipAndNonUKCompany:
@@ -844,7 +854,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "you have given details for a UK Partnership and NonUK Company"
+              description: you have given details for a UK Partnership and NonUK Company
               value:
                 code: INVALID_REQUEST
   wrongDeemedParentIsUKCompanyAndNonUK:
@@ -854,7 +864,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "you have given details for a UK and Non UK Company"
+              description: you have given details for a UK and Non UK Company
               value:
                 code: INVALID_REQUEST
   groupRatioBlendedSupplied:
@@ -864,7 +874,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Group Ratio is not elected, unable to elect GroupRatioBlended Election"
+              description: Group Ratio is not elected, unable to elect GroupRatioBlended Election
               value:
                 code: INVALID_REQUEST
   groupRatioBlendedNotSupplied:
@@ -874,7 +884,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Group Ratio is elected, must supply GroupRatioBlended Election"
+              description: Group Ratio is elected, must supply GroupRatioBlended Election
               value:
                 code: INVALID_REQUEST
   groupEBITDASupplied:
@@ -884,7 +894,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Group Ratio is not elected, unable to elect groupEBITDAChargeableGains Election"
+              description: Group Ratio is not elected, unable to elect groupEBITDAChargeableGains Election
               value:
                 code: INVALID_REQUEST
   groupEBITDANotSupplied:
@@ -894,7 +904,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Group Ratio is elected, must provide groupEBITDAChargeableGains Election"
+              description: Group Ratio is elected, must provide groupEBITDAChargeableGains Election
               value:
                 code: INVALID_REQUEST
   uTRChecksumError:
@@ -904,7 +914,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "UTR Check Sum does not satisfy the check sum"
+              description: UTR Check Sum does not satisfy the check sum
               value:
                 code: INVALID_REQUEST
   uTRLengthError:
@@ -914,7 +924,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "UTR is [LENGTH] characters long and should be 10"
+              description: UTR is [LENGTH] characters long and should be 10
               value:
                 code: INVALID_REQUEST
   startDateCannotBeInFuture:
@@ -924,7 +934,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Start date cannot be in the future"
+              description: Start date cannot be in the future
               value:
                 code: INVALID_REQUEST
   startDateCannotBeBeforeMinimum:
@@ -934,7 +944,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Start date cannot be before 2016-10-01"
+              description: Start date cannot be before 2016-10-01
               value:
                 code: INVALID_REQUEST
   endDateAfterStartDate:
@@ -944,7 +954,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "End Date must be after start date"
+              description: End Date must be after start date
               value:
                 code: INVALID_REQUEST
   accountingPeriod18MonthsMax:
@@ -954,7 +964,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "The end date must be less than 18 months after the start date"
+              description: The end date must be less than 18 months after the start date
               value:
                 code: ACCOUNTING_PERIOD_MAX
   parentCompanyDetailsNotSupplied:
@@ -964,7 +974,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Parent Company is required if the Reporting Company is not the same as the Ultimate Parent"
+              description: Parent Company is required if the Reporting Company is not the same as the Ultimate Parent
               value:
                 code: INVALID_REQUEST
   parentCompanyDetailsSupplied:
@@ -974,7 +984,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Parent Company should not be supplied as the parent is the same as the Reporting Company"
+              description: Parent Company should not be supplied as the parent is the same as the Reporting Company
               value:
                 code: INVALID_REQUEST
   ukCompaniesEmpty:
@@ -984,7 +994,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "ukCompanies must have at least 1 UK company"
+              description: ukCompanies must have at least 1 UK company
               value:
                 code: INVALID_REQUEST
   companyMakingAppointmentMustSupplyDetails:
@@ -994,7 +1004,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "companyMakingRevocation must be supplied when isReportingCompanyRevokingItself is false"
+              description: companyMakingRevocation must be supplied when isReportingCompanyRevokingItself is false
               value:
                 code: INVALID_REQUEST
   declaredFiftyPercentOfEligibleCompanies:
@@ -1004,7 +1014,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "The declaration that the listed companies constitute at least 50% of the eligible companies must be true"
+              description: The declaration that the listed companies constitute at least 50% of the eligible companies must be true
               value:
                 code: INVALID_REQUEST
   detailsNotNeededIfCompanyRevokingItself:
@@ -1014,7 +1024,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "If the reporting company is submitting this revocation, the identity of company making revocation is not needed."
+              description: If the reporting company is submitting this revocation, the identity of company making revocation is not needed.
               value:
                 code: INVALID_REQUEST
   ultimateParentCompanyIsSuppliedRevoke:
@@ -1024,7 +1034,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Ultimate Parent Company must not be supplied if it is the same as the reporting company"
+              description: Ultimate Parent Company must not be supplied if it is the same as the reporting company
               value:
                 code: INVALID_REQUEST
   groupCompanyDetailsTotalCompaniesError:
@@ -1034,7 +1044,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "totalCompanies is [TOTAL COMPANIES] but it must be greater than 0 and less than 32767"
+              description: totalCompanies is [TOTAL COMPANIES] but it must be greater than 0 and less than 32767
               value:
                 code: INVALID_REQUEST
   revisedReturnDetailsLengthError:
@@ -1044,7 +1054,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "The revised return details are [LENGTH] characters long and should be between 1 and 5000 character"
+              description: The revised return details are [LENGTH] characters long and should be between 1 and 5000 character
               value:
                 code: INVALID_REQUEST
   revisedReturnDetailsCharacterError:
@@ -1054,7 +1064,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "The revised return details contain invalid character"
+              description: The revised return details contain invalid character
               value:
                 code: INVALID_REQUEST
   companyNameLengthError:
@@ -1064,7 +1074,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Company name is [LENGTH] characters long and should be between 1 and 160"
+              description: Company name is [LENGTH] characters long and should be between 1 and 160
               value:
                 code: INVALID_REQUEST
   companyNameCharactersError:
@@ -1074,7 +1084,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Company name contains invalid characters."
+              description: Company name contains invalid characters.
               value:
                 code: INVALID_REQUEST
   groupRatioBlendedNotElectedError:
@@ -1084,7 +1094,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Group Ratio Blended is not elected, unable to supply investor group"
+              description: Group Ratio Blended is not elected, unable to supply investor group
               value:
                 code: INVALID_REQUEST
   investorGroupsEmpty:
@@ -1094,7 +1104,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "investorGroups must have at least 1 investor if supplied"
+              description: investorGroups must have at least 1 investor if supplied
               value:
                 code: INVALID_REQUEST
   agentNameLengthError:
@@ -1104,7 +1114,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Agent name must be between 1-160 characters if supplied"
+              description: Agent name must be between 1-160 characters if supplied
               value:
                 code: INVALID_REQUEST
   agentNameNotSuppliedError:
@@ -1114,7 +1124,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Agent name must be supplied if agent is acting on behalf of company"
+              description: Agent name must be supplied if agent is acting on behalf of company
               value:
                 code: INVALID_REQUEST
   agentNameSuppliedError:
@@ -1124,7 +1134,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Agent name must not be supplied if agent is not acting on behalf of company"
+              description: Agent name must not be supplied if agent is not acting on behalf of company
               value:
                 code: INVALID_REQUEST
   agentNameCharactersError:
@@ -1134,7 +1144,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "Agent name contains invalid characters."
+              description: Agent name contains invalid characters.
               value:
                 code: INVALID_REQUEST
   nonConsolidatedInvestmentSupplied:
@@ -1144,7 +1154,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "You can only provide non-consolidated investments if non-consolidated election is made"
+              description: You can only provide non-consolidated investments if non-consolidated election is made
               value:
                 code: INVALID_REQUEST
   nonConsolidatedInvestmentNotSupplied:
@@ -1154,7 +1164,7 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "You must provide non-consolidated investments if non-consolidated election is made"
+              description: You must provide non-consolidated investments if non-consolidated election is made
               value:
                 code: INVALID_REQUEST
   nonConsolidatedInvestmentEmpty:
@@ -1164,6 +1174,6 @@ traits:
           application/json:
             type: types.errorResponse
             example:
-              description: "nonConsolidatedInvestments must contain at least 1 value if supplied"
+              description: nonConsolidatedInvestments must contain at least 1 value if supplied
               value:
                 code: INVALID_REQUEST
