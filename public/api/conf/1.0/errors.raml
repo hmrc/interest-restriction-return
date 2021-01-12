@@ -80,10 +80,11 @@ traits:
         body:
           application/json:
             type: types.errorResponse
-            example:
-              description: "Identity of company submitting cannot contain data for UK and NonUK field"
-              value:
-                code: INVALID_REQUEST
+            examples:
+              cannotBeUkAndNonUk:
+                description: "Identity of company submitting cannot contain data for UK and NonUK field"
+                value:
+                  code: INVALID_REQUEST
   qngieDecimalError:
     responses:
       400:
