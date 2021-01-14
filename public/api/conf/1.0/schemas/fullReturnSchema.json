@@ -4,9 +4,11 @@
   "type": "object",
   "properties": {
     "appointedReportingCompany": {
+      "description": "Indicate whether a reporting company has been reported",
       "type": "boolean"
     },
     "agentDetails": {
+      "description": "If an Agent is submitting this return on behalf of the reporting company and group details are supplied here",
       "$ref": "subSchemas/agentDetails.json"
     },
     "reportingCompany": {
@@ -25,21 +27,15 @@
       "$ref": "definitions/definitions.json#/definitions/submissionType"
     },
     "revisedReturnDetails": {
+      "description": "A description of why the return is being amended, this is mandatory if the submissionType is 'revised'",
       "$ref": "definitions/definitions.json#/definitions/explanatoryNotesShort"
     },
     "angie": {
-      "description": "Adjusted Net Group-Interest Expense (ANGIE) amount",
       "$ref": "definitions/definitions.json#/definitions/angie"
     },
     "returnContainsEstimates": {
       "description": "Indicator for whether the return contains figures which are estimated",
       "type": "boolean"
-    },
-    "groupEstimateReason": {
-      "$ref": "definitions/definitions.json#/definitions/explanatoryNotesLong"
-    },
-    "companiesEstimateReason": {
-      "$ref": "definitions/definitions.json#/definitions/explanatoryNotesLong"
     },
     "groupSubjectToInterestRestrictions": {
       "description": "Indicator for whether the group is subject to interest restrictions",
@@ -48,9 +44,6 @@
     "groupSubjectToInterestReactivation": {
       "description": "Indicator for whether the group is subject to interest reactivations",
       "type": "boolean"
-    },
-    "revisedReturnDifferences": {
-      "$ref": "definitions/definitions.json#/definitions/explanatoryNotesShort"
     },
     "groupLevelElections": {
       "$ref": "subSchemas/groupLevelElections.json"

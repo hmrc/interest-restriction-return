@@ -4,12 +4,14 @@
   "type": "object",
   "properties": {
     "agentDetails": {
+      "description": "If an Agent is submitting this on behalf of the reporting company and group details are supplied here",
       "$ref": "subSchemas/agentDetails.json"
     },
     "reportingCompany": {
       "$ref": "subSchemas/reportingCompany.json"
     },
     "isReportingCompanyRevokingItself": {
+      "description": "Indicate whether the reporting company is revoking itself",
       "type": "boolean"
     },
     "companyMakingRevocation" : {

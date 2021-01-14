@@ -4,6 +4,7 @@
   "type": "object",
   "properties": {
     "appointedReportingCompany": {
+      "description": "Indicate whether a reporting company has been reported",
       "type": "boolean"
     },
     "agentDetails": {
@@ -26,6 +27,7 @@
       "$ref": "definitions/definitions.json#/definitions/submissionType"
     },
     "revisedReturnDetails": {
+      "description": "A description of why the return is being amended, this is mandatory if the submissionType is 'revised'",
       "$ref": "definitions/definitions.json#/definitions/explanatoryNotesShort"
     },
     "angie": {

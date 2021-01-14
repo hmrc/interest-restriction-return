@@ -1,5 +1,4 @@
 {
-  "description": "Required. If the agent is acting on behalf of the reporting company then the agent's name should be provided",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -7,9 +6,11 @@
   ],
   "properties": {
     "agentActingOnBehalfOfCompany": {
+      "description": "Indicate whether the agent is acting on behalf of the reporting company",
       "type": "boolean"
     },
     "agentName": {
+      "description": "If the agent is acting on behalf of the reporting company then the agent's name must be provided",
       "$ref": "../definitions/definitions.json#/definitions/ukCompanyNameType"
     }
   }

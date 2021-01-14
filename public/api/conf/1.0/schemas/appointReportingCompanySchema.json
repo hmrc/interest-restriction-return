@@ -4,6 +4,7 @@
   "type": "object",
   "properties": {
     "agentDetails": {
+      "description": "If an Agent is submitting this on behalf of the reporting company and group details are supplied here",
       "$ref": "subSchemas/agentDetails.json"
     },
     "reportingCompany": {
@@ -13,6 +14,7 @@
       "$ref": "subSchemas/authorisingCompanies.json"
     },
     "isReportingCompanyAppointingItself": {
+      "description": "Indicate whether the reporting company is appointing itself",
       "type": "boolean"
     },
     "identityOfAppointingCompany": {

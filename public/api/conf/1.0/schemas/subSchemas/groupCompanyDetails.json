@@ -1,5 +1,5 @@
 {
-  "description": "Required. Details of the group company.",
+  "description": "Details of the group company.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -13,7 +13,7 @@
       "minimum": 1
     },
     "accountingPeriod": {
-      "description": "The worldwide groups accounting period",
+      "description": "The worldwide group's accounting period",
       "$ref": "accountingPeriod.json"
     }
   }
