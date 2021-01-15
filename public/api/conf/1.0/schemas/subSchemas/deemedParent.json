@@ -7,22 +7,26 @@
     "type": "object",
         "properties": {
           "isUk": {
-            "description": "Required.",
+            "description": "Indicate whether the ultimate parent company pays tax in the UK",
             "type": "boolean"
           },
           "companyName": {
+            "description": "Name of the company",
             "$ref": "../definitions/definitions.json#/definitions/globalCompanyNameType"
           },
           "ctutr": {
+            "description": "Corporation Tax Unique Taxpayer Reference",
             "$ref": "../definitions/definitions.json#/definitions/utrType"
           },
           "sautr": {
+            "description": "Self Assessment Unique Taxpayer Reference",
             "$ref": "../definitions/definitions.json#/definitions/utrType"
           },
           "knownAs": {
             "$ref": "../definitions/definitions.json#/definitions/globalCompanyNameType"
           },
           "countryOfIncorporation": {
+            "description": "Country of incorporation",
             "$ref": "../definitions/countrycodes.json#/definitions/countryCode"
           },
           "legalEntityIdentifier": {

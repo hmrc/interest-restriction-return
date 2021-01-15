@@ -1,30 +1,12 @@
 {
   "description": "Details of the parent company, this can be either an ultimate parent company or a deemed parent",
   "type": "object",
-  "oneOf": [
-    {
-      "type": "object",
-      "properties": {
-        "ultimateParent": {
-          "$ref": "ultimateParent.json"
-        }
-      },
-      "required": [
-        "ultimateParent"
-      ],
-      "additionalProperties": false
+  "properties": {
+    "ultimateParent": {
+      "$ref": "ultimateParent.json"
     },
-    {
-      "type": "object",
-      "properties": {
-        "deemedParent": {
-          "$ref": "deemedParent.json"
-        }
-      },
-      "required": [
-        "deemedParent"
-      ],
-      "additionalProperties": false
+    "deemedParent": {
+      "$ref": "deemedParent.json"
     }
-  ]
+  }
 }

@@ -12,7 +12,7 @@
         "$ref": "../definitions/definitions.json#/definitions/utrType"
       },
       "consenting": {
-        "description": "Indicate whether the reporting company is the same as the ultimate parent",
+        "description": "Indicate whether the UK Company is a consenting company",
         "type": "boolean"
       },
       "qicElection": {

@@ -1,5 +1,5 @@
 {
-  "description": "Required. The details of the reporting company",
+  "description": "The details of the reporting company",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -9,9 +9,11 @@
   ],
   "properties": {
     "companyName": {
+      "description": "Name of the reporting company",
       "$ref": "../definitions/definitions.json#/definitions/ukCompanyNameType"
     },
     "ctutr": {
+      "description": "The reporting company's Corporation Tax Unique Taxpayer Reference",
       "$ref": "../definitions/definitions.json#/definitions/utrType"
     },
     "sameAsUltimateParent": {

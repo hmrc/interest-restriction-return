@@ -1,5 +1,5 @@
 {
-  "description": "Optional. The details of the appointing company",
+  "description": "The details of the appointing company",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -7,12 +7,15 @@
   ],
   "properties": {
     "companyName": {
+      "description": "Name of the company",
       "$ref": "../definitions/definitions.json#/definitions/globalCompanyNameType"
     },
     "countryOfIncorporation": {
+      "description": "Country of incorporation",
       "$ref": "../definitions/countrycodes.json#/definitions/countryCode"
     },
     "ctutr": {
+      "description": "Corporation Tax Unique Taxpayer Reference",
       "$ref": "../definitions/definitions.json#/definitions/utrType"
     },
     "legalEntityIdentifier": {

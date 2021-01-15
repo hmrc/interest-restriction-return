@@ -1,5 +1,5 @@
 {
-  "description": "Required.",
+  "description": "Period of account",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -8,11 +8,11 @@
   ],
   "properties": {
     "startDate": {
-      "description": "The start date of the accounting period",
+      "description": "The start date of the accounting period. It cannot be before 2016-10-01",
       "$ref": "../definitions/definitions.json#/definitions/dateType"
     },
     "endDate": {
-      "description": "The end date of the accounting period",
+      "description": "The end date of the accounting period. It must be within 18 months after the start date",
       "$ref": "../definitions/definitions.json#/definitions/dateType"
     }
   }
