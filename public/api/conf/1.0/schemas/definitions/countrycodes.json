@@ -4,7 +4,7 @@
     "countryCode": {
       "description": "A valid ISO 3166-1 2 Alpha Country Code",
       "type": "string",
-      "example" : "UK"
+      "example" : "US"
     }
   }
 }
