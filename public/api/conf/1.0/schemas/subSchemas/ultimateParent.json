@@ -23,9 +23,6 @@
       "description": "Self Assessment Unique Taxpayer Reference",
       "$ref": "../definitions/definitions.json#/definitions/utrType"
     },
-    "knownAs": {
-      "$ref": "../definitions/definitions.json#/definitions/globalCompanyNameType"
-    },
     "countryOfIncorporation": {
       "description": "Country of incorporation. A valid ISO 3166-1 2 Alpha Country Code",
       "$ref": "../definitions/countrycodes.json#/definitions/countryCode"
