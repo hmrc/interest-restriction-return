@@ -48,6 +48,7 @@ trait RevokeReportingCompanyValidator extends BaseValidation {
   private def validateUltimateParentCompany: ValidationResult[Option[UltimateParentModel]] = {
     (revokeReportingCompanyModel.reportingCompany.sameAsUltimateParent, revokeReportingCompanyModel.ultimateParentCompany) match {
       case (true, Some(parent)) => UltimateParentCompanyIsSuppliedRevoke(parent).invalidNec
+      case (false, None) => UltimateParentCompanyIsNotSuppliedRevoke.invalidNec
       case _ => revokeReportingCompanyModel.ultimateParentCompany.validNec
     }
   }
@@ -95,6 +96,12 @@ case class UltimateParentCompanyIsSuppliedRevoke(ultimateParentModel: UltimatePa
   val errorMessage: String = "Ultimate Parent Company must not be supplied if it is the same as the reporting company"
   val path = JsPath \ "ultimateParentCompany"
   val value = Json.toJson(ultimateParentModel)
+}
+
+case object UltimateParentCompanyIsNotSuppliedRevoke extends Validation {
+  val errorMessage: String = "Ultimate Parent Company must be supplied if it is not the same as the reporting company"
+  val path = JsPath \ "ultimateParentCompany"
+  val value = Json.obj()
 }
 
 case object AuthorisingCompaniesEmpty extends Validation {
