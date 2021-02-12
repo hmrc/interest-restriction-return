@@ -273,7 +273,6 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
      },
      "publicInfrastructure": true,
      "groupCompanyDetails": {
-       "totalCompanies": 1,
        "accountingPeriod": {
          "startDate": "2019-05-01",
          "endDate": "2020-04-30"
@@ -426,7 +425,6 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
      },
      "publicInfrastructure": true,
      "groupCompanyDetails": {
-       "totalCompanies": 1,
        "accountingPeriod": {
          "startDate": "2019-05-01",
          "endDate": "2020-04-30"

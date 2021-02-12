@@ -27,24 +27,6 @@ trait GroupCompanyDetailsValidator extends BaseValidation {
 
   val groupCompanyDetails: GroupCompanyDetailsModel
 
-  private def validateTotalCompanies(implicit path: JsPath): ValidationResult[Int] = {
-    val companies = groupCompanyDetails.totalCompanies
-    if(companies >= 1 && companies <= Constants.intMax) {
-      companies.validNec
-    } else {
-      GroupCompanyDetailsTotalCompaniesError(companies).invalidNec
-    }
-  }
-
-  def validate(implicit path: JsPath): ValidationResult[GroupCompanyDetailsModel] =
-    (validateTotalCompanies,
-      groupCompanyDetails.accountingPeriod.validate(path \ "accountingPeriod")
-      ).mapN((_,_) => groupCompanyDetails)
-}
-
-case class GroupCompanyDetailsTotalCompaniesError(totalCompanies: Int)(implicit topPath: JsPath) extends Validation {
-  val path = topPath \ "totalCompanies"
-  val errorMessage: String =
-    s"totalCompanies is ${totalCompanies} but it must be greater than 0 and less than ${Constants.intMax}"
-  val value = Json.toJson(totalCompanies)
+  def validate(implicit path: JsPath): ValidationResult[_] =
+    groupCompanyDetails.accountingPeriod.validate(path \ "accountingPeriod")
 }

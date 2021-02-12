@@ -17,7 +17,6 @@
 package v1.validation.abbreviatedReturn
 
 import assets.AgentDetailsConstants._
-import assets.GroupCompanyDetailsConstants._
 import assets.GroupLevelElectionsConstants._
 import assets.GroupRatioConstants._
 import assets.ParentCompanyConstants._
@@ -90,11 +89,6 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
       "Parent Company is invalid" in {
         leftSideError(abbreviatedReturnUltimateParentModel.copy(parentCompany = Some(parentCompanyModelMax)).validate).errorMessage shouldBe
           ParentCompanyCanNotBeUltimateAndDeemed(parentCompanyModelMax).errorMessage
-      }
-
-      "Group Company Details are invalid" in {
-        leftSideError(abbreviatedReturnUltimateParentModel.copy(groupCompanyDetails = groupCompanyDetailsModel.copy(totalCompanies = 0)).validate).errorMessage shouldBe
-          GroupCompanyDetailsTotalCompaniesError(0).errorMessage
       }
 
       "it is not the appointed reporting company" in {

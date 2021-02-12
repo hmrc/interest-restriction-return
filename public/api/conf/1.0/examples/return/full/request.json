@@ -18,7 +18,6 @@
   },
   "publicInfrastructure": true,
   "groupCompanyDetails": {
-    "totalCompanies": 1,
     "accountingPeriod": {
       "startDate": "2019-02-18",
       "endDate": "2020-08-17"

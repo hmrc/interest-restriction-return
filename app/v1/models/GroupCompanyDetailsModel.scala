@@ -19,8 +19,7 @@ package v1.models
 import play.api.libs.json.Json
 import v1.validation.GroupCompanyDetailsValidator
 
-case class GroupCompanyDetailsModel(totalCompanies: Int,
-                                    accountingPeriod: AccountingPeriodModel) extends GroupCompanyDetailsValidator {
+case class GroupCompanyDetailsModel(accountingPeriod: AccountingPeriodModel) extends GroupCompanyDetailsValidator {
   override val groupCompanyDetails: GroupCompanyDetailsModel = this
 }
 
