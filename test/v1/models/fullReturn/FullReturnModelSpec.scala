@@ -116,6 +116,37 @@ class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants {
         fullReturnModel.aggregateNetTaxInterest shouldBe 0
       }
     }
+
+    "deriving the totalReactivation" when {
+
+      "there is a single company without a reactivation" in {
+
+        val fullReturnModel = fullReturnModelMax.copy(ukCompanies = Seq(ukCompanyModelRestrictionMax))
+
+        fullReturnModel.totalReactivation shouldBe 0
+      }
+
+      "there is a single company with a reactivation" in {
+
+        val fullReturnModel = fullReturnModelMax.copy(ukCompanies = Seq(ukCompanyModelReactivationMax))
+
+        fullReturnModel.totalReactivation shouldBe 2.00
+      }
+
+      "there is a mixture of companies with reactivations and restrictions" in {
+
+        val fullReturnModel = fullReturnModelMax.copy(ukCompanies = Seq(ukCompanyModelRestrictionMax, ukCompanyModelReactivationMax))
+
+        fullReturnModel.totalReactivation shouldBe 2.00
+      }
+
+      "there are multiple companies with reactivations" in {
+
+        val fullReturnModel = fullReturnModelMax.copy(ukCompanies = Seq(ukCompanyModelReactivationMax, ukCompanyModelReactivationMax, ukCompanyModelReactivationMax))
+
+        fullReturnModel.totalReactivation shouldBe 6.00
+      }
+    }
       
   }
 

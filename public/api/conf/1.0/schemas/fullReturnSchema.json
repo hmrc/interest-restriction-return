@@ -57,12 +57,6 @@
     "adjustedGroupInterest": {
       "$ref": "subSchemas/adjustedGroupInterest.json"
     },
-    "totalReactivation": {
-      "description": "Total of all allocated reactivations for each UK company",
-      "type": "number",
-      "minimum": 0,
-      "multipleOf": 0.01
-    },
     "totalRestrictions": {
       "description": "Total of all allocated restrictions for each UK company",
       "type": "number",
@@ -82,7 +76,6 @@
     "returnContainsEstimates",
     "groupSubjectToInterestRestrictions",
     "groupSubjectToInterestReactivation",
-    "totalReactivation",
     "totalRestrictions",
     "groupLevelElections"
   ]

@@ -107,26 +107,11 @@ class FullReturnValidatorSpec extends BaseSpec {
         ).validate).errorMessage shouldBe InterestReactivationCapNotSupplied.errorMessage
       }
 
-      "Total Reactivations does not match the sum of the total reactivations for each company" in {
-        leftSideError(fullReturnUltimateParentModel.copy(
-          totalReactivation = incorrectTotalReactivation,
-          ukCompanies = Seq(ukCompanyModelReactivationMax, ukCompanyModelReactivationMax) //4.44
-        ).validate).errorMessage shouldBe TotalReactivationsDoesNotMatch(incorrectTotalReactivation, currentPeriodReactivation + currentPeriodReactivation).errorMessage
-      }
-
-      "Total Reactivations greater than 2 decimal places" in {
-        leftSideError(fullReturnUltimateParentModel.copy(
-          totalReactivation = 1.111,
-          ukCompanies = Seq(ukCompanyModelReactivationMax, ukCompanyModelReactivationMax) //4.44
-        ).validate).errorMessage shouldBe TotalReactivationsDecimalError(incorrectTotalReactivation).errorMessage
-      }
-
       "Total Restrictions does not match the sum of the total restrictions for each company" in {
         leftSideError(fullReturnUltimateParentModel.copy(
           groupSubjectToInterestReactivation = false,
           groupSubjectToInterestRestrictions = true,
           totalRestrictions = incorrectDisallowances,
-          totalReactivation = 0,
           ukCompanies = Seq(ukCompanyModelRestrictionMax, ukCompanyModelRestrictionMax) //4.44
         ).validate).errorMessage shouldBe TotalRestrictionsDoesNotMatch(incorrectDisallowances, totalDisallowances + totalDisallowances).errorMessage
       }
@@ -136,7 +121,6 @@ class FullReturnValidatorSpec extends BaseSpec {
           groupSubjectToInterestReactivation = false,
           groupSubjectToInterestRestrictions = true,
           totalRestrictions = 1.111,
-          totalReactivation = 0,
           ukCompanies = Seq(ukCompanyModelRestrictionMax, ukCompanyModelRestrictionMax) //4.44
         ).validate).errorMessage shouldBe TotalRestrictionsDecimalError(incorrectDisallowances).errorMessage
       }
@@ -206,7 +190,6 @@ class FullReturnValidatorSpec extends BaseSpec {
               allocatedReactivations = Some(allocatedReactivationsModel.copy(currentPeriodReactivation = 9001.00))
             )
           ),
-          totalReactivation = 36004.0, //to get pass the TotalReactivationsDoesNotMatch validation
           groupLevelAmount = groupLevelAmountModel
         )
 
@@ -219,7 +202,6 @@ class FullReturnValidatorSpec extends BaseSpec {
         val model = fullReturnUltimateParentModel.copy(
           groupSubjectToInterestReactivation = false,
           groupSubjectToInterestRestrictions = true,
-          totalReactivation = 0,
           totalRestrictions = 12,
           ukCompanies = Seq(
             ukCompanyModelRestrictionMax.copy(
