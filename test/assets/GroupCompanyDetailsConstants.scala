@@ -23,6 +23,7 @@ import v1.models.GroupCompanyDetailsModel
 object GroupCompanyDetailsConstants {
 
   val groupCompanyDetailsJson = Json.obj(
+    "totalCompanies" -> 0,
     "accountingPeriod" -> accountingPeriodJson
   )
 

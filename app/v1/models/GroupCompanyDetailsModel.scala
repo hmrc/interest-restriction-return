@@ -16,7 +16,7 @@
 
 package v1.models
 
-import play.api.libs.json.Json
+import play.api.libs.json._
 import v1.validation.GroupCompanyDetailsValidator
 
 case class GroupCompanyDetailsModel(accountingPeriod: AccountingPeriodModel) extends GroupCompanyDetailsValidator {
@@ -24,6 +24,14 @@ case class GroupCompanyDetailsModel(accountingPeriod: AccountingPeriodModel) ext
 }
 
 object GroupCompanyDetailsModel {
-  implicit val format = Json.format[GroupCompanyDetailsModel]
+  val writes: Writes[GroupCompanyDetailsModel] = Writes { models =>
+    JsObject(Json.obj(
+      "totalCompanies" -> 0,
+      "accountingPeriod" -> models.accountingPeriod
+    ).fields.filterNot(_._2 == JsNull))
+  }
+
+  implicit val format: Format[GroupCompanyDetailsModel] = Format[GroupCompanyDetailsModel](Json.reads[GroupCompanyDetailsModel], writes)
+
 }
 
