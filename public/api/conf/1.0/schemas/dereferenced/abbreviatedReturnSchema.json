@@ -667,11 +667,6 @@
             "description": "Details about the group",
             "type": "object",
             "properties": {
-                "totalCompanies": {
-                    "description": "Total number of companies within the worldwide group",
-                    "type": "integer",
-                    "minimum": 1
-                },
                 "accountingPeriod": {
                     "description": "The worldwide groups accounting period",
                     "type": "object",
@@ -695,7 +690,6 @@
                 }
             },
             "required": [
-                "totalCompanies",
                 "accountingPeriod"
             ],
             "additionalProperties": false

@@ -22,15 +22,12 @@ import v1.models.GroupCompanyDetailsModel
 
 object GroupCompanyDetailsConstants {
 
-  val totalCompanies = 1
-
   val groupCompanyDetailsJson = Json.obj(
-    "totalCompanies" -> totalCompanies,
+    "totalCompanies" -> 1,
     "accountingPeriod" -> accountingPeriodJson
   )
 
   val groupCompanyDetailsModel = GroupCompanyDetailsModel(
-    totalCompanies = totalCompanies,
     accountingPeriod = accountingPeriodModel
   )
 

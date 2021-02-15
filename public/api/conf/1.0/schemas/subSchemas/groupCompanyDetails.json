@@ -3,15 +3,9 @@
   "type": "object",
   "additionalProperties": false,
   "required": [
-    "totalCompanies",
     "accountingPeriod"
   ],
   "properties": {
-    "totalCompanies": {
-      "description": "Total number of companies within the worldwide group",
-      "type": "integer",
-      "minimum": 1
-    },
     "accountingPeriod": {
       "description": "The worldwide group's accounting period",
       "$ref": "accountingPeriod.json"

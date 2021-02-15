@@ -5,10 +5,8 @@ import play.api.libs.json.Json
 
 object GroupCompanyDetailsITConstants {
 
-  val totalCompanies = 1
-
   val groupCompanyDetailsJson = Json.obj(
-    "totalCompanies" -> totalCompanies,
+    "totalCompanies" -> 1,
     "accountingPeriod" -> accountingPeriodJson
   )
 }

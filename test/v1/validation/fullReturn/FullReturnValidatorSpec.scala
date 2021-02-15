@@ -17,7 +17,6 @@
 package v1.validation.fullReturn
 
 import assets.AgentDetailsConstants._
-import assets.GroupCompanyDetailsConstants._
 import assets.GroupLevelElectionsConstants._
 import assets.GroupRatioConstants._
 import assets.ParentCompanyConstants._
@@ -280,11 +279,6 @@ class FullReturnValidatorSpec extends BaseSpec {
       "Parent Company is invalid" in {
         leftSideError(fullReturnUltimateParentModel.copy(parentCompany = Some(parentCompanyModelMax)).validate).errorMessage shouldBe
           ParentCompanyCanNotBeUltimateAndDeemed(parentCompanyModelMax).errorMessage
-      }
-
-      "Group Company Details are invalid" in {
-        leftSideError(fullReturnUltimateParentModel.copy(groupCompanyDetails = groupCompanyDetailsModel.copy(totalCompanies = 0)).validate).errorMessage shouldBe
-          GroupCompanyDetailsTotalCompaniesError(0).errorMessage
       }
 
       "Group Level Elections are invalid" in {
