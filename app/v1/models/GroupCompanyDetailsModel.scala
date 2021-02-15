@@ -26,7 +26,7 @@ case class GroupCompanyDetailsModel(accountingPeriod: AccountingPeriodModel) ext
 object GroupCompanyDetailsModel {
   val writes: Writes[GroupCompanyDetailsModel] = Writes { models =>
     JsObject(Json.obj(
-      "totalCompanies" -> 0,
+      "totalCompanies" -> 1,
       "accountingPeriod" -> models.accountingPeriod
     ).fields.filterNot(_._2 == JsNull))
   }
