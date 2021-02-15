@@ -94,20 +94,6 @@ trait FullReturnValidator extends BaseValidation {
     }
   }
 
-  private def validateTotalReactivations: ValidationResult[BigDecimal] = {
-    val reactivations: BigDecimal = fullReturnModel.totalReactivation
-    val calculatedReactivations: BigDecimal = fullReturnModel.ukCompanies.foldLeft[BigDecimal](0) {
-      (total, company) =>
-        total + company.allocatedReactivations.fold[BigDecimal](0)(reactivations =>
-          reactivations.currentPeriodReactivation)
-    }
-    (reactivations, calculatedReactivations) match {
-      case (r, _) if r % 0.01 != 0 => TotalReactivationsDecimalError(reactivations).invalidNec
-      case (r, cr) if r != cr => TotalReactivationsDoesNotMatch(reactivations, calculatedReactivations).invalidNec
-      case (_, _) => reactivations.validNec
-    }
-  }
-
   private def validateTotalReactivationsNotGreaterThanCapacity: ValidationResult[BigDecimal] = {
     val capacity: BigDecimal = fullReturnModel.groupLevelAmount.interestReactivationCap.getOrElse(0)
     val calculatedReactivations: BigDecimal = fullReturnModel.ukCompanies.foldLeft[BigDecimal](0) {
@@ -182,7 +168,6 @@ trait FullReturnValidator extends BaseValidation {
       validateAllocatedRestrictions,
       validateAllocatedReactivations,
       validateInterestReactivationCap,
-      validateTotalReactivations,
       validateTotalReactivationsNotGreaterThanCapacity,
       validateTotalRestrictions,
       validateAggInterestAndReallocationOrRestrictionStatus,
@@ -192,7 +177,7 @@ trait FullReturnValidator extends BaseValidation {
       validateAppointedReporter,
       fullReturnModel.groupLevelAmount.validate(JsPath \ "groupLevelAmount"),
       optionValidations(fullReturnModel.adjustedGroupInterest.map(_.validate(JsPath \ "adjustedGroupInterest")))
-      ).mapN((_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) => fullReturnModel)
+      ).mapN((_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) => fullReturnModel)
   }
 }
 

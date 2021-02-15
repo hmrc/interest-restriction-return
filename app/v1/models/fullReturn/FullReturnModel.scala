@@ -34,7 +34,6 @@ case class FullReturnModel(appointedReportingCompany: Boolean,
                            returnContainsEstimates: Boolean,
                            groupSubjectToInterestRestrictions: Boolean,
                            groupSubjectToInterestReactivation: Boolean,
-                           totalReactivation: BigDecimal,
                            totalRestrictions: BigDecimal,
                            groupLevelAmount: GroupLevelAmountModel,
                            adjustedGroupInterest: Option[AdjustedGroupInterestModel]) extends FullReturnValidator {
@@ -44,6 +43,7 @@ case class FullReturnModel(appointedReportingCompany: Boolean,
   private val totalTaxInterestIncome: BigDecimal = ukCompanies.map(_.netTaxInterestIncome).sum
   private val totalTaxInterestExpense: BigDecimal = ukCompanies.map(_.netTaxInterestExpense).sum
   val aggregateNetTaxInterest: BigDecimal = totalTaxInterestIncome - totalTaxInterestExpense
+  val totalReactivation: BigDecimal = ukCompanies.flatMap(_.allocatedReactivations.map(_.currentPeriodReactivation)).sum
 }
 
 object FullReturnModel {
