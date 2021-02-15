@@ -40,7 +40,8 @@ class AppointReportingCompanyValidatorSpec extends BaseSpec {
       "Identity of Appointing Company is NOT supplied" should {
 
         "Return valid" in {
-          rightSide(appointReportingCompanyModelMin.validate) shouldBe appointReportingCompanyModelMin
+          val model = appointReportingCompanyModelMin.copy(reportingCompany = reportingCompanyModel.copy(sameAsUltimateParent = true))
+          rightSide(model.validate) shouldBe model
         }
       }
     }
@@ -95,19 +96,19 @@ class AppointReportingCompanyValidatorSpec extends BaseSpec {
 
       "Ultimate Parent is NOT supplied" should {
 
-        "Return valid, as it is optional" in {
+        "Return invalid, as it should be supplied" in {
 
           val model = appointReportingCompanyModelMax.copy(
             reportingCompany = reportingCompanyModel.copy(sameAsUltimateParent = false),
             ultimateParentCompany = None
           )
-          rightSide(model.validate) shouldBe model
+          leftSideError(model.validate).errorMessage shouldBe UltimateParentCompanyIsNotSupplied.errorMessage
         }
       }
 
       "Ultimate Parent is supplied" should {
 
-        "Return valid, as it can be optionally supplied" in {
+        "Return valid" in {
 
           val model = appointReportingCompanyModelMax.copy(
             reportingCompany = reportingCompanyModel.copy(sameAsUltimateParent = false),
