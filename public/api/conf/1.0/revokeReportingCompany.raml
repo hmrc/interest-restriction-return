@@ -29,11 +29,3 @@ responses:
           example-1:
             description: Typical response received
             value: !include examples/reportingCompany/revoke/response.json
-  400:
-    body:
-      application/json:
-        type: !include schemas/validationResponseSchema.json
-        examples:
-          example-1:
-            description: Typical validation error response received
-            value: !include examples/reportingCompany/revoke/validationResponse.json

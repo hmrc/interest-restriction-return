@@ -14,10 +14,5 @@
         "type": "string"
       }
     }
-  },
-  "required": [
-    "field",
-    "errors"
-  ],
-  "additionalProperties": false
+  }
 }
