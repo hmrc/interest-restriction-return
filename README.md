@@ -271,7 +271,6 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
          }
        ]
      },
-     "publicInfrastructure": true,
      "groupCompanyDetails": {
        "accountingPeriod": {
          "startDate": "2019-05-01",
@@ -423,7 +422,6 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
          }
        ]
      },
-     "publicInfrastructure": true,
      "groupCompanyDetails": {
        "accountingPeriod": {
          "startDate": "2019-05-01",

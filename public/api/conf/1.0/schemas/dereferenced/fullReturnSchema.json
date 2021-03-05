@@ -658,10 +658,6 @@
                 }
             ]
         },
-        "publicInfrastructure": {
-            "description": "Indicate if any of the companies has made a qualifying infrastructure company (QIC) election",
-            "type": "boolean"
-        },
         "groupCompanyDetails": {
             "description": "Details about the group",
             "type": "object",
@@ -1063,7 +1059,6 @@
     "required": [
         "agentDetails",
         "reportingCompany",
-        "publicInfrastructure",
         "groupCompanyDetails",
         "submissionType",
         "ukCompanies",

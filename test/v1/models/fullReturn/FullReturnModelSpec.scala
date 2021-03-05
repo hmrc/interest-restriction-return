@@ -147,6 +147,45 @@ class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants {
         fullReturnModel.totalReactivation shouldBe 6.00
       }
     }
+
+    "deriving the publicInfrastructure" when {
+
+      "there is a single company with qic set to true" in {
+        val company = ukCompanyModelReactivationMax.copy(qicElection = true)
+        val fullReturnModel = fullReturnModelMax.copy(ukCompanies = Seq(company))
+
+        fullReturnModel.publicInfrastructure shouldBe true
+      }
+
+      "there is a single company with qic set to false" in {
+        val company = ukCompanyModelReactivationMax.copy(qicElection = false)
+        val fullReturnModel = fullReturnModelMax.copy(ukCompanies = Seq(company))
+
+        fullReturnModel.publicInfrastructure shouldBe false
+      }
+
+      "there are multiple companies with qic set to true" in {
+        val company = ukCompanyModelReactivationMax.copy(qicElection = true)
+        val fullReturnModel = fullReturnModelMax.copy(ukCompanies = Seq(company, company, company))
+
+        fullReturnModel.publicInfrastructure shouldBe true
+      }
+
+      "there are multiple companies with qic set to false" in {
+        val company = ukCompanyModelReactivationMax.copy(qicElection = false)
+        val fullReturnModel = fullReturnModelMax.copy(ukCompanies = Seq(company, company, company))
+
+        fullReturnModel.publicInfrastructure shouldBe false
+      }
+
+      "there are companies with a mixture of qic to set to true and false" in {
+        val trueCompany = ukCompanyModelReactivationMax.copy(qicElection = true)
+        val falseCompany = ukCompanyModelReactivationMax.copy(qicElection = false)
+        val fullReturnModel = fullReturnModelMax.copy(ukCompanies = Seq(trueCompany, falseCompany, falseCompany))
+
+        fullReturnModel.publicInfrastructure shouldBe true
+      }
+    }
       
   }
 

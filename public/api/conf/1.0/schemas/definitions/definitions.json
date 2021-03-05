@@ -36,10 +36,6 @@
       "type": "string",
       "pattern": "^[ -~¢-¥©®±×÷‐₠-₿−-∝≈≠≣-≥]{1,10000}$"
     },
-    "publicInfrastructure": {
-      "description": "Indicate if any of the companies has made a qualifying infrastructure company (QIC) election",
-      "type": "boolean"
-    },
     "submissionType": {
       "description": "Indicate whether this is the first (original) return or an amended (revised) return",
       "type": "string",

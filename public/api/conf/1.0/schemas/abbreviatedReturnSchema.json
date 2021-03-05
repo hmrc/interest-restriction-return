@@ -17,9 +17,6 @@
     "parentCompany": {
       "$ref": "subSchemas/parentCompany.json"
     },
-    "publicInfrastructure": {
-      "$ref": "definitions/definitions.json#/definitions/publicInfrastructure"
-    },
     "groupCompanyDetails": {
       "$ref": "subSchemas/groupCompanyDetails.json"
     },
@@ -44,7 +41,6 @@
     "appointedReportingCompany",
     "agentDetails",
     "reportingCompany",
-    "publicInfrastructure",
     "groupCompanyDetails",
     "submissionType",
     "ukCompanies"

@@ -24,7 +24,6 @@ case class FullReturnModel(appointedReportingCompany: Boolean,
                            agentDetails: AgentDetailsModel,
                            reportingCompany: ReportingCompanyModel,
                            parentCompany: Option[ParentCompanyModel],
-                           publicInfrastructure: Boolean,
                            groupCompanyDetails: GroupCompanyDetailsModel,
                            submissionType: SubmissionType,
                            revisedReturnDetails: Option[RevisedReturnDetailsModel],
@@ -44,6 +43,7 @@ case class FullReturnModel(appointedReportingCompany: Boolean,
   private val totalTaxInterestExpense: BigDecimal = ukCompanies.map(_.netTaxInterestExpense).sum
   val aggregateNetTaxInterest: BigDecimal = totalTaxInterestIncome - totalTaxInterestExpense
   val totalReactivation: BigDecimal = ukCompanies.flatMap(_.allocatedReactivations.map(_.currentPeriodReactivation)).sum
+  val publicInfrastructure: Boolean = ukCompanies.map(_.qicElection).exists(identity)
 }
 
 object FullReturnModel {
