@@ -22,6 +22,7 @@ import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 import play.api.libs.json.JsObject
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
+import assets.abbreviatedReturn.UkCompanyConstants._
 
 class AbbreviatedReturnModelSpec extends WordSpec with Matchers with BaseConstants {
 
@@ -70,6 +71,45 @@ class AbbreviatedReturnModelSpec extends WordSpec with Matchers with BaseConstan
         val actualValue = abbreviatedReturnJsonMin.as[AbbreviatedReturnModel]
 
         actualValue shouldBe expectedValue
+      }
+    }
+
+    "deriving the publicInfrastructure" when {
+
+      "there is a single company with qic set to true" in {
+        val company = ukCompanyModel.copy(qicElection = true)
+        val abbreviatedReturn = abbreviatedReturnModelMin.copy(ukCompanies = Seq(company))
+
+        abbreviatedReturn.publicInfrastructure shouldBe true
+      }
+
+      "there is a single company with qic set to false" in {
+        val company = ukCompanyModel.copy(qicElection = false)
+        val abbreviatedReturn = abbreviatedReturnModelMin.copy(ukCompanies = Seq(company))
+
+        abbreviatedReturn.publicInfrastructure shouldBe false
+      }
+
+      "there are multiple companies with qic set to true" in {
+        val company = ukCompanyModel.copy(qicElection = true)
+        val abbreviatedReturn = abbreviatedReturnModelMin.copy(ukCompanies = Seq(company, company, company))
+
+        abbreviatedReturn.publicInfrastructure shouldBe true
+      }
+
+      "there are multiple companies with qic set to false" in {
+        val company = ukCompanyModel.copy(qicElection = false)
+        val abbreviatedReturn = abbreviatedReturnModelMin.copy(ukCompanies = Seq(company, company, company))
+
+        abbreviatedReturn.publicInfrastructure shouldBe false
+      }
+
+      "there are companies with a mixture of qic to set to true and false" in {
+        val trueCompany = ukCompanyModel.copy(qicElection = true)
+        val falseCompany = ukCompanyModel.copy(qicElection = false)
+        val abbreviatedReturn = abbreviatedReturnModelMin.copy(ukCompanies = Seq(trueCompany, falseCompany, falseCompany))
+
+        abbreviatedReturn.publicInfrastructure shouldBe true
       }
     }
   }
