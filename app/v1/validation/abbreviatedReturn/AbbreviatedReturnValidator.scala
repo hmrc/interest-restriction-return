@@ -45,15 +45,6 @@ trait AbbreviatedReturnValidator extends BaseValidation {
     }
   }
 
-  private def validateAngie: ValidationResult[BigDecimal] = {
-    val angie: BigDecimal = abbreviatedReturnModel.angie.getOrElse(0)
-    angie match {
-      case a if a < 0 => NegativeAngieError(angie).invalidNec
-      case a if a % 0.01 != 0 =>AngieDecimalError(angie).invalidNec
-      case _ => angie.validNec
-    }
-  }
-
   private def validateAppointedReporter: ValidationResult[Boolean] = {
     if(abbreviatedReturnModel.appointedReportingCompany) abbreviatedReturnModel.appointedReportingCompany.validNec else {
       ReportingCompanyNotAppointed.invalidNec
@@ -77,9 +68,8 @@ trait AbbreviatedReturnValidator extends BaseValidation {
       validatedUkCompanies,
       validateParentCompany,
       validateRevisedReturnDetails,
-      validateAngie,
       validateAppointedReporter
-      ).mapN((_,_,_,_,_,_,_,_,_,_) => abbreviatedReturnModel)
+      ).mapN((_,_,_,_,_,_,_,_,_) => abbreviatedReturnModel)
   }
 }
 

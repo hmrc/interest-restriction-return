@@ -29,7 +29,6 @@ import v1.models.{Original, Revised, RevisedReturnDetailsModel}
 object AbbreviatedReturnConstants {
 
   val ackRef = "ackRef"
-  val angie: BigDecimal = 1.11
 
   val abbreviatedReturnUltimateParentJson = Json.obj(
     "appointedReportingCompany" -> true,
@@ -41,7 +40,6 @@ object AbbreviatedReturnConstants {
     "submissionType" -> Revised,
     "revisedReturnDetails" -> "revised details",
     "groupLevelElections" -> groupLevelElectionsJsonMax,
-    "angie" -> angie,
     "ukCompanies" -> Seq(ukCompanyJson)
   )
 
@@ -55,7 +53,6 @@ object AbbreviatedReturnConstants {
     submissionType = Revised,
     revisedReturnDetails = Some(RevisedReturnDetailsModel("revised details")),
     groupLevelElections = Some(groupLevelElectionsModelMax),
-    angie = Some(angie),
     ukCompanies = Seq(ukCompanyModel)
   )
 
@@ -69,7 +66,6 @@ object AbbreviatedReturnConstants {
     "submissionType" -> Revised,
     "revisedReturnDetails" -> "revised details",
     "groupLevelElections" -> groupLevelElectionsJsonMax,
-    "angie" -> angie,
     "ukCompanies" -> Seq(ukCompanyJson)
   )
 
@@ -83,7 +79,6 @@ object AbbreviatedReturnConstants {
     submissionType = Revised,
     revisedReturnDetails = Some(RevisedReturnDetailsModel("revised details")),
     groupLevelElections = Some(groupLevelElectionsModelMax),
-    angie = Some(angie),
     ukCompanies = Seq(ukCompanyModel)
   )
 
@@ -107,7 +102,6 @@ object AbbreviatedReturnConstants {
     submissionType = Original,
     revisedReturnDetails = None,
     groupLevelElections = None,
-    angie = None,
     ukCompanies = Seq(ukCompanyModel)
   )
 }

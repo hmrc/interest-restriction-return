@@ -29,7 +29,6 @@ case class AbbreviatedReturnModel(appointedReportingCompany: Boolean,
                                   submissionType: SubmissionType,
                                   revisedReturnDetails: Option[RevisedReturnDetailsModel],
                                   groupLevelElections: Option[GroupLevelElectionsModel],
-                                  angie: Option[BigDecimal],
                                   ukCompanies: Seq[UkCompanyModel]) extends AbbreviatedReturnValidator {
 
   override val abbreviatedReturnModel: AbbreviatedReturnModel = this
@@ -48,7 +47,6 @@ object AbbreviatedReturnModel {
       "submissionType" -> models.submissionType,
       "revisedReturnDetails" -> models.revisedReturnDetails,
       "groupLevelElections" -> models.groupLevelElections,
-      "angie" -> models.angie,
       "ukCompanies" -> models.ukCompanies
     ).fields.filterNot(_._2 == JsNull))
   }

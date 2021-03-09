@@ -111,14 +111,6 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
         ).validate).errorMessage shouldBe CompanyNameLengthError(companyNameTooLong.name).errorMessage
       }
 
-      "Angie is negative" in {
-        leftSideError(abbreviatedReturnUltimateParentModel.copy(angie = Some(-0.01)).validate).errorMessage shouldBe NegativeAngieError(-0.01).errorMessage
-      }
-
-      "Angie has greater than two decimal places" in {
-        leftSideError(abbreviatedReturnUltimateParentModel.copy(angie = Some(1.011)).validate).errorMessage shouldBe AngieDecimalError(1.011).errorMessage
-      }
-
       "Return type is Revised and the revised return details are less than 1 character long" in {
 
         leftSideError(abbreviatedReturnUltimateParentModel.copy(
