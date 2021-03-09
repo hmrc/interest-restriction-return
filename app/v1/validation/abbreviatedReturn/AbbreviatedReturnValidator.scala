@@ -108,15 +108,3 @@ case object UkCompaniesEmpty extends Validation {
   val path = JsPath \ "ukCompanies"
   val value = Json.obj()
 }
-
-case class NegativeAngieError(amt: BigDecimal) extends Validation {
-  val errorMessage: String = "ANGIE cannot be negative"
-  val path = JsPath \ "angie"
-  val value = Json.toJson(amt)
-}
-
-case class AngieDecimalError(amt: BigDecimal) extends Validation {
-  val errorMessage: String = "ANGIE has greater than the allowed 2 decimal places."
-  val path = JsPath \ "angie"
-  val value = Json.toJson(amt)
-}
