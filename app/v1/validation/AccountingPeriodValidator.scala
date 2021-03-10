@@ -29,6 +29,7 @@ trait AccountingPeriodValidator extends BaseValidation {
   val accountingPeriodModel: AccountingPeriodModel
 
   val MINIMUM_START_DATE = LocalDate.parse("2016-10-01")
+  val MINIMUM_END_DATE = LocalDate.parse("2017-04-01")
 
   private def validateStartDateCannotBeInFuture(implicit path: JsPath): ValidationResult[LocalDate] =
     if (accountingPeriodModel.startDate.isAfter(LocalDate.now())) {
@@ -42,6 +43,13 @@ trait AccountingPeriodValidator extends BaseValidation {
       StartDateCannotBeBeforeMinimum(accountingPeriodModel.startDate).invalidNec
     } else {
       accountingPeriodModel.startDate.validNec
+    }
+
+  private def validateEndDateCannotBeBeforeMinimum(implicit path: JsPath): ValidationResult[LocalDate] =
+    if (accountingPeriodModel.endDate.isBefore(MINIMUM_END_DATE)) {
+      EndDateCannotBeBeforeMinimum(accountingPeriodModel.endDate).invalidNec
+    } else {
+      accountingPeriodModel.endDate.validNec
     }
 
   private def validateEndDateAfterStartDate(implicit path: JsPath): ValidationResult[LocalDate] =
@@ -65,7 +73,8 @@ trait AccountingPeriodValidator extends BaseValidation {
     )
     val endDateValidations = combineValidationsForField(
       validateEndDateAfterStartDate,
-      validateAccountingPeriod18MonthsMax
+      validateAccountingPeriod18MonthsMax,
+      validateEndDateCannotBeBeforeMinimum
     )
     (startDateValidations, endDateValidations).mapN((_, _) => accountingPeriodModel)
   }
@@ -81,6 +90,12 @@ case class StartDateCannotBeBeforeMinimum(startDate: LocalDate)(implicit topPath
   val errorMessage: String = "Start date cannot be before 2016-10-01"
   val path = topPath \ "startDate"
   val value = Json.toJson(startDate)
+}
+
+case class EndDateCannotBeBeforeMinimum(endDate: LocalDate)(implicit topPath: JsPath) extends Validation {
+  val errorMessage: String = "End date must be the same as or after 1 April 2017"
+  val path = topPath \ "endDate"
+  val value = Json.toJson(endDate)
 }
 
 case class EndDateAfterStartDate(endDate: LocalDate)(implicit topPath: JsPath) extends Validation {
