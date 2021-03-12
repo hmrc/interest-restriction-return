@@ -124,6 +124,13 @@ class UltimateParentValidatorSpec extends BaseSpec {
 
           leftSideError(model.validate).errorMessage shouldBe WrongUltimateParentIsUkPartnershipAndNonUKCompany(model).errorMessage
         }
+
+        "No UTR or Country of Incorporation" in {
+
+          val model = ultimateParentModelUkPartnership.copy(ctutr = None, sautr = None, countryOfIncorporation = None)
+
+          leftSideError(model.validate).errorMessage shouldBe NoUTROrCountryCode(model).errorMessage
+        }
       }
     }
   }

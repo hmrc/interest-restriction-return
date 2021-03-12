@@ -36,6 +36,7 @@ trait UltimateParentValidator extends BaseValidation {
       case (true, true, false) => WrongUltimateParentIsUkCompanyAndPartnership(ultimateParentModel).invalidNec
       case (true, false, true) => WrongUltimateParentIsUKCompanyAndNonUK(ultimateParentModel).invalidNec
       case (false, true, true) => WrongUltimateParentIsUkPartnershipAndNonUKCompany(ultimateParentModel).invalidNec
+      case (false, false, false) => NoUTROrCountryCode(ultimateParentModel).invalidNec
       case _ => ultimateParentModel.validNec
     }
   }
@@ -65,6 +66,11 @@ case class WrongUltimateParentIsUkPartnershipAndNonUKCompany(model: UltimatePare
 
 case class WrongUltimateParentIsUKCompanyAndNonUK(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {
   val errorMessage: String = "you have given details for a UK and Non UK Company"
+  val value = Json.toJson(model)
+}
+
+case class NoUTROrCountryCode(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {
+  val errorMessage: String = "You need to enter a CTUTR, an SAUTR, or a Country Of Incorporation"
   val value = Json.toJson(model)
 }
 
