@@ -37,7 +37,7 @@ object GroupRatioConstants {
     "isElected" -> false
   )
 
-  val groupRatioModelMin= GroupRatioModel(
+  val groupRatioModelMin = GroupRatioModel(
     isElected = false,
     groupEBITDAChargeableGains = None,
     groupRatioBlended = None

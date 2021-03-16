@@ -26,14 +26,6 @@ trait GroupRatioValidator extends BaseValidation {
 
   val groupRatioModel: GroupRatioModel
 
-  private def validateGroupRatioElected(implicit path: JsPath): ValidationResult[GroupRatioModel] = {
-    (groupRatioModel.isElected, groupRatioModel.groupRatioBlended.isDefined) match {
-      case (false, true) => GroupRatioBlendedSupplied(groupRatioModel).invalidNec
-      case (true, false) => GroupRatioBlendedNotSupplied().invalidNec
-      case _ => groupRatioModel.validNec
-    }
-  }
-
   private def validateGroupEBITDA(implicit path: JsPath): ValidationResult[Option[Boolean]] = {
     (groupRatioModel.isElected,  groupRatioModel.groupEBITDAChargeableGains.isDefined) match {
       case (false, true) => GroupEBITDASupplied(groupRatioModel.groupEBITDAChargeableGains).invalidNec
@@ -43,7 +35,7 @@ trait GroupRatioValidator extends BaseValidation {
   }
 
   def validate(implicit path: JsPath): ValidationResult[GroupRatioModel] =
-    (validateGroupRatioElected,
+    (groupRatioModel.validNec,
       validateGroupEBITDA,
       optionValidations(groupRatioModel.groupRatioBlended.map(_.validate(path \ "groupRatioBlended")))
     ).mapN((_, _, _) => groupRatioModel)
