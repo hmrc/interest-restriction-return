@@ -33,7 +33,7 @@ class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
     "the user is authenticated" when {
 
       object AuthorisedController extends FullReturnController(
-        authAction = AuthorisedAction,
+        authProvider = authProvider,
         fullReturnService = mockFullReturnService,
         controllerComponents = Helpers.stubControllerComponents()
       )
@@ -89,7 +89,7 @@ class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
       "return 401 (Unauthorised)" in {
 
         object UnauthorisedController extends FullReturnController(
-          authAction = UnauthorisedAction,
+          authProvider = authProvider,
           fullReturnService = mockFullReturnService,
           controllerComponents = Helpers.stubControllerComponents()
         )

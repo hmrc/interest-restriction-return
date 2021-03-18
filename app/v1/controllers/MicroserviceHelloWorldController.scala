@@ -18,15 +18,15 @@ package v1.controllers
 
 import javax.inject.{Inject, Singleton}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import v1.controllers.actions.AuthAction
+import v1.controllers.actions.{AuthAction, AuthActionProvider}
 
 import scala.concurrent.Future
 
 @Singleton()
-class MicroserviceHelloWorldController @Inject()(authAction: AuthAction,
+class MicroserviceHelloWorldController @Inject()(authProvider: AuthActionProvider,
                                                  override val controllerComponents: ControllerComponents) extends BaseController {
 
-  def hello(): Action[AnyContent] = authAction.async { _ =>
+  def hello(): Action[AnyContent] = authProvider(false).async { _ =>
     Future.successful(Ok("Hello world"))
   }
 }

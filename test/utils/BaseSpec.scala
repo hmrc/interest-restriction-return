@@ -26,6 +26,7 @@ import uk.gov.hmrc.auth.core.MissingBearerToken
 import uk.gov.hmrc.auth.core.retrieve.Credentials
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.test.UnitSpec
+import v1.controllers.actions.AuthActionProvider
 import v1.controllers.actions.mocks.{Authorised, Unauthorised}
 import v1.models.Validation
 import v1.models.Validation.ValidationResult
@@ -42,11 +43,14 @@ trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with Mate
 
   lazy val bodyParsers = injector.instanceOf[BodyParsers.Default]
   lazy val appConfig = injector.instanceOf[AppConfig]
+  lazy val authProvider = injector.instanceOf[AuthActionProvider]
   lazy implicit val ec = injector.instanceOf[ExecutionContext]
   lazy implicit val headerCarrier: HeaderCarrier = HeaderCarrier()
 
   object AuthorisedAction extends Authorised[Option[Credentials]](Some(Credentials("id", "SCP")), bodyParsers)
   object UnauthorisedAction extends Unauthorised(new MissingBearerToken, bodyParsers)
+
+
 
   def rightSide[A](validationResult: ValidationResult[A]): A = validationResult.toEither.right.get
 
