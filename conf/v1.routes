@@ -4,7 +4,9 @@ POST       /reporting-company/appoint                   v1.controllers.AppointRe
 
 POST       /reporting-company/revoke                    v1.controllers.RevokeReportingCompanyController.revoke()
 
-POST       /return/abbreviated                          v1.controllers.AbbreviatedReturnController.submitAbbreviatedReturn()
+POST       /return/abbreviated                          v1.controllers.AbbreviatedReturnController.submitAbbreviatedReturn(isInternal: Boolean = false)
+
+POST       /internal/return/abbreviated                 v1.controllers.AbbreviatedReturnController.submitAbbreviatedReturn(isInternal: Boolean = true)
 
 POST       /return/full                                 v1.controllers.FullReturnController.submit(isInternal: Boolean = false)
 

@@ -44,6 +44,16 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
           .withBody(abbreviatedReturnUltimateParentJson)
           .withHeaders("Content-Type" -> "application/json")
 
+        "it is an internal call" should {
+          "return 200 (OK)" in {
+            mockAuthProviderResponse(AuthorisedAction,true)
+            mockAbbreviatedReturn(abbreviatedReturnUltimateParentModel)(Right(DesSuccessResponse(ackRef)))
+
+            val result = AuthorisedController.submitAbbreviatedReturn(true)(validJsonFakeRequest)
+            status(result) shouldBe Status.OK
+          }
+        }
+
         "a success response is returned from the companies house service with no validation errors" when {
 
           "a success response is returned from the abbreviated return service" should {

@@ -28,7 +28,7 @@ class AbbreviatedReturnController @Inject()(authProvider: AuthActionProvider,
                                             abbreviatedReturnService: AbbreviatedReturnService,
                                             override val controllerComponents: ControllerComponents) extends BaseController {
 
-  def submitAbbreviatedReturn(): Action[JsValue] = authProvider().async(parse.json) { implicit request =>
+  def submitAbbreviatedReturn(isInternal: Boolean = false): Action[JsValue] = authProvider(isInternal).async(parse.json) { implicit request =>
     withJsonBody[AbbreviatedReturnModel] { AbbreviatedModel =>
       handleValidation(
         validationModel = AbbreviatedModel.validate,
