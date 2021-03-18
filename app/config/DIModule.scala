@@ -17,12 +17,12 @@
 package config
 
 import com.google.inject.AbstractModule
-import v1.controllers.actions.{AuthActionProvider, AuthActionProviderImp}
+import v1.controllers.actions.{AuthActionProvider, AuthActionProviderImpl}
 
 class DIModule extends AbstractModule {
 
   override def configure(): Unit = {
     bind(classOf[AppConfig]).to(classOf[AppConfigImpl]).asEagerSingleton()
-    bind(classOf[AuthActionProvider]).to(classOf[AuthActionProviderImp]).asEagerSingleton()
+    bind(classOf[AuthActionProvider]).to(classOf[AuthActionProviderImpl]).asEagerSingleton()
   }
 }

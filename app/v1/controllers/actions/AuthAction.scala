@@ -31,15 +31,12 @@ trait AuthActionProvider {
   def apply(isInternal: Boolean = false) : AuthActionBase
 }
 
-
-class AuthActionProviderImp @Inject()(authConnector: AuthConnector, parser: BodyParsers.Default)(implicit val ec: ExecutionContext) extends AuthActionProvider {
-  def apply(isInternal: Boolean = false) : AuthActionBase = {
-    if (isInternal)  NoAuthAction(authConnector,parser) else  AuthAction(authConnector,parser)
-  }
+class AuthActionProviderImpl @Inject()(authConnector: AuthConnector, parser: BodyParsers.Default)
+                                      (implicit val ec: ExecutionContext) extends AuthActionProvider {
+  def apply(isInternal: Boolean = false) : AuthActionBase = if (isInternal) NoAuthAction(authConnector,parser) else AuthAction(authConnector,parser)
 }
 
 trait AuthActionBase extends ActionBuilder[IdentifierRequest, AnyContent] with ActionFunction[Request, IdentifierRequest] with AuthorisedFunctions
-
 
 case class NoAuthAction(override val authConnector: AuthConnector,
                              parser: BodyParsers.Default
@@ -51,7 +48,6 @@ case class NoAuthAction(override val authConnector: AuthConnector,
      block(IdentifierRequest(request, "mdtp-ui"))
   }
 }
-
 
 case class AuthAction(override val authConnector: AuthConnector,
                            parser: BodyParsers.Default

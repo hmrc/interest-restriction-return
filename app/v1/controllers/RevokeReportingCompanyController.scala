@@ -19,7 +19,7 @@ package v1.controllers
 import javax.inject.{Inject, Singleton}
 import play.api.libs.json.JsValue
 import play.api.mvc.{Action, ControllerComponents}
-import v1.controllers.actions.{AuthAction, AuthActionProvider, AuthActionProviderImp}
+import v1.controllers.actions.{AuthAction, AuthActionProvider, AuthActionProviderImpl}
 import v1.models.revokeReportingCompany.RevokeReportingCompanyModel
 import v1.services.RevokeReportingCompanyService
 

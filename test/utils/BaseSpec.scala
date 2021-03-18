@@ -26,7 +26,7 @@ import uk.gov.hmrc.auth.core.MissingBearerToken
 import uk.gov.hmrc.auth.core.retrieve.Credentials
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.test.UnitSpec
-import v1.controllers.actions.{AuthActionBase, AuthActionProvider, AuthActionProviderImp}
+import v1.controllers.actions.{AuthActionBase, AuthActionProvider, AuthActionProviderImpl}
 import v1.controllers.actions.mocks.{Authorised, Unauthorised}
 import v1.models.Validation
 import v1.models.Validation.ValidationResult
