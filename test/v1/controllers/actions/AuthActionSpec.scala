@@ -25,8 +25,18 @@ import v1.connectors.mocks.{FakeFailingAuthConnector, FakeSuccessAuthConnector}
 
 class AuthActionSpec extends BaseSpec {
 
-  class Harness(authAction: AuthAction) {
+  class Harness(authAction: AuthActionBase) {
     def onPageLoad(): Action[AnyContent] = authAction { _ => Results.Ok }
+  }
+
+  "No Auth Action" must {
+    "let users through" in {
+      val authAction = NoAuthAction(new FakeSuccessAuthConnector[Option[Credentials]](Some(Credentials("id","SCP"))), bodyParsers)
+      val controller = new Harness(authAction)
+      val result = controller.onPageLoad()(fakeRequest)
+
+      status(result) shouldBe OK
+    }
   }
 
   "Auth Action" when {
@@ -35,7 +45,7 @@ class AuthActionSpec extends BaseSpec {
 
       "successful cary out request" in {
 
-        val authAction = new AuthAction(new FakeSuccessAuthConnector[Option[Credentials]](Some(Credentials("id","SCP"))), bodyParsers)
+        val authAction = AuthAction(new FakeSuccessAuthConnector[Option[Credentials]](Some(Credentials("id","SCP"))), bodyParsers)
         val controller = new Harness(authAction)
         val result = controller.onPageLoad()(fakeRequest)
 
@@ -47,7 +57,7 @@ class AuthActionSpec extends BaseSpec {
 
       "redirect to unauthorised" in {
 
-        val authAction = new AuthAction(new FakeSuccessAuthConnector[Option[Credentials]](None), bodyParsers)
+        val authAction = AuthAction(new FakeSuccessAuthConnector[Option[Credentials]](None), bodyParsers)
         val controller = new Harness(authAction)
         val result = controller.onPageLoad()(fakeRequest)
 
@@ -59,7 +69,7 @@ class AuthActionSpec extends BaseSpec {
 
       "redirect the user to log in " in {
 
-        val authAction = new AuthAction(new FakeFailingAuthConnector(new MissingBearerToken), bodyParsers)
+        val authAction = AuthAction(new FakeFailingAuthConnector(new MissingBearerToken), bodyParsers)
         val controller = new Harness(authAction)
         val result = controller.onPageLoad()(fakeRequest)
 
@@ -71,7 +81,7 @@ class AuthActionSpec extends BaseSpec {
 
       "redirect the user to log in " in {
 
-        val authAction = new AuthAction(new FakeFailingAuthConnector(new BearerTokenExpired), bodyParsers)
+        val authAction = AuthAction(new FakeFailingAuthConnector(new BearerTokenExpired), bodyParsers)
         val controller = new Harness(authAction)
         val result = controller.onPageLoad()(fakeRequest)
 
@@ -83,7 +93,7 @@ class AuthActionSpec extends BaseSpec {
 
       "redirect the user to the unauthorised page" in {
 
-        val authAction = new AuthAction(new FakeFailingAuthConnector(new InsufficientEnrolments), bodyParsers)
+        val authAction = AuthAction(new FakeFailingAuthConnector(new InsufficientEnrolments), bodyParsers)
         val controller = new Harness(authAction)
         val result = controller.onPageLoad()(fakeRequest)
 
@@ -95,7 +105,7 @@ class AuthActionSpec extends BaseSpec {
 
       "redirect the user to the unauthorised page" in {
 
-        val authAction = new AuthAction(new FakeFailingAuthConnector(new InsufficientConfidenceLevel), bodyParsers)
+        val authAction = AuthAction(new FakeFailingAuthConnector(new InsufficientConfidenceLevel), bodyParsers)
         val controller = new Harness(authAction)
         val result = controller.onPageLoad()(fakeRequest)
 
@@ -107,7 +117,7 @@ class AuthActionSpec extends BaseSpec {
 
       "redirect the user to the unauthorised page" in {
 
-        val authAction = new AuthAction(new FakeFailingAuthConnector(new UnsupportedAuthProvider), bodyParsers)
+        val authAction = AuthAction(new FakeFailingAuthConnector(new UnsupportedAuthProvider), bodyParsers)
         val controller = new Harness(authAction)
         val result = controller.onPageLoad()(fakeRequest)
 
@@ -119,7 +129,7 @@ class AuthActionSpec extends BaseSpec {
 
       "redirect the user to the unauthorised page" in {
 
-        val authAction = new AuthAction(new FakeFailingAuthConnector(new UnsupportedAffinityGroup), bodyParsers)
+        val authAction = AuthAction(new FakeFailingAuthConnector(new UnsupportedAffinityGroup), bodyParsers)
         val controller = new Harness(authAction)
         val result = controller.onPageLoad()(fakeRequest)
 
@@ -131,7 +141,7 @@ class AuthActionSpec extends BaseSpec {
 
       "redirect the user to the unauthorised page" in {
 
-        val authAction = new AuthAction(new FakeFailingAuthConnector(new UnsupportedCredentialRole), bodyParsers)
+        val authAction = AuthAction(new FakeFailingAuthConnector(new UnsupportedCredentialRole), bodyParsers)
         val controller = new Harness(authAction)
         val result = controller.onPageLoad()(fakeRequest)
 
