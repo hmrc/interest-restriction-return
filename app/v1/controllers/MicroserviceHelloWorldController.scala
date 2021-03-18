@@ -18,7 +18,7 @@ package v1.controllers
 
 import javax.inject.{Inject, Singleton}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import v1.controllers.actions.{AuthAction, AuthActionProvider}
+import v1.controllers.actions.{AuthAction, AuthActionProvider, AuthActionProviderImp}
 
 import scala.concurrent.Future
 

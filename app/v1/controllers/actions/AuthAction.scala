@@ -27,41 +27,38 @@ import v1.models.requests.IdentifierRequest
 
 import scala.concurrent.{ExecutionContext, Future}
 
+trait AuthActionProvider {
+  def apply(isInternal: Boolean = false) : AuthActionBase
+}
 
 
-class AuthActionProvider @Inject()(authConnector: AuthConnector, parser: BodyParsers.Default)(implicit val ec: ExecutionContext) {
+class AuthActionProviderImp @Inject()(authConnector: AuthConnector, parser: BodyParsers.Default)(implicit val ec: ExecutionContext) extends AuthActionProvider {
   def apply(isInternal: Boolean = false) : AuthActionBase = {
-
-    if (isInternal)
-      new NoAuthAction(authConnector,parser)
-    else
-      new AuthAction(authConnector,parser)
+    if (isInternal)  NoAuthAction(authConnector,parser) else  AuthAction(authConnector,parser)
   }
 }
 
 trait AuthActionBase extends ActionBuilder[IdentifierRequest, AnyContent] with ActionFunction[Request, IdentifierRequest] with AuthorisedFunctions
 
 
-class NoAuthAction(override val authConnector: AuthConnector,
-                             val parser: BodyParsers.Default
+case class NoAuthAction(override val authConnector: AuthConnector,
+                             parser: BodyParsers.Default
                             )(implicit val executionContext: ExecutionContext)
   extends AuthActionBase {
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
-
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSessionAndRequest(request.headers, request = Some(request))
      block(IdentifierRequest(request, "mdtp-ui"))
   }
 }
 
 
-class AuthAction(override val authConnector: AuthConnector,
-                           val parser: BodyParsers.Default
+case class AuthAction(override val authConnector: AuthConnector,
+                           parser: BodyParsers.Default
                           )(implicit val executionContext: ExecutionContext)
   extends AuthActionBase {
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
-
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSessionAndRequest(request.headers, request = Some(request))
 
     authorised().retrieve(Retrievals.credentials) {

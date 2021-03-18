@@ -33,7 +33,7 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
     "the user is authenticated" when {
 
       object AuthorisedController extends AbbreviatedReturnController(
-        authAction = AuthorisedAction,
+        authProvider = authProvider,
         abbreviatedReturnService = mockAbbreviatedReturnService,
         controllerComponents = Helpers.stubControllerComponents()
       )
@@ -87,7 +87,7 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
       "return 401 (Unauthorised)" in {
 
         object UnauthorisedController extends AbbreviatedReturnController(
-          authAction = UnauthorisedAction,
+          authProvider = authProvider,
           abbreviatedReturnService = mockAbbreviatedReturnService,
           controllerComponents = Helpers.stubControllerComponents()
         )

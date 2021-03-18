@@ -33,7 +33,7 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
     "the user is authenticated" when {
 
       object AuthorisedController extends RevokeReportingCompanyController(
-        authAction = AuthorisedAction,
+        authProvider = authProvider,
         revokeReportingCompanyService = mockRevokeReportingCompanyService,
         controllerComponents = Helpers.stubControllerComponents()
       )
@@ -91,7 +91,7 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
       "return 401 (Unauthorised)" in {
 
         object UnauthorisedController extends RevokeReportingCompanyController(
-          authAction = UnauthorisedAction,
+          authProvider = authProvider,
           revokeReportingCompanyService = mockRevokeReportingCompanyService,
           controllerComponents = Helpers.stubControllerComponents()
         )

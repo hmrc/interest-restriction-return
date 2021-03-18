@@ -26,7 +26,7 @@ import uk.gov.hmrc.auth.core.MissingBearerToken
 import uk.gov.hmrc.auth.core.retrieve.Credentials
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.test.UnitSpec
-import v1.controllers.actions.AuthActionProvider
+import v1.controllers.actions.{AuthActionBase, AuthActionProvider, AuthActionProviderImp}
 import v1.controllers.actions.mocks.{Authorised, Unauthorised}
 import v1.models.Validation
 import v1.models.Validation.ValidationResult
@@ -43,9 +43,10 @@ trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with Mate
 
   lazy val bodyParsers = injector.instanceOf[BodyParsers.Default]
   lazy val appConfig = injector.instanceOf[AppConfig]
-  lazy val authProvider = injector.instanceOf[AuthActionProvider]
   lazy implicit val ec = injector.instanceOf[ExecutionContext]
   lazy implicit val headerCarrier: HeaderCarrier = HeaderCarrier()
+  lazy val authProvider = injector.instanceOf[FakeAuthAction]
+
 
   object AuthorisedAction extends Authorised[Option[Credentials]](Some(Credentials("id", "SCP")), bodyParsers)
   object UnauthorisedAction extends Unauthorised(new MissingBearerToken, bodyParsers)
@@ -63,5 +64,12 @@ trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with Mate
   }
 
   def errorMessages(messages: String*) = messages.mkString("|")
+}
 
+class FakeAuthAction() extends AuthActionProvider with BaseSpec {
+  override def apply(isInternal: Boolean): AuthActionBase = AuthorisedAction
+}
+
+class FakeNoAuthAction() extends AuthActionProvider with BaseSpec {
+  override def apply(isInternal: Boolean): AuthActionBase = UnauthorisedAction
 }

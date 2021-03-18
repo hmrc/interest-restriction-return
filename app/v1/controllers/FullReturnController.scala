@@ -19,7 +19,7 @@ package v1.controllers
 import javax.inject.{Inject, Singleton}
 import play.api.libs.json.JsValue
 import play.api.mvc.{Action, ControllerComponents}
-import v1.controllers.actions.{AuthAction, AuthActionProvider}
+import v1.controllers.actions.{AuthAction, AuthActionProvider, AuthActionProviderImp}
 import v1.models.fullReturn.FullReturnModel
 import v1.services.FullReturnService
 
