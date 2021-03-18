@@ -45,7 +45,7 @@ trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with Mate
   lazy val appConfig = injector.instanceOf[AppConfig]
   lazy implicit val ec = injector.instanceOf[ExecutionContext]
   lazy implicit val headerCarrier: HeaderCarrier = HeaderCarrier()
-  lazy val authProvider = injector.instanceOf[FakeAuthAction]
+  lazy val authProvider = injector.instanceOf[AuthActionProvider]
 
 
   object AuthorisedAction extends Authorised[Option[Credentials]](Some(Credentials("id", "SCP")), bodyParsers)
@@ -64,12 +64,4 @@ trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with Mate
   }
 
   def errorMessages(messages: String*) = messages.mkString("|")
-}
-
-class FakeAuthAction() extends AuthActionProvider with BaseSpec {
-  override def apply(isInternal: Boolean): AuthActionBase = AuthorisedAction
-}
-
-class FakeNoAuthAction() extends AuthActionProvider with BaseSpec {
-  override def apply(isInternal: Boolean): AuthActionBase = UnauthorisedAction
 }
