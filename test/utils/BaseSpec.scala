@@ -38,14 +38,11 @@ trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with Mate
 
   lazy val fakeRequest = FakeRequest("GET", "/")
   lazy implicit val identifierRequest = IdentifierRequest(fakeRequest, "id")
-
   lazy val injector = app.injector
-
   lazy val bodyParsers = injector.instanceOf[BodyParsers.Default]
   lazy val appConfig = injector.instanceOf[AppConfig]
   lazy implicit val ec = injector.instanceOf[ExecutionContext]
   lazy implicit val headerCarrier: HeaderCarrier = HeaderCarrier()
-  lazy val authProvider = injector.instanceOf[AuthActionProvider]
 
 
   object AuthorisedAction extends Authorised[Option[Credentials]](Some(Credentials("id", "SCP")), bodyParsers)

@@ -22,9 +22,9 @@ import play.api.libs.json.Json
 import play.api.test.{FakeRequest, Helpers}
 import utils.BaseSpec
 import v1.connectors.{DesSuccessResponse, UnexpectedFailure}
-import v1.services.mocks.MockFullReturnService
+import v1.services.mocks.{MockCommon, MockFullReturnService}
 
-class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
+class FullReturnControllerSpec extends MockFullReturnService with BaseSpec with MockCommon {
 
   override lazy val fakeRequest = FakeRequest("POST", "/interest-restriction-return/return/full")
 

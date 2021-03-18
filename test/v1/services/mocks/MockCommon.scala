@@ -17,20 +17,13 @@
 package v1.services.mocks
 
 import org.scalamock.scalatest.MockFactory
-import uk.gov.hmrc.http.HeaderCarrier
-import v1.connectors.HttpHelper.SubmissionResponse
-import v1.models.fullReturn.FullReturnModel
-import v1.models.requests.IdentifierRequest
-import v1.services.FullReturnService
+import v1.controllers.actions.{AuthActionBase, AuthActionProvider}
 
-import scala.concurrent.{ExecutionContext, Future}
 
-trait MockFullReturnService extends MockFactory {
-  lazy val mockFullReturnService: FullReturnService = mock[FullReturnService]
+trait MockCommon extends MockFactory {
+  lazy val mockAuthProvider: AuthActionProvider = mock[AuthActionProvider]
 
-  def mockFullReturn(model: FullReturnModel)(response: SubmissionResponse): Unit = {
-    (mockFullReturnService.submit(_: FullReturnModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
-      .expects(model, *, *, *)
-      .returns(Future.successful(response))
+  def mockAuthProviderResponse(authAction: AuthActionBase, isInternal: Boolean) : Unit = {
+    (mockAuthProvider.apply(_: Boolean)).expects(isInternal).returns(authAction)
   }
 }

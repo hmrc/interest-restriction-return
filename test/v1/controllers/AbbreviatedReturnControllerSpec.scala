@@ -21,10 +21,10 @@ import v1.connectors.{DesSuccessResponse, UnexpectedFailure}
 import play.api.http.Status
 import play.api.libs.json.Json
 import play.api.test.{FakeRequest, Helpers}
-import v1.services.mocks.MockAbbreviatedReturnService
+import v1.services.mocks.{MockAbbreviatedReturnService, MockCommon}
 import utils.BaseSpec
 
-class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with BaseSpec {
+class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with BaseSpec with MockCommon{
 
   override lazy val fakeRequest = FakeRequest("POST", "/interest-restriction-return/return/abbreviated")
 
@@ -33,7 +33,7 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
     "the user is authenticated" when {
 
       object AuthorisedController extends AbbreviatedReturnController(
-        authProvider = authProvider,
+        authProvider = mockAuthProvider,
         abbreviatedReturnService = mockAbbreviatedReturnService,
         controllerComponents = Helpers.stubControllerComponents()
       )
@@ -49,8 +49,9 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
           "a success response is returned from the abbreviated return service" should {
 
             "return 200 (OK)" in {
-
+              mockAuthProviderResponse(AuthorisedAction,false)
               mockAbbreviatedReturn(abbreviatedReturnUltimateParentModel)(Right(DesSuccessResponse(ackRef)))
+
               val result = AuthorisedController.submitAbbreviatedReturn()(validJsonFakeRequest)
               status(result) shouldBe Status.OK
             }
@@ -59,8 +60,9 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
           "an error response is returned from the service" should {
 
             "return the Error" in {
-
+              mockAuthProviderResponse(AuthorisedAction,false)
               mockAbbreviatedReturn(abbreviatedReturnUltimateParentModel)(Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
+
               val result = AuthorisedController.submitAbbreviatedReturn()(validJsonFakeRequest)
               status(result) shouldBe Status.INTERNAL_SERVER_ERROR
             }
@@ -75,6 +77,7 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
           .withHeaders("Content-Type" -> "application/json")
 
         "return a BAD_REQUEST JSON validation error" in {
+          mockAuthProviderResponse(AuthorisedAction,false)
 
           val result = AuthorisedController.submitAbbreviatedReturn()(invalidJsonFakeRequest)
           status(result) shouldBe Status.BAD_REQUEST
@@ -87,10 +90,12 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
       "return 401 (Unauthorised)" in {
 
         object UnauthorisedController extends AbbreviatedReturnController(
-          authProvider = authProvider,
+          authProvider = mockAuthProvider,
           abbreviatedReturnService = mockAbbreviatedReturnService,
           controllerComponents = Helpers.stubControllerComponents()
         )
+
+        mockAuthProviderResponse(UnauthorisedAction,false)
 
         val result = UnauthorisedController.submitAbbreviatedReturn()(fakeRequest.withBody(Json.obj()))
         status(result) shouldBe Status.UNAUTHORIZED
