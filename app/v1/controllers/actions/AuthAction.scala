@@ -16,7 +16,6 @@
 
 package v1.controllers.actions
 
-import com.google.inject.Inject
 import play.api.mvc.Results._
 import play.api.mvc._
 import uk.gov.hmrc.auth.core._
@@ -27,13 +26,25 @@ import v1.models.requests.IdentifierRequest
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class AuthAction @Inject()(override val authConnector: AuthConnector,
-                           val parser: BodyParsers.Default
-                          )(implicit val executionContext: ExecutionContext)
-  extends ActionBuilder[IdentifierRequest, AnyContent] with ActionFunction[Request, IdentifierRequest] with AuthorisedFunctions {
+trait AuthActionBase extends ActionBuilder[IdentifierRequest, AnyContent] with ActionFunction[Request, IdentifierRequest] with AuthorisedFunctions
+
+case class NoAuthAction(override val authConnector: AuthConnector,
+                             parser: BodyParsers.Default
+                            )(implicit val executionContext: ExecutionContext)
+  extends AuthActionBase {
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
+    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSessionAndRequest(request.headers, request = Some(request))
+     block(IdentifierRequest(request, "interest-restriction-return-frontend"))
+  }
+}
 
+case class AuthAction(override val authConnector: AuthConnector,
+                           parser: BodyParsers.Default
+                          )(implicit val executionContext: ExecutionContext)
+  extends AuthActionBase {
+
+  override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSessionAndRequest(request.headers, request = Some(request))
 
     authorised().retrieve(Retrievals.credentials) {

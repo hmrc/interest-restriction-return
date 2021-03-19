@@ -22,18 +22,17 @@ import play.api.libs.json.Json
 import play.api.test.{FakeRequest, Helpers}
 import utils.BaseSpec
 import v1.connectors.{DesSuccessResponse, UnexpectedFailure}
-import v1.services.mocks.MockFullReturnService
+import v1.services.mocks.{MockCommon, MockFullReturnService}
 
-class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
+class FullReturnControllerSpec extends MockFullReturnService with BaseSpec with MockCommon {
 
   override lazy val fakeRequest = FakeRequest("POST", "/interest-restriction-return/return/full")
 
   "FullReturnController.submit()" when {
-
     "the user is authenticated" when {
 
       object AuthorisedController extends FullReturnController(
-        authAction = AuthorisedAction,
+        authProvider = mockAuthProvider,
         fullReturnService = mockFullReturnService,
         controllerComponents = Helpers.stubControllerComponents()
       )
@@ -44,12 +43,24 @@ class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
           .withBody(fullReturnUltimateParentJson)
           .withHeaders("Content-Type" -> "application/json")
 
+        "it is an internal call" should {
+          "return 200 (OK)" in {
+            mockAuthProviderResponse(AuthorisedAction,true)
+            mockFullReturn(fullReturnUltimateParentModel)(Right(DesSuccessResponse(ackRef)))
+
+            val result = AuthorisedController.submit(true)(validJsonFakeRequest)
+            status(result) shouldBe Status.OK
+
+          }
+        }
+
         "a success response is returned from the companies house service with no v1.validation errors" when {
 
           "a success response is returned from the service full return service" should {
 
             "return 200 (OK)" in {
 
+              mockAuthProviderResponse(AuthorisedAction,false)
               mockFullReturn(fullReturnUltimateParentModel)(Right(DesSuccessResponse(ackRef)))
 
               val result = AuthorisedController.submit()(validJsonFakeRequest)
@@ -61,6 +72,7 @@ class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
 
             "return the Error" in {
 
+              mockAuthProviderResponse(AuthorisedAction,false)
               mockFullReturn(fullReturnUltimateParentModel)(Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
 
               val result = AuthorisedController.submit()(validJsonFakeRequest)
@@ -77,6 +89,7 @@ class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
           .withHeaders("Content-Type" -> "application/json")
 
         "return a BAD_REQUEST JSON v1.validation error" in {
+          mockAuthProviderResponse(AuthorisedAction,false)
 
           val result = AuthorisedController.submit()(invalidJsonFakeRequest)
           status(result) shouldBe Status.BAD_REQUEST
@@ -89,10 +102,11 @@ class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
       "return 401 (Unauthorised)" in {
 
         object UnauthorisedController extends FullReturnController(
-          authAction = UnauthorisedAction,
+          authProvider = mockAuthProvider,
           fullReturnService = mockFullReturnService,
           controllerComponents = Helpers.stubControllerComponents()
         )
+        mockAuthProviderResponse(UnauthorisedAction,false)
 
         val result = UnauthorisedController.submit()(fakeRequest.withBody(Json.obj()))
         status(result) shouldBe Status.UNAUTHORIZED

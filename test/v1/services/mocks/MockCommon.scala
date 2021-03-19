@@ -14,19 +14,16 @@
  * limitations under the License.
  */
 
-package v1.controllers
+package v1.services.mocks
 
-import javax.inject.{Inject, Singleton}
-import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import v1.controllers.actions.AuthAction
+import org.scalamock.scalatest.MockFactory
+import v1.controllers.actions.{AuthActionBase, AuthActionProvider}
 
-import scala.concurrent.Future
 
-@Singleton()
-class MicroserviceHelloWorldController @Inject()(authAction: AuthAction,
-                                                 override val controllerComponents: ControllerComponents) extends BaseController {
+trait MockCommon extends MockFactory {
+  lazy val mockAuthProvider: AuthActionProvider = mock[AuthActionProvider]
 
-  def hello(): Action[AnyContent] = authAction.async { _ =>
-    Future.successful(Ok("Hello world"))
+  def mockAuthProviderResponse(authAction: AuthActionBase, isInternal: Boolean) : Unit = {
+    (mockAuthProvider.apply(_: Boolean)).expects(isInternal).returns(authAction)
   }
 }
