@@ -35,7 +35,7 @@ case class NoAuthAction(override val authConnector: AuthConnector,
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSessionAndRequest(request.headers, request = Some(request))
-     block(IdentifierRequest(request, "mdtp-ui"))
+     block(IdentifierRequest(request, "interest-restriction-return-frontend"))
   }
 }
 
