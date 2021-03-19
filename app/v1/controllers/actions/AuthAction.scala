@@ -16,7 +16,6 @@
 
 package v1.controllers.actions
 
-import com.google.inject.Inject
 import play.api.mvc.Results._
 import play.api.mvc._
 import uk.gov.hmrc.auth.core._
@@ -26,15 +25,6 @@ import uk.gov.hmrc.play.HeaderCarrierConverter
 import v1.models.requests.IdentifierRequest
 
 import scala.concurrent.{ExecutionContext, Future}
-
-trait AuthActionProvider {
-  def apply(isInternal: Boolean = false) : AuthActionBase
-}
-
-class AuthActionProviderImpl @Inject()(authConnector: AuthConnector, parser: BodyParsers.Default)
-                                      (implicit val ec: ExecutionContext) extends AuthActionProvider {
-  def apply(isInternal: Boolean = false) : AuthActionBase = if (isInternal) NoAuthAction(authConnector,parser) else AuthAction(authConnector,parser)
-}
 
 trait AuthActionBase extends ActionBuilder[IdentifierRequest, AnyContent] with ActionFunction[Request, IdentifierRequest] with AuthorisedFunctions
 
