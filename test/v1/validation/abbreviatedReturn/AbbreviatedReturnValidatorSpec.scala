@@ -17,8 +17,6 @@
 package v1.validation.abbreviatedReturn
 
 import assets.AgentDetailsConstants._
-import assets.GroupLevelElectionsConstants._
-import assets.GroupRatioConstants._
 import assets.ParentCompanyConstants._
 import assets.ReportingCompanyConstants._
 import assets.abbreviatedReturn.AbbreviatedReturnConstants._
@@ -95,14 +93,6 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
         leftSideError(abbreviatedReturnUltimateParentModel.copy(
           appointedReportingCompany = false
         ).validate).errorMessage shouldBe ReportingCompanyNotAppointed.errorMessage
-      }
-
-      "Group Level Elections are invalid" in {
-        leftSideError(abbreviatedReturnUltimateParentModel.copy(
-          groupLevelElections = Some(groupLevelElectionsModelMax.copy(
-            groupRatio = groupRatioModelMin.copy(groupEBITDAChargeableGains = Some(true))
-          )
-        )).validate).errorMessage shouldBe GroupEBITDASupplied(Some(true)).errorMessage
       }
 
       "Uk Company details are invalid" in {

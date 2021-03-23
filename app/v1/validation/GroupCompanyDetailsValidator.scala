@@ -16,14 +16,11 @@
 
 package v1.validation
 
-import config.Constants
-import play.api.libs.json.{JsPath, Json}
+import play.api.libs.json.JsPath
 import v1.models.Validation.ValidationResult
-import v1.models.{GroupCompanyDetailsModel, Validation}
+import v1.models.GroupCompanyDetailsModel
 
 trait GroupCompanyDetailsValidator extends BaseValidation {
-
-  import cats.implicits._
 
   val groupCompanyDetails: GroupCompanyDetailsModel
 

@@ -41,9 +41,7 @@ class FullReturnValidatorSpec extends BaseSpec {
     "Return valid" when {
 
       "a valid Full Return is supplied" in {
-
         val model = fullReturnUltimateParentModel
-
         rightSide(model.validate) shouldBe model
       }
     }
@@ -279,13 +277,6 @@ class FullReturnValidatorSpec extends BaseSpec {
       "Parent Company is invalid" in {
         leftSideError(fullReturnUltimateParentModel.copy(parentCompany = Some(parentCompanyModelMax)).validate).errorMessage shouldBe
           ParentCompanyCanNotBeUltimateAndDeemed(parentCompanyModelMax).errorMessage
-      }
-
-      "Group Level Elections are invalid" in {
-        leftSideError(fullReturnUltimateParentModel.copy(
-          groupLevelElections = groupLevelElectionsModelMax.copy(
-            groupRatio = groupRatioModelMin.copy(groupEBITDAChargeableGains = Some(true))
-          )).validate).errorMessage shouldBe GroupEBITDASupplied(Some(true)).errorMessage
       }
 
       "Uk Company details are invalid" in {

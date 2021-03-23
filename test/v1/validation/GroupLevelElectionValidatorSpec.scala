@@ -36,22 +36,23 @@ class GroupLevelElectionValidatorSpec extends BaseValidationSpec {
       "Valid Elections model is supplied" in {
         rightSide(groupLevelElectionsModelMax.validate) shouldBe groupLevelElectionsModelMax
       }
+
+        "groupRatio vaidation doesnt flag errors" in {
+          val model = groupLevelElectionsModelMax.copy(
+            groupRatio = groupRatioModelMax.copy(
+              isElected = false,
+              groupRatioBlended = None,
+              groupEBITDAChargeableGains = Some(true)
+            )
+          )
+
+          rightSide(model.validate) shouldBe groupLevelElectionsModelMax.copy(
+            groupRatio = groupRatioModelMax.copy(
+              isElected = false, groupRatioBlended = None, groupEBITDAChargeableGains = Some(true)))
+        }
     }
 
-
     "Return Invalid" when {
-
-      "groupRatio has errors" in {
-        val model = groupLevelElectionsModelMax.copy(
-          groupRatio = groupRatioModelMax.copy(
-            isElected = false,
-            groupRatioBlended = None,
-            groupEBITDAChargeableGains = Some(true)
-          )
-        )
-
-        leftSideError(model.validate).errorMessage shouldBe GroupEBITDASupplied(model.groupRatio.groupEBITDAChargeableGains).errorMessage
-      }
 
       "interestAllowanceNonConsolidatedInvestment has errors" in {
         val model = groupLevelElectionsModelMax.copy(
