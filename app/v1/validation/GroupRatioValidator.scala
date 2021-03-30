@@ -36,9 +36,8 @@ trait GroupRatioValidator extends BaseValidation {
 
   def validate(implicit path: JsPath): ValidationResult[GroupRatioModel] =
     (validateGroupRatioElected,
-      groupRatioModel.groupEBITDAChargeableGains.validNec,
       optionValidations(groupRatioModel.groupRatioBlended.map(_.validate(path \ "groupRatioBlended")))
-    ).mapN((_, _, _) => groupRatioModel)
+    ).mapN((_, _) => groupRatioModel)
 }
 
 case class GroupRatioBlendedSupplied(groupRatio: GroupRatioModel)(implicit val topPath: JsPath) extends Validation {
