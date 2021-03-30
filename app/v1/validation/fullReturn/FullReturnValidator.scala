@@ -65,11 +65,11 @@ trait FullReturnValidator extends BaseValidation {
 
   private def validateAllocatedRestrictions: ValidationResult[Boolean] = {
     (fullReturnModel.groupSubjectToInterestRestrictions, fullReturnModel.groupSubjectToInterestReactivation, fullReturnModel.ukCompanies.zipWithIndex) match {
-      case (true, false, companies) if companies.exists(_._1.allocatedRestrictions.isEmpty) => combineValidations(companies.map {
-        case (company, i) => MissingAllocatedRestrictionsForCompanies(company, i).invalidNec
+      case (true, false, companies) if companies.exists(_._1.allocatedRestrictions.isEmpty) => combineValidations(companies.collect {
+        case (company, i) if company.allocatedRestrictions.isEmpty => MissingAllocatedRestrictionsForCompanies(company, i).invalidNec
       }: _*)
-      case (false, true, companies) if companies.exists(_._1.allocatedRestrictions.nonEmpty) => combineValidations(companies.map {
-        case (company, i) => CompaniesContainedAllocatedRestrictions(company, i).invalidNec
+      case (false, true, companies) if companies.exists(_._1.allocatedRestrictions.nonEmpty) => combineValidations(companies.collect {
+        case (company, i) if company.allocatedRestrictions.nonEmpty => CompaniesContainedAllocatedRestrictions(company, i).invalidNec
       }: _*)
       case _ => fullReturnModel.groupSubjectToInterestRestrictions.validNec
     }
@@ -77,11 +77,11 @@ trait FullReturnValidator extends BaseValidation {
 
   private def validateAllocatedReactivations: ValidationResult[Boolean] = {
     (fullReturnModel.groupSubjectToInterestReactivation, fullReturnModel.groupSubjectToInterestRestrictions, fullReturnModel.ukCompanies.zipWithIndex) match {
-      case (true, false, companies) if companies.exists(_._1.allocatedReactivations.isEmpty) => combineValidations(companies.map {
-        case (company, i) => MissingAllocatedReactivationsForCompanies(company, i).invalidNec
+      case (true, false, companies) if companies.exists(_._1.allocatedReactivations.isEmpty) => combineValidations(companies.collect {
+        case (company, i) if company.allocatedReactivations.isEmpty => MissingAllocatedReactivationsForCompanies(company, i).invalidNec
       }: _*)
-      case (false, _, companies) if companies.exists(_._1.allocatedReactivations.nonEmpty) => combineValidations(companies.map {
-        case (company, i) => CompaniesContainedAllocatedReactivations(company, i).invalidNec
+      case (false, _, companies) if companies.exists(_._1.allocatedReactivations.nonEmpty) => combineValidations(companies.collect {
+        case (company, i) if company.allocatedReactivations.nonEmpty => CompaniesContainedAllocatedReactivations(company, i).invalidNec
       }: _*)
       case _ => fullReturnModel.groupSubjectToInterestReactivation.validNec
     }
