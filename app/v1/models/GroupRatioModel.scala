@@ -20,7 +20,7 @@ import play.api.libs.json.Json
 import v1.validation.GroupRatioValidator
 
 case class GroupRatioModel(isElected: Boolean,
-                           groupEBITDAChargeableGains: Option[Boolean],
+                           groupEBITDAChargeableGains: Boolean,
                            groupRatioBlended: Option[GroupRatioBlendedModel]) extends GroupRatioValidator {
   override val groupRatioModel = this
 }

@@ -37,14 +37,14 @@ class GroupRatioValidatorSpec extends BaseValidationSpec {
       }
 
       "isElected is false and GroupEBITDA is given" in {
-        val model = groupRatioModelMax.copy(isElected = false, groupRatioBlended = None, groupEBITDAChargeableGains = Some(false))
-        val validModel = groupRatioModelMax.copy(isElected = false, groupRatioBlended = None, groupEBITDAChargeableGains = Some(false))
+        val model = groupRatioModelMax.copy(isElected = false, groupRatioBlended = None, groupEBITDAChargeableGains = false)
+        val validModel = groupRatioModelMax.copy(isElected = false, groupRatioBlended = None, groupEBITDAChargeableGains = false)
         rightSide(model.validate) shouldBe validModel
       }
 
-      "isElected is true and GroupEBITDA is not provided" in {
-        val model = groupRatioModelMax.copy(isElected = true, groupEBITDAChargeableGains = None)
-        val validModel = groupRatioModelMax.copy(isElected = true, groupEBITDAChargeableGains = None)
+      "isElected is true and GroupEBITDA is false" in {
+        val model = groupRatioModelMax.copy(isElected = true, groupEBITDAChargeableGains = false)
+        val validModel = groupRatioModelMax.copy(isElected = true, groupEBITDAChargeableGains = false)
         rightSide(model.validate) shouldBe validModel
       }
     }

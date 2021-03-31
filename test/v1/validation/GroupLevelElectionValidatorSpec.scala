@@ -42,13 +42,13 @@ class GroupLevelElectionValidatorSpec extends BaseValidationSpec {
             groupRatio = groupRatioModelMax.copy(
               isElected = false,
               groupRatioBlended = None,
-              groupEBITDAChargeableGains = Some(true)
+              groupEBITDAChargeableGains = true
             )
           )
 
           rightSide(model.validate) shouldBe groupLevelElectionsModelMax.copy(
             groupRatio = groupRatioModelMax.copy(
-              isElected = false, groupRatioBlended = None, groupEBITDAChargeableGains = Some(true)))
+              isElected = false, groupRatioBlended = None, groupEBITDAChargeableGains = true))
         }
     }
 
