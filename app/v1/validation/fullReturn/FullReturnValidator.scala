@@ -65,10 +65,7 @@ trait FullReturnValidator extends BaseValidation {
 
   private def validateAllocatedRestrictions: ValidationResult[Boolean] = {
     (fullReturnModel.groupSubjectToInterestRestrictions, fullReturnModel.groupSubjectToInterestReactivation, fullReturnModel.ukCompanies.zipWithIndex) match {
-      case (true, false, companies) if companies.exists(_._1.allocatedRestrictions.isEmpty) => combineValidations(companies.collect {
-        case (company, i) if company.allocatedRestrictions.isEmpty => MissingAllocatedRestrictionsForCompanies(company, i).invalidNec
-      }: _*)
-      case (false, true, companies) if companies.exists(_._1.allocatedRestrictions.nonEmpty) => combineValidations(companies.collect {
+      case (false, _, companies) if companies.exists(_._1.allocatedRestrictions.nonEmpty) => combineValidations(companies.collect {
         case (company, i) if company.allocatedRestrictions.nonEmpty => CompaniesContainedAllocatedRestrictions(company, i).invalidNec
       }: _*)
       case _ => fullReturnModel.groupSubjectToInterestRestrictions.validNec
@@ -77,9 +74,6 @@ trait FullReturnValidator extends BaseValidation {
 
   private def validateAllocatedReactivations: ValidationResult[Boolean] = {
     (fullReturnModel.groupSubjectToInterestReactivation, fullReturnModel.groupSubjectToInterestRestrictions, fullReturnModel.ukCompanies.zipWithIndex) match {
-      case (true, false, companies) if companies.exists(_._1.allocatedReactivations.isEmpty) => combineValidations(companies.collect {
-        case (company, i) if company.allocatedReactivations.isEmpty => MissingAllocatedReactivationsForCompanies(company, i).invalidNec
-      }: _*)
       case (false, _, companies) if companies.exists(_._1.allocatedReactivations.nonEmpty) => combineValidations(companies.collect {
         case (company, i) if company.allocatedReactivations.nonEmpty => CompaniesContainedAllocatedReactivations(company, i).invalidNec
       }: _*)
@@ -274,20 +268,8 @@ case class AggInterestPositiveAndRestriction(totalTaxInterest: BigDecimal, subje
   val value = Json.obj()
 }
 
-case class MissingAllocatedRestrictionsForCompanies(company: UkCompanyModel, i: Int) extends Validation {
-  val errorMessage: String = s"Allocated Restrictions must be supplied for this UK Company when the group is subject to Interest Restrictions"
-  val path = JsPath \ s"ukCompanies[$i]"
-  val value = Json.obj()
-}
-
 case class CompaniesContainedAllocatedRestrictions(company: UkCompanyModel, i: Int) extends Validation {
   val errorMessage: String = s"Allocated Restrictions cannot be supplied for this UK Company when the group is not subject to Interest Restrictions"
-  val path = JsPath \ s"ukCompanies[$i]"
-  val value = Json.obj()
-}
-
-case class MissingAllocatedReactivationsForCompanies(company: UkCompanyModel, i: Int) extends Validation {
-  val errorMessage: String = s"Allocated Reactivations must be supplied for this UK Company when the group is subject to Interest Reactivations"
   val path = JsPath \ s"ukCompanies[$i]"
   val value = Json.obj()
 }
