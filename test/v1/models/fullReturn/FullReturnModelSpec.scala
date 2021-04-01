@@ -53,7 +53,6 @@ class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants {
 
         actualValue shouldBe expectedValue
       }
-
     }
 
     "not pass the appointedReportingCompany boolean" when {
@@ -190,5 +189,4 @@ class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants {
   }
 
   def withoutAppointedReportingCompany(json: JsObject): JsObject = json - "appointedReportingCompany"
-
 }

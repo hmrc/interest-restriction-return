@@ -120,7 +120,6 @@ trait FullReturnValidator extends BaseValidation {
       case (r, cr) if r != cr => TotalRestrictionsDoesNotMatch(restrictions, calculatedRestrictions).invalidNec
       case (_, _) => restrictions.validNec
     }
-
   }
 
   private def validateAggInterestAndReallocationOrRestrictionStatus: ValidationResult[BigDecimal] = {
