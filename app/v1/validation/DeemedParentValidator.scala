@@ -35,6 +35,7 @@ trait DeemedParentValidator extends BaseValidation {
       case (true, true, false) => WrongDeemedParentIsUkCompanyAndPartnership(deemedParentModel).invalidNec
       case (true, false, true) => WrongDeemedParentIsUKCompanyAndNonUK(deemedParentModel).invalidNec
       case (false, true, true) => WrongDeemedParentIsUkPartnershipAndNonUKCompany(deemedParentModel).invalidNec
+      case (false, false, false) => NoUTROrCountryCodeOnDeemedParent(deemedParentModel).invalidNec
       case _ => deemedParentModel.validNec
     }
   }
@@ -69,6 +70,10 @@ case class WrongDeemedParentIsUKCompanyAndNonUK(model: DeemedParentModel)(implic
   val value = Json.toJson(model)
 }
 
+case class NoUTROrCountryCodeOnDeemedParent(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
+  val errorMessage: String = "You need to enter a CTUTR, an SAUTR, or a Country Of Incorporation"
+  val value = Json.toJson(model)
+}
 
 
 

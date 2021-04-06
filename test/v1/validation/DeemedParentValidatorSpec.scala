@@ -124,6 +124,13 @@ class DeemedParentValidatorSpec extends BaseSpec {
 
           leftSideError(model.validate).errorMessage shouldBe WrongDeemedParentIsUkPartnershipAndNonUKCompany(model).errorMessage
         }
+
+        "No UTR or Country of Incorporation" in {
+
+          val model = deemedParentModelUkPartnership.copy(ctutr = None, sautr = None, countryOfIncorporation = None)
+
+          leftSideError(model.validate).errorMessage shouldBe NoUTROrCountryCodeOnDeemedParent(model).errorMessage
+        }
       }
 
 
