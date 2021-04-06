@@ -109,7 +109,6 @@ class DeemedParentValidatorSpec extends BaseSpec {
           leftSideError(model.validate).errorMessage shouldBe WrongDeemedParentIsUkCompanyAndPartnership(model).errorMessage
         }
 
-
         "Both UK Company and NonUK Details Supplied" in {
 
           val model = deemedParentModelUkCompany.copy(countryOfIncorporation = Some(nonUkCountryCode))
@@ -117,10 +116,45 @@ class DeemedParentValidatorSpec extends BaseSpec {
           leftSideError(model.validate).errorMessage shouldBe WrongDeemedParentIsUKCompanyAndNonUK(model).errorMessage
         }
 
-
         "Both UK Partnership and NonUk Details Supplied" in {
 
           val model = deemedParentModelUkPartnership.copy(countryOfIncorporation = Some(nonUkCountryCode))
+
+          leftSideError(model.validate).errorMessage shouldBe WrongDeemedParentIsUkPartnershipAndNonUKCompany(model).errorMessage
+        }
+
+        "IsUK and CountryOfIncorporation is supplied" in {
+
+          val model = deemedParentModelNonUkCompany.copy(
+            isUk = true
+          )
+
+          leftSideError(model.validate).errorMessage shouldBe WrongDeemedParentIsUkPartnershipAndNonUKCompany(model).errorMessage
+        }
+
+        "NonUK and SAUTR is supplied" in {
+
+          val model = deemedParentModelUkCompany.copy(
+            isUk = false
+          )
+
+          leftSideError(model.validate).errorMessage shouldBe WrongDeemedParentIsUkPartnershipAndNonUKCompany(model).errorMessage
+        }
+
+        "NonUK and CTUTR is supplied" in {
+
+          val model = deemedParentModelNonUkCompany.copy(
+            countryOfIncorporation = None
+          )
+
+          leftSideError(model.validate).errorMessage shouldBe NonUKMissingCountryOfIncorporation(model).errorMessage
+        }
+
+        "NonUK and no country of incorporation is supplied" in {
+
+          val model = deemedParentModelUkPartnership.copy(
+            isUk = false
+          )
 
           leftSideError(model.validate).errorMessage shouldBe WrongDeemedParentIsUkPartnershipAndNonUKCompany(model).errorMessage
         }
