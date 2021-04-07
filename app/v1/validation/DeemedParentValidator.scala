@@ -38,7 +38,7 @@ trait DeemedParentValidator extends BaseValidation {
       case (false, true, true, _) => WrongDeemedParentIsUkPartnershipAndNonUKCompany(deemedParentModel).invalidNec
       case (_, _, true, true) => WrongDeemedParentIsUkPartnershipAndNonUKCompany(deemedParentModel).invalidNec
       case (true, _, _, false) | (_, true, _, false) => WrongDeemedParentIsUkPartnershipAndNonUKCompany(deemedParentModel).invalidNec
-      case (_, _, false, false) => NonUKMissingCountryOfIncorporation(deemedParentModel).invalidNec
+      case (_, _, false, false) => NonUKDeemedParentMissingCountryOfIncorporation(deemedParentModel).invalidNec
       case (false, false, false, _) => NoUTROrCountryCodeOnDeemedParent(deemedParentModel).invalidNec
       case _ => deemedParentModel.validNec
     }
@@ -79,7 +79,7 @@ case class NoUTROrCountryCodeOnDeemedParent(model: DeemedParentModel)(implicit v
   val value: JsValue = Json.toJson(model)
 }
 
-case class NonUKMissingCountryOfIncorporation(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
+case class NonUKDeemedParentMissingCountryOfIncorporation(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
   val errorMessage: String = "You need to enter a Country Of Incorporation for a NonUK Company"
   val value: JsValue = Json.toJson(model)
 }

@@ -147,7 +147,7 @@ class DeemedParentValidatorSpec extends BaseSpec {
             countryOfIncorporation = None
           )
 
-          leftSideError(model.validate).errorMessage shouldBe NonUKMissingCountryOfIncorporation(model).errorMessage
+          leftSideError(model.validate).errorMessage shouldBe NonUKDeemedParentMissingCountryOfIncorporation(model).errorMessage
         }
 
         "NonUK and no country of incorporation is supplied" in {
