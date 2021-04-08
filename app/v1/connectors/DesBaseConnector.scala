@@ -19,7 +19,7 @@ package v1.connectors
 import config.AppConfig
 import v1.connectors.HttpHelper.SubmissionResponse
 import play.api.Logging
-import play.api.http.Status.CREATED
+import play.api.http.Status.{CREATED, INTERNAL_SERVER_ERROR}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import uk.gov.hmrc.http.logging.Authorization
 import v1.models.requests.IdentifierRequest
@@ -46,7 +46,7 @@ trait DesBaseConnector {
         )
       case status =>
         logger.warn(s"[$parserName][read]: Unexpected response, status $status returned with body ${response.body}")
-        Left(UnexpectedFailure(response.status,s"Status ${response.status} $unexpectedErrorMessage"))
+        Left(UnexpectedFailure(INTERNAL_SERVER_ERROR,s"Status $INTERNAL_SERVER_ERROR $unexpectedErrorMessage"))
     }
   }
 }

@@ -55,14 +55,22 @@ class AppointReportingCompanyHttpParserSpec extends WordSpec with Matchers with 
 
 
     "given any other status" should {
+      
+      val expectedResult = Left(UnexpectedFailure(
+        Status.INTERNAL_SERVER_ERROR,
+        s"Status ${Status.INTERNAL_SERVER_ERROR} Error returned when trying to appoint a reporting company"
+      ))
 
-      "return a Left(UnexpectedFailure)" in {
+      "return a Left(UnexpectedFailure) for a 500" in {
 
-        val expectedResult = Left(UnexpectedFailure(
-          Status.INTERNAL_SERVER_ERROR,
-          s"Status ${Status.INTERNAL_SERVER_ERROR} Error returned when trying to appoint a reporting company"
-        ))
         val actualResult = AppointReportingCompanyReads.read("", "", HttpResponse(Status.INTERNAL_SERVER_ERROR, Json.obj(), Map.empty[String,Seq[String]]))
+
+        actualResult shouldBe expectedResult
+      }
+
+      "return a Left(UnexpectedFailure) for a 200" in {
+
+        val actualResult = AppointReportingCompanyReads.read("", "", HttpResponse(Status.OK, ackRefResponse, Map.empty[String,Seq[String]]))
 
         actualResult shouldBe expectedResult
       }
