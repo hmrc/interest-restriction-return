@@ -21,10 +21,10 @@ import java.time.LocalDate
 import play.api.libs.json.Json
 import v1.validation.fullReturn.AllocatedRestrictionsValidator
 
-case class AllocatedRestrictionsModel(ap1EndDate: Option[LocalDate],
+case class AllocatedRestrictionsModel(ap1EndDate: LocalDate,
                                       ap2EndDate: Option[LocalDate],
                                       ap3EndDate: Option[LocalDate],
-                                      disallowanceAp1: Option[BigDecimal],
+                                      disallowanceAp1: BigDecimal,
                                       disallowanceAp2: Option[BigDecimal],
                                       disallowanceAp3: Option[BigDecimal],
                                       totalDisallowances: Option[BigDecimal]
