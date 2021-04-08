@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import play.api.libs.json.{JsPath, Json}
+import play.api.libs.json.{Json, JsPath, JsValue}
 import v1.models.Validation.ValidationResult
 import v1.models.{UltimateParentModel, Validation}
 
@@ -30,13 +30,17 @@ trait UltimateParentValidator extends BaseValidation {
     val ctutr = ultimateParentModel.ctutr.isDefined
     val sautr = ultimateParentModel.sautr.isDefined
     val countryCode = ultimateParentModel.countryOfIncorporation.isDefined
+    val isUk = ultimateParentModel.isUk
 
-    (ctutr, sautr, countryCode) match {
-      case (true, true, true) => UltimateParentWrongDetailsSuppliedError(ultimateParentModel).invalidNec
-      case (true, true, false) => WrongUltimateParentIsUkCompanyAndPartnership(ultimateParentModel).invalidNec
-      case (true, false, true) => WrongUltimateParentIsUKCompanyAndNonUK(ultimateParentModel).invalidNec
-      case (false, true, true) => WrongUltimateParentIsUkPartnershipAndNonUKCompany(ultimateParentModel).invalidNec
-      case (false, false, false) => NoUTROrCountryCode(ultimateParentModel).invalidNec
+    (ctutr, sautr, countryCode, isUk) match {
+      case (true, true, true, _) => UltimateParentWrongDetailsSuppliedError(ultimateParentModel).invalidNec
+      case (true, true, false, _) => WrongUltimateParentIsUkCompanyAndPartnership(ultimateParentModel).invalidNec
+      case (true, false, true, _) => WrongUltimateParentIsUKCompanyAndNonUK(ultimateParentModel).invalidNec
+      case (false, true, true, _) => WrongUltimateParentIsUkPartnershipAndNonUKCompany(ultimateParentModel).invalidNec
+      case (_, _, true, true) => WrongUltimateParentIsUkPartnershipAndNonUKCompany(ultimateParentModel).invalidNec
+      case (true, _, _, false) | (_, true, _, false) => WrongUltimateParentIsUkPartnershipAndNonUKCompany(ultimateParentModel).invalidNec
+      case (_, _, false, false) => NonUKUltimateParentMissingCountryOfIncorporation(ultimateParentModel).invalidNec
+      case (false, false, false, _) => NoUTROrCountryCode(ultimateParentModel).invalidNec
       case _ => ultimateParentModel.validNec
     }
   }
@@ -51,27 +55,32 @@ trait UltimateParentValidator extends BaseValidation {
 
 case class UltimateParentWrongDetailsSuppliedError(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {
   val errorMessage: String = "you have given the details for all three ultimate parents please give correct details"
-  val value = Json.toJson(model)
+  val value: JsValue = Json.toJson(model)
 }
 
 case class WrongUltimateParentIsUkCompanyAndPartnership(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {
   val errorMessage: String = "you have given details for a UK Company and Partnership"
-  val value = Json.toJson(model)
+  val value: JsValue = Json.toJson(model)
 }
 
 case class WrongUltimateParentIsUkPartnershipAndNonUKCompany(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {
   val errorMessage: String = "you have given details for a UK Partnership and NonUK Company"
-  val value = Json.toJson(model)
+  val value: JsValue = Json.toJson(model)
 }
 
 case class WrongUltimateParentIsUKCompanyAndNonUK(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {
   val errorMessage: String = "you have given details for a UK and Non UK Company"
-  val value = Json.toJson(model)
+  val value: JsValue = Json.toJson(model)
 }
 
 case class NoUTROrCountryCode(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {
   val errorMessage: String = "You need to enter a CTUTR, an SAUTR, or a Country Of Incorporation"
-  val value = Json.toJson(model)
+  val value: JsValue = Json.toJson(model)
+}
+
+case class NonUKUltimateParentMissingCountryOfIncorporation(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {
+  val errorMessage: String = "You need to enter a Country Of Incorporation for a NonUK Company"
+  val value: JsValue = Json.toJson(model)
 }
 
 

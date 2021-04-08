@@ -49,7 +49,7 @@ object UltimateParentConstants extends BaseConstants {
 
   val ultimateParentModelNonUkCompany = UltimateParentModel(
     companyName = companyName,
-    isUk = true,
+    isUk = false,
     ctutr = None,
     sautr = None,
     countryOfIncorporation = Some(nonUkCountryCode)

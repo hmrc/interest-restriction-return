@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import play.api.libs.json.{JsPath, Json}
+import play.api.libs.json.{Json, JsPath, JsValue}
 import v1.models.Validation.ValidationResult
 import v1.models.{DeemedParentModel, Validation}
 
@@ -30,12 +30,16 @@ trait DeemedParentValidator extends BaseValidation {
     val ctutr = deemedParentModel.ctutr.isDefined
     val sautr = deemedParentModel.sautr.isDefined
     val countryCode = deemedParentModel.countryOfIncorporation.isDefined
-    (ctutr, sautr, countryCode) match {
-      case (true, true, true) => DeemedParentWrongDetailsSuppliedError(deemedParentModel).invalidNec
-      case (true, true, false) => WrongDeemedParentIsUkCompanyAndPartnership(deemedParentModel).invalidNec
-      case (true, false, true) => WrongDeemedParentIsUKCompanyAndNonUK(deemedParentModel).invalidNec
-      case (false, true, true) => WrongDeemedParentIsUkPartnershipAndNonUKCompany(deemedParentModel).invalidNec
-      case (false, false, false) => NoUTROrCountryCodeOnDeemedParent(deemedParentModel).invalidNec
+    val isUk = deemedParentModel.isUk
+    (ctutr, sautr, countryCode, isUk) match {
+      case (true, true, true, _) => DeemedParentWrongDetailsSuppliedError(deemedParentModel).invalidNec
+      case (true, true, false, _) => WrongDeemedParentIsUkCompanyAndPartnership(deemedParentModel).invalidNec
+      case (true, false, true, _) => WrongDeemedParentIsUKCompanyAndNonUK(deemedParentModel).invalidNec
+      case (false, true, true, _) => WrongDeemedParentIsUkPartnershipAndNonUKCompany(deemedParentModel).invalidNec
+      case (_, _, true, true) => WrongDeemedParentIsUkPartnershipAndNonUKCompany(deemedParentModel).invalidNec
+      case (true, _, _, false) | (_, true, _, false) => WrongDeemedParentIsUkPartnershipAndNonUKCompany(deemedParentModel).invalidNec
+      case (_, _, false, false) => NonUKDeemedParentMissingCountryOfIncorporation(deemedParentModel).invalidNec
+      case (false, false, false, _) => NoUTROrCountryCodeOnDeemedParent(deemedParentModel).invalidNec
       case _ => deemedParentModel.validNec
     }
   }
@@ -52,27 +56,32 @@ trait DeemedParentValidator extends BaseValidation {
 
 case class DeemedParentWrongDetailsSuppliedError(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
   val errorMessage: String = "you have given the details for all three ultimate parents please give correct details"
-  val value = Json.toJson(model)
+  val value: JsValue = Json.toJson(model)
 }
 
 case class WrongDeemedParentIsUkCompanyAndPartnership(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
   val errorMessage: String = "you have given details for a UK Company and Partnership"
-  val value = Json.toJson(model)
+  val value: JsValue = Json.toJson(model)
 }
 
 case class WrongDeemedParentIsUkPartnershipAndNonUKCompany(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
   val errorMessage: String = "you have given details for a UK Partnership and NonUK Company"
-  val value = Json.toJson(model)
+  val value: JsValue = Json.toJson(model)
 }
 
 case class WrongDeemedParentIsUKCompanyAndNonUK(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
   val errorMessage: String = "you have given details for a UK and Non UK Company"
-  val value = Json.toJson(model)
+  val value: JsValue = Json.toJson(model)
 }
 
 case class NoUTROrCountryCodeOnDeemedParent(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
   val errorMessage: String = "You need to enter a CTUTR, an SAUTR, or a Country Of Incorporation"
-  val value = Json.toJson(model)
+  val value: JsValue = Json.toJson(model)
+}
+
+case class NonUKDeemedParentMissingCountryOfIncorporation(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
+  val errorMessage: String = "You need to enter a Country Of Incorporation for a NonUK Company"
+  val value: JsValue = Json.toJson(model)
 }
 
 

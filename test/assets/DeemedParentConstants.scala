@@ -47,7 +47,7 @@ object DeemedParentConstants extends BaseConstants {
 
   val deemedParentModelNonUkCompany = DeemedParentModel(
     companyName = companyName,
-    isUk = true,
+    isUk = false,
     ctutr = None,
     sautr = None,
     countryOfIncorporation = Some(nonUkCountryCode)
