@@ -37,10 +37,6 @@ class RevokeReportingCompanyConnector @Inject()(httpClient: HttpClient,
   def revoke(revokeReportingCompanyModel: RevokeReportingCompanyModel)
              (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
 
-    logger.debug(s"[RevokeReportingCompanyConnector][revoke] URL: $revokeUrl")
-    logger.debug(s"[RevokeReportingCompanyConnector][revoke] Headers: ${desHc.headers}")
-    logger.debug(s"[RevokeReportingCompanyConnector][revoke] Body: \n\n ${Json.toJson(revokeReportingCompanyModel)}")
-
     httpClient.POST(revokeUrl, revokeReportingCompanyModel)(RevokeReportingCompanyModel.format, RevokeReportingCompanyReads, desHc, ec)
   }
 
