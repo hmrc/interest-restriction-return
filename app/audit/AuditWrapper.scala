@@ -25,12 +25,11 @@ import uk.gov.hmrc.play.audit.AuditExtensions._
 import uk.gov.hmrc.play.audit.http.connector.AuditResult.{Disabled, Failure, Success}
 import uk.gov.hmrc.play.audit.http.connector.{AuditConnector, AuditResult}
 import uk.gov.hmrc.play.audit.model.DataEvent
-
 import scala.concurrent.{ExecutionContext, Future}
 import scala.language.implicitConversions
 
-@ImplementedBy(classOf[AuditServiceImpl])
-trait AuditService {
+@ImplementedBy(classOf[AuditWrapperImpl])
+trait AuditWrapper {
 
   def sendEvent[T <: AuditEvent](event: T)(implicit
                                            rh: RequestHeader,
@@ -38,10 +37,10 @@ trait AuditService {
 
 }
 
-class AuditServiceImpl @Inject()(
+class AuditWrapperImpl @Inject()(
                                   config: AppConfig,
                                   connector: AuditConnector
-                                ) extends AuditService with Logging {
+                                ) extends AuditWrapper with Logging {
 
   private implicit def toHc(request: RequestHeader): AuditHeaderCarrier =
     auditHeaderCarrier(HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session)))

@@ -16,7 +16,9 @@
 
 package v1.connectors
 
+import audit.{AuditWrapper, InterestRestrictionReturnAuditService}
 import config.AppConfig
+
 import javax.inject.Inject
 import play.api.Logging
 import play.api.libs.json.Json
@@ -29,7 +31,7 @@ import v1.models.requests.IdentifierRequest
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class FullReturnConnector @Inject()(httpClient: HttpClient,
+class FullReturnConnector @Inject()(httpClient: HttpClient, irrAuditService: InterestRestrictionReturnAuditService, auditWrapper: AuditWrapper,
                                     implicit val appConfig: AppConfig) extends DesBaseConnector with Logging {
 
   private[connectors] lazy val fullReturnUrl = s"${appConfig.desUrl}/organisations/interest-restrictions-return/full"
@@ -41,7 +43,8 @@ class FullReturnConnector @Inject()(httpClient: HttpClient,
     logger.debug(s"[FullReturnConnector][submit] Headers: ${desHc.headers}")
     logger.debug(s"[FullReturnConnector][submit] Body: \n\n ${Json.toJson(fullReturnModel)}")
 
-    httpClient.POST(fullReturnUrl, fullReturnModel)(FullReturnModel.format, FullReturnReads, desHc, ec)
+    httpClient.POST(fullReturnUrl, fullReturnModel)(FullReturnModel.format, FullReturnReads, desHc, ec) andThen
+      irrAuditService.sendInterestRestrictionReturnEvent("FullSubmission")(auditWrapper.sendEvent)
   }
 
 }
