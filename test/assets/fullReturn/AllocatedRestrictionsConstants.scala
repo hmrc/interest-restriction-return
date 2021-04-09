@@ -36,20 +36,20 @@ object AllocatedRestrictionsConstants {
   val incorrectDisallowances: BigDecimal = 10.00
 
   val allocatedRestrictionsModel = AllocatedRestrictionsModel(
-    ap1EndDate = Some(ap1EndDate),
+    ap1EndDate = ap1EndDate,
     ap2EndDate = Some(ap2EndDate),
     ap3EndDate = Some(ap3EndDate),
-    disallowanceAp1 = Some(disallowanceAp1),
+    disallowanceAp1 = disallowanceAp1,
     disallowanceAp2 = Some(disallowanceAp2),
     disallowanceAp3 = Some(disallowanceAp3),
     totalDisallowances = Some(totalDisallowances)
   )
 
   val zeroAllocatedRestrictionsModel = AllocatedRestrictionsModel(
-    ap1EndDate = Some(ap1EndDate),
+    ap1EndDate = ap1EndDate,
     ap2EndDate = None,
     ap3EndDate = None,
-    disallowanceAp1 = Some(0),
+    disallowanceAp1 = 0,
     disallowanceAp2 = None,
     disallowanceAp3 = None,
     totalDisallowances = Some(0)

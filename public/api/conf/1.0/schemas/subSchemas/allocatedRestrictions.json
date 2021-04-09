@@ -36,6 +36,7 @@
   },
   "required": [
     "ap1EndDate",
+    "disallowanceAp1",
     "totalDisallowances"
   ],
   "additionalProperties": false

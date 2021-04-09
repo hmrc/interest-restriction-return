@@ -32,8 +32,8 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
   )
 
   val restrictionModel = AllocatedRestrictionsModel(
-    ap1EndDate = None,
-    disallowanceAp1 = None,
+    ap1EndDate = ap1EndDate,
+    disallowanceAp1 = disallowanceAp1,
     ap2EndDate = None,
     disallowanceAp2 = None,
     ap3EndDate = None,
@@ -48,8 +48,6 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
       "Ap1 supplied with the total disallowed amount" in {
 
         val model = restrictionModel.copy(
-          ap1EndDate = Some(ap1EndDate),
-          disallowanceAp1 = Some(disallowanceAp1),
           totalDisallowances = Some(disallowanceAp1)
         )
 
@@ -59,8 +57,6 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
       "Ap1 and Ap2 supplied with the total disallowed amount" in {
 
         val model = restrictionModel.copy(
-          ap1EndDate = Some(ap1EndDate),
-          disallowanceAp1 = Some(disallowanceAp1),
           ap2EndDate = Some(ap2EndDate),
           disallowanceAp2 = Some(disallowanceAp2),
           totalDisallowances = Some(disallowanceAp1 + disallowanceAp2)
@@ -72,8 +68,6 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
       "Ap1, Ap2 and Ap3 supplied with the total disallowed amount" in {
 
         val model = restrictionModel.copy(
-          ap1EndDate = Some(ap1EndDate),
-          disallowanceAp1 = Some(disallowanceAp1),
           ap2EndDate = Some(ap2EndDate),
           disallowanceAp2 = Some(disallowanceAp2),
           ap3EndDate = Some(ap3EndDate),
@@ -90,31 +84,10 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
 
       "Ap1" when {
 
-        "is supplied with no amount" in {
-
-          val model = restrictionModel.copy(
-            ap1EndDate = Some(ap1EndDate),
-            totalDisallowances = Some(totalDisallowances)
-          )
-
-          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionNotSupplied(1).errorMessage
-        }
-
-        "is supplied with no date" in {
-
-          val model = restrictionModel.copy(
-            disallowanceAp1 = Some(disallowanceAp1),
-            totalDisallowances = Some(totalDisallowances)
-          )
-
-          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionSupplied(1).errorMessage
-        }
-
         "is supplied with negative amount" in {
 
           val model = restrictionModel.copy(
-            ap1EndDate = Some(ap1EndDate),
-            disallowanceAp1 = Some(-1),
+            disallowanceAp1 = -1,
             totalDisallowances = Some(totalDisallowances)
           )
 
@@ -124,8 +97,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
         "is supplied with >2 decimal places" in {
 
           val model = restrictionModel.copy(
-            ap1EndDate = Some(ap1EndDate),
-            disallowanceAp1 = Some(1.111),
+            disallowanceAp1 = 1.111,
             totalDisallowances = Some(totalDisallowances)
           )
 
@@ -135,8 +107,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
         "is supplied with a date that is equal to Group Accounting Period start date" in {
 
           val model = restrictionModel.copy(
-            ap1EndDate = Some(groupAccountingPeriod.startDate),
-            disallowanceAp1 = Some(disallowanceAp1),
+            ap1EndDate = groupAccountingPeriod.startDate,
             totalDisallowances = Some(totalDisallowances)
           )
 
@@ -147,8 +118,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
         "is supplied with a date that is less than Group Accounting Period start date" in {
 
           val model = restrictionModel.copy(
-            ap1EndDate = Some(groupAccountingPeriod.startDate.minusDays(1)),
-            disallowanceAp1 = Some(disallowanceAp1),
+            ap1EndDate = groupAccountingPeriod.startDate.minusDays(1),
             totalDisallowances = Some(totalDisallowances)
           )
 
@@ -201,22 +171,9 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
           leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionDecimalError(2, 1.111).errorMessage
         }
 
-        "is supplied without Ap1" in {
-
-          val model = restrictionModel.copy(
-            ap2EndDate = Some(ap2EndDate),
-            disallowanceAp2 = Some(disallowanceAp2),
-            totalDisallowances = Some(totalDisallowances)
-          )
-
-          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionLaterPeriodSupplied(2).errorMessage
-        }
-
         "is supplied with a date equal to Ap1" in {
 
           val model = restrictionModel.copy(
-            ap1EndDate = Some(ap1EndDate),
-            disallowanceAp1 = Some(disallowanceAp1),
             ap2EndDate = Some(ap1EndDate),
             disallowanceAp2 = Some(disallowanceAp2),
             totalDisallowances = Some(totalDisallowances)
@@ -228,8 +185,6 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
         "is supplied with a date less than Ap1" in {
 
           val model = restrictionModel.copy(
-            ap1EndDate = Some(ap1EndDate),
-            disallowanceAp1 = Some(disallowanceAp1),
             ap2EndDate = Some(ap1EndDate.minusDays(1)),
             disallowanceAp2 = Some(disallowanceAp2),
             totalDisallowances = Some(totalDisallowances)
@@ -297,8 +252,6 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
         "is supplied without Ap2" in {
 
           val model = restrictionModel.copy(
-            ap1EndDate = Some(ap1EndDate),
-            disallowanceAp1 = Some(disallowanceAp1),
             ap3EndDate = Some(ap3EndDate),
             disallowanceAp3 = Some(disallowanceAp3),
             totalDisallowances = Some(totalDisallowances)
@@ -310,8 +263,6 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
         "is supplied with a date equal to Ap2" in {
 
           val model = restrictionModel.copy(
-            ap1EndDate = Some(ap1EndDate),
-            disallowanceAp1 = Some(disallowanceAp1),
             ap2EndDate = Some(ap3EndDate),
             disallowanceAp2 = Some(disallowanceAp2),
             ap3EndDate = Some(ap3EndDate),
@@ -325,8 +276,6 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
         "is supplied with a date less than Ap2" in {
 
           val model = restrictionModel.copy(
-            ap1EndDate = Some(ap1EndDate),
-            disallowanceAp1 = Some(disallowanceAp1),
             ap2EndDate = Some(ap3EndDate.plusDays(1)),
             disallowanceAp2 = Some(disallowanceAp2),
             ap3EndDate = Some(ap3EndDate),
@@ -340,8 +289,6 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
         "is supplied with a date less than Group Accounting Period end" in {
 
           val model = restrictionModel.copy(
-            ap1EndDate = Some(ap1EndDate),
-            disallowanceAp1 = Some(disallowanceAp1),
             ap2EndDate = Some(ap2EndDate),
             disallowanceAp2 = Some(disallowanceAp2),
             ap3EndDate = Some(groupAccountingPeriod.endDate.minusDays(1)),
@@ -358,10 +305,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
 
         "is not supplied when Ap1 is" in {
 
-          val model = restrictionModel.copy(
-            ap1EndDate = Some(ap1EndDate),
-            disallowanceAp1 = Some(disallowanceAp1)
-          )
+          val model = restrictionModel
 
           leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionTotalNotSupplied().errorMessage
         }
@@ -369,8 +313,6 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
         "is not supplied when Ap1 & Ap2 is" in {
 
           val model = restrictionModel.copy(
-            ap1EndDate = Some(ap1EndDate),
-            disallowanceAp1 = Some(disallowanceAp1),
             ap2EndDate = Some(ap2EndDate),
             disallowanceAp2 = Some(disallowanceAp2)
           )
@@ -381,8 +323,6 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
         "is not supplied when Ap1, Ap2 & Ap3 is" in {
 
           val model = restrictionModel.copy(
-            ap1EndDate = Some(ap1EndDate),
-            disallowanceAp1 = Some(disallowanceAp1),
             ap2EndDate = Some(ap2EndDate),
             disallowanceAp2 = Some(disallowanceAp2),
             ap3EndDate = Some(ap3EndDate),
@@ -395,8 +335,6 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
         "is negative" in {
 
           val model = restrictionModel.copy(
-            ap1EndDate = Some(ap1EndDate),
-            disallowanceAp1 = Some(disallowanceAp1),
             totalDisallowances = Some(-1)
           )
 
@@ -406,8 +344,6 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
         "is >2 decimal places" in {
 
           val model = restrictionModel.copy(
-            ap1EndDate = Some(ap1EndDate),
-            disallowanceAp1 = Some(disallowanceAp1),
             totalDisallowances = Some(1.111)
           )
 
@@ -417,8 +353,6 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
         "does not match the calculated total" in {
 
           val model = restrictionModel.copy(
-            ap1EndDate = Some(ap1EndDate),
-            disallowanceAp1 = Some(disallowanceAp1),
             totalDisallowances = Some(totalDisallowances)
           )
 
