@@ -14,7 +14,7 @@
         "$ref": "../definitions/definitions.json#/definitions/utrType"
       },
       "consenting": {
-        "description": "Has the company consented to this return",
+        "description": "Indicate whether the authorising company agrees to take on the group's restriction in its Corporation Tax return",
         "type": "boolean"
       }
     },

@@ -10,7 +10,7 @@
       "type": "boolean"
     },
     "agentName": {
-      "description": "If the agent is acting on behalf of the reporting company then the agent's name must be provided",
+      "description": "Name of the agent where an agent is acting on behalf of the reporting company. Must conform to the regular expression ^[ ~¡-ÿĀ-ʯḀ-ỿ‐―‘‟₠₿ÅK]{1,160}$",
       "$ref": "../definitions/definitions.json#/definitions/ukCompanyNameType"
     }
   }
