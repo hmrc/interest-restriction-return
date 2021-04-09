@@ -3,7 +3,7 @@
   "definitions": {
     "ukCompanyNameType": {
       "type": "string",
-      "description": "Name of company authorising the appointment. Must conform to the regular expression ^[0-9] {10}\n$",
+      "description": "Name of company authorising the appointment",
       "pattern": "^[ -~¡-ÿĀ-ʯḀ-ỿ‐-―‘-‟₠-₿ÅK]{1,160}$"
     },
     "globalCompanyNameType": {
@@ -11,7 +11,7 @@
       "pattern": "^[ -~¡-ÿĀ-ʯḀ-ỿ‐-―‘-‟₠-₿ÅK]{1,160}$"
     },
     "utrType": {
-      "description": "Authorising company's Unique Taxpayer Reference. Must conform to the regular expression ^[0-9] {10}\n$",
+      "description": "Authorising company's Unique Taxpayer Reference",
       "type": "string",
       "pattern": "^[0-9]{10}$"
     },

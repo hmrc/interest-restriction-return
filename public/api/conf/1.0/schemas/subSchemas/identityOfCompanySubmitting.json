@@ -7,15 +7,15 @@
   ],
   "properties": {
     "companyName": {
-      "description": "Name of the appointing companyMust conform to the regular expression ^[ ~¡-ÿĀ-ʯḀ-ỿ‐―‘‟₠₿ÅK]{1,160}$",
+      "description": "Name of the appointing company",
       "$ref": "../definitions/definitions.json#/definitions/globalCompanyNameType"
     },
     "countryOfIncorporation": {
-      "description": "Country of incorporation where the appointing company is not a UK company. A valid ISO 3166-1 2 Alpha Country CodeFor example: US",
+      "description": "Country of incorporation where the appointing company is not a UK company. A valid ISO 3166-1 2 Alpha Country Code",
       "$ref": "../definitions/countrycodes.json#/definitions/countryCode"
     },
     "ctutr": {
-      "description": "Where the appointing company is a UK company, the Corporation Tax Unique Taxpayer Reference. Must conform to the regular expression ^[0-9] {10}$",
+      "description": "Where the appointing company is a UK company, the Corporation Tax Unique Taxpayer Reference",
       "$ref": "../definitions/definitions.json#/definitions/utrType"
     },
     "legalEntityIdentifier": {
