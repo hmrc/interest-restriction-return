@@ -16,7 +16,9 @@
 
 package v1.connectors
 
+import audit.{AuditWrapper, InterestRestrictionReturnAuditService}
 import config.AppConfig
+
 import javax.inject.Inject
 import play.api.Logging
 import play.api.libs.json.Json
@@ -30,14 +32,15 @@ import v1.models.revokeReportingCompany.RevokeReportingCompanyModel
 import scala.concurrent.{ExecutionContext, Future}
 
 class RevokeReportingCompanyConnector @Inject()(httpClient: HttpClient,
-                                                implicit val appConfig: AppConfig) extends DesBaseConnector with Logging {
+                                                irrAuditService: InterestRestrictionReturnAuditService, auditWrapper: AuditWrapper, implicit val appConfig: AppConfig) extends DesBaseConnector with Logging {
 
   private[connectors] lazy val revokeUrl = s"${appConfig.desUrl}/organisations/interest-restrictions-return/revoke"
 
   def revoke(revokeReportingCompanyModel: RevokeReportingCompanyModel)
              (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
 
-    httpClient.POST(revokeUrl, revokeReportingCompanyModel)(RevokeReportingCompanyModel.format, RevokeReportingCompanyReads, desHc, ec)
+    httpClient.POST(revokeUrl, revokeReportingCompanyModel)(RevokeReportingCompanyModel.format, RevokeReportingCompanyReads, desHc, ec)  andThen
+      irrAuditService.sendInterestRestrictionReturnEvent("RevokeReportingCompany")(auditWrapper.sendEvent)
   }
 
 }

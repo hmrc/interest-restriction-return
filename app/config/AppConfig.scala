@@ -23,6 +23,7 @@ import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 trait AppConfig {
 
   def desUrl: String
+  def appName: String
   def desEnvironmentHeader: (String, String)
   def desAuthorisationToken: String
   def apiGatewayContext: String
@@ -38,6 +39,7 @@ class AppConfigImpl @Inject()(val servicesConfig: ServicesConfig, configuration:
   lazy val desUrl: String = servicesConfig.baseUrl("des")
   lazy val desAuthorisationToken: String = s"Bearer ${servicesConfig.getString("microservice.services.des.authorisation-token")}"
   lazy val desEnvironmentHeader: (String, String) = "Environment" -> servicesConfig.getString("microservice.services.des.environment")
+  lazy val appName: String = servicesConfig.getString("appName")
 
   val apiGatewayContext: String = servicesConfig.getString("api.gateway.context")
 
