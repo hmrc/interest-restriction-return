@@ -31,7 +31,9 @@ class StubSuccessfulAuditService extends AuditWrapper {
     events += event
   }
 
-  def verifySent[T <: AuditEvent](event: T): Boolean = events.contains(event)
+  def verifySent[T <: AuditEvent](event: T): Boolean = {
+    events.contains(event)
+  }
 
   def verifyNothingSent(): Boolean = events.isEmpty
 

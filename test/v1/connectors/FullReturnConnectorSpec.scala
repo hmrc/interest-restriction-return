@@ -17,17 +17,21 @@
 package v1.connectors
 
 import assets.fullReturn.FullReturnConstants._
-import audit.InterestRestrictionReturnAuditService
+import audit.{InterestRestrictionReturnAuditEvent, InterestRestrictionReturnAuditService}
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.mocks.MockHttpClient
 import play.api.http.Status._
+import play.api.libs.json.Json
 import utils.BaseSpec
 import v1.audit.StubSuccessfulAuditService
 import v1.models.fullReturn.FullReturnModel
 
+import scala.concurrent.Future
+
 class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
   val auditWrapper = new StubSuccessfulAuditService()
   val auditService = new InterestRestrictionReturnAuditService()
+
 
 
   "FullReturnConnector.submit using fullReturnModelMax" when {
@@ -70,6 +74,7 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
     }
 
     "submission is successful" should {
+     auditWrapper.reset()
 
       "return a Right(SuccessResponse)" in {
 
@@ -78,15 +83,32 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
 
         await(result) shouldBe Right(DesSuccessResponse(ackRef))
       }
+
+      "send audit event for successful response" in {
+        val connector = setup(Right(DesSuccessResponse(ackRef)))
+
+        await(connector.submit(fullReturnModelMin).map {_ =>
+          auditWrapper.verifySent(InterestRestrictionReturnAuditEvent("FullSubmission",200,Some(Json.toJson(DesSuccessResponse(ackRef))))) shouldBe true
+        })
+      }
     }
 
     "update is unsuccessful" should {
+      auditWrapper.reset()
 
       "return a Left(UnexpectedFailure)" in {
 
         val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
         val result = connector.submit(fullReturnModelMin)
 
+        await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
+      }
+
+      "send audit event for error response" in {
+        val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
+        val result = connector.submit(fullReturnModelMin)
+
+        auditWrapper.verifySent(InterestRestrictionReturnAuditEvent("FullSubmission",500,Some(Json.toJson(DesSuccessResponse(ackRef))))) shouldBe true
         await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
       }
     }

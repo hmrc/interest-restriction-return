@@ -32,20 +32,22 @@ class InterestRestrictionReturnAuditService extends Logging{
                                         (implicit rh: RequestHeader, ec: ExecutionContext): PartialFunction[Try[SubmissionResponse], Unit] = {
 
 
-    case Success(Right(successFulResponse)) =>
+    case Success(Right(successFulResponse)) => {
       sendEvent(
         InterestRestrictionReturnAuditEvent(
           action = actionPerformed,
           status = Status.OK,
           payload = Some(Json.toJson(successFulResponse))
         )
+
       )
+    }
     case Success(Left(e)) =>
       sendEvent(
         InterestRestrictionReturnAuditEvent(
           action = actionPerformed,
-          status = e.status,
-          payload = Some(Json.parse(e.body))
+          status = 3,
+          payload =None
         )
       )
     case Failure(t) =>

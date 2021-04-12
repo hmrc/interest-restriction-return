@@ -19,11 +19,7 @@ package v1.audit
 import akka.stream.Materializer
 import audit.{AuditEvent, AuditWrapper}
 import com.codahale.metrics.SharedMetricRegistries
-import com.typesafe.config.ConfigFactory
-import config.AppConfig
-import config.TestHelper.mockAppConfig
-import mocks.MockAppConfig
-import org.scalatest.{Inside, Matchers}
+import org.scalatest.Inside
 import play.api.inject.{ApplicationLifecycle, bind}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.mvc.AnyContentAsEmpty
@@ -33,7 +29,6 @@ import uk.gov.hmrc.play.audit.http.config.AuditingConfig
 import uk.gov.hmrc.play.audit.http.connector.{AuditConnector, AuditResult}
 import uk.gov.hmrc.play.audit.model.DataEvent
 import utils.BaseSpec
-
 import scala.concurrent.{ExecutionContext, Future}
 
 
