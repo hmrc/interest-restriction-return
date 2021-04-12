@@ -26,16 +26,12 @@ import utils.BaseSpec
 import v1.audit.StubSuccessfulAuditService
 import v1.models.fullReturn.FullReturnModel
 
-import scala.concurrent.Future
-
 class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
   val auditWrapper = new StubSuccessfulAuditService()
   val auditService = new InterestRestrictionReturnAuditService()
 
 
-
   "FullReturnConnector.submit using fullReturnModelMax" when {
-
     def setup(response: SubmissionResponse): FullReturnConnector = {
       val desUrl = "http://localhost:9262/organisations/interest-restrictions-return/full"
       mockHttpPost[FullReturnModel, Either[ErrorResponse, DesSuccessResponse]](desUrl, fullReturnUltimateParentModel)(response)
@@ -76,7 +72,7 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
     "submission is successful" should {
      auditWrapper.reset()
 
-      "return a Right(SuccessResponse)" in {
+     "return a Right(SuccessResponse)" in {
 
         val connector = setup(Right(DesSuccessResponse(ackRef)))
         val result = connector.submit(fullReturnModelMin)
@@ -97,7 +93,6 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
       auditWrapper.reset()
 
       "return a Left(UnexpectedFailure)" in {
-
         val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
         val result = connector.submit(fullReturnModelMin)
 
@@ -106,10 +101,10 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
 
       "send audit event for error response" in {
         val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-        val result = connector.submit(fullReturnModelMin)
 
-        auditWrapper.verifySent(InterestRestrictionReturnAuditEvent("FullSubmission",500,Some(Json.toJson(DesSuccessResponse(ackRef))))) shouldBe true
-        await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
+        await(connector.submit(fullReturnModelMin).map {_ =>
+          auditWrapper.verifySent(InterestRestrictionReturnAuditEvent("FullSubmission",500,Some(Json.toJson("Error")))) shouldBe true
+        })
       }
     }
   }

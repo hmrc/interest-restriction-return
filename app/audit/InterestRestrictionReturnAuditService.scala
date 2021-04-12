@@ -46,8 +46,8 @@ class InterestRestrictionReturnAuditService extends Logging{
       sendEvent(
         InterestRestrictionReturnAuditEvent(
           action = actionPerformed,
-          status = 3,
-          payload =None
+          status = e.status,
+          payload =Some(Json.toJson(e.body))
         )
       )
     case Failure(t) =>
