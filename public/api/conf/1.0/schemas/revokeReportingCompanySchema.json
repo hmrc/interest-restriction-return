@@ -8,7 +8,6 @@
       "$ref": "subSchemas/agentDetails.json"
     },
     "reportingCompany": {
-      "description": "",
       "$ref": "subSchemas/reportingCompany.json"
     },
     "isReportingCompanyRevokingItself": {
