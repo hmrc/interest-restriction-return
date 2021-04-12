@@ -37,10 +37,6 @@ class AppointReportingCompanyConnector @Inject()(httpClient: HttpClient,
   def appoint(appointReportingCompanyModel: AppointReportingCompanyModel)
              (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
 
-    logger.debug(s"[AppointReportingCompanyConnector][appoint] URL: $appointUrl")
-    logger.debug(s"[AppointReportingCompanyConnector][appoint] Headers: ${desHc.headers}")
-    logger.debug(s"[AppointReportingCompanyConnector][appoint] Body: \n\n ${Json.toJson(appointReportingCompanyModel)}")
-
     httpClient.POST(appointUrl, appointReportingCompanyModel)(AppointReportingCompanyModel.format, AppointReportingCompanyReads, desHc, ec)
   }
 
