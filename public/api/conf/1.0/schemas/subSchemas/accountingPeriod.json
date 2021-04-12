@@ -8,11 +8,11 @@
   ],
   "properties": {
     "startDate": {
-      "description": "The start date of the period of account. It cannot be before 2016-10-01. For example: 2020-04-06",
+      "description": "The start date of the period of account. It cannot be before 2016-10-01.",
       "$ref": "../definitions/definitions.json#/definitions/dateType"
     },
     "endDate": {
-      "description": "The end date of the period of account. It must be within 18 months after the start date. For example: 2020-04-06",
+      "description": "The end date of the period of account. It must be within 18 months after the start date.",
       "$ref": "../definitions/definitions.json#/definitions/dateType"
     }
   }
