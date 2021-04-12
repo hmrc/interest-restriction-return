@@ -17,20 +17,25 @@
 package v1.connectors
 
 import assets.fullReturn.FullReturnConstants._
+import audit.InterestRestrictionReturnAuditService
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.mocks.MockHttpClient
 import play.api.http.Status._
 import utils.BaseSpec
+import v1.audit.StubSuccessfulAuditService
 import v1.models.fullReturn.FullReturnModel
 
 class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
+  val auditWrapper = new StubSuccessfulAuditService()
+  val auditService = new InterestRestrictionReturnAuditService()
+
 
   "FullReturnConnector.submit using fullReturnModelMax" when {
 
     def setup(response: SubmissionResponse): FullReturnConnector = {
       val desUrl = "http://localhost:9262/organisations/interest-restrictions-return/full"
       mockHttpPost[FullReturnModel, Either[ErrorResponse, DesSuccessResponse]](desUrl, fullReturnUltimateParentModel)(response)
-      new FullReturnConnector(mockHttpClient, appConfig)
+      new FullReturnConnector(mockHttpClient,auditService,auditWrapper,appConfig)
     }
 
     "submission is successful" should {
@@ -61,7 +66,7 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
     def setup(response: SubmissionResponse): FullReturnConnector = {
       val desUrl = "http://localhost:9262/organisations/interest-restrictions-return/full"
       mockHttpPost[FullReturnModel, Either[ErrorResponse, DesSuccessResponse]](desUrl, fullReturnModelMin)(response)
-      new FullReturnConnector(mockHttpClient, appConfig)
+      new FullReturnConnector(mockHttpClient,auditService,auditWrapper,appConfig)
     }
 
     "submission is successful" should {
