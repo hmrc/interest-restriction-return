@@ -18,7 +18,7 @@ package v1.audit
 
 import akka.stream.Materializer
 import audit.{AuditEvent, AuditWrapper}
-import org.scalatest.Inside
+import org.scalatest.{Inside, Matchers}
 import play.api.inject.{ApplicationLifecycle, bind}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.mvc.AnyContentAsEmpty
@@ -27,16 +27,19 @@ import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.config.AuditingConfig
 import uk.gov.hmrc.play.audit.http.connector.{AuditConnector, AuditResult}
 import uk.gov.hmrc.play.audit.model.DataEvent
-import utils.BaseSpec
-
+import uk.gov.hmrc.play.test.UnitSpec
 import scala.concurrent.{ExecutionContext, Future}
 
 
-class AuditWrapperSpec extends BaseSpec with Inside {
+class AuditWrapperSpec extends UnitSpec with Matchers with Inside {
+
   import AuditWrapperSpec._
+  import scala.concurrent.ExecutionContext.Implicits.global
 
   "AuditServiceImpl" should {
     "construct and send the correct event" in {
+      implicit val request: FakeRequest[AnyContentAsEmpty.type] = fakeRequest()
+
       val event = TestAuditWrapperEvent("test-audit-payload")
 
       auditService().sendEvent(event)
@@ -66,6 +69,7 @@ object AuditWrapperSpec {
 
   def appName: String = app.configuration.underlying.getString("appName")
 }
+
 
 object FakeAuditConnector extends AuditConnector {
   private var sentEvent: DataEvent = _
