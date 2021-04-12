@@ -41,6 +41,8 @@ class AbbreviatedReturnConnectorSpec extends MockHttpClient with BaseSpec {
 
     "submission is successful" should {
 
+      auditWrapper.reset()
+
       "return a Right(SuccessResponse)" in {
         val connector = setup(Right(DesSuccessResponse(ackRef)))
         val result = connector.submitAbbreviatedReturn(abbreviatedReturnUltimateParentModel)
@@ -57,6 +59,8 @@ class AbbreviatedReturnConnectorSpec extends MockHttpClient with BaseSpec {
       }
 
       "submission is unsuccessful" should {
+
+        auditWrapper.reset()
 
         "return a Left(UnexpectedFailure)" in {
 
