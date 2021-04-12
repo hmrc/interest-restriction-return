@@ -17,7 +17,7 @@
 package v1.connectors
 
 import assets.abbreviatedReturn.AbbreviatedReturnConstants._
-import assets.fullReturn.FullReturnConstants.{ackRef, fullReturnModelMin}
+import assets.fullReturn.FullReturnConstants.ackRef
 import audit.{InterestRestrictionReturnAuditEvent, InterestRestrictionReturnAuditService}
 import play.api.http.Status._
 import play.api.libs.json.Json

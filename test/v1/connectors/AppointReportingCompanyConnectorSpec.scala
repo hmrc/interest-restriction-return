@@ -16,7 +16,6 @@
 
 package v1.connectors
 
-import assets.abbreviatedReturn.AbbreviatedReturnConstants.abbreviatedReturnUltimateParentModel
 import assets.appointReportingCompany.AppointReportingCompanyConstants._
 import assets.fullReturn.FullReturnConstants.ackRef
 import audit.{InterestRestrictionReturnAuditEvent, InterestRestrictionReturnAuditService}
