@@ -36,13 +36,13 @@ class GroupLevelAmountValidatorSpec extends BaseSpec {
     "Return invalid" when {
 
       "interestReactivationCap is < 0" in {
-        val result = leftSideError(groupLevelAmountModel.copy(interestReactivationCap = Some(-0.1)).validate)
+        val result = leftSideError(groupLevelAmountModel.copy(interestReactivationCap = -0.1).validate)
         result.errorMessage shouldBe GroupLevelAmountCannotBeNegative("interestReactivationCap", -0.1).errorMessage
         result.path shouldBe path \ "interestReactivationCap"
       }
 
       "interestReactivationCap is >2 decimal places" in {
-        leftSideError(groupLevelAmountModel.copy(interestReactivationCap = Some(1.111)).validate).errorMessage shouldBe
+        leftSideError(groupLevelAmountModel.copy(interestReactivationCap = 1.111).validate).errorMessage shouldBe
           GroupLevelAmountDecimalError("interestReactivationCap", 1.111).errorMessage
       }
 

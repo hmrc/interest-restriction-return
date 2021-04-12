@@ -96,14 +96,6 @@ class FullReturnValidatorSpec extends BaseSpec {
           fullReturnUltimateParentModel.groupSubjectToInterestReactivation, fullReturnUltimateParentModel.groupSubjectToInterestRestrictions).errorMessage
       }
 
-      "Group is subject to interest reactivations and no reactivation cap is supplied" in {
-        leftSideError(fullReturnUltimateParentModel.copy(
-          groupSubjectToInterestReactivation = true,
-          groupSubjectToInterestRestrictions = false,
-          groupLevelAmount = groupLevelAmountModel.copy(interestReactivationCap = None)
-        ).validate).errorMessage shouldBe InterestReactivationCapNotSupplied.errorMessage
-      }
-
       "Total Restrictions does not match the sum of the total restrictions for each company" in {
         leftSideError(fullReturnUltimateParentModel.copy(
           groupSubjectToInterestReactivation = false,
@@ -166,7 +158,7 @@ class FullReturnValidatorSpec extends BaseSpec {
         )
 
         leftSideError(model.validate).errorMessage shouldBe
-          TotalReactivationsNotGreaterThanCapacity(36004.0, fullReturnUltimateParentModel.groupLevelAmount.interestReactivationCap.getOrElse(0)).errorMessage
+          TotalReactivationsNotGreaterThanCapacity(36004.0, fullReturnUltimateParentModel.groupLevelAmount.interestReactivationCap).errorMessage
       } //36004.0 is the calculated value of all 4 companies and should not be greater than 2.22 (the reactivation cap)
 
       "Group is subject to restrictions but total net tax interest is income" in {
