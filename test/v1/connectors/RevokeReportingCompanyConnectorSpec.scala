@@ -19,6 +19,7 @@ package v1.connectors
 import assets.fullReturn.FullReturnConstants.{ackRef, fullReturnModelMin}
 import assets.revokeReportingCompany.RevokeReportingCompanyConstants._
 import audit.{InterestRestrictionReturnAuditEvent, InterestRestrictionReturnAuditService}
+import play.api.http.Status
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.mocks.MockHttpClient
 import play.api.http.Status._
@@ -54,7 +55,7 @@ class RevokeReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec {
         val connector = setup(Right(DesSuccessResponse(ackRef)))
 
         await(connector.revoke(revokeReportingCompanyModelMax).map {_ =>
-          auditWrapper.verifySent(InterestRestrictionReturnAuditEvent("RevokeReportingCompany",200,Some(Json.toJson(DesSuccessResponse(ackRef))))) shouldBe true
+          auditWrapper.verifySent(InterestRestrictionReturnAuditEvent("RevokeReportingCompany",Status.CREATED,Some(Json.toJson(DesSuccessResponse(ackRef))))) shouldBe true
         })
       }
     }
@@ -74,7 +75,7 @@ class RevokeReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec {
         val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
 
         await(connector.revoke(revokeReportingCompanyModelMax).map {_ =>
-          auditWrapper.verifySent(InterestRestrictionReturnAuditEvent("RevokeReportingCompany",500,Some(Json.toJson("Error")))) shouldBe true
+          auditWrapper.verifySent(InterestRestrictionReturnAuditEvent("RevokeReportingCompany",Status.INTERNAL_SERVER_ERROR,Some(Json.toJson("Error")))) shouldBe true
         })
       }
     }

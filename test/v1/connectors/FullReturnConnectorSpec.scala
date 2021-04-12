@@ -18,6 +18,7 @@ package v1.connectors
 
 import assets.fullReturn.FullReturnConstants._
 import audit.{InterestRestrictionReturnAuditEvent, InterestRestrictionReturnAuditService}
+import play.api.http.Status
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.mocks.MockHttpClient
 import play.api.http.Status._
@@ -84,7 +85,7 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
         val connector = setup(Right(DesSuccessResponse(ackRef)))
 
         await(connector.submit(fullReturnModelMin).map {_ =>
-          auditWrapper.verifySent(InterestRestrictionReturnAuditEvent("FullSubmission",200,Some(Json.toJson(DesSuccessResponse(ackRef))))) shouldBe true
+          auditWrapper.verifySent(InterestRestrictionReturnAuditEvent("FullSubmission",Status.CREATED,Some(Json.toJson(DesSuccessResponse(ackRef))))) shouldBe true
         })
       }
     }
@@ -103,7 +104,7 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
         val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
 
         await(connector.submit(fullReturnModelMin).map {_ =>
-          auditWrapper.verifySent(InterestRestrictionReturnAuditEvent("FullSubmission",500,Some(Json.toJson("Error")))) shouldBe true
+          auditWrapper.verifySent(InterestRestrictionReturnAuditEvent("FullSubmission",Status.INTERNAL_SERVER_ERROR,Some(Json.toJson("Error")))) shouldBe true
         })
       }
     }
