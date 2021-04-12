@@ -8,23 +8,23 @@
   ],
   "properties": {
     "isUk": {
-      "description": "Indicate whether the ultimate parent company pays tax in the UK",
+      "description": "Indicate whether the ultimate parent company is a UK company",
       "type": "boolean"
     },
     "companyName": {
-      "description": "Name of the company",
+      "description": "Name of the ultimate parent company",
       "$ref": "../definitions/definitions.json#/definitions/globalCompanyNameType"
     },
     "ctutr": {
-      "description": "Corporation Tax Unique Taxpayer Reference",
+      "description": "Ultimate parent's Corporation Tax Unique Taxpayer Reference",
       "$ref": "../definitions/definitions.json#/definitions/utrType"
     },
     "sautr": {
-      "description": "Self Assessment Unique Taxpayer Reference",
+      "description": "Ultimate parent company's self assessment Unique Taxpayer Reference.",
       "$ref": "../definitions/definitions.json#/definitions/utrType"
     },
     "countryOfIncorporation": {
-      "description": "Country of incorporation. A valid ISO 3166-1 2 Alpha Country Code",
+      "description": "Country of incorporation where the ultimate parent company is not a UK company. A valid ISO 3166-1 2 Alpha Country Code",
       "$ref": "../definitions/countrycodes.json#/definitions/countryCode"
     },
     "legalEntityIdentifier": {

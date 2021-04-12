@@ -9,15 +9,15 @@
   ],
   "properties": {
     "companyName": {
-      "description": "Name of the reporting company",
+      "description": "Details of the reporting company",
       "$ref": "../definitions/definitions.json#/definitions/ukCompanyNameType"
     },
     "ctutr": {
-      "description": "The reporting company's Corporation Tax Unique Taxpayer Reference",
+      "description": "Reporting company's Corporation Tax Unique Taxpayer Reference",
       "$ref": "../definitions/definitions.json#/definitions/utrType"
     },
     "sameAsUltimateParent": {
-      "description": "Indicate whether the reporting company is the same as the ultimate parent",
+      "description": "Indicate whether the reporting company is also the ultimate parent company",
       "type": "boolean"
     }
   }
