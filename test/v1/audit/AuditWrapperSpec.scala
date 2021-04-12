@@ -18,6 +18,11 @@ package v1.audit
 
 import akka.stream.Materializer
 import audit.{AuditEvent, AuditWrapper}
+import com.codahale.metrics.SharedMetricRegistries
+import com.typesafe.config.ConfigFactory
+import config.AppConfig
+import config.TestHelper.mockAppConfig
+import mocks.MockAppConfig
 import org.scalatest.{Inside, Matchers}
 import play.api.inject.{ApplicationLifecycle, bind}
 import play.api.inject.guice.GuiceApplicationBuilder
@@ -27,28 +32,28 @@ import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.config.AuditingConfig
 import uk.gov.hmrc.play.audit.http.connector.{AuditConnector, AuditResult}
 import uk.gov.hmrc.play.audit.model.DataEvent
-import uk.gov.hmrc.play.test.UnitSpec
+import utils.BaseSpec
+
 import scala.concurrent.{ExecutionContext, Future}
 
 
-class AuditWrapperSpec extends UnitSpec with Matchers with Inside {
-
-  import AuditWrapperSpec._
-  import scala.concurrent.ExecutionContext.Implicits.global
+class AuditWrapperSpec extends BaseSpec with Inside {
 
   "AuditServiceImpl" should {
     "construct and send the correct event" in {
-      implicit val request: FakeRequest[AnyContentAsEmpty.type] = fakeRequest()
+      SharedMetricRegistries.clear()
+
+      implicit val request: FakeRequest[AnyContentAsEmpty.type] = TestHelper.fRequest
 
       val event = TestAuditWrapperEvent("test-audit-payload")
 
-      auditService().sendEvent(event)
+      TestHelper.auditService().sendEvent(event)(request,ec)
 
       val sentEvent = FakeAuditConnector.lastSentEvent
 
       inside(sentEvent) {
         case DataEvent(auditSource, auditType, _, _, detail, _) =>
-          auditSource shouldBe appName
+          auditSource shouldBe TestHelper.appName
           auditType shouldBe "TestAuditEvent"
           detail should contain("payload" -> "test-audit-payload")
       }
@@ -56,20 +61,21 @@ class AuditWrapperSpec extends UnitSpec with Matchers with Inside {
   }
 }
 
-object AuditWrapperSpec {
-  private val app = new GuiceApplicationBuilder()
+
+object TestHelper  {
+
+  lazy val auditWrapperServiceApp = new GuiceApplicationBuilder()
     .overrides(
       bind[AuditConnector].toInstance(FakeAuditConnector)
     )
     .build()
 
-  def fakeRequest(): FakeRequest[AnyContentAsEmpty.type] = FakeRequest("", "")
+  def fRequest(): FakeRequest[AnyContentAsEmpty.type] = FakeRequest("", "")
 
-  def auditService(): AuditWrapper = app.injector.instanceOf[AuditWrapper]
+  def auditService(): AuditWrapper = auditWrapperServiceApp.injector.instanceOf[AuditWrapper]
 
-  def appName: String = app.configuration.underlying.getString("appName")
+  def appName: String = auditWrapperServiceApp.configuration.underlying.getString("appName")
 }
-
 
 object FakeAuditConnector extends AuditConnector {
   private var sentEvent: DataEvent = _
