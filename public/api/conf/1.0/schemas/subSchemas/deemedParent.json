@@ -11,15 +11,15 @@
             "type": "boolean"
           },
           "companyName": {
-            "description": "Name of the entity.",
+            "description": "Name of the entity",
             "$ref": "../definitions/definitions.json#/definitions/globalCompanyNameType"
           },
           "ctutr": {
-            "description": "Entity's Corporation Tax Unique Taxpayer Reference.",
+            "description": "Entity's Corporation Tax Unique Taxpayer Reference",
             "$ref": "../definitions/definitions.json#/definitions/utrType"
           },
           "sautr": {
-            "description": "Entity's Self Assessment Unique Taxpayer Reference.",
+            "description": "Entity's Self Assessment Unique Taxpayer Reference",
             "$ref": "../definitions/definitions.json#/definitions/utrType"
           },
           "countryOfIncorporation": {

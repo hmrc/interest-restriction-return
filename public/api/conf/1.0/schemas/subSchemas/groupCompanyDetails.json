@@ -1,5 +1,5 @@
 {
-  "description": "Details of the worldwide company.",
+  "description": "Details of the worldwide company",
   "type": "object",
   "additionalProperties": false,
   "required": [

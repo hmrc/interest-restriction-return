@@ -690,7 +690,7 @@
             "additionalProperties": false
         },
         "submissionType": {
-            "description": "Indicate if this is a revised return [this should be a boolean true or false]. Limited to the following possible values:",
+            "description": "Indicate if this is a revised return [this should be a boolean true or false]. Limited to the following possible values",
             "type": "string",
             "enum": [
                 "original",
