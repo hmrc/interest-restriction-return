@@ -24,7 +24,7 @@
       "$ref": "../definitions/definitions.json#/definitions/utrType"
     },
     "countryOfIncorporation": {
-      "description": "Country of incorporation where the ultimate parent company is not a UK company\nA valid ISO 3166-1 2 Alpha Country Code.",
+      "description": "Country of incorporation where the ultimate parent company is not a UK company. A valid ISO 3166-1 2 Alpha Country Code.",
       "$ref": "../definitions/countrycodes.json#/definitions/countryCode"
     },
     "legalEntityIdentifier": {
