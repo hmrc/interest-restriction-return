@@ -125,6 +125,21 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
           val result = model.validate
           rightSide(result) shouldBe model
         }
+
+        "only provides some decimal places" in {
+
+          val qngie = 100.04
+          val groupEBITDA = 260.15
+          val groupRatio = 38.45
+
+          val model = adjustedGroupInterestModel.copy(
+            qngie = qngie,
+            groupEBITDA = groupEBITDA,
+            groupRatio = groupRatio
+          )
+          val result = model.validate
+          rightSide(result) shouldBe model
+        }
       }
     }
 
