@@ -44,7 +44,7 @@ class FullReturnConnector @Inject()(httpClient: HttpClient, irrAuditService: Int
     logger.debug(s"[FullReturnConnector][submit] Body: \n\n ${Json.toJson(fullReturnModel)}")
 
     httpClient.POST(fullReturnUrl, fullReturnModel)(FullReturnModel.format, FullReturnReads, desHc, ec) andThen
-      irrAuditService.sendInterestRestrictionReturnEvent("FullSubmission")(auditWrapper.sendEvent)
+      irrAuditService.sendInterestRestrictionReturnEvent("FullSubmission",Json.toJson(fullReturnModel))(auditWrapper.sendEvent)
   }
 
 }

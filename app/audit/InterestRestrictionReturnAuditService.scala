@@ -26,9 +26,9 @@ import v1.connectors.HttpHelper.SubmissionResponse
 import scala.concurrent.ExecutionContext
 import scala.util.{Failure, Success, Try}
 
-class InterestRestrictionReturnAuditService extends Logging{
+class InterestRestrictionReturnAuditService extends Logging {
 
-  def sendInterestRestrictionReturnEvent(actionPerformed: String)(sendEvent: InterestRestrictionReturnAuditEvent => Unit)
+  def sendInterestRestrictionReturnEvent(actionPerformed: String, payload: JsValue)(sendEvent: InterestRestrictionReturnAuditEvent => Unit)
                                         (implicit rh: RequestHeader, ec: ExecutionContext): PartialFunction[Try[SubmissionResponse], Unit] = {
 
 
@@ -37,7 +37,9 @@ class InterestRestrictionReturnAuditService extends Logging{
         InterestRestrictionReturnAuditEvent(
           action = actionPerformed,
           status = Status.CREATED,
-          payload = Some(Json.toJson(successFulResponse))
+          payload = Some(
+            Json.obj("response" -> Json.toJson(successFulResponse),
+            "payload" -> payload))
         )
 
       )
@@ -47,7 +49,9 @@ class InterestRestrictionReturnAuditService extends Logging{
         InterestRestrictionReturnAuditEvent(
           action = actionPerformed,
           status = e.status,
-          payload =Some(Json.toJson(e.body))
+          payload =Some(
+            Json.obj("error" -> Json.toJson(e.body),
+            "payload" -> payload))
         )
       )
     case Failure(t) =>

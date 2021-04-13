@@ -21,6 +21,7 @@ import config.AppConfig
 
 import javax.inject.Inject
 import play.api.Logging
+import play.api.libs.json.Json
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.HttpClient
 import v1.connectors.HttpHelper.SubmissionResponse
@@ -39,7 +40,7 @@ class AppointReportingCompanyConnector @Inject()(httpClient: HttpClient,irrAudit
              (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
 
     httpClient.POST(appointUrl, appointReportingCompanyModel)(AppointReportingCompanyModel.format, AppointReportingCompanyReads, desHc, ec) andThen
-      irrAuditService.sendInterestRestrictionReturnEvent("AppointReportingCompany")(auditWrapper.sendEvent)
+      irrAuditService.sendInterestRestrictionReturnEvent("AppointReportingCompany",Json.toJson(appointReportingCompanyModel))(auditWrapper.sendEvent)
   }
 
 }

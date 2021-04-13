@@ -40,7 +40,7 @@ class RevokeReportingCompanyConnector @Inject()(httpClient: HttpClient,
              (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
 
     httpClient.POST(revokeUrl, revokeReportingCompanyModel)(RevokeReportingCompanyModel.format, RevokeReportingCompanyReads, desHc, ec)  andThen
-      irrAuditService.sendInterestRestrictionReturnEvent("RevokeReportingCompany")(auditWrapper.sendEvent)
+      irrAuditService.sendInterestRestrictionReturnEvent("RevokeReportingCompany",Json.toJson(revokeReportingCompanyModel))(auditWrapper.sendEvent)
   }
 
 }
