@@ -16,11 +16,10 @@
 
 package audit
 
-import play.api.{Logger, Logging}
+import play.api.Logging
 import play.api.http.Status
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.RequestHeader
-import uk.gov.hmrc.http.HttpResponse
 import v1.connectors.HttpHelper.SubmissionResponse
 
 import scala.concurrent.ExecutionContext
@@ -30,31 +29,23 @@ class InterestRestrictionReturnAuditService extends Logging {
 
   def sendInterestRestrictionReturnEvent(actionPerformed: String, payload: JsValue)(sendEvent: InterestRestrictionReturnAuditEvent => Unit)
                                         (implicit rh: RequestHeader, ec: ExecutionContext): PartialFunction[Try[SubmissionResponse], Unit] = {
-
-
-    case Success(Right(successFulResponse)) => {
+    case Success(Right(successFulResponse)) =>
       sendEvent(
         InterestRestrictionReturnAuditEvent(
           action = actionPerformed,
           status = Status.CREATED,
-          payload = Some(
-            Json.obj("response" -> Json.toJson(successFulResponse),
-            "payload" -> payload))
-        )
-
-      )
-    }
+          payload = Some(eventPayload(Json.toJson(successFulResponse),payload))))
     case Success(Left(e)) =>
       sendEvent(
         InterestRestrictionReturnAuditEvent(
           action = actionPerformed,
           status = e.status,
-          payload =Some(
-            Json.obj("error" -> Json.toJson(e.body),
-            "payload" -> payload))
-        )
-      )
+          payload =Some(eventPayload(Json.toJson(e.body),payload))))
     case Failure(t) =>
-      logger.error("Error in sending audit event for get PSA details", t)
+      logger.error("Error in sending audit event", t)
+  }
+
+  private def eventPayload(response: JsValue, payload: JsValue): JsValue = {
+    Json.obj("response" -> Json.toJson(response), "payload" -> payload)
   }
 }

@@ -16,7 +16,7 @@
 
 package v1.connectors
 
-import audit.{AuditWrapper, InterestRestrictionReturnAuditService}
+import audit.{AuditEventTypes, AuditWrapper, InterestRestrictionReturnAuditService}
 import config.AppConfig
 
 import javax.inject.Inject
@@ -32,7 +32,7 @@ import v1.models.revokeReportingCompany.RevokeReportingCompanyModel
 import scala.concurrent.{ExecutionContext, Future}
 
 class RevokeReportingCompanyConnector @Inject()(httpClient: HttpClient,
-                                                irrAuditService: InterestRestrictionReturnAuditService, auditWrapper: AuditWrapper, implicit val appConfig: AppConfig) extends DesBaseConnector with Logging {
+                                                irrAuditService: InterestRestrictionReturnAuditService, auditWrapper: AuditWrapper, implicit val appConfig: AppConfig) extends DesBaseConnector with Logging with AuditEventTypes {
 
   private[connectors] lazy val revokeUrl = s"${appConfig.desUrl}/organisations/interest-restrictions-return/revoke"
 
@@ -40,7 +40,7 @@ class RevokeReportingCompanyConnector @Inject()(httpClient: HttpClient,
              (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
 
     httpClient.POST(revokeUrl, revokeReportingCompanyModel)(RevokeReportingCompanyModel.format, RevokeReportingCompanyReads, desHc, ec)  andThen
-      irrAuditService.sendInterestRestrictionReturnEvent("RevokeReportingCompany",Json.toJson(revokeReportingCompanyModel))(auditWrapper.sendEvent)
+      irrAuditService.sendInterestRestrictionReturnEvent(REVOKE_REPORTING_COMPANY,Json.toJson(revokeReportingCompanyModel))(auditWrapper.sendEvent)
   }
 
 }
