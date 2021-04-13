@@ -16,22 +16,17 @@
 
 package v1.connectors
 
-import assets.fullReturn.FullReturnConstants.{ackRef, fullReturnModelMin}
+import assets.fullReturn.FullReturnConstants.ackRef
 import assets.revokeReportingCompany.RevokeReportingCompanyConstants._
-import audit.{InterestRestrictionReturnAuditEvent, InterestRestrictionReturnAuditService}
+import audit.AuditEventTypes
 import play.api.http.Status
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.mocks.MockHttpClient
 import play.api.http.Status._
-import play.api.libs.json.Json
 import utils.BaseSpec
-import v1.audit.StubSuccessfulAuditService
 import v1.models.revokeReportingCompany.RevokeReportingCompanyModel
 
-class RevokeReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec {
-  val auditWrapper = new StubSuccessfulAuditService()
-  val auditService = new InterestRestrictionReturnAuditService()
-
+class RevokeReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec with AuditEventTypes {
   "RevokeReportingCompanyConnector.revoke" when {
 
     def setup(response: SubmissionResponse): RevokeReportingCompanyConnector = {
@@ -41,10 +36,7 @@ class RevokeReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec {
     }
 
     "revokement is successful" should {
-
-      auditWrapper.reset()
       "return a Right(SuccessResponse)" in {
-
         val connector = setup(Right(DesSuccessResponse(ackRef)))
         val result = connector.revoke(revokeReportingCompanyModelMax)
 
@@ -52,22 +44,21 @@ class RevokeReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec {
       }
 
       "send audit event for successful response" in {
+        auditWrapper.reset()
+
         val connector = setup(Right(DesSuccessResponse(ackRef)))
 
         await(connector.revoke(revokeReportingCompanyModelMax).map {_ =>
           val lastEvent = auditWrapper.lastEvent.get
 
-          lastEvent.auditType shouldBe "RevokeReportingCompany"
+          lastEvent.auditType shouldBe REVOKE_REPORTING_COMPANY
           lastEvent.details.get("status").get shouldBe Status.CREATED.toString
         })
       }
     }
 
     "update is unsuccessful" should {
-
-      auditWrapper.reset()
       "return a Left(UnexpectedFailure)" in {
-
         val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
         val result = connector.revoke(revokeReportingCompanyModelMax)
 
@@ -75,12 +66,14 @@ class RevokeReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec {
       }
 
       "send audit event for error response" in {
+        auditWrapper.reset()
+
         val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
 
         await(connector.revoke(revokeReportingCompanyModelMax).map {_ =>
           val lastEvent = auditWrapper.lastEvent.get
 
-          lastEvent.auditType shouldBe "RevokeReportingCompany"
+          lastEvent.auditType shouldBe REVOKE_REPORTING_COMPANY
           lastEvent.details.get("status").get shouldBe Status.INTERNAL_SERVER_ERROR.toString
         })
       }

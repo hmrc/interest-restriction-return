@@ -17,7 +17,7 @@
 package utils
 
 import assets.BaseConstants
-import audit.AuditWrapper
+import audit.{AuditWrapper, InterestRestrictionReturnAuditService}
 import config.AppConfig
 import org.scalatest.Matchers
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
@@ -30,7 +30,7 @@ import uk.gov.hmrc.auth.core.retrieve.Credentials
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import uk.gov.hmrc.play.test.UnitSpec
-import v1.audit.FakeAuditConnector
+import v1.audit.{FakeAuditConnector, StubSuccessfulAuditService}
 import v1.controllers.actions.mocks.{Authorised, Unauthorised}
 import v1.models.Validation
 import v1.models.Validation.ValidationResult
@@ -47,6 +47,8 @@ trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with Mate
   lazy val appConfig = injector.instanceOf[AppConfig]
   lazy implicit val ec = injector.instanceOf[ExecutionContext]
   lazy implicit val headerCarrier: HeaderCarrier = HeaderCarrier()
+  lazy val auditWrapper = new StubSuccessfulAuditService()
+  lazy val auditService = new InterestRestrictionReturnAuditService()
 
 
   object AuthorisedAction extends Authorised[Option[Credentials]](Some(Credentials("id", "SCP")), bodyParsers)

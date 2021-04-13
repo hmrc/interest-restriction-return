@@ -16,15 +16,13 @@
 
 package audit
 
-trait AuditEvent {
-  def auditType: String
+import play.api.libs.json.{JsValue, Json}
 
-  def details: Map[String, String]
-}
+case class InterestRestrictionReturnAuditEvent(action: String, status: Int, payload: Option[JsValue]) extends AuditEvent {
+  override def auditType: String = action
 
-trait AuditEventTypes {
-  val FULL_RETURN = "FullSubmission"
-  val ABBREVIATED_RETURN = "AbbreviatedSubmission"
-  val REVOKE_REPORTING_COMPANY = "RevokeReportingCompany"
-  val APPOINT_REPORTING_COMPANY = "AppointReportingCompany"
+  override def details: Map[String, String] = Map(
+    "status" -> status.toString,
+    "payload" -> payload.fold("")(Json.stringify)
+  )
 }
