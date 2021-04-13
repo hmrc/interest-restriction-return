@@ -55,7 +55,10 @@ class RevokeReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec {
         val connector = setup(Right(DesSuccessResponse(ackRef)))
 
         await(connector.revoke(revokeReportingCompanyModelMax).map {_ =>
-          auditWrapper.verifySent(InterestRestrictionReturnAuditEvent("RevokeReportingCompany",Status.CREATED,Some(Json.toJson(DesSuccessResponse(ackRef))))) shouldBe true
+          val lastEvent = auditWrapper.lastEvent.get
+
+          lastEvent.auditType shouldBe "RevokeReportingCompany"
+          lastEvent.details.get("status").get shouldBe Status.CREATED.toString
         })
       }
     }
@@ -75,7 +78,10 @@ class RevokeReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec {
         val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
 
         await(connector.revoke(revokeReportingCompanyModelMax).map {_ =>
-          auditWrapper.verifySent(InterestRestrictionReturnAuditEvent("RevokeReportingCompany",Status.INTERNAL_SERVER_ERROR,Some(Json.toJson("Error")))) shouldBe true
+          val lastEvent = auditWrapper.lastEvent.get
+
+          lastEvent.auditType shouldBe "RevokeReportingCompany"
+          lastEvent.details.get("status").get shouldBe Status.INTERNAL_SERVER_ERROR.toString
         })
       }
     }

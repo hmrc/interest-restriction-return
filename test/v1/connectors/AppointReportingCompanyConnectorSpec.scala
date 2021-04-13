@@ -56,7 +56,10 @@ class AppointReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec 
         val connector = setup(Right(DesSuccessResponse(ackRef)))
 
         await(connector.appoint(appointReportingCompanyModelMax).map { _ =>
-          auditWrapper.verifySent(InterestRestrictionReturnAuditEvent("AppointReportingCompany", Status.CREATED, Some(Json.toJson(DesSuccessResponse(ackRef))))) shouldBe true
+          val lastEvent = auditWrapper.lastEvent.get
+
+          lastEvent.auditType shouldBe "AppointReportingCompany"
+          lastEvent.details.get("status").get shouldBe Status.CREATED.toString
         })
       }
     }
@@ -77,7 +80,10 @@ class AppointReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec 
         val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
 
         await(connector.appoint(appointReportingCompanyModelMax).map { _ =>
-          auditWrapper.verifySent(InterestRestrictionReturnAuditEvent("AppointReportingCompany", Status.INTERNAL_SERVER_ERROR, Some(Json.toJson("Error")))) shouldBe true
+          val lastEvent = auditWrapper.lastEvent.get
+
+          lastEvent.auditType shouldBe "AppointReportingCompany"
+          lastEvent.details.get("status").get shouldBe Status.INTERNAL_SERVER_ERROR.toString
         })
       }
     }
