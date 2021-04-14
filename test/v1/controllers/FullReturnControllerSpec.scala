@@ -34,6 +34,7 @@ class FullReturnControllerSpec extends MockFullReturnService with BaseSpec with 
       object AuthorisedController extends FullReturnController(
         authProvider = mockAuthProvider,
         fullReturnService = mockFullReturnService,
+        auditWrapper = auditWrapper,
         controllerComponents = Helpers.stubControllerComponents()
       )
 
@@ -104,6 +105,7 @@ class FullReturnControllerSpec extends MockFullReturnService with BaseSpec with 
         object UnauthorisedController extends FullReturnController(
           authProvider = mockAuthProvider,
           fullReturnService = mockFullReturnService,
+          auditWrapper = auditWrapper,
           controllerComponents = Helpers.stubControllerComponents()
         )
         mockAuthProviderResponse(UnauthorisedAction,false)

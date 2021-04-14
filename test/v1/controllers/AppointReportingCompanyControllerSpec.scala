@@ -35,6 +35,7 @@ class AppointReportingCompanyControllerSpec extends MockAppointReportingCompanyS
       object AuthorisedController extends AppointReportingCompanyController(
         authProvider = mockAuthProvider,
         appointReportingCompanyService = mockAppointReportingCompanyService,
+        auditWrapper = auditWrapper,
         controllerComponents = Helpers.stubControllerComponents()
       )
 
@@ -92,6 +93,7 @@ class AppointReportingCompanyControllerSpec extends MockAppointReportingCompanyS
         object UnauthorisedController extends AppointReportingCompanyController(
           authProvider = mockAuthProvider,
           appointReportingCompanyService = mockAppointReportingCompanyService,
+          auditWrapper = auditWrapper,
           controllerComponents = Helpers.stubControllerComponents()
         )
         mockAuthProviderResponse(UnauthorisedAction,false)
