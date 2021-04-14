@@ -3,7 +3,7 @@
   "definitions": {
     "ukCompanyNameType": {
       "type": "string",
-      "description": "Name of company authorising the appointment",
+      "description": "Name of the UK company",
       "pattern": "^[ -~¡-ÿĀ-ʯḀ-ỿ‐-―‘-‟₠-₿ÅK]{1,160}$"
     },
     "globalCompanyNameType": {
@@ -46,7 +46,7 @@
       ]
     },
     "angie": {
-      "description": "Adjusted Net Group-Interest Expense (ANGIE) amount",
+      "description": "Adjusted net group-interest expense (ANGIE) amount",
       "type": "number",
       "minimum": 0,
       "multipleOf": 0.01

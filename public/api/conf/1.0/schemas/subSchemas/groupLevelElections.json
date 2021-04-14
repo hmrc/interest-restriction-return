@@ -1,5 +1,5 @@
 {
-  "description": "Details of the calculation elections made by the group",
+  "description": "Details of the calculation methods elected by the group",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -10,7 +10,7 @@
   ],
   "properties": {
     "groupRatio": {
-      "description": "Group Ratio",
+      "description": "Details of the group ratio method of calculation",
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -18,20 +18,20 @@
       ],
       "properties": {
         "isElected": {
-          "description": "Indicate if the group has elected to use the group ratio calculation. If this is false then fixed ratio is used",
+          "description": "Indicate if the group wants to use the group ration calculation",
           "type": "boolean"
         },
         "groupRatioBlended": {
-          "description": "Group Ratio Blended",
+          "description": "Details of the blended group ratio method of calculation",
           "type": "object",
           "additionalProperties": false,
           "properties": {
             "isElected": {
-              "description": "Indicate if the group has elected to use the group ratio blended calculation. Can only be elected if group ratio is elected",
+              "description": "Indicate if the group also elects to use a blended group ratio calculation",
               "type": "boolean"
             },
             "investorGroups": {
-              "description": "List the investor groups to which the group ratio blended election relates. Can only be supplied if group ratio blended is elected",
+              "description": "List investor groups the blended group ratio election relates to",
               "type": "array",
               "minItems": 1,
               "items": {
@@ -39,11 +39,11 @@
                 "additionalProperties": false,
                 "properties": {
                   "groupName": {
-                    "description": "Name of the group",
+                    "description": "Name of the investor group",
                     "$ref": "../definitions/definitions.json#/definitions/globalCompanyNameType"
                   },
                   "elections": {
-                    "description": "The elections made by this investor group",
+                    "description": "Elections made by the investor group. Limited to the following possible values:",
                     "type": "array",
                     "maxItems": 5,
                     "items": {
@@ -69,17 +69,17 @@
           ]
         },
         "groupEBITDAChargeableGains": {
-          "description": "Indicate if the group has elected to use the group EBITDA chargeable gains election. Can only be elected if group ratio is elected",
+          "description": "Indicate if the group elects to use group-EBITA chargeable gains election. Can only be elected if group ratio is elected",
           "type": "boolean"
         }
       }
     },
     "interestAllowanceAlternativeCalculation": {
-      "description": "Indicate if the group has elected to use the Interest Allowance Alternative Calculation election",
+      "description": "Indicate if the group elects interest allowance alternative calculation",
       "type": "boolean"
     },
     "interestAllowanceNonConsolidatedInvestment": {
-      "description": "Interest Allowance Non-Consolidated Investment",
+      "description": "Details of interest allowance non-consolidated investment",
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -87,11 +87,11 @@
       ],
       "properties": {
         "isElected": {
-          "description": "Indicate if the group has elected to use the Interest Allowance Non-Consolidated Investment election",
+          "description": "Indicate if the group elects interest allowance non-consolidated investment",
           "type": "boolean"
         },
         "nonConsolidatedInvestments": {
-          "description": "List the investors",
+          "description": "List investors",
           "type": "array",
           "minItems": 1,
           "items": {
@@ -99,7 +99,7 @@
             "additionalProperties": false,
             "properties": {
               "investmentName": {
-                "description": "Investment name",
+                "description": "Name of investment",
                 "$ref": "../definitions/definitions.json#/definitions/explanatoryNotesShort"
               }
             },
@@ -111,7 +111,7 @@
       }
     },
     "interestAllowanceConsolidatedPartnership": {
-      "description": "Interest Allowance Consolidated Partnership",
+      "description": "Details of interest allowance consolidated partnership",
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -119,11 +119,11 @@
       ],
       "properties": {
         "isElected": {
-          "description": "Indicate if the group has elected to use the Interest Allowance Consolidated Partnership election",
+          "description": "Indicate if the group elects interest allowance consolidated partnership",
           "type": "boolean"
         },
         "consolidatedPartnerships": {
-          "description": "List the partnerships",
+          "description": "List partnerships",
           "type": "array",
           "minItems": 1,
           "items": {
@@ -131,11 +131,11 @@
             "additionalProperties": false,
             "properties": {
               "partnershipName": {
-                "description": "Partnership name",
+                "description": "Name of partnership",
                 "$ref": "../definitions/definitions.json#/definitions/globalCompanyNameType"
               },
               "sautr": {
-                "description": "Self Assessment Unique Taxpayer Reference",
+                "description": "Partnership's Self Assessment Unique Taxpayer Reference",
                 "$ref": "../definitions/definitions.json#/definitions/utrType"
               }
             },
