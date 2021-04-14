@@ -7,15 +7,15 @@
   ],
   "properties": {
     "companyName": {
-      "description": "Name of the appointing company.",
+      "description": "Name of the revoking company.",
       "$ref": "../definitions/definitions.json#/definitions/globalCompanyNameType"
     },
     "countryOfIncorporation": {
-      "description": "Country of incorporation where the appointing company is not a UK company. A valid ISO 3166-1 2 Alpha Country Code. For example: US",
+      "description": "Country of incorporation where the revoking company is not a UK company. A valid ISO 3166-1 2 Alpha Country Code. For example: US",
       "$ref": "../definitions/countrycodes.json#/definitions/countryCode"
     },
     "ctutr": {
-      "description": "Where the appointing company is a UK company, the Corporation Tax Unique Taxpayer Reference",
+      "description": "Revoking company's Corporation Tax Unique Taxpayer Reference.",
       "$ref": "../definitions/definitions.json#/definitions/utrType"
     },
     "legalEntityIdentifier": {

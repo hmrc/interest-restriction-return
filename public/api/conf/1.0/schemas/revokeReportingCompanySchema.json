@@ -16,7 +16,7 @@
     },
     "companyMakingRevocation" : {
       "description": "Details of the revoking company",
-      "$ref": "subSchemas/identityOfCompanySubmitting.json"
+      "$ref": "subSchemas/revokeIdentityOfCompanySubmitting.json"
     },
     "ultimateParentCompany": {
       "$ref": "subSchemas/ultimateParent.json"
