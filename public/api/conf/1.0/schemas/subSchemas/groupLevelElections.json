@@ -43,7 +43,7 @@
                     "$ref": "../definitions/definitions.json#/definitions/globalCompanyNameType"
                   },
                   "elections": {
-                    "description": "Elections made by the investor group. Limited to the following possible values:",
+                    "description": "Elections made by the investor group.",
                     "type": "array",
                     "maxItems": 5,
                     "items": {
