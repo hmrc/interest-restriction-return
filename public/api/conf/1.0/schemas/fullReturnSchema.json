@@ -62,6 +62,7 @@
     }
   },
   "required": [
+    "angie",
     "appointedReportingCompany",
     "agentDetails",
     "reportingCompany",
