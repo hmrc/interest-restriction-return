@@ -20,7 +20,7 @@
       "$ref": "../definitions/definitions.json#/definitions/utrType"
     },
     "sautr": {
-      "description": "Ultimate parent company's self assessment Unique Taxpayer Reference.",
+      "description": "Ultimate parent company's self assessment Unique Taxpayer Reference",
       "$ref": "../definitions/definitions.json#/definitions/utrType"
     },
     "countryOfIncorporation": {
