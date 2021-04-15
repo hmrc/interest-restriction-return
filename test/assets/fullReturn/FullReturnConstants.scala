@@ -38,7 +38,7 @@ object FullReturnConstants {
   }
 
   val totalRestrictions: BigDecimal = ukCompanyModelRestrictionMax.allocatedRestrictions.foldLeft[BigDecimal](0) {
-    (total, company) => total + company.totalDisallowances
+    (total, company) => total + company.totalDisallowances.getOrElse(0)
   }
 
   //These models do not pass validation. The ones that do start at Ultimate Parent

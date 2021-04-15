@@ -26,11 +26,10 @@ case class AllocatedRestrictionsModel(ap1EndDate: LocalDate,
                                       ap3EndDate: Option[LocalDate],
                                       disallowanceAp1: BigDecimal,
                                       disallowanceAp2: Option[BigDecimal],
-                                      disallowanceAp3: Option[BigDecimal]
+                                      disallowanceAp3: Option[BigDecimal],
+                                      totalDisallowances: Option[BigDecimal]
                                      ) extends AllocatedRestrictionsValidator {
   override val allocatedRestrictionsModel: AllocatedRestrictionsModel = this
-
-  val totalDisallowances: BigDecimal = disallowanceAp1 + disallowanceAp2.getOrElse(0) + disallowanceAp3.getOrElse(0)
 }
 
 object AllocatedRestrictionsModel {

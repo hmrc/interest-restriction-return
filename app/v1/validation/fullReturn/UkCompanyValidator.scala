@@ -78,7 +78,7 @@ trait UkCompanyValidator extends BaseValidation {
   private def validateRestrictionNotGreaterThanExpense(implicit path: JsPath): ValidationResult[BigDecimal] = {
     val netExpense = ukCompany.netTaxInterestExpense
     val allocatedRestriction: BigDecimal = ukCompany.allocatedRestrictions.fold[BigDecimal](0){
-      restrictions => restrictions.totalDisallowances
+      restrictions => restrictions.totalDisallowances.getOrElse[BigDecimal](0)
     }
     if (allocatedRestriction > netExpense) {
       RestrictionNotGreaterThanExpense(netExpense, allocatedRestriction).invalidNec
@@ -90,7 +90,7 @@ trait UkCompanyValidator extends BaseValidation {
   private def validateNoTotalNetTaxInterestIncomeDuringRestriction(implicit path: JsPath): ValidationResult[BigDecimal] = {
     val netTaxIncome: BigDecimal = ukCompany.netTaxInterestIncome
     val restrictionApplied: BigDecimal = ukCompany.allocatedRestrictions.fold[BigDecimal](0) {
-      restriction => restriction.totalDisallowances
+      restriction => restriction.totalDisallowances.getOrElse(0)
     }
     if (netTaxIncome > 0 && restrictionApplied > 0) {
       NoTotalNetTaxInterestIncomeDuringRestriction(netTaxIncome).invalidNec
