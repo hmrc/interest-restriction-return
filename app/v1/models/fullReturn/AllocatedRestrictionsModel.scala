@@ -17,8 +17,8 @@
 package v1.models.fullReturn
 
 import java.time.LocalDate
-
-import play.api.libs.json.Json
+import play.api.libs.json.{Format, JsNull, JsObject, Json, Writes}
+import v1.models.fullReturn.FullReturnModel.writes
 import v1.validation.fullReturn.AllocatedRestrictionsValidator
 
 case class AllocatedRestrictionsModel(ap1EndDate: LocalDate,
@@ -34,6 +34,19 @@ case class AllocatedRestrictionsModel(ap1EndDate: LocalDate,
 }
 
 object AllocatedRestrictionsModel {
-  implicit val format = Json.format[AllocatedRestrictionsModel]
+
+  val writes: Writes[AllocatedRestrictionsModel] = Writes { model =>
+    JsObject(Json.obj(
+      "ap1EndDate" -> model.ap1EndDate,
+      "ap2EndDate" -> model.ap2EndDate,
+      "ap3EndDate" -> model.ap3EndDate,
+      "disallowanceAp1" -> model.disallowanceAp1,
+      "disallowanceAp2" -> model.disallowanceAp2,
+      "disallowanceAp3" -> model.disallowanceAp3,
+      "totalDisallowances" -> model.totalDisallowances
+    ).fields.filterNot(_._2 == JsNull))
+  }
+
+  implicit val format: Format[AllocatedRestrictionsModel] = Format[AllocatedRestrictionsModel](Json.reads[AllocatedRestrictionsModel], writes)
 }
 

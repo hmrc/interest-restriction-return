@@ -58,6 +58,7 @@ object AllocatedRestrictionsConstants {
     "ap3EndDate" -> ap3EndDate,
     "disallowanceAp1" -> disallowanceAp1,
     "disallowanceAp2" -> disallowanceAp2,
-    "disallowanceAp3" -> disallowanceAp3
+    "disallowanceAp3" -> disallowanceAp3,
+    "totalDisallowances" -> (disallowanceAp1 + disallowanceAp2 + disallowanceAp3)
   )
 }
