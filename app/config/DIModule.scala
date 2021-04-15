@@ -17,7 +17,6 @@
 package config
 
 import com.google.inject.AbstractModule
-import v1.controllers.actions.{AuthActionProvider, AuthActionProviderImpl}
 
 class DIModule extends AbstractModule {
 

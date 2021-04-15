@@ -86,7 +86,7 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
       "return 401 (Unauthorised)" in {
 
         object UnauthorisedController extends AbbreviatedReturnController(
-          authAction = AuthorisedAction,
+          authAction = UnauthorisedAction,
           abbreviatedReturnService = mockAbbreviatedReturnService,
           controllerComponents = Helpers.stubControllerComponents()
         )

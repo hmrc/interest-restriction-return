@@ -88,7 +88,7 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
       "return 401 (Unauthorised)" in {
 
         object UnauthorisedController extends RevokeReportingCompanyController(
-          authAction = AuthorisedAction,,
+          authAction = UnauthorisedAction,
           revokeReportingCompanyService = mockRevokeReportingCompanyService,
           controllerComponents = Helpers.stubControllerComponents()
         )
