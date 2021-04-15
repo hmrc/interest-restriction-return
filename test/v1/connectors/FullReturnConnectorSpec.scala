@@ -17,26 +17,24 @@
 package v1.connectors
 
 import assets.fullReturn.FullReturnConstants._
+import audit.AuditEventTypes
+import play.api.http.Status
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.mocks.MockHttpClient
 import play.api.http.Status._
 import utils.BaseSpec
 import v1.models.fullReturn.FullReturnModel
 
-class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
-
+class FullReturnConnectorSpec extends MockHttpClient with BaseSpec with AuditEventTypes {
   "FullReturnConnector.submit using fullReturnModelMax" when {
-
     def setup(response: SubmissionResponse): FullReturnConnector = {
       val desUrl = "http://localhost:9262/organisations/interest-restrictions-return/full"
       mockHttpPost[FullReturnModel, Either[ErrorResponse, DesSuccessResponse]](desUrl, fullReturnUltimateParentModel)(response)
-      new FullReturnConnector(mockHttpClient, appConfig)
+      new FullReturnConnector(mockHttpClient,auditService,auditWrapper,appConfig)
     }
 
     "submission is successful" should {
-
       "return a Right(SuccessResponse)" in {
-
         val connector = setup(Right(DesSuccessResponse("ackRef")))
         val result = connector.submit(fullReturnUltimateParentModel)
 
@@ -45,9 +43,7 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
     }
 
     "update is unsuccessful" should {
-
       "return a Left(UnexpectedFailure)" in {
-
         val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
         val result = connector.submit(fullReturnUltimateParentModel)
 
@@ -61,28 +57,50 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
     def setup(response: SubmissionResponse): FullReturnConnector = {
       val desUrl = "http://localhost:9262/organisations/interest-restrictions-return/full"
       mockHttpPost[FullReturnModel, Either[ErrorResponse, DesSuccessResponse]](desUrl, fullReturnModelMin)(response)
-      new FullReturnConnector(mockHttpClient, appConfig)
+      new FullReturnConnector(mockHttpClient,auditService,auditWrapper,appConfig)
     }
 
     "submission is successful" should {
-
-      "return a Right(SuccessResponse)" in {
-
+     "return a Right(SuccessResponse)" in {
         val connector = setup(Right(DesSuccessResponse(ackRef)))
         val result = connector.submit(fullReturnModelMin)
 
         await(result) shouldBe Right(DesSuccessResponse(ackRef))
       }
+
+      "send audit event for successful response" in {
+        auditWrapper.reset()
+
+        val connector = setup(Right(DesSuccessResponse(ackRef)))
+
+        await(connector.submit(fullReturnModelMin).map {_ =>
+          val lastEvent = auditWrapper.lastEvent.get
+
+          lastEvent.auditType shouldBe FULL_RETURN
+          lastEvent.details.get("status").get shouldBe Status.CREATED.toString
+        })
+      }
     }
 
     "update is unsuccessful" should {
-
       "return a Left(UnexpectedFailure)" in {
-
         val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
         val result = connector.submit(fullReturnModelMin)
 
         await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
+      }
+
+      "send audit event for error response" in {
+        auditWrapper.reset()
+
+        val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
+
+        await(connector.submit(fullReturnModelMin).map {_ =>
+          val lastEvent = auditWrapper.lastEvent.get
+
+          lastEvent.auditType shouldBe FULL_RETURN
+          lastEvent.details.get("status").get shouldBe Status.INTERNAL_SERVER_ERROR.toString
+        })
       }
     }
   }

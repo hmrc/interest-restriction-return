@@ -16,7 +16,9 @@
 
 package v1.connectors
 
+import audit.{AuditEventTypes, AuditWrapper, InterestRestrictionReturnAuditService}
 import config.AppConfig
+
 import javax.inject.Inject
 import play.api.Logging
 import play.api.libs.json.Json
@@ -29,15 +31,15 @@ import v1.models.requests.IdentifierRequest
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class AbbreviatedReturnConnector @Inject()(httpClient: HttpClient,
-                                           implicit val appConfig: AppConfig) extends DesBaseConnector with Logging {
+class AbbreviatedReturnConnector @Inject()(httpClient: HttpClient,irrAuditService: InterestRestrictionReturnAuditService, auditWrapper: AuditWrapper,
+                                           implicit val appConfig: AppConfig) extends DesBaseConnector with Logging with AuditEventTypes {
 
   private[connectors] lazy val abbreviatedReturnUrl = s"${appConfig.desUrl}/organisations/interest-restrictions-return/abbreviated"
 
   def submitAbbreviatedReturn(abbreviatedReturnModel: AbbreviatedReturnModel)
                              (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
 
-    httpClient.POST(abbreviatedReturnUrl, abbreviatedReturnModel)(AbbreviatedReturnModel.format, AbbreviatedReturnReads, desHc, ec)
+    httpClient.POST(abbreviatedReturnUrl, abbreviatedReturnModel)(AbbreviatedReturnModel.format, AbbreviatedReturnReads, desHc, ec) andThen
+      irrAuditService.sendInterestRestrictionReturnEvent(ABBREVIATED_RETURN,Json.toJson(abbreviatedReturnModel))(auditWrapper.sendEvent)
   }
-
 }

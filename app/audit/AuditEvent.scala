@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package assets
+package audit
 
-import play.api.libs.json.Json
+trait AuditEvent {
+  def auditType: String
 
-object AgentDetailsITConstants {
+  def details: Map[String, String]
+}
 
-  val agentName = "some agent"
-
-  val agentDetailsJson = Json.obj(
-    "agentActingOnBehalfOfCompany" -> true,
-    "agentName" -> agentName
-  )
+trait AuditEventTypes {
+  val FULL_RETURN = "FullSubmission"
+  val ABBREVIATED_RETURN = "AbbreviatedSubmission"
+  val REVOKE_REPORTING_COMPANY = "RevokeReportingCompany"
+  val APPOINT_REPORTING_COMPANY = "AppointReportingCompany"
 }

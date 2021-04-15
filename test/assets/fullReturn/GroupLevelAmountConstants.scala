@@ -27,7 +27,7 @@ object GroupLevelAmountConstants {
   val interestCapacityForPeriod: BigDecimal = 5.00
 
   val groupLevelAmountModel = GroupLevelAmountModel(
-    interestReactivationCap = Some(interestReactivationCap),
+    interestReactivationCap = interestReactivationCap,
     interestAllowanceBroughtForward = interestAllowanceBroughtForward,
     interestAllowanceForPeriod = interestAllowanceForPeriod,
     interestCapacityForPeriod = interestCapacityForPeriod

@@ -1,5 +1,5 @@
 {
-  "description": "Details of the parent company, this can be either an ultimate parent company or a deemed parent",
+  "description": "Details of the parent company, which can be ultimate parent or deemed parent",
   "type": "object",
   "properties": {
     "ultimateParent": {

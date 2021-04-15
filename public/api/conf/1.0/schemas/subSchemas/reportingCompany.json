@@ -1,5 +1,5 @@
 {
-  "description": "The details of the reporting company",
+  "description": "Details of the reporting company",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -9,7 +9,7 @@
   ],
   "properties": {
     "companyName": {
-      "description": "Details of the reporting company",
+      "description": "Name of the reporting company",
       "$ref": "../definitions/definitions.json#/definitions/ukCompanyNameType"
     },
     "ctutr": {

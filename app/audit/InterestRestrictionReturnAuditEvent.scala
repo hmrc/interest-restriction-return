@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package assets
+package audit
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 
-object AgentDetailsITConstants {
+case class InterestRestrictionReturnAuditEvent(action: String, status: Int, payload: Option[JsValue]) extends AuditEvent {
+  override def auditType: String = action
 
-  val agentName = "some agent"
-
-  val agentDetailsJson = Json.obj(
-    "agentActingOnBehalfOfCompany" -> true,
-    "agentName" -> agentName
+  override def details: Map[String, String] = Map(
+    "status" -> status.toString,
+    "payload" -> payload.fold("")(Json.stringify)
   )
 }

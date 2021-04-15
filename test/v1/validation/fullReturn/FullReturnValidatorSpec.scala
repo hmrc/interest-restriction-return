@@ -81,11 +81,11 @@ class FullReturnValidatorSpec extends BaseSpec {
       }
 
       "Angie is negative" in {
-        leftSideError(fullReturnUltimateParentModel.copy(angie = Some(-0.01)).validate).errorMessage shouldBe NegativeAngieError(-0.01).errorMessage
+        leftSideError(fullReturnUltimateParentModel.copy(angie = -0.01).validate).errorMessage shouldBe NegativeAngieError(-0.01).errorMessage
       }
 
       "Angie is greater than 2 decimal places" in {
-        leftSideError(fullReturnUltimateParentModel.copy(angie = Some(1.111)).validate).errorMessage shouldBe AngieDecimalError(1.111).errorMessage
+        leftSideError(fullReturnUltimateParentModel.copy(angie = 1.111).validate).errorMessage shouldBe AngieDecimalError(1.111).errorMessage
       }
 
       "Both group level interest restrictions and group level reactivations are supplied" in {
@@ -94,14 +94,6 @@ class FullReturnValidatorSpec extends BaseSpec {
           groupSubjectToInterestRestrictions = true
         ).validate).errorMessage shouldBe GroupLevelInterestRestrictionsAndReactivationSupplied(
           fullReturnUltimateParentModel.groupSubjectToInterestReactivation, fullReturnUltimateParentModel.groupSubjectToInterestRestrictions).errorMessage
-      }
-
-      "Group is subject to interest reactivations and no reactivation cap is supplied" in {
-        leftSideError(fullReturnUltimateParentModel.copy(
-          groupSubjectToInterestReactivation = true,
-          groupSubjectToInterestRestrictions = false,
-          groupLevelAmount = groupLevelAmountModel.copy(interestReactivationCap = None)
-        ).validate).errorMessage shouldBe InterestReactivationCapNotSupplied.errorMessage
       }
 
       "Total Restrictions does not match the sum of the total restrictions for each company" in {
@@ -166,7 +158,7 @@ class FullReturnValidatorSpec extends BaseSpec {
         )
 
         leftSideError(model.validate).errorMessage shouldBe
-          TotalReactivationsNotGreaterThanCapacity(36004.0, fullReturnUltimateParentModel.groupLevelAmount.interestReactivationCap.getOrElse(0)).errorMessage
+          TotalReactivationsNotGreaterThanCapacity(36004.0, fullReturnUltimateParentModel.groupLevelAmount.interestReactivationCap).errorMessage
       } //36004.0 is the calculated value of all 4 companies and should not be greater than 2.22 (the reactivation cap)
 
       "Group is subject to restrictions but total net tax interest is income" in {

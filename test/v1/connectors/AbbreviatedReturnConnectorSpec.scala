@@ -17,40 +17,65 @@
 package v1.connectors
 
 import assets.abbreviatedReturn.AbbreviatedReturnConstants._
+import assets.fullReturn.FullReturnConstants.ackRef
+import audit.AuditEventTypes
+import play.api.http.Status
 import play.api.http.Status._
 import utils.BaseSpec
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.mocks.MockHttpClient
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
 
-class AbbreviatedReturnConnectorSpec extends MockHttpClient with BaseSpec {
-
+class AbbreviatedReturnConnectorSpec extends MockHttpClient with BaseSpec with AuditEventTypes {
   "AbbreviatedReturnConnector.submitAbbreviatedReturn" when {
 
     def setup(response: SubmissionResponse): AbbreviatedReturnConnector = {
       val desUrl = "http://localhost:9262/organisations/interest-restrictions-return/abbreviated"
       mockHttpPost[AbbreviatedReturnModel, Either[ErrorResponse, DesSuccessResponse]](desUrl, abbreviatedReturnUltimateParentModel)(response)
-      new AbbreviatedReturnConnector(mockHttpClient, appConfig)
+      new AbbreviatedReturnConnector(mockHttpClient, auditService, auditWrapper, appConfig)
     }
 
     "submission is successful" should {
-
       "return a Right(SuccessResponse)" in {
         val connector = setup(Right(DesSuccessResponse(ackRef)))
         val result = connector.submitAbbreviatedReturn(abbreviatedReturnUltimateParentModel)
 
         await(result) shouldBe Right(DesSuccessResponse(ackRef))
       }
-    }
 
-    "submission is unsuccessful" should {
+      "send audit event for successful response" in {
+        auditWrapper.reset()
 
-      "return a Left(UnexpectedFailure)" in {
+        val connector = setup(Right(DesSuccessResponse(ackRef)))
 
-        val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-        val result = connector.submitAbbreviatedReturn(abbreviatedReturnUltimateParentModel)
+        await(connector.submitAbbreviatedReturn(abbreviatedReturnUltimateParentModel).map { _ =>
+          val lastEvent = auditWrapper.lastEvent.get
 
-        await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
+          lastEvent.auditType shouldBe ABBREVIATED_RETURN
+          lastEvent.details.get("status").get shouldBe Status.CREATED.toString
+        })
+      }
+
+      "submission is unsuccessful" should {
+        "return a Left(UnexpectedFailure)" in {
+          val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
+          val result = connector.submitAbbreviatedReturn(abbreviatedReturnUltimateParentModel)
+
+          await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
+        }
+
+        "send audit event for error response" in {
+          auditWrapper.reset()
+
+          val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
+
+          await(connector.submitAbbreviatedReturn(abbreviatedReturnUltimateParentModel).map { _ =>
+            val lastEvent = auditWrapper.lastEvent.get
+
+            lastEvent.auditType shouldBe ABBREVIATED_RETURN
+            lastEvent.details.get("status").get shouldBe Status.INTERNAL_SERVER_ERROR.toString
+          })
+        }
       }
     }
   }
