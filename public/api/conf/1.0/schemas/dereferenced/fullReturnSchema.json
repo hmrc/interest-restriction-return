@@ -663,16 +663,16 @@
             "type": "object",
             "properties": {
                 "accountingPeriod": {
-                    "description": "The worldwide groups accounting period",
+                    "description": "Worldwide group's period of account",
                     "type": "object",
                     "properties": {
                         "startDate": {
-                            "description": "The start date of the accounting period",
+                            "description": "Start date of the group's period of account, which cannot be before 2016-10-01",
                             "type": "string",
                             "format": "date"
                         },
                         "endDate": {
-                            "description": "The end date of the accounting period",
+                            "description": "End date of the group's period of account, which must be within 18 months of the start date",
                             "type": "string",
                             "format": "date"
                         }
@@ -690,7 +690,7 @@
             "additionalProperties": false
         },
         "submissionType": {
-            "description": "Indicate whether this is the first (original) return or an amended (revised) return",
+            "description": "Indicate if this is a revised return",
             "type": "string",
             "enum": [
                 "original",

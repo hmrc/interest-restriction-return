@@ -46,7 +46,7 @@ trait FullReturnValidator extends BaseValidation {
   }
 
   private def validateAngie: ValidationResult[BigDecimal] = {
-    val angie: BigDecimal = fullReturnModel.angie.getOrElse(0)
+    val angie: BigDecimal = fullReturnModel.angie
     angie match {
       case a if a < 0 => NegativeAngieError(angie).invalidNec
       case a if a % 0.01 != 0 => AngieDecimalError(angie).invalidNec

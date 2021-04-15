@@ -4,11 +4,11 @@
   "type": "object",
   "properties": {
     "appointedReportingCompany": {
-      "description": "Indicate whether a reporting company has been reported",
+      "description": "Indicate if reporting company appointed",
       "type": "boolean"
     },
     "agentDetails": {
-      "description": "If an Agent is submitting this return on behalf of the reporting company and group details are supplied here",
+      "description": "Details of the agent where an agent is submitting on behalf of the reporting company",
       "$ref": "subSchemas/agentDetails.json"
     },
     "reportingCompany": {
@@ -24,22 +24,22 @@
       "$ref": "definitions/definitions.json#/definitions/submissionType"
     },
     "revisedReturnDetails": {
-      "description": "A description of why the return is being amended, this is mandatory if the submissionType is 'revised'",
+      "description": "What information has been revised since the original return",
       "$ref": "definitions/definitions.json#/definitions/explanatoryNotesShort"
     },
     "angie": {
       "$ref": "definitions/definitions.json#/definitions/angie"
     },
     "returnContainsEstimates": {
-      "description": "Indicator for whether the return contains figures which are estimated",
+      "description": "Indicate if the return contains estimated figures",
       "type": "boolean"
     },
     "groupSubjectToInterestRestrictions": {
-      "description": "Indicator for whether the group is subject to interest restrictions",
+      "description": "Indicate if the group has an interest restriction",
       "type": "boolean"
     },
     "groupSubjectToInterestReactivation": {
-      "description": "Indicator for whether the group is subject to interest reactivations",
+      "description": "Indicate if the group has a reactivation",
       "type": "boolean"
     },
     "groupLevelElections": {
@@ -62,6 +62,7 @@
     }
   },
   "required": [
+    "angie",
     "appointedReportingCompany",
     "agentDetails",
     "reportingCompany",
