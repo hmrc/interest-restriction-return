@@ -11,7 +11,7 @@
       "$ref": "../definitions/definitions.json#/definitions/globalCompanyNameType"
     },
     "countryOfIncorporation": {
-      "description": "Country of incorporation where the appointing company is not a UK company. A valid ISO 3166-1 2 Alpha Country Code. For example: US",
+      "description": "Country of incorporation where the appointing company is not a UK company. A valid ISO 3166-1 2 Alpha Country Code.",
       "$ref": "../definitions/countrycodes.json#/definitions/countryCode"
     },
     "ctutr": {
