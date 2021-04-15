@@ -19,17 +19,17 @@ package v1.controllers
 import javax.inject.{Inject, Singleton}
 import play.api.libs.json.JsValue
 import play.api.mvc.{Action, ControllerComponents}
-import v1.controllers.actions.{AuthActionProvider}
+import v1.controllers.actions.AuthAction
 import v1.models.revokeReportingCompany.RevokeReportingCompanyModel
 import v1.services.RevokeReportingCompanyService
 
 
 @Singleton()
-class RevokeReportingCompanyController @Inject()(authProvider: AuthActionProvider,
+class RevokeReportingCompanyController @Inject()(authAction: AuthAction,
                                                  revokeReportingCompanyService: RevokeReportingCompanyService,
                                                  override val controllerComponents: ControllerComponents) extends BaseController {
 
-  def revoke(): Action[JsValue] = authProvider().async(parse.json) { implicit request =>
+  def revoke(): Action[JsValue] = authAction.async(parse.json) { implicit request =>
     withJsonBody[RevokeReportingCompanyModel] { revokeReportingCompanyModel =>
       handleValidation(
         validationModel = revokeReportingCompanyModel.validate,

@@ -19,16 +19,16 @@ package v1.controllers
 import javax.inject.{Inject, Singleton}
 import play.api.libs.json.JsValue
 import play.api.mvc.{Action, ControllerComponents}
-import v1.controllers.actions.{AuthActionProvider}
+import v1.controllers.actions.AuthAction
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
 import v1.services.AbbreviatedReturnService
 
 @Singleton()
-class AbbreviatedReturnController @Inject()(authProvider: AuthActionProvider,
+class AbbreviatedReturnController @Inject()(authAction: AuthAction,
                                             abbreviatedReturnService: AbbreviatedReturnService,
                                             override val controllerComponents: ControllerComponents) extends BaseController {
 
-  def submitAbbreviatedReturn(isInternal: Boolean = false): Action[JsValue] = authProvider(isInternal).async(parse.json) { implicit request =>
+  def submitAbbreviatedReturn(isInternal: Boolean = false): Action[JsValue] = authAction.async(parse.json) { implicit request =>
     withJsonBody[AbbreviatedReturnModel] { AbbreviatedModel =>
       handleValidation(
         validationModel = AbbreviatedModel.validate,
