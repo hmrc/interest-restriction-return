@@ -72,11 +72,14 @@ trait AdjustedGroupInterestValidator extends BaseValidation {
   }
 
   private def validationGroupRationCalc(qngie: BigDecimal, groupEBITDA: BigDecimal, groupRatio: BigDecimal): Boolean = {
-    groupRatio != ((qngie / groupEBITDA) * 100).min(100).setScale(5, RoundingMode.HALF_UP) &&
-    groupRatio.setScale(4, RoundingMode.DOWN) != ((qngie / groupEBITDA) * 100).min(100).setScale(4, RoundingMode.DOWN) &&
-    groupRatio.setScale(3, RoundingMode.DOWN) != ((qngie / groupEBITDA) * 100).min(100).setScale(3, RoundingMode.DOWN) &&
-    groupRatio.setScale(2, RoundingMode.DOWN) != ((qngie / groupEBITDA) * 100).min(100).setScale(2, RoundingMode.DOWN) &&
-    groupRatio.setScale(1, RoundingMode.DOWN) != ((qngie / groupEBITDA) * 100).min(100).setScale(1, RoundingMode.DOWN)
+    val hasDecimals = groupRatio.toString.contains(".")
+    val decimalPlaces = if (hasDecimals) {
+      groupRatio.toString.length - groupRatio.toString.indexOf(".") - 1
+    } else {
+      0
+    }
+
+    groupRatio != ((qngie / groupEBITDA) * 100).min(100).setScale(decimalPlaces, RoundingMode.HALF_UP)
   }
 
   def validate(implicit path: JsPath): ValidationResult[AdjustedGroupInterestModel] =
