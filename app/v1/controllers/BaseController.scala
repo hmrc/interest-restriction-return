@@ -16,8 +16,10 @@
 
 package v1.controllers
 
+import audit.{AuditEventTypes, AuditWrapper, InterestRestrictionReturnAuditEvent}
 import cats.data.Validated.{Invalid, Valid}
 import play.api.Logging
+import play.api.http.Status
 import play.api.libs.json._
 import play.api.mvc.{Request, Result}
 import uk.gov.hmrc.http.HeaderCarrier
@@ -30,7 +32,7 @@ import v1.services.Submission
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
 
-trait BaseController extends BackendBaseController with Logging {
+trait BaseController extends BackendBaseController with Logging with AuditEventTypes {
 
   implicit val ec: ExecutionContext = controllerComponents.executionContext
 
@@ -38,18 +40,25 @@ trait BaseController extends BackendBaseController with Logging {
     Try(request.body.validate[T]) match {
       case Success(JsSuccess(payload, _)) => f(payload)
       case Success(JsError(errs)) =>
-        logger.debug(request.body.toString())
+        logger.info(s"[IRR][VALIDATION][FAILURE][JSON]")
         Future.successful(BadRequest(Json.toJson(ValidationErrorResponseModel(errs))))
       case Failure(e) => Future.successful(BadRequest(s"Could not parse body due to ${e.getMessage}"))
     }
 
   def handleValidation[T](validationModel: ValidationResult[T], service: Submission[T], controllerName: String)
-                         (implicit hc: HeaderCarrier, identifierRequest: IdentifierRequest[JsValue]): Future[Result] = {
+                         (implicit hc: HeaderCarrier, identifierRequest: IdentifierRequest[JsValue], audit: AuditWrapper): Future[Result] = {
     validationModel match {
       case Invalid(e) =>
-        logger.debug(s"[$controllerName][submit] Business Rule Errors: ${Json.toJson(ValidationErrorResponseModel(e))}")
-        Future.successful(BadRequest(Json.toJson(ValidationErrorResponseModel(e))))
+        logger.debug(s"[$controllerName][VALIDATION][FAILURE] Business Rule Errors: ${Json.toJson(ValidationErrorResponseModel(e))}")
+        logger.info(s"[$controllerName][VALIDATION][FAILURE]")
+        val errors = Json.toJson(ValidationErrorResponseModel(e))
+        audit.sendEvent(
+          InterestRestrictionReturnAuditEvent(
+            FAILED_VALIDATION,BAD_REQUEST,
+            Some(Json.obj("errors" -> Json.toJson(ValidationErrorResponseModel(e)), "payload" -> identifierRequest.request.body))))
+        Future.successful(BadRequest(errors))
       case Valid(model) =>
+        logger.info(s"[$controllerName][VALIDATION][SUCCESS]")
         service.submit(model).map {
           case Left(err) => Status(err.status)(err.body)
           case Right(response) => Ok(Json.toJson(response))

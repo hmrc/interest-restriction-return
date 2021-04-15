@@ -27,4 +27,5 @@ trait AuditEventTypes {
   val ABBREVIATED_RETURN = "AbbreviatedSubmission"
   val REVOKE_REPORTING_COMPANY = "RevokeReportingCompany"
   val APPOINT_REPORTING_COMPANY = "AppointReportingCompany"
+  val FAILED_VALIDATION = "ValidationFailed"
 }
