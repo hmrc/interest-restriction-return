@@ -3,6 +3,7 @@
   "type": "object",
   "properties": {
     "acknowledgementReference": {
+      "description": "Confirmation of submission with reference number",
       "type": "string"
     }
   },
