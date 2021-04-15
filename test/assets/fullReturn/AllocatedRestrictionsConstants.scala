@@ -31,7 +31,6 @@ object AllocatedRestrictionsConstants {
   val disallowanceAp1: BigDecimal = 1.00
   val disallowanceAp2: BigDecimal = 2.00
   val disallowanceAp3: BigDecimal = 3.00
-  val totalDisallowances: BigDecimal = 6.00
 
   val incorrectDisallowances: BigDecimal = 10.00
 
@@ -41,8 +40,7 @@ object AllocatedRestrictionsConstants {
     ap3EndDate = Some(ap3EndDate),
     disallowanceAp1 = disallowanceAp1,
     disallowanceAp2 = Some(disallowanceAp2),
-    disallowanceAp3 = Some(disallowanceAp3),
-    totalDisallowances = Some(totalDisallowances)
+    disallowanceAp3 = Some(disallowanceAp3)
   )
 
   val zeroAllocatedRestrictionsModel = AllocatedRestrictionsModel(
@@ -51,8 +49,7 @@ object AllocatedRestrictionsConstants {
     ap3EndDate = None,
     disallowanceAp1 = 0,
     disallowanceAp2 = None,
-    disallowanceAp3 = None,
-    totalDisallowances = Some(0)
+    disallowanceAp3 = None
   )
 
   val allocatedRestrictionsJson = Json.obj(

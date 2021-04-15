@@ -100,7 +100,7 @@ trait FullReturnValidator extends BaseValidation {
     val calculatedRestrictions: BigDecimal = fullReturnModel.ukCompanies.foldLeft[BigDecimal](0) {
       (total, company) =>
         total + company.allocatedRestrictions.fold[BigDecimal](0)(restrictions =>
-          restrictions.totalDisallowances.getOrElse(0))
+          restrictions.totalDisallowances)
     }
     (restrictions, calculatedRestrictions) match {
       case (r, _) if r % 0.01 != 0 => TotalRestrictionsDecimalError(restrictions).invalidNec
