@@ -1,5 +1,5 @@
 {
-  "description": "Details of the deemed parent companies",
+  "description": "Details of the entities that make up the deemed parent company",
   "type": "array",
   "minItems": 2,
   "maxItems": 3,
