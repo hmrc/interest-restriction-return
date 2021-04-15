@@ -45,6 +45,7 @@ object FullReturnITConstants {
     "revisedReturnDetails" -> "some details",
     "groupLevelElections" -> groupLevelElectionsJson,
     "returnContainsEstimates" -> true,
+    "groupEstimateReason" -> "Some reason",
     "ukCompanies" -> Seq(ukCompanyFullJson),
     "angie" -> 1.1,
     "groupSubjectToInterestRestrictions" -> false,

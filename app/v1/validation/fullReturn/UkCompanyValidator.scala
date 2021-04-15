@@ -109,6 +109,23 @@ trait UkCompanyValidator extends BaseValidation {
     }
   }
 
+  private def companyEstimateReasonIsValidLength(reason: String): Boolean = (reason.length >= 1 && reason.length <= 5000)
+
+  private def companyEstimateReasonHasValidCharacters(reason: String): Boolean = {
+    val regex = "^[ -~¢-¥©®±×÷‐₠-₿−-∝≈≠≣-≥]*$".r
+    reason match {
+      case regex(_ *) => true
+      case _ => false
+    }
+  }
+
+  private def validateCompanyEstimateReason(implicit path: JsPath): ValidationResult[Option[String]] = 
+    ukCompany.companyEstimateReason match {
+      case Some(reason) if !companyEstimateReasonIsValidLength(reason) => CompanyEstimateReasonLengthError(reason).invalidNec
+      case Some(reason) if !companyEstimateReasonHasValidCharacters(reason) => CompanyEstimateReasonCharacterError(reason).invalidNec
+      case _ => ukCompany.companyEstimateReason.validNec
+    }
+
   def validate(groupAccountingPeriod: AccountingPeriodModel)(implicit path: JsPath): ValidationResult[UkCompanyModel] =
     (ukCompany.utr.validate(path \ "utr"),
       ukCompany.companyName.validate(path \ "companyName"),
@@ -121,8 +138,9 @@ trait UkCompanyValidator extends BaseValidation {
       validateNoTotalNetTaxInterestIncomeDuringRestriction,
       optionValidations(ukCompany.allocatedRestrictions.map(_.validate(groupAccountingPeriod)(path \ "allocatedRestrictions"))),
       optionValidations(ukCompany.allocatedReactivations.map(_.validate(path \ "allocatedReactivations"))),
-      validateTaxEBITDADecimalPlaces
-      ).mapN((_, _, _, _, _, _, _, _, _, _, _, _) => ukCompany)
+      validateTaxEBITDADecimalPlaces,
+      validateCompanyEstimateReason
+      ).mapN((_, _, _, _, _, _, _, _, _, _, _, _, _) => ukCompany)
 }
 
 case class NetTaxInterestExpenseError(netTaxInterestExpense: BigDecimal)(implicit topPath: JsPath) extends Validation {
@@ -168,4 +186,16 @@ case class TaxEBITDADecimalError(netTaxIncome:BigDecimal)(implicit val topPath: 
   val path = topPath \ "EBITDA"
   val errorMessage: String = s"The supplied Tax EBITDA has greater than the allowed 2 decimal places."
   val value = Json.toJson(netTaxIncome)
+}
+
+case class CompanyEstimateReasonLengthError(reason: String)(implicit val topPath: JsPath)  extends Validation {
+  val errorMessage: String = s"companyEstimateReason is ${reason.length} characters long and should be between 1 and 5,000 characters"
+  val path: JsPath = topPath \ "companyEstimateReason"
+  val value = Json.toJson(reason)
+}
+
+case class CompanyEstimateReasonCharacterError(reason: String)(implicit val topPath: JsPath)  extends Validation {
+  val errorMessage: String = "companyEstimateReason contains invalid characters"
+  val path: JsPath = topPath \ "companyEstimateReason"
+  val value = Json.toJson(reason)
 }

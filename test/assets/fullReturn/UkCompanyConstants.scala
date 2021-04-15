@@ -37,7 +37,8 @@ object UkCompanyConstants extends BaseConstants {
     netTaxInterestIncome = 0,
     taxEBITDA = taxEBITDA,
     allocatedRestrictions = Some(allocatedRestrictionsModel),
-    allocatedReactivations = Some(allocatedReactivationsModel)
+    allocatedReactivations = Some(allocatedReactivationsModel),
+    companyEstimateReason = None
   )
 
   val ukCompanyJsonMax = Json.obj(
@@ -61,7 +62,8 @@ object UkCompanyConstants extends BaseConstants {
     netTaxInterestIncome = netTaxInterestIncome,  // £50
     taxEBITDA = taxEBITDA,
     allocatedRestrictions = None,
-    allocatedReactivations = Some(allocatedReactivationsModel)  // £2.00
+    allocatedReactivations = Some(allocatedReactivationsModel),  // £2.00
+    companyEstimateReason = None
   )
 
   val ukCompanyReactivationJsonMax = Json.obj(
@@ -84,7 +86,8 @@ object UkCompanyConstants extends BaseConstants {
     netTaxInterestIncome = 0,
     taxEBITDA = taxEBITDA,
     allocatedRestrictions = Some(allocatedRestrictionsModel),
-    allocatedReactivations = None
+    allocatedReactivations = None,
+    companyEstimateReason = None
   )
 
   val ukCompanyRestrictionJsonMax = Json.obj(
@@ -107,7 +110,8 @@ object UkCompanyConstants extends BaseConstants {
     netTaxInterestIncome = netTaxInterestIncome,
     taxEBITDA = taxEBITDA,
     allocatedRestrictions = None,
-    allocatedReactivations = None
+    allocatedReactivations = None,
+    companyEstimateReason = None
   )
 
   val ukCompanyJsonMin = Json.obj(
