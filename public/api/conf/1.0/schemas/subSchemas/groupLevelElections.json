@@ -69,7 +69,7 @@
           ]
         },
         "groupEBITDAChargeableGains": {
-          "description": "Indicate if the group elects to use group-EBITA chargeable gains election. Can only be elected if group ratio is elected",
+          "description": "Indicate if the group elects to use group-EBITDA chargeable gains election. Can only be elected if group ratio is elected",
           "type": "boolean"
         }
       }
