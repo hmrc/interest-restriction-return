@@ -28,7 +28,7 @@ class FullReturnController @Inject()(authAction: AuthAction,
                                      fullReturnService: FullReturnService,
                                      override val controllerComponents: ControllerComponents) extends BaseController {
 
-  def submit(isInternal: Boolean = false): Action[JsValue] = authAction.async(parse.json) { implicit request =>
+  def submit(): Action[JsValue] = authAction.async(parse.json) { implicit request =>
     withJsonBody[FullReturnModel] { fullReturnModel =>
       handleValidation(
         validationModel = fullReturnModel.validate,
