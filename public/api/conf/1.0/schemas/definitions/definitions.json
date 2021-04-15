@@ -38,7 +38,7 @@
       "pattern": "^[ -~¢-¥©®±×÷‐₠-₿−-∝≈≠≣-≥]{1,10000}$"
     },
     "submissionType": {
-      "description": "Indicate if this is a revised return [this should be a boolean true or false]",
+      "description": "Indicate whether this is the first (original) return or an amended (revised) return",
       "type": "string",
       "enum": [
         "original",
