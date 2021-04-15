@@ -1,5 +1,5 @@
 {
-  "description": "The details of the authorising companies",
+  "description": "Details of the companies authorising the revocation of the appointment",
   "type": "array",
   "minItems": 1,
   "uniqueItems": true,

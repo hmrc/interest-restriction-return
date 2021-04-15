@@ -16,7 +16,7 @@
       "$ref": "../definitions/definitions.json#/definitions/globalCompanyNameType"
     },
     "ctutr": {
-      "description": "Ultimate parent's Corporation Tax Unique Taxpayer Reference",
+      "description": "Ultimate parent's Corporation Tax Unique Taxpayer Reference.",
       "$ref": "../definitions/definitions.json#/definitions/utrType"
     },
     "sautr": {

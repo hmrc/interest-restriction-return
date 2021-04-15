@@ -22,7 +22,7 @@
       "$ref": "subSchemas/ultimateParent.json"
     },
     "accountingPeriod": {
-      "description": "The Worldwide Group's period of account",
+      "description": "The worldwide group's period of account",
       "$ref": "subSchemas/accountingPeriod.json"
     },
     "authorisingCompanies": {
