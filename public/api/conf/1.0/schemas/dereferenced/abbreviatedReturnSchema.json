@@ -691,7 +691,7 @@
             "additionalProperties": false
         },
         "submissionType": {
-            "description": "Indicate whether this is the first (original) return or an amended (revised) return",
+            "description": "Indicate if this is a revised return [this should be a boolean true or false]",
             "type": "string",
             "enum": [
                 "original",

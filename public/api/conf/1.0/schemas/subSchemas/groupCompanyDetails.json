@@ -7,7 +7,7 @@
   ],
   "properties": {
     "accountingPeriod": {
-      "description": "The worldwide group's accounting period",
+      "description": "Worldwide group's period of account",
       "$ref": "accountingPeriod.json"
     }
   }
