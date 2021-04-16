@@ -16,6 +16,8 @@
 
 package v1.controllers
 
+import audit.AuditWrapper
+
 import javax.inject.{Inject, Singleton}
 import play.api.libs.json.JsValue
 import play.api.mvc.{Action, ControllerComponents}
@@ -25,7 +27,7 @@ import v1.services.FullReturnService
 
 @Singleton()
 class FullReturnController @Inject()(authAction: AuthAction,
-                                     fullReturnService: FullReturnService,
+                                     fullReturnService: FullReturnService, implicit val auditWrapper: AuditWrapper,
                                      override val controllerComponents: ControllerComponents) extends BaseController {
 
   def submit(): Action[JsValue] = authAction.async(parse.json) { implicit request =>

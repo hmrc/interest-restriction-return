@@ -6,11 +6,11 @@
   ],
   "properties": {
     "agentActingOnBehalfOfCompany": {
-      "description": "Indicate whether the agent is acting on behalf of the reporting company",
+      "description": "Is an agent acting on behalf of the reporting company",
       "type": "boolean"
     },
     "agentName": {
-      "description": "Name of the agent where an agent is acting on behalf of the reporting company",
+      "description": "Name of the agent where an agent is acting on behalf of the reporting company.",
       "$ref": "../definitions/definitions.json#/definitions/ukCompanyNameType"
     }
   }

@@ -16,6 +16,8 @@
 
 package v1.controllers
 
+import audit.AuditWrapper
+
 import javax.inject.{Inject, Singleton}
 import play.api.libs.json.JsValue
 import play.api.mvc.{Action, ControllerComponents}
@@ -25,7 +27,7 @@ import v1.services.AbbreviatedReturnService
 
 @Singleton()
 class AbbreviatedReturnController @Inject()(authAction: AuthAction,
-                                            abbreviatedReturnService: AbbreviatedReturnService,
+                                            abbreviatedReturnService: AbbreviatedReturnService,implicit val auditWrapper: AuditWrapper,
                                             override val controllerComponents: ControllerComponents) extends BaseController {
 
   def submitAbbreviatedReturn(): Action[JsValue] = authAction.async(parse.json) { implicit request =>
