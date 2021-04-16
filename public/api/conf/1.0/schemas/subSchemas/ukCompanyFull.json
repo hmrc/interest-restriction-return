@@ -42,6 +42,10 @@
       "taxEBITDA": {
         "description": "Amount of earnings before interest, tax, depreciation and amortisation (EBITDA)",
         "type": "number"
+      },
+      "companyEstimateReason": {
+        "description": "Reasons for company level figures being estimated",
+        "type": "string"
       }
     },
     "required": [

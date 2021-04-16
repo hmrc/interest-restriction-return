@@ -34,6 +34,10 @@
       "description": "Indicate if the return contains estimated figures",
       "type": "boolean"
     },
+    "groupEstimateReason": {
+      "description": "Reasons for group level figures being estimated",
+      "type": "string"
+    },
     "groupSubjectToInterestRestrictions": {
       "description": "Indicate if the group has an interest restriction",
       "type": "boolean"
