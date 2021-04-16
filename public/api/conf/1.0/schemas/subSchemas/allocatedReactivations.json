@@ -1,5 +1,6 @@
 {
   "type": "object",
+  "description": "Details of reactivations for the group's period of account",
   "properties": {
     "currentPeriodReactivation": {
       "description": "Amount reactivated for group's period of account",
