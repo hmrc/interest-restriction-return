@@ -26,7 +26,8 @@ object DeemedParentConstants extends BaseConstants {
     isUk = true,
     ctutr = Some(ctutr),
     sautr = Some(sautr),
-    countryOfIncorporation = Some(nonUkCountryCode)
+    countryOfIncorporation = Some(nonUkCountryCode),
+    legalEntityIdentifier = None
   )
 
   val deemedParentModelMin = DeemedParentModel(
@@ -34,7 +35,8 @@ object DeemedParentConstants extends BaseConstants {
     isUk = true,
     ctutr = None,
     sautr = None,
-    countryOfIncorporation = None
+    countryOfIncorporation = None,
+    legalEntityIdentifier = None
   )
 
   val deemedParentModelUkCompany = DeemedParentModel(
@@ -42,7 +44,8 @@ object DeemedParentConstants extends BaseConstants {
     isUk = true,
     ctutr = Some(ctutr),
     sautr = None,
-    countryOfIncorporation = None
+    countryOfIncorporation = None,
+    legalEntityIdentifier = None
   )
 
   val deemedParentModelNonUkCompany = DeemedParentModel(
@@ -50,7 +53,8 @@ object DeemedParentConstants extends BaseConstants {
     isUk = false,
     ctutr = None,
     sautr = None,
-    countryOfIncorporation = Some(nonUkCountryCode)
+    countryOfIncorporation = Some(nonUkCountryCode),
+    legalEntityIdentifier = None
   )
 
   val deemedParentModelUkPartnership = DeemedParentModel(
@@ -58,7 +62,8 @@ object DeemedParentConstants extends BaseConstants {
     isUk = true,
     ctutr = None,
     sautr = Some(sautr),
-    countryOfIncorporation = None
+    countryOfIncorporation = None,
+    legalEntityIdentifier = None
   )
 
   val deemedParentJsonMax = Json.obj(
