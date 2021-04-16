@@ -53,6 +53,6 @@ case class CountryCodeValueError(countryCode: CountryCodeModel)(implicit val pat
 
 case class CountryCodeLengthError(countryCode: CountryCodeModel)(implicit val path: JsPath) extends Validation {
   val errorMessage: String =
-    s"UTR is ${countryCode.code.length} character${if (countryCode.code.length != 1) "s" else ""} long and should be ${Constants.countryCodeLength}"
+    s"Country code is ${countryCode.code.length} character${if (countryCode.code.length != 1) "s" else ""} long and should be ${Constants.countryCodeLength}"
   val value = Json.toJson(countryCode)
 }
