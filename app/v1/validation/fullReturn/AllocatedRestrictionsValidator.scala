@@ -120,7 +120,7 @@ case class AllocatedRestrictionLaterPeriodSupplied(i: Int)(implicit topPath: JsP
 case class AllocatedRestrictionNegative(i: Int, amt: BigDecimal)(implicit topPath: JsPath) extends Validation {
   val path: JsPath = topPath \ s"disallowanceAp$i"
   val errorMessage: String = s"disallowanceAp$i cannot be negative"
-  val value: JsValue = Json.obj()
+  val value: JsValue = Json.obj(amt)
 }
 
 case class AllocatedRestrictionDecimalError(i: Int, amt: BigDecimal)(implicit topPath: JsPath) extends Validation {
