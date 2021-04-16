@@ -17,20 +17,17 @@
 package utils
 
 import assets.BaseConstants
-import audit.{AuditWrapper, InterestRestrictionReturnAuditService}
+import audit.InterestRestrictionReturnAuditService
 import config.AppConfig
 import org.scalatest.Matchers
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.inject.bind
-import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.mvc.{AnyContentAsEmpty, BodyParsers}
+import play.api.mvc.BodyParsers
 import play.api.test.FakeRequest
 import uk.gov.hmrc.auth.core.MissingBearerToken
 import uk.gov.hmrc.auth.core.retrieve.Credentials
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import uk.gov.hmrc.play.test.UnitSpec
-import v1.audit.{FakeAuditConnector, StubSuccessfulAuditService}
+import v1.audit.StubSuccessfulAuditService
 import v1.controllers.actions.mocks.{Authorised, Unauthorised}
 import v1.models.Validation
 import v1.models.Validation.ValidationResult

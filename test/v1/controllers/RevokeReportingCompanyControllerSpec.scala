@@ -21,10 +21,10 @@ import v1.connectors.{DesSuccessResponse, UnexpectedFailure}
 import play.api.http.Status
 import play.api.libs.json.Json
 import play.api.test.{FakeRequest, Helpers}
-import v1.services.mocks.{MockCommon, MockRevokeReportingCompanyService}
+import v1.services.mocks.MockRevokeReportingCompanyService
 import utils.BaseSpec
 
-class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanyService with BaseSpec with MockCommon {
+class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanyService with BaseSpec {
 
   override lazy val fakeRequest = FakeRequest("POST", "/interest-restriction-return/reporting-company/revoke")
 
@@ -33,7 +33,7 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
     "the user is authenticated" when {
 
       object AuthorisedController extends RevokeReportingCompanyController(
-        authProvider = mockAuthProvider,
+        authAction = AuthorisedAction,
         revokeReportingCompanyService = mockRevokeReportingCompanyService,
         auditWrapper = auditWrapper,
         controllerComponents = Helpers.stubControllerComponents()
@@ -50,7 +50,6 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
           "a success response is returned from the revoke reporting company service" should {
 
             "return 200 (OK)" in {
-              mockAuthProviderResponse(AuthorisedAction,false)
               mockRevokeReportingCompany(revokeReportingCompanyModelMax)(Right(DesSuccessResponse(ackRef)))
 
               val result = AuthorisedController.revoke()(validJsonFakeRequest)
@@ -61,7 +60,6 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
           "an error response is returned from the revoke reporting company service" should {
 
             "return the Error" in {
-              mockAuthProviderResponse(AuthorisedAction,false)
               mockRevokeReportingCompany(revokeReportingCompanyModelMax)(Left(
                 UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err"))
               )
@@ -80,8 +78,6 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
           .withHeaders("Content-Type" -> "application/json")
 
         "return a BAD_REQUEST JSON validation error" in {
-          mockAuthProviderResponse(AuthorisedAction,false)
-
           val result = AuthorisedController.revoke()(invalidJsonFakeRequest)
           status(result) shouldBe Status.BAD_REQUEST
         }
@@ -93,12 +89,11 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
       "return 401 (Unauthorised)" in {
 
         object UnauthorisedController extends RevokeReportingCompanyController(
-          authProvider = mockAuthProvider,
+          authAction = UnauthorisedAction,
           revokeReportingCompanyService = mockRevokeReportingCompanyService,
           auditWrapper = auditWrapper,
           controllerComponents = Helpers.stubControllerComponents()
         )
-        mockAuthProviderResponse(UnauthorisedAction,false)
 
         val result = UnauthorisedController.revoke()(fakeRequest.withBody(Json.obj()))
         status(result) shouldBe Status.UNAUTHORIZED
