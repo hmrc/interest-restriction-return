@@ -38,7 +38,6 @@ object Elections {
   )
 
   val fixedRatioValues = Seq(
-    GroupEBITDA,
     InterestAllowanceAlternativeCalculation,
     InterestAllowanceNonConsolidatedInvestment,
     InterestAllowanceConsolidatedPartnership
