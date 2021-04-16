@@ -8,11 +8,11 @@
   ],
   "properties": {
     "startDate": {
-      "description": "Start date of the worldwide group's period of account which must be on or after 2016-10-01.",
+      "description": "Start date of the group's period of account, which cannot be before 2016-10-01",
       "$ref": "../definitions/definitions.json#/definitions/dateType"
     },
     "endDate": {
-      "description": "End date of the worldwide group's period of account which must be within 18 months of the start date.",
+      "description": "End date of the group's period of account, which must be within 18 months of the start date",
       "$ref": "../definitions/definitions.json#/definitions/dateType"
     }
   }
