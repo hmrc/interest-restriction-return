@@ -87,11 +87,11 @@
       ],
       "properties": {
         "isElected": {
-          "description": "Indicate if the group elects interest allowance non-consolidated investment",
+          "description": "Indicate whether the group elects to include interest allowance non-consolidated investments",
           "type": "boolean"
         },
         "nonConsolidatedInvestments": {
-          "description": "List investors",
+          "description": "List the non-consolidated investments",
           "type": "array",
           "minItems": 1,
           "items": {
@@ -135,7 +135,7 @@
                 "$ref": "../definitions/definitions.json#/definitions/globalCompanyNameType"
               },
               "sautr": {
-                "description": "Partnership's Self Assessment Unique Taxpayer Reference",
+                "description": "Partnership's Self Assessment Unique Taxpayer Reference.",
                 "$ref": "../definitions/definitions.json#/definitions/utrType"
               }
             },

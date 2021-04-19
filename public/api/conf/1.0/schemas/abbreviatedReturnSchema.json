@@ -24,14 +24,14 @@
       "$ref": "definitions/definitions.json#/definitions/submissionType"
     },
     "revisedReturnDetails": {
-      "description": "A description of why the return is being amended, this is mandatory if the submissionType is 'revised'",
+      "description": "What information has been revised since the original return.",
       "$ref": "definitions/definitions.json#/definitions/explanatoryNotesShort"
-    },
-    "ukCompanies": {
-      "$ref": "subSchemas/ukCompanies.json"
     },
     "groupLevelElections": {
       "$ref": "subSchemas/groupLevelElections.json"
+    },
+    "ukCompanies": {
+      "$ref": "subSchemas/ukCompanies.json"
     }
   },
   "required": [
