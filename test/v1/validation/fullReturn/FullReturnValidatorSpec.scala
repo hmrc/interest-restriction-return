@@ -96,15 +96,6 @@ class FullReturnValidatorSpec extends BaseSpec {
           fullReturnUltimateParentModel.groupSubjectToInterestReactivation, fullReturnUltimateParentModel.groupSubjectToInterestRestrictions).errorMessage
       }
 
-      "Total Restrictions does not match the sum of the total restrictions for each company" in {
-        leftSideError(fullReturnUltimateParentModel.copy(
-          groupSubjectToInterestReactivation = false,
-          groupSubjectToInterestRestrictions = true,
-          totalRestrictions = incorrectDisallowances,
-          ukCompanies = Seq(ukCompanyModelRestrictionMax, ukCompanyModelRestrictionMax) //4.44
-        ).validate).errorMessage shouldBe TotalRestrictionsDoesNotMatch(incorrectDisallowances, totalDisallowances + totalDisallowances).errorMessage
-      }
-
       "Total Restrictions greater than 2 decimal places" in {
         leftSideError(fullReturnUltimateParentModel.copy(
           groupSubjectToInterestReactivation = false,
