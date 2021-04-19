@@ -2,7 +2,7 @@
   "type": "object",
   "properties": {
     "currentPeriodReactivation": {
-      "description": "Amount being reactivated for current period of account",
+      "description": "Amount reactivated for group's period of account",
       "type": "number",
       "minimum": 0
     }

@@ -2,34 +2,34 @@
   "type": "object",
   "properties": {
     "ap1EndDate": {
-      "description": "End date for the first Accounting Period apportioned dissallowances",
+      "description": "End date of the first accounting period that a company can apportion a disallowance to. For example: 2020-04-06",
       "$ref": "../definitions/definitions.json#/definitions/dateType"
     },
     "ap2EndDate": {
-      "description": "End date for the second Accounting Period apportioned dissallowances, if applicable. If supplied must be after ap1EndDate",
+      "description": "End date of the second accounting period that a company can apportion a disallowance to. For example: 2020-04-06",
       "$ref": "../definitions/definitions.json#/definitions/dateType"
     },
     "ap3EndDate": {
-      "description": "End date for the third Accounting Period apportioned dissallowances, if applicable. If supplied must be after ap2EndDate",
+      "description": "End date of the third accounting period that a company can apportion a disallowance to. For example: 2020-04-06",
       "$ref": "../definitions/definitions.json#/definitions/dateType"
     },
     "disallowanceAp1": {
-      "description": "Amount for the first Accounting Period apportioned dissallowances, must be supplied if ap1EndDate is supplied",
+      "description": "Amount of disallowance for the first accounting period",
       "type": "number",
       "minimum": 0
     },
     "disallowanceAp2": {
-      "description": "Amount for the second Accounting Period apportioned dissallowances, must be supplied if ap2EndDate is supplied",
+      "description": "Amount of disallowance for the second accounting period",
       "type": "number",
       "minimum": 0
     },
     "disallowanceAp3": {
-      "description": "Amount for the third Accounting Period apportioned dissallowances, must be supplied if ap3EndDate is supplied",
+      "description": "Amount of disallowance for the third accounting period",
       "type": "number",
       "minimum": 0
     },
     "totalDisallowances": {
-      "description": "Total of disallowanceAp1, disallowanceAp2 and disallowanceAp3",
+      "description": "Total disallowances for all accounting periods",
       "type": "number",
       "minimum": 0
     }
