@@ -17,7 +17,7 @@
       "$ref": "../definitions/definitions.json#/definitions/utrType"
     },
     "sameAsUltimateParent": {
-      "description": "Indicate whether the reporting company is also the ultimate parent",
+      "description": "Indicate whether the reporting company is also the ultimate parent company",
       "type": "boolean"
     }
   }
