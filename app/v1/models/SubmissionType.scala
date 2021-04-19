@@ -40,6 +40,6 @@ object SubmissionType {
   implicit val reads: Reads[SubmissionType] = Reads {
     case JsString(Original.toString) => JsSuccess(Original)
     case JsString(Revised.toString) => JsSuccess(Revised)
-    case _ => JsError("Unknown UserType")
+    case _ => JsError(s"Valid submission types are ${Original.toString} and ${Revised.toString}")
   }
 }
