@@ -956,6 +956,7 @@
                         "additionalProperties": false
                     },
                     "allocatedReactivations": {
+                        "description": "Details of reactivations for the group's period of account",
                         "type": "object",
                         "properties": {
                             "currentPeriodReactivation": {
