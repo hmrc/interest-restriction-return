@@ -92,6 +92,14 @@ class DeemedParentValidatorSpec extends BaseSpec {
         leftSideError(model.validate).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
       }
 
+      "SAUTR is invalid" in {
+        val model = deemedParentModelUkCompany.copy(
+          ctutr = None,
+          sautr = Some(invalidUtr))
+
+        leftSideError(model.validate).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
+      }
+
       "CountryOfIncorporation is invalid" in {
 
         val model = deemedParentModelNonUkCompany.copy(

@@ -21,7 +21,7 @@ import v1.validation.GroupLevelElectionValidation
 
 case class GroupLevelElectionsModel(groupRatio: GroupRatioModel,
                                     interestAllowanceAlternativeCalculation: Boolean,
-                                    interestAllowanceNonConsolidatedInvestment:NonConsolidatedInvestmentElectionModel,
+                                    interestAllowanceNonConsolidatedInvestment: NonConsolidatedInvestmentElectionModel,
                                     interestAllowanceConsolidatedPartnership: ConsolidatedPartnershipModel) extends GroupLevelElectionValidation {
   override val groupLevelElectionsModel = this
 }

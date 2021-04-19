@@ -49,8 +49,9 @@ trait DeemedParentValidator extends BaseValidation {
     (validateCorrectCompanyDetailsSupplied,
       deemedParentModel.companyName.validate(path \ "companyName"),
       optionValidations(deemedParentModel.ctutr.map(_.validate(path \ "ctutr"))),
+      optionValidations(deemedParentModel.sautr.map(_.validate(path \ "sautr"))),
       optionValidations(deemedParentModel.countryOfIncorporation.map(_.validate(path \ "countryOfIncorporation")))
-      ).mapN((_, _, _, _) => deemedParentModel)
+      ).mapN((_, _, _, _, _) => deemedParentModel)
 }
 
 
