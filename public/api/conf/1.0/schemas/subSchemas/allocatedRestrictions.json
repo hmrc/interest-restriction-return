@@ -1,5 +1,6 @@
 {
   "type": "object",
+  "description": "Details of restrictions for the accounting periods",
   "properties": {
     "ap1EndDate": {
       "description": "End date of the first accounting period that a company can apportion a disallowance to. For example: 2020-04-06",
