@@ -21,6 +21,7 @@ import v1.models.Validation.ValidationResult
 import v1.models.revokeReportingCompany.RevokeReportingCompanyModel
 import v1.models.{IdentityOfCompanySubmittingModel, UltimateParentModel, Validation}
 import v1.validation.BaseValidation
+import v1.models.AuthorisingCompanyModel
 
 trait RevokeReportingCompanyValidator extends BaseValidation {
 
@@ -53,6 +54,14 @@ trait RevokeReportingCompanyValidator extends BaseValidation {
     }
   }
 
+  private def validateDuplicateAuthorisingCompanies: ValidationResult[Seq[AuthorisingCompanyModel]] = {
+    val duplicatesExist = revokeReportingCompanyModel.authorisingCompanies.distinct.size != revokeReportingCompanyModel.authorisingCompanies.size
+    duplicatesExist match {
+      case true => AuthorisingCompaniesContainsDuplicates.invalidNec
+      case false => revokeReportingCompanyModel.authorisingCompanies.validNec
+    }
+  }
+
   def validate: ValidationResult[RevokeReportingCompanyModel] = {
 
     val validatedAuthorisingCompanies =
@@ -70,8 +79,9 @@ trait RevokeReportingCompanyValidator extends BaseValidation {
       optionValidations(revokeReportingCompanyModel.ultimateParentCompany.map(_.validate(JsPath \ "ultimateParentCompany"))),
       revokeReportingCompanyModel.accountingPeriod.validate(JsPath \ "accountingPeriod"),
       validatedAuthorisingCompanies,
-      validateDeclaration(JsPath \ "declaration")
-      ).mapN((_,_,_,_,_,_,_,_,_) => revokeReportingCompanyModel)
+      validateDeclaration(JsPath \ "declaration"),
+      validateDuplicateAuthorisingCompanies
+      ).mapN((_,_,_,_,_,_,_,_,_, _) => revokeReportingCompanyModel)
   }
 }
 
@@ -106,6 +116,12 @@ case object UltimateParentCompanyIsNotSuppliedRevoke extends Validation {
 
 case object AuthorisingCompaniesEmpty extends Validation {
   val errorMessage: String = "authorisingCompanies must have at least 1 authorising company"
+  val path = JsPath \ "authorisingCompanies"
+  val value = Json.obj()
+}
+
+case object AuthorisingCompaniesContainsDuplicates extends Validation {
+  val errorMessage: String = "authorisingCompanies contains duplicate elements"
   val path = JsPath \ "authorisingCompanies"
   val value = Json.obj()
 }

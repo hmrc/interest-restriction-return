@@ -20,6 +20,7 @@ import play.api.libs.json.{JsPath, Json}
 import v1.models.Validation.ValidationResult
 import v1.models.appointReportingCompany.AppointReportingCompanyModel
 import v1.models.{IdentityOfCompanySubmittingModel, UltimateParentModel, Validation}
+import v1.models.AuthorisingCompanyModel
 import v1.validation.BaseValidation
 
 trait AppointReportingCompanyValidator extends BaseValidation {
@@ -44,6 +45,14 @@ trait AppointReportingCompanyValidator extends BaseValidation {
     }
   }
 
+  private def validateDuplicateAuthorisingCompanies: ValidationResult[Seq[AuthorisingCompanyModel]] = {
+    val duplicatesExist = appointReportingCompanyModel.authorisingCompanies.distinct.size != appointReportingCompanyModel.authorisingCompanies.size
+    duplicatesExist match {
+      case true => AuthorisingCompaniesContainsDuplicates.invalidNec
+      case false => appointReportingCompanyModel.authorisingCompanies.validNec
+    }
+  }
+
   def validate: ValidationResult[AppointReportingCompanyModel] = {
 
     val validatedAuthorisingCompanies =
@@ -60,8 +69,9 @@ trait AppointReportingCompanyValidator extends BaseValidation {
       optionValidations(appointReportingCompanyModel.identityOfAppointingCompany.map(_.validate(JsPath \ "identityOfAppointingCompany"))),
       appointReportingCompanyModel.accountingPeriod.validate(JsPath \ "accountingPeriod"),
       validateIdentityOfAppointingCompany,
-      validateUltimateParentCompany
-      ).mapN((_,_,_,_,_,_,_,_) => appointReportingCompanyModel)
+      validateUltimateParentCompany,
+      validateDuplicateAuthorisingCompanies
+      ).mapN((_,_,_,_,_,_,_,_, _) => appointReportingCompanyModel)
   }
 }
 
@@ -95,10 +105,8 @@ case object AuthorisingCompaniesEmpty extends Validation {
   val value = Json.obj()
 }
 
-
-
-
-
-
-
-
+case object AuthorisingCompaniesContainsDuplicates extends Validation {
+  val errorMessage: String = "authorisingCompanies contains duplicate elements"
+  val path = JsPath \ "authorisingCompanies"
+  val value = Json.obj()
+}
