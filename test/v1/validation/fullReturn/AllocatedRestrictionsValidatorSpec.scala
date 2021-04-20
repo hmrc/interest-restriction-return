@@ -202,6 +202,16 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
           leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionDateBeforePrevious(2).errorMessage
         }
 
+        "is supplied with a date more than 12 months after Ap1" in {
+
+          val model = restrictionModel.copy(
+            ap2EndDate = Some(ap1EndDate.plusMonths(12).plusDays(1)),
+            disallowanceAp2 = Some(disallowanceAp2)
+          )
+
+          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionDateGreaterThan12MonthsAfterPrevious(2).errorMessage
+        }
+
         "is supplied with a date that is less than the minimum date" in {
 
           val model = restrictionModel.copy(
@@ -288,6 +298,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
         "is supplied with a date equal to Ap2" in {
 
           val model = restrictionModel.copy(
+            ap1EndDate = ap2EndDate,
             ap2EndDate = Some(ap3EndDate),
             disallowanceAp2 = Some(disallowanceAp2),
             ap3EndDate = Some(ap3EndDate),
@@ -300,6 +311,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
         "is supplied with a date less than Ap2" in {
 
           val model = restrictionModel.copy(
+            ap1EndDate = ap2EndDate,
             ap2EndDate = Some(ap3EndDate.plusDays(1)),
             disallowanceAp2 = Some(disallowanceAp2),
             ap3EndDate = Some(ap3EndDate),
@@ -307,6 +319,18 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
           )
 
           leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionDateBeforePrevious(3).errorMessage
+        }
+
+        "is supplied with a date more than 12 months after Ap2" in {
+
+          val model = restrictionModel.copy(
+            ap2EndDate = Some(ap2EndDate),
+            disallowanceAp2 = Some(disallowanceAp2),
+            ap3EndDate = Some(ap2EndDate.plusMonths(12).plusDays(1)),
+            disallowanceAp3 = Some(disallowanceAp3)
+          )
+
+          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionDateGreaterThan12MonthsAfterPrevious(3).errorMessage
         }
 
         "is supplied with a date less than Group Accounting Period end" in {
