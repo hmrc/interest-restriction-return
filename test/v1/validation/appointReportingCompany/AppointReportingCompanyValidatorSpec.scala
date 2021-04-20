@@ -21,6 +21,8 @@ import assets.ReportingCompanyConstants._
 import assets.UltimateParentConstants._
 import assets.appointReportingCompany.AppointReportingCompanyConstants._
 import utils.BaseSpec
+import assets.AuthorisingCompanyConstants._
+import v1.models.CompanyNameModel
 
 class AppointReportingCompanyValidatorSpec extends BaseSpec {
 
@@ -117,6 +119,24 @@ class AppointReportingCompanyValidatorSpec extends BaseSpec {
           rightSide(model.validate) shouldBe model
         }
       }
+    }
+
+    "authorisingCompanies" should {
+
+      "cause an error when the list contains duplicates" in {
+        val companies = Seq(authorisingCompanyModel, authorisingCompanyModel)
+        val testingModel = appointReportingCompanyModelMax.copy(authorisingCompanies = companies)
+
+        leftSideError(testingModel.validate).errorMessage shouldBe AuthorisingCompaniesContainsDuplicates.errorMessage
+      }
+
+      "not cause an error when there are no duplicates" in {
+        val companies = Seq(authorisingCompanyModel, authorisingCompanyModel.copy(companyName = CompanyNameModel("Company ABC")))
+        val testingModel = appointReportingCompanyModelMax.copy(authorisingCompanies = companies)
+
+        rightSide(testingModel.validate) shouldBe testingModel
+      }
+
     }
   }
 }

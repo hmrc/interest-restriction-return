@@ -21,6 +21,7 @@ import assets.revokeReportingCompany.RevokeReportingCompanyConstants.revokeRepor
 import play.api.libs.json.JsPath
 import utils.BaseSpec
 import assets.AuthorisingCompanyConstants._
+import v1.models.CompanyNameModel
 
 class RevokeReportingCompanyValidatorSpec extends BaseSpec {
 
@@ -47,6 +48,13 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
         val testingModel = revokeReportingCompanyModelMax.copy(
           reportingCompany = revokeReportingCompanyModelMax.reportingCompany.copy(sameAsUltimateParent = true),
           ultimateParentCompany = None)
+
+        rightSide(testingModel.validate) shouldBe testingModel
+      }
+
+      "appointingCompanies does not contain duplicates" in {
+        val companies = Seq(authorisingCompanyModel, authorisingCompanyModel.copy(companyName = CompanyNameModel("Company ABC")))
+        val testingModel = revokeReportingCompanyModelMax.copy(authorisingCompanies = companies)
 
         rightSide(testingModel.validate) shouldBe testingModel
       }
@@ -120,7 +128,7 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
         val companies = Seq(authorisingCompanyModel, authorisingCompanyModel)
         val testingModel = revokeReportingCompanyModelMax.copy(authorisingCompanies = companies)
 
-        leftSideError(testingModel.validate).errorMessage shouldBe AuthorisingCompaniesEmpty.errorMessage
+        leftSideError(testingModel.validate).errorMessage shouldBe AuthorisingCompaniesContainsDuplicates.errorMessage
       }
     }
 
