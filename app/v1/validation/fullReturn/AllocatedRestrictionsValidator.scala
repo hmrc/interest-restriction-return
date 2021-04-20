@@ -30,10 +30,13 @@ trait AllocatedRestrictionsValidator extends BaseValidation {
 
   val allocatedRestrictionsModel: AllocatedRestrictionsModel
 
-  def validate(groupAccountingPeriod: AccountingPeriodModel)(implicit path: JsPath): ValidationResult[AllocatedRestrictionsModel] =
-    (apRestrictionValidator(Some(allocatedRestrictionsModel.ap1EndDate), Some(allocatedRestrictionsModel.disallowanceAp1), 1),
-      apRestrictionValidator(allocatedRestrictionsModel.ap2EndDate, allocatedRestrictionsModel.disallowanceAp2, 2),
-      apRestrictionValidator(allocatedRestrictionsModel.ap3EndDate, allocatedRestrictionsModel.disallowanceAp3, 3),
+  val MINIMUM_DATE = LocalDate.parse("1900-01-01")
+  val MAXIMUM_DATE = LocalDate.parse("2099-12-31")
+
+  def validate(groupAccountingPeriod: AccountingPeriodModel)(implicit path: JsPath): ValidationResult[_] =
+    (apRestrictionValidator(Some(allocatedRestrictionsModel.ap1EndDate), Some(allocatedRestrictionsModel.disallowanceAp1), 1, "ap1EndDate"),
+      apRestrictionValidator(allocatedRestrictionsModel.ap2EndDate, allocatedRestrictionsModel.disallowanceAp2, 2, "ap2EndDate"),
+      apRestrictionValidator(allocatedRestrictionsModel.ap3EndDate, allocatedRestrictionsModel.disallowanceAp3, 3, "ap3EndDate"),
       validateAp1(groupAccountingPeriod.startDate),
       validateAp2,
       validateAp3(groupAccountingPeriod.endDate)
@@ -41,13 +44,15 @@ trait AllocatedRestrictionsValidator extends BaseValidation {
 
   private def apRestrictionValidator(endDate: Option[LocalDate],
                                      amount: Option[BigDecimal],
-                                     i: Int)(implicit path: JsPath): ValidationResult[(Option[LocalDate], Option[BigDecimal])] = {
+                                     i: Int,
+                                     endDateJsonAttribute: String)(implicit path: JsPath): ValidationResult[_] = {
     val period = (endDate, amount)
     period match {
       case (Some(_), None) => AllocatedRestrictionNotSupplied(i).invalidNec
       case (None, Some(_)) => AllocatedRestrictionSupplied(i).invalidNec
       case (Some(_), Some(amt)) if amt < 0 => AllocatedRestrictionNegative(i, amt).invalidNec
       case (Some(_), Some(amt)) if amt % 0.01 != 0 => AllocatedRestrictionDecimalError(i, amt).invalidNec
+      case (Some(date), _) => dateInRange(date, endDateJsonAttribute)
       case _ => period.validNec
     }
   }
@@ -74,6 +79,13 @@ trait AllocatedRestrictionsValidator extends BaseValidation {
         if (ap3.isBefore(groupEndDate)) Ap3BeforeGroupEndDate(ap3, groupEndDate).invalidNec else Some(ap3).validNec
       )
       case _ => None.validNec
+    }
+    
+  private def dateInRange(date: LocalDate, jsonAttribute: String)(implicit path: JsPath): ValidationResult[LocalDate] =
+    if (date.isAfter(MAXIMUM_DATE) || date.isBefore(MINIMUM_DATE)) {
+      DateRangeError(date, jsonAttribute).invalidNec
+    } else {
+      date.validNec
     }
 
 }
@@ -124,4 +136,10 @@ case class Ap3BeforeGroupEndDate(ap3Date: LocalDate, groupEndDate: LocalDate)(im
   val path: JsPath = topPath \ "ap3EndDate"
   val errorMessage: String = s"ap3EndDate ($ap3Date) is before the group accounting period end date ($groupEndDate)"
   val value: JsValue = Json.obj("ap3EndDate" -> ap3Date, "groupEndDate" -> groupEndDate)
+}
+
+case class DateRangeError(date: LocalDate, jsonAttribute: String)(implicit topPath: JsPath) extends Validation {
+  val errorMessage: String = "Dates must be in the range 1900-01-01 to 2099-12-31"
+  val path = topPath \ jsonAttribute
+  val value = Json.toJson(date)
 }

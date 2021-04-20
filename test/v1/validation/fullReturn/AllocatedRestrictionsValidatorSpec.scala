@@ -21,10 +21,14 @@ import play.api.libs.json.JsPath
 import utils.BaseSpec
 import v1.models.AccountingPeriodModel
 import v1.models.fullReturn.AllocatedRestrictionsModel
+import java.time.LocalDate
 
 class AllocatedRestrictionsValidatorSpec extends BaseSpec {
 
   implicit val path = JsPath \ "some" \ "path"
+
+  val MINIMUM_DATE = LocalDate.parse("1900-01-01")
+  val MAXIMUM_DATE = LocalDate.parse("2099-12-31")
 
   val groupAccountingPeriod = AccountingPeriodModel(
     startDate = ap1EndDate.minusDays(1),
@@ -116,6 +120,28 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
           leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe
             Ap1NotAfterGroupStartDate(groupAccountingPeriod.startDate.minusDays(1), groupAccountingPeriod.startDate).errorMessage
         }
+
+        "is supplied with a date that is less than the minimum date" in {
+
+          val model = restrictionModel.copy(
+            ap1EndDate = MINIMUM_DATE.minusDays(1),
+            totalDisallowances = Some(totalDisallowances)
+          )
+
+          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe
+            DateRangeError(MINIMUM_DATE.minusDays(1), "ap1EndDate").errorMessage
+        }
+
+        "is supplied with a date that is after than the max date" in {
+
+          val model = restrictionModel.copy(
+            ap1EndDate = MAXIMUM_DATE.plusDays(1),
+            totalDisallowances = Some(totalDisallowances)
+          )
+
+          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe
+            DateRangeError(MAXIMUM_DATE.plusDays(1), "ap1EndDate").errorMessage
+        }
       }
 
       "Ap2" when {
@@ -176,6 +202,30 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
           )
 
           leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionDateBeforePrevious(2).errorMessage
+        }
+
+        "is supplied with a date that is less than the minimum date" in {
+
+          val model = restrictionModel.copy(
+            ap2EndDate = Some(MINIMUM_DATE.minusDays(1)),
+            disallowanceAp2 = Some(disallowanceAp2),
+            totalDisallowances = Some(totalDisallowances)
+          )
+
+          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe
+            DateRangeError(MINIMUM_DATE.minusDays(1), "ap2EndDate").errorMessage
+        }
+
+        "is supplied with a date that is after than the max date" in {
+
+          val model = restrictionModel.copy(
+            ap2EndDate = Some(MAXIMUM_DATE.plusDays(1)),
+            disallowanceAp2 = Some(disallowanceAp2),
+            totalDisallowances = Some(totalDisallowances)
+          )
+
+          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe
+            DateRangeError(MAXIMUM_DATE.plusDays(1), "ap2EndDate").errorMessage
         }
       }
 
@@ -274,6 +324,34 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
 
           leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe
             Ap3BeforeGroupEndDate(groupAccountingPeriod.endDate.minusDays(1), groupAccountingPeriod.endDate).errorMessage
+        }
+
+        "is supplied with a date that is less than the minimum date" in {
+
+          val model = restrictionModel.copy(
+            ap2EndDate = Some(ap2EndDate),
+            disallowanceAp2 = Some(disallowanceAp2),
+            ap3EndDate = Some(MINIMUM_DATE.minusDays(1)),
+            disallowanceAp3 = Some(disallowanceAp3),
+            totalDisallowances = Some(totalDisallowances)
+          )
+
+          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe
+            DateRangeError(MINIMUM_DATE.minusDays(1), "ap3EndDate").errorMessage
+        }
+
+        "is supplied with a date that is after than the max date" in {
+
+          val model = restrictionModel.copy(
+            ap2EndDate = Some(ap2EndDate),
+            disallowanceAp2 = Some(disallowanceAp2),
+            ap3EndDate = Some(MAXIMUM_DATE.plusDays(1)),
+            disallowanceAp3 = Some(disallowanceAp3),
+            totalDisallowances = Some(totalDisallowances)
+          )
+
+          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe
+            DateRangeError(MAXIMUM_DATE.plusDays(1), "ap3EndDate").errorMessage
         }
       }
 
