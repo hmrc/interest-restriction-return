@@ -124,8 +124,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
         "is supplied with a date that is less than the minimum date" in {
 
           val model = restrictionModel.copy(
-            ap1EndDate = MINIMUM_DATE.minusDays(1),
-            totalDisallowances = Some(totalDisallowances)
+            ap1EndDate = MINIMUM_DATE.minusDays(1)
           )
 
           leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe
@@ -135,8 +134,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
         "is supplied with a date that is after than the max date" in {
 
           val model = restrictionModel.copy(
-            ap1EndDate = MAXIMUM_DATE.plusDays(1),
-            totalDisallowances = Some(totalDisallowances)
+            ap1EndDate = MAXIMUM_DATE.plusDays(1)
           )
 
           leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe
@@ -208,8 +206,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
 
           val model = restrictionModel.copy(
             ap2EndDate = Some(MINIMUM_DATE.minusDays(1)),
-            disallowanceAp2 = Some(disallowanceAp2),
-            totalDisallowances = Some(totalDisallowances)
+            disallowanceAp2 = Some(disallowanceAp2)
           )
 
           leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe
@@ -220,8 +217,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
 
           val model = restrictionModel.copy(
             ap2EndDate = Some(MAXIMUM_DATE.plusDays(1)),
-            disallowanceAp2 = Some(disallowanceAp2),
-            totalDisallowances = Some(totalDisallowances)
+            disallowanceAp2 = Some(disallowanceAp2)
           )
 
           leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe
@@ -332,8 +328,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
             ap2EndDate = Some(ap2EndDate),
             disallowanceAp2 = Some(disallowanceAp2),
             ap3EndDate = Some(MINIMUM_DATE.minusDays(1)),
-            disallowanceAp3 = Some(disallowanceAp3),
-            totalDisallowances = Some(totalDisallowances)
+            disallowanceAp3 = Some(disallowanceAp3)
           )
 
           leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe
@@ -346,8 +341,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
             ap2EndDate = Some(ap2EndDate),
             disallowanceAp2 = Some(disallowanceAp2),
             ap3EndDate = Some(MAXIMUM_DATE.plusDays(1)),
-            disallowanceAp3 = Some(disallowanceAp3),
-            totalDisallowances = Some(totalDisallowances)
+            disallowanceAp3 = Some(disallowanceAp3)
           )
 
           leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe
