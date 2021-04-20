@@ -134,6 +134,45 @@ trait FullReturnValidator extends BaseValidation {
     }
   }
 
+  private def groupEstimateReasonIsValidLength(reason: String): Boolean = (reason.length >= 1 && reason.length <= 10000)
+
+  private def groupEstimateReasonHasValidCharacters(reason: String): Boolean = {
+    val regex = "^[ -~¢-¥©®±×÷‐₠-₿−-∝≈≠≣-≥]*$".r
+    reason match {
+      case regex(_ *) => true
+      case _ => false
+    }
+  }
+
+  private def validateGroupEstimateReason: ValidationResult[Option[String]] = 
+    (fullReturnModel.returnContainsEstimates, fullReturnModel.groupEstimateReason) match {
+      case (false, Some(reason)) => EstimateReasonSupplied(reason).invalidNec
+      case (true, Some(reason)) if !groupEstimateReasonIsValidLength(reason) => EstimateReasonLengthError(reason).invalidNec
+      case (true, Some(reason)) if !groupEstimateReasonHasValidCharacters(reason) => EstimateReasonCharacterError(reason).invalidNec
+      case _ => fullReturnModel.groupEstimateReason.validNec
+    }
+
+  private def validateCompanyEstimateReasons: ValidationResult[_] = 
+    (fullReturnModel.returnContainsEstimates, fullReturnModel.ukCompanies.zipWithIndex) match {
+      case (false, companies) if companies.exists(_._1.companyEstimateReason.nonEmpty) => combineValidations(companies.collect {
+        case (company, i) => company.companyEstimateReason match {
+          case Some(reason) => CompaniesContainedEstimateReason(reason, i).invalidNec
+          case None => company.companyEstimateReason.validNec
+        }
+      }: _*)
+      case _ => fullReturnModel.returnContainsEstimates.validNec
+    }
+
+  private def validateReturnContainsEstimates: ValidationResult[_] = {
+    val companyContainsAnEstimateReason = fullReturnModel.ukCompanies.exists(_.companyEstimateReason.nonEmpty)
+    val groupEstimateReasonPopulated = fullReturnModel.groupEstimateReason.isDefined
+
+    (fullReturnModel.returnContainsEstimates, companyContainsAnEstimateReason, groupEstimateReasonPopulated) match {
+      case (true, false, false) => NoEstimatesSupplied(fullReturnModel.returnContainsEstimates).invalidNec
+      case _ => fullReturnModel.returnContainsEstimates.validNec
+    }
+  }
+
   def validate: ValidationResult[FullReturnModel] = {
 
     val validatedUkCompanies =
@@ -161,8 +200,11 @@ trait FullReturnValidator extends BaseValidation {
       validateAdjustedNetGroupInterest,
       validateAppointedReporter,
       fullReturnModel.groupLevelAmount.validate(JsPath \ "groupLevelAmount"),
-      optionValidations(fullReturnModel.adjustedGroupInterest.map(_.validate(JsPath \ "adjustedGroupInterest")))
-      ).mapN((_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) => fullReturnModel)
+      optionValidations(fullReturnModel.adjustedGroupInterest.map(_.validate(JsPath \ "adjustedGroupInterest"))),
+      validateGroupEstimateReason,
+      validateCompanyEstimateReasons,
+      validateReturnContainsEstimates
+      ).mapN((_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) => fullReturnModel)
   }
 }
 
@@ -281,4 +323,34 @@ case class AdjustedNetGroupInterestSupplied(details: AdjustedGroupInterestModel)
   val errorMessage: String = "Adjusted Group Interest should not be supplied as Group Ratio is not elected"
   val path: JsPath = JsPath \ "adjustedGroupInterest"
   val value: JsValue = Json.toJson(details)
+}
+
+case class EstimateReasonSupplied(reason: String) extends Validation {
+  val errorMessage: String = "groupEstimateReason cannot be supplied when returnContainsEstimates is set to false"
+  val path: JsPath = JsPath \ "groupEstimateReason"
+  val value: JsValue = Json.toJson(reason)
+}
+
+case class EstimateReasonLengthError(reason: String) extends Validation {
+  val errorMessage: String = s"groupEstimateReason is ${reason.length} characters long and should be between 1 and 10,000 characters"
+  val path: JsPath = JsPath \ "groupEstimateReason"
+  val value: JsValue = Json.toJson(reason)
+}
+
+case class EstimateReasonCharacterError(reason: String) extends Validation {
+  val errorMessage: String = "groupEstimateReason contains invalid characters"
+  val path: JsPath = JsPath \ "groupEstimateReason"
+  val value: JsValue = Json.toJson(reason)
+}
+
+case class CompaniesContainedEstimateReason(reason: String, i: Int) extends Validation {
+  val errorMessage: String = s"companyEstimateReason cannot be supplied for this UK Company when returnContainsEstimates is set to false"
+  val path: JsPath = JsPath \ s"ukCompanies[$i]"
+  val value: JsValue = Json.toJson(reason)
+}
+
+case class NoEstimatesSupplied(bool: Boolean) extends Validation {
+  val errorMessage: String = s"An estimate needs to be supplied in groupEstimateReason or companyEstimateReason where returnContainsEstimates is set to true"
+  val path: JsPath = JsPath \ "returnContainsEstimates"
+  val value: JsValue = Json.toJson(bool)
 }

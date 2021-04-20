@@ -86,6 +86,16 @@ class UkCompanyValidatorSpec extends BaseValidationSpec {
       "taxEBITDA is >2 DP" in {
         leftSideError(ukCompanyModelReactivationMax.copy(taxEBITDA = 2.222).validate(groupAccountingPeriod)).errorMessage shouldBe TaxEBITDADecimalError(2.222).errorMessage
       }
+
+      "companyEstimateReason contains more than 5,000 characters" in {
+        val estimateReason = "a" * 5001
+        leftSideError(ukCompanyModelReactivationMax.copy(companyEstimateReason = Some(estimateReason)).validate(groupAccountingPeriod)).errorMessage shouldBe CompanyEstimateReasonLengthError(estimateReason).errorMessage
+      }
+
+      "companyEstimateReason contains invalid characters" in {
+        val estimateReason = "New!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is 160 characters no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
+        leftSideError(ukCompanyModelReactivationMax.copy(companyEstimateReason = Some(estimateReason)).validate(groupAccountingPeriod)).errorMessage shouldBe CompanyEstimateReasonCharacterError(estimateReason).errorMessage
+      }
     }
   }
 }

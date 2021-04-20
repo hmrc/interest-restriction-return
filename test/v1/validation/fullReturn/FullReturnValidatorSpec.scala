@@ -280,6 +280,74 @@ class FullReturnValidatorSpec extends BaseSpec {
         ).validate).errorMessage shouldBe RevisedReturnDetailsCharacterError(returnDetails).errorMessage
       }
 
+      "ReturnContainsEstimates is false but groupEstimateReason is populated" in {
+        leftSideError(fullReturnUltimateParentModel.copy(
+          returnContainsEstimates = false,
+          groupEstimateReason = Some("Some reason")
+        ).validate).errorMessage shouldBe EstimateReasonSupplied("Some reason").errorMessage
+      }
+
+      "ReturnContainsEstimates is true and groupEstimateReason contains more than 10,000 characters" in {
+
+        leftSideError(fullReturnUltimateParentModel.copy(
+          returnContainsEstimates = true,
+          groupEstimateReason = Some("a" * 10001)
+        ).validate).errorMessage shouldBe EstimateReasonLengthError("a" * 10001).errorMessage
+      }
+
+      "ReturnContainsEstimates is true and groupEstimateReason contains invalid characters" in {
+        val estimateReason = "New!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is 160 characters no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
+        leftSideError(fullReturnUltimateParentModel.copy(
+          returnContainsEstimates = true,
+          groupEstimateReason = Some(estimateReason)
+        ).validate).errorMessage shouldBe EstimateReasonCharacterError(estimateReason).errorMessage
+      }
+
+      "ReturnContainsEstimates is false but companies have companyEstimatedReason populated" in {
+
+        val model = fullReturnUltimateParentModel.copy(
+          returnContainsEstimates = false,
+          groupEstimateReason = None,
+
+          ukCompanies = Seq(
+            ukCompanyModelMin.copy(
+              companyEstimateReason = Some("Some reason")
+            ),
+            ukCompanyModelMin.copy(
+              companyEstimateReason = None
+            ),
+            ukCompanyModelMin.copy(
+              companyEstimateReason = Some("Some reason 2")
+            )
+          )
+        )
+
+        leftSideError(model.validate).errorMessage shouldBe CompaniesContainedEstimateReason("Some reason", 0).errorMessage
+        leftSideError(model.validate, 1).errorMessage shouldBe CompaniesContainedEstimateReason("Some reason 2", 2).errorMessage
+      }
+
+      "ReturnContainsEstimates is true and no estimate reason is populated" in {
+
+        val model = fullReturnUltimateParentModel.copy(
+          returnContainsEstimates = true,
+          groupEstimateReason = None,
+
+          ukCompanies = Seq(
+            ukCompanyModelMin.copy(
+              companyEstimateReason = None
+            ),
+            ukCompanyModelMin.copy(
+              companyEstimateReason = None
+            ),
+            ukCompanyModelMin.copy(
+              companyEstimateReason = None
+            )
+          )
+        )
+
+        leftSideError(model.validate).errorMessage shouldBe NoEstimatesSupplied(true).errorMessage
+      }
+
     }
     
   }

@@ -28,7 +28,8 @@ case class UkCompanyModel(companyName: CompanyNameModel,
                           netTaxInterestIncome: BigDecimal,
                           taxEBITDA: BigDecimal,
                           allocatedRestrictions: Option[AllocatedRestrictionsModel],
-                          allocatedReactivations: Option[AllocatedReactivationsModel]
+                          allocatedReactivations: Option[AllocatedReactivationsModel],
+                          companyEstimateReason: Option[String]
                          ) extends UkCompanyValidator {
   override val ukCompany: UkCompanyModel = this
 }
