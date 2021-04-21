@@ -105,6 +105,15 @@ class FullReturnValidatorSpec extends BaseSpec {
         ).validate).errorMessage shouldBe TotalRestrictionsDecimalError(incorrectDisallowances).errorMessage
       }
 
+      "Group has empty UK companies supplied" in {
+
+        val model = fullReturnUltimateParentModel.copy(
+          ukCompanies = Nil
+        )
+
+        leftSideError(model.validate).errorMessage shouldBe UkCompaniesEmpty.errorMessage
+      }
+
       "Group is not subject to interest reactivations but has allocated reactivations supplied" in {
 
         val model = fullReturnUltimateParentModel.copy(

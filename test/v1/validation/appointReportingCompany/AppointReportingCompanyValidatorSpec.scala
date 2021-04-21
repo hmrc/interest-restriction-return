@@ -57,7 +57,7 @@ class AppointReportingCompanyValidatorSpec extends BaseSpec {
 
       "AuthorisingCompany contains empty Seq" should {
         "Return invalid, as there should be atleast 1 authorising company" in {
-          val model = appointReportingCompanyModelMax.copy(authorisingCompanies = Seq())
+          val model = appointReportingCompanyModelMax.copy(authorisingCompanies = Nil)
           leftSideError(model.validate).errorMessage shouldBe AuthorisingCompaniesEmpty.errorMessage
         }
       }
