@@ -19,7 +19,7 @@ package v1.validation
 import assets.DeemedParentConstants._
 import play.api.libs.json.JsPath
 import utils.BaseSpec
-import v1.models.CompanyNameModel
+import v1.models.{CompanyNameModel, LegalEntityIdentifierModel}
 
 class DeemedParentValidatorSpec extends BaseSpec {
 
@@ -172,6 +172,11 @@ class DeemedParentValidatorSpec extends BaseSpec {
           val model = deemedParentModelUkPartnership.copy(ctutr = None, sautr = None, countryOfIncorporation = None)
 
           leftSideError(model.validate).errorMessage shouldBe NoUTROrCountryCodeOnDeemedParent(model).errorMessage
+        }
+
+        "LEI is supplied but invalid" in {
+          val model = deemedParentModelUkPartnership.copy(legalEntityIdentifier = Some(LegalEntityIdentifierModel("123")))
+          leftSideError(model.validate).errorMessage shouldBe LegalEntityIdentifierCharacterError(LegalEntityIdentifierModel("123")).errorMessage
         }
       }
 

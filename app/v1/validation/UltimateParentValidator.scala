@@ -50,8 +50,9 @@ trait UltimateParentValidator extends BaseValidation {
       ultimateParentModel.companyName.validate(path \ "companyName"),
       optionValidations(ultimateParentModel.ctutr.map(_.validate(path \ "ctutr"))),
       optionValidations(ultimateParentModel.sautr.map(_.validate(path \ "sautr"))),
-      optionValidations(ultimateParentModel.countryOfIncorporation.map(_.validate(path \ "countryOfIncorporation")))
-    ).mapN((_, _, _, _, _) => ultimateParentModel)
+      optionValidations(ultimateParentModel.countryOfIncorporation.map(_.validate(path \ "countryOfIncorporation"))),
+      optionValidations(ultimateParentModel.legalEntityIdentifier.map(_.validate(path \ "legalEntityIdentifier")))
+    ).mapN((_, _, _, _, _, _) => ultimateParentModel)
 }
 
 case class UltimateParentWrongDetailsSuppliedError(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {

@@ -23,12 +23,12 @@ case class DeemedParentModel(companyName: CompanyNameModel,
                              isUk: Boolean,
                              ctutr: Option[UTRModel],
                              sautr: Option[UTRModel],
-                             countryOfIncorporation: Option[CountryCodeModel]
+                             countryOfIncorporation: Option[CountryCodeModel],
+                             legalEntityIdentifier: Option[LegalEntityIdentifierModel]
                             )
   extends DeemedParentValidator {
   override val deemedParentModel: DeemedParentModel = this
 }
-
 
 object DeemedParentModel {
   implicit def format: Format[DeemedParentModel] = Json.format[DeemedParentModel]
