@@ -55,6 +55,11 @@ class ConsolidatedPartnershipValidatorSpec extends BaseValidationSpec {
         val model = ConsolidatedPartnershipModel(isElected = true, consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = CompanyNameModel(""), sautr = Some(sautrFake)))))
         leftSideError(model.validate).errorMessage shouldBe CompanyNameLengthError("").errorMessage
       }
+
+      "consolidatedPartnerships is empty" in {
+        val model = ConsolidatedPartnershipModel(isElected = true, consolidatedPartnerships = Some(Nil))
+        leftSideError(model.validate).errorMessage shouldBe ConsolidatedPartnershipsEmpty().errorMessage
+      }
     }
   }
 }
