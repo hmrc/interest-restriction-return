@@ -39,6 +39,10 @@ class AbbreviatedReturnConnector @Inject()(httpClient: HttpClient,irrAuditServic
   def submitAbbreviatedReturn(abbreviatedReturnModel: AbbreviatedReturnModel)
                              (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
 
+    logger.debug(s"[AbbreviatedReturnConnector][submit] URL: $abbreviatedReturnUrl")
+    logger.debug(s"[AbbreviatedReturnConnector][submit] Headers: ${desHc.headers}")
+    logger.debug(s"[AbbreviatedReturnConnector][submit] Body: \n\n ${Json.toJson(abbreviatedReturnModel)}")
+
     httpClient.POST(abbreviatedReturnUrl, abbreviatedReturnModel)(AbbreviatedReturnModel.format, AbbreviatedReturnReads, desHc, ec) andThen
       irrAuditService.sendInterestRestrictionReturnEvent(ABBREVIATED_RETURN,Json.toJson(abbreviatedReturnModel))(auditWrapper.sendEvent)
   }
