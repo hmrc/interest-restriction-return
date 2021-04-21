@@ -49,16 +49,20 @@ class AppointReportingCompanyValidatorSpec extends BaseSpec {
     "Reporting Company is NOT appointing itself" when {
 
       "Identity of Appointing Company is NOT supplied" should {
-
         "Return invalid, as it should be supplied" in {
-
           val model = appointReportingCompanyModelMax.copy(identityOfAppointingCompany = None)
           leftSideError(model.validate).errorMessage shouldBe IdentityOfAppointingCompanyIsNotSupplied.errorMessage
         }
       }
 
-      "Identity of Appointing Company is supplied" should {
+      "AuthorisingCompany contains empty Seq" should {
+        "Return invalid, as there should be atleast 1 authorising company" in {
+          val model = appointReportingCompanyModelMax.copy(authorisingCompanies = Seq())
+          leftSideError(model.validate).errorMessage shouldBe AuthorisingCompaniesEmpty.errorMessage
+        }
+      }
 
+      "Identity of Appointing Company is supplied" should {
         "Return valid" in {
           rightSide(appointReportingCompanyModelMax.validate) shouldBe appointReportingCompanyModelMax
         }
