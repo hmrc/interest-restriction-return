@@ -259,18 +259,6 @@ case class GroupLevelInterestRestrictionsAndReactivationSupplied(groupSubjectToI
     "groupSubjectToInterestReactivation: " + groupSubjectToInterestReactivation))
 }
 
-case class TotalReactivationsDecimalError(amt: BigDecimal) extends Validation {
-  val errorMessage: String = s"totalReactivation has greater than the allowed 2 decimal places."
-  val path: JsPath = JsPath \ "totalReactivation"
-  val value: JsValue = Json.toJson(amt)
-}
-
-case class TotalReactivationsDoesNotMatch(amt: BigDecimal, calculated: BigDecimal) extends Validation {
-  val errorMessage: String = s"Calculated reactivations is $calculated which does not match the supplied amount of $amt"
-  val path: JsPath = JsPath \ "totalReactivation"
-  val value: JsValue = Json.obj()
-}
-
 case class TotalReactivationsNotGreaterThanCapacity(calculated: BigDecimal, capacity: BigDecimal) extends Validation {
   val errorMessage: String = s"Calculated Total Reactivations: $calculated cannot not be greater than Reactivations Capacity: $capacity"
   val path: JsPath = JsPath \ "totalReactivation" \ "interestReactivationCap"
