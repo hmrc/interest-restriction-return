@@ -63,6 +63,13 @@ class ParentCompanyValidatorSpec extends BaseValidationSpec {
         leftSideError(model.parentCompanyModel.validate).errorMessage shouldBe MaxThreeDeemedParents(model).errorMessage
       }
 
+      "Return invalid if deemed Parents empty" in {
+
+        val model = parentCompanyModelDeemedMin.copy(deemedParent = Some(Nil))
+
+        leftSideError(model.parentCompanyModel.validate).errorMessage shouldBe DeemedParentsEmpty().errorMessage
+      }
+
       "Return invalid if less than 2 deemed Parents" in {
 
         val model = parentCompanyModelDeemedMin.copy(deemedParent = Some(Seq(deemedParentModelUkCompany)))
