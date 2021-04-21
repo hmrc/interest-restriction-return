@@ -1,5 +1,6 @@
 {
   "type": "object",
+  "description": "Details of an agent",
   "additionalProperties": false,
   "required": [
     "agentActingOnBehalfOfCompany"
