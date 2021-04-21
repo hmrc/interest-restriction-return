@@ -121,7 +121,7 @@ case object AuthorisingCompaniesEmpty extends Validation {
 }
 
 case object AuthorisingCompaniesContainsDuplicates extends Validation {
-  val errorMessage: String = "authorisingCompanies contains duplicate elements"
+  val errorMessage: String = "Authorising companies contain duplicate information"
   val path = JsPath \ "authorisingCompanies"
   val value = Json.obj()
 }
