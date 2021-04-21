@@ -95,6 +95,12 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
         ).validate).errorMessage shouldBe ReportingCompanyNotAppointed.errorMessage
       }
 
+      "Uk Company details are empty" in {
+        leftSideError(abbreviatedReturnUltimateParentModel.copy(
+          ukCompanies = Seq()
+        ).validate).errorMessage shouldBe UkCompaniesEmpty.errorMessage
+      }
+
       "Uk Company details are invalid" in {
         leftSideError(abbreviatedReturnUltimateParentModel.copy(
           ukCompanies = Seq(ukCompanyModel.copy(companyName = companyNameTooLong))

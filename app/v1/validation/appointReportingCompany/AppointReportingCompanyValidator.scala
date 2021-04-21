@@ -16,7 +16,7 @@
 
 package v1.validation.appointReportingCompany
 
-import play.api.libs.json.{JsPath, Json}
+import play.api.libs.json.{Json, JsPath, JsValue}
 import v1.models.Validation.ValidationResult
 import v1.models.appointReportingCompany.AppointReportingCompanyModel
 import v1.models.{IdentityOfCompanySubmittingModel, UltimateParentModel, Validation}
@@ -67,32 +67,32 @@ trait AppointReportingCompanyValidator extends BaseValidation {
 
 case object IdentityOfAppointingCompanyIsNotSupplied extends Validation {
   val errorMessage: String = "Identity of Appointing Company must be supplied if it is not the same as the reporting company or agent"
-  val path = JsPath \ "identifyOfAppointingCompany"
-  val value = Json.obj()
+  val path: JsPath = JsPath \ "identifyOfAppointingCompany"
+  val value: JsValue = Json.obj()
 }
 
 case class IdentityOfAppointingCompanyIsSupplied(identityOfCompanySubmittingModel: IdentityOfCompanySubmittingModel) extends Validation {
   val errorMessage: String = "Identity of Appointing Company must not be supplied if it is the same as the reporting company or agent"
-  val path = JsPath \ "identifyOfAppointingCompany"
-  val value = Json.toJson(identityOfCompanySubmittingModel)
+  val path: JsPath = JsPath \ "identifyOfAppointingCompany"
+  val value: JsValue = Json.toJson(identityOfCompanySubmittingModel)
 }
 
 case class UltimateParentCompanyIsSupplied(ultimateParentModel: UltimateParentModel) extends Validation {
   val errorMessage: String = "Ultimate Parent Company must not be supplied if it is the same as the reporting company"
-  val path = JsPath \ "ultimateParentCompany"
-  val value = Json.toJson(ultimateParentModel)
+  val path: JsPath = JsPath \ "ultimateParentCompany"
+  val value: JsValue = Json.toJson(ultimateParentModel)
 }
 
 case object UltimateParentCompanyIsNotSupplied extends Validation {
   val errorMessage: String = "Ultimate Parent Company must be supplied if it is not the same as the reporting company"
-  val path = JsPath \ "ultimateParentCompany"
-  val value = Json.obj()
+  val path: JsPath = JsPath \ "ultimateParentCompany"
+  val value: JsValue = Json.obj()
 }
 
 case object AuthorisingCompaniesEmpty extends Validation {
   val errorMessage: String = "authorisingCompanies must have at least 1 authorising company"
-  val path = JsPath \ "authorisingCompanies"
-  val value = Json.obj()
+  val path: JsPath = JsPath \ "authorisingCompanies"
+  val value: JsValue = Json.obj()
 }
 
 
