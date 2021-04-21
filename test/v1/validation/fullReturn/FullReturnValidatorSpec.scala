@@ -205,6 +205,37 @@ class FullReturnValidatorSpec extends BaseSpec {
         leftSideError(model.validate, 1).errorMessage shouldBe CompaniesContainedAllocatedRestrictions(ukCompanyModelReactivationMax, 1).errorMessage
       }
 
+      "Fails when income and expense both exist" in {
+
+        val model = fullReturnUltimateParentModel.copy(
+          ukCompanies = Seq(
+            ukCompanyModelRestrictionMax.copy(
+              netTaxInterestIncome = 1,
+              allocatedRestrictions = Some(allocatedRestrictionsModel)
+            )
+          )
+        )
+
+        leftSideError(model.validate).errorMessage shouldBe
+          ExpenseAndIncomeBothNotGreaterThanZero(model.ukCompanies.head.netTaxInterestExpense, model.ukCompanies.head.netTaxInterestIncome).errorMessage
+      }
+
+      "Total Net Tax Income is invalid" in {
+        val model = fullReturnUltimateParentModel.copy(
+          groupSubjectToInterestReactivation = false,
+          groupSubjectToInterestRestrictions = true,
+          totalRestrictions = 1,
+          ukCompanies = Seq(
+            ukCompanyModelRestrictionMax.copy(
+              netTaxInterestIncome = 10,
+              netTaxInterestExpense = 9,
+              allocatedRestrictions = Some(allocatedRestrictionsModel)
+            )
+          )
+        )
+        leftSideError(model.validate,1).errorMessage shouldBe NoTotalNetTaxInterestIncomeDuringRestriction(incorrectDisallowances).errorMessage
+      }
+
       "Agent details are invalid" in {
         leftSideError(fullReturnUltimateParentModel.copy(agentDetails = agentDetailsModelMax.copy(agentName = None)).validate).errorMessage shouldBe
           AgentNameNotSuppliedError().errorMessage
@@ -360,5 +391,4 @@ class FullReturnValidatorSpec extends BaseSpec {
     }
     
   }
-
 }
