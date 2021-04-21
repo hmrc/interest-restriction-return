@@ -24,11 +24,29 @@ import scala.util.Try
 
 class ElectionDecisionSpec extends WordSpec with Matchers {
   "ElectionDecision" should {
-    "error when an incorrect value is entered" in {
-      val json = JsString("Something incorrect")
-      val result = Try(json.as[ElectionDecision])
+    "valid" when {
+      "elect is entered" in {
+        val json = JsString("elect")
+        val result = Try(json.as[ElectionDecision])
 
-      result.failure.exception shouldEqual JsResultException(Seq((JsPath, Seq(JsonValidationError(s"Unknown ElectionDecision")))))
+        result.isSuccess shouldEqual true
+      }
+
+      "revoke is entered" in {
+        val json = JsString("revoke")
+        val result = Try(json.as[ElectionDecision])
+
+        result.isSuccess shouldEqual true
+      }
+    }
+
+    "invalid" when {
+      "an incorrect value is entered" in {
+        val json = JsString("Something incorrect")
+        val result = Try(json.as[ElectionDecision])
+
+        result.failure.exception shouldEqual JsResultException(Seq((JsPath, Seq(JsonValidationError(s"Unknown ElectionDecision")))))
+      }
     }
   }
 }
