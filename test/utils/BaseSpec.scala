@@ -32,6 +32,7 @@ import v1.controllers.actions.mocks.{Authorised, Unauthorised}
 import v1.models.Validation
 import v1.models.Validation.ValidationResult
 import v1.models.requests.IdentifierRequest
+import uk.gov.hmrc.auth.core.retrieve.~
 
 import scala.concurrent.ExecutionContext
 
@@ -47,11 +48,9 @@ trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with Mate
   lazy val auditWrapper = new StubSuccessfulAuditService()
   lazy val auditService = new InterestRestrictionReturnAuditService()
 
-
-  object AuthorisedAction extends Authorised[Option[Credentials]](Some(Credentials("id", "SCP")), bodyParsers)
+  val fakeAuthResponse = new ~(Some(Credentials("id","SCP")), Some("SomeClientId"))
+  object AuthorisedAction extends Authorised[Option[Credentials] ~ Option[String]](fakeAuthResponse, bodyParsers)
   object UnauthorisedAction extends Unauthorised(new MissingBearerToken, bodyParsers)
-
-
 
   def rightSide[A](validationResult: ValidationResult[A]): A = validationResult.toEither.right.get
 
