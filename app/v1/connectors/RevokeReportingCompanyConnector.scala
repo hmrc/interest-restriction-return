@@ -39,6 +39,10 @@ class RevokeReportingCompanyConnector @Inject()(httpClient: HttpClient,
   def revoke(revokeReportingCompanyModel: RevokeReportingCompanyModel)
              (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
 
+    logger.debug(s"[RevokeReportingCompanyConnector][submit] URL: $revokeUrl")
+    logger.debug(s"[RevokeReportingCompanyConnector][submit] Headers: ${desHc.headers}")
+    logger.debug(s"[RevokeReportingCompanyConnector][submit] Body: \n\n ${Json.toJson(revokeReportingCompanyModel)}")
+
     httpClient.POST(revokeUrl, revokeReportingCompanyModel)(RevokeReportingCompanyModel.format, RevokeReportingCompanyReads, desHc, ec)  andThen
       irrAuditService.sendInterestRestrictionReturnEvent(REVOKE_REPORTING_COMPANY,Json.toJson(revokeReportingCompanyModel))(auditWrapper.sendEvent)
   }

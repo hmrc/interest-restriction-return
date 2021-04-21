@@ -39,6 +39,10 @@ class AppointReportingCompanyConnector @Inject()(httpClient: HttpClient,irrAudit
   def appoint(appointReportingCompanyModel: AppointReportingCompanyModel)
              (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
 
+    logger.debug(s"[AppointReportingCompanyConnector][submit] URL: $appointUrl")
+    logger.debug(s"[AppointReportingCompanyConnector][submit] Headers: ${desHc.headers}")
+    logger.debug(s"[AppointReportingCompanyConnector][submit] Body: \n\n ${Json.toJson(appointReportingCompanyModel)}")
+
     httpClient.POST(appointUrl, appointReportingCompanyModel)(AppointReportingCompanyModel.format, AppointReportingCompanyReads, desHc, ec) andThen
       irrAuditService.sendInterestRestrictionReturnEvent(APPOINT_REPORTING_COMPANY,Json.toJson(appointReportingCompanyModel))(auditWrapper.sendEvent)
   }
