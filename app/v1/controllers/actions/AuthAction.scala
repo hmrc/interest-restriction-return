@@ -40,8 +40,8 @@ class AuthAction @Inject()(override val authConnector: AuthConnector,
 
     authorised().retrieve(credentials and clientId) {
       case credentials ~ clientId =>
-        clientId.foreach(id => logger.info(s"clientId: $id"))
         credentials.map { credential =>
+          logger.info(s"[IRR][INCOMING-REQUEST][${request.id}][CLIENT][${clientId.fold("Unknown")(c=>c)}")
           block(IdentifierRequest(request, credential.providerId))
         }.getOrElse(throw UnsupportedAuthProvider("Unable to retrieve providerId"))
     } recover {
