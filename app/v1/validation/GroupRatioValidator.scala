@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import play.api.libs.json.{JsPath, Json}
+import play.api.libs.json.{Json, JsPath, JsValue}
 import v1.models.Validation.ValidationResult
 import v1.models.{GroupRatioModel, Validation}
 
@@ -42,28 +42,12 @@ trait GroupRatioValidator extends BaseValidation {
 
 case class GroupRatioBlendedSupplied(groupRatio: GroupRatioModel)(implicit val topPath: JsPath) extends Validation {
   val errorMessage: String = "Group Ratio is not elected, unable to elect GroupRatioBlended Election"
-  val path = topPath \ "groupRatioBlended"
-  val value = Json.toJson(groupRatio)
+  val path: JsPath = topPath \ "groupRatioBlended"
+  val value: JsValue = Json.toJson(groupRatio)
 }
 
 case class GroupRatioBlendedNotSupplied()(implicit val topPath: JsPath) extends Validation {
   val errorMessage: String = "Group Ratio is elected, must supply GroupRatioBlended Election"
-  val path = topPath \ "groupRatioBlended"
-  val value = Json.obj()
+  val path: JsPath = topPath \ "groupRatioBlended"
+  val value: JsValue = Json.obj()
 }
-
-case class GroupEBITDASupplied(ebitdaElect: Option[Boolean])(implicit topPath: JsPath) extends Validation {
-  val errorMessage: String = "Group Ratio is not elected, unable to elect groupEBITDAChargeableGains Election"
-  val path = topPath \ "groupEBITDAChargeableGains"
-  val value = Json.toJson(ebitdaElect)
-}
-
-case class GroupEBITDANotSupplied()(implicit topPath: JsPath) extends Validation {
-  val errorMessage: String = "Group Ratio is elected, must provide groupEBITDAChargeableGains Election"
-  val path = topPath \ "groupEBITDAChargeableGains"
-  val value = Json.obj()
-}
-
-
-
-
