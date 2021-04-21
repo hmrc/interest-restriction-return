@@ -19,6 +19,7 @@ package v1.controllers.actions
 import play.api.mvc.{Action, AnyContent, Results}
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core._
+import uk.gov.hmrc.auth.core.retrieve._
 import uk.gov.hmrc.auth.core.retrieve.Credentials
 import utils.BaseSpec
 import v1.connectors.mocks.{FakeFailingAuthConnector, FakeSuccessAuthConnector}
@@ -35,7 +36,9 @@ class AuthActionSpec extends BaseSpec {
 
       "successful cary out request" in {
 
-        val authAction = new AuthAction(new FakeSuccessAuthConnector[Option[Credentials]](Some(Credentials("id","SCP"))), bodyParsers)
+        val fakeResponse = new ~(Some(Credentials("id","SCP")), Some("SomeClientId"))
+        val authConnector = new FakeSuccessAuthConnector[Option[Credentials] ~ Option[String]](fakeResponse)
+        val authAction = new AuthAction(authConnector, bodyParsers)
         val controller = new Harness(authAction)
         val result = controller.onPageLoad()(fakeRequest)
 

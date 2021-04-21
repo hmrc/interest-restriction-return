@@ -20,26 +20,30 @@ import com.google.inject.Inject
 import play.api.mvc.Results._
 import play.api.mvc._
 import uk.gov.hmrc.auth.core._
-import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
+import uk.gov.hmrc.auth.core.retrieve.~
+import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.HeaderCarrierConverter
 import v1.models.requests.IdentifierRequest
+import play.api.Logging
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class AuthAction @Inject()(override val authConnector: AuthConnector,
                            val parser: BodyParsers.Default
                           )(implicit val executionContext: ExecutionContext)
-  extends ActionBuilder[IdentifierRequest, AnyContent] with ActionFunction[Request, IdentifierRequest] with AuthorisedFunctions {
+  extends ActionBuilder[IdentifierRequest, AnyContent] with ActionFunction[Request, IdentifierRequest] with AuthorisedFunctions with Logging {
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
 
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSessionAndRequest(request.headers, request = Some(request))
 
-    authorised().retrieve(Retrievals.credentials) {
-      _.map { credential =>
-        block(IdentifierRequest(request, credential.providerId))
-      }.getOrElse(throw UnsupportedAuthProvider("Unable to retrieve providerId"))
+    authorised().retrieve(credentials and clientId) {
+      case credentials ~ clientId =>
+        credentials.map { credential =>
+          logger.info(s"[IRR][INCOMING-REQUEST][${request.id}][CLIENT][${clientId.fold("Unknown")(c=>c)}")
+          block(IdentifierRequest(request, credential.providerId))
+        }.getOrElse(throw UnsupportedAuthProvider("Unable to retrieve providerId"))
     } recover {
       case _ => Unauthorized("No Active Session")
     }
