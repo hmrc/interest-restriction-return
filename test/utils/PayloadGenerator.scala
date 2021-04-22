@@ -27,7 +27,7 @@ import java.util.UUID
 
 /*
   To run use the following in sbt shell:
-  runMain app.utils.PayloadGenerator <appoint|revoke> <amount> <filePath>
+  test:runMain app.utils.PayloadGenerator <appoint|revoke> <amount> <filePath>
  */
 
 object PayloadGenerator extends App {
