@@ -15,6 +15,11 @@
       "type": "string",
       "pattern": "^[0-9]{10}$"
     },
+    "utrUkCompanyType": {
+      "description": "UK company's Unique Taxpayer Reference.",
+      "type": "string",
+      "pattern": "^[0-9]{10}$"
+    },
     "legalEntityIdentifierType": {
       "type": "string",
       "description": "A Legal Entity Identifier (LEI); format is as per the ISO 17442 standard - 18 uppercase alphabetic or numeric characters followed by 2 numeric characters",

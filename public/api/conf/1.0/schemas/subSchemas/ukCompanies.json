@@ -1,5 +1,5 @@
 {
-  "description": "Details of all the UK Companies which form part of the group",
+  "description": "Details of all the UK companies in the group",
   "type": "array",
   "minItems": 1,
   "items": {
@@ -9,14 +9,14 @@
         "$ref": "../definitions/definitions.json#/definitions/ukCompanyNameType"
       },
       "utr": {
-        "$ref": "../definitions/definitions.json#/definitions/utrType"
+        "$ref": "../definitions/definitions.json#/definitions/utrUkCompanyType"
       },
       "consenting": {
-        "description": "Indicate whether the UK Company is a consenting company",
+        "description": "Indicate if the UK company agrees to take on the group's restriction in its Corporation Tax return",
         "type": "boolean"
       },
       "qicElection": {
-        "description": "Indicate whether the UK Company participated in a QIC election",
+        "description": "Indicate whether any of the UK companies in the group has made a qualifying infrastructure company (QIC) election",
         "type": "boolean"
       }
     },
