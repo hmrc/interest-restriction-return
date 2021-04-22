@@ -19,7 +19,6 @@ package v1.controllers
 import audit.{AuditEventTypes, AuditWrapper, InterestRestrictionReturnAuditEvent}
 import cats.data.Validated.{Invalid, Valid}
 import play.api.Logging
-import play.api.http.Status
 import play.api.libs.json._
 import play.api.mvc.{Request, Result}
 import uk.gov.hmrc.http.HeaderCarrier
