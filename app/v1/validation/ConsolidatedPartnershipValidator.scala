@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import play.api.libs.json.{JsPath, Json}
+import play.api.libs.json.{Json, JsPath, JsValue}
 import v1.models.Validation.ValidationResult
 import v1.models.{ConsolidatedPartnershipModel, PartnershipModel, Validation}
 
@@ -52,20 +52,20 @@ trait ConsolidatedPartnershipValidator extends BaseValidation {
 
 case class ConsolidatedPartnershipsSupplied(consolidatedPartnershipModel: ConsolidatedPartnershipModel)(implicit val topPath: JsPath) extends Validation {
   val errorMessage: String = "Consolidated Partnership is not elected, unable to supply partnership names"
-  val path = topPath \ "consolidatedPartnership"
-  val value = Json.toJson(consolidatedPartnershipModel)
+  val path: JsPath = topPath \ "consolidatedPartnership"
+  val value: JsValue = Json.toJson(consolidatedPartnershipModel)
 }
 
 case class ConsolidatedPartnershipsNotSupplied(consolidatedPartnershipModel: ConsolidatedPartnershipModel)(implicit val topPath: JsPath) extends Validation {
   val errorMessage: String = "Consolidated Partnership is elected, must supply partnership names"
-  val path = topPath \ "consolidatedPartnership"
-  val value = Json.toJson(consolidatedPartnershipModel)
+  val path: JsPath = topPath \ "consolidatedPartnership"
+  val value: JsValue = Json.toJson(consolidatedPartnershipModel)
 }
 
 case class ConsolidatedPartnershipsEmpty()(implicit val topPath: JsPath) extends Validation {
   val errorMessage: String = "consolidatedPartnership must have at least 1 partnership"
-  val path = topPath \ "consolidatedPartnership"
-  val value = Json.obj()
+  val path: JsPath = topPath \ "consolidatedPartnership"
+  val value: JsValue = Json.obj()
 }
 
 

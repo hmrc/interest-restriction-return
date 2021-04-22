@@ -48,6 +48,11 @@ class NonConsolidatedInvestmentElectionValidatorSpec extends BaseValidationSpec 
         leftSideError(model.validate).errorMessage shouldBe NonConsolidatedInvestmentNotSupplied(model).errorMessage
       }
 
+      "isElected is true and empty investments are given" in {
+        val model = NonConsolidatedInvestmentElectionModel(isElected = true, nonConsolidatedInvestments = Some(Nil))
+        leftSideError(model.validate).errorMessage shouldBe NonConsolidatedInvestmentEmpty().errorMessage
+      }
+
       "isElected is false and some investments are given" in {
         val model = NonConsolidatedInvestmentElectionModel(
           isElected = false,

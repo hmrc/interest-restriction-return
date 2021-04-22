@@ -17,28 +17,25 @@
 package v1.validation.fullReturn
 
 import assets.fullReturn.AdjustedGroupInterestConstants._
+import cats.data.NonEmptyChain
 import play.api.libs.json.JsPath
 import utils.BaseSpec
 import v1.validation.BaseValidationSpec
-import cats.data.NonEmptyChain
 
 class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpec {
 
   implicit val path: JsPath = JsPath \ "some" \ "path"
 
   "Adjusted Group Interest Validation" should {
-
     "Return Valid" when {
-
       "a valid Adjusted Group Interest Model is validated" in {
         rightSide(adjustedGroupInterestModel.validate) shouldBe adjustedGroupInterestModel
       }
 
       "Group EBITDA is zero and group ratio is 100" in {
-
         val qngie: BigDecimal = 100.0
         val groupEBITDA: BigDecimal = 0.0
-        val groupRatio:BigDecimal = 100.0
+        val groupRatio: BigDecimal = 100.0
 
         val model = adjustedGroupInterestModel.copy(
           qngie = qngie,
@@ -51,7 +48,6 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
       "Group Ratio" when {
 
         "is 1%" in {
-
           val qngie = 100.0
           val groupEBITDA = 10000
 
@@ -62,8 +58,8 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
           )
           rightSide(model.validate) shouldBe model
         }
-        "is 50%" in {
 
+        "is 50%" in {
           val qngie = 100.0
           val groupEBITDA = 200
 
@@ -75,8 +71,8 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
           )
           rightSide(model.validate) shouldBe model
         }
-        "is > 100 and is capped" in {
 
+        "is > 100 and is capped" in {
           val qngie = 100000.0
           val groupEBITDA = 10.0
 
@@ -90,7 +86,6 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
         }
 
         "has a decimal which is a round number" in {
-
           val qngie = 5.0
           val groupEBITDA = 8.0
           val groupRatio = 62.5
@@ -105,7 +100,6 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
         }
 
         "has no decimal places" in {
-
           val qngie = 100
           val groupEBITDA = 200
           val groupRatio = 50
@@ -119,7 +113,6 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
         }
 
         "has five decimal places" in {
-
           val qngie = 100.04
           val groupEBITDA = 260.15
           val groupRatio = 38.45474
@@ -136,11 +129,8 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
     }
 
     "Return invalid" when {
-
       "qngie" when {
-
         "has more than two decimal places" in {
-
           val qngie: BigDecimal = 100.111
           val model = adjustedGroupInterestModel.copy(
             qngie = qngie
@@ -151,7 +141,6 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
       }
 
       "Group EBITDA" when {
-
         "has more than two decimal places" in {
           val qngie = 5.0
           val groupEBITDA = 8.888
@@ -169,9 +158,7 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
       }
 
       "Group Ratio" when {
-
         "is negative" in {
-
           val groupRatio: BigDecimal = -100.00
           val model = adjustedGroupInterestModel.copy(
             groupRatio = groupRatio
@@ -179,8 +166,17 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
           leftSideError(model.validate).errorMessage shouldBe GroupRatioError(groupRatio).errorMessage
         }
 
-        "is greater than 100" in {
+        "is calculated to be negative but not set to 100%" in {
+          val groupRatio: BigDecimal = 99.00
+          val model = adjustedGroupInterestModel.copy(
+            qngie = -1,
+            groupEBITDA = 1,
+            groupRatio = groupRatio
+          )
+          leftSideError(model.validate).errorMessage shouldBe NegativeOrZeroGroupRatioError(groupRatio).errorMessage
+        }
 
+        "is greater than 100" in {
           val groupRatio: BigDecimal = 100.01
           val model = adjustedGroupInterestModel.copy(
             groupRatio = groupRatio
@@ -189,7 +185,6 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
         }
 
         "has more than five decimal places" in {
-
           val qngie = 5.0
           val groupEBITDA = 8.0
           val groupRatio = 0.625555
@@ -204,14 +199,25 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
         }
 
         "is less than the calculated groupRatio" in {
-
           val groupRatio: BigDecimal = 0.5
           val model = adjustedGroupInterestModel.copy(
             groupRatio = groupRatio
           )
           leftSideError(model.validate).errorMessage shouldBe GroupRatioCalculationError(model).errorMessage
-
         }
+
+      }
+
+      "GroupEBITDA" when {
+        "is negative" in {
+          val groupEBITDA: BigDecimal = -1
+          val model = adjustedGroupInterestModel.copy(
+            groupEBITDA = groupEBITDA
+          )
+
+          leftSideError(model.validate).errorMessage shouldBe NegativeOrZeroGroupEBITDAError(groupEBITDA).errorMessage
+        }
+
       }
 
       "All fields fail validation" in {

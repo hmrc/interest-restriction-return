@@ -17,6 +17,7 @@
 package v1.validation.revokeReportingCompany
 
 import assets.IdentityOfCompanySubmittingConstants.identityOfCompanySubmittingModelMax
+import assets.appointReportingCompany.AppointReportingCompanyConstants.appointReportingCompanyModelMax
 import assets.revokeReportingCompany.RevokeReportingCompanyConstants.revokeReportingCompanyModelMax
 import play.api.libs.json.JsPath
 import utils.BaseSpec
@@ -61,6 +62,11 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
 
         leftSideError(testingModel.validate).errorMessage shouldBe
           UltimateParentCompanyIsSuppliedRevoke(revokeReportingCompanyModelMax.ultimateParentCompany.get).errorMessage
+      }
+
+      "a revoking company does not contain an authorising company" in {
+        val testingModel = revokeReportingCompanyModelMax.copy(authorisingCompanies = Seq())
+        leftSideError(testingModel.validate).errorMessage shouldBe AuthorisingCompaniesEmpty.errorMessage
       }
 
       "a revoking company is NOT the same as the ultimate parent, and ultimate parent was NOT supplied, " in {

@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import play.api.libs.json.{JsPath, Json}
+import play.api.libs.json.{Json, JsPath, JsValue}
 import v1.models.Validation.ValidationResult
 import v1.models.{ParentCompanyModel, Validation}
 
@@ -65,25 +65,25 @@ trait ParentCompanyValidator extends BaseValidation {
 
 case class ParentCompanyCanNotBeUltimateAndDeemed(model: ParentCompanyModel)(implicit val path: JsPath) extends Validation {
   val errorMessage: String = "Parent Company Model cannot contain data for Ultimate and Deemed fields"
-  val value = Json.toJson(model)
+  val value: JsValue = Json.toJson(model)
 }
 
 case class DeemedParentsEmpty()(implicit topPath: JsPath) extends Validation {
   val errorMessage: String = "deemedParent must have at least 1 deemed parent if supplied"
-  val path = topPath \ "deemedParent"
-  val value = Json.obj()
+  val path: JsPath = topPath \ "deemedParent"
+  val value: JsValue = Json.obj()
 }
 
 case class MinTwoDeemedParents(model: ParentCompanyModel)(implicit topPath: JsPath) extends Validation {
   val errorMessage: String = "Min number of deemed Parent can only be two"
-  val path = topPath \ "deemedParent"
-  val value = Json.obj()
+  val path: JsPath = topPath \ "deemedParent"
+  val value: JsValue = Json.obj()
 }
 
 case class MaxThreeDeemedParents(model: ParentCompanyModel)(implicit topPath: JsPath) extends Validation {
   val errorMessage: String = "Max number of deemed Parents can only be three"
-  val path = topPath \ "deemedParent"
-  val value = Json.obj()
+  val path: JsPath = topPath \ "deemedParent"
+  val value: JsValue = Json.obj()
 }
 
 
