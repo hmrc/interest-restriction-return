@@ -16,7 +16,6 @@
 
 package v1.validation
 
-import config.Constants
 import play.api.libs.json.{JsPath, Json}
 import v1.models.Validation.ValidationResult
 import v1.models.{LegalEntityIdentifierModel, Validation}

@@ -18,7 +18,6 @@ package v1.models.fullReturn
 
 import java.time.LocalDate
 import play.api.libs.json.{Format, JsNull, JsObject, Json, Writes}
-import v1.models.fullReturn.FullReturnModel.writes
 import v1.validation.fullReturn.AllocatedRestrictionsValidator
 
 case class AllocatedRestrictionsModel(ap1EndDate: LocalDate,
