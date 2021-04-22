@@ -79,7 +79,7 @@ trait AdjustedGroupInterestValidator extends BaseValidation {
       0
     }
 
-    groupRatio != ((qngie / groupEBITDA) * 100).min(100).setScale(decimalPlaces, RoundingMode.HALF_UP)
+    groupRatio != ((qngie / groupEBITDA) * 100).min(100).setScale(decimalPlaces, RoundingMode.DOWN)
   }
 
   def validate(implicit path: JsPath): ValidationResult[AdjustedGroupInterestModel] =
