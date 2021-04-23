@@ -58,33 +58,52 @@ object FullReturnModel extends Logging {
 
     logger.info(s"test")
 
-    val optionalFields = if (models.featureSwitch.changeRequestCR008Enabled) {
-      Tuple2(("test" -> "test"))
+    if (models.featureSwitch.changeRequestCR008Enabled) {
+      JsObject(Json.obj(
+        "agentDetails" -> models.agentDetails,
+        "reportingCompany" -> models.reportingCompany,
+        "parentCompany" -> models.parentCompany,
+        "publicInfrastructure" -> models.publicInfrastructure,
+        "groupCompanyDetails" -> models.groupCompanyDetails,
+        "submissionType" -> models.submissionType,
+        "revisedReturnDetails" -> models.revisedReturnDetails,
+        "groupLevelElections" -> models.groupLevelElections,
+        "ukCompanies" -> models.ukCompanies,
+        "angie" -> models.angie,
+        "returnContainsEstimates" -> models.returnContainsEstimates,
+        "groupEstimateReason" -> models.groupEstimateReason,
+        "groupSubjectToInterestRestrictions" -> models.groupSubjectToInterestRestrictions,
+        "groupSubjectToInterestReactivation" -> models.groupSubjectToInterestReactivation,
+        "totalReactivation" -> models.totalReactivation,
+        "totalRestrictions" -> models.totalRestrictions,
+        "groupLevelAmount" -> models.groupLevelAmount,
+        "adjustedGroupInterest" -> models.adjustedGroupInterest,
+        "groupEBITDA" -> "",
+        "interestAllowanceAlternativeCalculation" -> "",
+        "interestAllowanceConsolidatedPartnerships" -> ""
+      ).fields.filterNot(_._2 == JsNull))
     } else {
-      Nil
+      JsObject(Json.obj(
+        "agentDetails" -> models.agentDetails,
+        "reportingCompany" -> models.reportingCompany,
+        "parentCompany" -> models.parentCompany,
+        "publicInfrastructure" -> models.publicInfrastructure,
+        "groupCompanyDetails" -> models.groupCompanyDetails,
+        "submissionType" -> models.submissionType,
+        "revisedReturnDetails" -> models.revisedReturnDetails,
+        "groupLevelElections" -> models.groupLevelElections,
+        "ukCompanies" -> models.ukCompanies,
+        "angie" -> models.angie,
+        "returnContainsEstimates" -> models.returnContainsEstimates,
+        "groupEstimateReason" -> models.groupEstimateReason,
+        "groupSubjectToInterestRestrictions" -> models.groupSubjectToInterestRestrictions,
+        "groupSubjectToInterestReactivation" -> models.groupSubjectToInterestReactivation,
+        "totalReactivation" -> models.totalReactivation,
+        "totalRestrictions" -> models.totalRestrictions,
+        "groupLevelAmount" -> models.groupLevelAmount,
+        "adjustedGroupInterest" -> models.adjustedGroupInterest
+      ).fields.filterNot(_._2 == JsNull))
     }
-
-    JsObject(Json.obj(
-      "agentDetails" -> models.agentDetails,
-      "reportingCompany" -> models.reportingCompany,
-      "parentCompany" -> models.parentCompany,
-      "publicInfrastructure" -> models.publicInfrastructure,
-      "groupCompanyDetails" -> models.groupCompanyDetails,
-      "submissionType" -> models.submissionType,
-      "revisedReturnDetails" -> models.revisedReturnDetails,
-      "groupLevelElections" -> models.groupLevelElections,
-      "ukCompanies" -> models.ukCompanies,
-      "angie" -> models.angie,
-      "returnContainsEstimates" -> models.returnContainsEstimates,
-      "groupEstimateReason" -> models.groupEstimateReason,
-      "groupSubjectToInterestRestrictions" -> models.groupSubjectToInterestRestrictions,
-      "groupSubjectToInterestReactivation" -> models.groupSubjectToInterestReactivation,
-      "totalReactivation" -> models.totalReactivation,
-      "totalRestrictions" -> models.totalRestrictions,
-      "groupLevelAmount" -> models.groupLevelAmount,
-      "adjustedGroupInterest" -> models.adjustedGroupInterest
-        ++ optionalFields
-    ).fields.filterNot(_._2 == JsNull))
   }
 
   implicit val format: Format[FullReturnModel] = Format[FullReturnModel](Json.reads[FullReturnModel], writes)
