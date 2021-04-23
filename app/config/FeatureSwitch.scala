@@ -57,9 +57,7 @@ case class FeatureSwitch(value: Option[Configuration]) {
 
   def changeRequestCR008Enabled: Boolean =
     value match {
-      case Some(config) =>
-        config.getOptional[Boolean]("changeRequestCR008.enabled").getOrElse(false)
+      case Some(config) => config.getOptional[Boolean]("changeRequestCR008.enabled").getOrElse(false)
       case None => false
     }
-
 }

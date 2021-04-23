@@ -16,11 +16,14 @@
 
 package v1.models.fullReturn
 
+import config.{AppConfig, FeatureSwitch}
+import javax.inject.Inject
+import play.api.{Configuration, Logging}
 import play.api.libs.json._
 import v1.models._
 import v1.validation.fullReturn.FullReturnValidator
 
-case class FullReturnModel(appointedReportingCompany: Boolean,
+case class FullReturnModel @Inject()(appointedReportingCompany: Boolean,
                            agentDetails: AgentDetailsModel,
                            reportingCompany: ReportingCompanyModel,
                            parentCompany: Option[ParentCompanyModel],
@@ -36,9 +39,11 @@ case class FullReturnModel(appointedReportingCompany: Boolean,
                            groupSubjectToInterestReactivation: Boolean,
                            totalRestrictions: BigDecimal,
                            groupLevelAmount: GroupLevelAmountModel,
-                           adjustedGroupInterest: Option[AdjustedGroupInterestModel]) extends FullReturnValidator {
+                           adjustedGroupInterest: Option[AdjustedGroupInterestModel],
+                                     config: AppConfig) extends FullReturnValidator{
 
   override val fullReturnModel: FullReturnModel = this
+  val featureSwitch = FeatureSwitch(config.featureSwitch)
 
   private val totalTaxInterestIncome: BigDecimal = ukCompanies.map(_.netTaxInterestIncome).sum
   private val totalTaxInterestExpense: BigDecimal = ukCompanies.map(_.netTaxInterestExpense).sum
@@ -47,9 +52,17 @@ case class FullReturnModel(appointedReportingCompany: Boolean,
   val publicInfrastructure: Boolean = ukCompanies.map(_.qicElection).exists(identity)
 }
 
-object FullReturnModel {
+object FullReturnModel extends Logging {
 
   val writes: Writes[FullReturnModel] = Writes { models =>
+
+    logger.info(s"test")
+
+    val optionalFields = if (models.featureSwitch.changeRequestCR008Enabled) {
+      Tuple2(("test" -> "test"))
+    } else {
+      Nil
+    }
 
     JsObject(Json.obj(
       "agentDetails" -> models.agentDetails,
@@ -70,6 +83,7 @@ object FullReturnModel {
       "totalRestrictions" -> models.totalRestrictions,
       "groupLevelAmount" -> models.groupLevelAmount,
       "adjustedGroupInterest" -> models.adjustedGroupInterest
+        ++ optionalFields
     ).fields.filterNot(_._2 == JsNull))
   }
 
