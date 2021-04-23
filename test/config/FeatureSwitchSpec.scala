@@ -63,4 +63,38 @@ class FeatureSwitchSpec extends BaseSpec {
       }
     }
   }
+
+  "changeRequestCR008Enabled" when {
+    "no config" must {
+      val featureSwitch = FeatureSwitch(None)
+
+      "return false" in {
+        featureSwitch.changeRequestCR008Enabled shouldBe false
+      }
+    }
+
+    "no config value" must {
+      val featureSwitch = createFeatureSwitch("")
+
+      "return false" in {
+        featureSwitch.changeRequestCR008Enabled shouldBe false
+      }
+    }
+
+    "config value set to true" must {
+      val featureSwitch = createFeatureSwitch("changeRequestCR008.enabled = true")
+
+      "return true" in {
+        featureSwitch.changeRequestCR008Enabled shouldBe true
+      }
+    }
+
+    "config value set to false" must {
+      val featureSwitch = createFeatureSwitch("changeRequestCR008.enabled = false")
+
+      "return false" in {
+        featureSwitch.changeRequestCR008Enabled shouldBe false
+      }
+    }
+  }
 }
