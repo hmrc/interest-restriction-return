@@ -19,9 +19,10 @@ package v1.models.fullReturn
 import config.{AppConfig, FeatureSwitch}
 import javax.inject.Inject
 import play.api.{Configuration, Logging}
-import play.api.libs.json._
+import play.api.libs.json._s
+import v1.models.Elections._
 import v1.models._
-import v1.validation.fullReturn.FullReturnValidator
+import v1.validation.fullReturn.{FullReturnValidator, GroupEBITDADecimalError}
 
 case class FullReturnModel @Inject()(appointedReportingCompany: Boolean,
                            agentDetails: AgentDetailsModel,
@@ -40,7 +41,10 @@ case class FullReturnModel @Inject()(appointedReportingCompany: Boolean,
                            totalRestrictions: BigDecimal,
                            groupLevelAmount: GroupLevelAmountModel,
                            adjustedGroupInterest: Option[AdjustedGroupInterestModel],
-                                     config: AppConfig) extends FullReturnValidator{
+                           groupEBITDA: Elections.GroupEBITDA,
+                           interestAllowanceAlternativeCalculation: Elections.InterestAllowanceAlternativeCalculation,
+                           interestAllowanceConsolidatedPartnership: Elections.InterestAllowanceConsolidatedPartnership,
+                           config: AppConfig) extends FullReturnValidator{
 
   override val fullReturnModel: FullReturnModel = this
   val featureSwitch = FeatureSwitch(config.featureSwitch)
