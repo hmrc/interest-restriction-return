@@ -18,7 +18,7 @@ package utils
 
 import config.{AppConfig, FeatureSwitch}
 import play.api.libs.json._
-import v1.models.GroupLevelElectionsModel
+import v1.models.{GroupLevelElectionsModel, GroupRatioModel}
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
 import v1.models.fullReturn.FullReturnModel
 
@@ -42,6 +42,18 @@ trait JsonFormatters {
           Json.obj("activeInterestAllowanceAlternativeCalculation" -> models.activeInterestAllowanceAlternativeCalculation)
       } else {
         initialModel
+      }
+    }
+
+  implicit val groupRatioWrites: Writes[GroupRatioModel] =
+    Writes[GroupRatioModel] { models =>
+
+      val json = Json.toJson(models)
+
+      if (cr008Enabled) {
+        json
+      } else {
+        json - "activeGroupEBITDAChargeableGains"
       }
     }
 
@@ -84,7 +96,5 @@ trait JsonFormatters {
 }
 
 class FeatureSwitchJsonFormatter @Inject()(val config: AppConfig) extends JsonFormatters {
-
   override val cr008Enabled: Boolean = FeatureSwitch(config.featureSwitch).changeRequestCR008Enabled
-
 }

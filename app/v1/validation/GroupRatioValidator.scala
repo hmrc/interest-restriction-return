@@ -17,6 +17,7 @@
 package v1.validation
 
 import play.api.libs.json.{Json, JsPath, JsValue}
+import utils.{FeatureSwitchJsonFormatter, JsonFormatters}
 import v1.models.Validation.ValidationResult
 import v1.models.{GroupRatioModel, Validation}
 

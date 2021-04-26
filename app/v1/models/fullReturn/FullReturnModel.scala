@@ -50,30 +50,5 @@ case class FullReturnModel(
 }
 
 object FullReturnModel extends Logging {
-
-  /*  val writes: Writes[FullReturnModel] = Writes { models =>
-      JsObject(Json.obj(
-        "agentDetails" -> models.agentDetails,
-        "reportingCompany" -> models.reportingCompany,
-        "parentCompany" -> models.parentCompany,
-        "publicInfrastructure" -> models.publicInfrastructure,
-        "groupCompanyDetails" -> models.groupCompanyDetails,
-        "submissionType" -> models.submissionType,
-        "revisedReturnDetails" -> models.revisedReturnDetails,
-        "groupLevelElections" -> models.groupLevelElections,
-        "ukCompanies" -> models.ukCompanies,
-        "angie" -> models.angie,
-        "returnContainsEstimates" -> models.returnContainsEstimates,
-        "groupEstimateReason" -> models.groupEstimateReason,
-        "groupSubjectToInterestRestrictions" -> models.groupSubjectToInterestRestrictions,
-        "groupSubjectToInterestReactivation" -> models.groupSubjectToInterestReactivation,
-        "totalReactivation" -> models.totalReactivation,
-        "totalRestrictions" -> models.totalRestrictions,
-        "groupLevelAmount" -> models.groupLevelAmount,
-        "adjustedGroupInterest" -> models.adjustedGroupInterest
-      ).fields.filterNot(_._2 == JsNull))
-    }*/
-
   implicit val readsFormat: Reads[FullReturnModel] = Json.reads[FullReturnModel]
-  //  val format: Format[FullReturnModel] = Format[FullReturnModel](Json.reads[FullReturnModel], writes)
 }
