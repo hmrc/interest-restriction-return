@@ -16,52 +16,42 @@
 
 package v1.models.fullReturn
 
-import config.{AppConfig, FeatureSwitch}
-import javax.inject.Inject
-import play.api.{Configuration, Logging}
-import play.api.libs.json._s
-import v1.models.Elections._
+import play.api.Logging
+import play.api.libs.json._
 import v1.models._
-import v1.validation.fullReturn.{FullReturnValidator, GroupEBITDADecimalError}
+import v1.validation.fullReturn.FullReturnValidator
 
-case class FullReturnModel @Inject()(appointedReportingCompany: Boolean,
-                           agentDetails: AgentDetailsModel,
-                           reportingCompany: ReportingCompanyModel,
-                           parentCompany: Option[ParentCompanyModel],
-                           groupCompanyDetails: GroupCompanyDetailsModel,
-                           submissionType: SubmissionType,
-                           revisedReturnDetails: Option[RevisedReturnDetailsModel],
-                           groupLevelElections: GroupLevelElectionsModel,
-                           ukCompanies: Seq[UkCompanyModel],
-                           angie: BigDecimal,
-                           returnContainsEstimates: Boolean,
-                           groupEstimateReason: Option[String],
-                           groupSubjectToInterestRestrictions: Boolean,
-                           groupSubjectToInterestReactivation: Boolean,
-                           totalRestrictions: BigDecimal,
-                           groupLevelAmount: GroupLevelAmountModel,
-                           adjustedGroupInterest: Option[AdjustedGroupInterestModel],
-                           groupEBITDA: Elections.GroupEBITDA,
-                           interestAllowanceAlternativeCalculation: Elections.InterestAllowanceAlternativeCalculation,
-                           interestAllowanceConsolidatedPartnership: Elections.InterestAllowanceConsolidatedPartnership,
-                           config: AppConfig) extends FullReturnValidator{
+case class FullReturnModel(
+                            appointedReportingCompany: Boolean,
+                            agentDetails: AgentDetailsModel,
+                            reportingCompany: ReportingCompanyModel,
+                            parentCompany: Option[ParentCompanyModel],
+                            groupCompanyDetails: GroupCompanyDetailsModel,
+                            submissionType: SubmissionType,
+                            revisedReturnDetails: Option[RevisedReturnDetailsModel],
+                            groupLevelElections: GroupLevelElectionsModel,
+                            ukCompanies: Seq[UkCompanyModel],
+                            angie: BigDecimal,
+                            returnContainsEstimates: Boolean,
+                            groupEstimateReason: Option[String],
+                            groupSubjectToInterestRestrictions: Boolean,
+                            groupSubjectToInterestReactivation: Boolean,
+                            totalRestrictions: BigDecimal,
+                            groupLevelAmount: GroupLevelAmountModel,
+                            adjustedGroupInterest: Option[AdjustedGroupInterestModel],
+                          ) extends FullReturnValidator {
 
   override val fullReturnModel: FullReturnModel = this
-  val featureSwitch = FeatureSwitch(config.featureSwitch)
-
-  private val totalTaxInterestIncome: BigDecimal = ukCompanies.map(_.netTaxInterestIncome).sum
-  private val totalTaxInterestExpense: BigDecimal = ukCompanies.map(_.netTaxInterestExpense).sum
   val aggregateNetTaxInterest: BigDecimal = totalTaxInterestIncome - totalTaxInterestExpense
   val totalReactivation: BigDecimal = ukCompanies.flatMap(_.allocatedReactivations.map(_.currentPeriodReactivation)).sum
   val publicInfrastructure: Boolean = ukCompanies.map(_.qicElection).exists(identity)
+  private val totalTaxInterestIncome: BigDecimal = ukCompanies.map(_.netTaxInterestIncome).sum
+  private val totalTaxInterestExpense: BigDecimal = ukCompanies.map(_.netTaxInterestExpense).sum
 }
 
 object FullReturnModel extends Logging {
 
-  val writes: Writes[FullReturnModel] = Writes { models =>
-
-    logger.info(s"test")
-
+/*  val writes: Writes[FullReturnModel] = Writes { models =>
     JsObject(Json.obj(
       "agentDetails" -> models.agentDetails,
       "reportingCompany" -> models.reportingCompany,
@@ -82,14 +72,8 @@ object FullReturnModel extends Logging {
       "groupLevelAmount" -> models.groupLevelAmount,
       "adjustedGroupInterest" -> models.adjustedGroupInterest
     ).fields.filterNot(_._2 == JsNull))
+  }*/
 
-    if (models.featureSwitch.changeRequestCR008Enabled) {
-      val extendedJsonObj = models + (
-        "groupEBITDA" -> "" +
-        "interestAllowanceAlternativeCalculation" -> "" +
-        "interestAllowanceConsolidatedPartnerships" -> "")
-    }
-  }
-
-  implicit val format: Format[FullReturnModel] = Format[FullReturnModel](Json.reads[FullReturnModel], writes)
+  implicit val readsFormat: Reads[FullReturnModel] = Json.reads[FullReturnModel]
+//  val format: Format[FullReturnModel] = Format[FullReturnModel](Json.reads[FullReturnModel], writes)
 }

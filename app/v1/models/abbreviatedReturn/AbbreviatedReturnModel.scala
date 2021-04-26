@@ -35,21 +35,5 @@ case class AbbreviatedReturnModel(appointedReportingCompany: Boolean,
 }
 
 object AbbreviatedReturnModel {
-
-  val writes: Writes[AbbreviatedReturnModel] = Writes { models =>
-
-    JsObject(Json.obj(
-      "agentDetails" -> models.agentDetails,
-      "reportingCompany" -> models.reportingCompany,
-      "parentCompany" -> models.parentCompany,
-      "publicInfrastructure" -> models.publicInfrastructure,
-      "groupCompanyDetails" -> models.groupCompanyDetails,
-      "submissionType" -> models.submissionType,
-      "revisedReturnDetails" -> models.revisedReturnDetails,
-      "groupLevelElections" -> models.groupLevelElections,
-      "ukCompanies" -> models.ukCompanies
-    ).fields.filterNot(_._2 == JsNull))
-  }
-
-  implicit val format = Format[AbbreviatedReturnModel](Json.reads[AbbreviatedReturnModel], writes)
+  implicit val abbreviatedReturnReads: Reads[AbbreviatedReturnModel] = Json.reads[AbbreviatedReturnModel]
 }

@@ -17,10 +17,15 @@
 package v1.models
 
 import assets.GroupLevelElectionsConstants._
+import com.typesafe.config.ConfigFactory
+import config.FeatureSwitch
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
+import play.api.Configuration
 
 class GroupLevelElectionsModelSpec extends WordSpec with Matchers {
+
+  implicit val config: Configuration = Configuration.empty
 
   "GroupLevelElectionsModel" must {
 

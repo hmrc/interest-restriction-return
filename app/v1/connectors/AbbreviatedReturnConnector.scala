@@ -16,22 +16,20 @@
 
 package v1.connectors
 
-import audit.{AuditEventTypes}
 import config.AppConfig
-
-import javax.inject.Inject
 import play.api.Logging
-import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.http.HttpClient
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
+import utils.JsonFormatters
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.httpParsers.AbbreviatedReturnHttpParser.AbbreviatedReturnReads
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
 import v1.models.requests.IdentifierRequest
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class AbbreviatedReturnConnector @Inject()(httpClient: HttpClient,
-                                           implicit val appConfig: AppConfig) extends DesBaseConnector with Logging with AuditEventTypes {
+class AbbreviatedReturnConnector @Inject()(httpClient: HttpClient, jsonFormatters: JsonFormatters,
+                                           implicit val appConfig: AppConfig) extends DesBaseConnector with Logging {
 
   private[connectors] lazy val abbreviatedReturnUrl = s"${appConfig.desUrl}/organisations/interest-restrictions-return/abbreviated"
 
@@ -41,6 +39,6 @@ class AbbreviatedReturnConnector @Inject()(httpClient: HttpClient,
     logger.debug(s"[AbbreviatedReturnConnector][submit] URL: $abbreviatedReturnUrl")
     logger.debug(s"[AbbreviatedReturnConnector][submit] Headers: ${desHc.headers}")
 
-    httpClient.POST(abbreviatedReturnUrl, abbreviatedReturnModel)(AbbreviatedReturnModel.format, AbbreviatedReturnReads, desHc, ec)
+    httpClient.POST(abbreviatedReturnUrl, abbreviatedReturnModel)(jsonFormatters.abbreviatedReturnWrites, AbbreviatedReturnReads, desHc, ec)
   }
 }
