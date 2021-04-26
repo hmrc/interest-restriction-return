@@ -19,12 +19,14 @@ package models.abbreviatedReturn
 import assets.BaseConstants
 import assets.abbreviatedReturn.AbbreviatedReturnConstants._
 import org.scalatest.{Matchers, WordSpec}
-import play.api.libs.json.Json
-import play.api.libs.json.JsObject
+import play.api.libs.json.{JsObject, Json, Writes}
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
 import assets.abbreviatedReturn.UkCompanyConstants._
+import utils.TestJsonFormatter._
 
 class AbbreviatedReturnModelSpec extends WordSpec with Matchers with BaseConstants {
+
+  implicit val abbreviatedFormatter: Writes[AbbreviatedReturnModel] = cr008EnabledJsonFormatter.abbreviatedReturnWrites
 
   "AbbreviatedReturnModel" must {
 

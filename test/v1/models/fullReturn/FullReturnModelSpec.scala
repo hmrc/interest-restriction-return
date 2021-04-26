@@ -18,13 +18,15 @@ package models.fullReturn
 
 import assets.BaseConstants
 import org.scalatest.{Matchers, WordSpec}
-import play.api.libs.json.Json
-import play.api.libs.json.JsObject
+import play.api.libs.json.{JsObject, Json, Writes}
 import v1.models.fullReturn.FullReturnModel
 import assets.fullReturn.FullReturnConstants._
 import assets.fullReturn.UkCompanyConstants._
+import utils.TestJsonFormatter._
 
 class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants {
+
+  implicit val fullReturnFormatter: Writes[FullReturnModel] = cr008EnabledJsonFormatter.fullReturnWrites
 
   "FullReturnModel" must {
 

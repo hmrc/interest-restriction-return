@@ -19,7 +19,7 @@ package v1.connectors
 import config.AppConfig
 import play.api.Logging
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import utils.JsonFormatters
+import utils.FeatureSwitchJsonFormatter
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.httpParsers.AbbreviatedReturnHttpParser.AbbreviatedReturnReads
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
@@ -28,7 +28,8 @@ import v1.models.requests.IdentifierRequest
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class AbbreviatedReturnConnector @Inject()(httpClient: HttpClient, jsonFormatters: JsonFormatters,
+class AbbreviatedReturnConnector @Inject()(httpClient: HttpClient,
+                                           jsonFormatters: FeatureSwitchJsonFormatter,
                                            implicit val appConfig: AppConfig) extends DesBaseConnector with Logging {
 
   private[connectors] lazy val abbreviatedReturnUrl = s"${appConfig.desUrl}/organisations/interest-restrictions-return/abbreviated"

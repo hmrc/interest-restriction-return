@@ -16,16 +16,17 @@
 
 package utils
 
-import javax.inject.{Inject, Singleton}
-import config.{AppConfig, AppConfigImpl, FeatureSwitch}
+import config.{AppConfig, FeatureSwitch}
 import play.api.libs.json._
 import v1.models.GroupLevelElectionsModel
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
 import v1.models.fullReturn.FullReturnModel
 
-class JsonFormatters @Inject()(val config: AppConfig) {
-  val featureSwitch: FeatureSwitch = FeatureSwitch(config.featureSwitch)
-  implicit val groupLevelElectionWrites =
+import javax.inject.Inject
+
+trait JsonFormatters {
+  val cr008Enabled: Boolean
+  implicit val groupLevelElectionWrites: Writes[GroupLevelElectionsModel] =
     Writes[GroupLevelElectionsModel] { models =>
 
       val initialModel = JsObject(Json.obj(
@@ -36,7 +37,7 @@ class JsonFormatters @Inject()(val config: AppConfig) {
 
       ).fields.filterNot(_._2 == JsNull))
 
-      if (featureSwitch.changeRequestCR008Enabled) {
+      if (cr008Enabled) {
         initialModel ++
           Json.obj("activeInterestAllowanceAlternativeCalculation" -> models.activeInterestAllowanceAlternativeCalculation)
       } else {
@@ -80,4 +81,10 @@ class JsonFormatters @Inject()(val config: AppConfig) {
       "ukCompanies" -> models.ukCompanies
     ).fields.filterNot(_._2 == JsNull))
   }
+}
+
+class FeatureSwitchJsonFormatter @Inject()(val config: AppConfig) extends JsonFormatters {
+
+  override val cr008Enabled: Boolean = FeatureSwitch(config.featureSwitch).changeRequestCR008Enabled
+
 }

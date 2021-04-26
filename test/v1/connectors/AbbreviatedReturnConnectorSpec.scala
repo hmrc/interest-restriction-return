@@ -31,7 +31,7 @@ class AbbreviatedReturnConnectorSpec extends MockHttpClient with BaseSpec with A
     def setup(response: SubmissionResponse): AbbreviatedReturnConnector = {
       val desUrl = "http://localhost:9262/organisations/interest-restrictions-return/abbreviated"
       mockHttpPost[AbbreviatedReturnModel, Either[ErrorResponse, DesSuccessResponse]](desUrl, abbreviatedReturnUltimateParentModel)(response)
-      new AbbreviatedReturnConnector(mockHttpClient, appConfig)
+      new AbbreviatedReturnConnector(mockHttpClient, jsonFormatters, appConfig)
     }
 
     "submission is successful" should {

@@ -19,7 +19,7 @@ package v1.connectors
 import config.AppConfig
 import play.api.Logging
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import utils.JsonFormatters
+import utils.FeatureSwitchJsonFormatter
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.httpParsers.FullReturnHttpParser.FullReturnReads
 import v1.models.fullReturn.FullReturnModel
@@ -29,7 +29,7 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class FullReturnConnector @Inject()(httpClient: HttpClient,
-                                    jsonFormatters: JsonFormatters,
+                                    jsonFormatters: FeatureSwitchJsonFormatter,
                                     implicit val appConfig: AppConfig) extends DesBaseConnector with Logging {
 
   private[connectors] lazy val fullReturnUrl = s"${appConfig.desUrl}/organisations/interest-restrictions-return/full"

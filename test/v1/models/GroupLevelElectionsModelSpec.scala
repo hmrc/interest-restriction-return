@@ -22,10 +22,9 @@ import config.FeatureSwitch
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 import play.api.Configuration
+import utils.TestJsonFormatter._
 
 class GroupLevelElectionsModelSpec extends WordSpec with Matchers {
-
-  implicit val config: Configuration = Configuration.empty
 
   "GroupLevelElectionsModel" must {
 
@@ -34,7 +33,7 @@ class GroupLevelElectionsModelSpec extends WordSpec with Matchers {
       "max values given" in {
 
         val expectedValue = groupLevelElectionsJsonMax
-        val actualValue = Json.toJson(groupLevelElectionsModelMax)
+        val actualValue = Json.toJson(groupLevelElectionsModelMax)(cr008EnabledJsonFormatter.groupLevelElectionWrites)
 
         actualValue shouldBe expectedValue
       }
