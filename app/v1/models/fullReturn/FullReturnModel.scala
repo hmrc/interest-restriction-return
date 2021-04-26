@@ -44,8 +44,8 @@ case class FullReturnModel(
   override val fullReturnModel: FullReturnModel = this
   val totalReactivation: BigDecimal = ukCompanies.flatMap(_.allocatedReactivations.map(_.currentPeriodReactivation)).sum
   val publicInfrastructure: Boolean = ukCompanies.map(_.qicElection).exists(identity)
-  private val totalTaxInterestIncome: BigDecimal = ukCompanies.map(_.netTaxInterestIncome).sum
-  private val totalTaxInterestExpense: BigDecimal = ukCompanies.map(_.netTaxInterestExpense).sum
+  val totalTaxInterestIncome: BigDecimal = ukCompanies.map(_.netTaxInterestIncome).sum
+  val totalTaxInterestExpense: BigDecimal = ukCompanies.map(_.netTaxInterestExpense).sum
   val aggregateNetTaxInterest: BigDecimal = totalTaxInterestIncome - totalTaxInterestExpense
 }
 
