@@ -20,6 +20,9 @@ import assets.GroupLevelElectionsConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 import utils.TestJsonFormatter._
+import assets.ConsolidatedPartnershipConstants._
+import assets.GroupRatioConstants._
+import assets.NonConsolidatedInvestmentElectionConstants._
 
 class GroupLevelElectionsModelSpec extends WordSpec with Matchers {
 
@@ -31,6 +34,19 @@ class GroupLevelElectionsModelSpec extends WordSpec with Matchers {
 
         val expectedValue = groupLevelElectionsJsonMax
         val actualValue = Json.toJson(groupLevelElectionsModelMax)(cr008EnabledJsonFormatter.groupLevelElectionWrites)
+
+        actualValue shouldBe expectedValue
+      }
+
+      "the CR008 feature switch is disabled" in {
+
+        val expectedValue = Json.obj(
+          "groupRatio" -> groupRatioJsonMin,
+          "interestAllowanceAlternativeCalculation" -> true,
+          "interestAllowanceNonConsolidatedInvestment" -> nonConsolidatedInvestmentJsonMin,
+          "interestAllowanceConsolidatedPartnership" -> consolidatedPartnershipsJsonMin
+        )
+        val actualValue = Json.toJson(groupLevelElectionsModelMin)(cr008DisabledJsonFormatter.groupLevelElectionWrites)
 
         actualValue shouldBe expectedValue
       }

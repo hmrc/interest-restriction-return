@@ -16,9 +16,7 @@
 
 package v1.models
 
-import config.{AppConfig, FeatureSwitch}
 import play.api.libs.json._
-import utils.JsonFormatters
 import v1.validation.GroupLevelElectionValidation
 
 case class GroupLevelElectionsModel (groupRatio: GroupRatioModel,
@@ -31,5 +29,6 @@ case class GroupLevelElectionsModel (groupRatio: GroupRatioModel,
 
 }
 object GroupLevelElectionsModel {
-  implicit val readsFormat: Reads[GroupLevelElectionsModel] = Json.reads[GroupLevelElectionsModel]
+  implicit val writes: Writes[GroupLevelElectionsModel] = Json.writes[GroupLevelElectionsModel]
+  implicit val reads: Reads[GroupLevelElectionsModel] = Json.reads[GroupLevelElectionsModel]
 }

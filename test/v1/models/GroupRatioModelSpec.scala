@@ -34,13 +34,24 @@ class GroupRatioModelSpec extends WordSpec with Matchers {
 
         actualValue shouldBe expectedValue
       }
+
+      "the CR008 feature switch is disabled" in {
+
+        val expectedValue = Json.obj(
+          "isElected" -> false,
+          "groupEBITDAChargeableGains" -> false
+        )
+        val actualValue = Json.toJson(groupRatioModelMin)(cr008DisabledJsonFormatter.groupRatioWrites)
+
+        actualValue shouldBe expectedValue
+      }
     }
 
     "correctly read from Json" when {
       "max values given" in {
 
         val expectedValue = groupRatioModelMax
-        val actualValue = groupRatioJsonMax.as[GroupLevelElectionsModel]
+        val actualValue = groupRatioJsonMax.as[GroupRatioModel]
 
         actualValue shouldBe expectedValue
       }

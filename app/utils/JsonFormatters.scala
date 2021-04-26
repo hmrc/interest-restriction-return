@@ -26,36 +26,22 @@ import javax.inject.Inject
 
 trait JsonFormatters {
   val cr008Enabled: Boolean
-  implicit val groupLevelElectionWrites: Writes[GroupLevelElectionsModel] =
-    Writes[GroupLevelElectionsModel] { models =>
 
-      val initialModel = JsObject(Json.obj(
-        "groupRatio" -> models.groupRatio,
-        "interestAllowanceAlternativeCalculation" -> models.interestAllowanceAlternativeCalculation,
-        "interestAllowanceNonConsolidatedInvestment" -> models.interestAllowanceNonConsolidatedInvestment,
-        "interestAllowanceConsolidatedPartnership" -> models.interestAllowanceConsolidatedPartnership
-
-      ).fields.filterNot(_._2 == JsNull))
-
-      if (cr008Enabled) {
-        initialModel ++
-          Json.obj("activeInterestAllowanceAlternativeCalculation" -> models.activeInterestAllowanceAlternativeCalculation)
-      } else {
-        initialModel
-      }
+  def removeJsPathIfFeatureNotEnabled[T](path: JsPath)(implicit writes: Writes[T]): Writes[T] =
+    Writes[T] { models =>
+      val json: JsObject = Json.toJson(models).as[JsObject]
+      if (cr008Enabled) 
+        json 
+      else 
+        json.transform(path.json.prune) match {
+          case JsSuccess(newJson, _) => newJson.as[JsValue]
+          case _ => json
+        }
     }
 
-  implicit val groupRatioWrites: Writes[GroupRatioModel] =
-    Writes[GroupRatioModel] { models =>
+  implicit val groupLevelElectionWrites: Writes[GroupLevelElectionsModel] = removeJsPathIfFeatureNotEnabled(__ \ "activeInterestAllowanceAlternativeCalculation")(GroupLevelElectionsModel.writes)
 
-      val json = Json.toJson(models)
-
-      if (cr008Enabled) {
-        json
-      } else {
-        json - "activeGroupEBITDAChargeableGains"
-      }
-    }
+  implicit val groupRatioWrites: Writes[GroupRatioModel] = removeJsPathIfFeatureNotEnabled(__ \ "activeGroupEBITDAChargeableGains")(GroupRatioModel.writes)
 
   implicit val fullReturnWrites: Writes[FullReturnModel] = Writes { models =>
     JsObject(Json.obj(
