@@ -7,11 +7,11 @@
       "$ref": "../definitions/definitions.json#/definitions/dateType"
     },
     "ap2EndDate": {
-      "description": "End date of the second accounting period that a company can apportion a disallowance to. For example: 2020-04-06",
+      "description": "End date of the second accounting period that a company can apportion a disallowance to. For example: 2020-07-06",
       "$ref": "../definitions/definitions.json#/definitions/dateType"
     },
     "ap3EndDate": {
-      "description": "End date of the third accounting period that a company can apportion a disallowance to. For example: 2020-04-06",
+      "description": "End date of the third accounting period that a company can apportion a disallowance to. For example: 2020-10-06",
       "$ref": "../definitions/definitions.json#/definitions/dateType"
     },
     "disallowanceAp1": {
