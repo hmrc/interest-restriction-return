@@ -33,6 +33,7 @@ case class AbbreviatedReturnModel(declaration: Boolean,
 
   override val abbreviatedReturnModel: AbbreviatedReturnModel = this
   val publicInfrastructure: Boolean = ukCompanies.map(_.qicElection).exists(identity)
+  val numberOfUkCompanies: Int = ukCompanies.size
 }
 
 object AbbreviatedReturnModel {

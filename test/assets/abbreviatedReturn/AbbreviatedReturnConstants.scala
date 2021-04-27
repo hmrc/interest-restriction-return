@@ -41,7 +41,8 @@ object AbbreviatedReturnConstants {
     "submissionType" -> Revised,
     "revisedReturnDetails" -> "revised details",
     "groupLevelElections" -> groupLevelElectionsJsonMax,
-    "ukCompanies" -> Seq(ukCompanyJson)
+    "ukCompanies" -> Seq(ukCompanyJson),
+    "numberOfUkCompanies" -> 1
   )
 
   val abbreviatedReturnUltimateParentModel = AbbreviatedReturnModel(
@@ -68,7 +69,8 @@ object AbbreviatedReturnConstants {
     "submissionType" -> Revised,
     "revisedReturnDetails" -> "revised details",
     "groupLevelElections" -> groupLevelElectionsJsonMax,
-    "ukCompanies" -> Seq(ukCompanyJson)
+    "ukCompanies" -> Seq(ukCompanyJson),
+    "numberOfUkCompanies" -> 1
   )
 
   val abbreviatedReturnDeemedParentModel = AbbreviatedReturnModel(
@@ -92,7 +94,8 @@ object AbbreviatedReturnConstants {
     "publicInfrastructure" -> true,
     "groupCompanyDetails" -> groupCompanyDetailsJson,
     "submissionType" -> Original,
-    "ukCompanies" -> Seq(ukCompanyJson)
+    "ukCompanies" -> Seq(ukCompanyJson),
+    "numberOfUkCompanies" -> 1
   )
 
   val abbreviatedReturnModelMin = AbbreviatedReturnModel(

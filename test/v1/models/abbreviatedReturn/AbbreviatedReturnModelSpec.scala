@@ -18,9 +18,13 @@ package models.abbreviatedReturn
 
 import assets.BaseConstants
 import assets.abbreviatedReturn.AbbreviatedReturnConstants._
+import assets.AgentDetailsConstants._
+import assets.GroupCompanyDetailsConstants._
+import assets.ReportingCompanyConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.{JsObject, Json, Writes}
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
+import v1.models.Original
 import assets.abbreviatedReturn.UkCompanyConstants._
 import utils.TestJsonFormatter._
 
@@ -44,6 +48,22 @@ class AbbreviatedReturnModelSpec extends WordSpec with Matchers with BaseConstan
 
         val expectedValue = withoutAppointedReportingCompany(abbreviatedReturnJsonMin)
         val actualValue = Json.toJson(abbreviatedReturnModelMin)
+
+        actualValue shouldBe expectedValue
+      }
+
+      "min values feature switch disabled" in {
+        val expectedValue = Json.obj(
+          "declaration" -> true,
+          "appointedReportingCompany" -> true,
+          "agentDetails" -> agentDetailsJsonMin,
+          "reportingCompany" -> reportingCompanyJson,
+          "publicInfrastructure" -> true,
+          "groupCompanyDetails" -> groupCompanyDetailsJson,
+          "submissionType" -> Original,
+          "ukCompanies" -> Seq(ukCompanyJson)
+        )
+        val actualValue = Json.toJson(abbreviatedReturnModelMin)(cr008DisabledJsonFormatter.abbreviatedReturnWrites)
 
         actualValue shouldBe expectedValue
       }
