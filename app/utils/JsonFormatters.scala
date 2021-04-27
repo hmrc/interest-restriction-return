@@ -48,8 +48,9 @@ trait JsonFormatters {
   implicit val groupLevelElectionWrites: Writes[GroupLevelElectionsModel] =
     removeJsPathIfFeatureNotEnabled(__ \ "activeInterestAllowanceAlternativeCalculation")(Json.writes[GroupLevelElectionsModel])
 
-  implicit val fullReturnWrites: Writes[FullReturnModel] = Writes { models =>
+  private val completeFullReturnWrites: Writes[FullReturnModel] = Writes { models =>
     JsObject(Json.obj(
+      "declaration" -> models.declaration,
       "agentDetails" -> models.agentDetails,
       "reportingCompany" -> models.reportingCompany,
       "parentCompany" -> models.parentCompany,
@@ -71,8 +72,9 @@ trait JsonFormatters {
     ).fields.filterNot(_._2 == JsNull))
   }
 
-  implicit val abbreviatedReturnWrites: Writes[AbbreviatedReturnModel] = Writes { models =>
+  private val completeAbbreviatedReturnWrites: Writes[AbbreviatedReturnModel] = Writes { models =>
     JsObject(Json.obj(
+      "declaration" -> models.declaration,
       "agentDetails" -> models.agentDetails,
       "reportingCompany" -> models.reportingCompany,
       "parentCompany" -> models.parentCompany,
@@ -84,6 +86,12 @@ trait JsonFormatters {
       "ukCompanies" -> models.ukCompanies
     ).fields.filterNot(_._2 == JsNull))
   }
+
+  implicit val fullReturnWrites: Writes[FullReturnModel] =
+    removeJsPathIfFeatureNotEnabled(__ \ "declaration")(completeFullReturnWrites)
+
+  implicit val abbreviatedReturnWrites: Writes[AbbreviatedReturnModel] =
+    removeJsPathIfFeatureNotEnabled(__ \ "declaration")(completeAbbreviatedReturnWrites)
 }
 
 class FeatureSwitchJsonFormatter @Inject()(val config: AppConfig) extends JsonFormatters {

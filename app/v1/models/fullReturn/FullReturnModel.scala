@@ -21,7 +21,7 @@ import play.api.libs.json._
 import v1.models._
 import v1.validation.fullReturn.FullReturnValidator
 
-case class FullReturnModel(
+case class FullReturnModel(declaration: Boolean,
                             appointedReportingCompany: Boolean,
                             agentDetails: AgentDetailsModel,
                             reportingCompany: ReportingCompanyModel,
@@ -38,7 +38,7 @@ case class FullReturnModel(
                             groupSubjectToInterestReactivation: Boolean,
                             totalRestrictions: BigDecimal,
                             groupLevelAmount: GroupLevelAmountModel,
-                            adjustedGroupInterest: Option[AdjustedGroupInterestModel],
+                            adjustedGroupInterest: Option[AdjustedGroupInterestModel]
                           ) extends FullReturnValidator {
 
   override val fullReturnModel: FullReturnModel = this

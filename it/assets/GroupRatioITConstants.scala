@@ -23,6 +23,7 @@ object GroupRatioITConstants {
 
   val groupRatioJson= Json.obj(
     "isElected" -> true,
+    "activeGroupEBITDAChargeableGains" -> true,
     "groupEBITDAChargeableGains" -> Some(true),
     "groupRatioBlended" -> groupRatioBlendedJson)
 }

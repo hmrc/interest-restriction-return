@@ -25,6 +25,7 @@ object GroupLevelElectionsITConstants {
 
   val groupLevelElectionsJson= Json.obj(
     "groupRatio" -> groupRatioJson,
+    "activeInterestAllowanceAlternativeCalculation" -> true,
     "interestAllowanceAlternativeCalculation" -> true,
     "interestAllowanceNonConsolidatedInvestment" -> nonConsolidatedInvestmentJson,
     "interestAllowanceConsolidatedPartnership" -> consolidatedPartnershipsJson

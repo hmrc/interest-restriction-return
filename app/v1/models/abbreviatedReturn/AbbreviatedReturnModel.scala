@@ -20,7 +20,8 @@ import play.api.libs.json._
 import v1.models._
 import v1.validation.abbreviatedReturn.AbbreviatedReturnValidator
 
-case class AbbreviatedReturnModel(appointedReportingCompany: Boolean,
+case class AbbreviatedReturnModel(declaration: Boolean,
+                                  appointedReportingCompany: Boolean,
                                   agentDetails: AgentDetailsModel,
                                   reportingCompany: ReportingCompanyModel,
                                   parentCompany: Option[ParentCompanyModel],

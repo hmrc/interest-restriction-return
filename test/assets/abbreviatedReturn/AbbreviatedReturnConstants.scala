@@ -31,6 +31,7 @@ object AbbreviatedReturnConstants {
   val ackRef = "ackRef"
 
   val abbreviatedReturnUltimateParentJson = Json.obj(
+    "declaration" -> true,
     "appointedReportingCompany" -> true,
     "agentDetails" -> agentDetailsJsonMax,
     "reportingCompany" -> reportingCompanyJson,
@@ -44,6 +45,7 @@ object AbbreviatedReturnConstants {
   )
 
   val abbreviatedReturnUltimateParentModel = AbbreviatedReturnModel(
+    declaration = true,
     appointedReportingCompany = true,
     agentDetails = agentDetailsModelMax,
     reportingCompany = reportingCompanyModel,
@@ -56,6 +58,7 @@ object AbbreviatedReturnConstants {
   )
 
   val abbreviatedReturnDeemedParentJson = Json.obj(
+    "declaration" -> true,
     "appointedReportingCompany" -> true,
     "agentDetails" -> agentDetailsJsonMax,
     "reportingCompany" -> reportingCompanyJson,
@@ -69,6 +72,7 @@ object AbbreviatedReturnConstants {
   )
 
   val abbreviatedReturnDeemedParentModel = AbbreviatedReturnModel(
+    declaration = true,
     appointedReportingCompany = true,
     agentDetails = agentDetailsModelMax,
     reportingCompany = reportingCompanyModel,
@@ -81,6 +85,7 @@ object AbbreviatedReturnConstants {
   )
 
   val abbreviatedReturnJsonMin = Json.obj(
+    "declaration" -> true,
     "appointedReportingCompany" -> true,
     "agentDetails" -> agentDetailsJsonMin,
     "reportingCompany" -> reportingCompanyJson,
@@ -91,6 +96,7 @@ object AbbreviatedReturnConstants {
   )
 
   val abbreviatedReturnModelMin = AbbreviatedReturnModel(
+    declaration = true,
     appointedReportingCompany = true,
     agentDetails = agentDetailsModelMin,
     reportingCompany = reportingCompanyModel,
