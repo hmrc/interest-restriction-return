@@ -29,6 +29,5 @@ case class GroupLevelElectionsModel (groupRatio: GroupRatioModel,
 
 }
 object GroupLevelElectionsModel {
-  implicit val writes: Writes[GroupLevelElectionsModel] = Json.writes[GroupLevelElectionsModel]
   implicit val reads: Reads[GroupLevelElectionsModel] = Json.reads[GroupLevelElectionsModel]
 }

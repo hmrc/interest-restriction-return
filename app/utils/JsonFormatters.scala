@@ -18,10 +18,9 @@ package utils
 
 import config.{AppConfig, FeatureSwitch}
 import play.api.libs.json._
-import v1.models.{GroupLevelElectionsModel, GroupRatioModel}
+import v1.models.{ConsolidatedPartnershipModel, GroupLevelElectionsModel, GroupRatioModel}
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
 import v1.models.fullReturn.FullReturnModel
-
 import javax.inject.Inject
 
 trait JsonFormatters {
@@ -30,18 +29,24 @@ trait JsonFormatters {
   def removeJsPathIfFeatureNotEnabled[T](path: JsPath)(implicit writes: Writes[T]): Writes[T] =
     Writes[T] { models =>
       val json: JsObject = Json.toJson(models).as[JsObject]
-      if (cr008Enabled) 
-        json 
-      else 
+      if (cr008Enabled) {
+        json
+      } else {
         json.transform(path.json.prune) match {
           case JsSuccess(newJson, _) => newJson.as[JsValue]
           case _ => json
         }
+      }
     }
 
-  implicit val groupLevelElectionWrites: Writes[GroupLevelElectionsModel] = removeJsPathIfFeatureNotEnabled(__ \ "activeInterestAllowanceAlternativeCalculation")(GroupLevelElectionsModel.writes)
+  implicit val groupRatioWrites: Writes[GroupRatioModel] =
+    removeJsPathIfFeatureNotEnabled(__ \ "activeGroupEBITDAChargeableGains")(GroupRatioModel.writes)
 
-  implicit val groupRatioWrites: Writes[GroupRatioModel] = removeJsPathIfFeatureNotEnabled(__ \ "activeGroupEBITDAChargeableGains")(GroupRatioModel.writes)
+  implicit val consolidatedPartnershipWrites: Writes[ConsolidatedPartnershipModel] =
+    removeJsPathIfFeatureNotEnabled(__ \ "isActive")(ConsolidatedPartnershipModel.format)
+
+  implicit val groupLevelElectionWrites: Writes[GroupLevelElectionsModel] =
+    removeJsPathIfFeatureNotEnabled(__ \ "activeInterestAllowanceAlternativeCalculation")(Json.writes[GroupLevelElectionsModel])
 
   implicit val fullReturnWrites: Writes[FullReturnModel] = Writes { models =>
     JsObject(Json.obj(
