@@ -48,6 +48,9 @@ case class FullReturnModel(declaration: Boolean,
   val totalTaxInterestExpense: BigDecimal = ukCompanies.map(_.netTaxInterestExpense).sum
   val aggregateNetTaxInterest: BigDecimal = totalTaxInterestIncome - totalTaxInterestExpense
   val numberOfUkCompanies: Int = ukCompanies.size
+  val aggregateAllocatedRestrictions: BigDecimal = ukCompanies.flatMap(_.allocatedRestrictions.map(_.totalDisallowances)).sum
+  val aggregateAllocatedReactivations: BigDecimal = totalReactivation
+  val aggregateTaxEBITDA: BigDecimal = ukCompanies.map(_.taxEBITDA).sum
 }
 
 object FullReturnModel extends Logging {

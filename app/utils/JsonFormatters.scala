@@ -74,7 +74,10 @@ trait JsonFormatters {
       "totalRestrictions" -> models.totalRestrictions,
       "groupLevelAmount" -> models.groupLevelAmount,
       "adjustedGroupInterest" -> models.adjustedGroupInterest,
-      "aggregateNetTaxInterest" -> models.aggregateNetTaxInterest
+      "aggregateNetTaxInterest" -> models.aggregateNetTaxInterest,
+      "aggregateAllocatedRestrictions" -> models.aggregateAllocatedRestrictions,
+      "aggregateTaxEBITDA" -> models.aggregateTaxEBITDA,
+      "aggregateAllocatedReactivations" -> models.aggregateAllocatedReactivations
     ).fields.filterNot(_._2 == JsNull))
   }
 
@@ -97,7 +100,11 @@ trait JsonFormatters {
   implicit val fullReturnWrites: Writes[FullReturnModel] =
     removeJsPathIfFeatureNotEnabled(Seq(
       __ \ "declaration",
-      __ \ "numberOfUkCompanies"
+      __ \ "numberOfUkCompanies",
+      __ \ "aggregateNetTaxInterest",
+      __ \ "aggregateAllocatedRestrictions",
+      __ \ "aggregateTaxEBITDA",
+      __ \ "aggregateAllocatedReactivations"
     ))(completeFullReturnWrites)
 
   implicit val abbreviatedReturnWrites: Writes[AbbreviatedReturnModel] =

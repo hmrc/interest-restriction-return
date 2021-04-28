@@ -84,7 +84,8 @@ object FullReturnConstants {
     "totalReactivation" -> fullReturnModelMax.totalReactivation,
     "totalRestrictions" -> 0,
     "groupLevelAmount" -> groupLevelAmountJson,
-    "adjustedGroupInterest" -> adjustedGroupInterestJson
+    "adjustedGroupInterest" -> adjustedGroupInterestJson,
+
   )
 
   val fullReturnNetTaxExpenseModelMax: FullReturnModel = FullReturnModel(
@@ -129,7 +130,11 @@ object FullReturnConstants {
     "totalReactivation" -> totalReactivations * 3,
     "totalRestrictions" -> 0,
     "groupLevelAmount" -> groupLevelAmountJson,
-    "adjustedGroupInterest" -> adjustedGroupInterestJson
+    "adjustedGroupInterest" -> adjustedGroupInterestJson,
+    "aggregateNetTaxInterest" -> -10,
+    "aggregateAllocatedRestrictions" -> 18,
+    "aggregateTaxEBITDA" -> 20,
+    "aggregateAllocatedReactivations" -> 6
   )
 
   val fullReturnNetTaxIncomeModelMax: FullReturnModel = FullReturnModel(
@@ -174,7 +179,11 @@ object FullReturnConstants {
     "totalReactivation" -> totalReactivations,
     "totalRestrictions" -> 0,
     "groupLevelAmount" -> groupLevelAmountJson,
-    "adjustedGroupInterest" -> adjustedGroupInterestJson
+    "adjustedGroupInterest" -> adjustedGroupInterestJson,
+    "aggregateNetTaxInterest" -> 130,
+    "aggregateAllocatedRestrictions" -> 6,
+    "aggregateTaxEBITDA" -> 20,
+    "aggregateAllocatedReactivations" -> 2
   )
 
   // Ultimate Parent Model and Json.
@@ -221,7 +230,11 @@ object FullReturnConstants {
     "totalReactivation" -> totalReactivations * 2,
     "totalRestrictions" -> 0,
     "groupLevelAmount" -> groupLevelAmountJson,
-    "adjustedGroupInterest" -> adjustedGroupInterestJson
+    "adjustedGroupInterest" -> adjustedGroupInterestJson,
+    "aggregateNetTaxInterest" -> 100,
+    "aggregateAllocatedRestrictions" -> 0,
+    "aggregateTaxEBITDA" -> 10,
+    "aggregateAllocatedReactivations" -> 4
   )
 
   // Deemed Model and Json
@@ -287,6 +300,10 @@ object FullReturnConstants {
     "groupSubjectToInterestReactivation" -> true,
     "totalReactivation" -> 0,
     "totalRestrictions" -> 0,
-    "groupLevelAmount" -> groupLevelAmountJson
+    "groupLevelAmount" -> groupLevelAmountJson,
+    "aggregateNetTaxInterest" -> 50,
+    "aggregateAllocatedRestrictions" -> 0,
+    "aggregateTaxEBITDA" -> 5,
+    "aggregateAllocatedReactivations" -> 0
   )
 }
