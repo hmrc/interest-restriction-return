@@ -51,6 +51,12 @@ trait AbbreviatedReturnValidator extends BaseValidation {
     }
   }
 
+  private def validateDeclaration: ValidationResult[Boolean] =
+    abbreviatedReturnModel.declaration match {
+      case true => abbreviatedReturnModel.declaration.validNec
+      case false => AbbreviatedReturnDeclarationError(abbreviatedReturnModel.declaration).invalidNec
+    }
+
   def validate: ValidationResult[AbbreviatedReturnModel] = {
 
     val validatedUkCompanies =
@@ -60,7 +66,7 @@ trait AbbreviatedReturnValidator extends BaseValidation {
         }:_*)
       }
 
-    (abbreviatedReturnModel.agentDetails.validate(JsPath \ "agentDetails"),
+    combineValidations(abbreviatedReturnModel.agentDetails.validate(JsPath \ "agentDetails"),
       abbreviatedReturnModel.reportingCompany.validate(JsPath \ "reportingCompany"),
       optionValidations(abbreviatedReturnModel.parentCompany.map(_.validate(JsPath \ "parentCompany"))),
       abbreviatedReturnModel.groupCompanyDetails.validate(JsPath \ "groupCompanyDetails"),
@@ -68,8 +74,9 @@ trait AbbreviatedReturnValidator extends BaseValidation {
       validatedUkCompanies,
       validateParentCompany,
       validateRevisedReturnDetails,
-      validateAppointedReporter
-      ).mapN((_,_,_,_,_,_,_,_,_) => abbreviatedReturnModel)
+      validateAppointedReporter,
+      validateDeclaration
+      ).map(_ => abbreviatedReturnModel)
   }
 }
 
@@ -107,4 +114,10 @@ case object UkCompaniesEmpty extends Validation {
   val errorMessage: String = "ukCompanies must have at least 1 UK company"
   val path: JsPath = JsPath \ "ukCompanies"
   val value: JsValue = Json.obj()
+}
+
+case class AbbreviatedReturnDeclarationError(declaration: Boolean) extends Validation {
+  val errorMessage: String = "The declaration must be true"
+  val path: JsPath = JsPath \ "declaration"
+  val value: JsValue = Json.toJson(declaration)
 }

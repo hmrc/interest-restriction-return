@@ -388,6 +388,11 @@ class FullReturnValidatorSpec extends BaseSpec {
         leftSideError(model.validate).errorMessage shouldBe NoEstimatesSupplied(true).errorMessage
       }
 
+      "declaration is false" in {
+        val model = fullReturnUltimateParentModel.copy(declaration = false)
+        leftSideError(model.validate).errorMessage shouldBe FullReturnDeclarationError(false).errorMessage
+      }
+
     }
     
   }

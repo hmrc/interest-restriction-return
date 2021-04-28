@@ -83,11 +83,7 @@ trait FullReturnValidator extends BaseValidation {
 
   private def validateTotalReactivationsNotGreaterThanCapacity: ValidationResult[BigDecimal] = {
     val capacity: BigDecimal = fullReturnModel.groupLevelAmount.interestReactivationCap
-    val calculatedReactivations: BigDecimal = fullReturnModel.ukCompanies.foldLeft[BigDecimal](0) {
-      (total, company) =>
-        total + company.allocatedReactivations.fold[BigDecimal](0)(reactivations =>
-          reactivations.currentPeriodReactivation)
-    }
+    val calculatedReactivations: BigDecimal = fullReturnModel.aggregateAllocatedReactivations
     if (calculatedReactivations > capacity) {
       TotalReactivationsNotGreaterThanCapacity(calculatedReactivations, capacity).invalidNec
     } else {
@@ -97,11 +93,7 @@ trait FullReturnValidator extends BaseValidation {
 
   private def validateTotalRestrictions: ValidationResult[BigDecimal] = {
     val restrictions: BigDecimal = fullReturnModel.totalRestrictions
-    val calculatedRestrictions: BigDecimal = fullReturnModel.ukCompanies.foldLeft[BigDecimal](0) {
-      (total, company) =>
-        total + company.allocatedRestrictions.fold[BigDecimal](0)(restrictions =>
-          restrictions.totalDisallowances)
-    }
+    val calculatedRestrictions: BigDecimal = fullReturnModel.aggregateAllocatedRestrictions
     (restrictions, calculatedRestrictions) match {
       case (r, _) if r % 0.01 != 0 => TotalRestrictionsDecimalError(restrictions).invalidNec
       case (r, cr) if r != cr => TotalRestrictionsDoesNotMatch(restrictions, calculatedRestrictions).invalidNec
@@ -173,6 +165,12 @@ trait FullReturnValidator extends BaseValidation {
     }
   }
 
+  private def validateDeclaration: ValidationResult[Boolean] =
+    fullReturnModel.declaration match {
+      case true => fullReturnModel.declaration.validNec
+      case false => FullReturnDeclarationError(fullReturnModel.declaration).invalidNec
+    }
+
   def validate: ValidationResult[FullReturnModel] = {
 
     val validatedUkCompanies =
@@ -182,7 +180,7 @@ trait FullReturnValidator extends BaseValidation {
         }: _*)
       }
 
-    (fullReturnModel.agentDetails.validate(JsPath \ "agentDetails"),
+    combineValidations(fullReturnModel.agentDetails.validate(JsPath \ "agentDetails"),
       fullReturnModel.reportingCompany.validate(JsPath \ "reportingCompany"),
       optionValidations(fullReturnModel.parentCompany.map(_.validate(JsPath \ "parentCompany"))),
       fullReturnModel.groupCompanyDetails.validate(JsPath \ "groupCompanyDetails"),
@@ -203,8 +201,8 @@ trait FullReturnValidator extends BaseValidation {
       optionValidations(fullReturnModel.adjustedGroupInterest.map(_.validate(JsPath \ "adjustedGroupInterest"))),
       validateGroupEstimateReason,
       validateCompanyEstimateReasons,
-      validateReturnContainsEstimates
-      ).mapN((_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) => fullReturnModel)
+      validateReturnContainsEstimates,
+      validateDeclaration).map(_ => fullReturnModel)
   }
 }
 
@@ -341,4 +339,10 @@ case class NoEstimatesSupplied(bool: Boolean) extends Validation {
   val errorMessage: String = s"An estimate needs to be supplied in groupEstimateReason or companyEstimateReason where returnContainsEstimates is set to true"
   val path: JsPath = JsPath \ "returnContainsEstimates"
   val value: JsValue = Json.toJson(bool)
+}
+
+case class FullReturnDeclarationError(declaration: Boolean) extends Validation {
+  val errorMessage: String = "The declaration must be true"
+  val path: JsPath = JsPath \ "declaration"
+  val value: JsValue = Json.toJson(declaration)
 }
