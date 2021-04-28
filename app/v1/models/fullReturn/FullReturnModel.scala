@@ -50,7 +50,14 @@ case class FullReturnModel(declaration: Boolean,
   val numberOfUkCompanies: Int = ukCompanies.size
   val aggregateAllocatedRestrictions: BigDecimal = ukCompanies.flatMap(_.allocatedRestrictions.map(_.totalDisallowances)).sum
   val aggregateAllocatedReactivations: BigDecimal = totalReactivation
-  val aggregateTaxEBITDA: BigDecimal = ukCompanies.map(_.taxEBITDA).sum
+  val aggregateTaxEBITDA: BigDecimal = {
+    val totalTaxEBITDA = ukCompanies.map(_.taxEBITDA).sum
+    if (totalTaxEBITDA < 0) {
+      0
+    } else {
+      totalTaxEBITDA
+    }
+  }
 }
 
 object FullReturnModel extends Logging {

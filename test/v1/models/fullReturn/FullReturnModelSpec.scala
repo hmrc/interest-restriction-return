@@ -230,6 +230,23 @@ class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants {
         fullReturnModel.publicInfrastructure shouldBe true
       }
     }
+
+    "deriving the taxEBITDA" when {
+
+      "there is multiple companies with tax EBITDA" in {
+        val fullReturnModel = fullReturnModelMax.copy(ukCompanies = Seq(ukCompanyModelReactivationMax, ukCompanyModelReactivationMax))
+
+        fullReturnModel.aggregateTaxEBITDA shouldBe 10
+      }
+
+      "the tax EBIDTA adds up to a negative number the aggregate is 0" in {
+        val company = ukCompanyModelReactivationMax.copy(taxEBITDA = -1)
+        val fullReturnModel = fullReturnModelMax.copy(ukCompanies = Seq(company, company))
+
+        fullReturnModel.aggregateTaxEBITDA shouldBe 0
+      }
+
+    }
       
   }
 
