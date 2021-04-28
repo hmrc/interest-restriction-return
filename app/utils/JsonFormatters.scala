@@ -73,7 +73,8 @@ trait JsonFormatters {
       "totalReactivation" -> models.totalReactivation,
       "totalRestrictions" -> models.totalRestrictions,
       "groupLevelAmount" -> models.groupLevelAmount,
-      "adjustedGroupInterest" -> models.adjustedGroupInterest
+      "adjustedGroupInterest" -> models.adjustedGroupInterest,
+      "aggregateNetTaxInterest" -> models.aggregateNetTaxInterest
     ).fields.filterNot(_._2 == JsNull))
   }
 
