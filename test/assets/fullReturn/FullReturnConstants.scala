@@ -84,8 +84,7 @@ object FullReturnConstants {
     "totalReactivation" -> fullReturnModelMax.totalReactivation,
     "totalRestrictions" -> 0,
     "groupLevelAmount" -> groupLevelAmountJson,
-    "adjustedGroupInterest" -> adjustedGroupInterestJson,
-
+    "adjustedGroupInterest" -> adjustedGroupInterestJson
   )
 
   val fullReturnNetTaxExpenseModelMax: FullReturnModel = FullReturnModel(
