@@ -54,8 +54,6 @@ class AbbreviatedReturnModelSpec extends WordSpec with Matchers with BaseConstan
 
       "min values feature switch disabled" in {
         val expectedValue = Json.obj(
-          "declaration" -> true,
-          "appointedReportingCompany" -> true,
           "agentDetails" -> agentDetailsJsonMin,
           "reportingCompany" -> reportingCompanyJson,
           "publicInfrastructure" -> true,

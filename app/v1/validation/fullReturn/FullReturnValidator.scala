@@ -106,7 +106,7 @@ trait FullReturnValidator extends BaseValidation {
     val subjectRestrictions: Boolean = fullReturnModel.groupSubjectToInterestRestrictions
 
     if (aggregateNetTaxInterest > 0 && subjectRestrictions) {
-      AggInterestPositiveAndRestriction(aggregateNetTaxInterest, subjectRestrictions).invalidNec
+      AggregateNetTaxInterestIncomeSubjectToRestrictions(subjectRestrictions).invalidNec
     } else {
       aggregateNetTaxInterest.validNec
     }
@@ -171,6 +171,27 @@ trait FullReturnValidator extends BaseValidation {
       case false => FullReturnDeclarationError(fullReturnModel.declaration).invalidNec
     }
 
+  private def validateNetTaxInterest(implicit path: JsPath): ValidationResult[_] = {
+    if (fullReturnModel.aggregateNetTaxInterest >
+    fullReturnModel.groupLevelAmount.interestReactivationCap) {
+      AggregateNetTaxInterestIncomeExceedsCap().invalidNec
+    } else {
+      fullReturnModel.aggregateNetTaxInterest.validNec
+    }
+  }
+
+  private def validateTotalRestrictionsDoesntExceedAggNetTaxInterestExpense: ValidationResult[_] = {
+    val aggregateNetTaxInterestExpense: Option[BigDecimal] =
+      if (fullReturnModel.aggregateNetTaxInterest < 0) Some(fullReturnModel.aggregateNetTaxInterest * -1) else None
+
+    aggregateNetTaxInterestExpense match {
+      case Some(expense) if fullReturnModel.totalRestrictions > expense =>
+        TotalRestrictionExceedsAggregateNetTaxInterestExpense(fullReturnModel.totalRestrictions).invalidNec
+      case _ => fullReturnModel.totalRestrictions.validNec
+    }
+
+  }
+
   def validate: ValidationResult[FullReturnModel] = {
 
     val validatedUkCompanies =
@@ -202,7 +223,10 @@ trait FullReturnValidator extends BaseValidation {
       validateGroupEstimateReason,
       validateCompanyEstimateReasons,
       validateReturnContainsEstimates,
-      validateDeclaration).map(_ => fullReturnModel)
+      validateDeclaration,
+      validateNetTaxInterest(JsPath),
+      validateTotalRestrictionsDoesntExceedAggNetTaxInterestExpense
+    ).map(_ => fullReturnModel)
   }
 }
 
@@ -275,12 +299,6 @@ case class TotalRestrictionsDoesNotMatch(amt: BigDecimal, calculated: BigDecimal
   val value: JsValue = Json.obj()
 }
 
-case class AggInterestPositiveAndRestriction(totalTaxInterest: BigDecimal, subjectRestrictions: Boolean) extends Validation {
-  val errorMessage: String = s"You cannot have a calculated totalTaxInterest: ${totalTaxInterest.abs} when there the  full return is subjectToRestriction: ${subjectRestrictions.toString}"
-  val path: JsPath = JsPath \ "totalRestrictions"
-  val value: JsValue = Json.obj()
-}
-
 case class CompaniesContainedAllocatedRestrictions(company: UkCompanyModel, i: Int) extends Validation {
   val errorMessage: String = s"Allocated Restrictions cannot be supplied for this UK Company when the group is not subject to Interest Restrictions"
   val path: JsPath = JsPath \ s"ukCompanies[$i]"
@@ -345,4 +363,21 @@ case class FullReturnDeclarationError(declaration: Boolean) extends Validation {
   val errorMessage: String = "The declaration must be true"
   val path: JsPath = JsPath \ "declaration"
   val value: JsValue = Json.toJson(declaration)
+}
+
+case class AggregateNetTaxInterestIncomeExceedsCap(implicit val path: JsPath) extends Validation {
+  val errorMessage: String = "The aggregate net-tax interest income exceeds the reactivation cap"
+  val value: JsValue = Json.obj()
+}
+
+case class TotalRestrictionExceedsAggregateNetTaxInterestExpense(totalRestrictions: BigDecimal) extends Validation {
+  val errorMessage: String = "The total restriction exceeds aggregate net-tax interest expense"
+  val path: JsPath = JsPath \ "totalRestrictions"
+  val value: JsValue = Json.toJson(totalRestrictions)
+}
+
+case class AggregateNetTaxInterestIncomeSubjectToRestrictions(groupSubjectToInterestRestrictions: Boolean) extends Validation {
+  val errorMessage: String = "The group cannot be subject to restrictions and have an aggregate net-tax interest income"
+  val path: JsPath = JsPath \ "groupSubjectToInterestRestrictions"
+  val value: JsValue = Json.toJson(groupSubjectToInterestRestrictions)
 }
