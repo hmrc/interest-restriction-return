@@ -16,7 +16,6 @@
 
 package v1.controllers
 
-import audit.AuditEventTypes
 import cats.data.Validated.{Invalid, Valid}
 import play.api.Logging
 import play.api.libs.json._
@@ -31,7 +30,7 @@ import v1.services.Submission
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
 
-trait BaseController extends BackendBaseController with Logging with AuditEventTypes {
+trait BaseController extends BackendBaseController with Logging {
 
   implicit val ec: ExecutionContext = controllerComponents.executionContext
 

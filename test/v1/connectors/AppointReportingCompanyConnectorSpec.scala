@@ -18,14 +18,13 @@ package v1.connectors
 
 import assets.appointReportingCompany.AppointReportingCompanyConstants._
 import assets.fullReturn.FullReturnConstants.ackRef
-import audit.AuditEventTypes
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.mocks.MockHttpClient
 import play.api.http.Status._
 import utils.BaseSpec
 import v1.models.appointReportingCompany.AppointReportingCompanyModel
 
-class AppointReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec with AuditEventTypes {
+class AppointReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec {
   "AppointReportingCompanyConnector.appoint" when {
     def setup(response: SubmissionResponse): AppointReportingCompanyConnector = {
       val desUrl = "http://localhost:9262/organisations/interest-restrictions-return/appoint"

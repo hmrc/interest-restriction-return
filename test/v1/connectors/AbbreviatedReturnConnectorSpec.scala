@@ -25,7 +25,7 @@ import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.mocks.MockHttpClient
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
 
-class AbbreviatedReturnConnectorSpec extends MockHttpClient with BaseSpec with AuditEventTypes {
+class AbbreviatedReturnConnectorSpec extends MockHttpClient with BaseSpec {
   "AbbreviatedReturnConnector.submitAbbreviatedReturn" when {
 
     def setup(response: SubmissionResponse): AbbreviatedReturnConnector = {

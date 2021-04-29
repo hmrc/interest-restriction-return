@@ -17,7 +17,6 @@
 package v1.connectors
 
 import assets.fullReturn.FullReturnConstants._
-import audit.AuditEventTypes
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.mocks.MockHttpClient
 import play.api.http.Status
@@ -27,7 +26,7 @@ import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.mocks.MockHttpClient
 import v1.models.fullReturn.FullReturnModel
 
-class FullReturnConnectorSpec extends MockHttpClient with BaseSpec with AuditEventTypes {
+class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
   "FullReturnConnector.submit using fullReturnModelMax" when {
     def setup(response: SubmissionResponse): FullReturnConnector = {
       val desUrl = "http://localhost:9262/organisations/interest-restrictions-return/full"
