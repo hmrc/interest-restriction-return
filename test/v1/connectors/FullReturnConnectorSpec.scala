@@ -30,7 +30,7 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec with AuditEve
     def setup(response: SubmissionResponse): FullReturnConnector = {
       val desUrl = "http://localhost:9262/organisations/interest-restrictions-return/full"
       mockHttpPost[FullReturnModel, Either[ErrorResponse, DesSuccessResponse]](desUrl, fullReturnUltimateParentModel)(response)
-      new FullReturnConnector(mockHttpClient,auditService,auditWrapper,appConfig)
+      new FullReturnConnector(mockHttpClient,appConfig)
     }
 
     "submission is successful" should {
@@ -57,7 +57,7 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec with AuditEve
     def setup(response: SubmissionResponse): FullReturnConnector = {
       val desUrl = "http://localhost:9262/organisations/interest-restrictions-return/full"
       mockHttpPost[FullReturnModel, Either[ErrorResponse, DesSuccessResponse]](desUrl, fullReturnModelMin)(response)
-      new FullReturnConnector(mockHttpClient,auditService,auditWrapper,appConfig)
+      new FullReturnConnector(mockHttpClient,appConfig)
     }
 
     "submission is successful" should {
@@ -67,19 +67,6 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec with AuditEve
 
         await(result) shouldBe Right(DesSuccessResponse(ackRef))
       }
-
-      "send audit event for successful response" in {
-        auditWrapper.reset()
-
-        val connector = setup(Right(DesSuccessResponse(ackRef)))
-
-        await(connector.submit(fullReturnModelMin).map {_ =>
-          val lastEvent = auditWrapper.lastEvent.get
-
-          lastEvent.auditType shouldBe FULL_RETURN
-          lastEvent.details.get("status").get shouldBe Status.CREATED.toString
-        })
-      }
     }
 
     "update is unsuccessful" should {
@@ -88,19 +75,6 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec with AuditEve
         val result = connector.submit(fullReturnModelMin)
 
         await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
-      }
-
-      "send audit event for error response" in {
-        auditWrapper.reset()
-
-        val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-
-        await(connector.submit(fullReturnModelMin).map {_ =>
-          val lastEvent = auditWrapper.lastEvent.get
-
-          lastEvent.auditType shouldBe FULL_RETURN
-          lastEvent.details.get("status").get shouldBe Status.INTERNAL_SERVER_ERROR.toString
-        })
       }
     }
   }

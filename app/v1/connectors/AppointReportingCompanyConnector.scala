@@ -16,12 +16,11 @@
 
 package v1.connectors
 
-import audit.{AuditEventTypes, AuditWrapper, InterestRestrictionReturnAuditService}
+import audit.{AuditEventTypes}
 import config.AppConfig
 
 import javax.inject.Inject
 import play.api.Logging
-import play.api.libs.json.Json
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.HttpClient
 import v1.connectors.HttpHelper.SubmissionResponse
@@ -31,7 +30,7 @@ import v1.models.requests.IdentifierRequest
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class AppointReportingCompanyConnector @Inject()(httpClient: HttpClient,irrAuditService: InterestRestrictionReturnAuditService, auditWrapper: AuditWrapper,
+class AppointReportingCompanyConnector @Inject()(httpClient: HttpClient,
                                                  implicit val appConfig: AppConfig) extends DesBaseConnector with Logging with AuditEventTypes {
 
   private[connectors] lazy val appointUrl = s"${appConfig.desUrl}/organisations/interest-restrictions-return/appoint"
@@ -42,8 +41,7 @@ class AppointReportingCompanyConnector @Inject()(httpClient: HttpClient,irrAudit
     logger.debug(s"[AppointReportingCompanyConnector][submit] URL: $appointUrl")
     logger.debug(s"[AppointReportingCompanyConnector][submit] Headers: ${desHc.headers}")
 
-    httpClient.POST(appointUrl, appointReportingCompanyModel)(AppointReportingCompanyModel.format, AppointReportingCompanyReads, desHc, ec) andThen
-      irrAuditService.sendInterestRestrictionReturnEvent(APPOINT_REPORTING_COMPANY,Json.toJson(appointReportingCompanyModel))(auditWrapper.sendEvent)
+    httpClient.POST(appointUrl, appointReportingCompanyModel)(AppointReportingCompanyModel.format, AppointReportingCompanyReads, desHc, ec)
   }
 
 }
