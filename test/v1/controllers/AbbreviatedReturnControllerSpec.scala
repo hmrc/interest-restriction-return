@@ -35,7 +35,6 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
       object AuthorisedController extends AbbreviatedReturnController(
         authAction = AuthorisedAction,
         abbreviatedReturnService = mockAbbreviatedReturnService,
-        auditWrapper = auditWrapper,
         controllerComponents = Helpers.stubControllerComponents()
       )
 
@@ -89,7 +88,6 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
         object UnauthorisedController extends AbbreviatedReturnController(
           authAction = UnauthorisedAction,
           abbreviatedReturnService = mockAbbreviatedReturnService,
-          auditWrapper = auditWrapper,
           controllerComponents = Helpers.stubControllerComponents()
         )
 

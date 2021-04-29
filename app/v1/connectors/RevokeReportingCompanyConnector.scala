@@ -16,12 +16,11 @@
 
 package v1.connectors
 
-import audit.{AuditEventTypes, AuditWrapper, InterestRestrictionReturnAuditService}
+import audit.{AuditEventTypes}
 import config.AppConfig
 
 import javax.inject.Inject
 import play.api.Logging
-import play.api.libs.json.Json
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.HttpClient
 import v1.connectors.HttpHelper.SubmissionResponse
@@ -32,7 +31,7 @@ import v1.models.revokeReportingCompany.RevokeReportingCompanyModel
 import scala.concurrent.{ExecutionContext, Future}
 
 class RevokeReportingCompanyConnector @Inject()(httpClient: HttpClient,
-                                                irrAuditService: InterestRestrictionReturnAuditService, auditWrapper: AuditWrapper, implicit val appConfig: AppConfig) extends DesBaseConnector with Logging with AuditEventTypes {
+                                                implicit val appConfig: AppConfig) extends DesBaseConnector with Logging with AuditEventTypes {
 
   private[connectors] lazy val revokeUrl = s"${appConfig.desUrl}/organisations/interest-restrictions-return/revoke"
 
@@ -42,8 +41,7 @@ class RevokeReportingCompanyConnector @Inject()(httpClient: HttpClient,
     logger.debug(s"[RevokeReportingCompanyConnector][submit] URL: $revokeUrl")
     logger.debug(s"[RevokeReportingCompanyConnector][submit] Headers: ${desHc.headers}")
 
-    httpClient.POST(revokeUrl, revokeReportingCompanyModel)(RevokeReportingCompanyModel.format, RevokeReportingCompanyReads, desHc, ec)  andThen
-      irrAuditService.sendInterestRestrictionReturnEvent(REVOKE_REPORTING_COMPANY,Json.toJson(revokeReportingCompanyModel))(auditWrapper.sendEvent)
+    httpClient.POST(revokeUrl, revokeReportingCompanyModel)(RevokeReportingCompanyModel.format, RevokeReportingCompanyReads, desHc, ec)
   }
 
 }

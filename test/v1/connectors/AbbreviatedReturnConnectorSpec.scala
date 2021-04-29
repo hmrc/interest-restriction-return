@@ -32,7 +32,7 @@ class AbbreviatedReturnConnectorSpec extends MockHttpClient with BaseSpec with A
     def setup(response: SubmissionResponse): AbbreviatedReturnConnector = {
       val desUrl = "http://localhost:9262/organisations/interest-restrictions-return/abbreviated"
       mockHttpPost[AbbreviatedReturnModel, Either[ErrorResponse, DesSuccessResponse]](desUrl, abbreviatedReturnUltimateParentModel)(response)
-      new AbbreviatedReturnConnector(mockHttpClient, auditService, auditWrapper, appConfig)
+      new AbbreviatedReturnConnector(mockHttpClient, appConfig)
     }
 
     "submission is successful" should {
@@ -43,38 +43,12 @@ class AbbreviatedReturnConnectorSpec extends MockHttpClient with BaseSpec with A
         await(result) shouldBe Right(DesSuccessResponse(ackRef))
       }
 
-      "send audit event for successful response" in {
-        auditWrapper.reset()
-
-        val connector = setup(Right(DesSuccessResponse(ackRef)))
-
-        await(connector.submitAbbreviatedReturn(abbreviatedReturnUltimateParentModel).map { _ =>
-          val lastEvent = auditWrapper.lastEvent.get
-
-          lastEvent.auditType shouldBe ABBREVIATED_RETURN
-          lastEvent.details.get("status").get shouldBe Status.CREATED.toString
-        })
-      }
-
       "submission is unsuccessful" should {
         "return a Left(UnexpectedFailure)" in {
           val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
           val result = connector.submitAbbreviatedReturn(abbreviatedReturnUltimateParentModel)
 
           await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
-        }
-
-        "send audit event for error response" in {
-          auditWrapper.reset()
-
-          val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-
-          await(connector.submitAbbreviatedReturn(abbreviatedReturnUltimateParentModel).map { _ =>
-            val lastEvent = auditWrapper.lastEvent.get
-
-            lastEvent.auditType shouldBe ABBREVIATED_RETURN
-            lastEvent.details.get("status").get shouldBe Status.INTERNAL_SERVER_ERROR.toString
-          })
         }
       }
     }

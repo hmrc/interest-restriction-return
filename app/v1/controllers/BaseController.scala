@@ -45,16 +45,12 @@ trait BaseController extends BackendBaseController with Logging with AuditEventT
     }
 
   def handleValidation[T](validationModel: ValidationResult[T], service: Submission[T], controllerName: String)
-                         (implicit hc: HeaderCarrier, identifierRequest: IdentifierRequest[JsValue], audit: AuditWrapper): Future[Result] = {
+                         (implicit hc: HeaderCarrier, identifierRequest: IdentifierRequest[JsValue]): Future[Result] = {
     validationModel match {
       case Invalid(e) =>
         logger.debug(s"[$controllerName][VALIDATION][FAILURE] Business Rule Errors: ${Json.toJson(ValidationErrorResponseModel(e))}")
         logger.info(s"[$controllerName][VALIDATION][FAILURE]")
         val errors = Json.toJson(ValidationErrorResponseModel(e))
-        audit.sendEvent(
-          InterestRestrictionReturnAuditEvent(
-            FAILED_VALIDATION,BAD_REQUEST,
-            Some(Json.obj("errors" -> Json.toJson(ValidationErrorResponseModel(e)), "payload" -> identifierRequest.request.body))))
         Future.successful(BadRequest(errors))
       case Valid(model) =>
         logger.info(s"[$controllerName][VALIDATION][SUCCESS]")

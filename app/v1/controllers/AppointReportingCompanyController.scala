@@ -16,7 +16,6 @@
 
 package v1.controllers
 
-import audit.AuditWrapper
 
 import javax.inject.{Inject, Singleton}
 import play.api.libs.json.JsValue
@@ -27,7 +26,7 @@ import v1.services.AppointReportingCompanyService
 
 @Singleton()
 class AppointReportingCompanyController @Inject()(authAction: AuthAction,
-                                                  appointReportingCompanyService: AppointReportingCompanyService,implicit val auditWrapper: AuditWrapper,
+                                                  appointReportingCompanyService: AppointReportingCompanyService,
 
                                                   override val controllerComponents: ControllerComponents) extends BaseController {
 

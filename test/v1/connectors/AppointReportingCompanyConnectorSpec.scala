@@ -31,7 +31,7 @@ class AppointReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec 
     def setup(response: SubmissionResponse): AppointReportingCompanyConnector = {
       val desUrl = "http://localhost:9262/organisations/interest-restrictions-return/appoint"
       mockHttpPost[AppointReportingCompanyModel, Either[ErrorResponse, DesSuccessResponse]](desUrl, appointReportingCompanyModelMax)(response)
-      new AppointReportingCompanyConnector(mockHttpClient,auditService,auditWrapper,appConfig)
+      new AppointReportingCompanyConnector(mockHttpClient,appConfig)
     }
 
     "appointment is successful" should {
@@ -41,19 +41,6 @@ class AppointReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec 
 
         await(result) shouldBe Right(DesSuccessResponse(ackRef))
       }
-
-      "send audit event for successful response" in {
-        auditWrapper.reset()
-
-        val connector = setup(Right(DesSuccessResponse(ackRef)))
-
-        await(connector.appoint(appointReportingCompanyModelMax).map { _ =>
-          val lastEvent = auditWrapper.lastEvent.get
-
-          lastEvent.auditType shouldBe APPOINT_REPORTING_COMPANY
-          lastEvent.details.get("status").get shouldBe Status.CREATED.toString
-        })
-      }
     }
 
     "update is unsuccessful" should {
@@ -62,19 +49,6 @@ class AppointReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec 
         val result = connector.appoint(appointReportingCompanyModelMax)
 
         await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
-      }
-
-      "send audit event for error response" in {
-        auditWrapper.reset()
-
-        val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-
-        await(connector.appoint(appointReportingCompanyModelMax).map { _ =>
-          val lastEvent = auditWrapper.lastEvent.get
-
-          lastEvent.auditType shouldBe APPOINT_REPORTING_COMPANY
-          lastEvent.details.get("status").get shouldBe Status.INTERNAL_SERVER_ERROR.toString
-        })
       }
     }
   }

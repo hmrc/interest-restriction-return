@@ -35,7 +35,6 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
       object AuthorisedController extends RevokeReportingCompanyController(
         authAction = AuthorisedAction,
         revokeReportingCompanyService = mockRevokeReportingCompanyService,
-        auditWrapper = auditWrapper,
         controllerComponents = Helpers.stubControllerComponents()
       )
 
@@ -91,7 +90,6 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
         object UnauthorisedController extends RevokeReportingCompanyController(
           authAction = UnauthorisedAction,
           revokeReportingCompanyService = mockRevokeReportingCompanyService,
-          auditWrapper = auditWrapper,
           controllerComponents = Helpers.stubControllerComponents()
         )
 
