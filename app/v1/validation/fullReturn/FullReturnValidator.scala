@@ -231,7 +231,7 @@ trait FullReturnValidator extends BaseValidation {
       validateCompanyEstimateReasons,
       validateReturnContainsEstimates,
       validateDeclaration,
-      validateNetTaxInterest(JsPath),
+      validateNetTaxInterest,
       validateTotalRestrictionsDoesntExceedAggNetTaxInterestExpense,
       validateReactivationCapSubjectToReactivations
     ).map(_ => fullReturnModel)
