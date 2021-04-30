@@ -171,7 +171,7 @@ trait FullReturnValidator extends BaseValidation {
       case false => FullReturnDeclarationError(fullReturnModel.declaration).invalidNec
     }
 
-  private def validateNetTaxInterest(implicit path: JsPath): ValidationResult[_] = {
+  private def validateNetTaxInterest: ValidationResult[_] = {
     if (fullReturnModel.groupSubjectToInterestReactivation &&
       fullReturnModel.aggregateNetTaxInterest > fullReturnModel.groupLevelAmount.interestReactivationCap) {
       AggregateNetTaxInterestIncomeExceedsCap(fullReturnModel.groupLevelAmount.interestReactivationCap).invalidNec

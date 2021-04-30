@@ -21,8 +21,8 @@ import v1.validation.GroupRatioValidator
 
 case class GroupRatioModel(isElected: Boolean,
                            groupEBITDAChargeableGains: Boolean,
-                           groupRatioBlended: Option[GroupRatioBlendedModel],
-                           activeGroupEBITDAChargeableGains: Boolean
+                           activeGroupEBITDAChargeableGains: Boolean,
+                           groupRatioBlended: Option[GroupRatioBlendedModel]
                           ) extends GroupRatioValidator {
   override val groupRatioModel = this
 }
