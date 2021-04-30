@@ -18,7 +18,6 @@ package v1.connectors
 
 import assets.fullReturn.FullReturnConstants._
 import audit.AuditEventTypes
-import play.api.http.Status
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.mocks.MockHttpClient
 import play.api.http.Status._

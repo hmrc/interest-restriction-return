@@ -53,6 +53,13 @@ trait AppointReportingCompanyValidator extends BaseValidation {
     }
   }
 
+  private def validateDeclaration: ValidationResult[Boolean] = {
+    val declaration = appointReportingCompanyModel.declaration
+    if(declaration) declaration.validNec else {
+      DeclaredFiftyPercentOfEligibleCompanies(declaration).invalidNec
+    }
+  }
+
   def validate: ValidationResult[AppointReportingCompanyModel] = {
 
     val validatedAuthorisingCompanies =
@@ -62,7 +69,7 @@ trait AppointReportingCompanyValidator extends BaseValidation {
         }:_*)
       }
 
-    (appointReportingCompanyModel.agentDetails.validate(JsPath \ "agentDetails"),
+    combineValidations(appointReportingCompanyModel.agentDetails.validate(JsPath \ "agentDetails"),
       appointReportingCompanyModel.reportingCompany.validate(JsPath \ "reportingCompany"),
       validatedAuthorisingCompanies,
       optionValidations(appointReportingCompanyModel.ultimateParentCompany.map(_.validate(JsPath \ "ultimateParentCompany"))),
@@ -70,8 +77,9 @@ trait AppointReportingCompanyValidator extends BaseValidation {
       appointReportingCompanyModel.accountingPeriod.validate(JsPath \ "accountingPeriod"),
       validateIdentityOfAppointingCompany,
       validateUltimateParentCompany,
-      validateDuplicateAuthorisingCompanies
-      ).mapN((_,_,_,_,_,_,_,_, _) => appointReportingCompanyModel)
+      validateDuplicateAuthorisingCompanies,
+      validateDeclaration
+      ).map(_ => appointReportingCompanyModel)
   }
 }
 
@@ -109,4 +117,10 @@ case object AuthorisingCompaniesContainsDuplicates extends Validation {
   val errorMessage: String = "Authorising companies contain duplicate information"
   val path = JsPath \ "authorisingCompanies"
   val value = Json.obj()
+}
+
+case class DeclaredFiftyPercentOfEligibleCompanies(declaration: Boolean) extends Validation {
+  val errorMessage: String = "The declaration that the listed companies constitute at least 50% of the eligible companies must be true"
+  val path: JsPath = JsPath \ "declaration"
+  val value = Json.toJson(declaration)
 }

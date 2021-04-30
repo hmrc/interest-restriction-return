@@ -39,7 +39,7 @@ trait RevokeReportingCompanyValidator extends BaseValidation {
     }
   }
 
-  private def validateDeclaration(implicit path: JsPath): ValidationResult[Boolean] = {
+  private def validateDeclaration: ValidationResult[Boolean] = {
     val declaration = revokeReportingCompanyModel.declaration
     if(declaration) declaration.validNec else {
       DeclaredFiftyPercentOfEligibleCompanies(declaration).invalidNec
@@ -71,7 +71,7 @@ trait RevokeReportingCompanyValidator extends BaseValidation {
         }:_*)
       }
 
-    (revokeReportingCompanyModel.agentDetails.validate(JsPath \ "agentDetails"),
+    combineValidations(revokeReportingCompanyModel.agentDetails.validate(JsPath \ "agentDetails"),
       revokeReportingCompanyModel.reportingCompany.validate(JsPath \ "reportingCompany"),
       validateReportingCompanyRevokeItself(JsPath \ "isReportingCompanyRevokingItself"),
       optionValidations(revokeReportingCompanyModel.companyMakingRevocation.map(_.validate(JsPath \ "companyMakingRevocation"))),
@@ -79,9 +79,9 @@ trait RevokeReportingCompanyValidator extends BaseValidation {
       optionValidations(revokeReportingCompanyModel.ultimateParentCompany.map(_.validate(JsPath \ "ultimateParentCompany"))),
       revokeReportingCompanyModel.accountingPeriod.validate(JsPath \ "accountingPeriod"),
       validatedAuthorisingCompanies,
-      validateDeclaration(JsPath \ "declaration"),
+      validateDeclaration,
       validateDuplicateAuthorisingCompanies
-      ).mapN((_,_,_,_,_,_,_,_,_, _) => revokeReportingCompanyModel)
+      ).map(_ => revokeReportingCompanyModel)
   }
 }
 
@@ -91,8 +91,9 @@ case object CompanyMakingAppointmentMustSupplyDetails extends Validation {
   val value = Json.obj()
 }
 
-case class DeclaredFiftyPercentOfEligibleCompanies(declaration: Boolean)(implicit val path: JsPath) extends Validation {
+case class DeclaredFiftyPercentOfEligibleCompanies(declaration: Boolean) extends Validation {
   val errorMessage: String = "The declaration that the listed companies constitute at least 50% of the eligible companies must be true"
+  val path: JsPath = JsPath \ "declaration"
   val value = JsBoolean(declaration)
 }
 

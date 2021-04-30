@@ -142,5 +142,14 @@ class AppointReportingCompanyValidatorSpec extends BaseSpec {
       }
 
     }
+
+    "fail validation when the declaration is false" in {
+      val testModel = appointReportingCompanyModelMax.copy(declaration = false)
+
+      leftSideErrorLength(testModel.validate) shouldBe 1
+
+      leftSideError(testModel.validate).errorMessage shouldBe
+        DeclaredFiftyPercentOfEligibleCompanies(declaration = false).errorMessage
+    }
   }
 }
