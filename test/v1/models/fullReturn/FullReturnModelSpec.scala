@@ -27,8 +27,6 @@ import assets.GroupCompanyDetailsConstants._
 import assets.ReportingCompanyConstants._
 import assets.fullReturn.GroupLevelAmountConstants._
 import assets.fullReturn.UkCompanyConstants._
-import assets.ConsolidatedPartnershipConstants._
-import assets.GroupRatioConstants._
 import assets.NonConsolidatedInvestmentElectionConstants._
 import v1.models.Original
 
@@ -68,7 +66,7 @@ class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants {
 
         val expectedValue = Json.obj(
           "agentDetails" -> agentDetailsJsonMin,
-          "reportingCompany" -> reportingCompanyJson,
+          "reportingCompany" -> reportingCompanySameJson,
           "publicInfrastructure" -> true,
           "groupCompanyDetails" -> groupCompanyDetailsJson,
           "submissionType" -> Original,

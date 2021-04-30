@@ -172,9 +172,9 @@ trait FullReturnValidator extends BaseValidation {
     }
 
   private def validateNetTaxInterest(implicit path: JsPath): ValidationResult[_] = {
-    if (fullReturnModel.aggregateNetTaxInterest >
-    fullReturnModel.groupLevelAmount.interestReactivationCap) {
-      AggregateNetTaxInterestIncomeExceedsCap().invalidNec
+    if (fullReturnModel.groupSubjectToInterestReactivation &&
+      fullReturnModel.aggregateNetTaxInterest > fullReturnModel.groupLevelAmount.interestReactivationCap) {
+      AggregateNetTaxInterestIncomeExceedsCap(fullReturnModel.groupLevelAmount.interestReactivationCap).invalidNec
     } else {
       fullReturnModel.aggregateNetTaxInterest.validNec
     }
@@ -191,6 +191,13 @@ trait FullReturnValidator extends BaseValidation {
     }
 
   }
+
+  def validateReactivationCapSubjectToReactivations: ValidationResult[_] =
+    if (!fullReturnModel.groupSubjectToInterestReactivation && fullReturnModel.groupLevelAmount.interestReactivationCap > 0) {
+      ReactivationCapNotSubjectToReactivations(fullReturnModel.groupLevelAmount.interestReactivationCap).invalidNec
+    } else {
+      fullReturnModel.groupSubjectToInterestReactivation.validNec
+    }
 
   def validate: ValidationResult[FullReturnModel] = {
 
@@ -225,7 +232,8 @@ trait FullReturnValidator extends BaseValidation {
       validateReturnContainsEstimates,
       validateDeclaration,
       validateNetTaxInterest(JsPath),
-      validateTotalRestrictionsDoesntExceedAggNetTaxInterestExpense
+      validateTotalRestrictionsDoesntExceedAggNetTaxInterestExpense,
+      validateReactivationCapSubjectToReactivations
     ).map(_ => fullReturnModel)
   }
 }
@@ -283,7 +291,7 @@ case class GroupLevelInterestRestrictionsAndReactivationSupplied(groupSubjectToI
 
 case class TotalReactivationsNotGreaterThanCapacity(calculated: BigDecimal, capacity: BigDecimal) extends Validation {
   val errorMessage: String = s"Calculated Total Reactivations: $calculated cannot not be greater than Reactivations Capacity: $capacity"
-  val path: JsPath = JsPath \ "totalReactivation" \ "interestReactivationCap"
+  val path: JsPath = JsPath \ "groupLevelAmount" \ "interestReactivationCap"
   val value: JsValue = Json.obj()
 }
 
@@ -365,9 +373,10 @@ case class FullReturnDeclarationError(declaration: Boolean) extends Validation {
   val value: JsValue = Json.toJson(declaration)
 }
 
-case class AggregateNetTaxInterestIncomeExceedsCap(implicit val path: JsPath) extends Validation {
+case class AggregateNetTaxInterestIncomeExceedsCap(reactivationCap: BigDecimal) extends Validation {
   val errorMessage: String = "The aggregate net-tax interest income exceeds the reactivation cap"
-  val value: JsValue = Json.obj()
+  val path: JsPath = JsPath \ "groupLevelAmount" \ "interestReactivationCap"
+  val value: JsValue = Json.toJson(reactivationCap)
 }
 
 case class TotalRestrictionExceedsAggregateNetTaxInterestExpense(totalRestrictions: BigDecimal) extends Validation {
@@ -380,4 +389,10 @@ case class AggregateNetTaxInterestIncomeSubjectToRestrictions(groupSubjectToInte
   val errorMessage: String = "The group cannot be subject to restrictions and have an aggregate net-tax interest income"
   val path: JsPath = JsPath \ "groupSubjectToInterestRestrictions"
   val value: JsValue = Json.toJson(groupSubjectToInterestRestrictions)
+}
+
+case class ReactivationCapNotSubjectToReactivations(reactivationCap: BigDecimal) extends Validation {
+  val errorMessage: String = "A reactivation cap cannot be supplied when the group is not subject to reactivations"
+  val path: JsPath = JsPath \ "groupLevelAmount" \ "interestReactivationCap"
+  val value: JsValue = Json.toJson(reactivationCap)
 }
