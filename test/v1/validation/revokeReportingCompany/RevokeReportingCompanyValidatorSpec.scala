@@ -17,7 +17,6 @@
 package v1.validation.revokeReportingCompany
 
 import assets.IdentityOfCompanySubmittingConstants.identityOfCompanySubmittingModelMax
-import assets.appointReportingCompany.AppointReportingCompanyConstants.appointReportingCompanyModelMax
 import assets.revokeReportingCompany.RevokeReportingCompanyConstants.revokeReportingCompanyModelMax
 import play.api.libs.json.JsPath
 import utils.BaseSpec

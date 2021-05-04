@@ -16,7 +16,7 @@
 
 package v1.controllers
 
-import audit.{AuditEventTypes, AuditWrapper, InterestRestrictionReturnAuditEvent}
+import audit.AuditEventTypes
 import cats.data.Validated.{Invalid, Valid}
 import play.api.Logging
 import play.api.libs.json._
