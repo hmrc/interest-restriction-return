@@ -21,10 +21,13 @@ import v1.validation.GroupRatioValidator
 
 case class GroupRatioModel(isElected: Boolean,
                            groupEBITDAChargeableGains: Boolean,
-                           groupRatioBlended: Option[GroupRatioBlendedModel]) extends GroupRatioValidator {
+                           activeGroupEBITDAChargeableGains: Boolean,
+                           groupRatioBlended: Option[GroupRatioBlendedModel]
+                          ) extends GroupRatioValidator {
   override val groupRatioModel = this
 }
 
 object GroupRatioModel {
-  implicit val format = Json.format[GroupRatioModel]
+  implicit val writes = Json.writes[GroupRatioModel]
+  implicit val reads = Json.reads[GroupRatioModel]
 }

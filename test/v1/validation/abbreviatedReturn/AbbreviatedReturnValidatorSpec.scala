@@ -130,6 +130,12 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
           revisedReturnDetails = Some(RevisedReturnDetailsModel(returnDetails))
         ).validate).errorMessage shouldBe RevisedReturnDetailsCharacterError(returnDetails).errorMessage
       }
+
+      "declaration is false" in {
+        val model = abbreviatedReturnUltimateParentModel.copy(declaration = false)
+        leftSideError(model.validate).errorMessage shouldBe AbbreviatedReturnDeclarationError(false).errorMessage
+      }
+
     }
   }
 }

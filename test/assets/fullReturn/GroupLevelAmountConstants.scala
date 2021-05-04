@@ -39,4 +39,12 @@ object GroupLevelAmountConstants {
     "interestAllowanceForPeriod" -> interestAllowanceForPeriod,
     "interestCapacityForPeriod" -> interestCapacityForPeriod
   )
+
+  val groupLevelAmountNoCapModel = GroupLevelAmountModel(
+    interestReactivationCap = 0,
+    interestAllowanceBroughtForward = interestAllowanceBroughtForward,
+    interestAllowanceForPeriod = interestAllowanceForPeriod,
+    interestCapacityForPeriod = interestCapacityForPeriod
+  )
+
 }

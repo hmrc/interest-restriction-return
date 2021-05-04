@@ -23,6 +23,7 @@ object ConsolidatedPartnershipITConstants extends BaseITConstants {
 
   val consolidatedPartnershipsJson= Json.obj(
     "isElected" -> true,
+    "isActive" -> true,
     "consolidatedPartnerships" -> Seq(partnershipJson)
   )
 }

@@ -18,20 +18,19 @@ package v1.connectors
 
 import assets.abbreviatedReturn.AbbreviatedReturnConstants._
 import assets.fullReturn.FullReturnConstants.ackRef
-import audit.AuditEventTypes
 import play.api.http.Status._
 import utils.BaseSpec
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.mocks.MockHttpClient
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
 
-class AbbreviatedReturnConnectorSpec extends MockHttpClient with BaseSpec with AuditEventTypes {
+class AbbreviatedReturnConnectorSpec extends MockHttpClient with BaseSpec {
   "AbbreviatedReturnConnector.submitAbbreviatedReturn" when {
 
     def setup(response: SubmissionResponse): AbbreviatedReturnConnector = {
       val desUrl = "http://localhost:9262/organisations/interest-restrictions-return/abbreviated"
       mockHttpPost[AbbreviatedReturnModel, Either[ErrorResponse, DesSuccessResponse]](desUrl, abbreviatedReturnUltimateParentModel)(response)
-      new AbbreviatedReturnConnector(mockHttpClient, appConfig)
+      new AbbreviatedReturnConnector(mockHttpClient, jsonFormatters, appConfig)
     }
 
     "submission is successful" should {

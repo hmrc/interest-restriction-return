@@ -16,7 +16,6 @@
 
 package v1.connectors
 
-import audit.{AuditEventTypes}
 import config.AppConfig
 
 import javax.inject.Inject
@@ -31,7 +30,7 @@ import v1.models.requests.IdentifierRequest
 import scala.concurrent.{ExecutionContext, Future}
 
 class AppointReportingCompanyConnector @Inject()(httpClient: HttpClient,
-                                                 implicit val appConfig: AppConfig) extends DesBaseConnector with Logging with AuditEventTypes {
+                                                 implicit val appConfig: AppConfig) extends DesBaseConnector with Logging {
 
   private[connectors] lazy val appointUrl = s"${appConfig.desUrl}/organisations/interest-restrictions-return/appoint"
 

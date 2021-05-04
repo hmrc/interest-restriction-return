@@ -16,7 +16,6 @@
 
 package v1.connectors
 
-import audit.{AuditEventTypes}
 import config.AppConfig
 
 import javax.inject.Inject
@@ -31,7 +30,7 @@ import v1.models.revokeReportingCompany.RevokeReportingCompanyModel
 import scala.concurrent.{ExecutionContext, Future}
 
 class RevokeReportingCompanyConnector @Inject()(httpClient: HttpClient,
-                                                implicit val appConfig: AppConfig) extends DesBaseConnector with Logging with AuditEventTypes {
+                                                implicit val appConfig: AppConfig) extends DesBaseConnector with Logging {
 
   private[connectors] lazy val revokeUrl = s"${appConfig.desUrl}/organisations/interest-restrictions-return/revoke"
 

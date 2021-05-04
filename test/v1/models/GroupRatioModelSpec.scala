@@ -16,22 +16,21 @@
 
 package v1.models
 
-import assets.GroupLevelElectionsConstants._
+import assets.GroupRatioConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 import utils.TestJsonFormatter._
-import assets.NonConsolidatedInvestmentElectionConstants._
 
-class GroupLevelElectionsModelSpec extends WordSpec with Matchers {
+class GroupRatioModelSpec extends WordSpec with Matchers {
 
-  "GroupLevelElectionsModel" must {
+  "GroupRatioModel" must {
 
     "correctly write to json" when {
 
       "max values given" in {
 
-        val expectedValue = groupLevelElectionsJsonMax
-        val actualValue = Json.toJson(groupLevelElectionsModelMax)(cr008EnabledJsonFormatter.groupLevelElectionWrites)
+        val expectedValue = groupRatioJsonMax
+        val actualValue = Json.toJson(groupRatioModelMax)(cr008EnabledJsonFormatter.groupRatioWrites)
 
         actualValue shouldBe expectedValue
       }
@@ -39,28 +38,20 @@ class GroupLevelElectionsModelSpec extends WordSpec with Matchers {
       "the CR008 feature switch is disabled" in {
 
         val expectedValue = Json.obj(
-          "groupRatio" -> Json.obj(
-            "isElected" -> false,
-            "groupEBITDAChargeableGains" -> false
-          ),
-          "interestAllowanceAlternativeCalculation" -> true,
-          "interestAllowanceNonConsolidatedInvestment" -> nonConsolidatedInvestmentJsonMin,
-          "interestAllowanceConsolidatedPartnership" -> Json.obj(
-            "isElected" -> false
-          )
+          "isElected" -> false,
+          "groupEBITDAChargeableGains" -> false
         )
-        val actualValue = Json.toJson(groupLevelElectionsModelMin)(cr008DisabledJsonFormatter.groupLevelElectionWrites)
+        val actualValue = Json.toJson(groupRatioModelMin)(cr008DisabledJsonFormatter.groupRatioWrites)
 
         actualValue shouldBe expectedValue
       }
     }
 
     "correctly read from Json" when {
-
       "max values given" in {
 
-        val expectedValue = groupLevelElectionsModelMax
-        val actualValue = groupLevelElectionsJsonMax.as[GroupLevelElectionsModel]
+        val expectedValue = groupRatioModelMax
+        val actualValue = groupRatioJsonMax.as[GroupRatioModel]
 
         actualValue shouldBe expectedValue
       }

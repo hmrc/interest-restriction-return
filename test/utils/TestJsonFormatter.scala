@@ -14,18 +14,11 @@
  * limitations under the License.
  */
 
-package audit
+package utils
 
-trait AuditEvent {
-  def auditType: String
+case class TestJsonFormatter(cr008Enabled: Boolean) extends JsonFormatters
 
-  def details: Map[String, String]
-}
-
-trait AuditEventTypes {
-  val FULL_RETURN = "FullSubmission"
-  val ABBREVIATED_RETURN = "AbbreviatedSubmission"
-  val REVOKE_REPORTING_COMPANY = "RevokeReportingCompany"
-  val APPOINT_REPORTING_COMPANY = "AppointReportingCompany"
-  val FAILED_VALIDATION = "ValidationFailed"
+object TestJsonFormatter {
+  val cr008EnabledJsonFormatter: TestJsonFormatter = TestJsonFormatter(true)
+  val cr008DisabledJsonFormatter: TestJsonFormatter = TestJsonFormatter(false)
 }

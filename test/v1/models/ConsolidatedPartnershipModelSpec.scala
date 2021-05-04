@@ -20,6 +20,7 @@ import assets.ConsolidatedPartnershipConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 import v1.models.ConsolidatedPartnershipModel
+import utils.TestJsonFormatter._
 
 class ConsolidatedPartnershipModelSpec extends WordSpec with Matchers {
 
@@ -30,7 +31,7 @@ class ConsolidatedPartnershipModelSpec extends WordSpec with Matchers {
       "max values given" in {
 
         val expectedValue = consolidatedPartnershipsJsonMax
-        val actualValue = Json.toJson(consolidatedPartnershipsModelMax)
+        val actualValue = Json.toJson(consolidatedPartnershipsModelMax)(cr008EnabledJsonFormatter.consolidatedPartnershipWrites)
 
         actualValue shouldBe expectedValue
       }
@@ -38,7 +39,17 @@ class ConsolidatedPartnershipModelSpec extends WordSpec with Matchers {
       "min values given" in {
 
         val expectedValue = consolidatedPartnershipsJsonMin
-        val actualValue = Json.toJson(consolidatedPartnershipsModelMin)
+        val actualValue = Json.toJson(consolidatedPartnershipsModelMin)(cr008EnabledJsonFormatter.consolidatedPartnershipWrites)
+
+        actualValue shouldBe expectedValue
+      }
+
+      "the CR008 feature switch is disabled" in {
+
+        val expectedValue = Json.obj(
+          "isElected" -> false
+        )
+        val actualValue = Json.toJson(consolidatedPartnershipsModelMin)(cr008DisabledJsonFormatter.consolidatedPartnershipWrites)
 
         actualValue shouldBe expectedValue
       }

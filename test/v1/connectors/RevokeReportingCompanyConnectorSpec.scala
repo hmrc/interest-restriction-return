@@ -18,14 +18,13 @@ package v1.connectors
 
 import assets.fullReturn.FullReturnConstants.ackRef
 import assets.revokeReportingCompany.RevokeReportingCompanyConstants._
-import audit.AuditEventTypes
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.mocks.MockHttpClient
 import play.api.http.Status._
 import utils.BaseSpec
 import v1.models.revokeReportingCompany.RevokeReportingCompanyModel
 
-class RevokeReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec with AuditEventTypes {
+class RevokeReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec {
   "RevokeReportingCompanyConnector.revoke" when {
 
     def setup(response: SubmissionResponse): RevokeReportingCompanyConnector = {

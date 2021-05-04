@@ -16,16 +16,18 @@
 
 package v1.models
 
-import play.api.libs.json.Json
+import play.api.libs.json._
 import v1.validation.GroupLevelElectionValidation
 
-case class GroupLevelElectionsModel(groupRatio: GroupRatioModel,
+case class GroupLevelElectionsModel (groupRatio: GroupRatioModel,
                                     interestAllowanceAlternativeCalculation: Boolean,
+                                    activeInterestAllowanceAlternativeCalculation: Boolean,
                                     interestAllowanceNonConsolidatedInvestment: NonConsolidatedInvestmentElectionModel,
-                                    interestAllowanceConsolidatedPartnership: ConsolidatedPartnershipModel) extends GroupLevelElectionValidation {
+                                    interestAllowanceConsolidatedPartnership: ConsolidatedPartnershipModel
+                                   ) extends GroupLevelElectionValidation {
   override val groupLevelElectionsModel = this
-}
 
+}
 object GroupLevelElectionsModel {
-  implicit val format = Json.format[GroupLevelElectionsModel]
+  implicit val reads: Reads[GroupLevelElectionsModel] = Json.reads[GroupLevelElectionsModel]
 }

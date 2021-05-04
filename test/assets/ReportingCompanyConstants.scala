@@ -34,4 +34,16 @@ object ReportingCompanyConstants extends BaseConstants {
     ctutr = ctutr,
     sameAsUltimateParent = false
   )
+
+  val reportingCompanySameJson = Json.obj(
+    "companyName" -> companyName,
+    "ctutr" -> ctutr,
+    "sameAsUltimateParent" -> true
+  )
+
+  val reportingCompanySameModel = ReportingCompanyModel(
+    companyName = companyName,
+    ctutr = ctutr,
+    sameAsUltimateParent = true
+  )
 }

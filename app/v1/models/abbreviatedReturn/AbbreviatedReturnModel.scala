@@ -20,7 +20,8 @@ import play.api.libs.json._
 import v1.models._
 import v1.validation.abbreviatedReturn.AbbreviatedReturnValidator
 
-case class AbbreviatedReturnModel(appointedReportingCompany: Boolean,
+case class AbbreviatedReturnModel(declaration: Boolean,
+                                  appointedReportingCompany: Boolean,
                                   agentDetails: AgentDetailsModel,
                                   reportingCompany: ReportingCompanyModel,
                                   parentCompany: Option[ParentCompanyModel],
@@ -32,24 +33,9 @@ case class AbbreviatedReturnModel(appointedReportingCompany: Boolean,
 
   override val abbreviatedReturnModel: AbbreviatedReturnModel = this
   val publicInfrastructure: Boolean = ukCompanies.map(_.qicElection).exists(identity)
+  val numberOfUkCompanies: Int = ukCompanies.size
 }
 
 object AbbreviatedReturnModel {
-
-  val writes: Writes[AbbreviatedReturnModel] = Writes { models =>
-
-    JsObject(Json.obj(
-      "agentDetails" -> models.agentDetails,
-      "reportingCompany" -> models.reportingCompany,
-      "parentCompany" -> models.parentCompany,
-      "publicInfrastructure" -> models.publicInfrastructure,
-      "groupCompanyDetails" -> models.groupCompanyDetails,
-      "submissionType" -> models.submissionType,
-      "revisedReturnDetails" -> models.revisedReturnDetails,
-      "groupLevelElections" -> models.groupLevelElections,
-      "ukCompanies" -> models.ukCompanies
-    ).fields.filterNot(_._2 == JsNull))
-  }
-
-  implicit val format = Format[AbbreviatedReturnModel](Json.reads[AbbreviatedReturnModel], writes)
+  implicit val abbreviatedReturnReads: Reads[AbbreviatedReturnModel] = Json.reads[AbbreviatedReturnModel]
 }
