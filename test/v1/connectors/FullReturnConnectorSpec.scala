@@ -19,7 +19,6 @@ package v1.connectors
 import assets.fullReturn.FullReturnConstants._
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.mocks.MockHttpClient
-import play.api.http.Status
 import play.api.http.Status._
 import utils.BaseSpec
 import v1.connectors.HttpHelper.SubmissionResponse

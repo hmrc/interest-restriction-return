@@ -18,7 +18,6 @@ package v1.connectors
 
 import assets.abbreviatedReturn.AbbreviatedReturnConstants._
 import assets.fullReturn.FullReturnConstants.ackRef
-import audit.AuditEventTypes
 import play.api.http.Status._
 import utils.BaseSpec
 import v1.connectors.HttpHelper.SubmissionResponse
