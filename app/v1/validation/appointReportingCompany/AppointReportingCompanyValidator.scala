@@ -120,7 +120,7 @@ case object AuthorisingCompaniesContainsDuplicates extends Validation {
 }
 
 case class DeclaredFiftyPercentOfEligibleCompanies(declaration: Boolean) extends Validation {
-  val errorMessage: String = "The declaration that the listed companies constitute at least 50% of the eligible companies must be true"
+  val errorMessage: String = "Declaration is not valid so will not be submitted. You need to confirm the listed companies constitute at least 50% of the eligible companies."
   val path: JsPath = JsPath \ "declaration"
   val value = Json.toJson(declaration)
 }
