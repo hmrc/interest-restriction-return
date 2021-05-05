@@ -27,29 +27,42 @@ This is a protected backend microservice that is the conduit between Public faci
 
 **Example Request**
 ```json
-  {
-    "agentDetails": {
-    	"agentActingOnBehalfOfCompany": true,
-    	"agentName": "some agent"
-	},
-    "reportingCompany": {
-    	"companyName": "company name a",
-    	"ctutr": "1123456789",
-    	"sameAsUltimateParent": true,
-    	"reportingCompanyDeemed": false
+{
+  "agentDetails": {
+    "agentActingOnBehalfOfCompany": true,
+    "agentName": "some agent"
+  },
+  "reportingCompany": {
+    "companyName": "company name a",
+    "ctutr": "1123456789",
+    "sameAsUltimateParent": false
+  },
+  "isReportingCompanyAppointingItself": false,
+  "identityOfAppointingCompany": {
+    "companyName": "company name b",
+    "countryOfIncorporation": "IT"
+  },
+  "ultimateParentCompany": {
+    "isUk": true,
+    "companyName": "parent company a",
+    "sautr": "1111111111"
+  },
+  "authorisingCompanies": [
+    {
+      "companyName": "company name c",
+      "utr": "1111111111"
     },
-    "authorisingCompanies": [
-      {
-    	"companyName": "company name b",
-    	"ctutr": "1123456789"
-      },
-      {
-    	"companyName": "company name c",
-    	"ctutr": "1123456789"
-      }
-    ],
-    "declaration": true
-  }
+    {
+      "companyName": "company name d",
+      "utr": "1111111111"
+    }
+  ],
+  "accountingPeriod": {
+    "startDate": "2018-11-01",
+    "endDate": "2019-12-01"
+  },
+  "declaration": true
+}
 ```
 
 #### Success Response
@@ -132,39 +145,42 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
 
 **Example Request**
 ```json
-  {
-    "agentDetails": {
-      "agentActingOnBehalfOfCompany": true,
-      "agentName": "some agent"
+{
+  "agentDetails": {
+    "agentActingOnBehalfOfCompany": true,
+    "agentName": "some agent"
+  },
+  "reportingCompany": {
+    "companyName": "company name a",
+    "ctutr": "1123456789",
+    "sameAsUltimateParent": false
+  },
+  "isReportingCompanyRevokingItself": false,
+  "companyMakingRevocation": {
+    "companyName": "company name b",
+    "countryOfIncorporation": "IT"
+  },
+  "ultimateParentCompany": {
+    "isUk": true,
+    "companyName": "parent company a",
+    "sautr": "1111111111"
+  },
+  "authorisingCompanies": [
+    {
+      "companyName": "company name c",
+      "utr": "1111111111"
     },
-    "reportingCompany": {
-      "companyName": "some reporting company",
-      "ctutr": "1123456789",
-      "sameAsUltimateParent": true,
-      "reportingCompanyDeemed": true
-    },
-    "isReportingCompanyRevokingItself": true,
-    "companyMakingRevocation": {
-      "companyName": "some company",
-      "ctutr": "1123456789",
-      "countryOfIncorporation": "US"
-    },
-    "ultimateParent": {
-      "registeredCompanyName": "some company",
-      "ctutr": "1123456789"
-    },
-    "accountingPeriod": {
-      "startDate": "2019-05-01",
-      "endDate": "2020-04-30"
-    },
-    "authorisingCompanies": [
-      {
-        "companyName": "some authorising company",
-        "ctutr": "1123456789"
-      }
-    ],
-    "declaration": true
-  }
+    {
+      "companyName": "company name d",
+      "utr": "1111111111"
+    }
+  ],
+  "accountingPeriod": {
+    "startDate": "2018-11-01",
+    "endDate": "2019-12-01"
+  },
+  "declaration": true
+}
 ```
 
 #### Success Response
@@ -247,76 +263,77 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
 **Example Request**
 ```json
    {
-     "agentDetails": {
-       "agentActingOnBehalfOfCompany": true,
-       "agentName": "some agent"
-     },
-     "reportingCompany": {
-       "companyName": "some reporting company",
-       "ctutr": "1123456789",
-       "sameAsUltimateParent": true,
-       "reportingCompanyDeemed": true
-     },
-     "parentCompany": {
-       "ultimateParent": {
-         "registeredCompanyName": "some company",
-         "ctutr": "1123456789"
-       },
-       "deemedParent": [
-         {
-           "companyName": "some company ltd",
-           "ctutr": "1123456789",
-           "countryOfIncorporation": "US",
-           "sautr": "9876543210"
-         }
-       ]
-     },
-     "groupCompanyDetails": {
-       "accountingPeriod": {
-         "startDate": "2019-05-01",
-         "endDate": "2020-04-30"
-       }
-     },
-     "submissionType": "original",
-     "revisedReturnDetails": "revised details",
-     "groupLevelElections": {
-       "isElected": true,
-       "groupRatioBlended": {
-         "isElected": true,
-         "investorGroups": [
-           "investment1",
-           "investment2",
-           "investment3"
-         ]
-       },
-       "groupEBITDAChargeableGains": true,
-       "interestAllowanceAlternativeCalculation": true,
-       "interestAllowanceNonConsolidatedInvestment": {
-         "isElected": true,
-         "nonConsolidatedInvestments": [
-           "investment1",
-           "investment2",
-           "investment3"
-         ]
-       },
-       "interestAllowanceConsolidatedPartnership": {
-         "isElected": true,
-         "consolidatedPartnerships": [
-           "investment1",
-           "investment2",
-           "investment3"
-         ]
-       }
-     },
-     "ukCompanies": [
-       {
-         "companyName": "some company",
-         "utr": "1123456789",
-         "consenting": true,
-         "qicElection": false
-       }
-     ]
-   }
+    "declaration": true,
+    "appointedReportingCompany": true,
+    "agentDetails": {
+      "agentActingOnBehalfOfCompany": true,
+      "agentName": "some agent"
+    },
+    "reportingCompany": {
+      "companyName": "Company Name ltd",
+      "ctutr": "1123456789",
+      "sameAsUltimateParent": false
+    },
+    "parentCompany": {
+      "ultimateParent": {
+        "companyName": "Company Name ltd",
+        "isUk": true,
+        "ctutr": "1123456789"
+      }
+    },
+    "groupCompanyDetails": {
+      "accountingPeriod": {
+        "startDate": "2019-02-18",
+        "endDate": "2020-08-17"
+      }
+    },
+    "submissionType": "revised",
+    "revisedReturnDetails": "some details",
+    "groupLevelElections": {
+      "activeInterestAllowanceAlternativeCalculation": true,
+      "groupRatio": {
+        "isElected": true,
+        "activeGroupEBITDAChargeableGains": true,
+        "groupEBITDAChargeableGains": true,
+        "groupRatioBlended": {
+          "isElected": true,
+          "investorGroups": [{
+            "groupName": "some investor group",
+            "elections": ["groupRatioBlended", "groupEBITDA", "interestAllowanceAlternativeCalculation", "interestAllowanceNonConsolidatedInvestment", "interestAllowanceConsolidatedPartnership"]
+          }, {
+            "groupName": "some investor group",
+            "elections": ["interestAllowanceAlternativeCalculation", "interestAllowanceNonConsolidatedInvestment", "interestAllowanceConsolidatedPartnership"]
+          }]
+        }
+      },
+      "interestAllowanceAlternativeCalculation": true,
+      "interestAllowanceNonConsolidatedInvestment": {
+        "isElected": true,
+        "nonConsolidatedInvestments": [{
+          "investmentName": "investment1"
+        }]
+      },
+      "interestAllowanceConsolidatedPartnership": {
+        "isElected": true,
+        "isActive": true,
+        "consolidatedPartnerships": [{
+          "partnershipName": "some partner",
+          "sautr": "1123456789"
+        }]
+      }
+    },
+    "ukCompanies": [{
+      "companyName": "Company Name ltd",
+      "utr": "1123456789",
+      "consenting": true,
+      "qicElection": true
+    }, {
+      "companyName": "Company Name ltd",
+      "utr": "1123456789",
+      "consenting": true,
+      "qicElection": true
+    }]
+  }
 ```
 
 #### Success Response
@@ -399,93 +416,105 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
 **Example Request**
 ```json
    {
-     "agentDetails": {
-       "agentActingOnBehalfOfCompany": true,
-       "agentName": "some agent"
-     },
-     "reportingCompany": {
-       "companyName": "some reporting company",
-       "ctutr": "1123456789",
-       
-       "sameAsUltimateParent": true,
-       "reportingCompanyDeemed": true
-     },
-     "parentCompany": {
-       "deemedParent": [
-         {
-           "companyName": "some company ltd",
-           "sautr": "9876543210"
-         },
-         {
-           "companyName": "some company ltd",
-           "countryOfIncorporation": "US"
-         }
-       ]
-     },
-     "groupCompanyDetails": {
-       "accountingPeriod": {
-         "startDate": "2019-05-01",
-         "endDate": "2020-04-30"
-       }
-     },
-     "submissionType": "original",
-     "revisedReturnDetails": "some details",
-     "groupLevelElections": {
-       "isElected": true,
-       "groupRatioBlended": {
-         "isElected": true,
-         "investorGroups": [
-           "investment1",
-           "investment2",
-           "investment3"
-         ]
-       },
-       "groupEBITDAChargeableGains": true,
-       "interestAllowanceAlternativeCalculation": true,
-       "interestAllowanceNonConsolidatedInvestment": {
-         "isElected": true,
-         "nonConsolidatedInvestments": [
-           "investment1",
-           "investment2",
-           "investment3"
-         ]
-       },
-       "interestAllowanceConsolidatedPartnership": {
-         "isElected": true,
-         "consolidatedPartnerships": [
-           "investment1",
-           "investment2",
-           "investment3"
-         ]
-       }
-     },
-     "ukCompanies": [
-       {
-         "companyName": "some company",
-         "utr": "1123456789",
-         "consenting": true,
-         "qicElection": false,
-         "netTaxInterestExpense": 1.11,
-         "netTaxInterestIncome": 2.22,
-         "taxEBITDA": 3.33
-       }
-     ],
-     "angie": 1.1,
-     "groupSubjectToInterestRestrictions": true,
-     "groupSubjectToInterestReactivation": true,
-     "groupLevelAmount": {
-       "totalDisallowedAmount": 1,
-       "interestReactivationCap": 1,
-       "interestAllowanceBroughtForward": 1,
-       "interestAllowanceForPeriod": 1,
-       "interestCapacityForPeriod": 1
-     },
-     "adjustedGroupInterest": {
-       "qngie": 1,
-       "groupEBITDA": 1,
-       "groupRatio": 1
-     }
-   }
+    "declaration": true,
+    "appointedReportingCompany": true,
+    "agentDetails": {
+      "agentActingOnBehalfOfCompany": true,
+      "agentName": "some agent"
+    },
+    "reportingCompany": {
+      "companyName": "Company Name ltd",
+      "ctutr": "1123456789",
+      "sameAsUltimateParent": false
+    },
+    "parentCompany": {
+      "ultimateParent": {
+        "companyName": "Company Name ltd",
+        "isUk": true,
+        "ctutr": "1123456789"
+      }
+    },
+    "groupCompanyDetails": {
+      "accountingPeriod": {
+        "startDate": "2019-02-18",
+        "endDate": "2020-08-17"
+      }
+    },
+    "submissionType": "revised",
+    "revisedReturnDetails": "some details",
+    "groupLevelElections": {
+      "activeInterestAllowanceAlternativeCalculation": true,
+      "groupRatio": {
+        "isElected": true,
+        "activeGroupEBITDAChargeableGains": true,
+        "groupEBITDAChargeableGains": true,
+        "groupRatioBlended": {
+          "isElected": true,
+          "investorGroups": [{
+            "groupName": "some investor group",
+            "elections": ["groupRatioBlended", "groupEBITDA", "interestAllowanceAlternativeCalculation", "interestAllowanceNonConsolidatedInvestment", "interestAllowanceConsolidatedPartnership"]
+          }, {
+            "groupName": "some investor group",
+            "elections": ["interestAllowanceAlternativeCalculation", "interestAllowanceNonConsolidatedInvestment", "interestAllowanceConsolidatedPartnership"]
+          }]
+        }
+      },
+      "interestAllowanceAlternativeCalculation": true,
+      "interestAllowanceNonConsolidatedInvestment": {
+        "isElected": true,
+        "nonConsolidatedInvestments": [{
+          "investmentName": "investment1"
+        }]
+      },
+      "interestAllowanceConsolidatedPartnership": {
+        "isElected": true,
+        "isActive": true,
+        "consolidatedPartnerships": [{
+          "partnershipName": "some partner",
+          "sautr": "1123456789"
+        }]
+      }
+    },
+    "ukCompanies": [{
+      "companyName": "Company Name ltd",
+      "utr": "1123456789",
+      "consenting": true,
+      "qicElection": true,
+      "netTaxInterestExpense": 0,
+      "netTaxInterestIncome": 50,
+      "taxEBITDA": 5,
+      "allocatedReactivations": {
+        "currentPeriodReactivation": 2
+      }
+    }, {
+      "companyName": "Company Name ltd",
+      "utr": "1123456789",
+      "consenting": true,
+      "qicElection": true,
+      "netTaxInterestExpense": 0,
+      "netTaxInterestIncome": 50,
+      "taxEBITDA": 5,
+      "allocatedReactivations": {
+        "currentPeriodReactivation": 2
+      }
+    }],
+    "angie": 1.11,
+    "returnContainsEstimates": false,
+    "groupSubjectToInterestRestrictions": false,
+    "groupSubjectToInterestReactivation": true,
+    "totalRestrictions": 0,
+    "groupLevelAmount": {
+      "interestReactivationCap": 300,
+      "interestAllowanceBroughtForward": 3,
+      "interestAllowanceForPeriod": 4,
+      "interestCapacityForPeriod": 5
+    },
+    "adjustedGroupInterest": {
+      "qngie": 100,
+      "groupEBITDA": 200,
+      "groupRatio": 50
+    }
+  }
 ```
 
 #### Success Response
