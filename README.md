@@ -263,7 +263,6 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
 **Example Request**
 ```json
    {
-    "declaration": true,
     "appointedReportingCompany": true,
     "agentDetails": {
       "agentActingOnBehalfOfCompany": true,
@@ -332,7 +331,8 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
       "utr": "1123456789",
       "consenting": true,
       "qicElection": true
-    }]
+    }],
+    "declaration": true
   }
 ```
 
@@ -416,7 +416,6 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
 **Example Request**
 ```json
    {
-    "declaration": true,
     "appointedReportingCompany": true,
     "agentDetails": {
       "agentActingOnBehalfOfCompany": true,
@@ -513,7 +512,8 @@ Status: `500 (INTERNAL_SERVER_ERROR)`
       "qngie": 100,
       "groupEBITDA": 200,
       "groupRatio": 50
-    }
+    },
+    "declaration": true
   }
 ```
 
