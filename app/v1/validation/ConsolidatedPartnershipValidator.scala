@@ -27,7 +27,7 @@ trait ConsolidatedPartnershipValidator extends BaseValidation {
   val consolidatedPartnershipModel: ConsolidatedPartnershipModel
 
   private def validateConsolidatedPartnershipModel(implicit path: JsPath): ValidationResult[ConsolidatedPartnershipModel] = {
-    (consolidatedPartnershipModel.isElected, consolidatedPartnershipModel.consolidatedPartnerships.isDefined) match {
+    (consolidatedPartnershipModel.isElected || consolidatedPartnershipModel.isActive, consolidatedPartnershipModel.consolidatedPartnerships.isDefined) match {
       case (false, true) => ConsolidatedPartnershipsSupplied(consolidatedPartnershipModel).invalidNec
       case (true, false) => ConsolidatedPartnershipsNotSupplied(consolidatedPartnershipModel).invalidNec
       case _ => consolidatedPartnershipModel.validNec

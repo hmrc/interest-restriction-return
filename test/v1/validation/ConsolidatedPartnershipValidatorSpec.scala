@@ -33,8 +33,8 @@ class ConsolidatedPartnershipValidatorSpec extends BaseValidationSpec {
         rightSide(model.validate) shouldBe model
       }
 
-      "isElected is false and no partnerships are given" in {
-        val model = ConsolidatedPartnershipModel(isElected = false, isActive = true, consolidatedPartnerships = None)
+      "isElected is false and some partnerships are given" in {
+        val model = ConsolidatedPartnershipModel(isElected = false, isActive = true, consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = CompanyNameModel("Partner 1"), sautr = Some(sautrFake)))))
         rightSide(model.validate) shouldBe model
       }
     }
@@ -46,9 +46,9 @@ class ConsolidatedPartnershipValidatorSpec extends BaseValidationSpec {
         leftSideError(model.validate).errorMessage shouldBe ConsolidatedPartnershipsNotSupplied(model).errorMessage
       }
 
-      "isElected is false and some partnerships are given" in {
-        val model = ConsolidatedPartnershipModel(isElected = false, isActive = true, consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = CompanyNameModel("Partner 1"), sautr = Some(sautrFake)))))
-        leftSideError(model.validate).errorMessage shouldBe ConsolidatedPartnershipsSupplied(model).errorMessage
+      "isElected is false and no partnerships are given" in {
+        val model = ConsolidatedPartnershipModel(isElected = false, isActive = true, consolidatedPartnerships = None)
+        leftSideError(model.validate).errorMessage shouldBe ConsolidatedPartnershipsNotSupplied(model).errorMessage
       }
 
       "consolidatedPartnerships is invalid" in {
