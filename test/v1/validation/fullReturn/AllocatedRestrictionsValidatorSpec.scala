@@ -233,6 +233,17 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
           leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe
             DateRangeError(MAXIMUM_DATE.plusDays(1), "ap2EndDate").errorMessage
         }
+
+        "is supplied when ap1 supplied with a date later than GPOA" in {
+          val model = restrictionModel.copy(
+            ap1EndDate = ap3EndDate.plusDays(1),
+            ap2EndDate = Some(ap3EndDate.plusDays(2)),
+            disallowanceAp2 = Some(disallowanceAp2)
+          )
+
+          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe
+            DateAfterGPOA(2).errorMessage
+        }
       }
 
       "Ap3" when {
@@ -370,6 +381,19 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
 
           leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe
             DateRangeError(MAXIMUM_DATE.plusDays(1), "ap3EndDate").errorMessage
+        }
+
+        "is supplied when ap2 supplied with a date later than GPOA" in {
+          val model = restrictionModel.copy(
+            ap1EndDate = ap3EndDate.minusDays(5),
+            ap2EndDate = Some(ap3EndDate.plusDays(1)),
+            ap3EndDate = Some(ap3EndDate.plusDays(2)),
+            disallowanceAp2 = Some(disallowanceAp2),
+            disallowanceAp3 = Some(disallowanceAp3)
+          )
+
+          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe
+            DateAfterGPOA(3).errorMessage
         }
       }
 
