@@ -29,12 +29,20 @@ class ConsolidatedPartnershipValidatorSpec extends BaseValidationSpec {
     "Return valid" when {
 
       "isElected is true and a Seq of partnerships are given" in {
-        val model = ConsolidatedPartnershipModel(isElected = true, isActive = true, consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = CompanyNameModel("Partner 1"), sautr = Some(sautrFake)))))
+        val model = ConsolidatedPartnershipModel(isElected = true, isActive = true,
+          consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = CompanyNameModel("Partner 1"), sautr = Some(sautrFake)))))
         rightSide(model.validate) shouldBe model
       }
 
       "isElected is false and some partnerships are given" in {
-        val model = ConsolidatedPartnershipModel(isElected = false, isActive = true, consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = CompanyNameModel("Partner 1"), sautr = Some(sautrFake)))))
+        val model = ConsolidatedPartnershipModel(isElected = false, isActive = true,
+          consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = CompanyNameModel("Partner 1"), sautr = Some(sautrFake)))))
+        rightSide(model.validate) shouldBe model
+      }
+
+      "isActive is false and some partnerships are given" in {
+        val model = ConsolidatedPartnershipModel(isElected = true, isActive = false,
+          consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = CompanyNameModel("Partner 1"), sautr = Some(sautrFake)))))
         rightSide(model.validate) shouldBe model
       }
     }
@@ -52,7 +60,8 @@ class ConsolidatedPartnershipValidatorSpec extends BaseValidationSpec {
       }
 
       "consolidatedPartnerships is invalid" in {
-        val model = ConsolidatedPartnershipModel(isElected = true, isActive = true, consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = CompanyNameModel(""), sautr = Some(sautrFake)))))
+        val model = ConsolidatedPartnershipModel(isElected = true, isActive = true,
+          consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = CompanyNameModel(""), sautr = Some(sautrFake)))))
         leftSideError(model.validate).errorMessage shouldBe CompanyNameLengthError("").errorMessage
       }
 
