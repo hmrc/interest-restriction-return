@@ -49,13 +49,23 @@ class ConsolidatedPartnershipValidatorSpec extends BaseValidationSpec {
 
     "Return invalid" when {
 
-      "isElected is true and no partnerships are given" in {
+      "IsActive & IsElected are true and no partnerships are given" in {
         val model = ConsolidatedPartnershipModel(isElected = true, isActive = true, consolidatedPartnerships = None)
         leftSideError(model.validate).errorMessage shouldBe ConsolidatedPartnershipsNotSupplied(model).errorMessage
       }
 
       "isElected is false and no partnerships are given" in {
         val model = ConsolidatedPartnershipModel(isElected = false, isActive = true, consolidatedPartnerships = None)
+        leftSideError(model.validate).errorMessage shouldBe ConsolidatedPartnershipsNotSupplied(model).errorMessage
+      }
+
+      "IsActive is false and no partnerships are given" in {
+        val model = ConsolidatedPartnershipModel(isElected = true, isActive = false, consolidatedPartnerships = None)
+        leftSideError(model.validate).errorMessage shouldBe ConsolidatedPartnershipsNotSupplied(model).errorMessage
+      }
+
+      "isElected is false & isActive is false and no partnerships are given" in {
+        val model = ConsolidatedPartnershipModel(isElected = false, isActive = false, consolidatedPartnerships = None)
         leftSideError(model.validate).errorMessage shouldBe ConsolidatedPartnershipsNotSupplied(model).errorMessage
       }
 
