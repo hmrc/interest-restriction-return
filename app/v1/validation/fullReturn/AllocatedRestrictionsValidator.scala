@@ -76,7 +76,7 @@ trait AllocatedRestrictionsValidator extends BaseValidation {
   def validateAp2(groupEndDate: LocalDate)(implicit topPath: JsPath): ValidationResult[Option[LocalDate]] =
     (allocatedRestrictionsModel.ap1EndDate, allocatedRestrictionsModel.ap2EndDate) match {
       case (ap1, Some(ap2)) =>
-        combineValidationsForField(
+        combineValidations(
           if (!ap2.isAfter(ap1))
             AllocatedRestrictionDateBeforePrevious(2).invalidNec
           else Some(ap2).validNec,
@@ -96,7 +96,7 @@ trait AllocatedRestrictionsValidator extends BaseValidation {
       case (_, None, Some(_)) =>
         AllocatedRestrictionLaterPeriodSupplied(3).invalidNec
       case (_, Some(ap2), Some(ap3)) =>
-        combineValidationsForField(
+        combineValidations(
           if (!ap3.isAfter(ap2)) AllocatedRestrictionDateBeforePrevious(3).invalidNec else Some(ap3).validNec,
           if (ap3.isBefore(groupEndDate)) Ap3BeforeGroupEndDate(ap3, groupEndDate).invalidNec else Some(ap3).validNec,
           if (ap3.minusMonths(12).isAfter(ap2)) AllocatedRestrictionDateGreaterThan12MonthsAfterPrevious(3).invalidNec else Some(ap3).validNec,
