@@ -63,6 +63,10 @@
       "type": "number",
       "minimum": 0,
       "multipleOf": 0.01
+    },
+    "declaration": {
+      "description": "Statement to confirm the truth of the information given",
+      "type": "boolean"
     }
   },
   "required": [
@@ -78,6 +82,7 @@
     "groupSubjectToInterestRestrictions",
     "groupSubjectToInterestReactivation",
     "totalRestrictions",
-    "groupLevelElections"
+    "groupLevelElections",
+    "declaration"
   ]
 }
