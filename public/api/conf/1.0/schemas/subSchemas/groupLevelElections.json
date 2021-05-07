@@ -5,6 +5,7 @@
   "required": [
     "groupRatio",
     "interestAllowanceAlternativeCalculation",
+    "activeInterestAllowanceAlternativeCalculation",
     "interestAllowanceNonConsolidatedInvestment",
     "interestAllowanceConsolidatedPartnership"
   ],
@@ -14,7 +15,9 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "isElected"
+        "isElected",
+        "groupEBITDAChargeableGains",
+        "activeGroupEBITDAChargeableGains"
       ],
       "properties": {
         "isElected": {
@@ -69,13 +72,21 @@
           ]
         },
         "groupEBITDAChargeableGains": {
-          "description": "Indicate if the group elects to use group-EBITDA chargeable gains election. Can only be elected if group ratio is elected",
+          "description": "Indicate if the group elects to use group-EBITDA chargeable gains election",
+          "type": "boolean"
+        },
+        "activeGroupEBITDAChargeableGains": {
+          "description": "Indicate if the group has an active group-EBITDA chargeable gains election",
           "type": "boolean"
         }
       }
     },
     "interestAllowanceAlternativeCalculation": {
       "description": "Indicate if the group elects interest allowance alternative calculation",
+      "type": "boolean"
+    },
+    "activeInterestAllowanceAlternativeCalculation": {
+      "description": "Indicate if the group has an active interest allowance alternative calculation election",
       "type": "boolean"
     },
     "interestAllowanceNonConsolidatedInvestment": {
@@ -115,11 +126,16 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "isElected"
+        "isElected",
+        "isActive"
       ],
       "properties": {
         "isElected": {
           "description": "Indicate if the group elects interest allowance consolidated partnership",
+          "type": "boolean"
+        },        
+        "isActive": {
+          "description": "Indicate if the group has an active interest allowance consolidated partnership election",
           "type": "boolean"
         },
         "consolidatedPartnerships": {

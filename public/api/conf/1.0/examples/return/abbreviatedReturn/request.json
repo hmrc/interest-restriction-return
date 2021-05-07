@@ -28,6 +28,7 @@
     "groupRatio" : {
       "isElected" : true,
       "groupEBITDAChargeableGains" : true,
+      "activeGroupEBITDAChargeableGains" : false,
       "groupRatioBlended" : {
         "isElected" : true,
         "investorGroups" : [{
@@ -42,6 +43,7 @@
       }
     },
     "interestAllowanceAlternativeCalculation" : true,
+    "activeInterestAllowanceAlternativeCalculation" : false,
     "interestAllowanceNonConsolidatedInvestment" : {
       "isElected" : true,
       "nonConsolidatedInvestments" : [{
@@ -53,6 +55,7 @@
     },
     "interestAllowanceConsolidatedPartnership" : {
       "isElected" : true,
+      "isActive": false,
       "consolidatedPartnerships" : [{
         "partnershipName" : "APartnership",
         "sautr" : "1123456789"
@@ -80,5 +83,6 @@
       "utr" : "1123456789",
       "consenting" : false,
       "qicElection" : true
-    }]
+    }],
+    "declaration":true
 }
