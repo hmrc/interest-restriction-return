@@ -170,6 +170,6 @@ case class DateRangeError(date: LocalDate, jsonAttribute: String)(implicit topPa
 
 case class DateAfterGPOA(i: Int)(implicit topPath: JsPath) extends Validation {
   val path: JsPath = topPath \ s"ap${i}EndDate"
-  val errorMessage: String = s"ap${i-1} enddate is after Group Period of Account end date. ap$i cannot start outside of GPOA"
+  val errorMessage: String = s"AP${i-1} end date is after the group's period of account so AP$i end date is not allowed"
   val value: JsValue = Json.obj()
 }
