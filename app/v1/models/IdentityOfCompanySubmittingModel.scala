@@ -21,7 +21,8 @@ import v1.validation.IdentityOfCompanySubmittingValidator
 
 case class IdentityOfCompanySubmittingModel(companyName: CompanyNameModel,
                                             ctutr: Option[UTRModel],
-                                            countryOfIncorporation: Option[CountryCodeModel]
+                                            countryOfIncorporation: Option[CountryCodeModel],
+                                            legalEntityIdentifier: Option[LegalEntityIdentifierModel]
                                            ) extends IdentityOfCompanySubmittingValidator {
   override val identityOfCompanySubmitting: IdentityOfCompanySubmittingModel = this
 }
