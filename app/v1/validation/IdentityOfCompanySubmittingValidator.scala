@@ -41,8 +41,9 @@ trait IdentityOfCompanySubmittingValidator extends BaseValidation {
     (validateIdentityOfCompanySubmitting,
       identityOfCompanySubmitting.companyName.validate(path \ "companyName"),
       optionValidations(identityOfCompanySubmitting.ctutr.map(_.validate(path \ "ctutr"))),
-      optionValidations(identityOfCompanySubmitting.countryOfIncorporation.map(_.validate(path \ "countryOfIncorporation")))
-      ).mapN((_,_,_,_) => identityOfCompanySubmitting)
+      optionValidations(identityOfCompanySubmitting.countryOfIncorporation.map(_.validate(path \ "countryOfIncorporation"))),
+      optionValidations(identityOfCompanySubmitting.legalEntityIdentifier.map(_.validate(path \ "legalEntityIdentifier")))
+      ).mapN((_,_,_,_,_) => identityOfCompanySubmitting)
 }
 
 case class CannotBeUkAndNonUk(companySubmitting: IdentityOfCompanySubmittingModel)(implicit val path: JsPath) extends Validation {

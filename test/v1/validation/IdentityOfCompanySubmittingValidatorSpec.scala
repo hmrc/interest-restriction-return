@@ -69,6 +69,14 @@ class IdentityOfCompanySubmittingValidatorSpec extends BaseSpec {
 
         leftSideError(model.validate).errorMessage shouldBe CountryCodeValueError(invalidCountryCode).errorMessage
       }
+
+      "LegalEntityIdentifier is invalid" in {
+        val model = identityOfCompanySubmittingModelMax.copy(
+          ctutr = None,
+          legalEntityIdentifier = Some(invalidLei))
+
+        leftSideError(model.validate).errorMessage shouldBe LegalEntityIdentifierCharacterError(invalidLei).errorMessage
+      }
     }
   }
 }

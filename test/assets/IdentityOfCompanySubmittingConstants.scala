@@ -25,19 +25,22 @@ object IdentityOfCompanySubmittingConstants extends BaseConstants {
 
   val identityOfCompanySubmittingJsonMax = Json.obj(
     "companyName" -> companyName,
-    "ctutr" -> ctutr
+    "ctutr" -> ctutr,
+    "legalEntityIdentifier" -> lei
   )
 
   val identityOfCompanySubmittingModelMax = IdentityOfCompanySubmittingModel(
     companyName = companyName,
     ctutr = Some(ctutr),
-    countryOfIncorporation = None
+    countryOfIncorporation = None,
+    legalEntityIdentifier = Some(lei)
   )
 
   val identityOfCompanySubmittingModelNonUk = IdentityOfCompanySubmittingModel(
     companyName = companyName,
     ctutr = None,
-    countryOfIncorporation = Some(CountryCodeModel(countryCode))
+    countryOfIncorporation = Some(CountryCodeModel(countryCode)),
+    legalEntityIdentifier = None
   )
 
   val identityOfCompanySubmittingJsonMin = Json.obj(
@@ -47,6 +50,7 @@ object IdentityOfCompanySubmittingConstants extends BaseConstants {
   val identityOfCompanySubmittingModelMin = IdentityOfCompanySubmittingModel(
     companyName = companyName,
     ctutr = None,
-    countryOfIncorporation = None
+    countryOfIncorporation = None,
+    legalEntityIdentifier = None
   )
 }
