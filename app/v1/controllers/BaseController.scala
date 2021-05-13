@@ -38,9 +38,11 @@ trait BaseController extends BackendBaseController with Logging {
     Try(request.body.validate[T]) match {
       case Success(JsSuccess(payload, _)) => f(payload)
       case Success(JsError(errs)) =>
-        logger.info(s"[IRR][VALIDATION][FAILURE][JSON]")
+        logger.error(s"Json failure $errs during request on ${request.uri}")
         Future.successful(BadRequest(Json.toJson(ValidationErrorResponseModel(errs))))
-      case Failure(e) => Future.successful(BadRequest(s"Could not parse body due to ${e.getMessage}"))
+      case Failure(e) =>
+        logger.error(s"General error occurred during json parsing ${e.getMessage}", e)
+        Future.successful(BadRequest(s"Could not parse body due to ${e.getMessage}"))
     }
 
   def handleValidation[T](validationModel: ValidationResult[T], service: Submission[T], controllerName: String)

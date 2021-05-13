@@ -20,6 +20,8 @@ import config.AppConfig
 
 import javax.inject.Inject
 import play.api.Logging
+import play.api.http.HeaderNames
+import play.api.libs.json.Json
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.HttpClient
 import v1.connectors.HttpHelper.SubmissionResponse
@@ -36,9 +38,11 @@ class RevokeReportingCompanyConnector @Inject()(httpClient: HttpClient,
 
   def revoke(revokeReportingCompanyModel: RevokeReportingCompanyModel)
              (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
-
-    logger.debug(s"[RevokeReportingCompanyConnector][submit] URL: $revokeUrl")
-    logger.debug(s"[RevokeReportingCompanyConnector][submit] Headers: ${desHc.headers}")
+    logger.debug(s"URL: $revokeUrl")
+    logger.debug(s"Headers: ${desHc.headers}")
+    val receivedSize = request.headers.get(HeaderNames.CONTENT_LENGTH)
+    val jsonSize = Json.stringify(Json.toJson(revokeReportingCompanyModel)(RevokeReportingCompanyModel.format))
+    logger.debug(s"Size of content received: $receivedSize sent: $jsonSize")
 
     httpClient.POST(revokeUrl, revokeReportingCompanyModel)(RevokeReportingCompanyModel.format, RevokeReportingCompanyReads, desHc, ec)
   }
