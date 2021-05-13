@@ -18,6 +18,8 @@ package v1.connectors
 
 import config.AppConfig
 import play.api.Logging
+import play.api.http.HeaderNames
+import play.api.libs.json.Json
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import utils.FeatureSwitchJsonFormatter
 import v1.connectors.HttpHelper.SubmissionResponse
@@ -37,9 +39,11 @@ class FullReturnConnector @Inject()(httpClient: HttpClient,
   def submit(fullReturnModel: FullReturnModel)
             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
 
-    logger.debug(s"[FullReturnConnector][submit] URL: $fullReturnUrl")
-    logger.debug(s"[FullReturnConnector][submit] Headers: ${desHc.headers}")
-
+    logger.debug(s"URL: $fullReturnUrl")
+    logger.debug(s"Headers: ${desHc.headers}")
+    val receivedSize = request.headers.get(HeaderNames.CONTENT_LENGTH)
+    val jsonSize = Json.stringify(Json.toJson(fullReturnModel)(jsonFormatters.fullReturnWrites))
+    logger.debug(s"Size of content received: $receivedSize sent: $jsonSize")
 
     httpClient.POST(fullReturnUrl, fullReturnModel)(jsonFormatters.fullReturnWrites, FullReturnReads, desHc, ec)
   }

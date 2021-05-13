@@ -35,17 +35,18 @@ trait DesBaseConnector {
   def handleHttpResponse(response: HttpResponse, parserName: String, unexpectedErrorMessage: String): SubmissionResponse = {
     response.status match {
       case CREATED =>
-        logger.debug(s"[$parserName][read]: Status CREATED")
-        logger.debug(s"[$parserName][read]: Json Response: ${response.json}")
+        logger.info(s"Successfully created with response ${response}") // TODO correlation id /
+        logger.debug(s"Status CREATED")
+        logger.debug(s"Json Response: ${response.json}")
         response.json.validate[DesSuccessResponse](DesSuccessResponse.fmt).fold(
           invalid => {
-            logger.warn(s"[$parserName][read]: Invalid Success Response Json - $invalid")
+            logger.error(s"Invalid Success Response Json - $invalid")
             Left(InvalidSuccessResponse)
           },
           valid => Right(valid)
         )
       case status =>
-        logger.warn(s"[$parserName][read]: Unexpected response, status $status returned with body ${response.body}")
+        logger.error(s"Unexpected response, status $status returned with body ${response.body}")
         Left(UnexpectedFailure(INTERNAL_SERVER_ERROR,s"Status $INTERNAL_SERVER_ERROR $unexpectedErrorMessage"))
     }
   }
