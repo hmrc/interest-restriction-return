@@ -27,7 +27,7 @@ import java.util.UUID
 
 /*
   To run use the following in sbt shell:
-  test:runMain utils.PayloadGenerator <appoint|revoke> <amount> <filePath>
+  test:runMain app.utils.PayloadGenerator <appoint|revoke> <amount> <filePath>
  */
 
 object PayloadGenerator extends App {
@@ -64,7 +64,7 @@ object PayloadGenerator extends App {
     file.createNewFile()
 
     reflect.io.File(file.getAbsolutePath).writeAll(jsonString)
-    println(s"Written to ${file.getAbsolutePath} with size ${file.length()} and jsonString size was: ${jsonString.length}")
+    println(s"Written to ${file.getAbsolutePath} with size ${file.length()}")
   }
 
   args.toList match {
