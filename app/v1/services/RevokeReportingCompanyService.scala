@@ -16,6 +16,8 @@
 
 package v1.services
 
+import play.api.Logging
+
 import javax.inject.Inject
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.connectors.HttpHelper.SubmissionResponse
@@ -26,10 +28,13 @@ import v1.models.revokeReportingCompany.RevokeReportingCompanyModel
 import scala.concurrent.{ExecutionContext, Future}
 
 class RevokeReportingCompanyService @Inject()(revokeReportingCompanyConnector: RevokeReportingCompanyConnector)
-  extends Submission[RevokeReportingCompanyModel]{
+  extends Submission[RevokeReportingCompanyModel] with Logging {
 
   override def submit (revokeReportingCompany: RevokeReportingCompanyModel)
                       (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] =
-    revokeReportingCompanyConnector.revoke(revokeReportingCompany)
+    revokeReportingCompanyConnector.revoke(revokeReportingCompany).map{ resp =>
+      logger.info("Successfully sent a revoke reporting company payload")
+      resp
+    }
 
 }

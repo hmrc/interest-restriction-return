@@ -16,6 +16,8 @@
 
 package v1.services
 
+import play.api.Logging
+
 import javax.inject.Inject
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.connectors.AbbreviatedReturnConnector
@@ -26,10 +28,13 @@ import v1.models.requests.IdentifierRequest
 import scala.concurrent.{ExecutionContext, Future}
 
 class AbbreviatedReturnService @Inject()(abbreviatedReturnConnector: AbbreviatedReturnConnector)
-  extends Submission[AbbreviatedReturnModel]{
+  extends Submission[AbbreviatedReturnModel] with Logging {
 
   override def submit(abbreviatedReturn: AbbreviatedReturnModel)
              (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] =
-    abbreviatedReturnConnector.submitAbbreviatedReturn(abbreviatedReturn)
+    abbreviatedReturnConnector.submitAbbreviatedReturn(abbreviatedReturn).map{ resp =>
+      logger.info("Successfully sent a abbreviated return payload")
+      resp
+    }
 
 }

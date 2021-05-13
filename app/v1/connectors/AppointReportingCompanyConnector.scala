@@ -41,7 +41,7 @@ class AppointReportingCompanyConnector @Inject()(httpClient: HttpClient,
     logger.debug(s"URL: $appointUrl")
     logger.debug(s"Headers: ${desHc.headers}")
     val receivedSize = request.headers.get(HeaderNames.CONTENT_LENGTH)
-    val jsonSize = Json.stringify(Json.toJson(appointReportingCompanyModel)(AppointReportingCompanyModel.format))
+    val jsonSize = Json.stringify(Json.toJson(appointReportingCompanyModel)(AppointReportingCompanyModel.format)).length
     logger.debug(s"Size of content received: $receivedSize sent: $jsonSize")
 
     httpClient.POST(appointUrl, appointReportingCompanyModel)(AppointReportingCompanyModel.format, AppointReportingCompanyReads, desHc, ec)

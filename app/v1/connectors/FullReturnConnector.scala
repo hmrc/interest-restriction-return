@@ -42,7 +42,7 @@ class FullReturnConnector @Inject()(httpClient: HttpClient,
     logger.debug(s"URL: $fullReturnUrl")
     logger.debug(s"Headers: ${desHc.headers}")
     val receivedSize = request.headers.get(HeaderNames.CONTENT_LENGTH)
-    val jsonSize = Json.stringify(Json.toJson(fullReturnModel)(jsonFormatters.fullReturnWrites))
+    val jsonSize = Json.stringify(Json.toJson(fullReturnModel)(jsonFormatters.fullReturnWrites)).length
     logger.debug(s"Size of content received: $receivedSize sent: $jsonSize")
 
     httpClient.POST(fullReturnUrl, fullReturnModel)(jsonFormatters.fullReturnWrites, FullReturnReads, desHc, ec)
