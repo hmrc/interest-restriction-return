@@ -16,6 +16,8 @@
 
 package v1.services
 
+import play.api.Logging
+
 import javax.inject.Inject
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.connectors.AppointReportingCompanyConnector
@@ -26,10 +28,13 @@ import v1.models.requests.IdentifierRequest
 import scala.concurrent.{ExecutionContext, Future}
 
 class AppointReportingCompanyService @Inject()(appointReportingCompanyConnector: AppointReportingCompanyConnector)
-  extends Submission[AppointReportingCompanyModel]{
+  extends Submission[AppointReportingCompanyModel] with Logging {
 
   override def submit(appointReportingCompany: AppointReportingCompanyModel)
                      (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] =
-    appointReportingCompanyConnector.appoint(appointReportingCompany)
+    appointReportingCompanyConnector.appoint(appointReportingCompany).map{ resp =>
+      logger.info("Successfully sent a appoint reporting company payload")
+      resp
+    }
 
 }

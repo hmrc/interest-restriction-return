@@ -16,6 +16,8 @@
 
 package v1.services
 
+import play.api.Logging
+
 import javax.inject.Inject
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.connectors.FullReturnConnector
@@ -25,10 +27,13 @@ import v1.models.requests.IdentifierRequest
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class FullReturnService @Inject()(fullReturnConnector: FullReturnConnector) extends Submission[FullReturnModel] {
+class FullReturnService @Inject()(fullReturnConnector: FullReturnConnector) extends Submission[FullReturnModel] with Logging {
 
   override def submit(fullReturn: FullReturnModel)
                      (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] =
-    fullReturnConnector.submit(fullReturn)
+    fullReturnConnector.submit(fullReturn).map{ resp =>
+      logger.info("Successfully sent a full return payload")
+      resp
+    }
 
 }
