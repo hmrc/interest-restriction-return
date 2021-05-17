@@ -54,7 +54,7 @@ class BaseControllerSpec extends BaseSpec {
 
     "if provided with an invalid JSON body" should {
 
-      "return an error" in {
+      "return `path.missing` if a mandatory property is missing" in {
 
         val actual: Future[Result] = TestBaseController.withJsonBody[DummyModel](
           _ => Future.successful(Ok("Success"))
