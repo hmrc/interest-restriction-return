@@ -50,7 +50,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
 
       "Ap1 supplied" in {
 
-        val model = restrictionModel
+        val model = restrictionModel.copy(ap1EndDate = groupAccountingPeriod.endDate.plusDays(1))
 
         rightSide(model.validate(groupAccountingPeriod)) shouldBe model
       }
@@ -58,7 +58,8 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
       "Ap1 and Ap2 supplied" in {
 
         val model = restrictionModel.copy(
-          ap2EndDate = Some(ap2EndDate),
+          ap1EndDate = groupAccountingPeriod.endDate.minusDays(1),
+          ap2EndDate = Some(groupAccountingPeriod.endDate.plusDays(1)),
           disallowanceAp2 = Some(disallowanceAp2)
         )
 
@@ -395,6 +396,12 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
           leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe
             DateAfterGPOA(3).errorMessage
         }
+      }
+
+      "Accounting periods don't cover GPOA" in {
+        val model = restrictionModel
+
+        leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe CompanyAPDoesNotCoverGPOA().errorMessage
       }
 
     }
