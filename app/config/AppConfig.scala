@@ -30,7 +30,9 @@ trait AppConfig {
   def apiStatus(version: String): String
   def featureSwitch: Option[Configuration]
   def endpointsEnabled: Boolean
-  def companiesHouseProxy: String
+  def nrsUrl: Option[String]
+  def nrsAuthorisationToken: Option[String]
+
 }
 
 @Singleton
@@ -41,6 +43,9 @@ class AppConfigImpl @Inject()(val servicesConfig: ServicesConfig, configuration:
   lazy val desEnvironmentHeader: (String, String) = "Environment" -> servicesConfig.getString("microservice.services.des.environment")
   lazy val appName: String = servicesConfig.getString("appName")
 
+  lazy val nrsUrl: Option[String] = configuration.getOptional[Configuration]("microservice.services.nrs").map(_ => servicesConfig.baseUrl("nrs"))
+  lazy val nrsAuthorisationToken: Option[String] = configuration.getOptional[String]("microservice.services.nrs.authorisation-token").map(token => s"Bearer $token")
+
   val apiGatewayContext: String = servicesConfig.getString("api.gateway.context")
 
   def apiStatus(version: String): String = servicesConfig.getString(s"api.$version.status")
@@ -48,6 +53,4 @@ class AppConfigImpl @Inject()(val servicesConfig: ServicesConfig, configuration:
   def featureSwitch: Option[Configuration] = configuration.getOptional[Configuration](s"feature-switch")
 
   val endpointsEnabled: Boolean = servicesConfig.getBoolean("api-definitions.endpoints.enabled")
-
-  lazy val companiesHouseProxy = servicesConfig.baseUrl("companies-house-api-proxy")
 }

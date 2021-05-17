@@ -18,10 +18,11 @@ package v1.connectors
 
 import play.api.http.Status.{INTERNAL_SERVER_ERROR, NOT_FOUND}
 import play.api.libs.json.Json
+import v1.models.nrs.NrSubmissionId
 
 object HttpHelper {
   type SubmissionResponse = Either[ErrorResponse, DesSuccessResponse]
-  type CompaniesHouseResponse = Either[ErrorResponse, HttpSuccess]
+  type NrsResponse = Either[ErrorResponse, NrSubmissionId]
 }
 
 case class DesSuccessResponse(acknowledgementReference: String)
@@ -54,4 +55,5 @@ object HttpErrorMessages {
   val FULL_ERROR = "Error returned when trying to submit a full return"
   val REVOKE_ERROR = "Error returned when trying to revoke a reporting company"
   val UNEXPECTED_ERROR = "Invalid Json returned in Success response"
+  val NRS_ERROR = "Error returned when trying to submit Non Repudiation Submission"
 }

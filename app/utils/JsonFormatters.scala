@@ -37,10 +37,10 @@ trait JsonFormatters {
     }
 
   private def removeAPath(json: JsValue, path: JsPath): JsValue = {
-      json.transform(path.json.prune) match {
-        case JsSuccess(newJson, _) => newJson.as[JsValue]
-        case _ => json
-      }
+    json.transform(path.json.prune) match {
+      case JsSuccess(newJson, _) => newJson.as[JsValue]
+      case _ => json
+    }
   }
 
   implicit val groupRatioWrites: Writes[GroupRatioModel] =

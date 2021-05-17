@@ -41,9 +41,7 @@ trait IntegrationSpecBase extends WordSpec
     "microservice.services.auth.host" -> mockHost,
     "microservice.services.auth.port" -> mockPort,
     "microservice.services.des.host" -> mockHost,
-    "microservice.services.des.port" -> mockPort,
-    "microservice.services.companies-house-api-proxy.host" -> mockHost,
-    "microservice.services.companies-house-api-proxy.port" -> mockPort
+    "microservice.services.des.port" -> mockPort
   )
 
   override def beforeEach(): Unit = {
