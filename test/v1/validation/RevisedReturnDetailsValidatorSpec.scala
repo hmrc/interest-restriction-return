@@ -39,7 +39,8 @@ class RevisedReturnDetailsValidatorSpec extends BaseSpec {
       }
 
       "Return type is Revised and the revised return details contains invalid characters" in {
-        val returnDetails = "New!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is 160 characters no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
+        val returnDetails = "ʰʲʺ£$%˦˫qwNew!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is" +
+          " 160 characters no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
         leftSideError(RevisedReturnDetailsModel(returnDetails).validate).errorMessage shouldBe RevisedReturnDetailsCharacterError(returnDetails).errorMessage
       }
 
@@ -49,5 +50,4 @@ class RevisedReturnDetailsValidatorSpec extends BaseSpec {
       }
     }
   }
-
 }

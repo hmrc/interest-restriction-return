@@ -19,8 +19,8 @@ package v1.validation.fullReturn
 import assets.fullReturn.AllocatedRestrictionsConstants._
 import assets.fullReturn.UkCompanyConstants._
 import play.api.libs.json.JsPath
-import v1.models.AccountingPeriodModel
-import v1.validation.{BaseValidationSpec, CompanyNameLengthError, UTRChecksumError}
+import v1.models.{AccountingPeriodModel, CompanyNameModel, UTRModel}
+import v1.validation.{BaseValidationSpec, CompanyNameCharactersError, CompanyNameLengthError, UTRChecksumError, UTRLengthError}
 
 class UkCompanyValidatorSpec extends BaseValidationSpec {
 
@@ -32,6 +32,7 @@ class UkCompanyValidatorSpec extends BaseValidationSpec {
   )
 
   val allocatedRestriction = Some(allocatedRestrictionsModel.copy(disallowanceAp1 = 10, disallowanceAp2 = Some(10), disallowanceAp3 = Some(10.01)))
+  val allocatedRestrictionOneDisallowance = Some(allocatedRestrictionsModel.copy(disallowanceAp1 = 21))
 
   "Full UK Company Validation" should {
 
@@ -51,12 +52,38 @@ class UkCompanyValidatorSpec extends BaseValidationSpec {
     "Return invalid" when {
 
       "CTUTR is invalid" in {
-        leftSideError(ukCompanyModelReactivationMax.copy(utr = invalidUtr).validate(groupAccountingPeriod)).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
+        leftSideError(ukCompanyModelReactivationMax.copy(
+          utr = invalidUtr).validate(groupAccountingPeriod)).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
       }
 
-      "CompanyName is invalid" in {
-        leftSideError(ukCompanyModelReactivationMax.copy(companyName = companyNameTooLong).validate(groupAccountingPeriod)).errorMessage shouldBe
-          CompanyNameLengthError(companyNameTooLong.name).errorMessage
+      "CTUTR is to short" in {
+        leftSideError(ukCompanyModelReactivationMax.copy(
+          utr = UTRModel("1")).validate(groupAccountingPeriod)).errorMessage shouldBe UTRLengthError(invalidShortUtr).errorMessage
+      }
+
+      "CTUTR is to long" in {
+        leftSideError(ukCompanyModelReactivationMax.copy(
+          utr = UTRModel("11234567890")).validate(groupAccountingPeriod)).errorMessage shouldBe UTRLengthError(invalidLongUtr).errorMessage
+      }
+
+      "CTUTR contains invalid characters" in {
+        leftSideError(ukCompanyModelReactivationMax.copy(
+          utr = UTRModel("ʰʲʺ£$%˦˫qw")).validate(groupAccountingPeriod)).errorMessage shouldBe UTRChecksumError(UTRModel("ʰʲʺ£$%˦˫qw")).errorMessage
+      }
+
+      "CompanyName is invalid when too long" in {
+        leftSideError(ukCompanyModelReactivationMax.copy(companyName = companyNameTooLong).validate(
+          groupAccountingPeriod)).errorMessage shouldBe CompanyNameLengthError(companyNameTooLong.name).errorMessage
+      }
+
+      "CompanyName is invalid when empty" in {
+        leftSideError(ukCompanyModelReactivationMax.copy(companyName = CompanyNameModel("")).validate(
+          groupAccountingPeriod)).errorMessage shouldBe CompanyNameLengthError(companyNameIsZero.name).errorMessage
+      }
+
+      "CompanyName is invalid when containing invalid characters" in {
+        leftSideError(ukCompanyModelReactivationMax.copy(companyName = CompanyNameModel("ʰʲʺ£$%˦˫qw")).validate(
+          groupAccountingPeriod)).errorMessage shouldBe CompanyNameCharactersError("ʰʲʺ£$%˦˫qw").errorMessage
       }
 
       "netTaxInterestExpense is < 0" in {
@@ -92,8 +119,16 @@ class UkCompanyValidatorSpec extends BaseValidationSpec {
         leftSideError(ukCompanyModelReactivationMax.copy(companyEstimateReason = Some(estimateReason)).validate(groupAccountingPeriod)).errorMessage shouldBe CompanyEstimateReasonLengthError(estimateReason).errorMessage
       }
 
+      "companyEstimateReason contains 0 characters" in {
+        val estimateReason = ""
+        leftSideError(ukCompanyModelReactivationMax.copy(companyEstimateReason = Some(estimateReason)).validate(
+          groupAccountingPeriod)).errorMessage shouldBe CompanyEstimateReasonLengthError(estimateReason).errorMessage
+      }
+
       "companyEstimateReason contains invalid characters" in {
-        val estimateReason = "New!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is 160 characters no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
+        val estimateReason = "ʰʲʺ£$%˦˫qwNew!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is " +
+          "160 no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
+
         leftSideError(ukCompanyModelReactivationMax.copy(companyEstimateReason = Some(estimateReason)).validate(groupAccountingPeriod)).errorMessage shouldBe CompanyEstimateReasonCharacterError(estimateReason).errorMessage
       }
     }

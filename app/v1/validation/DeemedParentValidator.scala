@@ -44,7 +44,6 @@ trait DeemedParentValidator extends BaseValidation {
     }
   }
 
-
   def validate(implicit path: JsPath): ValidationResult[DeemedParentModel] =
     (validateCorrectCompanyDetailsSupplied,
       deemedParentModel.companyName.validate(path \ "companyName"),
@@ -54,7 +53,6 @@ trait DeemedParentValidator extends BaseValidation {
       optionValidations(deemedParentModel.legalEntityIdentifier.map(_.validate(path \ "legalEntityIdentifier")))
       ).mapN((_, _, _, _, _, _) => deemedParentModel)
 }
-
 
 case class DeemedParentWrongDetailsSuppliedError(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
   val errorMessage: String = "you have given the details for all three ultimate parents please give correct details"

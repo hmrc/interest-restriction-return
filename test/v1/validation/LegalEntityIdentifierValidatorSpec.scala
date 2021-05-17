@@ -26,6 +26,11 @@ class LegalEntityIdentifierValidatorSpec extends BaseSpec {
 
   "LEI Validation" when {
 
+    "is supplied and contains invalid character" in {
+      val model  = LegalEntityIdentifierModel("abcdeabcdeabcdeabc!12")
+      leftSideError(model.validate).errorMessage shouldBe LegalEntityIdentifierCharacterError(model).errorMessage
+    }
+
     "is supplied and contains lower case" in {
       val model  = LegalEntityIdentifierModel("abcdeabcdeabcdeabc12")
       leftSideError(model.validate).errorMessage shouldBe LegalEntityIdentifierCharacterError(model).errorMessage

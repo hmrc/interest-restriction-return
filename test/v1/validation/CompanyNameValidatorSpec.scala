@@ -45,7 +45,9 @@ class CompanyNameValidatorSpec extends WordSpec with Matchers {
       }
 
       "company name contains an invalid character" in {
-        val invalidName = "New!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is 160 characters no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
+        val invalidName = "ʰʲʺ£$%˦˫qwNew!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is" +
+          " 160 no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
+
         val model = CompanyNameModel(invalidName)
         model.validate.toEither.left.get.head.errorMessage shouldBe CompanyNameCharactersError(model.name).errorMessage
       }
@@ -54,7 +56,6 @@ class CompanyNameValidatorSpec extends WordSpec with Matchers {
         val model = CompanyNameModel("1111\n222222")
         model.validate.toEither.left.get.head.errorMessage shouldBe CompanyNameCharactersError(model.name).errorMessage
       }
-
     }
   }
 }

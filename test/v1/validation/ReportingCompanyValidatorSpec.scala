@@ -19,7 +19,7 @@ package v1.validation
 import assets.ReportingCompanyConstants._
 import play.api.libs.json.JsPath
 import utils.BaseSpec
-import v1.models.CompanyNameModel
+import v1.models.{CompanyNameModel, UTRModel}
 
 class ReportingCompanyValidatorSpec extends BaseSpec {
 
@@ -32,6 +32,7 @@ class ReportingCompanyValidatorSpec extends BaseSpec {
       "a valid Reporting Company model is validated" in {
         rightSide(reportingCompanyModel.validate) shouldBe reportingCompanyModel
       }
+
     }
 
     "Return invalid" when {
@@ -39,16 +40,26 @@ class ReportingCompanyValidatorSpec extends BaseSpec {
       "Company name" when {
 
         "Company name is empty" in {
-          leftSideError(reportingCompanyModel.copy(companyName = CompanyNameModel("")).validate).errorMessage shouldBe CompanyNameLengthError("").errorMessage
+          leftSideError(reportingCompanyModel.copy(
+            companyName = CompanyNameModel("")).validate).errorMessage shouldBe CompanyNameLengthError("").errorMessage
         }
 
         s"Company name is longer that ${companyNameMaxLength}" in {
-          leftSideError(reportingCompanyModel.copy(companyName = companyNameTooLong).validate).errorMessage shouldBe CompanyNameLengthError("a" * (companyNameMaxLength + 1)).errorMessage
+          leftSideError(reportingCompanyModel.copy(
+            companyName = companyNameTooLong).validate).errorMessage shouldBe CompanyNameLengthError("a" * (companyNameMaxLength + 1)).errorMessage
         }
       }
 
       "CTUTR is invalid" in {
         leftSideError(reportingCompanyModel.copy(ctutr = invalidUtr).validate).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
+      }
+
+      "CTUTR is to short" in {
+        leftSideError(reportingCompanyModel.copy(ctutr = UTRModel("1")).validate).errorMessage shouldBe UTRLengthError(invalidShortUtr).errorMessage
+      }
+
+      "CTUTR is to long" in {
+        leftSideError(reportingCompanyModel.copy(ctutr = UTRModel("11234567890")).validate).errorMessage shouldBe UTRLengthError(invalidLongUtr).errorMessage
       }
     }
   }
