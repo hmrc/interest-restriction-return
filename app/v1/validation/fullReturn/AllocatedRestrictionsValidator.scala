@@ -40,7 +40,8 @@ trait AllocatedRestrictionsValidator extends BaseValidation {
       apRestrictionValidator(allocatedRestrictionsModel.ap3EndDate, allocatedRestrictionsModel.disallowanceAp3, 3, "ap3EndDate"),
       validateAp1(groupAccountingPeriod.startDate),
       validateAp2(groupAccountingPeriod.endDate),
-      validateAp3(groupAccountingPeriod.endDate)
+      validateAp3(groupAccountingPeriod.endDate),
+      gpoaNotCoveredByApValidator(groupAccountingPeriod.endDate)
       )).map(_ => allocatedRestrictionsModel)
   }
 
@@ -56,6 +57,18 @@ trait AllocatedRestrictionsValidator extends BaseValidation {
       case (Some(_), Some(amt)) if amt % 0.01 != 0 => AllocatedRestrictionDecimalError(i, amt).invalidNec
       case (Some(date), _) => dateInRange(date, endDateJsonAttribute)
       case _ => period.validNec
+    }
+  }
+
+  private def gpoaNotCoveredByApValidator(groupEndDate: LocalDate)(implicit path: JsPath): ValidationResult[_] = {
+    val aps = Seq(Some(allocatedRestrictionsModel.ap1EndDate), allocatedRestrictionsModel.ap2EndDate, allocatedRestrictionsModel.ap3EndDate)
+    val setAps = aps.flatten
+    val lastDate = setAps.reverse.head
+
+    if (lastDate.isBefore(groupEndDate)) {
+      CompanyAPDoesNotCoverGPOA().invalidNec
+    } else {
+      lastDate.validNec
     }
   }
 
@@ -171,5 +184,11 @@ case class DateRangeError(date: LocalDate, jsonAttribute: String)(implicit topPa
 case class DateAfterGPOA(i: Int)(implicit topPath: JsPath) extends Validation {
   val path: JsPath = topPath \ s"ap${i}EndDate"
   val errorMessage: String = s"AP${i-1} end date is after the group's period of account so AP$i end date is not allowed"
+  val value: JsValue = Json.obj()
+}
+
+case class CompanyAPDoesNotCoverGPOA()(implicit topPath: JsPath) extends Validation {
+  val path: JsPath = topPath
+  val errorMessage: String = "Company's accounting periods must cover the group's entire POA"
   val value: JsValue = Json.obj()
 }
