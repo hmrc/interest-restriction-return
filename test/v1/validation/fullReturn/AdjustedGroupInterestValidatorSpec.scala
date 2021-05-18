@@ -224,15 +224,18 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
       }
 
       "GroupEBITDA" when {
+
         "is negative" in {
           val groupEBITDA: BigDecimal = -1
-          val model = adjustedGroupInterestModel.copy(
-            groupEBITDA = groupEBITDA
-          )
-
+          val model = adjustedGroupInterestModel.copy(groupEBITDA = groupEBITDA)
           leftSideError(model.validate).errorMessage shouldBe NegativeOrZeroGroupEBITDAError(groupEBITDA).errorMessage
         }
 
+        "is zero" in {
+          val groupEBITDA: BigDecimal = 0
+          val model = adjustedGroupInterestModel.copy(groupEBITDA = groupEBITDA)
+          leftSideError(model.validate).errorMessage shouldBe NegativeOrZeroGroupEBITDAError(groupEBITDA).errorMessage
+        }
       }
 
       "All fields fail validation" in {

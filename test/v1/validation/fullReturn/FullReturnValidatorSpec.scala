@@ -84,6 +84,14 @@ class FullReturnValidatorSpec extends BaseSpec {
         ).validate).errorMessage shouldBe ParentCompanyDetailsSupplied(parentCompanyModelMax).errorMessage
       }
 
+      "Reporting Company is the same as Deemed Parent but Parent Details are supplied as deemed" in {
+
+        leftSideError(fullReturnDeemedParentModel.copy(
+          reportingCompany = reportingCompanyModel.copy(sameAsUltimateParent = true),
+          parentCompany = Some(parentCompanyModelUltUkCompany)
+        ).validate).errorMessage shouldBe ParentCompanyDetailsSupplied(parentCompanyModelMax).errorMessage
+      }
+
       "Reporting Company is not the same as UPC and UPC is not supplied" in {
 
         leftSideError(fullReturnUltimateParentModel.copy(
@@ -115,6 +123,13 @@ class FullReturnValidatorSpec extends BaseSpec {
           totalRestrictions = 1.111,
           ukCompanies = Seq(ukCompanyModelRestrictionMax, ukCompanyModelRestrictionMax) //4.44
         ).validate).errorMessage shouldBe TotalRestrictionsDecimalError(incorrectDisallowances).errorMessage
+      }
+
+      "Calculated Restrictions does not match supplied ammount" in {
+        leftSideError(fullReturnUltimateParentModel.copy(
+          groupSubjectToInterestReactivation = false, groupSubjectToInterestRestrictions = true,
+          totalRestrictions = 6.0, ukCompanies = Seq(ukCompanyModelRestrictionMax, ukCompanyModelRestrictionMax)
+        ).validate).errorMessage shouldBe TotalRestrictionsDoesNotMatch(totalRestrictions, 12.0).errorMessage
       }
 
       "Group has empty UK companies supplied" in {
@@ -304,7 +319,9 @@ class FullReturnValidatorSpec extends BaseSpec {
       }
 
       "Return type is Revised and the revised return details contains invalid characters" in {
-        val returnDetails = "New!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is 160 characters no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
+        val returnDetails = "ʰʲʺ£$%˦˫qwNew!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is" +
+          " 160 no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
+
         leftSideError(fullReturnUltimateParentModel.copy(
           submissionType = Revised,
           revisedReturnDetails = Some(RevisedReturnDetailsModel(returnDetails))
@@ -326,8 +343,18 @@ class FullReturnValidatorSpec extends BaseSpec {
         ).validate).errorMessage shouldBe EstimateReasonLengthError("a" * 10001).errorMessage
       }
 
+      "ReturnContainsEstimates is true and groupEstimateReason contains 0 characters" in {
+
+        leftSideError(fullReturnUltimateParentModel.copy(
+          returnContainsEstimates = true,
+          groupEstimateReason = Some("")
+        ).validate).errorMessage shouldBe EstimateReasonLengthError("").errorMessage
+      }
+
       "ReturnContainsEstimates is true and groupEstimateReason contains invalid characters" in {
-        val estimateReason = "New!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is 160 characters no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
+        val estimateReason = "ʰʲʺ£$%˦˫qwNew!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is" +
+          "160 no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
+
         leftSideError(fullReturnUltimateParentModel.copy(
           returnContainsEstimates = true,
           groupEstimateReason = Some(estimateReason)
@@ -379,15 +406,20 @@ class FullReturnValidatorSpec extends BaseSpec {
         leftSideError(model.validate).errorMessage shouldBe NoEstimatesSupplied(true).errorMessage
       }
 
-      "declaration is false" in {
+      "Ulti parent declaration is false" in {
         val model = fullReturnUltimateParentModel.copy(declaration = false)
         leftSideError(model.validate).errorMessage shouldBe FullReturnDeclarationError(false).errorMessage
       }
 
-      "aggregate net tax interest income and exceeds cap" in {
-        val model = fullReturnUltimateParentModel
-          .copy(ukCompanies = Seq.fill(7)(ukCompanyModelReactivationMax))
-        leftSideError(model.validate).errorMessage shouldBe AggregateNetTaxInterestIncomeExceedsCap(fullReturnUltimateParentModel.groupLevelAmount.interestReactivationCap).errorMessage
+      "deemed parent declaration is false" in {
+        val model = fullReturnDeemedParentModel.copy(declaration = false, parentCompany = Some(parentCompanyModelDeemedMin))
+        leftSideError(model.validate).errorMessage shouldBe FullReturnDeclarationError(false).errorMessage
+      }
+
+      "aggregate net tax interest income exceeds the cap" in {
+        val model = fullReturnUltimateParentModel.copy(ukCompanies = Seq.fill(7)(ukCompanyModelReactivationMax))
+        leftSideError(model.validate).errorMessage shouldBe AggregateNetTaxInterestIncomeExceedsCap(
+          fullReturnUltimateParentModel.groupLevelAmount.interestReactivationCap).errorMessage
       }
 
       "total restriction exceeds aggregate net tax interest expense" in {
@@ -423,10 +455,9 @@ class FullReturnValidatorSpec extends BaseSpec {
 
       "reactivation cap cannot be supplied where the group is not subject to reactivations" in {
         val model = fullReturnModelMin.copy(groupSubjectToInterestReactivation = false)
-        leftSideError(model.validate).errorMessage shouldBe ReactivationCapNotSubjectToReactivations(fullReturnUltimateParentModel.groupLevelAmount.interestReactivationCap).errorMessage
+        leftSideError(model.validate).errorMessage shouldBe ReactivationCapNotSubjectToReactivations(
+          fullReturnUltimateParentModel.groupLevelAmount.interestReactivationCap).errorMessage
       }
-
     }
-    
   }
 }

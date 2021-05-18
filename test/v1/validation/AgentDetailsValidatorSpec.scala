@@ -47,7 +47,7 @@ class AgentDetailsValidatorSpec extends BaseSpec {
     }
 
     "passed false and Some name (with incorrect name length) should not succeed with 2 errors" in {
-      val model = AgentDetailsModel(false , Some(""))
+      val model = AgentDetailsModel(false, Some(""))
       leftSideError(model.validate).errorMessage shouldBe
         errorMessages(AgentNameLengthError("").errorMessage, AgentNameSuppliedError("").errorMessage)
     }
@@ -63,7 +63,9 @@ class AgentDetailsValidatorSpec extends BaseSpec {
     }
 
     "passed true and Some name with invalid characters should not succeed" in {
-      val invalidName = "New!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is 160 characters no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
+      val invalidName = "ʰʲʺ£$%˦˫qwNew!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is" +
+        " 160 no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
+
       val model = AgentDetailsModel(true, Some(invalidName))
       leftSideError(model.validate).errorMessage shouldBe AgentNameCharactersError(invalidName).errorMessage
     }
@@ -73,6 +75,5 @@ class AgentDetailsValidatorSpec extends BaseSpec {
       val model = AgentDetailsModel(true, Some(invalidName))
       leftSideError(model.validate).errorMessage shouldBe AgentNameCharactersError(invalidName).errorMessage
     }
-
   }
 }
