@@ -28,33 +28,50 @@
     "groupRatio": {
       "isElected": true,
       "groupEBITDAChargeableGains": true,
-      "activeGroupEBITDAChargeableGains" : false,
+      "activeGroupEBITDAChargeableGains": false,
       "groupRatioBlended": {
         "isElected": true,
-        "investorGroups": [{
-          "groupName": "some investor group",
-          "elections": ["groupRatioBlended", "groupEBITDA", "interestAllowanceAlternativeCalculation", "interestAllowanceNonConsolidatedInvestment", "interestAllowanceConsolidatedPartnership"]
-        }, {
-          "groupName": "some investor group",
-          "elections": ["interestAllowanceAlternativeCalculation", "interestAllowanceNonConsolidatedInvestment", "interestAllowanceConsolidatedPartnership"]
-        }]
+        "investorGroups": [
+          {
+            "groupName": "some investor group",
+            "elections": [
+              "groupRatioBlended",
+              "groupEBITDA",
+              "interestAllowanceAlternativeCalculation",
+              "interestAllowanceNonConsolidatedInvestment",
+              "interestAllowanceConsolidatedPartnership"
+            ]
+          },
+          {
+            "groupName": "some investor group",
+            "elections": [
+              "interestAllowanceAlternativeCalculation",
+              "interestAllowanceNonConsolidatedInvestment",
+              "interestAllowanceConsolidatedPartnership"
+            ]
+          }
+        ]
       }
     },
     "interestAllowanceAlternativeCalculation": true,
-    "activeInterestAllowanceAlternativeCalculation" : false,
+    "activeInterestAllowanceAlternativeCalculation": false,
     "interestAllowanceNonConsolidatedInvestment": {
       "isElected": true,
-      "nonConsolidatedInvestments": [{
-        "investmentName": "some Investment"
-      }]
+      "nonConsolidatedInvestments": [
+        {
+          "investmentName": "some Investment"
+        }
+      ]
     },
     "interestAllowanceConsolidatedPartnership": {
       "isElected": true,
       "isActive": false,
-      "consolidatedPartnerships": [{
-        "partnershipName": "some partner",
-        "sautr": "1123456789"
-      }]
+      "consolidatedPartnerships": [
+        {
+          "partnershipName": "some partner",
+          "sautr": "1123456789"
+        }
+      ]
     }
   },
   "ukCompanies": [
@@ -69,7 +86,8 @@
       "allocatedReactivations": {
         "currentPeriodReactivation": 2
       }
-    },{
+    },
+    {
       "companyName": "Company Name ltd",
       "utr": "1123456789",
       "consenting": true,
@@ -83,7 +101,7 @@
     }
   ],
   "angie": 1.11,
-  "returnContainsEstimates": true,
+  "returnContainsEstimates": false,
   "groupSubjectToInterestRestrictions": false,
   "groupSubjectToInterestReactivation": true,
   "totalReactivation": 4,
@@ -99,5 +117,5 @@
     "groupEBITDA": 200,
     "groupRatio": 50
   },
-  "declaration":true
+  "declaration": true
 }
