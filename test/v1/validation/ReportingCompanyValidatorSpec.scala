@@ -32,7 +32,6 @@ class ReportingCompanyValidatorSpec extends BaseSpec {
       "a valid Reporting Company model is validated" in {
         rightSide(reportingCompanyModel.validate) shouldBe reportingCompanyModel
       }
-
     }
 
     "Return invalid" when {

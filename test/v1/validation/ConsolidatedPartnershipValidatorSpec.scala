@@ -64,7 +64,7 @@ class ConsolidatedPartnershipValidatorSpec extends BaseValidationSpec {
         leftSideError(model.validate).errorMessage shouldBe ConsolidatedPartnershipsNotSupplied(model).errorMessage
       }
 
-      "isElected is false & isActive is false and some partnerships are given" in {
+      "isElected is false & isActive is false and some partnerships without a CompanyNameModel are given" in {
         val model = ConsolidatedPartnershipModel(isElected = false, isActive = false,
           consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = CompanyNameModel(""), sautr = Some(sautrFake)))))
         leftSideError(model.validate).errorMessage shouldBe ConsolidatedPartnershipsSupplied(model).errorMessage
