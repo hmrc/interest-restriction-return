@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import play.api.libs.json.{Json, JsPath, JsValue}
+import play.api.libs.json.{Json, JsPath}
 import v1.models.Validation.ValidationResult
 import v1.models.{GroupRatioBlendedModel, InvestorGroupModel, Validation}
 
@@ -51,13 +51,15 @@ trait GroupRatioBlendedValidator extends BaseValidation {
 
 
 case class GroupRatioBlendedNotElectedError(groupRatioBlended: GroupRatioBlendedModel)(implicit val topPath: JsPath) extends Validation {
+  val code = "INVESTOR_GROUPS_SUPPLIED"
   val errorMessage: String = "Group Ratio Blended is not elected, unable to supply investor groups"
   val path: JsPath = topPath \ "groupRatioBlended"
-  val value: JsValue = Json.toJson(groupRatioBlended)
+  val value = Some(Json.toJson(groupRatioBlended))
 }
 
 case class InvestorGroupsEmpty()(implicit val topPath: JsPath) extends Validation {
+  val code = "INVESTOR_GROUPS_EMPTY"
   val errorMessage: String = "investorGroups must have at least 1 investor if supplied"
   val path: JsPath = topPath \ "investorGroups"
-  val value: JsValue = Json.obj()
+  val value = None
 }

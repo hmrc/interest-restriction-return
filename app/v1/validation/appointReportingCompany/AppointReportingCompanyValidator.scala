@@ -16,12 +16,13 @@
 
 package v1.validation.appointReportingCompany
 
-import play.api.libs.json.{Json, JsPath, JsValue}
+import play.api.libs.json.{Json, JsPath}
 import v1.models.Validation.ValidationResult
 import v1.models.appointReportingCompany.AppointReportingCompanyModel
 import v1.models.{IdentityOfCompanySubmittingModel, UltimateParentModel, Validation}
 import v1.models.AuthorisingCompanyModel
 import v1.validation.BaseValidation
+import v1.validation.errors._
 
 trait AppointReportingCompanyValidator extends BaseValidation {
 
@@ -84,43 +85,22 @@ trait AppointReportingCompanyValidator extends BaseValidation {
 }
 
 case object IdentityOfAppointingCompanyIsNotSupplied extends Validation {
+  val code = "IDENTITY_APPOINTING_COMPANY_NOT_SUPPLIED"
   val errorMessage: String = "Identity of Appointing Company must be supplied if it is not the same as the reporting company or agent"
   val path: JsPath = JsPath \ "identifyOfAppointingCompany"
-  val value: JsValue = Json.obj()
+  val value = None
 }
 
 case class IdentityOfAppointingCompanyIsSupplied(identityOfCompanySubmittingModel: IdentityOfCompanySubmittingModel) extends Validation {
+  val code = "IDENTITY_APPOINTING_COMPANY_SUPPLIED"
   val errorMessage: String = "Identity of Appointing Company must not be supplied if it is the same as the reporting company or agent"
   val path: JsPath = JsPath \ "identifyOfAppointingCompany"
-  val value: JsValue = Json.toJson(identityOfCompanySubmittingModel)
-}
-
-case class UltimateParentCompanyIsSupplied(ultimateParentModel: UltimateParentModel) extends Validation {
-  val errorMessage: String = "Ultimate Parent Company must not be supplied if it is the same as the reporting company"
-  val path: JsPath = JsPath \ "ultimateParentCompany"
-  val value: JsValue = Json.toJson(ultimateParentModel)
-}
-
-case object UltimateParentCompanyIsNotSupplied extends Validation {
-  val errorMessage: String = "Ultimate Parent Company must be supplied if it is not the same as the reporting company"
-  val path: JsPath = JsPath \ "ultimateParentCompany"
-  val value: JsValue = Json.obj()
-}
-
-case object AuthorisingCompaniesEmpty extends Validation {
-  val errorMessage: String = "authorisingCompanies must have at least 1 authorising company"
-  val path: JsPath = JsPath \ "authorisingCompanies"
-  val value: JsValue = Json.obj()
-}
-
-case object AuthorisingCompaniesContainsDuplicates extends Validation {
-  val errorMessage: String = "Authorising companies contain duplicate information"
-  val path = JsPath \ "authorisingCompanies"
-  val value = Json.obj()
+  val value = Some(Json.toJson(identityOfCompanySubmittingModel))
 }
 
 case class DeclaredFiftyPercentOfEligibleCompanies(declaration: Boolean) extends Validation {
+  val code = "DECLARATION_FALSE"
   val errorMessage: String = "Declaration is not valid so will not be submitted. You need to confirm the listed companies constitute at least 50% of the eligible companies."
   val path: JsPath = JsPath \ "declaration"
-  val value = Json.toJson(declaration)
+  val value = Some(Json.toJson(declaration))
 }

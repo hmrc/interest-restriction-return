@@ -48,15 +48,17 @@ trait NonConsolidatedInvestmentValidator extends BaseValidation {
 }
 
 case class NonConsolidatedInvestmentNameLengthError(investmentName: String)(implicit topPath: JsPath) extends Validation {
+  val code = "INVESTMENT_LENGTH"
   val errorMessage: String = s"Investment name is ${investmentName.length} characters long and should be between 1 and 5000 characters"
   val path = topPath \ "investmentName"
-  val value = Json.toJson(investmentName)
+  val value = Some(Json.toJson(investmentName))
 }
 
 case class NonConsolidatedInvestmentNameCharacterError(investmentName: String)(implicit topPath: JsPath) extends Validation {
+  val code = "INVESTMENT_CHARACTERS"
   val errorMessage: String = "Investment name contains invalid characters"
   val path = topPath \ "investmentName"
-  val value = Json.toJson(investmentName)
+  val value = Some(Json.toJson(investmentName))
 }
 
 

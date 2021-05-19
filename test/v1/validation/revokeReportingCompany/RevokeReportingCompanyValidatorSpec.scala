@@ -22,6 +22,7 @@ import play.api.libs.json.JsPath
 import utils.BaseSpec
 import assets.AuthorisingCompanyConstants._
 import v1.models.CompanyNameModel
+import v1.validation.errors._
 
 class RevokeReportingCompanyValidatorSpec extends BaseSpec {
 
@@ -69,7 +70,7 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
         leftSideErrorLength(testingModel.validate) shouldBe 1
 
         leftSideError(testingModel.validate).errorMessage shouldBe
-          UltimateParentCompanyIsSuppliedRevoke(revokeReportingCompanyModelMax.ultimateParentCompany.get).errorMessage
+          UltimateParentCompanyIsSupplied(revokeReportingCompanyModelMax.ultimateParentCompany.get).errorMessage
       }
 
       "a revoking company does not contain an authorising company" in {
@@ -86,7 +87,7 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
         leftSideErrorLength(testingModel.validate) shouldBe 1
 
         leftSideError(testingModel.validate).errorMessage shouldBe
-          UltimateParentCompanyIsNotSuppliedRevoke.errorMessage
+          UltimateParentCompanyIsNotSupplied.errorMessage
       }
 
       "a company submitting on behalf doesn't supply their company details" in {

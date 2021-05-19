@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import play.api.libs.json.{Json, JsPath, JsValue}
+import play.api.libs.json.{Json, JsPath}
 import v1.models.Validation.ValidationResult
 import v1.models.{GroupRatioModel, Validation}
 
@@ -41,13 +41,15 @@ trait GroupRatioValidator extends BaseValidation {
 }
 
 case class GroupRatioBlendedSupplied(groupRatio: GroupRatioModel)(implicit val topPath: JsPath) extends Validation {
+  val code = "GROUP_RATIO_BLENDED_SUPPLIED"
   val errorMessage: String = "Group Ratio is not elected, unable to elect GroupRatioBlended Election"
   val path: JsPath = topPath \ "groupRatioBlended"
-  val value: JsValue = Json.toJson(groupRatio)
+  val value = Some(Json.toJson(groupRatio))
 }
 
 case class GroupRatioBlendedNotSupplied()(implicit val topPath: JsPath) extends Validation {
+  val code = "GROUP_RATIO_BLENDED_NOT_SUPPLIED"
   val errorMessage: String = "Group Ratio is elected, must supply GroupRatioBlended Election"
   val path: JsPath = topPath \ "groupRatioBlended"
-  val value: JsValue = Json.obj()
+  val value = None
 }

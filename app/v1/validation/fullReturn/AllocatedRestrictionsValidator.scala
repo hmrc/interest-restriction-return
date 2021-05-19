@@ -16,7 +16,7 @@
 
 package v1.validation.fullReturn
 
-import play.api.libs.json.{Json, JsPath, JsValue}
+import play.api.libs.json.{Json, JsPath}
 import v1.models.{AccountingPeriodModel, Validation}
 import v1.models.Validation.ValidationResult
 import v1.models.fullReturn.AllocatedRestrictionsModel
@@ -98,8 +98,6 @@ trait AllocatedRestrictionsValidator extends BaseValidation {
           else Some(ap2).validNec,
           if (ap1.isAfter(groupEndDate)) DateAfterGPOA(2).invalidNec else Some(ap2).validNec
         )
-      case (_, Some(ap2)) =>
-        Some(ap2).validNec
       case _ =>
         None.validNec
     }
@@ -122,73 +120,85 @@ trait AllocatedRestrictionsValidator extends BaseValidation {
 }
 
 case class AllocatedRestrictionNotSupplied(i: Int)(implicit topPath: JsPath) extends Validation {
+  val code = "RESTRICTION_NOT_SUPPLIED"
   val path: JsPath = topPath \ s"disallowanceAp$i"
   val errorMessage: String = s"disallowanceAp$i must have a value when ap${i}End is supplied"
-  val value: JsValue = Json.obj()
+  val value = None
 }
 
 case class AllocatedRestrictionSupplied(i: Int)(implicit topPath: JsPath) extends Validation {
+  val code = "RESTRICTION_SUPPLIED"
   val path: JsPath = topPath \ s"disallowanceAp$i"
   val errorMessage: String = s"disallowanceAp$i cannot have a value when no ap${i}End is supplied"
-  val value: JsValue = Json.obj()
+  val value = None
 }
 
 case class AllocatedRestrictionLaterPeriodSupplied(i: Int)(implicit topPath: JsPath) extends Validation {
+  val code = "RESTRICTION_MISSING_PREVIOUS"
   val path: JsPath = topPath \ s"ap${i}End"
   val errorMessage: String = s"ap${i}End cannot be supplied as a previous period is missing"
-  val value: JsValue = Json.obj()
+  val value = None
 }
 
 case class AllocatedRestrictionNegative(i: Int, amt: BigDecimal)(implicit topPath: JsPath) extends Validation {
+  val code = "RESTRICTION_NEGATIVE"
   val path: JsPath = topPath \ s"disallowanceAp$i"
   val errorMessage: String = s"disallowanceAp$i cannot be negative"
-  val value: JsValue = Json.toJson(amt)
+  val value = Some(Json.toJson(amt))
 }
 
 case class AllocatedRestrictionDecimalError(i: Int, amt: BigDecimal)(implicit topPath: JsPath) extends Validation {
+  val code = "RESTRICTION_DECIMAL"
   val path: JsPath = topPath \ s"disallowanceAp$i"
   val errorMessage: String = s"disallowanceAp$i has greater than the allowed 2 decimal places."
-  val value: JsValue = Json.toJson(amt)
+  val value = Some(Json.toJson(amt))
 }
 
 case class AllocatedRestrictionDateBeforePrevious(i: Int)(implicit topPath: JsPath) extends Validation {
+  val code = "END_DATE_BEFORE_PREVIOUS"
   val path: JsPath = topPath \ s"ap${i}EndDate"
   val errorMessage: String = s"ap${i}End cannot be equal to or before ap${i - 1}EndDate"
-  val value: JsValue = Json.obj()
+  val value = None
 }
 
 case class AllocatedRestrictionDateGreaterThan12MonthsAfterPrevious(i: Int)(implicit topPath: JsPath) extends Validation {
+  val code = "END_DATE_GREATER_THAN_12_MONTHS"
   val path: JsPath = topPath \ s"ap${i}EndDate"
   val errorMessage: String = s"Ap${i} end date is entered and is greater than 12 month after the end date of Ap${i - 1}"
-  val value: JsValue = Json.obj()
+  val value = None
 }
 
 case class Ap1NotAfterGroupStartDate(ap1Date: LocalDate, groupStartDate: LocalDate)(implicit topPath: JsPath) extends Validation {
+  val code = "END_DATE_BEFORE_GROUP_START_DATE"
   val path: JsPath = topPath \ "ap1EndDate"
   val errorMessage: String = s"ap1EndDate ($ap1Date) must be after the group accounting period start date ($groupStartDate)"
-  val value: JsValue = Json.obj("ap1EndDate" -> ap1Date, "groupStartDate" -> groupStartDate)
+  val value = Some(Json.obj("ap1EndDate" -> ap1Date, "groupStartDate" -> groupStartDate))
 }
 
 case class Ap3BeforeGroupEndDate(ap3Date: LocalDate, groupEndDate: LocalDate)(implicit topPath: JsPath) extends Validation {
+  val code = "END_DATE_AFTER_GROUP_END_DATE"
   val path: JsPath = topPath \ "ap3EndDate"
   val errorMessage: String = s"ap3EndDate ($ap3Date) is before the group accounting period end date ($groupEndDate)"
-  val value: JsValue = Json.obj("ap3EndDate" -> ap3Date, "groupEndDate" -> groupEndDate)
+  val value = Some(Json.obj("ap3EndDate" -> ap3Date, "groupEndDate" -> groupEndDate))
 }
 
 case class DateRangeError(date: LocalDate, jsonAttribute: String)(implicit topPath: JsPath) extends Validation {
+  val code = "END_DATE_INVALID"
   val path: JsPath = topPath \ jsonAttribute
   val errorMessage: String = "Dates must be in the range 1900-01-01 to 2099-12-31"
-  val value: JsValue = Json.toJson(date)
+  val value = Some(Json.toJson(date))
 }
 
 case class DateAfterGPOA(i: Int)(implicit topPath: JsPath) extends Validation {
+  val code = "ACCOUNTING_PERIOD_OUTSIDE_POA"
   val path: JsPath = topPath \ s"ap${i}EndDate"
   val errorMessage: String = s"AP${i-1} end date is after the group's period of account so AP$i end date is not allowed"
-  val value: JsValue = Json.obj()
+  val value = None
 }
 
 case class CompanyAPDoesNotCoverGPOA()(implicit topPath: JsPath) extends Validation {
+  val code = "ACCOUNTING_PERIODS_DONT_COVER_POA"
   val path: JsPath = topPath
   val errorMessage: String = "Company's accounting periods must cover the group's entire POA"
-  val value: JsValue = Json.obj()
+  val value = None
 }

@@ -60,10 +60,15 @@ class BaseControllerSpec extends BaseSpec {
           _ => Future.successful(Ok("Success"))
         )(invalidJsonRequest, implicitly, implicitly)
 
-        await(jsonBodyOf(actual)) shouldBe Json.arr(
-          Json.obj(
-            "field" -> "/y",
-            "errors" -> Json.arr("error.path.missing")
+        await(jsonBodyOf(actual)) shouldBe Json.obj(
+          "code" -> "BAD_REQUEST",
+          "message" -> "Bad request",
+          "errors" -> Json.arr(
+            Json.obj(
+              "path" -> "/y",
+              "code" -> "JSON_VALIDATION_ERROR",
+              "message" -> "error.path.missing"
+            )
           )
         )
       }

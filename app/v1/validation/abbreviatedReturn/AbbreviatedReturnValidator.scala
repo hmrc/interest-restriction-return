@@ -19,8 +19,9 @@ package v1.validation.abbreviatedReturn
 import play.api.libs.json.{Json, JsPath, JsValue}
 import v1.models.Validation.ValidationResult
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
-import v1.models.{Original, ParentCompanyModel, Revised, Validation}
+import v1.models.{Original, Revised, Validation}
 import v1.validation.BaseValidation
+import v1.validation.errors._
 
 trait AbbreviatedReturnValidator extends BaseValidation {
 
@@ -30,7 +31,7 @@ trait AbbreviatedReturnValidator extends BaseValidation {
 
   private def validateRevisedReturnDetails: ValidationResult[_] = {
     (abbreviatedReturnModel.submissionType, abbreviatedReturnModel.revisedReturnDetails) match {
-      case (Original, Some(details)) => RevisedReturnDetailsSupplied(details.details).invalidNec
+      case (Original, Some(details)) => RevisedReturnDetailsSupplied(details).invalidNec
       case (Revised, None) => RevisedReturnDetailsNotSupplied.invalidNec
       case (Revised, Some(details)) => details.validate(JsPath)
       case _ => abbreviatedReturnModel.revisedReturnDetails.validNec
@@ -80,44 +81,9 @@ trait AbbreviatedReturnValidator extends BaseValidation {
   }
 }
 
-case object ReportingCompanyNotAppointed extends Validation {
-  val errorMessage: String = "You need to appoint a reporting company"
-  val path: JsPath = JsPath \ "appointedReportingCompany"
-  val value: JsValue = Json.obj()
-}
-
-case object RevisedReturnDetailsNotSupplied extends Validation {
-  val errorMessage: String = "A description of the amendments made to the return must be supplied if this is a revised return"
-  val path: JsPath = JsPath \ "revisedReturnDetails"
-  val value: JsValue = Json.obj()
-}
-
-case class RevisedReturnDetailsSupplied(details: String) extends Validation {
-  val errorMessage: String = "A description of the amendments made to the return cannot be supplied if this is an original return"
-  val path: JsPath = JsPath \ "revisedReturnDetails"
-  val value: JsValue = Json.toJson(details)
-}
-
-case object ParentCompanyDetailsNotSupplied extends Validation {
-  val errorMessage: String = "Parent Company is required if the Reporting Company is not the same as the Ultimate Parent"
-  val path: JsPath = JsPath \ "parentCompany"
-  val value: JsValue = Json.obj()
-}
-
-case class ParentCompanyDetailsSupplied(parentCompany: ParentCompanyModel) extends Validation {
-  val errorMessage: String = "Parent Company should not be supplied as the parent is the same as the Reporting Company"
-  val path: JsPath = JsPath \ "parentCompany"
-  val value: JsValue = Json.toJson(parentCompany)
-}
-
-case object UkCompaniesEmpty extends Validation {
-  val errorMessage: String = "ukCompanies must have at least 1 UK company"
-  val path: JsPath = JsPath \ "ukCompanies"
-  val value: JsValue = Json.obj()
-}
-
 case class AbbreviatedReturnDeclarationError(declaration: Boolean) extends Validation {
+  val code = "DECLARATION_FALSE"
   val errorMessage: String = "The declaration must be true"
   val path: JsPath = JsPath \ "declaration"
-  val value: JsValue = Json.toJson(declaration)
+  val value: Option[JsValue] = Some(Json.toJson(declaration))
 }
