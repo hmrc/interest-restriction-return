@@ -1,121 +1,88 @@
 {
-  "appointedReportingCompany": true,
-  "agentDetails": {
-    "agentActingOnBehalfOfCompany": true,
-    "agentName": "AAgent"
+  "appointedReportingCompany" : true,
+  "agentDetails" : {
+    "agentActingOnBehalfOfCompany" : true,
+    "agentName" : "AAgent"
   },
-  "reportingCompany": {
-    "companyName": "ACompany",
-    "ctutr": "1123456789",
-    "sameAsUltimateParent": false
+  "reportingCompany" : {
+    "companyName" : "ACompany",
+    "ctutr" : "1123456789",
+    "sameAsUltimateParent" : false
   },
-  "parentCompany": {
-    "ultimateParent": {
-      "companyName": "BCompany",
+  "parentCompany" : {
+    "ultimateParent" : {
+      "companyName" : "BCompany",
       "isUk": true,
-      "ctutr": "1123456789"
+      "ctutr" : "1123456789"
     }
   },
-  "groupCompanyDetails": {
-    "accountingPeriod": {
-      "startDate": "2018-07-27",
-      "endDate": "2020-01-26"
+  "groupCompanyDetails" : {
+    "accountingPeriod" : {
+      "startDate" : "2018-07-27",
+      "endDate" : "2020-01-26"
     }
   },
-  "submissionType": "revised",
-  "revisedReturnDetails": "Reason for revision",
-  "groupLevelElections": {
-    "groupRatio": {
-      "isElected": true,
-      "groupEBITDAChargeableGains": true,
-      "activeGroupEBITDAChargeableGains": false,
-      "groupRatioBlended": {
-        "isElected": true,
-        "investorGroups": [
+  "submissionType" : "revised",
+  "revisedReturnDetails" : "Reason for revision",
+  "groupLevelElections" : {
+    "groupRatio" : {
+      "isElected" : true,
+      "groupEBITDAChargeableGains" : true,
+      "activeGroupEBITDAChargeableGains" : false,
+      "groupRatioBlended" : {
+        "isElected" : true,
+        "investorGroups" : [{
+          "groupName" : "AInvestor"
+        },
           {
-            "groupName": "AInvestor"
+            "groupName" : "BInvestor"
           },
           {
-            "groupName": "BInvestor"
-          },
-          {
-            "groupName": "CInvestor"
-          }
-        ]
+            "groupName" : "CInvestor"
+          }]
       }
     },
-    "interestAllowanceAlternativeCalculation": true,
-    "activeInterestAllowanceAlternativeCalculation": false,
-    "interestAllowanceNonConsolidatedInvestment": {
-      "isElected": true,
-      "nonConsolidatedInvestments": [
+    "interestAllowanceAlternativeCalculation" : true,
+    "activeInterestAllowanceAlternativeCalculation" : false,
+    "interestAllowanceNonConsolidatedInvestment" : {
+      "isElected" : true,
+      "nonConsolidatedInvestments" : [{
+        "investmentName" : "AInvestment"
+      },
         {
-          "investmentName": "AInvestment"
-        },
-        {
-          "investmentName": "BInvestment"
-        }
-      ]
+          "investmentName" : "BInvestment"
+        }]
     },
-    "interestAllowanceConsolidatedPartnership": {
-      "isElected": true,
+    "interestAllowanceConsolidatedPartnership" : {
+      "isElected" : true,
       "isActive": false,
-      "consolidatedPartnerships": [
-        {
-          "partnershipName": "APartnership",
-          "sautr": "1123456789"
-        },
-        {
-          "partnershipName": "BPartnership",
-          "sautr": "1123456789"
-        }
-      ]
+      "consolidatedPartnerships" : [{
+        "partnershipName" : "APartnership",
+        "sautr" : "1123456789"
+      },
+      {
+        "partnershipName" : "BPartnership",
+        "sautr" : "1123456789"
+      }]
     }
   },
-  "ukCompanies": [
-    {
-      "companyName": "ACompany",
-      "utr": "1123456789",
-      "consenting": true,
-      "qicElection": false,
-      "taxEBITDA": 0,
-      "netTaxInterestIncome": 0,
-      "netTaxInterestExpense": 0
+  "ukCompanies" : [{
+      "companyName" : "ACompany",
+      "utr" : "1123456789",
+      "consenting" : true,
+      "qicElection" : false
     },
     {
-      "companyName": "BCompany",
-      "utr": "1123456789",
-      "consenting": true,
-      "qicElection": false,
-      "taxEBITDA": 0,
-      "netTaxInterestIncome": 0,
-      "netTaxInterestExpense": 0
+      "companyName" : "BCompany",
+      "utr" : "1123456789",
+      "consenting" : true,
+      "qicElection" : false
     },
     {
-      "companyName": "CCompany",
-      "utr": "1123456789",
-      "consenting": false,
-      "qicElection": true,
-      "taxEBITDA": 0,
-      "netTaxInterestIncome": 0,
-      "netTaxInterestExpense": 0
-    }
-  ],
-  "returnContainsEstimates": false,
-  "groupSubjectToInterestReactivation": false,
-  "groupSubjectToInterestRestrictions": false,
-  "totalRestrictions": 0,
-  "groupLevelAmount": {
-    "interestAllowanceBroughtForward": 0,
-    "interestReactivationCap": 0,
-    "interestAllowanceForPeriod": 0,
-    "interestCapacityForPeriod": 0
-  },
-  "adjustedGroupInterest": {
-    "qngie": 0,
-    "groupEBITDA": 0,
-    "groupRatio": 100
-  },
-  "angie": 0,
-  "declaration": true
+      "companyName" : "CCompany",
+      "utr" : "1123456789",
+      "consenting" : false,
+      "qicElection" : true
+    }],
+    "declaration":true
 }
