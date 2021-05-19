@@ -77,45 +77,21 @@
       "companyName": "ACompany",
       "utr": "1123456789",
       "consenting": true,
-      "qicElection": false,
-      "taxEBITDA": 0,
-      "netTaxInterestIncome": 0,
-      "netTaxInterestExpense": 0
+      "qicElection": false
     },
     {
       "companyName": "BCompany",
       "utr": "1123456789",
       "consenting": true,
-      "qicElection": false,
-      "taxEBITDA": 0,
-      "netTaxInterestIncome": 0,
-      "netTaxInterestExpense": 0
+      "qicElection": false
     },
     {
       "companyName": "CCompany",
       "utr": "1123456789",
       "consenting": false,
-      "qicElection": true,
-      "taxEBITDA": 0,
-      "netTaxInterestIncome": 0,
-      "netTaxInterestExpense": 0
+      "qicElection": true
     }
   ],
   "returnContainsEstimates": false,
-  "groupSubjectToInterestReactivation": false,
-  "groupSubjectToInterestRestrictions": false,
-  "totalRestrictions": 0,
-  "groupLevelAmount": {
-    "interestAllowanceBroughtForward": 0,
-    "interestReactivationCap": 0,
-    "interestAllowanceForPeriod": 0,
-    "interestCapacityForPeriod": 0
-  },
-  "adjustedGroupInterest": {
-    "qngie": 0,
-    "groupEBITDA": 0,
-    "groupRatio": 100
-  },
-  "angie": 0,
   "declaration": true
 }
