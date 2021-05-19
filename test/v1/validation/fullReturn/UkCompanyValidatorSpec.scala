@@ -56,6 +56,11 @@ class UkCompanyValidatorSpec extends BaseValidationSpec {
           utr = invalidUtr).validate(groupAccountingPeriod)).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
       }
 
+      "CTUTR is empty" in {
+        leftSideError(ukCompanyModelReactivationMax.copy(
+          utr = UTRModel("")).validate(groupAccountingPeriod)).errorMessage shouldBe UTRLengthError(UTRModel("")).errorMessage
+      }
+
       "CTUTR is to short" in {
         leftSideError(ukCompanyModelReactivationMax.copy(
           utr = UTRModel("1")).validate(groupAccountingPeriod)).errorMessage shouldBe UTRLengthError(invalidShortUtr).errorMessage
@@ -87,36 +92,44 @@ class UkCompanyValidatorSpec extends BaseValidationSpec {
       }
 
       "netTaxInterestExpense is < 0" in {
-        leftSideError(ukCompanyModelReactivationMax.copy(netTaxInterestExpense = -1).validate(groupAccountingPeriod)).errorMessage shouldBe NetTaxInterestExpenseError(-1).errorMessage
+        leftSideError(ukCompanyModelReactivationMax.copy(netTaxInterestExpense = -1).validate(
+          groupAccountingPeriod)).errorMessage shouldBe NetTaxInterestExpenseError(-1).errorMessage
       }
 
       "netTaxInterestExpense is >2 DP" in {
-        leftSideError(ukCompanyModelReactivationMax.copy(netTaxInterestExpense = 2.222, netTaxInterestIncome = 0).validate(groupAccountingPeriod)).errorMessage shouldBe NetTaxInterestExpenseDecimalError(2.222).errorMessage
+        leftSideError(ukCompanyModelReactivationMax.copy(netTaxInterestExpense = 2.222, netTaxInterestIncome = 0).validate(
+          groupAccountingPeriod)).errorMessage shouldBe NetTaxInterestExpenseDecimalError(2.222).errorMessage
       }
 
       "netTaxInterestIncomes is < 0" in {
-        leftSideError(ukCompanyModelReactivationMax.copy(netTaxInterestIncome = -1).validate(groupAccountingPeriod)).errorMessage shouldBe NetTaxInterestIncomeError(-1).errorMessage
+        leftSideError(ukCompanyModelReactivationMax.copy(netTaxInterestIncome = -1).validate(
+          groupAccountingPeriod)).errorMessage shouldBe NetTaxInterestIncomeError(-1).errorMessage
       }
 
       "netTaxInterestIncome is >2 DP" in {
-        leftSideError(ukCompanyModelReactivationMax.copy(netTaxInterestIncome = 2.222).validate(groupAccountingPeriod)).errorMessage shouldBe NetTaxInterestIncomeDecimalError(2.222).errorMessage
+        leftSideError(ukCompanyModelReactivationMax.copy(netTaxInterestIncome = 2.222).validate(
+          groupAccountingPeriod)).errorMessage shouldBe NetTaxInterestIncomeDecimalError(2.222).errorMessage
       }
 
       "ExpenseAndIncomeBothNotGreaterThanZero where both values are > 0" in {
-        leftSideError(ukCompanyModelReactivationMax.copy(netTaxInterestExpense = 20.00,netTaxInterestIncome = 30.00).validate(groupAccountingPeriod)).errorMessage shouldBe ExpenseAndIncomeBothNotGreaterThanZero(20.00,30.00).errorMessage
+        leftSideError(ukCompanyModelReactivationMax.copy(netTaxInterestExpense = 20.00,netTaxInterestIncome = 30.00).validate(
+          groupAccountingPeriod)).errorMessage shouldBe ExpenseAndIncomeBothNotGreaterThanZero(20.00,30.00).errorMessage
       }
 
       "RestrictionNotGreaterThanExpense where restriction values > expense" in {
-        leftSideError(ukCompanyModelRestrictionMax.copy(netTaxInterestExpense = 20.00, allocatedRestrictions = allocatedRestriction).validate(groupAccountingPeriod)).errorMessage shouldBe RestrictionNotGreaterThanExpense(20.00,30.01).errorMessage
+        leftSideError(ukCompanyModelRestrictionMax.copy(netTaxInterestExpense = 20.00, allocatedRestrictions = allocatedRestriction).validate(
+          groupAccountingPeriod)).errorMessage shouldBe RestrictionNotGreaterThanExpense(20.00,30.01).errorMessage
       }
 
       "taxEBITDA is >2 DP" in {
-        leftSideError(ukCompanyModelReactivationMax.copy(taxEBITDA = 2.222).validate(groupAccountingPeriod)).errorMessage shouldBe TaxEBITDADecimalError(2.222).errorMessage
+        leftSideError(ukCompanyModelReactivationMax.copy(taxEBITDA = 2.222).validate(
+          groupAccountingPeriod)).errorMessage shouldBe TaxEBITDADecimalError(2.222).errorMessage
       }
 
       "companyEstimateReason contains more than 5,000 characters" in {
         val estimateReason = "a" * 5001
-        leftSideError(ukCompanyModelReactivationMax.copy(companyEstimateReason = Some(estimateReason)).validate(groupAccountingPeriod)).errorMessage shouldBe CompanyEstimateReasonLengthError(estimateReason).errorMessage
+        leftSideError(ukCompanyModelReactivationMax.copy(companyEstimateReason = Some(estimateReason)).validate(
+          groupAccountingPeriod)).errorMessage shouldBe CompanyEstimateReasonLengthError(estimateReason).errorMessage
       }
 
       "companyEstimateReason contains 0 characters" in {
@@ -129,7 +142,8 @@ class UkCompanyValidatorSpec extends BaseValidationSpec {
         val estimateReason = "ʰʲʺ£$%˦˫qwNew!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is " +
           "160 no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
 
-        leftSideError(ukCompanyModelReactivationMax.copy(companyEstimateReason = Some(estimateReason)).validate(groupAccountingPeriod)).errorMessage shouldBe CompanyEstimateReasonCharacterError(estimateReason).errorMessage
+        leftSideError(ukCompanyModelReactivationMax.copy(companyEstimateReason = Some(estimateReason)).validate(
+          groupAccountingPeriod)).errorMessage shouldBe CompanyEstimateReasonCharacterError(estimateReason).errorMessage
       }
     }
   }

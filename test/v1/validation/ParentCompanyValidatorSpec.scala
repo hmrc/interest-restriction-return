@@ -58,7 +58,8 @@ class ParentCompanyValidatorSpec extends BaseValidationSpec {
 
       "Return invalid if more than 3 deemed Parents" in {
 
-        val model = parentCompanyModelDeemedMin.copy(deemedParent = Some(Seq(deemedParentModelUkCompany, deemedParentModelUkCompany, deemedParentModelUkCompany, deemedParentModelUkCompany)))
+        val model = parentCompanyModelDeemedMin.copy(deemedParent = Some(
+          Seq(deemedParentModelUkCompany, deemedParentModelUkCompany, deemedParentModelUkCompany, deemedParentModelUkCompany)))
 
         leftSideError(model.parentCompanyModel.validate).errorMessage shouldBe MaxThreeDeemedParents(model).errorMessage
       }
@@ -66,17 +67,14 @@ class ParentCompanyValidatorSpec extends BaseValidationSpec {
       "Return invalid if deemed Parents empty" in {
 
         val model = parentCompanyModelDeemedMin.copy(deemedParent = Some(Nil))
-
         leftSideError(model.parentCompanyModel.validate).errorMessage shouldBe DeemedParentsEmpty().errorMessage
       }
 
       "Return invalid if less than 2 deemed Parents" in {
 
         val model = parentCompanyModelDeemedMin.copy(deemedParent = Some(Seq(deemedParentModelUkCompany)))
-
         leftSideError(model.parentCompanyModel.validate).errorMessage shouldBe MinTwoDeemedParents(model).errorMessage
       }
     }
-
   }
 }

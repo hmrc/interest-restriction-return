@@ -87,12 +87,28 @@ class ConsolidatedPartnershipValidatorSpec extends BaseValidationSpec {
         leftSideError(model.validate).errorMessage shouldBe ConsolidatedPartnershipsEmpty().errorMessage
       }
 
+      "SAUTR is invalid" in {
+
+        val model = ConsolidatedPartnershipModel(isElected = true, isActive = true,
+          consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = CompanyNameModel("Partner 1"), sautr = Some(invalidUtr)))))
+
+        leftSideError(model.validate).errorMessage shouldBe UTRChecksumError(UTRModel("ʰʲʺ£$%˦˫qw")).errorMessage
+      }
+
       "SAUTR contains invalid characters" in {
 
         val model = ConsolidatedPartnershipModel(isElected = true, isActive = true,
           consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = CompanyNameModel("Partner 1"), sautr = Some(UTRModel("ʰʲʺ£$%˦˫qw"))))))
 
         leftSideError(model.validate).errorMessage shouldBe UTRChecksumError(UTRModel("ʰʲʺ£$%˦˫qw")).errorMessage
+      }
+
+      "SAUTR is empty" in {
+
+        val model = ConsolidatedPartnershipModel(isElected = true, isActive = true,
+          consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = CompanyNameModel("Partner 1"), sautr = Some(UTRModel(""))))))
+
+        leftSideError(model.validate).errorMessage shouldBe UTRLengthError(UTRModel("")).errorMessage
       }
 
       "SAUTR is to short" in {

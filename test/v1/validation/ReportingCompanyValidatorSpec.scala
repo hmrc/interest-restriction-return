@@ -53,6 +53,10 @@ class ReportingCompanyValidatorSpec extends BaseSpec {
         leftSideError(reportingCompanyModel.copy(ctutr = invalidUtr).validate).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
       }
 
+      "CTUTR is empty" in {
+        leftSideError(reportingCompanyModel.copy(ctutr = UTRModel("")).validate).errorMessage shouldBe UTRLengthError(UTRModel("")).errorMessage
+      }
+
       "CTUTR is to short" in {
         leftSideError(reportingCompanyModel.copy(ctutr = UTRModel("1")).validate).errorMessage shouldBe UTRLengthError(invalidShortUtr).errorMessage
       }

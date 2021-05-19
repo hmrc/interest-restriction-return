@@ -61,27 +61,21 @@ class AccountingPeriodValidatorSpec extends BaseSpec {
 
       "Start date is in the future" in {
 
-        val startDate = LocalDate.now().plusDays(1)
-        val model = accountingPeriodModel.copy(
-          startDate = startDate
-        )
+        val startDatePlusOneDay = LocalDate.now().plusDays(1)
+        val model = accountingPeriodModel.copy(startDate = startDatePlusOneDay)
         leftSideError(model.validate).errorMessage shouldBe StartDateCannotBeInFuture(startDate).errorMessage
       }
 
       "End date is before start date" in {
 
-        val endDate = startDate.minusDays(1)
-        val model = accountingPeriodModel.copy(
-          endDate = endDate
-        )
+        val endDateMinusOneDay = startDate.minusDays(1)
+        val model = accountingPeriodModel.copy(endDate = endDateMinusOneDay)
         leftSideError(model.validate).errorMessage shouldBe EndDateAfterStartDate(endDate).errorMessage
       }
 
       "End date is equal to start date" in {
 
-        val model = accountingPeriodModel.copy(
-          endDate = startDate
-        )
+        val model = accountingPeriodModel.copy(endDate = startDate)
         leftSideError(model.validate).errorMessage shouldBe EndDateAfterStartDate(endDate).errorMessage
       }
 
@@ -89,27 +83,34 @@ class AccountingPeriodValidatorSpec extends BaseSpec {
 
         val startDate = LocalDate.now().minusMonths(20)
         val endDate = startDate.plusMonths(18)
+
         val model = accountingPeriodModel.copy(
           startDate = startDate,
           endDate = endDate
         )
+
         leftSideError(model.validate).errorMessage shouldBe AccountingPeriod18MonthsMax(endDate).errorMessage
       }
 
       "Start date is before minimum" in {
+
         val startDate = minimumStartDate.minusDays(1L)
+
         val model = accountingPeriodModel.copy(
           startDate = startDate,
           endDate = startDate.plusMonths(1L)
         )
+
         leftSideError(model.validate).errorMessage shouldBe StartDateCannotBeBeforeMinimum(startDate).errorMessage
       }
 
       "End date is before minimum" in {
+
         val model = accountingPeriodModel.copy(
           startDate = minimumStartDate,
           endDate = minimumEndDate.minusDays(1L)
         )
+
         leftSideError(model.validate).errorMessage shouldBe EndDateCannotBeBeforeMinimum(endDate).errorMessage
       }
     }
