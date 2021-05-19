@@ -29,7 +29,6 @@ import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import uk.gov.hmrc.play.bootstrap.config.HttpAuditEvent
 import uk.gov.hmrc.play.bootstrap.backend.http.JsonErrorHandler
 import v1.models.errors._
-
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -43,6 +42,8 @@ class ErrorHandler @Inject()(
   import httpAuditEvent.dataEvent
 
   override def onClientError(request: RequestHeader, statusCode: Int, message: String): Future[Result] = {
+
+    implicit val writes = Json.writes[ErrorResponseModel]
 
     implicit val headerCarrier: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
 
