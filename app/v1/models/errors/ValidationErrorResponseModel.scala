@@ -20,36 +20,50 @@ import cats.data.NonEmptyChain
 import play.api.libs.json._
 import v1.models.Validation
 
-case class ValidationErrorResponseModel(code: String, message: String, errors: Seq[ErrorResponseModel])
+case class ValidationErrorResponseModel(code: String, message: String, path: Option[String], value: Option[JsValue], errors: Option[Seq[ErrorResponseModel]])
 
 object ValidationErrorResponseModel {
-  implicit val writes = Json.writes[ValidationErrorResponseModel]
+
+  implicit val writes: Writes[ValidationErrorResponseModel] = Json.writes[ValidationErrorResponseModel]
 
   val VALIDATION_ERROR_CODE = "JSON_VALIDATION_ERROR"
-  val BAD_REQUEST_ERROR_CODE = "BAD_REQUEST"
+  val BAD_REQUEST_ERROR_CODE = "INVALID_REQUEST"
   val BAD_REQUEST_ERROR_MESSAGE = "Request contains validation errors"
 
   def apply(errors: Seq[(JsPath, Seq[JsonValidationError])]): ValidationErrorResponseModel = {
-
     val validationErrors = errors.map {
       case (path, errs) => 
         errs.flatMap(_.messages).map(message => ErrorResponseModel(code = VALIDATION_ERROR_CODE, message = message, path = Some(path.toString)))
     }.flatten
 
-    ValidationErrorResponseModel(
-      code = BAD_REQUEST_ERROR_CODE,
-      message = BAD_REQUEST_ERROR_MESSAGE,
-      errors = validationErrors
-    )
+    errorsToValidationResponse(validationErrors)
   }
 
   def apply(errors: NonEmptyChain[Validation]): ValidationErrorResponseModel = {
-    ValidationErrorResponseModel(
-      code = BAD_REQUEST_ERROR_CODE,
-      message = BAD_REQUEST_ERROR_MESSAGE,
-      errors = errors.map(ErrorResponseModel(_)).toChain.toList
-    )
+    val validationErrors = errors.map(ErrorResponseModel(_)).toChain.toList
+    errorsToValidationResponse(validationErrors)
   }
+
+  def errorsToValidationResponse(errors: Seq[ErrorResponseModel]): ValidationErrorResponseModel =
+    errors match {
+      case error :: Nil => 
+        ValidationErrorResponseModel(
+          code = error.code,
+          message = error.message,
+          path = error.path,
+          value = error.value,
+          errors = None
+        )
+      case _ => 
+        ValidationErrorResponseModel(
+          code = BAD_REQUEST_ERROR_CODE,
+          message = BAD_REQUEST_ERROR_MESSAGE,
+          errors = Some(errors),
+          path = None,
+          value = None
+        )
+    }
+
 }
 
 

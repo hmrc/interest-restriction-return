@@ -39,9 +39,11 @@ class ValidationErrorResponseModelSpec extends WordSpec with Matchers {
       )
 
       val expected = ValidationErrorResponseModel(
-        code = "BAD_REQUEST", 
+        code = "INVALID_REQUEST", 
         message = "Request contains validation errors",
-        errors = expectedErrors
+        errors = Some(expectedErrors),
+        path = None,
+        value = None
       )
 
       ValidationErrorResponseModel(errors) shouldBe expected
@@ -50,7 +52,7 @@ class ValidationErrorResponseModelSpec extends WordSpec with Matchers {
     "serialise Json Validation Errors to Json correctly" in {
 
       val expected = Json.obj(
-        "code" -> "BAD_REQUEST",
+        "code" -> "INVALID_REQUEST",
         "message" -> "Request contains validation errors",
         "errors" -> Json.arr(
           Json.obj(
@@ -92,9 +94,11 @@ class ValidationErrorResponseModelSpec extends WordSpec with Matchers {
       )
 
       val expected = ValidationErrorResponseModel(
-        code = "BAD_REQUEST", 
+        code = "INVALID_REQUEST", 
         message = "Request contains validation errors",
-        errors = expectedErrors
+        errors = Some(expectedErrors),
+        path = None,
+        value = None
       )
 
       ValidationErrorResponseModel(apiErrorChain) shouldBe expected
@@ -103,7 +107,7 @@ class ValidationErrorResponseModelSpec extends WordSpec with Matchers {
     "serialise our Validation Errors to Json correctly" in {
 
       val expected = Json.obj(
-        "code" -> "BAD_REQUEST",
+        "code" -> "INVALID_REQUEST",
         "message" -> "Request contains validation errors",
         "errors" -> Json.arr(
           Json.obj(
@@ -122,6 +126,35 @@ class ValidationErrorResponseModelSpec extends WordSpec with Matchers {
       )
 
       Json.toJson(ValidationErrorResponseModel(apiErrorChain)) shouldBe expected
+    }
+
+    val singleApiError = Seq(TotalRestrictionsDecimalError(33.22222))
+    val singleApiErrorChain = NonEmptyChain.fromChainUnsafe(
+      Chain.fromSeq(singleApiError)
+    )
+
+    "be successfully constructed given a single Validation Errors" in {
+      val expected = ValidationErrorResponseModel(
+        code = "TOTAL_RESTRICTIONS_DECIMAL", 
+        message = "totalRestrictions has greater than the allowed 2 decimal places.",
+        errors = None,
+        path = Some("/totalRestrictions"), 
+        value = Some(Json.toJson(33.22222))
+      )
+
+      ValidationErrorResponseModel(singleApiErrorChain) shouldBe expected
+    }
+
+    "serialise a single validation error to Json correctly" in {
+
+      val expected = Json.obj(
+        "code" -> "TOTAL_RESTRICTIONS_DECIMAL",
+        "message" -> "totalRestrictions has greater than the allowed 2 decimal places.",
+        "path" -> "/totalRestrictions",
+        "value" -> 33.22222
+      )
+        
+      Json.toJson(ValidationErrorResponseModel(singleApiErrorChain)) shouldBe expected
     }
   }
 }
