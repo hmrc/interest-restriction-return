@@ -40,7 +40,7 @@ class ValidationErrorResponseModelSpec extends WordSpec with Matchers {
 
       val expected = ValidationErrorResponseModel(
         code = "BAD_REQUEST", 
-        message = "Bad request",
+        message = "Request contains validation errors",
         errors = expectedErrors
       )
 
@@ -51,7 +51,7 @@ class ValidationErrorResponseModelSpec extends WordSpec with Matchers {
 
       val expected = Json.obj(
         "code" -> "BAD_REQUEST",
-        "message" -> "Bad request",
+        "message" -> "Request contains validation errors",
         "errors" -> Json.arr(
           Json.obj(
             "code" -> "JSON_VALIDATION_ERROR",
@@ -87,13 +87,13 @@ class ValidationErrorResponseModelSpec extends WordSpec with Matchers {
     "be successfully constructed given a sequence of our Validation Errors" in {
 
       val expectedErrors = Seq(
-        ErrorResponseModel(code = "NEGATIVE_ANGIE", message = "ANGIE cannot be negative", path = Some("/angie"), value = Some("-123")),
-        ErrorResponseModel(code = "TOTAL_RESTRICTIONS_DECIMAL", message = "totalRestrictions has greater than the allowed 2 decimal places.", path = Some("/totalRestrictions"), value = Some("33.22222"))
+        ErrorResponseModel(code = "NEGATIVE_ANGIE", message = "ANGIE cannot be negative", path = Some("/angie"), value = Some(Json.toJson(-123))),
+        ErrorResponseModel(code = "TOTAL_RESTRICTIONS_DECIMAL", message = "totalRestrictions has greater than the allowed 2 decimal places.", path = Some("/totalRestrictions"), value = Some(Json.toJson(33.22222)))
       )
 
       val expected = ValidationErrorResponseModel(
         code = "BAD_REQUEST", 
-        message = "Bad request",
+        message = "Request contains validation errors",
         errors = expectedErrors
       )
 
@@ -104,19 +104,19 @@ class ValidationErrorResponseModelSpec extends WordSpec with Matchers {
 
       val expected = Json.obj(
         "code" -> "BAD_REQUEST",
-        "message" -> "Bad request",
+        "message" -> "Request contains validation errors",
         "errors" -> Json.arr(
           Json.obj(
             "code" -> "NEGATIVE_ANGIE",
             "message" -> "ANGIE cannot be negative",
             "path" -> "/angie",
-            "value" -> "-123"
+            "value" -> -123
           ), 
           Json.obj(
             "code" -> "TOTAL_RESTRICTIONS_DECIMAL",
             "message" -> "totalRestrictions has greater than the allowed 2 decimal places.",
             "path" -> "/totalRestrictions",
-            "value" -> "33.22222"
+            "value" -> 33.22222
           )
         )
       )

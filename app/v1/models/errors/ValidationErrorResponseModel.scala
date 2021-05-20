@@ -25,24 +25,28 @@ case class ValidationErrorResponseModel(code: String, message: String, errors: S
 object ValidationErrorResponseModel {
   implicit val writes = Json.writes[ValidationErrorResponseModel]
 
+  val VALIDATION_ERROR_CODE = "JSON_VALIDATION_ERROR"
+  val BAD_REQUEST_ERROR_CODE = "BAD_REQUEST"
+  val BAD_REQUEST_ERROR_MESSAGE = "Request contains validation errors"
+
   def apply(errors: Seq[(JsPath, Seq[JsonValidationError])]): ValidationErrorResponseModel = {
 
     val validationErrors = errors.map {
       case (path, errs) => 
-        errs.flatMap(_.messages).map(message => ErrorResponseModel(code = "JSON_VALIDATION_ERROR", message = message, path = Some(path.toString)))
+        errs.flatMap(_.messages).map(message => ErrorResponseModel(code = VALIDATION_ERROR_CODE, message = message, path = Some(path.toString)))
     }.flatten
 
     ValidationErrorResponseModel(
-      code = "BAD_REQUEST",
-      message = "Bad request",
+      code = BAD_REQUEST_ERROR_CODE,
+      message = BAD_REQUEST_ERROR_MESSAGE,
       errors = validationErrors
     )
   }
 
   def apply(errors: NonEmptyChain[Validation]): ValidationErrorResponseModel = {
     ValidationErrorResponseModel(
-      code = "BAD_REQUEST",
-      message = "Bad request",
+      code = BAD_REQUEST_ERROR_CODE,
+      message = BAD_REQUEST_ERROR_MESSAGE,
       errors = errors.map(ErrorResponseModel(_)).toChain.toList
     )
   }

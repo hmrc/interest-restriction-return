@@ -62,7 +62,7 @@ class BaseControllerSpec extends BaseSpec {
 
         await(jsonBodyOf(actual)) shouldBe Json.obj(
           "code" -> "BAD_REQUEST",
-          "message" -> "Bad request",
+          "message" -> "Request contains validation errors",
           "errors" -> Json.arr(
             Json.obj(
               "path" -> "/y",
