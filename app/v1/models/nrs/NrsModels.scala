@@ -66,7 +66,7 @@ object NrSubmissionId {
 
 case class NrsMetadata(businessId: String, notableEvent: String, payloadContentType: String, payloadSha256Checksum: String,
                        userSubmissionTimestamp: String, identityData: NrsRetrievalData, userAuthToken: String, headerData: JsValue,
-                       searchKeys: JsValue, nrsSubmissionId: String)
+                       searchKeys: JsValue)
 
 object NrsMetadata {
   implicit val format = Json.format[NrsMetadata]

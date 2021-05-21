@@ -44,10 +44,17 @@ object AppConfigConstants {
   val nrsMap = Map(
     "host" -> "localhost",
     "port" -> "1111",
-    "authorisation-token" -> "some.token"
+    "authorisation-token" -> "some.token",
+    "enabled" -> "true"
   )
 
+  val nrsDisabledMap = Map(
+    "enabled" -> "false"
+  )
+
+
   val servicesMapWithNrs: Map[String, Map[String, String]] = servicesMap + ("nrs" -> nrsMap)
+  val servicesMapWithNrsDisabled: Map[String, Map[String, String]] = servicesMap + ("nrs" -> nrsDisabledMap)
 
   def config(serviceMap: Map[String, Map[String, String]]) = Map(
     "api" -> Map(
@@ -59,6 +66,7 @@ object AppConfigConstants {
   )
 
   val appConfigWithNrs = createAppConfig(config(servicesMapWithNrs))
+  val appConfigWithNrsDisabled = createAppConfig(config(servicesMap))
   val appConfigWithoutNrs = createAppConfig(config(servicesMap))
   
 }
