@@ -223,7 +223,7 @@ class DeemedParentValidatorSpec extends BaseSpec {
             LegalEntityIdentifierModel("QWERTYUIOPASDFGHJq11QWERTYUIOPASDFGHJq11")).errorMessage
         }
 
-        "LEI is invalid valids" in {
+        "LEI is invalid" in {
           val model = deemedParentModelUkPartnership.copy(legalEntityIdentifier = Some(LegalEntityIdentifierModel("QWERTYUIOPASDFGHJAA1")))
 
           leftSideError(model.validate).errorMessage shouldBe LegalEntityIdentifierCharacterError(
