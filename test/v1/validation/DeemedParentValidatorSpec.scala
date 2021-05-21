@@ -175,28 +175,16 @@ class DeemedParentValidatorSpec extends BaseSpec {
           leftSideError(model.validate).errorMessage shouldBe WrongDeemedParentIsUkPartnershipAndNonUKCompany(model).errorMessage
         }
 
-        "NonUK and SAUTR is supplied by default" in {
-
-          val model = deemedParentModelUkCompany.copy(isUk = false)
-          leftSideError(model.validate).errorMessage shouldBe WrongDeemedParentIsUkPartnershipAndNonUKCompany(model).errorMessage
-        }
-
-        "NonUK and No SAUTR is supplied explicitly" in {
+        "NonUK and No SAUTR is supplied" in {
 
           val model = deemedParentModelNonUkCompany.copy(isUk = false, sautr = Some(UTRModel("1123456789")))
           leftSideError(model.validate).errorMessage shouldBe WrongDeemedParentIsUkPartnershipAndNonUKCompany(model).errorMessage
         }
 
-        "NonUK and missing Country of Incorporation explicitly" in {
+        "NonUK and missing Country of Incorporation is supplied" in {
 
           val model = deemedParentModelNonUkCompany.copy(isUk = false, countryOfIncorporation = None)
           leftSideError(model.validate).errorMessage shouldBe NonUKDeemedParentMissingCountryOfIncorporation(model).errorMessage
-        }
-
-        "NonUK and no country of incorporation is supplied by default" in {
-
-          val model = deemedParentModelUkPartnership.copy(isUk = false)
-          leftSideError(model.validate).errorMessage shouldBe WrongDeemedParentIsUkPartnershipAndNonUKCompany(model).errorMessage
         }
 
         "No UTR or Country of Incorporation and IsUk is true" in {
