@@ -56,7 +56,7 @@ class AuthorisingCompanyValidatorSpec extends BaseValidationSpec {
         leftSideError(authorisingCompanyModel.copy(utr = invalidUtr).validate).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
       }
 
-      "CTUTR is contains invalid characters" in {
+      "UTR is contains invalid characters" in {
         leftSideError(authorisingCompanyModel.copy(
           utr = UTRModel("ʰʲʺ˦˫˥ʺ˦˫˥")).validate).errorMessage shouldBe UTRChecksumError(UTRModel("ʰʲʺ˦˫˥ʺ˦˫˥")).errorMessage
       }
