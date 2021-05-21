@@ -17,27 +17,26 @@
 package utils
 
 import assets.BaseConstants
+import assets.NrsConstants
 import config.AppConfig
 import org.scalatest.Matchers
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.mvc.BodyParsers
 import play.api.test.FakeRequest
 import uk.gov.hmrc.auth.core.MissingBearerToken
-import uk.gov.hmrc.auth.core.retrieve.Credentials
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.test.UnitSpec
 import v1.controllers.actions.mocks.{Authorised, Unauthorised}
 import v1.models.Validation
 import v1.models.Validation.ValidationResult
 import v1.models.requests.IdentifierRequest
-import uk.gov.hmrc.auth.core.retrieve.~
 
 import scala.concurrent.ExecutionContext
 
 trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with MaterializerSupport with BaseConstants {
 
   lazy val fakeRequest = FakeRequest("GET", "/")
-  lazy implicit val identifierRequest = IdentifierRequest(fakeRequest, "id")
+  lazy implicit val identifierRequest = IdentifierRequest(fakeRequest, "id", NrsConstants.nrsRetrievalData)
   lazy val injector = app.injector
   lazy val bodyParsers = injector.instanceOf[BodyParsers.Default]
   lazy val jsonFormatters = injector.instanceOf[FeatureSwitchJsonFormatter]
@@ -45,8 +44,8 @@ trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with Mate
   lazy implicit val ec = injector.instanceOf[ExecutionContext]
   lazy implicit val headerCarrier: HeaderCarrier = HeaderCarrier()
 
-  val fakeAuthResponse = new ~(Some(Credentials("id","SCP")), Some("SomeClientId"))
-  object AuthorisedAction extends Authorised[Option[Credentials] ~ Option[String]](fakeAuthResponse, bodyParsers)
+  val fakeAuthResponse = NrsConstants.fakeResponse
+  object AuthorisedAction extends Authorised[NrsConstants.NrsRetrievalDataType](fakeAuthResponse, bodyParsers)
   object UnauthorisedAction extends Unauthorised(new MissingBearerToken, bodyParsers)
 
   def rightSide[A](validationResult: ValidationResult[A]): A = validationResult.toEither.right.get

@@ -20,9 +20,9 @@ import play.api.mvc.{Action, AnyContent, Results}
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve._
-import uk.gov.hmrc.auth.core.retrieve.Credentials
 import utils.BaseSpec
 import v1.connectors.mocks.{FakeFailingAuthConnector, FakeSuccessAuthConnector}
+import assets.NrsConstants
 
 class AuthActionSpec extends BaseSpec {
 
@@ -35,9 +35,7 @@ class AuthActionSpec extends BaseSpec {
     "the user is logged in with providerId returned" must {
 
       "successful cary out request" in {
-
-        val fakeResponse = new ~(Some(Credentials("id","SCP")), Some("SomeClientId"))
-        val authConnector = new FakeSuccessAuthConnector[Option[Credentials] ~ Option[String]](fakeResponse)
+        val authConnector = new FakeSuccessAuthConnector[NrsConstants.NrsRetrievalDataType](NrsConstants.fakeResponse)
         val authAction = new AuthAction(authConnector, bodyParsers)
         val controller = new Harness(authAction)
         val result = controller.onPageLoad()(fakeRequest)

@@ -16,7 +16,6 @@
 
 package v1.controllers.actions
 
-import config.AppConfig
 import com.google.inject.Inject
 import play.api.mvc.Results._
 import play.api.mvc._
@@ -32,8 +31,7 @@ import v1.models.nrs.NrsRetrievalData
 import scala.concurrent.{ExecutionContext, Future}
 
 class AuthAction @Inject()(override val authConnector: AuthConnector,
-                           val parser: BodyParsers.Default,
-                           val appConfig: AppConfig
+                           val parser: BodyParsers.Default
                           )(implicit val executionContext: ExecutionContext)
   extends ActionBuilder[IdentifierRequest, AnyContent] with ActionFunction[Request, IdentifierRequest] with AuthorisedFunctions with Logging {
 
