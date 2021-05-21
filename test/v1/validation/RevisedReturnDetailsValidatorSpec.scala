@@ -29,12 +29,10 @@ class RevisedReturnDetailsValidatorSpec extends BaseSpec {
     "return invalid" when {
 
       "Return type is Revised and the revised return details are less than 1 character long" in {
-
         leftSideError(RevisedReturnDetailsModel("").validate).errorMessage shouldBe RevisedReturnDetailsLengthError("").errorMessage
       }
 
       "Return type is Revised and the revised return details are more than 5000 character longs" in {
-
         leftSideError(RevisedReturnDetailsModel("a" * 5001).validate).errorMessage shouldBe RevisedReturnDetailsLengthError("a" * 5001).errorMessage
       }
 

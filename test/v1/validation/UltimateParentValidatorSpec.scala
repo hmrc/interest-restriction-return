@@ -91,10 +91,13 @@ class UltimateParentValidatorSpec extends BaseSpec {
       }
 
       "CTUTR is invalid" in {
-        val model = ultimateParentModelUkCompany.copy(
-          ctutr = Some(invalidUtr))
-
+        val model = ultimateParentModelUkCompany.copy(ctutr = Some(invalidUtr))
         leftSideError(model.validate).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
+      }
+
+      "CTUTR is empty" in {
+        val model = ultimateParentModelUkCompany.copy(ctutr = Some(UTRModel("")))
+        leftSideError(model.validate).errorMessage shouldBe UTRLengthError(UTRModel("")).errorMessage
       }
 
       "CTUTR is to short" in {
@@ -115,7 +118,32 @@ class UltimateParentValidatorSpec extends BaseSpec {
         leftSideError(model.validate).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
       }
 
-      "CountryOfIncorporation is invalid" in {
+      "SAUTR is to short" in {
+        val model = ultimateParentModelUkCompany.copy(
+          ctutr = None,
+          sautr = Some(UTRModel("1")))
+
+        leftSideError(model.validate).errorMessage shouldBe UTRLengthError(invalidShortUtr).errorMessage
+      }
+
+      "SAUTR is to long" in {
+        val model = ultimateParentModelUkCompany.copy(
+          ctutr = None,
+          sautr = Some(UTRModel("11234567890")))
+
+        leftSideError(model.validate).errorMessage shouldBe UTRLengthError(invalidLongUtr).errorMessage
+      }
+
+      "SAUTR is empty" in {
+        val model = ultimateParentModelUkCompany.copy(
+          ctutr = None,
+          sautr = Some(UTRModel("")))
+
+        leftSideError(model.validate).errorMessage shouldBe UTRLengthError(UTRModel("")).errorMessage
+      }
+
+
+        "CountryOfIncorporation is invalid" in {
         val model = ultimateParentModelNonUkCompany.copy(countryOfIncorporation = Some(invalidCountryCode))
         leftSideError(model.validate).errorMessage shouldBe CountryCodeValueError(invalidCountryCode).errorMessage
       }
@@ -125,7 +153,6 @@ class UltimateParentValidatorSpec extends BaseSpec {
         "Both UK Company and Partnership Details Supplied" in {
 
           val model = ultimateParentModelUkCompany.copy(sautr = Some(sautr))
-
           leftSideError(model.validate).errorMessage shouldBe WrongUltimateParentIsUkCompanyAndPartnership(model).errorMessage
         }
 
@@ -133,82 +160,54 @@ class UltimateParentValidatorSpec extends BaseSpec {
         "Both UK Company and NonUK Details Supplied" in {
 
           val model = ultimateParentModelUkCompany.copy(countryOfIncorporation = Some(nonUkCountryCode))
-
           leftSideError(model.validate).errorMessage shouldBe WrongUltimateParentIsUKCompanyAndNonUK(model).errorMessage
         }
 
         "Both UK Company and NonUK Details Supplied when uk is false" in {
 
           val model = ultimateParentModelUkCompany.copy(isUk = false, countryOfIncorporation = Some(nonUkCountryCode))
-
           leftSideError(model.validate).errorMessage shouldBe WrongUltimateParentIsUKCompanyAndNonUK(model).errorMessage
         }
 
         "Both UK Partnership and NonUk Details Supplied" in {
 
           val model = ultimateParentModelUkPartnership.copy(countryOfIncorporation = Some(nonUkCountryCode))
-
           leftSideError(model.validate).errorMessage shouldBe WrongUltimateParentIsUkPartnershipAndNonUKCompany(model).errorMessage
         }
 
         "Both UK Partnership and NonUk Details Supplied when uk is false" in {
 
           val model = ultimateParentModelUkPartnership.copy(isUk = false, countryOfIncorporation = Some(nonUkCountryCode))
-
           leftSideError(model.validate).errorMessage shouldBe WrongUltimateParentIsUkPartnershipAndNonUKCompany(model).errorMessage
         }
 
         "IsUK and CountryOfIncorporation is supplied" in {
 
-          val model = ultimateParentModelNonUkCompany.copy(
-            isUk = true
-          )
-
+          val model = ultimateParentModelNonUkCompany.copy(isUk = true)
           leftSideError(model.validate).errorMessage shouldBe WrongUltimateParentIsUkPartnershipAndNonUKCompany(model).errorMessage
         }
 
         "IsUk is false and SAUTR is supplied by default" in {
 
-          val model = ultimateParentModelUkCompany.copy(
-            isUk = false
-          )
-
-          leftSideError(model.validate).errorMessage shouldBe WrongUltimateParentIsUkPartnershipAndNonUKCompany(model).errorMessage
-        }
-
-        "NonUK and SAUTR is supplied" in {
-
-          val model = ultimateParentModelUkCompany.copy(
-            isUk = false,
-            ctutr = None,
-            sautr = Some(UTRModel("1123456789"))
-          )
-
+          val model = ultimateParentModelUkCompany.copy(isUk = false)
           leftSideError(model.validate).errorMessage shouldBe WrongUltimateParentIsUkPartnershipAndNonUKCompany(model).errorMessage
         }
 
         "NonUK and CTUTR is supplied" in {
 
-          val model = ultimateParentModelNonUkCompany.copy(
-            countryOfIncorporation = None
-          )
-
+          val model = ultimateParentModelNonUkCompany.copy(countryOfIncorporation = None)
           leftSideError(model.validate).errorMessage shouldBe NonUKUltimateParentMissingCountryOfIncorporation(model).errorMessage
         }
 
         "NonUK and no country of incorporation is supplied" in {
 
-          val model = ultimateParentModelUkPartnership.copy(
-            isUk = false
-          )
-
+          val model = ultimateParentModelUkPartnership.copy(isUk = false)
           leftSideError(model.validate).errorMessage shouldBe WrongUltimateParentIsUkPartnershipAndNonUKCompany(model).errorMessage
         }
 
         "No UTR or Country of Incorporation" in {
 
           val model = ultimateParentModelUkPartnership.copy(ctutr = None, sautr = None, countryOfIncorporation = None)
-
           leftSideError(model.validate).errorMessage shouldBe NoUTROrCountryCode(model).errorMessage
         }
 
@@ -225,6 +224,29 @@ class UltimateParentValidatorSpec extends BaseSpec {
         "LEI is not surprised supplied" in {
           val model = ultimateParentModelUkPartnership.copy(legalEntityIdentifier = Some(LegalEntityIdentifierModel("")))
           leftSideError(model.validate).errorMessage shouldBe LegalEntityIdentifierCharacterError(LegalEntityIdentifierModel("")).errorMessage
+        }
+
+        "LEI is to long" in {
+          val model = ultimateParentModelUkPartnership.copy(
+            legalEntityIdentifier = Some(LegalEntityIdentifierModel("QWERTYUIOPASDFGHJq11QWERTYUIOPASDFGHJq11")))
+
+          leftSideError(model.validate).errorMessage shouldBe LegalEntityIdentifierCharacterError(
+            LegalEntityIdentifierModel("QWERTYUIOPASDFGHJq11QWERTYUIOPASDFGHJq11")).errorMessage
+        }
+
+        "LEI is invalid values" in {
+          val model = ultimateParentModelUkPartnership.copy(
+            legalEntityIdentifier = Some(LegalEntityIdentifierModel("QWERTYUIOPASDFGHJAA1")))
+
+          leftSideError(model.validate).errorMessage shouldBe LegalEntityIdentifierCharacterError(
+            LegalEntityIdentifierModel("QWERTYUIOPASDFGHJAA1")).errorMessage
+        }
+
+        "LEI is contains an invalid character" in {
+          val model = ultimateParentModelUkPartnership.copy(legalEntityIdentifier = Some(LegalEntityIdentifierModel("QWERTYUIOPASDFGHJ!11")))
+
+          leftSideError(model.validate).errorMessage shouldBe LegalEntityIdentifierCharacterError(
+            LegalEntityIdentifierModel("QWERTYUIOPASDFGHJ!11")).errorMessage
         }
       }
     }

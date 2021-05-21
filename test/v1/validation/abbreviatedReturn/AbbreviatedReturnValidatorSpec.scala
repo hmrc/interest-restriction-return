@@ -65,6 +65,14 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
         ).validate).errorMessage shouldBe ParentCompanyDetailsSupplied(parentCompanyModelUltUkCompany).errorMessage
       }
 
+      "Reporting Company is the same as deemed but Parent Details are supplied" in {
+
+        leftSideError(abbreviatedReturnDeemedParentModel.copy(
+          reportingCompany = reportingCompanyModel.copy(sameAsUltimateParent = true),
+          parentCompany = Some(parentCompanyModelDeemedUkCompany)
+        ).validate).errorMessage shouldBe ParentCompanyDetailsSupplied(parentCompanyModelUltUkCompany).errorMessage
+      }
+
       "Reporting Company is not the same as UPC and UPC is not supplied" in {
 
         leftSideError(abbreviatedReturnUltimateParentModel.copy(
@@ -74,13 +82,12 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
       }
 
       "Agent details are invalid" in {
-        leftSideError(abbreviatedReturnUltimateParentModel.copy(agentDetails = agentDetailsModelMax.copy(agentName = None)).validate).errorMessage shouldBe
-          AgentNameNotSuppliedError().errorMessage
+        leftSideError(abbreviatedReturnUltimateParentModel.copy(agentDetails = agentDetailsModelMax.copy(
+          agentName = None)).validate).errorMessage shouldBe AgentNameNotSuppliedError().errorMessage
       }
 
       "Reporting Company details are invalid" in {
-        leftSideError(abbreviatedReturnUltimateParentModel.copy(
-          reportingCompany = reportingCompanyModel.copy(
+        leftSideError(abbreviatedReturnUltimateParentModel.copy(reportingCompany = reportingCompanyModel.copy(
             companyName = companyNameTooLong)).validate).errorMessage shouldBe CompanyNameLengthError(companyNameTooLong.name).errorMessage
       }
 
@@ -90,14 +97,12 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
       }
 
       "it is not the appointed reporting company" in {
-        leftSideError(abbreviatedReturnUltimateParentModel.copy(
-          appointedReportingCompany = false
+        leftSideError(abbreviatedReturnUltimateParentModel.copy(appointedReportingCompany = false
         ).validate).errorMessage shouldBe ReportingCompanyNotAppointed.errorMessage
       }
 
       "Uk Company details are empty" in {
-        leftSideError(abbreviatedReturnUltimateParentModel.copy(
-          ukCompanies = Seq()
+        leftSideError(abbreviatedReturnUltimateParentModel.copy(ukCompanies = Seq()
         ).validate).errorMessage shouldBe UkCompaniesEmpty.errorMessage
       }
 
@@ -124,7 +129,8 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
       }
 
       "Return type is Revised and the revised return details contains invalid characters" in {
-        val returnDetails = "New!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is 160 characters no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
+        val returnDetails = "ʰʲʺ£$%˦˫qwNew!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is 160" +
+          " no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
         leftSideError(abbreviatedReturnUltimateParentModel.copy(
           submissionType = Revised,
           revisedReturnDetails = Some(RevisedReturnDetailsModel(returnDetails))
@@ -135,7 +141,6 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
         val model = abbreviatedReturnUltimateParentModel.copy(declaration = false)
         leftSideError(model.validate).errorMessage shouldBe AbbreviatedReturnDeclarationError(false).errorMessage
       }
-
     }
   }
 }
