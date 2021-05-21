@@ -33,7 +33,6 @@ class AppointReportingCompanyValidatorSpec extends BaseSpec {
       "Identity of Appointing Company is supplied" should {
 
         "Return invalid, as it should not be supplied" in {
-
           val model = appointReportingCompanyModelMin.copy(identityOfAppointingCompany = Some(identityOfCompanySubmittingModelMax))
           leftSideError(model.validate).errorMessage shouldBe IdentityOfAppointingCompanyIsSupplied(identityOfCompanySubmittingModelMax).errorMessage
         }
@@ -108,6 +107,7 @@ class AppointReportingCompanyValidatorSpec extends BaseSpec {
             reportingCompany = reportingCompanyModel.copy(sameAsUltimateParent = false),
             ultimateParentCompany = None
           )
+
           leftSideError(model.validate).errorMessage shouldBe UltimateParentCompanyIsNotSupplied.errorMessage
         }
       }
@@ -120,6 +120,7 @@ class AppointReportingCompanyValidatorSpec extends BaseSpec {
             reportingCompany = reportingCompanyModel.copy(sameAsUltimateParent = false),
             ultimateParentCompany = Some(ultimateParentModelUkCompany)
           )
+
           rightSide(model.validate) shouldBe model
         }
       }
