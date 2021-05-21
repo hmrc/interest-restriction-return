@@ -25,6 +25,7 @@ import play.api.libs.json.JsPath
 import utils.BaseSpec
 import v1.models.{Original, Revised, RevisedReturnDetailsModel}
 import v1.validation._
+import v1.validation.errors._
 
 class AbbreviatedReturnValidatorSpec extends BaseSpec {
 
@@ -46,7 +47,7 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
         leftSideError(abbreviatedReturnUltimateParentModel.copy(
           submissionType = Original,
           revisedReturnDetails = Some(RevisedReturnDetailsModel("Revision"))
-        ).validate).errorMessage shouldBe RevisedReturnDetailsSupplied("Revision").errorMessage
+        ).validate).errorMessage shouldBe RevisedReturnDetailsSupplied(RevisedReturnDetailsModel("Revision")).errorMessage
       }
 
       "Return type is Revised and no details for a revision are supplied" in {

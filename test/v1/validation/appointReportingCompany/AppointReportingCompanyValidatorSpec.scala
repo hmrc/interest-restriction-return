@@ -23,6 +23,7 @@ import assets.appointReportingCompany.AppointReportingCompanyConstants._
 import utils.BaseSpec
 import assets.AuthorisingCompanyConstants._
 import v1.models.CompanyNameModel
+import v1.validation.errors._
 
 class AppointReportingCompanyValidatorSpec extends BaseSpec {
 

@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import play.api.libs.json.{Json, JsPath, JsValue}
+import play.api.libs.json.{Json, JsPath}
 import v1.models.Validation.ValidationResult
 import v1.models.{DeemedParentModel, Validation}
 
@@ -55,33 +55,39 @@ trait DeemedParentValidator extends BaseValidation {
 }
 
 case class DeemedParentWrongDetailsSuppliedError(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
+  val code = "DEEMED_PARENT_DETAILS"
   val errorMessage: String = "you have given the details for all three ultimate parents please give correct details"
-  val value: JsValue = Json.toJson(model)
+  val value = Some(Json.toJson(model))
 }
 
 case class WrongDeemedParentIsUkCompanyAndPartnership(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
+  val code = "DEEMED_PARENT_DETAILS"
   val errorMessage: String = "you have given details for a UK Company and Partnership"
-  val value: JsValue = Json.toJson(model)
+  val value = Some(Json.toJson(model))
 }
 
 case class WrongDeemedParentIsUkPartnershipAndNonUKCompany(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
+  val code = "DEEMED_PARENT_DETAILS"
   val errorMessage: String = "you have given details for a UK Partnership and NonUK Company"
-  val value: JsValue = Json.toJson(model)
+  val value = Some(Json.toJson(model))
 }
 
 case class WrongDeemedParentIsUKCompanyAndNonUK(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
+  val code = "DEEMED_PARENT_DETAILS"
   val errorMessage: String = "you have given details for a UK and Non UK Company"
-  val value: JsValue = Json.toJson(model)
+  val value = Some(Json.toJson(model))
 }
 
 case class NoUTROrCountryCodeOnDeemedParent(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
+  val code = "DEEMED_PARENT_DETAILS"
   val errorMessage: String = "You need to enter a CTUTR, an SAUTR, or a Country Of Incorporation"
-  val value: JsValue = Json.toJson(model)
+  val value = Some(Json.toJson(model))
 }
 
 case class NonUKDeemedParentMissingCountryOfIncorporation(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
+  val code = "DEEMED_PARENT_COUNTRY"
   val errorMessage: String = "You need to enter a Country Of Incorporation for a NonUK Company"
-  val value: JsValue = Json.toJson(model)
+  val value = Some(Json.toJson(model))
 }
 
 

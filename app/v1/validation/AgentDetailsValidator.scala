@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import play.api.libs.json.{JsObject, JsPath, JsString, Json}
+import play.api.libs.json.{JsPath, JsValue, JsString}
 import v1.models.Validation.ValidationResult
 import v1.models.{AgentDetailsModel, Validation}
 
@@ -57,24 +57,28 @@ trait AgentDetailsValidator extends BaseValidation {
 }
 
 case class AgentNameLengthError(name: String)(implicit topPath: JsPath) extends Validation {
+  val code = "AGENT_NAME_LENGTH"
   val errorMessage: String = "Agent name must be between 1-160 characters if supplied"
   val path: JsPath = topPath \ "agentName"
-  val value: JsString = JsString(name)
+  val value: Option[JsValue] = Some(JsString(name))
 }
 
 case class AgentNameNotSuppliedError()(implicit topPath: JsPath) extends Validation {
+  val code = "AGENT_NAME_NOT_SUPPLIED"
   val errorMessage: String = "Agent name must be supplied if agent is acting on behalf of company"
   val path: JsPath = topPath \ "agentName"
-  val value: JsObject = Json.obj()
+  val value: Option[JsValue] = None
 }
 
 case class AgentNameSuppliedError(name: String)(implicit topPath: JsPath) extends Validation {
+  val code = "AGENT_NAME_SUPPLIED"
   val errorMessage: String = "Agent name must not be supplied if agent is not acting on behalf of company"
   val path: JsPath = topPath \ "agentName"
-  val value: JsString = JsString(name)
+  val value: Option[JsValue] = Some(JsString(name))
 }
 
 case class AgentNameCharactersError(name: String)(implicit val path: JsPath) extends Validation {
+  val code = "AGENT_NAME_CHARACTERS"
   val errorMessage: String = s"Agent name contains invalid characters."
-  val value = JsString(name)
+  val value: Option[JsValue] = Some(JsString(name))
 }

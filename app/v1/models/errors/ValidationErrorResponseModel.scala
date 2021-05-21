@@ -20,29 +20,50 @@ import cats.data.NonEmptyChain
 import play.api.libs.json._
 import v1.models.Validation
 
-case class ValidationErrorResponseModel(field: String, value: JsValue = Json.obj(), errors: Seq[String])
+case class ValidationErrorResponseModel(code: String, message: String, path: Option[String], value: Option[JsValue], errors: Option[Seq[ErrorResponseModel]])
 
 object ValidationErrorResponseModel {
-  implicit val writes: Writes[ValidationErrorResponseModel] = Writes { models =>
-    JsObject(Json.obj("field" -> models.field.toString(),
-      "value" -> models.value,
-      "errors" -> models.errors
-    ).fields.filterNot(_._2 == Json.obj()).toMap)
+
+  implicit val writes: Writes[ValidationErrorResponseModel] = Json.writes[ValidationErrorResponseModel]
+
+  val VALIDATION_ERROR_CODE = "JSON_VALIDATION_ERROR"
+  val BAD_REQUEST_ERROR_CODE = "INVALID_REQUEST"
+  val BAD_REQUEST_ERROR_MESSAGE = "Request contains validation errors"
+
+  def apply(errors: Seq[(JsPath, Seq[JsonValidationError])]): ValidationErrorResponseModel = {
+    val validationErrors = errors.map {
+      case (path, errs) => 
+        errs.flatMap(_.messages).map(message => ErrorResponseModel(code = VALIDATION_ERROR_CODE, message = message, path = Some(path.toString)))
+    }.flatten
+
+    errorsToValidationResponse(validationErrors)
   }
 
-  def apply(errors: Seq[(JsPath, Seq[JsonValidationError])]): Seq[ValidationErrorResponseModel] = {
-    errors.map {
-      case (field, errs) => ValidationErrorResponseModel(field = field.toString, errors = errs.flatMap(_.messages))
+  def apply(errors: NonEmptyChain[Validation]): ValidationErrorResponseModel = {
+    val validationErrors = errors.map(ErrorResponseModel(_)).toChain.toList
+    errorsToValidationResponse(validationErrors)
+  }
+
+  def errorsToValidationResponse(errors: Seq[ErrorResponseModel]): ValidationErrorResponseModel =
+    errors match {
+      case error :: Nil => 
+        ValidationErrorResponseModel(
+          code = error.code,
+          message = error.message,
+          path = error.path,
+          value = error.value,
+          errors = None
+        )
+      case _ => 
+        ValidationErrorResponseModel(
+          code = BAD_REQUEST_ERROR_CODE,
+          message = BAD_REQUEST_ERROR_MESSAGE,
+          errors = Some(errors),
+          path = None,
+          value = None
+        )
     }
-  }
 
-  def apply(errors: NonEmptyChain[Validation]): Seq[ValidationErrorResponseModel] = {
-    errors.toChain.toList.map(errs => ValidationErrorResponseModel(
-      field = errs.path.toString,
-      errors = errs.errorMessage.split("\\|"),
-      value = errs.value
-    ))
-  }
 }
 
 

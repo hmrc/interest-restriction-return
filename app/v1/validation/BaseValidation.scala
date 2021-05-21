@@ -33,9 +33,10 @@ trait BaseValidation {
       case errors => {
         val validations = errors.flatMap(_.toList)
         new Validation {
+          override val code = "BAD_REQUEST"
           override val errorMessage: String = validations.map(_.errorMessage).mkString("|")
           override val path: JsPath = validations.head.path
-          override val value: JsValue = validations.head.value
+          override val value: Option[JsValue] = validations.head.value
         }.invalidNec
       }
     }

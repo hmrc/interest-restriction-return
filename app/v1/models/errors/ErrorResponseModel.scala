@@ -16,12 +16,20 @@
 
 package v1.models.errors
 
-import play.api.libs.json.{Json, Writes}
+import play.api.libs.json.{Json, Writes, JsValue}
+import v1.models.Validation
 
-case class ErrorResponseModel(code: String, message: String)
+case class ErrorResponseModel(code: String, message: String, path: Option[String] = None, value: Option[JsValue] = None)
 
 object ErrorResponseModel {
   implicit val writes: Writes[ErrorResponseModel] = Json.writes[ErrorResponseModel]
+  def apply(validation: Validation): ErrorResponseModel = 
+    ErrorResponseModel(
+      code = validation.code,
+      message = validation.errorMessage,
+      path = Some(validation.path.toString),
+      value = validation.value
+    )
 }
 
 //Standard Errors

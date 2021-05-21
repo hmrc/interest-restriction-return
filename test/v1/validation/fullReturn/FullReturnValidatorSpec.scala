@@ -31,6 +31,7 @@ import play.api.libs.json.JsPath
 import utils.BaseSpec
 import v1.models.{Original, Revised, RevisedReturnDetailsModel}
 import v1.validation._
+import v1.validation.errors._
 
 class FullReturnValidatorSpec extends BaseSpec {
 

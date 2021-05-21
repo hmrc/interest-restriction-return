@@ -19,8 +19,9 @@ package v1.validation.fullReturn
 import play.api.libs.json.{Json, JsPath, JsValue}
 import v1.models.Validation.ValidationResult
 import v1.models.fullReturn.{AdjustedGroupInterestModel, FullReturnModel, UkCompanyModel}
-import v1.models.{Original, ParentCompanyModel, Revised, RevisedReturnDetailsModel, Validation}
+import v1.models.{Original, Revised, Validation}
 import v1.validation.BaseValidation
+import v1.validation.errors._
 
 trait FullReturnValidator extends BaseValidation {
 
@@ -238,161 +239,145 @@ trait FullReturnValidator extends BaseValidation {
   }
 }
 
-case object ReportingCompanyNotAppointed extends Validation {
-  val errorMessage: String = "You need to appoint a reporting company"
-  val path: JsPath = JsPath \ "appointedReportingCompany"
-  val value: JsValue = Json.obj()
-}
-
-case object RevisedReturnDetailsNotSupplied extends Validation {
-  val errorMessage: String = "A description of the amendments made to the return must be supplied if this is a revised return"
-  val path: JsPath = JsPath \ "revisedReturnDetails"
-  val value: JsValue = Json.obj()
-}
-
-case class RevisedReturnDetailsSupplied(details: RevisedReturnDetailsModel) extends Validation {
-  val errorMessage: String = "A description of the amendments made to the return cannot be supplied if this is an original return"
-  val path: JsPath = JsPath \ "revisedReturnDetails"
-  val value: JsValue = Json.toJson(details)
-}
-
-case object ParentCompanyDetailsNotSupplied extends Validation {
-  val errorMessage: String = "Parent Company is required if the Reporting Company is not the same as the Ultimate Parent"
-  val path: JsPath = JsPath \ "parentCompany"
-  val value: JsValue = Json.obj()
-}
-
-case class ParentCompanyDetailsSupplied(parentCompany: ParentCompanyModel) extends Validation {
-  val errorMessage: String = "Parent Company should not be supplied as the parent is the same as the Reporting Company"
-  val path: JsPath = JsPath \ "parentCompany"
-  val value: JsValue = Json.toJson(parentCompany)
-}
-
 case class NegativeAngieError(amt: BigDecimal) extends Validation {
+  val code = "NEGATIVE_ANGIE"
   val errorMessage: String = "ANGIE cannot be negative"
   val path: JsPath = JsPath \ "angie"
-  val value: JsValue = Json.toJson(amt)
+  val value: Option[JsValue] = Some(Json.toJson(amt))
 }
 
 case class AngieDecimalError(amt: BigDecimal) extends Validation {
+  val code = "ANGIE_DECIMAL"
   val errorMessage: String = "ANGIE has greater than the allowed 2 decimal places."
   val path: JsPath = JsPath \ "angie"
-  val value: JsValue = Json.toJson(amt)
+  val value: Option[JsValue] = Some(Json.toJson(amt))
 }
 
 case class GroupLevelInterestRestrictionsAndReactivationSupplied(groupSubjectToInterestRestrictions: Boolean, groupSubjectToInterestReactivation: Boolean)
   extends Validation {
+  val code = "RESTRICTION_REACTIVATION_SUPPLIED"
   override val errorMessage: String = "You cannot supply both a group level restriction and reactivation in the same return"
   val path: JsPath = JsPath \ ""
-  val value: JsValue = Json.toJson((
+  val value: Option[JsValue] = Some(Json.toJson((
     "groupSubjectToInterestRestrictions: " + groupSubjectToInterestRestrictions,
-    "groupSubjectToInterestReactivation: " + groupSubjectToInterestReactivation))
+    "groupSubjectToInterestReactivation: " + groupSubjectToInterestReactivation)))
 }
 
 case class TotalReactivationsNotGreaterThanCapacity(calculated: BigDecimal, capacity: BigDecimal) extends Validation {
+  val code = "REACTIVATIONS_GREATER_THAN_CAP"
   val errorMessage: String = s"Calculated Total Reactivations: $calculated cannot not be greater than Reactivations Capacity: $capacity"
   val path: JsPath = JsPath \ "groupLevelAmount" \ "interestReactivationCap"
-  val value: JsValue = Json.obj()
+  val value: Option[JsValue] = None
 }
 
 case class TotalRestrictionsDecimalError(amt: BigDecimal) extends Validation {
+  val code = "TOTAL_RESTRICTIONS_DECIMAL"
   val errorMessage: String = s"totalRestrictions has greater than the allowed 2 decimal places."
   val path: JsPath = JsPath \ "totalRestrictions"
-  val value: JsValue = Json.toJson(amt)
+  val value: Option[JsValue] = Some(Json.toJson(amt))
 }
 
 case class TotalRestrictionsDoesNotMatch(amt: BigDecimal, calculated: BigDecimal) extends Validation {
+  val code = "TOTAL_RESTRICTIONS_MATCH"
   val errorMessage: String = s"Calculated restrictions is $calculated which does not match the supplied amount of $amt"
   val path: JsPath = JsPath \ "totalRestrictions"
-  val value: JsValue = Json.obj()
+  val value: Option[JsValue] = None
 }
 
 case class CompaniesContainedAllocatedRestrictions(company: UkCompanyModel, i: Int) extends Validation {
+  val code = "COMPANIES_RESTRICTIONS"
   val errorMessage: String = s"Allocated Restrictions cannot be supplied for this UK Company when the group is not subject to Interest Restrictions"
   val path: JsPath = JsPath \ s"ukCompanies[$i]"
-  val value: JsValue = Json.obj()
+  val value: Option[JsValue] = None
 }
 
 case class CompaniesContainedAllocatedReactivations(company: UkCompanyModel, i: Int) extends Validation {
+  val code = "COMPANIES_REACTIVATIONS"
   val errorMessage: String = s"Allocated Reactivations cannot be supplied for this UK Company when the group is not subject to Interest Reactivations"
   val path: JsPath = JsPath \ s"ukCompanies[$i]"
-  val value: JsValue = Json.obj()
-}
-
-case object UkCompaniesEmpty extends Validation {
-  val errorMessage: String = "ukCompanies must have at least 1 UK company"
-  val path: JsPath = JsPath \ "ukCompanies"
-  val value: JsValue = Json.obj()
+  val value: Option[JsValue] = None
 }
 
 case object AdjustedNetGroupInterestNotSupplied extends Validation {
+  val code = "ADJUSTED_GROUP_INTEREST_NOT_SUPPLIED"
   val errorMessage: String = "Adjusted Group Interest is required when Group Ratio is elected"
   val path: JsPath = JsPath \ "adjustedGroupInterest"
-  val value: JsValue = Json.obj()
+  val value: Option[JsValue] = None
 }
 
 case class AdjustedNetGroupInterestSupplied(details: AdjustedGroupInterestModel) extends Validation {
+  val code = "ADJUSTED_GROUP_INTEREST_SUPPLIED"
   val errorMessage: String = "Adjusted Group Interest should not be supplied as Group Ratio is not elected"
   val path: JsPath = JsPath \ "adjustedGroupInterest"
-  val value: JsValue = Json.toJson(details)
+  val value: Option[JsValue] = Some(Json.toJson(details))
 }
 
 case class EstimateReasonSupplied(reason: String) extends Validation {
+  val code = "ESTIMATE_REASON_SUPPLIED"
   val errorMessage: String = "groupEstimateReason cannot be supplied when returnContainsEstimates is set to false"
   val path: JsPath = JsPath \ "groupEstimateReason"
-  val value: JsValue = Json.toJson(reason)
+  val value: Option[JsValue] = Some(Json.toJson(reason))
 }
 
 case class EstimateReasonLengthError(reason: String) extends Validation {
+  val code = "ESTIMATE_REASON_LENGTH"
   val errorMessage: String = s"groupEstimateReason is ${reason.length} characters long and should be between 1 and 10,000 characters"
   val path: JsPath = JsPath \ "groupEstimateReason"
-  val value: JsValue = Json.toJson(reason)
+  val value: Option[JsValue] = Some(Json.toJson(reason))
 }
 
 case class EstimateReasonCharacterError(reason: String) extends Validation {
+  val code = "ESTIMATE_REASON_CHARACTERS"
   val errorMessage: String = "groupEstimateReason contains invalid characters"
   val path: JsPath = JsPath \ "groupEstimateReason"
-  val value: JsValue = Json.toJson(reason)
+  val value: Option[JsValue] = Some(Json.toJson(reason))
 }
 
 case class CompaniesContainedEstimateReason(reason: String, i: Int) extends Validation {
+  val code = "COMPANY_ESTIMATE_REASON_SUPPLIED"
   val errorMessage: String = s"companyEstimateReason cannot be supplied for this UK Company when returnContainsEstimates is set to false"
   val path: JsPath = JsPath \ s"ukCompanies[$i]"
-  val value: JsValue = Json.toJson(reason)
+  val value: Option[JsValue] = Some(Json.toJson(reason))
 }
 
 case class NoEstimatesSupplied(bool: Boolean) extends Validation {
+  val code = "ESTIMATE_REASON_NOT_SUPPLIED"
   val errorMessage: String = s"An estimate needs to be supplied in groupEstimateReason or companyEstimateReason where returnContainsEstimates is set to true"
   val path: JsPath = JsPath \ "returnContainsEstimates"
-  val value: JsValue = Json.toJson(bool)
+  val value: Option[JsValue] = Some(Json.toJson(bool))
 }
 
 case class FullReturnDeclarationError(declaration: Boolean) extends Validation {
+  val code = "DECLARATION_FALSE"
   val errorMessage: String = "The declaration must be true"
   val path: JsPath = JsPath \ "declaration"
-  val value: JsValue = Json.toJson(declaration)
+  val value: Option[JsValue] = Some(Json.toJson(declaration))
 }
 
 case class AggregateNetTaxInterestIncomeExceedsCap(reactivationCap: BigDecimal) extends Validation {
+  val code = "AGGREGATE_NET_TAX_CAP"
   val errorMessage: String = "The aggregate net-tax interest income exceeds the reactivation cap"
   val path: JsPath = JsPath \ "groupLevelAmount" \ "interestReactivationCap"
-  val value: JsValue = Json.toJson(reactivationCap)
+  val value: Option[JsValue] = Some(Json.toJson(reactivationCap))
 }
 
 case class TotalRestrictionExceedsAggregateNetTaxInterestExpense(totalRestrictions: BigDecimal) extends Validation {
+  val code = "TOTAL_RESTRICTIONS_EXCEEDS_EXPENSE"
   val errorMessage: String = "The total restriction exceeds aggregate net-tax interest expense"
   val path: JsPath = JsPath \ "totalRestrictions"
-  val value: JsValue = Json.toJson(totalRestrictions)
+  val value: Option[JsValue] = Some(Json.toJson(totalRestrictions))
 }
 
 case class AggregateNetTaxInterestIncomeSubjectToRestrictions(groupSubjectToInterestRestrictions: Boolean) extends Validation {
+  val code = "TOTAL_RESTRICTIONS_EXCEEDS_EXPENSE"
   val errorMessage: String = "The group cannot be subject to restrictions and have an aggregate net-tax interest income"
   val path: JsPath = JsPath \ "groupSubjectToInterestRestrictions"
-  val value: JsValue = Json.toJson(groupSubjectToInterestRestrictions)
+  val value: Option[JsValue] = Some(Json.toJson(groupSubjectToInterestRestrictions))
 }
 
 case class ReactivationCapNotSubjectToReactivations(reactivationCap: BigDecimal) extends Validation {
+  val code = "REACTIVATION_CAP_SUBJECT_REACTIVATIONS"
   val errorMessage: String = "A reactivation cap cannot be supplied when the group is not subject to reactivations"
   val path: JsPath = JsPath \ "groupLevelAmount" \ "interestReactivationCap"
-  val value: JsValue = Json.toJson(reactivationCap)
+  val value: Option[JsValue] = Some(Json.toJson(reactivationCap))
 }

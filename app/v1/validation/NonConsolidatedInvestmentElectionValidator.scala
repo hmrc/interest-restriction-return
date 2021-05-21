@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import play.api.libs.json.{Json, JsPath, JsValue}
+import play.api.libs.json.{Json, JsPath}
 import v1.models.Validation.ValidationResult
 import v1.models.{NonConsolidatedInvestmentElectionModel, NonConsolidatedInvestmentModel, Validation}
 
@@ -52,22 +52,25 @@ trait NonConsolidatedInvestmentElectionValidator extends BaseValidation {
 
 case class NonConsolidatedInvestmentSupplied(nonConsolidatedInvestmentElectionModel: NonConsolidatedInvestmentElectionModel)
                                             (implicit val topPath: JsPath) extends Validation {
+  val code = "INVESTMENT_SUPPLIED"
   val errorMessage: String = "You can only provide non-consolidated investments if non-consolidated election is made"
   val path: JsPath = topPath \ "nonConsolidatedInvestments"
-  val value: JsValue = Json.toJson(nonConsolidatedInvestmentElectionModel)
+  val value = Some(Json.toJson(nonConsolidatedInvestmentElectionModel))
 }
 
 case class NonConsolidatedInvestmentNotSupplied(nonConsolidatedInvestmentElectionModel: NonConsolidatedInvestmentElectionModel)
                                                (implicit val topPath: JsPath) extends Validation {
+  val code = "INVESTMENT_NOT_SUPPLIED"
   val errorMessage: String = "You must provide non-consolidated investments if non-consolidated election is made"
   val path: JsPath = topPath \ "nonConsolidatedInvestments"
-  val value: JsValue = Json.toJson(nonConsolidatedInvestmentElectionModel)
+  val value = Some(Json.toJson(nonConsolidatedInvestmentElectionModel))
 }
 
 case class NonConsolidatedInvestmentEmpty()(implicit val topPath: JsPath) extends Validation {
+  val code = "INVESTMENT_EMPTY"
   val errorMessage: String = "nonConsolidatedInvestments must contain at least 1 value if supplied"
   val path: JsPath = topPath \ "nonConsolidatedInvestments"
-  val value: JsValue = Json.obj()
+  val value = None
 }
 
 

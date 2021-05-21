@@ -20,11 +20,13 @@ import cats.data.ValidatedNec
 import play.api.libs.json.{JsPath, JsValue}
 
 trait Validation {
+  val code: String
   val errorMessage: String
   val path: JsPath
-  val value: JsValue
+  val value: Option[JsValue]
 }
 
 object Validation {
   type ValidationResult[A] = ValidatedNec[Validation, A]
 }
+

@@ -43,8 +43,6 @@ class ErrorHandler @Inject()(
 
   override def onClientError(request: RequestHeader, statusCode: Int, message: String): Future[Result] = {
 
-    implicit val writes = Json.writes[ErrorResponseModel]
-
     implicit val headerCarrier: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
 
     logger.error(s"Error in version 1, for (${request.method}) [${request.uri}] with status:" +

@@ -52,11 +52,13 @@ trait UTRValidator extends BaseValidation {
 }
 
 case class UTRChecksumError(utrValue: UTRModel)(implicit val path: JsPath) extends Validation {
+  val code = "UTR_CHECKSUM"
   val errorMessage: String = "UTR Check Sum does not satisfy the check sum"
-  val value = Json.toJson(utrValue)
+  val value = Some(Json.toJson(utrValue))
 }
 
 case class UTRLengthError(utrValue: UTRModel)(implicit val path: JsPath) extends Validation {
+  val code = "UTR_LENGTH"
   val errorMessage: String = s"UTR must be 10 numeric characters"
-  val value = Json.toJson(utrValue)
+  val value = Some(Json.toJson(utrValue))
 }
