@@ -43,6 +43,11 @@ class ReportingCompanyValidatorSpec extends BaseSpec {
             companyName = CompanyNameModel("")).validate).errorMessage shouldBe CompanyNameLengthError("").errorMessage
         }
 
+        "Company name contains invalid characters" in {
+          leftSideError(reportingCompanyModel.copy(
+            companyName = CompanyNameModel("ʰʲʺ˦˫˥ʺ˦˫˥")).validate).errorMessage shouldBe CompanyNameCharactersError("ʰʲʺ˦˫˥ʺ˦˫˥").errorMessage
+        }
+
         s"Company name is longer that ${companyNameMaxLength}" in {
           leftSideError(reportingCompanyModel.copy(
             companyName = companyNameTooLong).validate).errorMessage shouldBe CompanyNameLengthError("a" * (companyNameMaxLength + 1)).errorMessage
@@ -55,6 +60,11 @@ class ReportingCompanyValidatorSpec extends BaseSpec {
 
       "CTUTR is empty" in {
         leftSideError(reportingCompanyModel.copy(ctutr = UTRModel("")).validate).errorMessage shouldBe UTRLengthError(UTRModel("")).errorMessage
+      }
+
+      "CTUTR is contains invalid characters" in {
+        leftSideError(reportingCompanyModel.copy(
+          ctutr = UTRModel("ʰʲʺ˦˫˥ʺ˦˫˥")).validate).errorMessage shouldBe UTRChecksumError(UTRModel("ʰʲʺ˦˫˥ʺ˦˫˥")).errorMessage
       }
 
       "CTUTR is to short" in {

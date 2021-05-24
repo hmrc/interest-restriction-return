@@ -18,7 +18,7 @@ package v1.validation
 
 import assets.AuthorisingCompanyConstants._
 import play.api.libs.json.JsPath
-import v1.models.CompanyNameModel
+import v1.models.{CompanyNameModel, UTRModel}
 
 class AuthorisingCompanyValidatorSpec extends BaseValidationSpec {
 
@@ -41,13 +41,36 @@ class AuthorisingCompanyValidatorSpec extends BaseValidationSpec {
           leftSideError(authorisingCompanyModel.copy(companyName = CompanyNameModel("")).validate).errorMessage shouldBe CompanyNameLengthError("").errorMessage
         }
 
+        "Company name contains invalid characters" in {
+          leftSideError(authorisingCompanyModel.copy(
+            companyName = CompanyNameModel("ʰʲʺ˦˫˥ʺ˦˫˥")).validate).errorMessage shouldBe CompanyNameCharactersError("ʰʲʺ˦˫˥ʺ˦˫˥").errorMessage
+        }
+
         s"Company name is longer that ${companyNameMaxLength}" in {
-          leftSideError(authorisingCompanyModel.copy(companyName = companyNameTooLong).validate).errorMessage shouldBe CompanyNameLengthError("a" * (companyNameMaxLength + 1)).errorMessage
+          leftSideError(authorisingCompanyModel.copy(
+            companyName = companyNameTooLong).validate).errorMessage shouldBe CompanyNameLengthError("a" * (companyNameMaxLength + 1)).errorMessage
         }
       }
 
       "UTR is invalid" in {
         leftSideError(authorisingCompanyModel.copy(utr = invalidUtr).validate).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
+      }
+
+      "UTR is contains invalid characters" in {
+        leftSideError(authorisingCompanyModel.copy(
+          utr = UTRModel("ʰʲʺ˦˫˥ʺ˦˫˥")).validate).errorMessage shouldBe UTRChecksumError(UTRModel("ʰʲʺ˦˫˥ʺ˦˫˥")).errorMessage
+      }
+
+      "UTR is empty" in {
+        leftSideError(authorisingCompanyModel.copy(utr = UTRModel("")).validate).errorMessage shouldBe UTRLengthError(UTRModel("")).errorMessage
+      }
+
+      "UTR is too short" in {
+        leftSideError(authorisingCompanyModel.copy(utr = invalidShortUtr).validate).errorMessage shouldBe UTRLengthError(invalidShortUtr).errorMessage
+      }
+
+      "UTR is too long" in {
+        leftSideError(authorisingCompanyModel.copy(utr = invalidLongUtr).validate).errorMessage shouldBe UTRLengthError(invalidLongUtr).errorMessage
       }
     }
   }
