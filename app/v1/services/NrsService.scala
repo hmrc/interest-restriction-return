@@ -46,7 +46,7 @@ class NrsService @Inject()(nrsConnector: NrsConnector)(implicit ec: ExecutionCon
 
     val payloadAsString = identifierRequest.request.body.toString
 
-    val searchValue = "" //TODO: Update once NRS have updated the Calling Service Registry with a value for us https://confluence.tools.tax.service.gov.uk/display/NR/Calling+Service+Registry
+    val searchValue = "searchValue" //TODO: Update once NRS have updated the Calling Service Registry with a value for us https://confluence.tools.tax.service.gov.uk/display/NR/Calling+Service+Registry
 
     val nrsMetadata = new NrsMetadata(businessId = businessIdValue,
       notableEvent = notableEventValue,

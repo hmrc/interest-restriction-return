@@ -29,8 +29,12 @@ import v1.connectors.httpParsers.NrsResponseHttpParser._
 
 import scala.concurrent.{ExecutionContext, Future}
 
+trait NrsConnector {
+  def send[A](nrsPayload: NrsPayload): Future[NrsResponse]
+}
+
 @Singleton
-class NrsConnector @Inject()(http: HttpClient, implicit val appConfig: AppConfig)(implicit ec: ExecutionContext) extends Logging {
+class NrsConnectorImpl @Inject()(http: HttpClient, implicit val appConfig: AppConfig)(implicit ec: ExecutionContext) extends NrsConnector with Logging {
 
   private val XApiKey = "X-API-Key"
 
