@@ -19,7 +19,7 @@ package v1.connectors.httpParsers
 import play.api.Logging
 import v1.connectors.HttpHelper.NrsResponse
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
-import play.api.http.Status.{OK, INTERNAL_SERVER_ERROR}
+import play.api.http.Status.OK
 import v1.connectors.{InvalidSuccessResponse, HttpErrorMessages, UnexpectedFailure}
 import v1.models.nrs.NrSubmissionId
 
@@ -39,7 +39,7 @@ object NrsResponseHttpParser extends Logging {
           )
         case status =>
           logger.error(s"Unexpected response from NRS, status $status returned with body ${response.body}")
-          Left(UnexpectedFailure(INTERNAL_SERVER_ERROR,s"Status $INTERNAL_SERVER_ERROR ${HttpErrorMessages.NRS_ERROR}"))
+          Left(UnexpectedFailure(status,s"Status $status ${HttpErrorMessages.NRS_ERROR}"))
       }
     }
   }

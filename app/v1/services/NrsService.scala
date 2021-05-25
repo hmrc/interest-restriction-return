@@ -29,12 +29,10 @@ import uk.gov.hmrc.http._
 import play.api.Logging
 import v1.models.nrs._
 import v1.connectors.HttpHelper.NrsResponse
-import org.joda.time.{DateTime, DateTimeZone}
-import java.time.Clock
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class NrsService @Inject()(nrsConnector: NrsConnector)(implicit ec: ExecutionContext) extends HttpErrorFunctions with Logging {
+class NrsService @Inject()(nrsConnector: NrsConnector, dateTimeService: DateTimeService)(implicit ec: ExecutionContext) extends HttpErrorFunctions with Logging {
 
   private val searchKey = "searchKey" //TODO: Update once NRS have updated the Calling Service Registry with a value for us https://confluence.tools.tax.service.gov.uk/display/NR/Calling+Service+Registry
   private val applicationJson = "application/json"
@@ -52,7 +50,7 @@ class NrsService @Inject()(nrsConnector: NrsConnector)(implicit ec: ExecutionCon
       notableEvent = notableEventValue,
       payloadContentType = applicationJson,
       payloadSha256Checksum = sha256Hash(payloadAsString), // This should come from the end user NOT us
-      userSubmissionTimestamp = nowUtc().toString,
+      userSubmissionTimestamp = dateTimeService.nowUtc().toString,
       userAuthToken = identifierRequest.request.headers.get(AuthorizationHeader).getOrElse(""),
       identityData = identifierRequest.nrsRetrievalData,
       headerData = new JsObject(identifierRequest.request.headers.toMap.map(x => x._1 -> JsString(x._2 mkString ","))),
@@ -61,17 +59,18 @@ class NrsService @Inject()(nrsConnector: NrsConnector)(implicit ec: ExecutionCon
 
     val nrsPayload: NrsPayload = NrsPayload(base64().encode(payloadAsString.getBytes(UTF_8)), nrsMetadata)
 
-    nrsConnector.send(nrsPayload).recoverWith {
-      case e: HttpException =>
-        logger.info(s"Error occurred while submitting NRS payload got HttpException status: ${e.responseCode} error message: ${e.message}")
-        Future.failed(e)
-      case e: UpstreamErrorResponse =>
-        logger.info(s"Error occurred while submitting NRS payload got UpstreamErrorResponse status: ${e.statusCode} error message: ${e.message}")
-        Future.failed(e)
-    }
+    attemptSubmission(nrsPayload, 2)
   }
 
-  private def nowUtc(): DateTime = new DateTime(Clock.systemUTC().instant().toEpochMilli, DateTimeZone.UTC)
+  private def attemptSubmission(nrsPayload: NrsPayload, retries: Int): Future[NrsResponse] = {
+    val result = nrsConnector.send(nrsPayload)
+    result.flatMap{ 
+      _ match {
+        case Left(e) if e.status >= 500 && e.status < 600 && retries > 0 => attemptSubmission(nrsPayload, retries - 1)
+        case response => Future.successful(response)
+      }
+    }
+  }
 
   private def sha256Hash(text: String) : String =  {
     format("%064x", new BigInteger(1, getInstance("SHA-256").digest(text.getBytes("UTF-8"))))

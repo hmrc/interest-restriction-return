@@ -51,7 +51,7 @@ class NrsConnectorImpl @Inject()(http: HttpClient, implicit val appConfig: AppCo
     logger.debug(s"Sending request to NRS service. Url: $url Payload:\n${Json.prettyPrint(Json.toJson(payload))}")
     val result = http.POST[NrsPayload, NrsResponse](url, payload, Seq[(String, String)](("Content-Type", "application/json"), (XApiKey, authToken)))
     result.onComplete {
-      case Success(id) => logger.info(s"Response received from NRS service is submission id: ${id}")
+      case Success(response) => logger.info(s"Response received from NRS service: ${response}")
       case Failure(e) => logger.error(s"Call to NRS service failed url=$url, exception=$e", e)
     }
     result

@@ -14,24 +14,22 @@
  * limitations under the License.
  */
 
-package stubs
+package v1.services.mocks
 
-import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import play.api.http.Status.{OK, UNAUTHORIZED}
-import utils.WireMockMethods
-import assets.NrsConstants
+import org.scalamock.scalatest.AsyncMockFactory
+import v1.connectors.HttpHelper.NrsResponse
+import v1.models.nrs._
+import v1.connectors.NrsConnector
 
-object AuthStub extends WireMockMethods {
+import scala.concurrent.Future
 
-  private val authoriseUri = "/auth/authorise"
+trait MockNrsConnector extends AsyncMockFactory {
 
-  def authorised(): StubMapping =
-    when(method = POST, uri = authoriseUri)
-      .thenReturn(
-        status = OK, 
-        body = NrsConstants.nrsRetrievalData
-      )
+  def mockNrsConnector(): NrsConnector = mock[NrsConnector]
 
-  def unauthorised(): StubMapping =
-    when(method = POST, uri = authoriseUri).thenReturn(status = UNAUTHORIZED)
+  def mockNrsSubmission(nrsPayload: NrsPayload, mockConnector: NrsConnector)(response: Future[NrsResponse]): Unit = {
+    (mockConnector.send(_: NrsPayload))
+      .expects(nrsPayload)
+      .returns(response)
+  }
 }
