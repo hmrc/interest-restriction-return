@@ -54,6 +54,6 @@ case class CompanyNameLengthError(name: String)(implicit val path: JsPath) exten
 
 case class CompanyNameCharactersError(name: String)(implicit val path: JsPath) extends Validation {
   val code = "COMPANY_NAME_CHARACTERS"
-  val errorMessage: String = s"Company name contains invalid characters."
+  val errorMessage: String = s"Company name contains invalid characters"
   val value = Some(JsString(name))
 }

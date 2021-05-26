@@ -248,7 +248,7 @@ case class NegativeAngieError(amt: BigDecimal) extends Validation {
 
 case class AngieDecimalError(amt: BigDecimal) extends Validation {
   val code = "ANGIE_DECIMAL"
-  val errorMessage: String = "ANGIE has greater than the allowed 2 decimal places."
+  val errorMessage: String = "ANGIE must be to 2 decimal places or less"
   val path: JsPath = JsPath \ "angie"
   val value: Option[JsValue] = Some(Json.toJson(amt))
 }
@@ -286,28 +286,28 @@ case class TotalRestrictionsDoesNotMatch(amt: BigDecimal, calculated: BigDecimal
 
 case class CompaniesContainedAllocatedRestrictions(company: UkCompanyModel, i: Int) extends Validation {
   val code = "COMPANIES_RESTRICTIONS"
-  val errorMessage: String = s"Allocated Restrictions cannot be supplied for this UK Company when the group is not subject to Interest Restrictions"
+  val errorMessage: String = s"Group does not have an interest restriction so no allocated restrictions needed for this company"
   val path: JsPath = JsPath \ s"ukCompanies[$i]"
   val value: Option[JsValue] = None
 }
 
 case class CompaniesContainedAllocatedReactivations(company: UkCompanyModel, i: Int) extends Validation {
   val code = "COMPANIES_REACTIVATIONS"
-  val errorMessage: String = s"Allocated Reactivations cannot be supplied for this UK Company when the group is not subject to Interest Reactivations"
+  val errorMessage: String = s"Group does not have an interest reactivation so no allocated reactivations needed for this company"
   val path: JsPath = JsPath \ s"ukCompanies[$i]"
   val value: Option[JsValue] = None
 }
 
 case object AdjustedNetGroupInterestNotSupplied extends Validation {
   val code = "ADJUSTED_GROUP_INTEREST_NOT_SUPPLIED"
-  val errorMessage: String = "Adjusted Group Interest is required when Group Ratio is elected"
+  val errorMessage: String = "Group ratio elected so adjusted group interest required"
   val path: JsPath = JsPath \ "adjustedGroupInterest"
   val value: Option[JsValue] = None
 }
 
 case class AdjustedNetGroupInterestSupplied(details: AdjustedGroupInterestModel) extends Validation {
   val code = "ADJUSTED_GROUP_INTEREST_SUPPLIED"
-  val errorMessage: String = "Adjusted Group Interest should not be supplied as Group Ratio is not elected"
+  val errorMessage: String = "Group ratio not elected so adjusted group interest should not be provided"
   val path: JsPath = JsPath \ "adjustedGroupInterest"
   val value: Option[JsValue] = Some(Json.toJson(details))
 }
@@ -369,7 +369,7 @@ case class TotalRestrictionExceedsAggregateNetTaxInterestExpense(totalRestrictio
 }
 
 case class AggregateNetTaxInterestIncomeSubjectToRestrictions(groupSubjectToInterestRestrictions: Boolean) extends Validation {
-  val code = "TOTAL_RESTRICTIONS_EXCEEDS_EXPENSE"
+  val code = "SUBJECT_RESTRICTION_NET_INCOME"
   val errorMessage: String = "The group cannot be subject to restrictions and have an aggregate net-tax interest income"
   val path: JsPath = JsPath \ "groupSubjectToInterestRestrictions"
   val value: Option[JsValue] = Some(Json.toJson(groupSubjectToInterestRestrictions))

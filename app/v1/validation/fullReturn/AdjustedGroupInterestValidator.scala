@@ -98,7 +98,7 @@ trait AdjustedGroupInterestValidator extends BaseValidation {
 
   case class GroupEBITDADecimalError(groupEBITDA: BigDecimal)(implicit topPath: JsPath) extends Validation {
     val code = "EBITDA_DECIMAL"
-    val errorMessage: String = "groupEBITDA has greater than the allowed 2 decimal places."
+    val errorMessage: String = "Group EBITDA must be to 2 decimal places or less"
     val path: JsPath = topPath \ "groupEBITDA"
     val value = Some(Json.toJson(groupEBITDA))
   }
