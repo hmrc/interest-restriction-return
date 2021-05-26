@@ -30,6 +30,7 @@ trait AppConfig {
   def apiStatus(version: String): String
   def featureSwitch: Option[Configuration]
   def endpointsEnabled: Boolean
+  def nrsEnabled: Boolean
   def nrsUrl: Option[String]
   def nrsAuthorisationToken: Option[String]
 
@@ -43,6 +44,10 @@ class AppConfigImpl @Inject()(val servicesConfig: ServicesConfig, configuration:
   lazy val desEnvironmentHeader: (String, String) = "Environment" -> servicesConfig.getString("microservice.services.des.environment")
   lazy val appName: String = servicesConfig.getString("appName")
 
+  lazy val nrsEnabled: Boolean = configuration.getOptional[Boolean]("microservice.services.nrs.enabled") match {
+    case Some(true) => true
+    case _ => false
+  }
   lazy val nrsUrl: Option[String] = configuration.getOptional[Configuration]("microservice.services.nrs").map(_ => servicesConfig.baseUrl("nrs"))
   lazy val nrsAuthorisationToken: Option[String] = configuration.getOptional[String]("microservice.services.nrs.authorisation-token").map(token => s"Bearer $token")
 

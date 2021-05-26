@@ -29,8 +29,12 @@ import v1.connectors.httpParsers.NrsResponseHttpParser._
 
 import scala.concurrent.{ExecutionContext, Future}
 
+trait NrsConnector {
+  def send[A](nrsPayload: NrsPayload): Future[NrsResponse]
+}
+
 @Singleton
-class NrsConnector @Inject()(http: HttpClient, implicit val appConfig: AppConfig)(implicit ec: ExecutionContext) extends Logging {
+class NrsConnectorImpl @Inject()(http: HttpClient, implicit val appConfig: AppConfig)(implicit ec: ExecutionContext) extends NrsConnector with Logging {
 
   private val XApiKey = "X-API-Key"
 
@@ -47,7 +51,7 @@ class NrsConnector @Inject()(http: HttpClient, implicit val appConfig: AppConfig
     logger.debug(s"Sending request to NRS service. Url: $url Payload:\n${Json.prettyPrint(Json.toJson(payload))}")
     val result = http.POST[NrsPayload, NrsResponse](url, payload, Seq[(String, String)](("Content-Type", "application/json"), (XApiKey, authToken)))
     result.onComplete {
-      case Success(id) => logger.info(s"Response received from NRS service is submission id: ${id}")
+      case Success(response) => logger.info(s"Response received from NRS service: ${response}")
       case Failure(e) => logger.error(s"Call to NRS service failed url=$url, exception=$e", e)
     }
     result

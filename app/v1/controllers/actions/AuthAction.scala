@@ -21,11 +21,12 @@ import play.api.mvc.Results._
 import play.api.mvc._
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.~
-import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
+import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.HeaderCarrierConverter
 import v1.models.requests.IdentifierRequest
 import play.api.Logging
+import v1.models.nrs.NrsRetrievalData
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -34,17 +35,34 @@ class AuthAction @Inject()(override val authConnector: AuthConnector,
                           )(implicit val executionContext: ExecutionContext)
   extends ActionBuilder[IdentifierRequest, AnyContent] with ActionFunction[Request, IdentifierRequest] with AuthorisedFunctions with Logging {
 
-  override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
+  private val nrsRetrievals =
+    Retrievals.internalId and Retrievals.externalId and Retrievals.agentCode and
+    Retrievals.credentials and Retrievals.confidenceLevel and Retrievals.nino and
+    Retrievals.saUtr and Retrievals.name and Retrievals.dateOfBirth and
+    Retrievals.email and Retrievals.agentInformation and Retrievals.groupIdentifier and
+    Retrievals.credentialRole and Retrievals.mdtpInformation and Retrievals.itmpName and
+    Retrievals.itmpDateOfBirth and Retrievals.itmpAddress and Retrievals.affinityGroup and
+    Retrievals.credentialStrength and Retrievals.loginTimes
 
+  override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSessionAndRequest(request.headers, request = Some(request))
 
-    authorised().retrieve(credentials and clientId) {
-      case credentials ~ clientId =>
+    authorised().retrieve(nrsRetrievals) {
+       case internalId ~ externalId ~ agentCode ~ credentials ~ confidenceLevel ~ nino ~ saUtr ~ name ~ 
+            dateOfBirth ~ email ~ agentInformation ~ groupIdentifier ~ credentialRole ~ mdtpInformation ~ 
+            itmpName ~ itmpDateOfBirth ~ itmpAddress ~ affinityGroup ~ credentialStrength ~ loginTimes =>
+
+        val retrievalData = NrsRetrievalData(internalId, externalId, agentCode, credentials, confidenceLevel, nino, saUtr,
+          name, dateOfBirth, email, agentInformation, groupIdentifier, credentialRole, mdtpInformation, itmpName,
+          itmpDateOfBirth, itmpAddress, affinityGroup, credentialStrength, loginTimes)
+
         credentials.map { credential =>
-          block(IdentifierRequest(request, credential.providerId))
+          block(IdentifierRequest(request, credential.providerId, retrievalData))
         }.getOrElse(throw UnsupportedAuthProvider("Unable to retrieve providerId"))
     } recover {
-      case _ => Unauthorized("No Active Session")
+      case e => 
+        Unauthorized("No Active Session")
     }
   }
+
 }

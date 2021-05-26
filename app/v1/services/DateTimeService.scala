@@ -14,24 +14,19 @@
  * limitations under the License.
  */
 
-package stubs
+package v1.services
 
-import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import play.api.http.Status.{OK, UNAUTHORIZED}
-import utils.WireMockMethods
-import assets.NrsConstants
+import java.time.{Clock, ZoneId, ZonedDateTime}
+import org.joda.time.{DateTime, DateTimeZone}
+import javax.inject.Singleton
 
-object AuthStub extends WireMockMethods {
+trait DateTimeService {
+  def nowUtc(): DateTime
+}
 
-  private val authoriseUri = "/auth/authorise"
-
-  def authorised(): StubMapping =
-    when(method = POST, uri = authoriseUri)
-      .thenReturn(
-        status = OK, 
-        body = NrsConstants.nrsRetrievalData
-      )
-
-  def unauthorised(): StubMapping =
-    when(method = POST, uri = authoriseUri).thenReturn(status = UNAUTHORIZED)
+@Singleton
+object DateTimeServiceImpl extends DateTimeService {
+  val UtcZoneId = ZoneId.of("UTC")
+  def nowUtc(): DateTime = new DateTime(Clock.systemUTC().instant().toEpochMilli, DateTimeZone.UTC)
+  def zonedDateTimeUtc: ZonedDateTime = ZonedDateTime.now(UtcZoneId)
 }

@@ -27,20 +27,20 @@ import uk.gov.hmrc.auth.core.{AffinityGroup, ConfidenceLevel, CredentialRole}
 case class NrsRetrievalData(internalId: Option[String],
   externalId: Option[String],
   agentCode: Option[String],
-  credentials: Option[Credentials],
+  optionalCredentials: Option[Credentials],
   confidenceLevel: ConfidenceLevel,
   nino: Option[String],
   saUtr: Option[String],
-  name: Option[Name],
+  optionalName: Option[Name],
   dateOfBirth: Option[LocalDate],
   email: Option[String],
   agentInformation: AgentInformation,
   groupIdentifier: Option[String],
   credentialRole: Option[CredentialRole],
   mdtpInformation: Option[MdtpInformation],
-  itmpName: Option[ItmpName],
+  optionalItmpName: Option[ItmpName],
   itmpDateOfBirth: Option[LocalDate],
-  itmpAddress: Option[ItmpAddress],
+  optionalItmpAddress: Option[ItmpAddress],
   affinityGroup: Option[AffinityGroup],
   credentialStrength: Option[String],
   loginTimes: LoginTimes)
@@ -66,7 +66,7 @@ object NrSubmissionId {
 
 case class NrsMetadata(businessId: String, notableEvent: String, payloadContentType: String, payloadSha256Checksum: String,
                        userSubmissionTimestamp: String, identityData: NrsRetrievalData, userAuthToken: String, headerData: JsValue,
-                       searchKeys: JsValue, nrsSubmissionId: String)
+                       searchKeys: JsValue)
 
 object NrsMetadata {
   implicit val format = Json.format[NrsMetadata]

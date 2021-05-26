@@ -45,4 +45,17 @@ class AppConfigSpec extends BaseSpec  {
     }
   }
 
+  "nrsEnabled" should {
+    "be false when the nrs Config isn't present " in {
+      val appConfig = appConfigWithoutNrs
+      appConfig.nrsEnabled shouldBe false
+    }
+
+    "be true when the nrs Config is present" in {
+      val appConfig = appConfigWithNrs
+      appConfig.nrsEnabled shouldBe true
+    }
+  }
+
+
 }
