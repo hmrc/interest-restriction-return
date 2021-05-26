@@ -30,6 +30,7 @@ import play.api.Logging
 import v1.models.nrs._
 import v1.connectors.HttpHelper.NrsResponse
 import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.duration.{Duration, MILLISECONDS}
 
 @Singleton
 class NrsService @Inject()(nrsConnector: NrsConnector, dateTimeService: DateTimeService)(implicit ec: ExecutionContext) extends HttpErrorFunctions with Logging {
@@ -59,14 +60,17 @@ class NrsService @Inject()(nrsConnector: NrsConnector, dateTimeService: DateTime
 
     val nrsPayload: NrsPayload = NrsPayload(base64().encode(payloadAsString.getBytes(UTF_8)), nrsMetadata)
 
-    attemptSubmission(nrsPayload, 2)
+    val delay = Duration(5, MILLISECONDS)
+    attemptSubmission(nrsPayload, delay, 2)
   }
 
-  private def attemptSubmission(nrsPayload: NrsPayload, retries: Int): Future[NrsResponse] = {
+  private def attemptSubmission(nrsPayload: NrsPayload, delay: Duration, retries: Int): Future[NrsResponse] = {
     val result = nrsConnector.send(nrsPayload)
     result.flatMap{ 
       _ match {
-        case Left(e) if e.status >= 500 && e.status < 600 && retries > 0 => attemptSubmission(nrsPayload, retries - 1)
+        case Left(e) if e.status >= 500 && e.status < 600 && retries > 0 => 
+          Thread.sleep(delay.toMillis)
+          attemptSubmission(nrsPayload, delay, retries - 1)
         case response => Future.successful(response)
       }
     }
