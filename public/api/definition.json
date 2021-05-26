@@ -3,7 +3,8 @@
     {
       "key": "write:interest-restriction-return",
       "name": "Write Interest Restriction Return",
-      "description": "Write Interest Restriction Return"
+      "description": "Write Interest Restriction Return",
+      "confidenceLevel": 200
     }
   ],
   "api": {
