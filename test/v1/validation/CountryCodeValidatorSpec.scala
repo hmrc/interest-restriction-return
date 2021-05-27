@@ -33,7 +33,7 @@ class CountryCodeValidatorSpec extends BaseSpec {
     }
 
     "Invalid Country Code supplied" in {
-     leftSideError(invalidCountryCode.validate).errorMessage shouldBe CountryCodeValueError(invalidCountryCode).errorMessage
+      leftSideError(invalidCountryCode.validate).errorMessage shouldBe CountryCodeValueError(invalidCountryCode).errorMessage
     }
 
     "Valid Country Code supplied" in {
