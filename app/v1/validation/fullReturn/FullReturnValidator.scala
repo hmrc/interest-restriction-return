@@ -256,7 +256,7 @@ case class AngieDecimalError(amt: BigDecimal) extends Validation {
 case class GroupLevelInterestRestrictionsAndReactivationSupplied(groupSubjectToInterestRestrictions: Boolean, groupSubjectToInterestReactivation: Boolean)
   extends Validation {
   val code = "RESTRICTION_REACTIVATION_SUPPLIED"
-  override val errorMessage: String = "You cannot supply both a group level restriction and reactivation in the same return"
+  override val errorMessage: String = "Cannot have group level restriction and reactivation"
   val path: JsPath = JsPath \ ""
   val value: Option[JsValue] = Some(Json.toJson((
     "groupSubjectToInterestRestrictions: " + groupSubjectToInterestRestrictions,

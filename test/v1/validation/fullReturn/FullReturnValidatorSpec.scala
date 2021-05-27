@@ -268,7 +268,7 @@ class FullReturnValidatorSpec extends BaseSpec {
       "Group Level Amount details are invalid" in {
         leftSideError(fullReturnUltimateParentModel.copy(
           groupLevelAmount = groupLevelAmountModel.copy(interestAllowanceForPeriod = -1)
-        ).validate).errorMessage shouldBe GroupLevelAmountCannotBeNegative("interestAllowanceForPeriod", -1).errorMessage
+        ).validate).errorMessage shouldBe InterestAllowanceForPeriodCannotBeNegative(-1).errorMessage
       }
 
       "Group Ratio is Elected and Adjusted Group Interest details are invalid" in {

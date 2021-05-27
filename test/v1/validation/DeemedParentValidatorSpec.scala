@@ -144,41 +144,41 @@ class DeemedParentValidatorSpec extends BaseSpec {
         "Both UK Company and Partnership Details Supplied" in {
 
           val model = deemedParentModelUkCompany.copy(sautr = Some(sautr))
-          leftSideError(model.validate).errorMessage shouldBe WrongDeemedParentIsUkCompanyAndPartnership(model).errorMessage
+          leftSideError(model.validate).errorMessage shouldBe DeemedParentWrongDetailsSuppliedError(model).errorMessage
         }
 
         "Both UK Company and NonUK Details Supplied" in {
 
           val model = deemedParentModelUkCompany.copy(countryOfIncorporation = Some(nonUkCountryCode))
-          leftSideError(model.validate).errorMessage shouldBe WrongDeemedParentIsUKCompanyAndNonUK(model).errorMessage
+          leftSideError(model.validate).errorMessage shouldBe DeemedParentWrongDetailsSuppliedError(model).errorMessage
         }
 
         "Both UK Company and NonUK Details Supplied when uk is false" in {
           val model = deemedParentModelUkCompany.copy(isUk = false, countryOfIncorporation = Some(nonUkCountryCode))
-          leftSideError(model.validate).errorMessage shouldBe WrongDeemedParentIsUKCompanyAndNonUK(model).errorMessage
+          leftSideError(model.validate).errorMessage shouldBe DeemedParentWrongDetailsSuppliedError(model).errorMessage
         }
 
         "Both UK Partnership and NonUk Details Supplied" in {
 
           val model = deemedParentModelUkPartnership.copy(countryOfIncorporation = Some(nonUkCountryCode))
-          leftSideError(model.validate).errorMessage shouldBe WrongDeemedParentIsUkPartnershipAndNonUKCompany(model).errorMessage
+          leftSideError(model.validate).errorMessage shouldBe DeemedParentWrongDetailsSuppliedError(model).errorMessage
         }
 
         "Both UK Partnership and NonUk Details Supplied when Uk is false" in {
           val model = deemedParentModelUkPartnership.copy(isUk = false, countryOfIncorporation = Some(nonUkCountryCode))
-          leftSideError(model.validate).errorMessage shouldBe WrongDeemedParentIsUkPartnershipAndNonUKCompany(model).errorMessage
+          leftSideError(model.validate).errorMessage shouldBe DeemedParentWrongDetailsSuppliedError(model).errorMessage
         }
 
         "IsUK and CountryOfIncorporation is supplied" in {
 
           val model = deemedParentModelNonUkCompany.copy(isUk = true)
-          leftSideError(model.validate).errorMessage shouldBe WrongDeemedParentIsUkPartnershipAndNonUKCompany(model).errorMessage
+          leftSideError(model.validate).errorMessage shouldBe DeemedParentWrongDetailsSuppliedError(model).errorMessage
         }
 
         "NonUK and No SAUTR is supplied" in {
 
           val model = deemedParentModelNonUkCompany.copy(isUk = false, sautr = Some(UTRModel("1123456789")))
-          leftSideError(model.validate).errorMessage shouldBe WrongDeemedParentIsUkPartnershipAndNonUKCompany(model).errorMessage
+          leftSideError(model.validate).errorMessage shouldBe DeemedParentWrongDetailsSuppliedError(model).errorMessage
         }
 
         "NonUK and missing Country of Incorporation is supplied" in {
@@ -190,7 +190,7 @@ class DeemedParentValidatorSpec extends BaseSpec {
         "No UTR or Country of Incorporation and IsUk is true" in {
 
           val model = deemedParentModelUkPartnership.copy(isUk = true, ctutr = None, sautr = None, countryOfIncorporation = None)
-          leftSideError(model.validate).errorMessage shouldBe NoUTROrCountryCodeOnDeemedParent(model).errorMessage
+          leftSideError(model.validate).errorMessage shouldBe DeemedParentWrongDetailsSuppliedError(model).errorMessage
         }
 
         "LEI is supplied but invalid" in {
