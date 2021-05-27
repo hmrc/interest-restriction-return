@@ -20,6 +20,7 @@ import assets.fullReturn.AllocatedRestrictionsConstants._
 import assets.fullReturn.UkCompanyConstants._
 import play.api.libs.json.JsPath
 import v1.models.{AccountingPeriodModel, CompanyNameModel, UTRModel}
+import v1.validation
 import v1.validation.{BaseValidationSpec, CompanyNameCharactersError, CompanyNameLengthError, UTRChecksumError, UTRLengthError}
 
 class UkCompanyValidatorSpec extends BaseValidationSpec {
@@ -39,7 +40,7 @@ class UkCompanyValidatorSpec extends BaseValidationSpec {
     "Return valid" when {
 
       "a valid Full Reactivation UK Company model is validated" in {
-        val model =  ukCompanyModelReactivationMax
+        val model = ukCompanyModelReactivationMax
 
         rightSide(model.validate(groupAccountingPeriod)) shouldBe model
       }
@@ -112,13 +113,13 @@ class UkCompanyValidatorSpec extends BaseValidationSpec {
       }
 
       "ExpenseAndIncomeBothNotGreaterThanZero where both values are > 0" in {
-        leftSideError(ukCompanyModelReactivationMax.copy(netTaxInterestExpense = 20.00,netTaxInterestIncome = 30.00).validate(
-          groupAccountingPeriod)).errorMessage shouldBe ExpenseAndIncomeBothNotGreaterThanZero(20.00,30.00).errorMessage
+        leftSideError(ukCompanyModelReactivationMax.copy(netTaxInterestExpense = 20.00, netTaxInterestIncome = 30.00).validate(
+          groupAccountingPeriod)).errorMessage shouldBe ExpenseAndIncomeBothNotGreaterThanZero(20.00, 30.00).errorMessage
       }
 
       "RestrictionNotGreaterThanExpense where restriction values > expense" in {
         leftSideError(ukCompanyModelRestrictionMax.copy(netTaxInterestExpense = 20.00, allocatedRestrictions = allocatedRestriction).validate(
-          groupAccountingPeriod)).errorMessage shouldBe RestrictionNotGreaterThanExpense(20.00,30.01).errorMessage
+          groupAccountingPeriod)).errorMessage shouldBe RestrictionNotGreaterThanExpense(20.00, 30.01).errorMessage
       }
 
       "taxEBITDA is >2 DP" in {
@@ -144,6 +145,11 @@ class UkCompanyValidatorSpec extends BaseValidationSpec {
 
         leftSideError(ukCompanyModelReactivationMax.copy(companyEstimateReason = Some(estimateReason)).validate(
           groupAccountingPeriod)).errorMessage shouldBe CompanyEstimateReasonCharacterError(estimateReason).errorMessage
+      }
+
+      "Passing true and CompanyName invalid characters should not succeed" in {
+        leftSideError(ukCompanyModelReactivationMax.copy(companyName = CompanyNameModel("ʰʲʺ˦˫˥ʺ˦˫˥")).validate(
+          groupAccountingPeriod)).errorMessage shouldBe validation.CompanyNameCharactersError("ʰʲʺ˦˫˥ʺ˦˫˥").errorMessage
       }
     }
   }

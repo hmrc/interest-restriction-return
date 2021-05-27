@@ -70,6 +70,11 @@ class AgentDetailsValidatorSpec extends BaseSpec {
       leftSideError(model.validate).errorMessage shouldBe AgentNameCharactersError(invalidName).errorMessage
     }
 
+    "Passing true and invalid characters should not succeed" in {
+      val model = AgentDetailsModel(true, Some("ʰʲʺ˦˫˥ʺ˦˫˥"))
+      leftSideError(model.validate).errorMessage shouldBe AgentNameCharactersError("ʰʲʺ˦˫˥ʺ˦˫˥").errorMessage
+    }
+
     "passed true and Some name with an end of line should not succeed" in {
       val invalidName = "\n"
       val model = AgentDetailsModel(true, Some(invalidName))
