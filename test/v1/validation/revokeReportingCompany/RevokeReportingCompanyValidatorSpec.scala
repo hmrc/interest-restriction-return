@@ -21,7 +21,7 @@ import assets.revokeReportingCompany.RevokeReportingCompanyConstants.revokeRepor
 import play.api.libs.json.JsPath
 import utils.BaseSpec
 import assets.AuthorisingCompanyConstants._
-import v1.models.CompanyNameModel
+import v1.models.{CompanyNameModel, CountryCodeModel, UTRModel}
 import v1.validation.errors._
 
 class RevokeReportingCompanyValidatorSpec extends BaseSpec {
@@ -91,8 +91,7 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
       }
 
       "a company submitting on behalf doesn't supply their company details" in {
-        val testModel = revokeReportingCompanyModelMax.copy(
-          isReportingCompanyRevokingItself = false)
+        val testModel = revokeReportingCompanyModelMax.copy(isReportingCompanyRevokingItself = false)
 
         leftSideErrorLength(testModel.validate) shouldBe 1
 
@@ -109,11 +108,11 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
       }
 
       "the declaration hasn't been declared and the company is revoking itself but still supplies revoking company details" in {
-        val testModel = revokeReportingCompanyModelMax.copy(declaration = false,companyMakingRevocation = Some(identityOfCompanySubmittingModelMax))
+        val testModel = revokeReportingCompanyModelMax.copy(declaration = false, companyMakingRevocation = Some(identityOfCompanySubmittingModelMax))
 
         leftSideErrorLength(testModel.validate) shouldBe 2
 
-        leftSideError(testModel.validate,1).errorMessage shouldBe
+        leftSideError(testModel.validate, 1).errorMessage shouldBe
           DeclaredFiftyPercentOfEligibleCompanies(declaration = false).errorMessage
 
         leftSideError(testModel.validate).errorMessage shouldBe
@@ -136,7 +135,64 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
 
         leftSideError(testingModel.validate).errorMessage shouldBe AuthorisingCompaniesContainsDuplicates.errorMessage
       }
-    }
 
+      "CompanyMakingRevocation's CompanyName contains invalid characters" in {
+
+        val companyNameInvalid = CompanyNameModel("ʰʲʺ˦˫˥ʺ˦˫˥")
+        val identityOfComp = identityOfCompanySubmittingModelMax.copy(companyName = companyNameInvalid)
+        val testModel = revokeReportingCompanyModelMax.copy(isReportingCompanyRevokingItself = true, companyMakingRevocation = Some(identityOfComp))
+
+        leftSideError(testModel.validate).errorMessage shouldBe DetailsNotNeededIfCompanyRevokingItself(identityOfComp).errorMessage
+      }
+
+      "CompanyMakingRevocation's CompanyNameis too long" in {
+
+        val identityOfComp = identityOfCompanySubmittingModelMax.copy(companyName = companyNameTooLong)
+        val testModel = revokeReportingCompanyModelMax.copy(isReportingCompanyRevokingItself = true, companyMakingRevocation = Some(identityOfComp))
+
+        leftSideError(testModel.validate).errorMessage shouldBe DetailsNotNeededIfCompanyRevokingItself(identityOfComp).errorMessage
+      }
+
+      "CompanyMakingRevocation's CompanyName is empty" in {
+
+        val companyNameInvalid = CompanyNameModel("")
+        val identityOfComp = identityOfCompanySubmittingModelMax.copy(companyName = companyNameInvalid)
+        val testModel = revokeReportingCompanyModelMax.copy(isReportingCompanyRevokingItself = true, companyMakingRevocation = Some(identityOfComp))
+
+        leftSideError(testModel.validate).errorMessage shouldBe DetailsNotNeededIfCompanyRevokingItself(identityOfComp).errorMessage
+      }
+
+      "CompanyMakingRevocation's ctutr is empty" in {
+
+        val identityOfComp = identityOfCompanySubmittingModelMax.copy(ctutr = Some(UTRModel("")))
+        val testModel = revokeReportingCompanyModelMax.copy(isReportingCompanyRevokingItself = true, companyMakingRevocation = Some(identityOfComp))
+
+        leftSideError(testModel.validate).errorMessage shouldBe DetailsNotNeededIfCompanyRevokingItself(identityOfComp).errorMessage
+      }
+
+      "CompanyMakingRevocation's ctutr is too long" in {
+
+        val identityOfComp = identityOfCompanySubmittingModelMax.copy(ctutr = Some(invalidLongUtr))
+        val testModel = revokeReportingCompanyModelMax.copy(isReportingCompanyRevokingItself = true, companyMakingRevocation = Some(identityOfComp))
+
+        leftSideError(testModel.validate).errorMessage shouldBe DetailsNotNeededIfCompanyRevokingItself(identityOfComp).errorMessage
+      }
+
+      "CompanyMakingRevocation's Country of Incorporation is empty" in {
+
+        val identityOfComp = identityOfCompanySubmittingModelMax.copy(countryOfIncorporation = Some(CountryCodeModel("")))
+        val testModel = revokeReportingCompanyModelMax.copy(isReportingCompanyRevokingItself = true, companyMakingRevocation = Some(identityOfComp))
+
+        leftSideError(testModel.validate).errorMessage shouldBe DetailsNotNeededIfCompanyRevokingItself(identityOfComp).errorMessage
+      }
+
+      "CompanyMakingRevocation's Country of Incorporation is an invalid country code" in {
+
+        val identityOfComp = identityOfCompanySubmittingModelMax.copy(countryOfIncorporation = Some(invalidCountryCode))
+        val testModel = revokeReportingCompanyModelMax.copy(isReportingCompanyRevokingItself = true, companyMakingRevocation = Some(identityOfComp))
+
+        leftSideError(testModel.validate).errorMessage shouldBe DetailsNotNeededIfCompanyRevokingItself(identityOfComp).errorMessage
+      }
+    }
   }
 }

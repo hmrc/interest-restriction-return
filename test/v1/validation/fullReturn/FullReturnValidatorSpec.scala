@@ -240,7 +240,7 @@ class FullReturnValidatorSpec extends BaseSpec {
             )
           )
         )
-        leftSideError(model.validate,1).errorMessage shouldBe NoTotalNetTaxInterestIncomeDuringRestriction(incorrectDisallowances).errorMessage
+        leftSideError(model.validate, 1).errorMessage shouldBe NoTotalNetTaxInterestIncomeDuringRestriction(incorrectDisallowances).errorMessage
       }
 
       "Agent details are invalid" in {
@@ -329,7 +329,16 @@ class FullReturnValidatorSpec extends BaseSpec {
         ).validate).errorMessage shouldBe RevisedReturnDetailsCharacterError(returnDetails).errorMessage
       }
 
+      "Return type is Revised and the return details contains alternative invalid characters" in {
+
+        leftSideError(fullReturnUltimateParentModel.copy(
+          submissionType = Revised,
+          revisedReturnDetails = Some(RevisedReturnDetailsModel("ʰʲʺ˦˫˥ʺ˦˫˥"))
+        ).validate).errorMessage shouldBe RevisedReturnDetailsCharacterError("ʰʲʺ˦˫˥ʺ˦˫˥").errorMessage
+      }
+
       "ReturnContainsEstimates is false but groupEstimateReason is populated" in {
+
         leftSideError(fullReturnUltimateParentModel.copy(
           returnContainsEstimates = false,
           groupEstimateReason = Some("Some reason")
@@ -360,6 +369,14 @@ class FullReturnValidatorSpec extends BaseSpec {
           returnContainsEstimates = true,
           groupEstimateReason = Some(estimateReason)
         ).validate).errorMessage shouldBe EstimateReasonCharacterError(estimateReason).errorMessage
+      }
+
+      "ReturnContainsEstimates equals true and groupEstimateReason contains alternative invalid characters" in {
+
+        leftSideError(fullReturnUltimateParentModel.copy(
+          returnContainsEstimates = true,
+          groupEstimateReason = Some("ʰʲʺ˦˫˥ʺ˦˫˥")
+        ).validate).errorMessage shouldBe EstimateReasonCharacterError("ʰʲʺ˦˫˥ʺ˦˫˥").errorMessage
       }
 
       "ReturnContainsEstimates is false but companies have companyEstimatedReason populated" in {
