@@ -40,4 +40,30 @@ class CountryCodeValidatorSpec extends BaseSpec {
       rightSide(nonUkCountryCode.validate) shouldBe nonUkCountryCode
     }
   }
+
+  "Country Code Invalid List" when {
+    "DD" in {
+      leftSideError(CountryCodeModel("DD").validate).errorMessage shouldBe CountryCodeValueError(CountryCodeModel("DD")).errorMessage
+    }
+
+    "EU" in {
+      leftSideError(CountryCodeModel("EU").validate).errorMessage shouldBe CountryCodeValueError(CountryCodeModel("EU")).errorMessage
+    }
+
+    "NT" in {
+      leftSideError(CountryCodeModel("NT").validate).errorMessage shouldBe CountryCodeValueError(CountryCodeModel("NT")).errorMessage
+    }
+
+    "TP" in {
+      leftSideError(CountryCodeModel("TP").validate).errorMessage shouldBe CountryCodeValueError(CountryCodeModel("TP")).errorMessage
+    }
+
+    "UK" in {
+      leftSideError(CountryCodeModel("UK").validate).errorMessage shouldBe CountryCodeValueError(CountryCodeModel("UK")).errorMessage
+    }
+
+    "UN" in {
+      leftSideError(CountryCodeModel("UN").validate).errorMessage shouldBe CountryCodeValueError(CountryCodeModel("UN")).errorMessage
+    }
+  }
 }
