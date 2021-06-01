@@ -105,23 +105,21 @@ trait AdjustedGroupInterestValidator extends BaseValidation {
 
   case class GroupRatioDecimalError(groupEBITDA: BigDecimal)(implicit topPath: JsPath) extends Validation {
     val code = "GROUP_RATIO_DECIMAL"
-    val errorMessage: String = "groupRatio has greater than the allowed 5 decimal places."
+    val errorMessage: String = "Group ratio must be to 5 decimal places or less"
     val path: JsPath = topPath \ "groupRatio"
     val value = Some(Json.toJson(groupEBITDA))
   }
 
   case class GroupRatioError(groupRatio: BigDecimal)(implicit topPath: JsPath) extends Validation {
     val code = "GROUP_RATIO_RANGE"
-    val errorMessage: String = "Group Ratio must be between 0 and 100%"
+    val errorMessage: String = "Group ratio must be between 0% and 100%"
     val path: JsPath = topPath \ "groupRatio"
     val value = Some(Json.toJson(groupRatio))
   }
 
   case class GroupRatioCalculationError(details: AdjustedGroupInterestModel)(implicit topPath: JsPath) extends Validation {
     val code = "GROUP_RATIO_CALC"
-    val errorMessage: String = s"The value for Group Ratio Percent you provided ${details.groupRatio}, " +
-      s"does not match the value calculated from the provided QNGIE (${details.qngie}) and group-EBITDA ${details.groupEBITDA}, " +
-      s"${((details.qngie / details.groupEBITDA) * 100).setScale(5, RoundingMode.HALF_UP).min(100)}"
+    val errorMessage: String = s"The vaue of the group ratio percentage must match the value calculated by dividing the QNGIE by the group EBITDA"
     val path: JsPath = topPath \ "groupEBITDA"
     val value = Some(Json.toJson(details))
   }

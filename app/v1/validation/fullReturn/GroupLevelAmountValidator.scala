@@ -71,7 +71,7 @@ case class InterestAllowanceForPeriodCannotBeNegative(amt: BigDecimal)(implicit 
 case class InterestAllowanceForPeriodDecimalError(amt: BigDecimal)(implicit topPath: JsPath) extends Validation {
   val code = "INTEREST_ALLOWANCE_PERIOD_DECIMAL"
   val path = topPath \ s"interestAllowanceForPeriod"
-  val errorMessage: String = s"Interest allowance brought forward must be to 2 decimal places or less"
+  val errorMessage: String = s"Interest allowance for the period must be to 2 decimal places or less"
   val value = Some(Json.toJson(amt))
 }
 

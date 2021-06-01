@@ -57,7 +57,7 @@ trait AgentDetailsValidator extends BaseValidation {
 }
 
 case class AgentNameLengthError(name: String)(implicit topPath: JsPath) extends Validation {
-  val code = ""
+  val code = "AGENT_NAME_LENGTH"
   val errorMessage: String = "Agent name must be between 1 and 160 characters"
   val path: JsPath = topPath \ "agentName"
   val value: Option[JsValue] = Some(JsString(name))

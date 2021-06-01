@@ -150,7 +150,7 @@ case class AllocatedRestrictionNegative(i: Int, amt: BigDecimal)(implicit topPat
 case class AllocatedRestrictionDecimalError(i: Int, amt: BigDecimal)(implicit topPath: JsPath) extends Validation {
   val code = "RESTRICTION_DECIMAL"
   val path: JsPath = topPath \ s"disallowanceAp$i"
-  val errorMessage: String = s"disallowanceAp$i has greater than the allowed 2 decimal places."
+  val errorMessage: String = s"Amount of disallowance for this accounting period must be to 2 decimal places or less"
   val value = Some(Json.toJson(amt))
 }
 

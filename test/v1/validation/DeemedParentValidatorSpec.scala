@@ -172,7 +172,7 @@ class DeemedParentValidatorSpec extends BaseSpec {
         "IsUK and CountryOfIncorporation is supplied" in {
 
           val model = deemedParentModelNonUkCompany.copy(isUk = true)
-          leftSideError(model.validate).errorMessage shouldBe DeemedParentWrongDetailsSuppliedError(model).errorMessage
+          leftSideError(model.validate).errorMessage shouldBe UKDeemedMissingUTR(model).errorMessage
         }
 
         "NonUK and No SAUTR is supplied" in {
@@ -190,7 +190,7 @@ class DeemedParentValidatorSpec extends BaseSpec {
         "No UTR or Country of Incorporation and IsUk is true" in {
 
           val model = deemedParentModelUkPartnership.copy(isUk = true, ctutr = None, sautr = None, countryOfIncorporation = None)
-          leftSideError(model.validate).errorMessage shouldBe DeemedParentWrongDetailsSuppliedError(model).errorMessage
+          leftSideError(model.validate).errorMessage shouldBe UKDeemedMissingUTR(model).errorMessage
         }
 
         "LEI is supplied but invalid" in {
