@@ -43,7 +43,7 @@ trait CountryCodeValidator extends BaseValidation {
     }
   }
 
-  def validate(implicit path: JsPath): ValidationResult[CountryCodeModel] = combineValidationsForField(validateLength, validateValue)
+  def validate(implicit path: JsPath): ValidationResult[CountryCodeModel] = combineValidations(validateLength, validateValue)
 }
 
 case class CountryCodeValueError(countryCode: CountryCodeModel)(implicit val path: JsPath) extends Validation {

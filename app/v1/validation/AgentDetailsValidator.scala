@@ -42,7 +42,7 @@ trait AgentDetailsValidator extends BaseValidation {
       case None => agentDetailsModel.agentName.validNec
     }
 
-    combineValidationsForField(lengthCheck, suppliedCheck, characterCheck)
+    combineValidations(lengthCheck, suppliedCheck, characterCheck)
   }
 
   private def validateAgentNameCharacters(agentName: String)(implicit topPath: JsPath): ValidationResult[Option[String]] = {

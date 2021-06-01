@@ -28,8 +28,7 @@ class CountryCodeValidatorSpec extends BaseSpec {
 
     "Country Code is supplied and is not the correct length" in {
       val model  = CountryCodeModel("A")
-      leftSideError(model.validate).errorMessage shouldBe
-        errorMessages(CountryCodeLengthError(model).errorMessage, CountryCodeValueError(model).errorMessage)
+      leftSideError(model.validate).errorMessage shouldBe errorMessages (CountryCodeLengthError(model).errorMessage)
     }
 
     "Invalid Country Code supplied" in {

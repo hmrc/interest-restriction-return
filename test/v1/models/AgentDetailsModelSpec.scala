@@ -72,7 +72,7 @@ class AgentDetailsModelSpec extends WordSpec with Matchers {
         val actualValue = agentDetailsJsonWhitespaceName.as[AgentDetailsModel]
 
         actualValue shouldBe expectedValue
-      }   
-    } 
+      }
+    }
   }
 }
