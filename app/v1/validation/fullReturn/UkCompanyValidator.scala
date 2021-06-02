@@ -173,7 +173,7 @@ case class NetTaxInterestIncomeDecimalError(netTaxInterestIncome: BigDecimal)(im
 
 case class ExpenseAndIncomeBothNotGreaterThanZero(netTaxInterestExpense: BigDecimal, netTaxInterestIncome: BigDecimal)(implicit val path: JsPath) extends Validation {
   val code = "EXPENSE_AND_INCOME"
-  val errorMessage: String = "A company can not have both a net tax interest expense and a net tax interest income"
+  val errorMessage: String = "A company cannot have both net tax interest expense and net tax interest income"
   val value = Some(Json.toJson(("netTaxInterestExpense: " + netTaxInterestExpense, "netTaxInterestIncome: " + netTaxInterestIncome)))
 }
 

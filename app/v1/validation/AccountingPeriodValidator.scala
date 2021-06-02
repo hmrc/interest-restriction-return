@@ -103,7 +103,7 @@ case class EndDateCannotBeBeforeMinimum(endDate: LocalDate)(implicit topPath: Js
 
 case class EndDateAfterStartDate(endDate: LocalDate)(implicit topPath: JsPath) extends Validation {
   val code = "END_DATE_BEFORE_START"
-  val errorMessage: String = "End Date must be after start date"
+  val errorMessage: String = "End date of the group's period of account must be after start date of the group's period of account"
   val path = topPath \ "endDate"
   val value = Some(Json.toJson(endDate))
 }

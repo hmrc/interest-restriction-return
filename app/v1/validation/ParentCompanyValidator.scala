@@ -71,7 +71,7 @@ case class ParentCompanyCanNotBeUltimateAndDeemed(model: ParentCompanyModel)(imp
 
 case class DeemedParentsEmpty()(implicit topPath: JsPath) extends Validation {
   val code = "DEEMED_EMPTY"
-  val errorMessage: String = "deemedParent must have at least 1 deemed parent if supplied"
+  val errorMessage: String = "Add at least 1 deemed parent"
   val path: JsPath = topPath \ "deemedParent"
   val value = None
 }
