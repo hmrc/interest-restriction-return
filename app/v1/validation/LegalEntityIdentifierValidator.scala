@@ -34,7 +34,7 @@ trait LegalEntityIdentifierValidator extends BaseValidation {
     }
   }
 
-  def validate(implicit path: JsPath): ValidationResult[LegalEntityIdentifierModel] = combineValidationsForField(validateValue)
+  def validate(implicit path: JsPath): ValidationResult[LegalEntityIdentifierModel] = combineValidations(validateValue)
 }
 
 case class LegalEntityIdentifierCharacterError(lei: LegalEntityIdentifierModel)(implicit val path: JsPath) extends Validation {

@@ -17,7 +17,6 @@
 package v1.validation
 import cats.data.NonEmptyChain
 import cats.data.Validated.{Invalid, Valid}
-import play.api.libs.json.{JsPath, JsValue}
 import v1.models.Validation
 import v1.models.Validation.ValidationResult
 
@@ -25,22 +24,6 @@ import scala.annotation.tailrec
 
 trait BaseValidation {
   import cats.implicits._
-
-  def combineValidationsForField[T](validations: ValidationResult[T]*): ValidationResult[T] = {
-    val invalids = validations.collect { case Invalid(invalid) => invalid}
-    invalids match {
-      case seq if seq.isEmpty => validations.head
-      case errors => {
-        val validations = errors.flatMap(_.toList)
-        new Validation {
-          override val code = "BAD_REQUEST"
-          override val errorMessage: String = validations.map(_.errorMessage).mkString("|")
-          override val path: JsPath = validations.head.path
-          override val value: Option[JsValue] = validations.head.value
-        }.invalidNec
-      }
-    }
-  }
 
   def combineValidations[T](validations: ValidationResult[T]*): ValidationResult[T] = {
     val invalids = validations.collect { case Invalid(invalid) => invalid}
@@ -65,5 +48,4 @@ trait BaseValidation {
       combineInvalids(errors.tail, combined.combine(errors.head))
     }
   }
-
 }

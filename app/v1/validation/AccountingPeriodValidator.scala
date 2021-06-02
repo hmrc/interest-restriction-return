@@ -67,11 +67,11 @@ trait AccountingPeriodValidator extends BaseValidation {
     }
 
   def validate(implicit path: JsPath): ValidationResult[AccountingPeriodModel] = {
-    val startDateValidations = combineValidationsForField(
-      validateStartDateCannotBeInFuture, 
+    val startDateValidations = combineValidations(
+      validateStartDateCannotBeInFuture,
       validateStartDateCannotBeBeforeMinimum
     )
-    val endDateValidations = combineValidationsForField(
+    val endDateValidations = combineValidations(
       validateEndDateAfterStartDate,
       validateAccountingPeriod18MonthsMax,
       validateEndDateCannotBeBeforeMinimum
