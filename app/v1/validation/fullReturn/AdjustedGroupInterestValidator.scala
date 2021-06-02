@@ -119,7 +119,7 @@ trait AdjustedGroupInterestValidator extends BaseValidation {
 
   case class GroupRatioCalculationError(details: AdjustedGroupInterestModel)(implicit topPath: JsPath) extends Validation {
     val code = "GROUP_RATIO_CALC"
-    val errorMessage: String = s"The vaue of the group ratio percentage must match the value calculated by dividing the QNGIE by the group EBITDA"
+    val errorMessage: String = s"The value of the group ratio percentage must match the value calculated by dividing the QNGIE by the group EBITDA"
     val path: JsPath = topPath \ "groupEBITDA"
     val value = Some(Json.toJson(details))
   }
