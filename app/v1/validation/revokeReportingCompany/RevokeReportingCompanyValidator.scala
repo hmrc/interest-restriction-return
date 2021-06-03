@@ -88,7 +88,7 @@ trait RevokeReportingCompanyValidator extends BaseValidation {
 
 case object CompanyMakingAppointmentMustSupplyDetails extends Validation {
   val code = "COMPANY_MAKING_REVOCATION_NOT_SUPPLIED"
-  val errorMessage: String = "companyMakingRevocation must be supplied when isReportingCompanyRevokingItself is false"
+  val errorMessage: String = "If the reporting company is not revoking itself, details of the company making revocation must be provided"
   val path = JsPath \ "companyMakingRevocation"
   val value = None
 }
@@ -102,6 +102,6 @@ case class DeclaredFiftyPercentOfEligibleCompanies(declaration: Boolean) extends
 
 case class DetailsNotNeededIfCompanyRevokingItself(companyMakingRevocation: IdentityOfCompanySubmittingModel)(implicit val path: JsPath) extends Validation {
   val code = "COMPANY_NOT_NEEDED"
-  val errorMessage: String = "If the reporting company is submitting this revocation, the identity of company making revocation is not needed."
+  val errorMessage: String = "Reporting company not needed as it is the same the company making the revocation"
   val value = Some(Json.toJson(companyMakingRevocation))
 }

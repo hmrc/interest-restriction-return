@@ -42,14 +42,14 @@ trait GroupRatioValidator extends BaseValidation {
 
 case class GroupRatioBlendedSupplied(groupRatio: GroupRatioModel)(implicit val topPath: JsPath) extends Validation {
   val code = "GROUP_RATIO_BLENDED_SUPPLIED"
-  val errorMessage: String = "Group Ratio is not elected, unable to elect GroupRatioBlended Election"
+  val errorMessage: String = "Group ratio not elected, so group ratio blended not needed"
   val path: JsPath = topPath \ "groupRatioBlended"
   val value = Some(Json.toJson(groupRatio))
 }
 
 case class GroupRatioBlendedNotSupplied()(implicit val topPath: JsPath) extends Validation {
   val code = "GROUP_RATIO_BLENDED_NOT_SUPPLIED"
-  val errorMessage: String = "If group ratio is elected, group ratio blended election must be provided"
+  val errorMessage: String = "If group ratio is elected, a value for group ratio (blended) election must be provided"
   val path: JsPath = topPath \ "groupRatioBlended"
   val value = None
 }

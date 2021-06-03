@@ -86,14 +86,14 @@ trait AppointReportingCompanyValidator extends BaseValidation {
 
 case object IdentityOfAppointingCompanyIsNotSupplied extends Validation {
   val code = "IDENTITY_APPOINTING_COMPANY_NOT_SUPPLIED"
-  val errorMessage: String = "Identity of Appointing Company must be supplied if it is not the same as the reporting company or agent"
+  val errorMessage: String = "Appointing company must be supplied if it's not the same as the reporting company"
   val path: JsPath = JsPath \ "identifyOfAppointingCompany"
   val value = None
 }
 
 case class IdentityOfAppointingCompanyIsSupplied(identityOfCompanySubmittingModel: IdentityOfCompanySubmittingModel) extends Validation {
   val code = "IDENTITY_APPOINTING_COMPANY_SUPPLIED"
-  val errorMessage: String = "Identity of Appointing Company must not be supplied if it is the same as the reporting company or agent"
+  val errorMessage: String = "Appointing company not needed as it is the same as the reporting company"
   val path: JsPath = JsPath \ "identifyOfAppointingCompany"
   val value = Some(Json.toJson(identityOfCompanySubmittingModel))
 }

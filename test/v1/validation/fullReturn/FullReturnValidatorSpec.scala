@@ -426,12 +426,12 @@ class FullReturnValidatorSpec extends BaseSpec {
 
       "Ulti parent declaration is false" in {
         val model = fullReturnUltimateParentModel.copy(declaration = false)
-        leftSideError(model.validate).errorMessage shouldBe FullReturnDeclarationError(false).errorMessage
+        leftSideError(model.validate).errorMessage shouldBe ReturnDeclarationError(false).errorMessage
       }
 
       "deemed parent declaration is false" in {
         val model = fullReturnDeemedParentModel.copy(declaration = false, parentCompany = Some(parentCompanyModelDeemedMin))
-        leftSideError(model.validate).errorMessage shouldBe FullReturnDeclarationError(false).errorMessage
+        leftSideError(model.validate).errorMessage shouldBe ReturnDeclarationError(false).errorMessage
       }
 
       "aggregate net tax interest income exceeds the cap" in {

@@ -91,7 +91,7 @@ trait AdjustedGroupInterestValidator extends BaseValidation {
 
   case class QngieDecimalError(qngie: BigDecimal)(implicit topPath: JsPath) extends Validation {
     val code = "QNGIE_DECIMAL"
-    val errorMessage: String = "qngie has greater than the allowed 2 decimal places."
+    val errorMessage: String = "QNGIE must be to 2 decimal places or less"
     val path: JsPath = topPath \ "qngie"
     val value = Some(Json.toJson(qngie))
   }
@@ -126,14 +126,14 @@ trait AdjustedGroupInterestValidator extends BaseValidation {
 
   case class NegativeOrZeroGroupEBITDAError(groupEBITDA: BigDecimal)(implicit topPath: JsPath) extends Validation {
     val code = "EBITDA_NEGATIVE"
-    val errorMessage: String = "If group-EBITDA is negative or zero, groupRatio must be set to 100"
+    val errorMessage: String = "If group EBITDA is negative or zero, set group ratio to 100"
     val path: JsPath = topPath \ "groupEBITDA"
     val value = Some(Json.toJson(groupEBITDA))
   }
 
   case class NegativeOrZeroGroupRatioError(groupRatio: BigDecimal)(implicit topPath: JsPath) extends Validation {
     val code = "GROUP_RATIO_NEGATIVE"
-    val errorMessage: String = "If group ratio calculation is negative then group ratio should be 100%"
+    val errorMessage: String = "If group ratio calculation is negative then set group ratio to 100%"
     val path: JsPath = topPath \ "groupRatio"
     val value = Some(Json.toJson(groupRatio))
   }

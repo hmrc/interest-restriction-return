@@ -65,7 +65,7 @@ trait ParentCompanyValidator extends BaseValidation {
 
 case class ParentCompanyCanNotBeUltimateAndDeemed(model: ParentCompanyModel)(implicit val path: JsPath) extends Validation {
   val code = "PARENT_ULTIMATE_AND_DEEMED"
-  val errorMessage: String = "Parent Company Model cannot contain data for Ultimate and Deemed fields"
+  val errorMessage: String = "Parent company must be either ultimate or deemed parent"
   val value = Some(Json.toJson(model))
 }
 
@@ -78,14 +78,14 @@ case class DeemedParentsEmpty()(implicit topPath: JsPath) extends Validation {
 
 case class MinTwoDeemedParents(model: ParentCompanyModel)(implicit topPath: JsPath) extends Validation {
   val code = "DEEMED_MIN"
-  val errorMessage: String = "Min number of deemed Parent can only be two"
+  val errorMessage: String = "Minimum number of deemed parents is 2"
   val path: JsPath = topPath \ "deemedParent"
   val value = None
 }
 
 case class MaxThreeDeemedParents(model: ParentCompanyModel)(implicit topPath: JsPath) extends Validation {
   val code = "DEEMED_MAX"
-  val errorMessage: String = "Max number of deemed Parents can only be three"
+  val errorMessage: String = "Maximum number of deemed parents is 3"
   val path: JsPath = topPath \ "deemedParent"
   val value = None
 }

@@ -48,14 +48,14 @@ trait RevisedReturnDetailsValidator extends BaseValidation {
 
 case class RevisedReturnDetailsLengthError(details: String)(implicit topPath: JsPath) extends Validation {
   val code = "REVISION_DETAILS_LENGTH"
-  val errorMessage: String = s"The revised return details are ${details.length} characters long and should be between 1 and 5000 characters"
+  val errorMessage: String = s"Revised return details must be between 1 and 5,000 characters"
   val path = topPath \ "revisedReturnDetails"
   val value = Some(Json.toJson(details))
 }
 
 case class RevisedReturnDetailsCharacterError(details: String)(implicit topPath: JsPath) extends Validation {
   val code = "REVISION_DETAILS_CHARACTERS"
-  val errorMessage: String = "The revised return details contain invalid characters"
+  val errorMessage: String = "Revised return details contains invalid characters"
   val path = topPath \ "revisedReturnDetails"
   val value = Some(Json.toJson(details))
 }
