@@ -71,5 +71,9 @@ class CountryCodeValidatorSpec extends BaseSpec {
     "UN" in {
       leftSideError(CountryCodeModel("UN").validate).errorMessage shouldBe CountryCodeValueError(CountryCodeModel("UN")).errorMessage
     }
+
+    "GB" in {
+      leftSideError(CountryCodeModel("GB").validate).errorMessage shouldBe CountryCodeCantBeGB(CountryCodeModel("GB")).errorMessage
+    }
   }
 }
