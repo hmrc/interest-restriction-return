@@ -321,7 +321,7 @@ case class EstimateReasonSupplied(reason: String) extends Validation {
 
 case class EstimateReasonLengthError(reason: String) extends Validation {
   val code = "ESTIMATE_REASON_LENGTH"
-  val errorMessage: String = s"groupEstimateReason is ${reason.length} characters long and should be between 1 and 10,000 characters"
+  val errorMessage: String = s"Estimate reason must be between 1 and 10,000 characters"
   val path: JsPath = JsPath \ "groupEstimateReason"
   val value: Option[JsValue] = Some(Json.toJson(reason))
 }
