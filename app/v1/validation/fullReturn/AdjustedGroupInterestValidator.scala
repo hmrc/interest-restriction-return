@@ -133,7 +133,7 @@ trait AdjustedGroupInterestValidator extends BaseValidation {
 
   case class NegativeOrZeroGroupRatioError(groupRatio: BigDecimal)(implicit topPath: JsPath) extends Validation {
     val code = "GROUP_RATIO_NEGATIVE"
-    val errorMessage: String = "If group ratio calculation is negative then set group ratio to 100%"
+    val errorMessage: String = "If group ratio calculation is negative or zero, then set group ratio to 100"
     val path: JsPath = topPath \ "groupRatio"
     val value = Some(Json.toJson(groupRatio))
   }
