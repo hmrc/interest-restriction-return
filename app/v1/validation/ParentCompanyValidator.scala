@@ -32,6 +32,8 @@ trait ParentCompanyValidator extends BaseValidation {
 
     if (isUltimate && isDeemed) {
       ParentCompanyCanNotBeUltimateAndDeemed(parentCompanyModel).invalidNec
+    } else if (!isUltimate && !isDeemed) {
+      ParentCompanyCanNotBeUltimateAndDeemed(parentCompanyModel).invalidNec
     } else {
       parentCompanyModel.validNec
     }
