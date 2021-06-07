@@ -39,7 +39,7 @@ class ParentCompanyValidatorSpec extends BaseValidationSpec {
     "Ultimate and Deemed field are both not populated" should {
       "Return invalid" in {
         val model = parentCompanyModelNone
-        leftSideError(model.validate).errorMessage shouldBe ParentCompanyCanNotBeUltimateAndDeemed(model).errorMessage
+        leftSideError(model.validate).errorMessage shouldBe ParentCompanyBothUltimateAndDeemedEmtpty(model).errorMessage
       }
     }
 

@@ -33,7 +33,7 @@ trait ParentCompanyValidator extends BaseValidation {
     if (isUltimate && isDeemed) {
       ParentCompanyCanNotBeUltimateAndDeemed(parentCompanyModel).invalidNec
     } else if (!isUltimate && !isDeemed) {
-      ParentCompanyCanNotBeUltimateAndDeemed(parentCompanyModel).invalidNec
+      ParentCompanyBothUltimateAndDeemedEmtpty(parentCompanyModel).invalidNec
     } else {
       parentCompanyModel.validNec
     }
@@ -68,6 +68,12 @@ trait ParentCompanyValidator extends BaseValidation {
 case class ParentCompanyCanNotBeUltimateAndDeemed(model: ParentCompanyModel)(implicit val path: JsPath) extends Validation {
   val code = "PARENT_ULTIMATE_AND_DEEMED"
   val errorMessage: String = "Parent Company Model cannot contain data for Ultimate and Deemed fields"
+  val value = Some(Json.toJson(model))
+}
+
+case class ParentCompanyBothUltimateAndDeemedEmtpty(model: ParentCompanyModel)(implicit val path: JsPath) extends Validation {
+  val code = "ULTIMATE_AND_DEEMED_EMPTY"
+  val errorMessage: String = "Parent company must be either ultimate or deemed parent"
   val value = Some(Json.toJson(model))
 }
 
