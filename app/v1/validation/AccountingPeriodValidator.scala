@@ -96,7 +96,7 @@ case class StartDateCannotBeBeforeMinimum(startDate: LocalDate)(implicit topPath
 
 case class EndDateCannotBeBeforeMinimum(endDate: LocalDate)(implicit topPath: JsPath) extends Validation {
   val code = "END_DATE_CANNOT_BE_BEFORE_MIN"
-  val errorMessage: String = "End date must be the same as or after 1 April 2017"
+  val errorMessage: String = "End date must be the same as or after 2017-04-01"
   val path = topPath \ "endDate"
   val value = Some(Json.toJson(endDate))
 }
