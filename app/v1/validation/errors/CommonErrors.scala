@@ -43,7 +43,7 @@ case class RevisedReturnDetailsSupplied(details: RevisedReturnDetailsModel) exte
 
 case object ParentCompanyDetailsNotSupplied extends Validation {
   val code = "PARENT_COMPANY_NOT_SUPPLIED"
-  val errorMessage: String = "Reporting company is not the ultimate parent, so details of ultimate parent needed"
+  val errorMessage: String = "Reporting company is not the ultimate parent, so details of ultimate parent or deemed parent needed"
   val path: JsPath = JsPath \ "parentCompany"
   val value: Option[JsValue] = None
 }
