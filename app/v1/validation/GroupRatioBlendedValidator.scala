@@ -52,7 +52,7 @@ trait GroupRatioBlendedValidator extends BaseValidation {
 
 case class GroupRatioBlendedNotElectedError(groupRatioBlended: GroupRatioBlendedModel)(implicit val topPath: JsPath) extends Validation {
   val code = "INVESTOR_GROUPS_SUPPLIED"
-  val errorMessage: String = "Group ratio not elected so supply investor group not required"
+  val errorMessage: String = "Group ratio blended not elected so supply investor group not required"
   val path: JsPath = topPath \ "groupRatioBlended"
   val value = Some(Json.toJson(groupRatioBlended))
 }
