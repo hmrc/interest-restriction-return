@@ -50,7 +50,7 @@ trait GroupLevelAmountValidator extends BaseValidation {
 case class ReactivationCapCannotBeNegative(amt: BigDecimal)(implicit topPath: JsPath) extends Validation {
   val code = "REACTIVATION_CAP_PERIOD_NEGATIVE"
   val path = topPath \ s"interestReactivationCap"
-  val errorMessage: String = s"Interest reactivation cap must be a positive number"
+  val errorMessage: String = s"Interest reactivation cap must be a positive number or zero"
   val value = Some(Json.toJson(amt))
 }
 
@@ -64,7 +64,7 @@ case class ReactivationCapDecimalError(amt: BigDecimal)(implicit topPath: JsPath
 case class InterestAllowanceForPeriodCannotBeNegative(amt: BigDecimal)(implicit topPath: JsPath) extends Validation {
   val code = "INTEREST_ALLOWANCE_PERIOD_NEGATIVE"
   val path = topPath \ s"interestAllowanceForPeriod"
-  val errorMessage: String = s"Interest allowance for the period must be a positive number"
+  val errorMessage: String = s"Interest allowance for the period must be a positive number or zero"
   val value = Some(Json.toJson(amt))
 }
 
@@ -78,7 +78,7 @@ case class InterestAllowanceForPeriodDecimalError(amt: BigDecimal)(implicit topP
 case class InterestAllowanceBroughtForwardCannotBeNegative(amt: BigDecimal)(implicit topPath: JsPath) extends Validation {
   val code = "INTEREST_ALLOWANCE_FORWARD_NEGATIVE"
   val path = topPath \ s"interestAllowanceBroughtForward"
-  val errorMessage: String = s"Interest allowance brought forward must be a positive number"
+  val errorMessage: String = s"Interest allowance brought forward must be a positive number or zero"
   val value = Some(Json.toJson(amt))
 }
 
@@ -92,7 +92,7 @@ case class InterestAllowanceBroughtForwardDecimalError(amt: BigDecimal)(implicit
 case class InterestCapacityForPeriodCannotBeNegative(amt: BigDecimal)(implicit topPath: JsPath) extends Validation {
   val code = "INTEREST_CAP_PERIOD_NEGATIVE"
   val path = topPath \ s"interestCapacityForPeriod"
-  val errorMessage: String = s"Interest capacity for the period must be a positive number"
+  val errorMessage: String = s"Interest capacity for the period must be a positive number or zero"
   val value = Some(Json.toJson(amt))
 }
 

@@ -53,7 +53,7 @@ trait NonConsolidatedInvestmentElectionValidator extends BaseValidation {
 case class NonConsolidatedInvestmentSupplied(nonConsolidatedInvestmentElectionModel: NonConsolidatedInvestmentElectionModel)
                                             (implicit val topPath: JsPath) extends Validation {
   val code = "INVESTMENT_SUPPLIED"
-  val errorMessage: String = "You can only provide non-consolidated investments if non-consolidated election is made"
+  val errorMessage: String = "Interest allowance (non-consolidated investments) election not made, so no details of non-consolidated investments needed"
   val path: JsPath = topPath \ "nonConsolidatedInvestments"
   val value = Some(Json.toJson(nonConsolidatedInvestmentElectionModel))
 }
@@ -61,14 +61,14 @@ case class NonConsolidatedInvestmentSupplied(nonConsolidatedInvestmentElectionMo
 case class NonConsolidatedInvestmentNotSupplied(nonConsolidatedInvestmentElectionModel: NonConsolidatedInvestmentElectionModel)
                                                (implicit val topPath: JsPath) extends Validation {
   val code = "INVESTMENT_NOT_SUPPLIED"
-  val errorMessage: String = "You must provide non-consolidated investments if non-consolidated election is made"
+  val errorMessage: String = "Interest allowance (non-consolidated investments) election made, add at least 1 non-consolidated investment"
   val path: JsPath = topPath \ "nonConsolidatedInvestments"
   val value = Some(Json.toJson(nonConsolidatedInvestmentElectionModel))
 }
 
 case class NonConsolidatedInvestmentEmpty()(implicit val topPath: JsPath) extends Validation {
   val code = "INVESTMENT_EMPTY"
-  val errorMessage: String = "nonConsolidatedInvestments must contain at least 1 value if supplied"
+  val errorMessage: String = "Non consolidated investments elected so add at least 1 investment"
   val path: JsPath = topPath \ "nonConsolidatedInvestments"
   val value = None
 }

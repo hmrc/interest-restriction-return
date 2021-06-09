@@ -47,8 +47,8 @@ trait IdentityOfCompanySubmittingValidator extends BaseValidation {
 }
 
 case class CannotBeUkAndNonUk(companySubmitting: IdentityOfCompanySubmittingModel)(implicit val path: JsPath) extends Validation {
-  val code = "UK_AND_NON_UK"
-  val errorMessage: String = "Identity of company submitting cannot contain data for UK and NonUK fields"
+  val code = "IDENTITY_CTUTR_COUNTRY"
+  val errorMessage: String = "Company submitting cannot send both a CTUTR and a country of incorporation"
   val value = Some(Json.toJson(companySubmitting))
 }
 

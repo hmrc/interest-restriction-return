@@ -89,14 +89,14 @@ case class StartDateCannotBeInFuture(startDate: LocalDate)(implicit topPath: JsP
 
 case class StartDateCannotBeBeforeMinimum(startDate: LocalDate)(implicit topPath: JsPath) extends Validation {
   val code = "START_DATE_CANNOT_BE_BEFORE_MIN"
-  val errorMessage: String = "Start date cannot be before 2016-10-01"
+  val errorMessage: String = "Start date must be on or after 2016-10-01"
   val path = topPath \ "startDate"
   val value = Some(Json.toJson(startDate))
 }
 
 case class EndDateCannotBeBeforeMinimum(endDate: LocalDate)(implicit topPath: JsPath) extends Validation {
   val code = "END_DATE_CANNOT_BE_BEFORE_MIN"
-  val errorMessage: String = "End date must be the same as or after 1 April 2017"
+  val errorMessage: String = "End date must be the same as or after 2017-04-01"
   val path = topPath \ "endDate"
   val value = Some(Json.toJson(endDate))
 }
@@ -110,7 +110,7 @@ case class EndDateAfterStartDate(endDate: LocalDate)(implicit topPath: JsPath) e
 
 case class AccountingPeriod18MonthsMax(endDate: LocalDate)(implicit topPath: JsPath) extends Validation {
   val code = "END_DATE_18_MONTHS"
-  val errorMessage: String = "The end date must be less than 18 months after the start date"
+  val errorMessage: String = "Period of account cannot be longer than 18 months"
   val path = topPath \ "endDate"
   val value = Some(Json.toJson(endDate))
 }

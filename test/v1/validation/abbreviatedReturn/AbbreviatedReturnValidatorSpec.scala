@@ -140,7 +140,7 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
 
       "declaration is false" in {
         val model = abbreviatedReturnUltimateParentModel.copy(declaration = false)
-        leftSideError(model.validate).errorMessage shouldBe AbbreviatedReturnDeclarationError(false).errorMessage
+        leftSideError(model.validate).errorMessage shouldBe ReturnDeclarationError(false).errorMessage
       }
     }
   }
