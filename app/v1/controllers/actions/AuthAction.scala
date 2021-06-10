@@ -60,7 +60,8 @@ class AuthAction @Inject()(override val authConnector: AuthConnector,
           block(IdentifierRequest(request, credential.providerId, retrievalData))
         }.getOrElse(throw UnsupportedAuthProvider("Unable to retrieve providerId"))
     } recover {
-      case e => 
+      case e =>
+        logger.error(s"An error occurred during auth action: ${e.getMessage}", e)
         Unauthorized("No Active Session")
     }
   }
