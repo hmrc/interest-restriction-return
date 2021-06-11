@@ -44,6 +44,9 @@ trait AdjustedGroupInterestValidator extends BaseValidation {
   private def validateQngie(implicit path: JsPath): ValidationResult[BigDecimal] = {
     if (adjustedGroupInterestModel.qngie % 0.01 != 0) {
       QngieDecimalError(adjustedGroupInterestModel.qngie).invalidNec
+    }
+    else if(adjustedGroupInterestModel.qngie < 0 ) {
+      NegativeQNGIEError(adjustedGroupInterestModel.qngie).invalidNec
     } else {
       adjustedGroupInterestModel.qngie.validNec
     }
@@ -63,8 +66,6 @@ trait AdjustedGroupInterestValidator extends BaseValidation {
         adjustedGroupInterestModel.groupRatio.validNec
       case (_, groupEBITDA, groupRatio) if groupEBITDA <= 0 && groupRatio != 100 =>
         NegativeOrZeroGroupEBITDAError(groupRatio).invalidNec
-      case (qngie, _, groupRatio) if qngie <= 0 && groupRatio != 100 =>
-        NegativeOrZeroQNGIEError(groupRatio).invalidNec
       case (qngie, groupEBITA, groupRatio) if qngie / groupEBITA <= 0 && groupRatio != 100 =>
         NegativeOrZeroGroupRatioError(groupRatio).invalidNec
       case (qngie, groupEBITDA, groupRatio) if validationGroupRationCalc(qngie, groupEBITDA, groupRatio) =>
@@ -140,9 +141,9 @@ trait AdjustedGroupInterestValidator extends BaseValidation {
     val value = Some(Json.toJson(groupRatio))
   }
 
-case class NegativeOrZeroQNGIEError(groupRatio: BigDecimal)(implicit topPath: JsPath) extends Validation {
+case class NegativeQNGIEError(groupRatio: BigDecimal)(implicit topPath: JsPath) extends Validation {
   val code = "QNGIE_NEGATIVE"
-  val errorMessage: String = "If group QNGIE is negative or zero, set group ratio to 100"
+  val errorMessage: String = "QNGIE must be a positive number"
   val path: JsPath = topPath \ "qngie"
   val value = Some(Json.toJson(groupRatio))
 }

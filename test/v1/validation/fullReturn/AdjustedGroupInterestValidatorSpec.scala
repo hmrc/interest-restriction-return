@@ -153,14 +153,13 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
           leftSideError(model.validate).errorMessage shouldBe QngieDecimalError(qngie).errorMessage
         }
 
-        "is calculated to be negative but not set to 100%" in {
-          val groupRatio: BigDecimal = 99.00
+        "is calculated to be negative" in {
           val model = adjustedGroupInterestModel.copy(
             qngie = -1,
             groupEBITDA = 1,
-            groupRatio = groupRatio
+            groupRatio = 1
           )
-          leftSideError(model.validate).errorMessage shouldBe NegativeOrZeroQNGIEError(groupRatio).errorMessage
+          leftSideError(model.validate).errorMessage shouldBe NegativeQNGIEError(groupRatio).errorMessage
         }
       }
 
