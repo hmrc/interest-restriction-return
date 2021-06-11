@@ -217,7 +217,7 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
             groupEBITDA = 1,
             groupRatio = groupRatio
           )
-          leftSideError(model.validate).errorMessage shouldBe NegativeOrZeroGroupRatioError(groupRatio).errorMessage
+          leftSideError(model.validate).errorMessage shouldBe NegativeQNGIEError(groupRatio).errorMessage
         }
       }
 

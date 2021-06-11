@@ -72,7 +72,7 @@ trait AdjustedGroupInterestValidator extends BaseValidation {
       case (_, groupEBITDA, groupRatio) if groupEBITDA <= 0 && groupRatio != 100 =>
         NegativeOrZeroGroupEBITDAError(groupRatio).invalidNec
       case (qngie, groupEBITA, groupRatio) if qngie / groupEBITA < 0 && groupRatio != 100 =>
-        NegativeOrZeroGroupRatioError(groupRatio).invalidNec
+        NegativeGroupRatioError(groupRatio).invalidNec
       case (qngie, groupEBITDA, groupRatio) if groupEBITDA != 0 && groupRatioCalculationDoesntMatch(qngie, groupEBITDA, groupRatio) =>
         GroupRatioCalculationError(adjustedGroupInterestModel).invalidNec
       case _ => adjustedGroupInterestModel.groupRatio.validNec
