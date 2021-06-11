@@ -297,13 +297,25 @@ class FullReturnValidatorSpec extends BaseSpec {
       "Group Ratio is Elected and Adjusted Group Interest details are valid" in {
 
         val adjustedGroupInterestValue = adjustedGroupInterestModel.copy(
+          qngie = 10,
+          groupEBITDA = 345680475,
+          groupRatio = 100
+        )
+
+        val model = fullReturnUltimateParentModel.copy(adjustedGroupInterest = Some(adjustedGroupInterestValue))
+        leftSideError(model.validate).errorMessage shouldBe GroupRatioCalculationError(adjustedGroupInterestValue).errorMessage
+      }
+
+      "Group Ratio is Elected but QNGIQ is invalid" in {
+
+        val adjustedGroupInterestValue = adjustedGroupInterestModel.copy(
           qngie = 0,
           groupEBITDA = 345680475,
           groupRatio = 100
         )
 
         val model = fullReturnUltimateParentModel.copy(adjustedGroupInterest = Some(adjustedGroupInterestValue))
-        rightSide(model.validate) shouldBe model
+        leftSideError(model.validate).errorMessage shouldBe GroupRatioCalculationError(adjustedGroupInterestValue).errorMessage
       }
 
       "Group Ratio is not Elected and Adjusted Group Interest details are supplied" in {
