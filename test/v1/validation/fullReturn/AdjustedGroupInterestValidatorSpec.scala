@@ -75,12 +75,13 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
         "is > 100 and is capped" in {
           val qngie = 100000.0
           val groupEBITDA = 10.0
+          val groupRatio = 100
 
           val model = adjustedGroupInterestModel.copy(
 
             qngie = qngie,
             groupEBITDA = groupEBITDA,
-            groupRatio = 100
+            groupRatio = groupRatio
           )
           rightSide(model.validate) shouldBe model
         }

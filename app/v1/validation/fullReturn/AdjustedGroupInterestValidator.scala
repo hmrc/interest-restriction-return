@@ -41,12 +41,17 @@ trait AdjustedGroupInterestValidator extends BaseValidation {
     }
   }
 
-  private def validateQngie(implicit path: JsPath): ValidationResult[BigDecimal] = {
+  private def validateQngieNegative(implicit path: JsPath): ValidationResult[BigDecimal] = {
+    if (adjustedGroupInterestModel.qngie < 0) {
+      NegativeQNGIEError(adjustedGroupInterestModel.qngie).invalidNec
+    } else {
+      adjustedGroupInterestModel.qngie.validNec
+    }
+  }
+
+  private def validateQngieDecimal(implicit path: JsPath): ValidationResult[BigDecimal] = {
     if (adjustedGroupInterestModel.qngie % 0.01 != 0) {
       QngieDecimalError(adjustedGroupInterestModel.qngie).invalidNec
-    }
-    else if (adjustedGroupInterestModel.qngie < 0) {
-      NegativeQNGIEError(adjustedGroupInterestModel.qngie).invalidNec
     } else {
       adjustedGroupInterestModel.qngie.validNec
     }
@@ -86,9 +91,10 @@ trait AdjustedGroupInterestValidator extends BaseValidation {
 
   def validate(implicit path: JsPath): ValidationResult[AdjustedGroupInterestModel] =
     (validateGroupRatio,
-      validateQngie,
+      validateQngieDecimal,
+      validateQngieNegative,
       validateGroupEBITDA,
-      validateGroupRatioCalculation).mapN((_, _, _, _) => adjustedGroupInterestModel)
+      validateGroupRatioCalculation).mapN((_, _, _, _, _) => adjustedGroupInterestModel)
 }
 
 case class QngieDecimalError(qngie: BigDecimal)(implicit topPath: JsPath) extends Validation {
