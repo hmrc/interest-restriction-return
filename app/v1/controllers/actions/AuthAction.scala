@@ -35,26 +35,18 @@ class AuthAction @Inject()(override val authConnector: AuthConnector,
                           )(implicit val executionContext: ExecutionContext)
   extends ActionBuilder[IdentifierRequest, AnyContent] with ActionFunction[Request, IdentifierRequest] with AuthorisedFunctions with Logging {
 
-  private val nrsRetrievals =
-    Retrievals.internalId and Retrievals.externalId and Retrievals.agentCode and
-    Retrievals.credentials and Retrievals.confidenceLevel and Retrievals.nino and
-    Retrievals.saUtr and Retrievals.name and Retrievals.dateOfBirth and
-    Retrievals.email and Retrievals.agentInformation and Retrievals.groupIdentifier and
-    Retrievals.credentialRole and Retrievals.mdtpInformation and Retrievals.itmpName and
-    Retrievals.itmpDateOfBirth and Retrievals.itmpAddress and Retrievals.affinityGroup and
-    Retrievals.credentialStrength and Retrievals.loginTimes
+  private val nrsRetrievals = Retrievals.credentials and
+    Retrievals.confidenceLevel and Retrievals.agentInformation and Retrievals.loginTimes
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSessionAndRequest(request.headers, request = Some(request))
 
     authorised().retrieve(nrsRetrievals) {
-       case internalId ~ externalId ~ agentCode ~ credentials ~ confidenceLevel ~ nino ~ saUtr ~ name ~ 
-            dateOfBirth ~ email ~ agentInformation ~ groupIdentifier ~ credentialRole ~ mdtpInformation ~ 
-            itmpName ~ itmpDateOfBirth ~ itmpAddress ~ affinityGroup ~ credentialStrength ~ loginTimes =>
+      case credentials ~ confidenceLevel ~ agentInformation ~ loginTimes =>
 
-        val retrievalData = NrsRetrievalData(internalId, externalId, agentCode, credentials, confidenceLevel, nino, saUtr,
-          name, dateOfBirth, email, agentInformation, groupIdentifier, credentialRole, mdtpInformation, itmpName,
-          itmpDateOfBirth, itmpAddress, affinityGroup, credentialStrength, loginTimes)
+        val retrievalData = NrsRetrievalData(None, None, None, credentials, confidenceLevel, None, None,
+          None, None, None, agentInformation, None, None, None, None,
+          None, None, None, None, loginTimes)
 
         credentials.map { credential =>
           block(IdentifierRequest(request, credential.providerId, retrievalData))

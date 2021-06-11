@@ -41,7 +41,15 @@ trait AdjustedGroupInterestValidator extends BaseValidation {
     }
   }
 
-  private def validateQngie(implicit path: JsPath): ValidationResult[BigDecimal] = {
+  private def validateQngieNegative(implicit path: JsPath): ValidationResult[BigDecimal] = {
+    if (adjustedGroupInterestModel.qngie < 0) {
+      NegativeQNGIEError(adjustedGroupInterestModel.qngie).invalidNec
+    } else {
+      adjustedGroupInterestModel.qngie.validNec
+    }
+  }
+
+  private def validateQngieDecimal(implicit path: JsPath): ValidationResult[BigDecimal] = {
     if (adjustedGroupInterestModel.qngie % 0.01 != 0) {
       QngieDecimalError(adjustedGroupInterestModel.qngie).invalidNec
     } else {
@@ -83,9 +91,10 @@ trait AdjustedGroupInterestValidator extends BaseValidation {
 
   def validate(implicit path: JsPath): ValidationResult[AdjustedGroupInterestModel] =
     (validateGroupRatio,
-      validateQngie,
+      validateQngieDecimal,
+      validateQngieNegative,
       validateGroupEBITDA,
-      validateGroupRatioCalculation).mapN((_, _, _, _) => adjustedGroupInterestModel)
+      validateGroupRatioCalculation).mapN((_, _, _, _, _) => adjustedGroupInterestModel)
 }
 
 case class QngieDecimalError(qngie: BigDecimal)(implicit topPath: JsPath) extends Validation {
@@ -130,9 +139,16 @@ case class NegativeOrZeroGroupEBITDAError(groupEBITDA: BigDecimal)(implicit topP
   val value = Some(Json.toJson(groupEBITDA))
 }
 
-case class NegativeOrZeroGroupRatioError(groupRatio: BigDecimal)(implicit topPath: JsPath) extends Validation {
+case class NegativeGroupRatioError(groupRatio: BigDecimal)(implicit topPath: JsPath) extends Validation {
   val code = "GROUP_RATIO_NEGATIVE"
   val errorMessage: String = "If group ratio calculation is negative, then set group ratio to 100"
   val path: JsPath = topPath \ "groupRatio"
+  val value = Some(Json.toJson(groupRatio))
+}
+
+case class NegativeQNGIEError(groupRatio: BigDecimal)(implicit topPath: JsPath) extends Validation {
+  val code = "QNGIE_NEGATIVE"
+  val errorMessage: String = "QNGIE must be a positive number"
+  val path: JsPath = topPath \ "qngie"
   val value = Some(Json.toJson(groupRatio))
 }
