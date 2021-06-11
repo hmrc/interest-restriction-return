@@ -121,31 +121,12 @@ object NrsConstants {
     format("%064x", new BigInteger(1, getInstance("SHA-256").digest(text.getBytes("UTF-8"))))
   }
 
-  type NrsRetrievalDataType = Option[String] ~ Option[String] ~ Option[String] ~ Option[Credentials] ~ ConfidenceLevel ~ Option[String] ~
-    Option[String] ~ Option[Name] ~ Option[LocalDate] ~ Option[String] ~ AgentInformation ~ Option[String] ~
-    Option[CredentialRole] ~ Option[MdtpInformation] ~ Option[ItmpName] ~ Option[LocalDate] ~ Option[ItmpAddress] ~
-    Option[AffinityGroup] ~ Option[String] ~ LoginTimes
+  type NrsRetrievalDataType = Option[Credentials] ~ ConfidenceLevel ~ AgentInformation ~ LoginTimes
 
-  val fakeResponse: NrsRetrievalDataType = new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~( new ~(new ~(
-    Some(nrsInternalIdValue),
-    Some(nrsExternalIdValue)),
-    Some(nrsAgentCodeValue)),
-    nrsCredentials),
+  val fakeResponse: NrsRetrievalDataType = new ~(new ~(new ~(
+    nrsCredentials,
     nrsConfidenceLevel),
-    Some(nrsNinoValue)),
-    Some(nrsSaUtrValue)),
-    nrsNameValue),
-    nrsDateOfBirth),
-    nrsEmailValue),
     nrsAgentInformationValue),
-    nrsGroupIdentifierValue),
-    nrsCredentialRole),
-    Some(nrsMdtpInformation)),
-    nrsItmpName),
-    nrsDateOfBirth),
-    nrsItmpAddress),
-    nrsAffinityGroup),
-    nrsCredentialStrength),
     nrsLoginTimes)
-  
+
 }
