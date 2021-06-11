@@ -86,6 +86,18 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
           rightSide(model.validate) shouldBe model
         }
 
+        "GroupRatio & QNGIE are zero" in {
+          val qngie = 0
+          val groupRatio = 0
+
+          val model = adjustedGroupInterestModel.copy(
+            qngie = qngie,
+            groupRatio = groupRatio
+          )
+
+          rightSide(model.validate) shouldBe model
+        }
+
         "has a decimal which is a round number" in {
           val qngie = 5.0
           val groupEBITDA = 8.0
@@ -187,6 +199,25 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
             groupRatio = groupRatio
           )
           leftSideError(model.validate).errorMessage shouldBe GroupRatioError(groupRatio).errorMessage
+        }
+
+        "is 100 and qngie is zero" in {
+          val groupRatio: BigDecimal = 100.00
+          val model = adjustedGroupInterestModel.copy(
+            groupRatio = groupRatio,
+            qngie = 0
+          )
+          leftSideError(model.validate).errorMessage shouldBe GroupRatioCalculationError(model).errorMessage
+        }
+
+        "is calculated to be negative but not set to 100%" in {
+          val groupRatio: BigDecimal = 99.00
+          val model = adjustedGroupInterestModel.copy(
+            qngie = -1,
+            groupEBITDA = 1,
+            groupRatio = groupRatio
+          )
+          leftSideError(model.validate).errorMessage shouldBe NegativeQNGIEError(groupRatio).errorMessage
         }
       }
 
