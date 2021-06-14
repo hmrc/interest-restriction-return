@@ -6,7 +6,6 @@ import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin.publishingSettings
 val appName = "interest-restriction-return"
 
 scalacOptions += "-Ypartial-unification"
-
 scalaVersion := "2.12.12"
 
 lazy val microservice = Project(appName, file("."))
