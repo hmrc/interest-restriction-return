@@ -39,7 +39,6 @@ class AbbreviatedReturnConnector @Inject()(httpClient: HttpClient,
   def submitAbbreviatedReturn(abbreviatedReturnModel: AbbreviatedReturnModel)
                              (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
     logger.debug(s"URL: $abbreviatedReturnUrl")
-    logger.debug(s"Headers: ${desHc.headers}")
     val receivedSize = request.headers.get(HeaderNames.CONTENT_LENGTH)
     val jsonSize = Json.stringify(Json.toJson(abbreviatedReturnModel)(jsonFormatters.abbreviatedReturnWrites)).length
     logger.debug(s"Size of content received: $receivedSize sent: $jsonSize")

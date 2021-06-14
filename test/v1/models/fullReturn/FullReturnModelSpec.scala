@@ -28,7 +28,7 @@ import assets.ReportingCompanyConstants._
 import assets.fullReturn.GroupLevelAmountConstants._
 import assets.fullReturn.UkCompanyConstants._
 import assets.NonConsolidatedInvestmentElectionConstants._
-import v1.models.Original
+import v1.models.{SubmissionType, Original}
 
 class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants {
 
@@ -69,7 +69,7 @@ class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants {
           "reportingCompany" -> reportingCompanySameJson,
           "publicInfrastructure" -> true,
           "groupCompanyDetails" -> groupCompanyDetailsJson,
-          "submissionType" -> Original,
+          "submissionType" -> Json.toJson[SubmissionType](Original),
           "ukCompanies" -> Seq(ukCompanyJsonMin),
           "angie" -> 0,
           "groupLevelElections" -> Json.obj(

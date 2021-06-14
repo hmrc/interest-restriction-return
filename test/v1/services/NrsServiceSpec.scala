@@ -33,7 +33,6 @@ import org.joda.time.DateTime
 import org.joda.time.format.{DateTimeFormat, DateTimeFormatter}
 import v1.connectors.UnexpectedFailure
 import org.scalatest.Matchers
-import uk.gov.hmrc.play.test.UnitSpec
 
 class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
 

@@ -26,7 +26,7 @@ import assets.fullReturn.GroupLevelAmountConstants._
 import assets.fullReturn.UkCompanyConstants._
 import play.api.libs.json.{JsObject, Json}
 import v1.models.fullReturn.FullReturnModel
-import v1.models.{Original, Revised, RevisedReturnDetailsModel}
+import v1.models.{Original, Revised, RevisedReturnDetailsModel, SubmissionType}
 
 object FullReturnConstants {
 
@@ -72,7 +72,7 @@ object FullReturnConstants {
     "parentCompany" -> parentCompanyJsonUltUkCompany,
     "publicInfrastructure" -> true,
     "groupCompanyDetails" -> groupCompanyDetailsJson,
-    "submissionType" -> Revised,
+    "submissionType" -> Json.toJson[SubmissionType](Revised),
     "revisedReturnDetails" -> revisedReturnDetails,
     "groupLevelElections" -> groupLevelElectionsJsonMax,
     "ukCompanies" -> Seq(ukCompanyJsonMax, ukCompanyJsonMin),
@@ -116,7 +116,7 @@ object FullReturnConstants {
     "parentCompany" -> parentCompanyJsonUltUkCompany,
     "publicInfrastructure" -> true,
     "groupCompanyDetails" -> groupCompanyDetailsJson,
-    "submissionType" -> Revised,
+    "submissionType" -> Json.toJson[SubmissionType](Revised),
     "revisedReturnDetails" -> revisedReturnDetails,
     "groupLevelElections" -> groupLevelElectionsJsonMax,
     "ukCompanies" -> Seq(ukCompanyJsonMax, ukCompanyJsonMax, ukCompanyJsonMax, ukCompanyJsonMin),
@@ -165,7 +165,7 @@ object FullReturnConstants {
     "parentCompany" -> parentCompanyJsonUltUkCompany,
     "publicInfrastructure" -> true,
     "groupCompanyDetails" -> groupCompanyDetailsJson,
-    "submissionType" -> Revised,
+    "submissionType" -> Json.toJson[SubmissionType](Revised),
     "revisedReturnDetails" -> revisedReturnDetails,
     "groupLevelElections" -> groupLevelElectionsJsonMax,
     "ukCompanies" -> Seq(ukCompanyJsonMin, ukCompanyJsonMin, ukCompanyJsonMin, ukCompanyJsonMax),
@@ -216,7 +216,7 @@ object FullReturnConstants {
     "parentCompany" -> parentCompanyJsonUltUkCompany,
     "publicInfrastructure" -> true,
     "groupCompanyDetails" -> groupCompanyDetailsJson,
-    "submissionType" -> Revised,
+    "submissionType" -> Json.toJson[SubmissionType](Revised),
     "revisedReturnDetails" -> revisedReturnDetails,
     "groupLevelElections" -> groupLevelElectionsJsonMax,
     "ukCompanies" -> Seq(ukCompanyReactivationJsonMax, ukCompanyReactivationJsonMax),
@@ -288,7 +288,7 @@ object FullReturnConstants {
     "reportingCompany" -> reportingCompanySameJson,
     "publicInfrastructure" -> true,
     "groupCompanyDetails" -> groupCompanyDetailsJson,
-    "submissionType" -> Original,
+    "submissionType" -> Json.toJson[SubmissionType](Original),
     "ukCompanies" -> Seq(ukCompanyJsonMin),
     "numberOfUkCompanies" -> 1,
     "angie" -> 0,

@@ -23,7 +23,7 @@ import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.HeaderCarrierConverter
+import uk.gov.hmrc.http.HeaderCarrierConverter
 import v1.models.requests.IdentifierRequest
 import play.api.Logging
 import v1.models.nrs.NrsRetrievalData
@@ -39,7 +39,7 @@ class AuthAction @Inject()(override val authConnector: AuthConnector,
     Retrievals.confidenceLevel and Retrievals.agentInformation and Retrievals.loginTimes
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
-    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSessionAndRequest(request.headers, request = Some(request))
+    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
     authorised().retrieve(nrsRetrievals) {
       case credentials ~ confidenceLevel ~ agentInformation ~ loginTimes =>
