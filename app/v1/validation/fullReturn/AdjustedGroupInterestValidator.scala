@@ -71,8 +71,6 @@ trait AdjustedGroupInterestValidator extends BaseValidation {
         adjustedGroupInterestModel.groupRatio.validNec
       case (_, groupEBITDA, groupRatio) if groupEBITDA <= 0 && groupRatio != 100 =>
         NegativeOrZeroGroupEBITDAError(groupRatio).invalidNec
-      case (qngie, groupEBITA, groupRatio) if qngie / groupEBITA < 0 && groupRatio != 100 =>
-        NegativeGroupRatioError(groupRatio).invalidNec
       case (qngie, groupEBITDA, groupRatio) if groupEBITDA != 0 && groupRatioCalculationDoesntMatch(qngie, groupEBITDA, groupRatio) =>
         GroupRatioCalculationError(adjustedGroupInterestModel).invalidNec
       case _ => adjustedGroupInterestModel.groupRatio.validNec
@@ -137,13 +135,6 @@ case class NegativeOrZeroGroupEBITDAError(groupEBITDA: BigDecimal)(implicit topP
   val errorMessage: String = "If group EBITDA is negative or zero, set group ratio to 100"
   val path: JsPath = topPath \ "groupEBITDA"
   val value = Some(Json.toJson(groupEBITDA))
-}
-
-case class NegativeGroupRatioError(groupRatio: BigDecimal)(implicit topPath: JsPath) extends Validation {
-  val code = "GROUP_RATIO_NEGATIVE"
-  val errorMessage: String = "If group ratio calculation is negative, then set group ratio to 100"
-  val path: JsPath = topPath \ "groupRatio"
-  val value = Some(Json.toJson(groupRatio))
 }
 
 case class NegativeQNGIEError(groupRatio: BigDecimal)(implicit topPath: JsPath) extends Validation {
