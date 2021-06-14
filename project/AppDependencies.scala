@@ -18,7 +18,7 @@ object AppDependencies {
     "org.scalatest"           %% "scalatest"                    % "3.0.8"                 % "test",
     "com.typesafe.play"       %% "play-test"                    % current                 % "test",
     "org.pegdown"             %  "pegdown"                      % "1.6.0"                 % "test, it",
-    "org.scalatestplus.play"  %% "scalatestplus-play"           % "4.0.0"                 % "test, it",
+    "org.scalatestplus.play"  %% "scalatestplus-play"           % "5.0.0"                 % "test, it",
     "org.scalamock"           %% "scalamock-scalatest-support"  % "3.6.0"                 % "test",
     "com.github.tomakehurst"  %  "wiremock-standalone"          % "2.22.0"                % "it"
   )
