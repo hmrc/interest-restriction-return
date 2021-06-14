@@ -30,10 +30,17 @@ import v1.controllers.actions.mocks.{Authorised, Unauthorised}
 import v1.models.Validation
 import v1.models.Validation.ValidationResult
 import v1.models.requests.IdentifierRequest
-
 import scala.concurrent.ExecutionContext
+import play.api.Application
+import play.api.inject.guice.GuiceApplicationBuilder
 
 trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with MaterializerSupport with BaseConstants {
+
+  implicit override lazy val app: Application =
+    new GuiceApplicationBuilder()
+      .disable(classOf[com.kenshoo.play.metrics.PlayModule])
+      .configure("metrics.jvm" -> false)
+      .build()
 
   lazy val fakeRequest = FakeRequest("GET", "/")
   lazy implicit val identifierRequest = IdentifierRequest(fakeRequest, "id", NrsConstants.nrsRetrievalData)

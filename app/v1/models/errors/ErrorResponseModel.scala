@@ -32,18 +32,24 @@ object ErrorResponseModel {
     )
 }
 
-//Standard Errors
-object NotFoundError extends ErrorResponseModel("MATCHING_RESOURCE_NOT_FOUND", "Matching resource not found")
-object DownstreamError extends ErrorResponseModel("INTERNAL_SERVER_ERROR", "An internal server error occurred")
-object BadRequestError extends ErrorResponseModel("INVALID_REQUEST", "Invalid request")
-object InvalidBodyTypeError extends ErrorResponseModel("INVALID_BODY_TYPE", "Expecting text/json or application/json body")
+object ErrorResponses {
 
-//Authorisation Errors
-object UnauthorisedError extends ErrorResponseModel("CLIENT_OR_AGENT_NOT_AUTHORISED", "The client and/or agent is not authorised")
+  //Standard Errors
+  val NotFoundError = ErrorResponseModel("MATCHING_RESOURCE_NOT_FOUND", "Matching resource not found")
+  val DownstreamError = ErrorResponseModel("INTERNAL_SERVER_ERROR", "An internal server error occurred")
+  val BadRequestError = ErrorResponseModel("INVALID_REQUEST", "Invalid request")
+  val InvalidBodyTypeError = ErrorResponseModel("INVALID_BODY_TYPE", "Expecting text/json or application/json body")
 
-// Accept header Errors
-object InvalidAcceptHeaderError extends ErrorResponseModel("ACCEPT_HEADER_INVALID", "The accept header is missing or invalid")
-object UnsupportedVersionError extends ErrorResponseModel("NOT_FOUND", "The requested resource could not be found")
+  //Authorisation Errors
+  val UnauthorisedError = ErrorResponseModel("CLIENT_OR_AGENT_NOT_AUTHORISED", "The client and/or agent is not authorised")
+
+  // Accept header Errors
+  val InvalidAcceptHeaderError = ErrorResponseModel("ACCEPT_HEADER_INVALID", "The accept header is missing or invalid")
+  val UnsupportedVersionError = ErrorResponseModel("NOT_FOUND", "The requested resource could not be found")
+
+}
+
+
 
 
 

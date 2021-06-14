@@ -24,7 +24,7 @@ import assets.ReportingCompanyConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.{JsObject, Json, Writes}
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
-import v1.models.Original
+import v1.models.{SubmissionType, Original}
 import assets.abbreviatedReturn.UkCompanyConstants._
 import utils.TestJsonFormatter._
 
@@ -58,7 +58,7 @@ class AbbreviatedReturnModelSpec extends WordSpec with Matchers with BaseConstan
           "reportingCompany" -> reportingCompanyJson,
           "publicInfrastructure" -> true,
           "groupCompanyDetails" -> groupCompanyDetailsJson,
-          "submissionType" -> Original,
+          "submissionType" -> Json.toJson[SubmissionType](Original),
           "ukCompanies" -> Seq(ukCompanyJson)
         )
         val actualValue = Json.toJson(abbreviatedReturnModelMin)(cr008DisabledJsonFormatter.abbreviatedReturnWrites)

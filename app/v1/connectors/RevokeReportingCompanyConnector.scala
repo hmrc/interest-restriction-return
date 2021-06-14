@@ -39,7 +39,6 @@ class RevokeReportingCompanyConnector @Inject()(httpClient: HttpClient,
   def revoke(revokeReportingCompanyModel: RevokeReportingCompanyModel)
              (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
     logger.debug(s"URL: $revokeUrl")
-    logger.debug(s"Headers: ${desHc.headers}")
     val receivedSize = request.headers.get(HeaderNames.CONTENT_LENGTH)
     val jsonSize = Json.stringify(Json.toJson(revokeReportingCompanyModel)(RevokeReportingCompanyModel.format)).length
     logger.debug(s"Size of content received: $receivedSize sent: $jsonSize")

@@ -21,7 +21,7 @@ import v1.connectors.HttpHelper.SubmissionResponse
 import play.api.Logging
 import play.api.http.Status.{CREATED, INTERNAL_SERVER_ERROR}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
-import uk.gov.hmrc.http.logging.Authorization
+import uk.gov.hmrc.http.Authorization
 import v1.models.requests.IdentifierRequest
 
 trait DesBaseConnector {

@@ -31,7 +31,7 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import uk.gov.hmrc.play.bootstrap.config.HttpAuditEvent
 import utils.{BaseSpec, ErrorHandler}
-import v1.models.errors.{InvalidAcceptHeaderError, UnsupportedVersionError}
+import v1.models.errors.ErrorResponses._
 
 class VersionRoutingRequestHandlerSpec extends BaseSpec with Matchers with MockFactory with Inside with MockAppConfig {
   test =>
