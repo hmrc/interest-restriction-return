@@ -39,7 +39,7 @@ class AuthAction @Inject()(override val authConnector: AuthConnector,
     Retrievals.confidenceLevel and Retrievals.agentInformation and Retrievals.loginTimes
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
-    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequest(request)
+    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSessionAndRequest(request.headers, request = Some(request))
 
     authorised().retrieve(nrsRetrievals) {
       case credentials ~ confidenceLevel ~ agentInformation ~ loginTimes =>
