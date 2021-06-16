@@ -21,7 +21,6 @@ import v1.connectors.HttpHelper.SubmissionResponse
 import play.api.Logging
 import play.api.http.Status.{CREATED, INTERNAL_SERVER_ERROR}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
-import uk.gov.hmrc.http.Authorization
 import v1.models.requests.IdentifierRequest
 
 import java.util.UUID
@@ -33,8 +32,7 @@ trait DesBaseConnector {
   def desHc(implicit hc: HeaderCarrier, appConfig: AppConfig, request: IdentifierRequest[_]): HeaderCarrier = {
     val correlationId = UUID.randomUUID()
     logger.debug(s"Prepping message with correlationId header: $correlationId")
-    hc.withExtraHeaders(appConfig.desEnvironmentHeader, "providerId" -> request.identifier, "correlationId" -> correlationId.toString)
-      .copy(authorization = Some(Authorization(appConfig.desAuthorisationToken)))
+    hc.withExtraHeaders(appConfig.desEnvironmentHeader, "providerId" -> request.identifier, "correlationId" -> correlationId.toString, "Authorization" -> appConfig.desAuthorisationToken)
   }
 
   def handleHttpResponse(response: HttpResponse, parserName: String, unexpectedErrorMessage: String): SubmissionResponse = {
