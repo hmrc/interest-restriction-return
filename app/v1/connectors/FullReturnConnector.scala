@@ -21,18 +21,17 @@ import play.api.Logging
 import play.api.http.HeaderNames
 import play.api.libs.json.Json
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import utils.FeatureSwitchJsonFormatter
+import utils.JsonFormatters
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.httpParsers.FullReturnHttpParser.FullReturnReads
 import v1.models.fullReturn.FullReturnModel
 import v1.models.requests.IdentifierRequest
-
 import javax.inject.Inject
+
 import scala.concurrent.{ExecutionContext, Future}
 
 class FullReturnConnector @Inject()(httpClient: HttpClient,
-                                    jsonFormatters: FeatureSwitchJsonFormatter,
-                                    implicit val appConfig: AppConfig) extends DesBaseConnector with Logging {
+                                    implicit val appConfig: AppConfig) extends DesBaseConnector with Logging with JsonFormatters {
 
   private[connectors] lazy val fullReturnUrl = s"${appConfig.desUrl}/organisations/interest-restrictions-return/full"
 
@@ -41,10 +40,10 @@ class FullReturnConnector @Inject()(httpClient: HttpClient,
 
     logger.debug(s"URL: $fullReturnUrl")
     val receivedSize = request.headers.get(HeaderNames.CONTENT_LENGTH)
-    val jsonSize = Json.stringify(Json.toJson(fullReturnModel)(jsonFormatters.fullReturnWrites)).length
+    val jsonSize = Json.stringify(Json.toJson(fullReturnModel)).length
     logger.debug(s"Size of content received: $receivedSize sent: $jsonSize")
 
-    httpClient.POST(fullReturnUrl, fullReturnModel)(jsonFormatters.fullReturnWrites, FullReturnReads, desHc, ec)
+    httpClient.POST(fullReturnUrl, fullReturnModel)(fullReturnWrites, FullReturnReads, desHc, ec)
   }
 
 }
