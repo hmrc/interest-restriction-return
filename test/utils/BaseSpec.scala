@@ -52,8 +52,8 @@ trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with Mate
   lazy implicit val headerCarrier: HeaderCarrier = HeaderCarrier()
 
   val fakeAuthResponse = NrsConstants.fakeResponse
-  object AuthorisedAction extends Authorised[NrsConstants.NrsRetrievalDataType](fakeAuthResponse, bodyParsers)
-  object UnauthorisedAction extends Unauthorised(new MissingBearerToken, bodyParsers)
+  object AuthorisedAction extends Authorised[NrsConstants.NrsRetrievalDataType](fakeAuthResponse, bodyParsers, appConfig)
+  object UnauthorisedAction extends Unauthorised(new MissingBearerToken, bodyParsers, appConfig)
 
   def rightSide[A](validationResult: ValidationResult[A]): A = validationResult.toEither.right.get
 
