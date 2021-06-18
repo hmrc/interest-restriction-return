@@ -16,14 +16,15 @@
 
 package v1.controllers.actions.mocks
 
+import config.AppConfig
 import play.api.mvc.BodyParsers
 import v1.connectors.mocks.{FakeFailingAuthConnector, FakeSuccessAuthConnector}
 import v1.controllers.actions.AuthAction
 
 import scala.concurrent.ExecutionContext
 
-class Authorised[B](response: B, bodyParser: BodyParsers.Default)(implicit ec: ExecutionContext) extends
-  AuthAction(new FakeSuccessAuthConnector[B](response), bodyParser)
+class Authorised[B](response: B, bodyParser: BodyParsers.Default, appConfig: AppConfig)(implicit ec: ExecutionContext) extends
+  AuthAction(new FakeSuccessAuthConnector[B](response), bodyParser, appConfig)
 
-class Unauthorised(exceptionToReturn: Throwable, bodyParser: BodyParsers.Default)(implicit ec: ExecutionContext) extends
-  AuthAction(new FakeFailingAuthConnector(exceptionToReturn), bodyParser)
+class Unauthorised(exceptionToReturn: Throwable, bodyParser: BodyParsers.Default, appConfig: AppConfig)(implicit ec: ExecutionContext) extends
+  AuthAction(new FakeFailingAuthConnector(exceptionToReturn), bodyParser, appConfig)
