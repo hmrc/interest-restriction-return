@@ -300,14 +300,14 @@ case class CompaniesContainedAllocatedReactivations(company: UkCompanyModel, i: 
 
 case object AdjustedNetGroupInterestNotSupplied extends Validation {
   val code = "ADJUSTED_GROUP_INTEREST_NOT_SUPPLIED"
-  val errorMessage: String = "Group ratio elected so qngie, group-EBITDA and group ratio should be provided"
+  val errorMessage: String = "Group ratio % elected so qngie, group-EBITDA and group ratio should be provided"
   val path: JsPath = JsPath \ "adjustedGroupInterest"
   val value: Option[JsValue] = None
 }
 
 case class AdjustedNetGroupInterestSupplied(details: AdjustedGroupInterestModel) extends Validation {
   val code = "ADJUSTED_GROUP_INTEREST_SUPPLIED"
-  val errorMessage: String = "Group ratio not elected so qngie, group-EBITDA and group ratio should not be provided"
+  val errorMessage: String = "Group ratio % not elected so qngie, group-EBITDA and group ratio should not be provided"
   val path: JsPath = JsPath \ "adjustedGroupInterest"
   val value: Option[JsValue] = Some(Json.toJson(details))
 }
