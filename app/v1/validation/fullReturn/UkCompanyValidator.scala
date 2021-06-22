@@ -179,7 +179,7 @@ case class ExpenseAndIncomeBothNotGreaterThanZero(netTaxInterestExpense: BigDeci
 
 case class RestrictionNotGreaterThanExpense(netTaxInterestExpense: BigDecimal, allocatedRestriction: BigDecimal)(implicit val path: JsPath) extends Validation {
   val code = "RESTRICTION_GREATER_THAN_EXPENSE"
-  val errorMessage: String = "A company cannot have a restriction greater than its net tax expense"
+  val errorMessage: String = "A company cannot have a restriction greater than its net tax-interest expense"
   val value = Some(Json.toJson(("netTaxInterestExpense: " + netTaxInterestExpense, "allocatedRestriction: " + allocatedRestriction)))
 }
 
