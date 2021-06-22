@@ -49,7 +49,7 @@ case class GroupRatioBlendedSupplied(groupRatio: GroupRatioModel)(implicit val t
 
 case class GroupRatioBlendedNotSupplied()(implicit val topPath: JsPath) extends Validation {
   val code = "GROUP_RATIO_BLENDED_NOT_SUPPLIED"
-  val errorMessage: String = "If group ratio % is elected, a value for group ratio (blended) election must be true or false
+  val errorMessage: String = "If group ratio % is elected, a value for group ratio (blended) election must be true or false"
   val path: JsPath = topPath \ "groupRatioBlended"
   val value = None
 }
