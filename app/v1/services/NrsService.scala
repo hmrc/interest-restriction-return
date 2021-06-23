@@ -67,12 +67,10 @@ class NrsService @Inject()(nrsConnector: NrsConnector, dateTimeService: DateTime
   private def attemptSubmission(nrsPayload: NrsPayload, delay: Duration, retries: Int): Future[NrsResponse] = {
     val result = nrsConnector.send(nrsPayload)
     result.flatMap{ 
-      _ match {
-        case Left(e) if e.status >= 500 && e.status < 600 && retries > 0 => 
-          Thread.sleep(delay.toMillis)
-          attemptSubmission(nrsPayload, delay, retries - 1)
-        case response => Future.successful(response)
-      }
+      case Left(e) if e.status >= 500 && e.status < 600 && retries > 0 =>
+        Thread.sleep(delay.toMillis)
+        attemptSubmission(nrsPayload, delay, retries - 1)
+      case response => Future.successful(response)
     }
   }
 

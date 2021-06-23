@@ -17,17 +17,20 @@
 package v1.controllers
 
 
-import javax.inject.{Inject, Singleton}
+import config.AppConfig
 import play.api.libs.json.JsValue
 import play.api.mvc.{Action, ControllerComponents}
 import v1.controllers.actions.AuthAction
 import v1.models.appointReportingCompany.AppointReportingCompanyModel
-import v1.services.AppointReportingCompanyService
+import v1.services.{AppointReportingCompanyService, NrsService}
+
+import javax.inject.{Inject, Singleton}
 
 @Singleton()
 class AppointReportingCompanyController @Inject()(authAction: AuthAction,
                                                   appointReportingCompanyService: AppointReportingCompanyService,
-
+                                                  nrsService: NrsService,
+                                                  appConfig: AppConfig,
                                                   override val controllerComponents: ControllerComponents) extends BaseController {
 
   def appoint(): Action[JsValue] = authAction.async(parse.json) { implicit request =>
@@ -35,7 +38,9 @@ class AppointReportingCompanyController @Inject()(authAction: AuthAction,
       handleValidation(
         validationModel = appointReportingCompanyModel.validate,
         service = appointReportingCompanyService,
-        controllerName = "AppointReportingCompanyController"
+        controllerName = "AppointReportingCompanyController",
+        nrsService = nrsService,
+        appConfig = appConfig
       )
     }
   }

@@ -17,16 +17,20 @@
 package v1.controllers
 
 
-import javax.inject.{Inject, Singleton}
+import config.AppConfig
 import play.api.libs.json.JsValue
 import play.api.mvc.{Action, ControllerComponents}
 import v1.controllers.actions.AuthAction
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
-import v1.services.AbbreviatedReturnService
+import v1.services.{AbbreviatedReturnService, NrsService}
+
+import javax.inject.{Inject, Singleton}
 
 @Singleton()
 class AbbreviatedReturnController @Inject()(authAction: AuthAction,
                                             abbreviatedReturnService: AbbreviatedReturnService,
+                                            nrsService: NrsService,
+                                            appConfig: AppConfig,
                                             override val controllerComponents: ControllerComponents) extends BaseController {
 
   def submitAbbreviatedReturn(): Action[JsValue] = authAction.async(parse.json) { implicit request =>
@@ -34,7 +38,9 @@ class AbbreviatedReturnController @Inject()(authAction: AuthAction,
       handleValidation(
         validationModel = AbbreviatedModel.validate,
         service = abbreviatedReturnService,
-        controllerName = "AbbreviatedReturnController"
+        controllerName = "AbbreviatedReturnController",
+        nrsService = nrsService,
+        appConfig = appConfig
       )
     }
   }

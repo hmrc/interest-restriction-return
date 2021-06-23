@@ -17,6 +17,7 @@
 package v1.controllers
 
 import cats.data.Validated.{Invalid, Valid}
+import config.AppConfig
 import play.api.Logging
 import play.api.libs.json._
 import play.api.mvc.{Request, Result}
@@ -25,7 +26,7 @@ import uk.gov.hmrc.play.bootstrap.backend.controller.BackendBaseController
 import v1.models.Validation.ValidationResult
 import v1.models.errors.ValidationErrorResponseModel
 import v1.models.requests.IdentifierRequest
-import v1.services.Submission
+import v1.services.{NrsService, Submission}
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
@@ -45,7 +46,7 @@ trait BaseController extends BackendBaseController with Logging {
         Future.successful(BadRequest(s"Could not parse body due to ${e.getMessage}"))
     }
 
-  def handleValidation[T](validationModel: ValidationResult[T], service: Submission[T], controllerName: String)
+  def handleValidation[T](validationModel: ValidationResult[T], service: Submission[T], controllerName: String, nrsService: NrsService, appConfig: AppConfig)
                          (implicit hc: HeaderCarrier, identifierRequest: IdentifierRequest[JsValue]): Future[Result] = {
     validationModel match {
       case Invalid(e) =>
@@ -57,7 +58,11 @@ trait BaseController extends BackendBaseController with Logging {
         logger.info(s"[$controllerName][VALIDATION][SUCCESS]")
         service.submit(model).map {
           case Left(err) => Status(err.status)(err.body)
-          case Right(response) => Ok(Json.toJson(response))
+          case Right(response) =>
+            if(appConfig.nrsEnabled) {
+              nrsService.send
+            }
+            Ok(Json.toJson(response))
         }
     }
   }
