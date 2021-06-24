@@ -41,6 +41,8 @@ class NrsService @Inject()(nrsConnector: NrsConnector, dateTimeService: DateTime
   private val notableEventValue = "irr-submission" //TODO: Update once NRS have updated the Calling Service Registry with a value for us https://confluence.tools.tax.service.gov.uk/display/NR/Calling+Service+Registry
   private val AuthorizationHeader = "Authorization"
 
+  private val MaxRetries = 2
+
   def send[A](implicit identifierRequest: IdentifierRequest[A]): Future[NrsResponse] = {
 
     val payloadAsString = identifierRequest.request.body.toString
@@ -61,10 +63,11 @@ class NrsService @Inject()(nrsConnector: NrsConnector, dateTimeService: DateTime
     val nrsPayload: NrsPayload = NrsPayload(base64().encode(payloadAsString.getBytes(UTF_8)), nrsMetadata)
 
     val delay = Duration(5, MILLISECONDS)
-    attemptSubmission(nrsPayload, delay, 2)
+    attemptSubmission(nrsPayload, delay, MaxRetries)
   }
 
   private def attemptSubmission(nrsPayload: NrsPayload, delay: Duration, retries: Int): Future[NrsResponse] = {
+    logger.info(s"Attempting NRS submission ${MaxRetries - retries + 1}")
     val result = nrsConnector.send(nrsPayload)
     result.flatMap{ 
       case Left(e) if e.status >= 500 && e.status < 600 && retries > 0 =>

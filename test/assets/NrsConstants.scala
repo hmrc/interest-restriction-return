@@ -22,7 +22,7 @@ import org.joda.time.DateTimeZone.UTC
 import uk.gov.hmrc.auth.core.retrieve._
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
 import uk.gov.hmrc.auth.core._
-import v1.models.nrs.{NrsRetrievalData, NrsMetadata, NrsPayload}
+import v1.models.nrs.{NrsMetadata, NrsPayload, NrsRetrievalData}
 import play.api.libs.json._
 import java.lang.String.format
 import java.math.BigInteger
@@ -30,7 +30,7 @@ import java.security.MessageDigest.getInstance
 
 object NrsConstants {
 
-  val jsonPayload = 
+  val jsonPayload =
   """
   {
     "something": "true"

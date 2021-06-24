@@ -36,7 +36,6 @@ class AppointReportingCompanyControllerSpec extends MockAppointReportingCompanyS
         authAction = AuthorisedAction,
         appointReportingCompanyService = mockAppointReportingCompanyService,
         controllerComponents = Helpers.stubControllerComponents(),
-        nrsService = nrsService,
         appConfig = appConfig
       )
 
@@ -91,7 +90,6 @@ class AppointReportingCompanyControllerSpec extends MockAppointReportingCompanyS
           authAction = UnauthorisedAction,
           appointReportingCompanyService = mockAppointReportingCompanyService,
           controllerComponents = Helpers.stubControllerComponents(),
-          nrsService = nrsService,
           appConfig = appConfig
         )
 

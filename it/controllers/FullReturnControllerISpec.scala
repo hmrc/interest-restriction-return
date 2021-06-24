@@ -18,13 +18,16 @@ package controllers
 
 import assets.FullReturnITConstants._
 import assets.NrsConstants._
+import com.github.tomakehurst.wiremock.client.WireMock
+import com.github.tomakehurst.wiremock.client.WireMock._
 import play.api.http.Status._
 import play.api.libs.json.Json
+import play.api.Logging
 import stubs.{AuthStub, DESStub, NRSStub}
 import utils.{CreateRequestHelper, CustomMatchers, IntegrationSpecBase}
 
 
-class FullReturnControllerISpec extends IntegrationSpecBase with CreateRequestHelper with CustomMatchers {
+class FullReturnControllerISpec extends IntegrationSpecBase with CreateRequestHelper with CustomMatchers with Logging {
 
   "POST /return/full" when {
 
@@ -38,11 +41,12 @@ class FullReturnControllerISpec extends IntegrationSpecBase with CreateRequestHe
 
             AuthStub.authorised()
             DESStub.fullReturnSuccess(fullReturnDesSuccessJson)
-            NRSStub.success(Json.toJson(jsonPayload))
+            NRSStub.success(responsePayload)
 
             val res = postRequest("/return/full", fullReturnJson)
 
             whenReady(res) { result =>
+              verifyCall("/submission")
               result should have(
                 httpStatus(OK),
                 jsonBodyAs(fullReturnDesSuccessJson)
@@ -62,6 +66,7 @@ class FullReturnControllerISpec extends IntegrationSpecBase with CreateRequestHe
             val res = postRequest("/return/full", fullReturnJson)
 
             whenReady(res) { result =>
+              verifyCall("/submission")
               result should have(
                 httpStatus(OK),
                 jsonBodyAs(fullReturnDesSuccessJson)

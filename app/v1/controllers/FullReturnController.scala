@@ -39,7 +39,7 @@ class FullReturnController @Inject()(authAction: AuthAction,
         validationModel = fullReturnModel.validate,
         service = fullReturnService,
         controllerName = "FullReturnController",
-        nrsService = nrsService,
+        maybeNrsService = Some(nrsService),
         appConfig = appConfig
       )
     }

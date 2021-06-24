@@ -23,6 +23,7 @@ import play.api.libs.json._
 import play.api.mvc.{Request, Result}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendBaseController
+import v1.connectors.ErrorResponse
 import v1.models.Validation.ValidationResult
 import v1.models.errors.ValidationErrorResponseModel
 import v1.models.requests.IdentifierRequest
@@ -46,7 +47,7 @@ trait BaseController extends BackendBaseController with Logging {
         Future.successful(BadRequest(s"Could not parse body due to ${e.getMessage}"))
     }
 
-  def handleValidation[T](validationModel: ValidationResult[T], service: Submission[T], controllerName: String, nrsService: NrsService, appConfig: AppConfig)
+  def handleValidation[T](validationModel: ValidationResult[T], service: Submission[T], controllerName: String, maybeNrsService: Option[NrsService], appConfig: AppConfig)
                          (implicit hc: HeaderCarrier, identifierRequest: IdentifierRequest[JsValue]): Future[Result] = {
     validationModel match {
       case Invalid(e) =>
@@ -59,8 +60,10 @@ trait BaseController extends BackendBaseController with Logging {
         service.submit(model).map {
           case Left(err) => Status(err.status)(err.body)
           case Right(response) =>
-            if(appConfig.nrsEnabled) {
-              nrsService.send
+            maybeNrsService match {
+              case Some(nrsService) if appConfig.nrsEnabled =>
+                nrsService.send
+              case _ =>
             }
             Ok(Json.toJson(response))
         }

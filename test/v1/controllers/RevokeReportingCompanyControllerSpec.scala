@@ -36,7 +36,6 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
         authAction = AuthorisedAction,
         revokeReportingCompanyService = mockRevokeReportingCompanyService,
         controllerComponents = Helpers.stubControllerComponents(),
-        nrsService = nrsService,
         appConfig = appConfig
       )
 
@@ -93,7 +92,6 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
           authAction = UnauthorisedAction,
           revokeReportingCompanyService = mockRevokeReportingCompanyService,
           controllerComponents = Helpers.stubControllerComponents(),
-          nrsService = nrsService,
           appConfig = appConfig
         )
 

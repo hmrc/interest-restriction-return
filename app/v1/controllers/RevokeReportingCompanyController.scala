@@ -30,7 +30,6 @@ import javax.inject.{Inject, Singleton}
 @Singleton()
 class RevokeReportingCompanyController @Inject()(authAction: AuthAction,
                                                  revokeReportingCompanyService: RevokeReportingCompanyService,
-                                                 nrsService: NrsService,
                                                  appConfig: AppConfig,
                                                  override val controllerComponents: ControllerComponents) extends BaseController {
 
@@ -40,7 +39,7 @@ class RevokeReportingCompanyController @Inject()(authAction: AuthAction,
         validationModel = revokeReportingCompanyModel.validate,
         service = revokeReportingCompanyService,
         controllerName = "RevokeReportingCompanyController",
-        nrsService = nrsService,
+        maybeNrsService = None,
         appConfig = appConfig
       )
     }

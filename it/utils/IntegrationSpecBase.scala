@@ -45,6 +45,7 @@ trait IntegrationSpecBase extends WordSpec
     "microservice.services.nrs.host" -> mockHost,
     "microservice.services.nrs.port" -> mockPort,
     "microservice.services.nrs.enabled" -> true,
+    "microservice.services.nrs.authorisation-token" -> "test",
     "internalServiceHostPatterns" -> Nil
   )
 

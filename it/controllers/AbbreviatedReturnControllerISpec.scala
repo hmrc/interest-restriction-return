@@ -17,8 +17,9 @@
 package controllers
 
 import assets.AbbreviatedReturnITConstants._
+import assets.NrsConstants._
 import play.api.http.Status._
-import stubs.{AuthStub, DESStub}
+import stubs.{AuthStub, DESStub, NRSStub}
 import utils.{CreateRequestHelper, CustomMatchers, IntegrationSpecBase}
 
 
@@ -28,54 +29,76 @@ class AbbreviatedReturnControllerISpec extends IntegrationSpecBase with CreateRe
 
     "user is authenticated" when {
 
-      "request is successfully processed by DES" should {
+      "request is successfully processed by DES" when {
 
-        "return OK (200) with the correct body" in {
+        "nrs is successful" should {
 
-          AuthStub.authorised()
-          DESStub.abbreviatedReturnSuccess(abbreviatedReturnDesSuccessJson)
+          "return OK (200) with the correct body" in {
+
+            AuthStub.authorised()
+            DESStub.abbreviatedReturnSuccess(abbreviatedReturnDesSuccessJson)
+            NRSStub.success(responsePayload)
+
+            val res = postRequest("/return/abbreviated", abbreviatedReturnJson)
+
+            whenReady(res) { result =>
+              result should have(
+                httpStatus(OK),
+                jsonBodyAs(abbreviatedReturnDesSuccessJson)
+              )
+            }
+          }
+          "nrs errors" should {
+
+            "return OK (200) with the correct body" in {
+
+              AuthStub.authorised()
+              DESStub.abbreviatedReturnSuccess(abbreviatedReturnDesSuccessJson)
+              NRSStub.error
+
+              val res = postRequest("/return/abbreviated", abbreviatedReturnJson)
+
+              whenReady(res) { result =>
+                result should have(
+                  httpStatus(OK),
+                  jsonBodyAs(abbreviatedReturnDesSuccessJson)
+                )
+              }
+            }
+          }
+        }
+
+        "error is returned from DES" should {
+
+          "should return the error" in {
+
+            AuthStub.authorised()
+            DESStub.abbreviatedReturnError
+
+            val res = postRequest("/return/abbreviated", abbreviatedReturnJson)
+
+            whenReady(res) { result =>
+              result should have(
+                httpStatus(INTERNAL_SERVER_ERROR)
+              )
+            }
+          }
+        }
+      }
+
+      "user is unauthenticated" when {
+
+        "should return UNAUTHORISED (401)" in {
+
+          AuthStub.unauthorised()
 
           val res = postRequest("/return/abbreviated", abbreviatedReturnJson)
 
           whenReady(res) { result =>
             result should have(
-              httpStatus(OK),
-              jsonBodyAs(abbreviatedReturnDesSuccessJson)
+              httpStatus(UNAUTHORIZED)
             )
           }
-        }
-      }
-
-      "error is returned from DES" should {
-
-        "should return the error" in {
-
-          AuthStub.authorised()
-          DESStub.abbreviatedReturnError
-
-          val res = postRequest("/return/abbreviated", abbreviatedReturnJson)
-
-          whenReady(res) { result =>
-            result should have(
-              httpStatus(INTERNAL_SERVER_ERROR)
-            )
-          }
-        }
-      }
-    }
-
-    "user is unauthenticated" when {
-
-      "should return UNAUTHORISED (401)" in {
-
-        AuthStub.unauthorised()
-
-        val res = postRequest("/return/abbreviated", abbreviatedReturnJson)
-
-        whenReady(res) { result =>
-          result should have(
-            httpStatus(UNAUTHORIZED)
-          )
         }
       }
     }

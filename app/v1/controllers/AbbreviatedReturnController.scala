@@ -39,7 +39,7 @@ class AbbreviatedReturnController @Inject()(authAction: AuthAction,
         validationModel = AbbreviatedModel.validate,
         service = abbreviatedReturnService,
         controllerName = "AbbreviatedReturnController",
-        nrsService = nrsService,
+        maybeNrsService = Some(nrsService),
         appConfig = appConfig
       )
     }

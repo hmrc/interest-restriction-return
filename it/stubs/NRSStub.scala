@@ -23,10 +23,10 @@ import utils.WireMockMethods
 
 object NRSStub extends WireMockMethods {
 
-  private val url = s"/nrs" // TODO could be based on config
+  private val url = s"/submission"
 
   def success(response: JsValue): StubMapping =
-    when(method = POST, uri = url).thenReturn(status = CREATED, body = response)
+    when(method = POST, uri = url).thenReturn(status = ACCEPTED, body = response)
 
   def error: StubMapping =
     when(method = POST, uri = url).thenReturn(status = INTERNAL_SERVER_ERROR)
