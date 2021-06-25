@@ -62,18 +62,22 @@ class NrsService @Inject()(nrsConnector: NrsConnector, dateTimeService: DateTime
 
     val nrsPayload: NrsPayload = NrsPayload(base64().encode(payloadAsString.getBytes(UTF_8)), nrsMetadata)
 
-    val delay = Duration(5, MILLISECONDS)
+    val delay = Duration(500, MILLISECONDS)
     attemptSubmission(nrsPayload, delay, MaxRetries)
   }
 
   private def attemptSubmission(nrsPayload: NrsPayload, delay: Duration, retries: Int): Future[NrsResponse] = {
-    logger.info(s"Attempting NRS submission ${MaxRetries - retries + 1}")
+    logger.info(s"Attempting NRS submission ${MaxRetries - retries + 1} retries left: $retries")
     val result = nrsConnector.send(nrsPayload)
     result.flatMap{ 
       case Left(e) if e.status >= 500 && e.status < 600 && retries > 0 =>
         Thread.sleep(delay.toMillis)
         attemptSubmission(nrsPayload, delay, retries - 1)
       case response => Future.successful(response)
+    } recoverWith {
+      case e: Exception if retries > 0 =>
+        Thread.sleep(delay.toMillis)
+        attemptSubmission(nrsPayload, delay, retries - 1)
     }
   }
 
