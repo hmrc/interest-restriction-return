@@ -27,7 +27,6 @@ import v1.connectors.httpParsers.FullReturnHttpParser.FullReturnReads
 import v1.models.fullReturn.FullReturnModel
 import v1.models.requests.IdentifierRequest
 import javax.inject.Inject
-
 import scala.concurrent.{ExecutionContext, Future}
 
 class FullReturnConnector @Inject()(httpClient: HttpClient,

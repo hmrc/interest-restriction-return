@@ -14,17 +14,21 @@
  * limitations under the License.
  */
 
-package config
+package stubs
 
-import com.google.inject.AbstractModule
-import v1.connectors.{NrsConnector, NrsConnectorImpl}
-import v1.services.{DateTimeService, DateTimeServiceImpl}
+import com.github.tomakehurst.wiremock.stubbing.StubMapping
+import play.api.http.Status._
+import play.api.libs.json.JsValue
+import utils.WireMockMethods
 
-class DIModule extends AbstractModule {
+object NRSStub extends WireMockMethods {
 
-  override def configure(): Unit = {
-    bind(classOf[AppConfig]).to(classOf[AppConfigImpl]).asEagerSingleton()
-    bind(classOf[DateTimeService]).to(classOf[DateTimeServiceImpl]).asEagerSingleton()
-    bind(classOf[NrsConnector]).to(classOf[NrsConnectorImpl]).asEagerSingleton()
-  }
+  private val url = s"/submission"
+
+  def success(response: JsValue): StubMapping =
+    when(method = POST, uri = url).thenReturn(status = ACCEPTED, body = response)
+
+  def error: StubMapping =
+    when(method = POST, uri = url).thenReturn(status = INTERNAL_SERVER_ERROR)
+
 }

@@ -35,7 +35,9 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
       object AuthorisedController extends AbbreviatedReturnController(
         authAction = AuthorisedAction,
         abbreviatedReturnService = mockAbbreviatedReturnService,
-        controllerComponents = Helpers.stubControllerComponents()
+        controllerComponents = Helpers.stubControllerComponents(),
+        nrsService = nrsService,
+        appConfig = appConfig
       )
 
       "a valid payload is submitted" when {
@@ -88,7 +90,9 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
         object UnauthorisedController extends AbbreviatedReturnController(
           authAction = UnauthorisedAction,
           abbreviatedReturnService = mockAbbreviatedReturnService,
-          controllerComponents = Helpers.stubControllerComponents()
+          controllerComponents = Helpers.stubControllerComponents(),
+          nrsService = nrsService,
+          appConfig = appConfig
         )
 
         val result = UnauthorisedController.submitAbbreviatedReturn()(fakeRequest.withBody(Json.obj()))

@@ -17,16 +17,20 @@
 package v1.controllers
 
 
-import javax.inject.{Inject, Singleton}
+import config.AppConfig
 import play.api.libs.json.JsValue
 import play.api.mvc.{Action, ControllerComponents}
 import v1.controllers.actions.AuthAction
 import v1.models.fullReturn.FullReturnModel
-import v1.services.FullReturnService
+import v1.services.{FullReturnService, NrsService}
+
+import javax.inject.{Inject, Singleton}
 
 @Singleton()
 class FullReturnController @Inject()(authAction: AuthAction,
                                      fullReturnService: FullReturnService,
+                                     nrsService: NrsService,
+                                     appConfig: AppConfig,
                                      override val controllerComponents: ControllerComponents) extends BaseController {
 
   def submit(): Action[JsValue] = authAction.async(parse.json) { implicit request =>
@@ -34,7 +38,9 @@ class FullReturnController @Inject()(authAction: AuthAction,
       handleValidation(
         validationModel = fullReturnModel.validate,
         service = fullReturnService,
-        controllerName = "FullReturnController"
+        controllerName = "FullReturnController",
+        maybeNrsService = Some(nrsService),
+        appConfig = appConfig
       )
     }
   }

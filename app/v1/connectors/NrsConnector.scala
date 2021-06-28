@@ -17,7 +17,7 @@
 package v1.connectors
 
 import config.AppConfig
-import com.google.inject._
+import javax.inject.{Inject, Singleton}
 import play.api.libs.json.Json
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.HttpClient
@@ -41,15 +41,17 @@ class NrsConnectorImpl @Inject()(http: HttpClient, implicit val appConfig: AppCo
   def send[A](nrsPayload: NrsPayload): Future[NrsResponse] = 
     (appConfig.nrsUrl, appConfig.nrsAuthorisationToken) match {
       case (Some(url), Some(token)) => post(nrsPayload, url, token)
-      case _ => Future.failed(new NrsConfigurationException)
+      case _ =>
+        logger.error(s"${appConfig.nrsUrl} ${appConfig.nrsAuthorisationToken}")
+        Future.failed(new NrsConfigurationException)
     }
 
   private def post[A](payload: NrsPayload, url: String, authToken: String): Future[NrsResponse] = {
 
     implicit val hc: HeaderCarrier = HeaderCarrier()
 
-    logger.debug(s"Sending request to NRS service. Url: $url Payload:\n${Json.prettyPrint(Json.toJson(payload))}")
-    val result = http.POST[NrsPayload, NrsResponse](url, payload, Seq[(String, String)](("Content-Type", "application/json"), (XApiKey, authToken)))
+    logger.info(s"Sending request to NRS service. Url: $url Payload:\n${Json.prettyPrint(Json.toJson(payload))}") // TODO remove payload logging
+    val result = http.POST[NrsPayload, NrsResponse](s"$url/submission", payload, Seq[(String, String)](("Content-Type", "application/json"), (XApiKey, authToken)))
     result.onComplete {
       case Success(response) => logger.info(s"Response received from NRS service: ${response}")
       case Failure(e) => logger.error(s"Call to NRS service failed url=$url, exception=$e", e)

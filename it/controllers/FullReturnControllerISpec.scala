@@ -17,33 +17,66 @@
 package controllers
 
 import assets.FullReturnITConstants._
+import assets.NrsConstants._
+import com.github.tomakehurst.wiremock.client.WireMock
+import com.github.tomakehurst.wiremock.client.WireMock._
 import play.api.http.Status._
-import stubs.{AuthStub, DESStub}
+import play.api.libs.json.Json
+import play.api.Logging
+import stubs.{AuthStub, DESStub, NRSStub}
 import utils.{CreateRequestHelper, CustomMatchers, IntegrationSpecBase}
 
 
-class FullReturnControllerISpec extends IntegrationSpecBase with CreateRequestHelper with CustomMatchers {
+class FullReturnControllerISpec extends IntegrationSpecBase with CreateRequestHelper with CustomMatchers with Logging {
 
   "POST /return/full" when {
 
     "user is authenticated" when {
 
-      "request is successfully processed by DES" should {
+      "request is successfully processed by DES" when {
 
-        "should return OK (200) with the correct body" in {
+        "nrs is successful" should {
 
-          AuthStub.authorised()
-          DESStub.fullReturnSuccess(fullReturnDesSuccessJson)
+          "return OK (200) with the correct body" in {
 
-          val res = postRequest("/return/full", fullReturnJson)
+            AuthStub.authorised()
+            DESStub.fullReturnSuccess(fullReturnDesSuccessJson)
+            NRSStub.success(responsePayload)
 
-          whenReady(res) { result =>
-            result should have(
-              httpStatus(OK),
-              jsonBodyAs(fullReturnDesSuccessJson)
-            )
+            val res = postRequest("/return/full", fullReturnJson)
+
+            whenReady(res) { result =>
+              verifyCall("/submission")
+              result should have(
+                httpStatus(OK),
+                jsonBodyAs(fullReturnDesSuccessJson)
+              )
+            }
           }
         }
+
+        "nrs errors" should {
+
+          "return OK (200) with the correct body" in {
+
+            AuthStub.authorised()
+            DESStub.fullReturnSuccess(fullReturnDesSuccessJson)
+            NRSStub.error
+
+            val res = postRequest("/return/full", fullReturnJson)
+
+            whenReady(res) { result =>
+              verifyCall("/submission")
+              result should have(
+                httpStatus(OK),
+                jsonBodyAs(fullReturnDesSuccessJson)
+              )
+            }
+
+          }
+        }
+
+
       }
 
       "error is returned from DES" should {

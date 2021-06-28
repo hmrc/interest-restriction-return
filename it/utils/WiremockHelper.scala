@@ -48,6 +48,8 @@ trait WiremockHelper {
 
   def resetWiremock(): Unit = WireMock.reset()
 
+  def verifyCall(url: String): Unit = WireMock.verify(postRequestedFor(urlPathEqualTo(url)))
+
   def stubGet(url: String, status: Integer, body: String = ""): StubMapping =
     stubFor(get(urlMatching(url))
       .willReturn(
