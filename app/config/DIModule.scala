@@ -17,10 +17,14 @@
 package config
 
 import com.google.inject.AbstractModule
+import v1.connectors.{NrsConnector, NrsConnectorImpl}
+import v1.services.{DateTimeService, DateTimeServiceImpl}
 
 class DIModule extends AbstractModule {
 
   override def configure(): Unit = {
     bind(classOf[AppConfig]).to(classOf[AppConfigImpl]).asEagerSingleton()
+    bind(classOf[DateTimeService]).to(classOf[DateTimeServiceImpl]).asEagerSingleton()
+    bind(classOf[NrsConnector]).to(classOf[NrsConnectorImpl]).asEagerSingleton()
   }
 }

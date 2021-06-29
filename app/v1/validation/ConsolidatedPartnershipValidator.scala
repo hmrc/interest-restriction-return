@@ -52,21 +52,21 @@ trait ConsolidatedPartnershipValidator extends BaseValidation {
 
 case class ConsolidatedPartnershipsSupplied(consolidatedPartnershipModel: ConsolidatedPartnershipModel)(implicit val topPath: JsPath) extends Validation {
   val code = "PARTNERSHIPS_SUPPLIED"
-  val errorMessage: String = "Consolidated Partnership is not elected, unable to supply partnership names"
+  val errorMessage: String = "Interest allowance (consolidated partnerships) election not made, so no details of consolidated partnership needed"
   val path: JsPath = topPath \ "consolidatedPartnership"
   val value = Some(Json.toJson(consolidatedPartnershipModel))
 }
 
 case class ConsolidatedPartnershipsNotSupplied(consolidatedPartnershipModel: ConsolidatedPartnershipModel)(implicit val topPath: JsPath) extends Validation {
   val code = "PARTNERSHIPS_NOT_SUPPLIED"
-  val errorMessage: String = "Consolidated Partnership is elected, must supply partnership names"
+  val errorMessage: String = "Interest allowance (consolidated partnerships) election made, enter details of at least 1 consolidated partnership"
   val path: JsPath = topPath \ "consolidatedPartnership"
   val value = Some(Json.toJson(consolidatedPartnershipModel))
 }
 
 case class ConsolidatedPartnershipsEmpty()(implicit val topPath: JsPath) extends Validation {
   val code = "PARTNERSHIPS_EMPTY"
-  val errorMessage: String = "consolidatedPartnership must have at least 1 partnership"
+  val errorMessage: String = "Interest allowance (consolidated partnerships) election made, enter details of at least 1 consolidated partnership"
   val path: JsPath = topPath \ "consolidatedPartnership"
   val value = None
 }

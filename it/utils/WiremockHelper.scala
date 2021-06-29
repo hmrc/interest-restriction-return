@@ -17,7 +17,6 @@
 package utils
 
 import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock._
@@ -39,7 +38,6 @@ trait WiremockHelper {
   val wireMockServer = new WireMockServer(wmConfig)
 
   implicit val system = ActorSystem("my-system")
-  implicit val materializer = ActorMaterializer()
 
   def startWiremock(): Unit = {
     WireMock.configureFor(wiremockHost, wiremockPort)
@@ -49,6 +47,8 @@ trait WiremockHelper {
   def stopWiremock(): Unit = wireMockServer.stop()
 
   def resetWiremock(): Unit = WireMock.reset()
+
+  def verifyCall(url: String): Unit = WireMock.verify(postRequestedFor(urlPathEqualTo(url)))
 
   def stubGet(url: String, status: Integer, body: String = ""): StubMapping =
     stubFor(get(urlMatching(url))

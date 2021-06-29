@@ -34,11 +34,11 @@ trait LegalEntityIdentifierValidator extends BaseValidation {
     }
   }
 
-  def validate(implicit path: JsPath): ValidationResult[LegalEntityIdentifierModel] = combineValidationsForField(validateValue)
+  def validate(implicit path: JsPath): ValidationResult[LegalEntityIdentifierModel] = combineValidations(validateValue)
 }
 
 case class LegalEntityIdentifierCharacterError(lei: LegalEntityIdentifierModel)(implicit val path: JsPath) extends Validation {
   val code = "LEI_CHARACTER"
-  val errorMessage: String = s"legalEntityIdentifier should follow the ISO 17442 standard: 18 uppercase alphanumeric characters followed by 2 numeric characters"
+  val errorMessage: String = s"Legal entity identifier must be 18 uppercase letters followed by 2 numbers"
   val value = Some(Json.toJson(lei))
 }

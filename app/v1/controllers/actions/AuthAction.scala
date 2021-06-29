@@ -17,52 +17,76 @@
 package v1.controllers.actions
 
 import com.google.inject.Inject
-import play.api.mvc.Results._
+import config.AppConfig
 import play.api.mvc._
+import play.api.mvc.Results._
+import play.api.Logging
 import uk.gov.hmrc.auth.core._
-import uk.gov.hmrc.auth.core.retrieve.~
+import uk.gov.hmrc.auth.core.retrieve.{~, Credentials}
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.HeaderCarrierConverter
-import v1.models.requests.IdentifierRequest
-import play.api.Logging
+import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import v1.models.nrs.NrsRetrievalData
+import v1.models.requests.IdentifierRequest
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class AuthAction @Inject()(override val authConnector: AuthConnector,
-                           val parser: BodyParsers.Default
+                           val parser: BodyParsers.Default,
+                           appConfig: AppConfig
                           )(implicit val executionContext: ExecutionContext)
   extends ActionBuilder[IdentifierRequest, AnyContent] with ActionFunction[Request, IdentifierRequest] with AuthorisedFunctions with Logging {
 
   private val nrsRetrievals =
     Retrievals.internalId and Retrievals.externalId and Retrievals.agentCode and
-    Retrievals.credentials and Retrievals.confidenceLevel and Retrievals.nino and
-    Retrievals.saUtr and Retrievals.name and Retrievals.dateOfBirth and
-    Retrievals.email and Retrievals.agentInformation and Retrievals.groupIdentifier and
-    Retrievals.credentialRole and Retrievals.mdtpInformation and Retrievals.itmpName and
-    Retrievals.itmpDateOfBirth and Retrievals.itmpAddress and Retrievals.affinityGroup and
-    Retrievals.credentialStrength and Retrievals.loginTimes
+      Retrievals.credentials and Retrievals.confidenceLevel and Retrievals.nino and
+      Retrievals.saUtr and Retrievals.name and Retrievals.dateOfBirth and
+      Retrievals.email and Retrievals.agentInformation and Retrievals.groupIdentifier and
+      Retrievals.credentialRole and Retrievals.mdtpInformation and Retrievals.itmpName and
+      Retrievals.itmpDateOfBirth and Retrievals.itmpAddress and Retrievals.affinityGroup and
+      Retrievals.credentialStrength and Retrievals.loginTimes
+  private val defaultRetrievals =
+    Retrievals.credentials and Retrievals.confidenceLevel and
+      Retrievals.agentInformation and Retrievals.loginTimes
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSessionAndRequest(request.headers, request = Some(request))
 
-    authorised().retrieve(nrsRetrievals) {
-       case internalId ~ externalId ~ agentCode ~ credentials ~ confidenceLevel ~ nino ~ saUtr ~ name ~ 
-            dateOfBirth ~ email ~ agentInformation ~ groupIdentifier ~ credentialRole ~ mdtpInformation ~ 
+    {
+      if (appConfig.nrsEnabled) {
+        authorised().retrieve(nrsRetrievals) {
+          case internalId ~ externalId ~ agentCode ~ credentials ~ confidenceLevel ~ nino ~ saUtr ~ name ~
+            dateOfBirth ~ email ~ agentInformation ~ groupIdentifier ~ credentialRole ~ mdtpInformation ~
             itmpName ~ itmpDateOfBirth ~ itmpAddress ~ affinityGroup ~ credentialStrength ~ loginTimes =>
 
-        val retrievalData = NrsRetrievalData(internalId, externalId, agentCode, credentials, confidenceLevel, nino, saUtr,
-          name, dateOfBirth, email, agentInformation, groupIdentifier, credentialRole, mdtpInformation, itmpName,
-          itmpDateOfBirth, itmpAddress, affinityGroup, credentialStrength, loginTimes)
+            val retrievalData = NrsRetrievalData(internalId, externalId, agentCode, credentials, confidenceLevel, nino, saUtr,
+              name, dateOfBirth, email, agentInformation, groupIdentifier, credentialRole, mdtpInformation, itmpName,
+              itmpDateOfBirth, itmpAddress, affinityGroup, credentialStrength, loginTimes)
 
-        credentials.map { credential =>
-          block(IdentifierRequest(request, credential.providerId, retrievalData))
-        }.getOrElse(throw UnsupportedAuthProvider("Unable to retrieve providerId"))
+            credentialMap(request, block, credentials, retrievalData)
+        }
+      } else {
+        authorised().retrieve(defaultRetrievals) {
+
+          case credentials ~ confidenceLevel ~ agentInformation ~ loginTimes =>
+
+            val retrievalData = NrsRetrievalData(None, None, None, credentials, confidenceLevel, None, None,
+              None, None, None, agentInformation, None, None, None, None,
+              None, None, None, None, loginTimes)
+
+            credentialMap(request, block, credentials, retrievalData)
+        }
+      }
     } recover {
-      case e => 
+      case e =>
+        logger.error(s"An error occurred during auth action: ${e.getMessage}", e)
         Unauthorized("No Active Session")
     }
   }
+
+  private def credentialMap[A](request: Request[A], block: IdentifierRequest[A] => Future[Result], credentials: Option[Credentials], retrievalData: NrsRetrievalData): Future[Result] =
+    credentials.map { credential =>
+      block(IdentifierRequest(request, credential.providerId, retrievalData))
+    }.getOrElse(throw UnsupportedAuthProvider("Unable to retrieve providerId"))
 
 }

@@ -21,18 +21,18 @@ import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.{JsObject, Json, Writes}
 import v1.models.fullReturn.FullReturnModel
 import assets.fullReturn.FullReturnConstants._
-import utils.TestJsonFormatter._
 import assets.AgentDetailsConstants._
 import assets.GroupCompanyDetailsConstants._
 import assets.ReportingCompanyConstants._
 import assets.fullReturn.GroupLevelAmountConstants._
 import assets.fullReturn.UkCompanyConstants._
 import assets.NonConsolidatedInvestmentElectionConstants._
-import v1.models.Original
+import v1.models.{SubmissionType, Original}
+import utils.JsonFormatters
 
-class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants {
+class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants with JsonFormatters {
 
-  implicit val fullReturnFormatter: Writes[FullReturnModel] = cr008EnabledJsonFormatter.fullReturnWrites
+  implicit val fullReturnFormatter: Writes[FullReturnModel] = fullReturnWrites
 
   "FullReturnModel" must {
 
@@ -62,38 +62,47 @@ class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants {
         actualValue shouldBe expectedValue
       }
 
-      "min values feature switch disabled" in {
+      "All data is included in the Json.toJson" in {
 
         val expectedValue = Json.obj(
+          "declaration" -> true,
           "agentDetails" -> agentDetailsJsonMin,
           "reportingCompany" -> reportingCompanySameJson,
           "publicInfrastructure" -> true,
           "groupCompanyDetails" -> groupCompanyDetailsJson,
-          "submissionType" -> Original,
-          "ukCompanies" -> Seq(ukCompanyJsonMin),
-          "angie" -> 0,
+          "submissionType" -> Json.toJson[SubmissionType](Original),
           "groupLevelElections" -> Json.obj(
             "groupRatio" -> Json.obj(
               "isElected" -> false,
-              "groupEBITDAChargeableGains" -> false
+              "isElected" -> false,
+              "groupEBITDAChargeableGains" -> false,
+              "activeGroupEBITDAChargeableGains" -> false,
             ),
             "interestAllowanceAlternativeCalculation" -> true,
+            "activeInterestAllowanceAlternativeCalculation" -> true,
             "interestAllowanceNonConsolidatedInvestment" -> nonConsolidatedInvestmentJsonMin,
             "interestAllowanceConsolidatedPartnership" -> Json.obj(
-              "isElected" -> false
+              "isElected" -> false,
+              "isActive" -> false
             )
           ),
+          "ukCompanies" -> Seq(ukCompanyJsonMin),
+          "numberOfUkCompanies" -> 1,
+          "angie" -> 0,
           "returnContainsEstimates" -> true,
           "groupEstimateReason" -> "Some reason",
           "groupSubjectToInterestRestrictions" -> false,
           "groupSubjectToInterestReactivation" -> true,
           "totalReactivation" -> 0,
           "totalRestrictions" -> 0,
-          "groupLevelAmount" -> groupLevelAmountJson
+          "groupLevelAmount" -> groupLevelAmountJson,
+          "aggregateNetTaxInterest" -> 50,
+          "aggregateAllocatedRestrictions" -> 0,
+          "aggregateTaxEBITDA" -> 5,
+          "aggregateAllocatedReactivations" -> 0
         )
 
-        val actualValue = Json.toJson(fullReturnModelMin)(cr008DisabledJsonFormatter.fullReturnWrites)
-
+        val actualValue = Json.toJson(fullReturnModelMin)
         actualValue shouldBe expectedValue
       }
     }
@@ -245,7 +254,7 @@ class FullReturnModelSpec extends WordSpec with Matchers with BaseConstants {
       }
 
     }
-      
+
   }
 
   def withoutAppointedReportingCompany(json: JsObject): JsObject = json - "appointedReportingCompany"

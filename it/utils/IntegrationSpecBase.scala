@@ -36,12 +36,17 @@ trait IntegrationSpecBase extends WordSpec
   val mockPort = WiremockHelper.wiremockPort.toString
   val mockUrl = s"http://$mockHost:$mockPort"
 
-  def config: Map[String, String] = Map(
+  def config: Map[String, Any] = Map(
     "application.router" -> "testOnlyDoNotUseInAppConf.Routes",
     "microservice.services.auth.host" -> mockHost,
     "microservice.services.auth.port" -> mockPort,
     "microservice.services.des.host" -> mockHost,
-    "microservice.services.des.port" -> mockPort
+    "microservice.services.des.port" -> mockPort,
+    "microservice.services.nrs.host" -> mockHost,
+    "microservice.services.nrs.port" -> mockPort,
+    "microservice.services.nrs.enabled" -> true,
+    "microservice.services.nrs.authorisation-token" -> "test",
+    "internalServiceHostPatterns" -> Nil
   )
 
   override def beforeEach(): Unit = {

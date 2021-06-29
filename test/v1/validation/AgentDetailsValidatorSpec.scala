@@ -48,8 +48,8 @@ class AgentDetailsValidatorSpec extends BaseSpec {
 
     "passed false and Some name (with incorrect name length) should not succeed with 2 errors" in {
       val model = AgentDetailsModel(false, Some(""))
-      leftSideError(model.validate).errorMessage shouldBe
-        errorMessages(AgentNameLengthError("").errorMessage, AgentNameSuppliedError("").errorMessage)
+      leftSideError(model.validate, 0).errorMessage shouldBe AgentNameLengthError("").errorMessage
+      leftSideError(model.validate, 1).errorMessage shouldBe AgentNameSuppliedError("").errorMessage
     }
 
     "passed true and None should not succeed" in {
@@ -68,6 +68,11 @@ class AgentDetailsValidatorSpec extends BaseSpec {
 
       val model = AgentDetailsModel(true, Some(invalidName))
       leftSideError(model.validate).errorMessage shouldBe AgentNameCharactersError(invalidName).errorMessage
+    }
+
+    "Passing true and invalid characters should not succeed" in {
+      val model = AgentDetailsModel(true, Some("ʰʲʺ˦˫˥ʺ˦˫˥"))
+      leftSideError(model.validate).errorMessage shouldBe AgentNameCharactersError("ʰʲʺ˦˫˥ʺ˦˫˥").errorMessage
     }
 
     "passed true and Some name with an end of line should not succeed" in {

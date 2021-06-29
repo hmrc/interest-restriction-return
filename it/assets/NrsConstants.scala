@@ -17,16 +17,19 @@
 package assets
 
 import org.joda.time.{DateTime, DateTimeZone, LocalDate}
+
 import java.time.Clock
 import org.joda.time.DateTimeZone.UTC
 import uk.gov.hmrc.auth.core.retrieve._
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
 import uk.gov.hmrc.auth.core._
-import v1.models.nrs.{NrsRetrievalData, NrsMetadata, NrsPayload}
+import v1.models.nrs.{NrsMetadata, NrsPayload, NrsRetrievalData}
 import play.api.libs.json._
+
 import java.lang.String.format
 import java.math.BigInteger
 import java.security.MessageDigest.getInstance
+import java.util.UUID
 
 object NrsConstants {
 
@@ -36,6 +39,8 @@ object NrsConstants {
     "something": "true"
   }
   """
+
+  val responsePayload: JsValue = Json.toJson(s"""{"nrSubmissionId":"${UUID.randomUUID()}"}""")
 
   val nrsInternalIdValue: String = "internalId"
   val nrsExternalIdValue: String = "externalId"

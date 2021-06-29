@@ -14,11 +14,21 @@
  * limitations under the License.
  */
 
-package utils
+package stubs
 
-case class TestJsonFormatter(cr008Enabled: Boolean) extends JsonFormatters
+import com.github.tomakehurst.wiremock.stubbing.StubMapping
+import play.api.http.Status._
+import play.api.libs.json.JsValue
+import utils.WireMockMethods
 
-object TestJsonFormatter {
-  val cr008EnabledJsonFormatter: TestJsonFormatter = TestJsonFormatter(true)
-  val cr008DisabledJsonFormatter: TestJsonFormatter = TestJsonFormatter(false)
+object NRSStub extends WireMockMethods {
+
+  private val url = s"/submission"
+
+  def success(response: JsValue): StubMapping =
+    when(method = POST, uri = url).thenReturn(status = ACCEPTED, body = response)
+
+  def error: StubMapping =
+    when(method = POST, uri = url).thenReturn(status = INTERNAL_SERVER_ERROR)
+
 }

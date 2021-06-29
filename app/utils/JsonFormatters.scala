@@ -16,43 +16,13 @@
 
 package utils
 
-import config.{AppConfig, FeatureSwitch}
 import play.api.libs.json._
-import v1.models.{ConsolidatedPartnershipModel, GroupLevelElectionsModel, GroupRatioModel}
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
 import v1.models.fullReturn.FullReturnModel
-import javax.inject.Inject
 
 trait JsonFormatters {
-  val cr008Enabled: Boolean
 
-  def removeJsPathIfFeatureNotEnabled[T](paths: Seq[JsPath])(implicit writes: Writes[T]): Writes[T] =
-    Writes[T] { models =>
-      val json: JsValue = Json.toJson(models)
-      if (cr008Enabled) {
-        json
-      } else {
-        paths.foldLeft(json)(removeAPath)
-      }
-    }
-
-  private def removeAPath(json: JsValue, path: JsPath): JsValue = {
-    json.transform(path.json.prune) match {
-      case JsSuccess(newJson, _) => newJson.as[JsValue]
-      case _ => json
-    }
-  }
-
-  implicit val groupRatioWrites: Writes[GroupRatioModel] =
-    removeJsPathIfFeatureNotEnabled(Seq(__ \ "activeGroupEBITDAChargeableGains"))(GroupRatioModel.writes)
-
-  implicit val consolidatedPartnershipWrites: Writes[ConsolidatedPartnershipModel] =
-    removeJsPathIfFeatureNotEnabled(Seq(__ \ "isActive"))(ConsolidatedPartnershipModel.format)
-
-  implicit val groupLevelElectionWrites: Writes[GroupLevelElectionsModel] =
-    removeJsPathIfFeatureNotEnabled(Seq(__ \ "activeInterestAllowanceAlternativeCalculation"))(Json.writes[GroupLevelElectionsModel])
-
-  private val completeFullReturnWrites: Writes[FullReturnModel] = Writes { models =>
+  implicit val fullReturnWrites: Writes[FullReturnModel] = Writes { models =>
     JsObject(Json.obj(
       "declaration" -> models.declaration,
       "agentDetails" -> models.agentDetails,
@@ -81,7 +51,7 @@ trait JsonFormatters {
     ).fields.filterNot(_._2 == JsNull))
   }
 
-  private val completeAbbreviatedReturnWrites: Writes[AbbreviatedReturnModel] = Writes { models =>
+  implicit val abbreviatedReturnWrites: Writes[AbbreviatedReturnModel] = Writes { models =>
     JsObject(Json.obj(
       "declaration" -> models.declaration,
       "agentDetails" -> models.agentDetails,
@@ -96,24 +66,4 @@ trait JsonFormatters {
       "numberOfUkCompanies" -> models.numberOfUkCompanies
     ).fields.filterNot(_._2 == JsNull))
   }
-
-  implicit val fullReturnWrites: Writes[FullReturnModel] =
-    removeJsPathIfFeatureNotEnabled(Seq(
-      __ \ "declaration",
-      __ \ "numberOfUkCompanies",
-      __ \ "aggregateNetTaxInterest",
-      __ \ "aggregateAllocatedRestrictions",
-      __ \ "aggregateTaxEBITDA",
-      __ \ "aggregateAllocatedReactivations"
-    ))(completeFullReturnWrites)
-
-  implicit val abbreviatedReturnWrites: Writes[AbbreviatedReturnModel] =
-    removeJsPathIfFeatureNotEnabled(Seq(
-      __ \ "declaration",
-      __ \ "numberOfUkCompanies"
-    ))(completeAbbreviatedReturnWrites)
-}
-
-class FeatureSwitchJsonFormatter @Inject()(val config: AppConfig) extends JsonFormatters {
-  override val cr008Enabled: Boolean = FeatureSwitch(config.featureSwitch).changeRequestCR008Enabled
 }

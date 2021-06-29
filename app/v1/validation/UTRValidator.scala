@@ -53,7 +53,7 @@ trait UTRValidator extends BaseValidation {
 
 case class UTRChecksumError(utrValue: UTRModel)(implicit val path: JsPath) extends Validation {
   val code = "UTR_CHECKSUM"
-  val errorMessage: String = "UTR Check Sum does not satisfy the check sum"
+  val errorMessage: String = "UTR given is not valid"
   val value = Some(Json.toJson(utrValue))
 }
 

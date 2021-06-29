@@ -240,7 +240,7 @@ class FullReturnValidatorSpec extends BaseSpec {
             )
           )
         )
-        leftSideError(model.validate,1).errorMessage shouldBe NoTotalNetTaxInterestIncomeDuringRestriction(incorrectDisallowances).errorMessage
+        leftSideError(model.validate, 1).errorMessage shouldBe NoTotalNetTaxInterestIncomeDuringRestriction(incorrectDisallowances).errorMessage
       }
 
       "Agent details are invalid" in {
@@ -268,7 +268,7 @@ class FullReturnValidatorSpec extends BaseSpec {
       "Group Level Amount details are invalid" in {
         leftSideError(fullReturnUltimateParentModel.copy(
           groupLevelAmount = groupLevelAmountModel.copy(interestAllowanceForPeriod = -1)
-        ).validate).errorMessage shouldBe GroupLevelAmountCannotBeNegative("interestAllowanceForPeriod", -1).errorMessage
+        ).validate).errorMessage shouldBe InterestAllowanceForPeriodCannotBeNegative(-1).errorMessage
       }
 
       "Group Ratio is Elected and Adjusted Group Interest details are invalid" in {
@@ -292,6 +292,30 @@ class FullReturnValidatorSpec extends BaseSpec {
         leftSideError(fullReturnUltimateParentModel.copy(
           appointedReportingCompany = false
         ).validate).errorMessage shouldBe ReportingCompanyNotAppointed.errorMessage
+      }
+
+      "Group Ratio is Elected and Adjusted Group Interest details are valid" in {
+
+        val adjustedGroupInterestValue = adjustedGroupInterestModel.copy(
+          qngie = 10,
+          groupEBITDA = 345680475,
+          groupRatio = 100
+        )
+
+        val model = fullReturnUltimateParentModel.copy(adjustedGroupInterest = Some(adjustedGroupInterestValue))
+        leftSideError(model.validate).errorMessage shouldBe GroupRatioCalculationError(adjustedGroupInterestValue).errorMessage
+      }
+
+      "Group Ratio is Elected but QNGIQ is invalid" in {
+
+        val adjustedGroupInterestValue = adjustedGroupInterestModel.copy(
+          qngie = 0,
+          groupEBITDA = 345680475,
+          groupRatio = 100
+        )
+
+        val model = fullReturnUltimateParentModel.copy(adjustedGroupInterest = Some(adjustedGroupInterestValue))
+        leftSideError(model.validate).errorMessage shouldBe GroupRatioCalculationError(adjustedGroupInterestValue).errorMessage
       }
 
       "Group Ratio is not Elected and Adjusted Group Interest details are supplied" in {
@@ -329,7 +353,16 @@ class FullReturnValidatorSpec extends BaseSpec {
         ).validate).errorMessage shouldBe RevisedReturnDetailsCharacterError(returnDetails).errorMessage
       }
 
+      "Return type is Revised and the return details contains alternative invalid characters" in {
+
+        leftSideError(fullReturnUltimateParentModel.copy(
+          submissionType = Revised,
+          revisedReturnDetails = Some(RevisedReturnDetailsModel("ʰʲʺ˦˫˥ʺ˦˫˥"))
+        ).validate).errorMessage shouldBe RevisedReturnDetailsCharacterError("ʰʲʺ˦˫˥ʺ˦˫˥").errorMessage
+      }
+
       "ReturnContainsEstimates is false but groupEstimateReason is populated" in {
+
         leftSideError(fullReturnUltimateParentModel.copy(
           returnContainsEstimates = false,
           groupEstimateReason = Some("Some reason")
@@ -360,6 +393,14 @@ class FullReturnValidatorSpec extends BaseSpec {
           returnContainsEstimates = true,
           groupEstimateReason = Some(estimateReason)
         ).validate).errorMessage shouldBe EstimateReasonCharacterError(estimateReason).errorMessage
+      }
+
+      "ReturnContainsEstimates equals true and groupEstimateReason contains alternative invalid characters" in {
+
+        leftSideError(fullReturnUltimateParentModel.copy(
+          returnContainsEstimates = true,
+          groupEstimateReason = Some("ʰʲʺ˦˫˥ʺ˦˫˥")
+        ).validate).errorMessage shouldBe EstimateReasonCharacterError("ʰʲʺ˦˫˥ʺ˦˫˥").errorMessage
       }
 
       "ReturnContainsEstimates is false but companies have companyEstimatedReason populated" in {
@@ -409,12 +450,12 @@ class FullReturnValidatorSpec extends BaseSpec {
 
       "Ulti parent declaration is false" in {
         val model = fullReturnUltimateParentModel.copy(declaration = false)
-        leftSideError(model.validate).errorMessage shouldBe FullReturnDeclarationError(false).errorMessage
+        leftSideError(model.validate).errorMessage shouldBe ReturnDeclarationError(false).errorMessage
       }
 
       "deemed parent declaration is false" in {
         val model = fullReturnDeemedParentModel.copy(declaration = false, parentCompany = Some(parentCompanyModelDeemedMin))
-        leftSideError(model.validate).errorMessage shouldBe FullReturnDeclarationError(false).errorMessage
+        leftSideError(model.validate).errorMessage shouldBe ReturnDeclarationError(false).errorMessage
       }
 
       "aggregate net tax interest income exceeds the cap" in {

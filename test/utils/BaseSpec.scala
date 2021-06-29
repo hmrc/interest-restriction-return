@@ -32,21 +32,33 @@ import v1.models.Validation.ValidationResult
 import v1.models.requests.IdentifierRequest
 
 import scala.concurrent.ExecutionContext
+import play.api.Application
+import play.api.inject.guice.GuiceApplicationBuilder
+import v1.connectors.NrsConnector
+import v1.services.{DateTimeService, NrsService}
 
 trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with MaterializerSupport with BaseConstants {
+
+  implicit override lazy val app: Application =
+    new GuiceApplicationBuilder()
+      .disable(classOf[com.kenshoo.play.metrics.PlayModule])
+      .configure("metrics.jvm" -> false)
+      .build()
 
   lazy val fakeRequest = FakeRequest("GET", "/")
   lazy implicit val identifierRequest = IdentifierRequest(fakeRequest, "id", NrsConstants.nrsRetrievalData)
   lazy val injector = app.injector
   lazy val bodyParsers = injector.instanceOf[BodyParsers.Default]
-  lazy val jsonFormatters = injector.instanceOf[FeatureSwitchJsonFormatter]
   lazy val appConfig = injector.instanceOf[AppConfig]
+  lazy val dateTimeService = injector.instanceOf[DateTimeService]
+  lazy val nrsConnector = injector.instanceOf[NrsConnector]
   lazy implicit val ec = injector.instanceOf[ExecutionContext]
+  lazy val nrsService = new NrsService(nrsConnector = nrsConnector, dateTimeService = dateTimeService)
   lazy implicit val headerCarrier: HeaderCarrier = HeaderCarrier()
 
   val fakeAuthResponse = NrsConstants.fakeResponse
-  object AuthorisedAction extends Authorised[NrsConstants.NrsRetrievalDataType](fakeAuthResponse, bodyParsers)
-  object UnauthorisedAction extends Unauthorised(new MissingBearerToken, bodyParsers)
+  object AuthorisedAction extends Authorised[NrsConstants.NrsRetrievalDataType](fakeAuthResponse, bodyParsers, appConfig)
+  object UnauthorisedAction extends Unauthorised(new MissingBearerToken, bodyParsers, appConfig)
 
   def rightSide[A](validationResult: ValidationResult[A]): A = validationResult.toEither.right.get
 

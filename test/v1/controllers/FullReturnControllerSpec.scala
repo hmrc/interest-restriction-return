@@ -34,7 +34,9 @@ class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
       object AuthorisedController extends FullReturnController(
         authAction = AuthorisedAction,
         fullReturnService = mockFullReturnService,
-        controllerComponents = Helpers.stubControllerComponents()
+        controllerComponents = Helpers.stubControllerComponents(),
+        nrsService = nrsService,
+        appConfig = appConfig
       )
 
       "a valid payload is submitted" when {
@@ -87,7 +89,9 @@ class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
         object UnauthorisedController extends FullReturnController(
           authAction = UnauthorisedAction,
           fullReturnService = mockFullReturnService,
-          controllerComponents = Helpers.stubControllerComponents()
+          controllerComponents = Helpers.stubControllerComponents(),
+          nrsService = nrsService,
+          appConfig = appConfig
         )
 
         val result = UnauthorisedController.submit()(fakeRequest.withBody(Json.obj()))

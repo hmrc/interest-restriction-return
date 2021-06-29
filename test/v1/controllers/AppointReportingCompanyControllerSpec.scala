@@ -35,7 +35,8 @@ class AppointReportingCompanyControllerSpec extends MockAppointReportingCompanyS
       object AuthorisedController extends AppointReportingCompanyController(
         authAction = AuthorisedAction,
         appointReportingCompanyService = mockAppointReportingCompanyService,
-        controllerComponents = Helpers.stubControllerComponents()
+        controllerComponents = Helpers.stubControllerComponents(),
+        appConfig = appConfig
       )
 
       "a valid payload is submitted" when {
@@ -88,7 +89,8 @@ class AppointReportingCompanyControllerSpec extends MockAppointReportingCompanyS
         object UnauthorisedController extends AppointReportingCompanyController(
           authAction = UnauthorisedAction,
           appointReportingCompanyService = mockAppointReportingCompanyService,
-          controllerComponents = Helpers.stubControllerComponents()
+          controllerComponents = Helpers.stubControllerComponents(),
+          appConfig = appConfig
         )
 
         val result = UnauthorisedController.appoint()(fakeRequest.withBody(Json.obj()))

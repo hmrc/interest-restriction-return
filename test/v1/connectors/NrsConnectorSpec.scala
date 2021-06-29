@@ -34,7 +34,7 @@ class NrsConnectorSpec extends MockHttpClient with BaseSpec {
 
   "NrsConnector.send" when {
     def setup(response: NrsResponse, appConfig: AppConfig): NrsConnector = {
-      val nrsUrl = "http://localhost:1111"
+      val nrsUrl = "http://localhost:1111/submission"
       mockHttpPost[NrsPayload, Either[ErrorResponse, NrSubmissionId]](nrsUrl, nrsPayload)(response)
       new NrsConnectorImpl(mockHttpClient, appConfig)
     }

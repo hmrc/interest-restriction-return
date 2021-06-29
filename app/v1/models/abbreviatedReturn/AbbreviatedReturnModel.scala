@@ -38,4 +38,5 @@ case class AbbreviatedReturnModel(declaration: Boolean,
 
 object AbbreviatedReturnModel {
   implicit val abbreviatedReturnReads: Reads[AbbreviatedReturnModel] = Json.reads[AbbreviatedReturnModel]
+  implicit val abbreviatedReturnWrites: Writes[AbbreviatedReturnModel] = Json.writes[AbbreviatedReturnModel]
 }

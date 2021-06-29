@@ -24,13 +24,13 @@ import assets.ReportingCompanyConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.{JsObject, Json, Writes}
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
-import v1.models.Original
+import v1.models.{Original, SubmissionType}
 import assets.abbreviatedReturn.UkCompanyConstants._
-import utils.TestJsonFormatter._
+import utils.JsonFormatters
 
-class AbbreviatedReturnModelSpec extends WordSpec with Matchers with BaseConstants {
+class AbbreviatedReturnModelSpec extends WordSpec with Matchers with BaseConstants with JsonFormatters {
 
-  implicit val abbreviatedFormatter: Writes[AbbreviatedReturnModel] = cr008EnabledJsonFormatter.abbreviatedReturnWrites
+  implicit val abbreviatedFormatter: Writes[AbbreviatedReturnModel] = abbreviatedReturnWrites
 
   "AbbreviatedReturnModel" must {
 
@@ -52,17 +52,18 @@ class AbbreviatedReturnModelSpec extends WordSpec with Matchers with BaseConstan
         actualValue shouldBe expectedValue
       }
 
-      "min values feature switch disabled" in {
+      "All data is included in the Json.toJson" in {
         val expectedValue = Json.obj(
+          "declaration" -> true,
           "agentDetails" -> agentDetailsJsonMin,
           "reportingCompany" -> reportingCompanyJson,
           "publicInfrastructure" -> true,
           "groupCompanyDetails" -> groupCompanyDetailsJson,
-          "submissionType" -> Original,
-          "ukCompanies" -> Seq(ukCompanyJson)
+          "submissionType" -> Json.toJson[SubmissionType](Original),
+          "ukCompanies" -> Seq(ukCompanyJson),
+          "numberOfUkCompanies" -> 1
         )
-        val actualValue = Json.toJson(abbreviatedReturnModelMin)(cr008DisabledJsonFormatter.abbreviatedReturnWrites)
-
+        val actualValue = Json.toJson(abbreviatedReturnModelMin)
         actualValue shouldBe expectedValue
       }
     }

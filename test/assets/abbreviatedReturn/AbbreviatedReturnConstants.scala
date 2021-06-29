@@ -24,7 +24,8 @@ import assets.ReportingCompanyConstants._
 import assets.abbreviatedReturn.UkCompanyConstants._
 import play.api.libs.json.Json
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
-import v1.models.{Original, Revised, RevisedReturnDetailsModel}
+import v1.models.{Original, Revised, RevisedReturnDetailsModel, SubmissionType}
+import v1.models.SubmissionType._
 
 object AbbreviatedReturnConstants {
 
@@ -38,7 +39,7 @@ object AbbreviatedReturnConstants {
     "publicInfrastructure" -> true,
     "parentCompany" -> parentCompanyJsonUltUkCompany,
     "groupCompanyDetails" -> groupCompanyDetailsJson,
-    "submissionType" -> Revised,
+    "submissionType" -> Json.toJson[SubmissionType](Revised),
     "revisedReturnDetails" -> "revised details",
     "groupLevelElections" -> groupLevelElectionsJsonMax,
     "ukCompanies" -> Seq(ukCompanyJson),
@@ -66,7 +67,7 @@ object AbbreviatedReturnConstants {
     "publicInfrastructure" -> true,
     "parentCompany" -> parentCompanyJsonDeemedMax,
     "groupCompanyDetails" -> groupCompanyDetailsJson,
-    "submissionType" -> Revised,
+    "submissionType" -> Json.toJson[SubmissionType](Revised),
     "revisedReturnDetails" -> "revised details",
     "groupLevelElections" -> groupLevelElectionsJsonMax,
     "ukCompanies" -> Seq(ukCompanyJson),
@@ -93,7 +94,7 @@ object AbbreviatedReturnConstants {
     "reportingCompany" -> reportingCompanyJson,
     "publicInfrastructure" -> true,
     "groupCompanyDetails" -> groupCompanyDetailsJson,
-    "submissionType" -> Original,
+    "submissionType" -> Json.toJson[SubmissionType](Original),
     "ukCompanies" -> Seq(ukCompanyJson),
     "numberOfUkCompanies" -> 1
   )

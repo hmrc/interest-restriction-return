@@ -16,10 +16,10 @@
 
 package v1.validation.abbreviatedReturn
 
-import play.api.libs.json.{Json, JsPath, JsValue}
+import play.api.libs.json.JsPath
 import v1.models.Validation.ValidationResult
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
-import v1.models.{Original, Revised, Validation}
+import v1.models.{Original, Revised}
 import v1.validation.BaseValidation
 import v1.validation.errors._
 
@@ -55,7 +55,7 @@ trait AbbreviatedReturnValidator extends BaseValidation {
   private def validateDeclaration: ValidationResult[Boolean] =
     abbreviatedReturnModel.declaration match {
       case true => abbreviatedReturnModel.declaration.validNec
-      case false => AbbreviatedReturnDeclarationError(abbreviatedReturnModel.declaration).invalidNec
+      case false => ReturnDeclarationError(abbreviatedReturnModel.declaration).invalidNec
     }
 
   def validate: ValidationResult[AbbreviatedReturnModel] = {
@@ -79,11 +79,4 @@ trait AbbreviatedReturnValidator extends BaseValidation {
       validateDeclaration
       ).map(_ => abbreviatedReturnModel)
   }
-}
-
-case class AbbreviatedReturnDeclarationError(declaration: Boolean) extends Validation {
-  val code = "DECLARATION_FALSE"
-  val errorMessage: String = "The declaration must be true"
-  val path: JsPath = JsPath \ "declaration"
-  val value: Option[JsValue] = Some(Json.toJson(declaration))
 }

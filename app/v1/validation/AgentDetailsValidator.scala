@@ -42,7 +42,7 @@ trait AgentDetailsValidator extends BaseValidation {
       case None => agentDetailsModel.agentName.validNec
     }
 
-    combineValidationsForField(lengthCheck, suppliedCheck, characterCheck)
+    combineValidations(lengthCheck, suppliedCheck, characterCheck)
   }
 
   private def validateAgentNameCharacters(agentName: String)(implicit topPath: JsPath): ValidationResult[Option[String]] = {
@@ -58,27 +58,27 @@ trait AgentDetailsValidator extends BaseValidation {
 
 case class AgentNameLengthError(name: String)(implicit topPath: JsPath) extends Validation {
   val code = "AGENT_NAME_LENGTH"
-  val errorMessage: String = "Agent name must be between 1-160 characters if supplied"
+  val errorMessage: String = "Agent name must be between 1 and 160 characters"
   val path: JsPath = topPath \ "agentName"
   val value: Option[JsValue] = Some(JsString(name))
 }
 
 case class AgentNameNotSuppliedError()(implicit topPath: JsPath) extends Validation {
   val code = "AGENT_NAME_NOT_SUPPLIED"
-  val errorMessage: String = "Agent name must be supplied if agent is acting on behalf of company"
+  val errorMessage: String = "Agent acts on behalf of company so agent name needed"
   val path: JsPath = topPath \ "agentName"
   val value: Option[JsValue] = None
 }
 
 case class AgentNameSuppliedError(name: String)(implicit topPath: JsPath) extends Validation {
   val code = "AGENT_NAME_SUPPLIED"
-  val errorMessage: String = "Agent name must not be supplied if agent is not acting on behalf of company"
+  val errorMessage: String = "No agent so agent name not needed"
   val path: JsPath = topPath \ "agentName"
   val value: Option[JsValue] = Some(JsString(name))
 }
 
 case class AgentNameCharactersError(name: String)(implicit val path: JsPath) extends Validation {
   val code = "AGENT_NAME_CHARACTERS"
-  val errorMessage: String = s"Agent name contains invalid characters."
+  val errorMessage: String = s"Agent name contains invalid characters"
   val value: Option[JsValue] = Some(JsString(name))
 }

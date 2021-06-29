@@ -35,7 +35,8 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
       object AuthorisedController extends RevokeReportingCompanyController(
         authAction = AuthorisedAction,
         revokeReportingCompanyService = mockRevokeReportingCompanyService,
-        controllerComponents = Helpers.stubControllerComponents()
+        controllerComponents = Helpers.stubControllerComponents(),
+        appConfig = appConfig
       )
 
       "a valid payload is submitted" when {
@@ -90,7 +91,8 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
         object UnauthorisedController extends RevokeReportingCompanyController(
           authAction = UnauthorisedAction,
           revokeReportingCompanyService = mockRevokeReportingCompanyService,
-          controllerComponents = Helpers.stubControllerComponents()
+          controllerComponents = Helpers.stubControllerComponents(),
+          appConfig = appConfig
         )
 
         val result = UnauthorisedController.revoke()(fakeRequest.withBody(Json.obj()))

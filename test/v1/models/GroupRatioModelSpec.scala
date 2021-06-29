@@ -19,7 +19,6 @@ package v1.models
 import assets.GroupRatioConstants._
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
-import utils.TestJsonFormatter._
 
 class GroupRatioModelSpec extends WordSpec with Matchers {
 
@@ -30,19 +29,20 @@ class GroupRatioModelSpec extends WordSpec with Matchers {
       "max values given" in {
 
         val expectedValue = groupRatioJsonMax
-        val actualValue = Json.toJson(groupRatioModelMax)(cr008EnabledJsonFormatter.groupRatioWrites)
+        val actualValue = Json.toJson(groupRatioModelMax)
 
         actualValue shouldBe expectedValue
       }
 
-      "the CR008 feature switch is disabled" in {
+      "All data is included in the Json.toJson" in {
 
         val expectedValue = Json.obj(
           "isElected" -> false,
-          "groupEBITDAChargeableGains" -> false
+          "groupEBITDAChargeableGains" -> false,
+          "activeGroupEBITDAChargeableGains" -> false,
         )
-        val actualValue = Json.toJson(groupRatioModelMin)(cr008DisabledJsonFormatter.groupRatioWrites)
 
+        val actualValue = Json.toJson(groupRatioModelMin)
         actualValue shouldBe expectedValue
       }
     }

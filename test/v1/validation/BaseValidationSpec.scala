@@ -43,22 +43,6 @@ class BaseValidationSpec extends WordSpec with Matchers with BaseSpec {
 
   val baseValidation = new BaseValidation {}
 
-  "combineValidationsForField" should {
-    "return a single v1.validation if there are no errors" in {
-
-      val result = baseValidation.combineValidationsForField(Valid("ok"))
-
-      rightSide(result) shouldBe "ok"
-    }
-
-    "return 2 invalids as a single message if there are 2 errors" in {
-
-      val result = baseValidation.combineValidationsForField(TestError().invalidNec,TestError1().invalidNec)
-
-      leftSideError(result).errorMessage shouldBe "error|error1"
-    }
-  }
-
   "combineValidations" should {
     "return a single v1.validation if there are no errors" in {
 

@@ -89,8 +89,8 @@ class ValidationErrorResponseModelSpec extends WordSpec with Matchers {
     "be successfully constructed given a sequence of our Validation Errors" in {
 
       val expectedErrors = Seq(
-        ErrorResponseModel(code = "NEGATIVE_ANGIE", message = "ANGIE cannot be negative", path = Some("/angie"), value = Some(Json.toJson(-123))),
-        ErrorResponseModel(code = "TOTAL_RESTRICTIONS_DECIMAL", message = "totalRestrictions has greater than the allowed 2 decimal places.", path = Some("/totalRestrictions"), value = Some(Json.toJson(33.22222)))
+        ErrorResponseModel(code = "NEGATIVE_ANGIE", message = "ANGIE must be a positive number", path = Some("/angie"), value = Some(Json.toJson(-123))),
+        ErrorResponseModel(code = "TOTAL_RESTRICTIONS_DECIMAL", message = "Total restrictions must be to 2 decimal places or less", path = Some("/totalRestrictions"), value = Some(Json.toJson(33.22222)))
       )
 
       val expected = ValidationErrorResponseModel(
@@ -112,13 +112,13 @@ class ValidationErrorResponseModelSpec extends WordSpec with Matchers {
         "errors" -> Json.arr(
           Json.obj(
             "code" -> "NEGATIVE_ANGIE",
-            "message" -> "ANGIE cannot be negative",
+            "message" -> "ANGIE must be a positive number",
             "path" -> "/angie",
             "value" -> -123
           ), 
           Json.obj(
             "code" -> "TOTAL_RESTRICTIONS_DECIMAL",
-            "message" -> "totalRestrictions has greater than the allowed 2 decimal places.",
+            "message" -> "Total restrictions must be to 2 decimal places or less",
             "path" -> "/totalRestrictions",
             "value" -> 33.22222
           )
@@ -136,7 +136,7 @@ class ValidationErrorResponseModelSpec extends WordSpec with Matchers {
     "be successfully constructed given a single Validation Errors" in {
       val expected = ValidationErrorResponseModel(
         code = "TOTAL_RESTRICTIONS_DECIMAL", 
-        message = "totalRestrictions has greater than the allowed 2 decimal places.",
+        message = "Total restrictions must be to 2 decimal places or less",
         errors = None,
         path = Some("/totalRestrictions"), 
         value = Some(Json.toJson(33.22222))
@@ -149,7 +149,7 @@ class ValidationErrorResponseModelSpec extends WordSpec with Matchers {
 
       val expected = Json.obj(
         "code" -> "TOTAL_RESTRICTIONS_DECIMAL",
-        "message" -> "totalRestrictions has greater than the allowed 2 decimal places.",
+        "message" -> "Total restrictions must be to 2 decimal places or less",
         "path" -> "/totalRestrictions",
         "value" -> 33.22222
       )

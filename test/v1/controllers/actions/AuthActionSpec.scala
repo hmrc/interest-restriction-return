@@ -36,7 +36,7 @@ class AuthActionSpec extends BaseSpec {
 
       "successful cary out request" in {
         val authConnector = new FakeSuccessAuthConnector[NrsConstants.NrsRetrievalDataType](NrsConstants.fakeResponse)
-        val authAction = new AuthAction(authConnector, bodyParsers)
+        val authAction = new AuthAction(authConnector, bodyParsers, appConfig)
         val controller = new Harness(authAction)
         val result = controller.onPageLoad()(fakeRequest)
 
@@ -48,7 +48,7 @@ class AuthActionSpec extends BaseSpec {
 
       "redirect to unauthorised" in {
 
-        val authAction = new AuthAction(new FakeSuccessAuthConnector[Option[Credentials]](None), bodyParsers)
+        val authAction = new AuthAction(new FakeSuccessAuthConnector[Option[Credentials]](None), bodyParsers, appConfig)
         val controller = new Harness(authAction)
         val result = controller.onPageLoad()(fakeRequest)
 
@@ -60,7 +60,7 @@ class AuthActionSpec extends BaseSpec {
 
       "redirect the user to log in " in {
 
-        val authAction = new AuthAction(new FakeFailingAuthConnector(new MissingBearerToken), bodyParsers)
+        val authAction = new AuthAction(new FakeFailingAuthConnector(new MissingBearerToken), bodyParsers, appConfig)
         val controller = new Harness(authAction)
         val result = controller.onPageLoad()(fakeRequest)
 
@@ -72,7 +72,7 @@ class AuthActionSpec extends BaseSpec {
 
       "redirect the user to log in " in {
 
-        val authAction = new AuthAction(new FakeFailingAuthConnector(new BearerTokenExpired), bodyParsers)
+        val authAction = new AuthAction(new FakeFailingAuthConnector(new BearerTokenExpired), bodyParsers, appConfig)
         val controller = new Harness(authAction)
         val result = controller.onPageLoad()(fakeRequest)
 
@@ -84,7 +84,7 @@ class AuthActionSpec extends BaseSpec {
 
       "redirect the user to the unauthorised page" in {
 
-        val authAction = new AuthAction(new FakeFailingAuthConnector(new InsufficientEnrolments), bodyParsers)
+        val authAction = new AuthAction(new FakeFailingAuthConnector(new InsufficientEnrolments), bodyParsers, appConfig)
         val controller = new Harness(authAction)
         val result = controller.onPageLoad()(fakeRequest)
 
@@ -96,7 +96,7 @@ class AuthActionSpec extends BaseSpec {
 
       "redirect the user to the unauthorised page" in {
 
-        val authAction = new AuthAction(new FakeFailingAuthConnector(new InsufficientConfidenceLevel), bodyParsers)
+        val authAction = new AuthAction(new FakeFailingAuthConnector(new InsufficientConfidenceLevel), bodyParsers, appConfig)
         val controller = new Harness(authAction)
         val result = controller.onPageLoad()(fakeRequest)
 
@@ -108,7 +108,7 @@ class AuthActionSpec extends BaseSpec {
 
       "redirect the user to the unauthorised page" in {
 
-        val authAction = new AuthAction(new FakeFailingAuthConnector(new UnsupportedAuthProvider), bodyParsers)
+        val authAction = new AuthAction(new FakeFailingAuthConnector(new UnsupportedAuthProvider), bodyParsers, appConfig)
         val controller = new Harness(authAction)
         val result = controller.onPageLoad()(fakeRequest)
 
@@ -120,7 +120,7 @@ class AuthActionSpec extends BaseSpec {
 
       "redirect the user to the unauthorised page" in {
 
-        val authAction = new AuthAction(new FakeFailingAuthConnector(new UnsupportedAffinityGroup), bodyParsers)
+        val authAction = new AuthAction(new FakeFailingAuthConnector(new UnsupportedAffinityGroup), bodyParsers, appConfig)
         val controller = new Harness(authAction)
         val result = controller.onPageLoad()(fakeRequest)
 
@@ -132,7 +132,7 @@ class AuthActionSpec extends BaseSpec {
 
       "redirect the user to the unauthorised page" in {
 
-        val authAction = new AuthAction(new FakeFailingAuthConnector(new UnsupportedCredentialRole), bodyParsers)
+        val authAction = new AuthAction(new FakeFailingAuthConnector(new UnsupportedCredentialRole), bodyParsers, appConfig)
         val controller = new Harness(authAction)
         val result = controller.onPageLoad()(fakeRequest)
 

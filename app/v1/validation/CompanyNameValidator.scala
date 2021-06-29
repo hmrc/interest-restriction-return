@@ -48,12 +48,12 @@ trait CompanyNameValidator extends BaseValidation {
 
 case class CompanyNameLengthError(name: String)(implicit val path: JsPath) extends Validation {
   val code = "COMPANY_NAME_LENGTH"
-  val errorMessage: String = s"Company name is ${name.length} character${if (name.length != 1) "s" else ""} long and should be between 1 and 160"
+  val errorMessage: String = s"Company name must be 1 to 160 characters long"
   val value = Some(JsString(name))
 }
 
 case class CompanyNameCharactersError(name: String)(implicit val path: JsPath) extends Validation {
   val code = "COMPANY_NAME_CHARACTERS"
-  val errorMessage: String = s"Company name contains invalid characters."
+  val errorMessage: String = s"Company name contains invalid characters"
   val value = Some(JsString(name))
 }
