@@ -96,7 +96,6 @@ object TestHelper extends MockAppConfig {
   def controller(selfAssessmentApiDefinition: ApiDefinitionFactory): DocumentationController = {
     lazy val mockCc: ControllerComponents = fakeApplication.injector.instanceOf[ControllerComponents]
     lazy val mockAssets: Assets = fakeApplication.injector.instanceOf[Assets]
-    new DocumentationController(selfAssessmentApiDefinition, mockCc, mockAssets, errorHandler)
+    new DocumentationController(selfAssessmentApiDefinition, mockCc, mockAssets)
   }
-
 }

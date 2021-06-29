@@ -19,21 +19,14 @@ package config
 import controllers.Assets
 import definition.ApiDefinitionFactory
 import javax.inject.{Inject, Singleton}
-import play.api.http.HttpErrorHandler
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendBaseController
 
 @Singleton
-<<<<<<< HEAD
 class DocumentationController @Inject()(interestRestrictionReturnApiDefinition: ApiDefinitionFactory,
-                                        cc: ControllerComponents, assets: Assets, errorHandler: HttpErrorHandler)
-  extends BackendController(cc) {
-=======
-class DocumentationController @Inject()(selfAssessmentApiDefinition: ApiDefinitionFactory,
-                                        override val controllerComponents: ControllerComponents, assets: Assets, errorHandler: HttpErrorHandler)
+                                        override val controllerComponents: ControllerComponents, assets: Assets)
   extends BackendBaseController {
->>>>>>> master
 
   def definition(): Action[AnyContent] = Action {
     Ok(Json.toJson(interestRestrictionReturnApiDefinition.definition))
