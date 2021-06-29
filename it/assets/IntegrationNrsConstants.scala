@@ -31,9 +31,9 @@ import java.math.BigInteger
 import java.security.MessageDigest.getInstance
 import java.util.UUID
 
-object NrsConstants {
+object IntegrationNrsConstants {
 
-  val jsonPayload = 
+  val jsonPayload =
   """
   {
     "something": "true"
@@ -106,19 +106,19 @@ object NrsConstants {
   )
 
   val metadata = NrsMetadata(
-    businessId = "irr", 
-    notableEvent = "irr-submission", 
-    payloadContentType = "application/json", 
+    businessId = "irr",
+    notableEvent = "irr-submission",
+    payloadContentType = "application/json",
     payloadSha256Checksum = sha256Hash(jsonPayload),
-    userSubmissionTimestamp = new DateTime(Clock.systemUTC().instant().toEpochMilli, DateTimeZone.UTC).toString, 
-    identityData = nrsRetrievalData, 
+    userSubmissionTimestamp = new DateTime(Clock.systemUTC().instant().toEpochMilli, DateTimeZone.UTC).toString,
+    identityData = nrsRetrievalData,
     userAuthToken = "Bearer 123",
     headerData = Json.obj(),
     searchKeys = JsObject(Map[String, JsValue]("searchKey" -> JsString("searchValue")))
   )
 
   val payload = NrsPayload(
-    payload = jsonPayload, 
+    payload = jsonPayload,
     metadata = metadata
   )
 

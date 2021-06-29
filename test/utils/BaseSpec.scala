@@ -17,7 +17,7 @@
 package utils
 
 import assets.BaseConstants
-import assets.NrsConstants
+import assets.UnitNrsConstants
 import config.AppConfig
 import org.scalatest.Matchers
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
@@ -46,7 +46,7 @@ trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with Mate
       .build()
 
   lazy val fakeRequest = FakeRequest("GET", "/")
-  lazy implicit val identifierRequest = IdentifierRequest(fakeRequest, "id", NrsConstants.nrsRetrievalData)
+  lazy implicit val identifierRequest = IdentifierRequest(fakeRequest, "id", UnitNrsConstants.nrsRetrievalData)
   lazy val injector = app.injector
   lazy val bodyParsers = injector.instanceOf[BodyParsers.Default]
   lazy val appConfig = injector.instanceOf[AppConfig]
@@ -56,8 +56,8 @@ trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with Mate
   lazy val nrsService = new NrsService(nrsConnector = nrsConnector, dateTimeService = dateTimeService)
   lazy implicit val headerCarrier: HeaderCarrier = HeaderCarrier()
 
-  val fakeAuthResponse = NrsConstants.fakeResponse
-  object AuthorisedAction extends Authorised[NrsConstants.NrsRetrievalDataType](fakeAuthResponse, bodyParsers, appConfig)
+  val fakeAuthResponse = UnitNrsConstants.fakeResponse
+  object AuthorisedAction extends Authorised[UnitNrsConstants.NrsRetrievalDataType](fakeAuthResponse, bodyParsers, appConfig)
   object UnauthorisedAction extends Unauthorised(new MissingBearerToken, bodyParsers, appConfig)
 
   def rightSide[A](validationResult: ValidationResult[A]): A = validationResult.toEither.right.get

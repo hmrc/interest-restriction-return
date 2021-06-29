@@ -22,7 +22,7 @@ import scala.concurrent.Future
 import java.util.UUID
 import v1.services.mocks.MockNrsConnector
 import assets.fullReturn.FullReturnConstants
-import assets.NrsConstants
+import assets.UnitNrsConstants
 import com.google.common.io.BaseEncoding.base64
 import play.api.test.{FakeRequest, FakeHeaders}
 import v1.models.requests.IdentifierRequest
@@ -48,14 +48,14 @@ class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
   val request = IdentifierRequest[String](
     request = fullRequest,
     identifier = "123",
-    nrsRetrievalData = NrsConstants.nrsRetrievalData
+    nrsRetrievalData = UnitNrsConstants.nrsRetrievalData
   )
 
   val expectedNrsMetadata = new NrsMetadata(
     businessId = "irr",
     notableEvent = "irr-submission",
     payloadContentType = "application/json",
-    payloadSha256Checksum = NrsConstants.sha256Hash(payloadAsString),
+    payloadSha256Checksum = UnitNrsConstants.sha256Hash(payloadAsString),
     userSubmissionTimestamp = dateTime.toString,
     userAuthToken = "Bearer 123",
     identityData = request.nrsRetrievalData,
