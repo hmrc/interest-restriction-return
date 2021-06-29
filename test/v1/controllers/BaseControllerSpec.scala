@@ -22,7 +22,6 @@ import play.api.mvc._
 import play.api.test.Helpers
 import utils.BaseSpec
 import play.api.mvc.Results.Ok
-
 import scala.concurrent.Future
 
 class BaseControllerSpec extends BaseSpec {

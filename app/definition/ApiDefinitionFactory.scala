@@ -32,7 +32,8 @@ class ApiDefinitionFactory @Inject()(appConfig: AppConfig) extends Logging {
         Scope(
           key = writeScope,
           name = "Create and Update your Interest Restriction Return information",
-          description = "Allow write access to Interest Restriction Return data"
+          description = "Allow write access to Interest Restriction Return data",
+          confidenceLevel = 200
         )
       ),
       api = APIDefinition(

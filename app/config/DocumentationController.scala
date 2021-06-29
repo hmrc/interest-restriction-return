@@ -19,18 +19,17 @@ package config
 import controllers.Assets
 import definition.ApiDefinitionFactory
 import javax.inject.{Inject, Singleton}
-import play.api.http.HttpErrorHandler
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendBaseController
 
 @Singleton
-class DocumentationController @Inject()(selfAssessmentApiDefinition: ApiDefinitionFactory,
-                                        override val controllerComponents: ControllerComponents, assets: Assets, errorHandler: HttpErrorHandler)
+class DocumentationController @Inject()(interestRestrictionReturnApiDefinition: ApiDefinitionFactory,
+                                        override val controllerComponents: ControllerComponents, assets: Assets)
   extends BackendBaseController {
 
   def definition(): Action[AnyContent] = Action {
-    Ok(Json.toJson(selfAssessmentApiDefinition.definition))
+    Ok(Json.toJson(interestRestrictionReturnApiDefinition.definition))
   }
 
   def raml(version: String, file: String): Action[AnyContent] =
