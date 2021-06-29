@@ -43,7 +43,7 @@ class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
 
         lazy val validJsonFakeRequest = fakeRequest
           .withBody(fullReturnUltimateParentJson)
-          .withHeaders("Content-Type" -> "application/json")
+          .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
 
         "a success response is returned from the companies house service with no v1.validation errors" when {
 
@@ -73,7 +73,7 @@ class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
 
         lazy val invalidJsonFakeRequest = fakeRequest
           .withBody(Json.obj())
-          .withHeaders("Content-Type" -> "application/json")
+          .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
 
         "return a BAD_REQUEST JSON v1.validation error" in {
           val result = AuthorisedController.submit()(invalidJsonFakeRequest)

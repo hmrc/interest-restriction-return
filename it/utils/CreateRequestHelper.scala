@@ -46,7 +46,7 @@ trait CreateRequestHelper extends ServerProvider {
   def postRequest(path: String, formJson: JsValue, follow: Boolean = true): Future[WSResponse] = {
     ws.url(s"http://localhost:$port$path")
       .withCookies(defaultCookie)
-      .withHttpHeaders(ACCEPT -> "application/vnd.hmrc.1.0+json")
+      .withHttpHeaders(ACCEPT -> "application/vnd.hmrc.1.0+json", "Authorization" -> "test")
       .withFollowRedirects(follow)
       .post(formJson)
   }

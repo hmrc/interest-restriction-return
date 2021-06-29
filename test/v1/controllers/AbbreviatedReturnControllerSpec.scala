@@ -44,7 +44,7 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
 
         lazy val validJsonFakeRequest = fakeRequest
           .withBody(abbreviatedReturnUltimateParentJson)
-          .withHeaders("Content-Type" -> "application/json")
+          .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
 
         "a success response is returned from the companies house service with no validation errors" when {
 
@@ -74,7 +74,7 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
 
         lazy val invalidJsonFakeRequest = fakeRequest
           .withBody(Json.obj())
-          .withHeaders("Content-Type" -> "application/json")
+          .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
 
         "return a BAD_REQUEST JSON validation error" in {
           val result = AuthorisedController.submitAbbreviatedReturn()(invalidJsonFakeRequest)

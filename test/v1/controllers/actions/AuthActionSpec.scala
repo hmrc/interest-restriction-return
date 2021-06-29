@@ -34,11 +34,11 @@ class AuthActionSpec extends BaseSpec {
 
     "the user is logged in with providerId returned" must {
 
-      "successful cary out request" in {
+      "successfully carry out request" in {
         val authConnector = new FakeSuccessAuthConnector[UnitNrsConstants.NrsRetrievalDataType](UnitNrsConstants.fakeResponse)
         val authAction = new AuthAction(authConnector, bodyParsers, appConfig)
         val controller = new Harness(authAction)
-        val result = controller.onPageLoad()(fakeRequest)
+        val result = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
 
         status(result) shouldBe OK
       }
