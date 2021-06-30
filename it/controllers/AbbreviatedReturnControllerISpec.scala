@@ -17,11 +17,10 @@
 package controllers
 
 import assets.AbbreviatedReturnITConstants._
-import assets.NrsConstants._
+import assets.IntegrationNrsConstants._
 import play.api.http.Status._
 import stubs.{AuthStub, DESStub, NRSStub}
 import utils.{CreateRequestHelper, CustomMatchers, IntegrationSpecBase}
-
 
 class AbbreviatedReturnControllerISpec extends IntegrationSpecBase with CreateRequestHelper with CustomMatchers {
 
@@ -48,6 +47,7 @@ class AbbreviatedReturnControllerISpec extends IntegrationSpecBase with CreateRe
               )
             }
           }
+
           "nrs errors" should {
 
             "return OK (200) with the correct body" in {

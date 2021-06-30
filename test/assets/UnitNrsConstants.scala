@@ -20,7 +20,6 @@ import org.joda.time.{DateTime, DateTimeZone, LocalDate}
 import java.time.Clock
 import org.joda.time.DateTimeZone.UTC
 import uk.gov.hmrc.auth.core.retrieve._
-import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
 import uk.gov.hmrc.auth.core._
 import v1.models.nrs.{NrsMetadata, NrsPayload, NrsRetrievalData}
 import play.api.libs.json._
@@ -28,7 +27,7 @@ import java.lang.String.format
 import java.math.BigInteger
 import java.security.MessageDigest.getInstance
 
-object NrsConstants {
+object UnitNrsConstants {
 
   val jsonPayload =
   """
@@ -101,19 +100,19 @@ object NrsConstants {
   )
 
   val metadata = NrsMetadata(
-    businessId = "irr", 
-    notableEvent = "irr-submission", 
-    payloadContentType = "application/json", 
+    businessId = "irr",
+    notableEvent = "irr-submission",
+    payloadContentType = "application/json",
     payloadSha256Checksum = sha256Hash(jsonPayload),
-    userSubmissionTimestamp = new DateTime(Clock.systemUTC().instant().toEpochMilli, DateTimeZone.UTC).toString, 
-    identityData = nrsRetrievalData, 
+    userSubmissionTimestamp = new DateTime(Clock.systemUTC().instant().toEpochMilli, DateTimeZone.UTC).toString,
+    identityData = nrsRetrievalData,
     userAuthToken = "Bearer 123",
     headerData = Json.obj(),
     searchKeys = JsObject(Map[String, JsValue]("searchKey" -> JsString("searchValue")))
   )
 
   val payload = NrsPayload(
-    payload = jsonPayload, 
+    payload = jsonPayload,
     metadata = metadata
   )
 

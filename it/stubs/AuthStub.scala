@@ -19,7 +19,7 @@ package stubs
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.Status.{OK, UNAUTHORIZED}
 import utils.WireMockMethods
-import assets.NrsConstants
+import assets.IntegrationNrsConstants
 
 object AuthStub extends WireMockMethods {
 
@@ -28,8 +28,8 @@ object AuthStub extends WireMockMethods {
   def authorised(): StubMapping =
     when(method = POST, uri = authoriseUri)
       .thenReturn(
-        status = OK, 
-        body = NrsConstants.nrsRetrievalData
+        status = OK,
+        body = IntegrationNrsConstants.nrsRetrievalData
       )
 
   def unauthorised(): StubMapping =

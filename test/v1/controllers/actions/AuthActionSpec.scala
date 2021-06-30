@@ -22,7 +22,7 @@ import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve._
 import utils.BaseSpec
 import v1.connectors.mocks.{FakeFailingAuthConnector, FakeSuccessAuthConnector}
-import assets.NrsConstants
+import assets.UnitNrsConstants
 
 class AuthActionSpec extends BaseSpec {
 
@@ -35,7 +35,7 @@ class AuthActionSpec extends BaseSpec {
     "the user is logged in with providerId returned" must {
 
       "successful cary out request" in {
-        val authConnector = new FakeSuccessAuthConnector[NrsConstants.NrsRetrievalDataType](NrsConstants.fakeResponse)
+        val authConnector = new FakeSuccessAuthConnector[UnitNrsConstants.NrsRetrievalDataType](UnitNrsConstants.fakeResponse)
         val authAction = new AuthAction(authConnector, bodyParsers, appConfig)
         val controller = new Harness(authAction)
         val result = controller.onPageLoad()(fakeRequest)
