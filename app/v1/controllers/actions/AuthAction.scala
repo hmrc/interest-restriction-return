@@ -24,7 +24,7 @@ import play.api.Logging
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.{~, Credentials}
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
-import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.{Authorization, HeaderCarrier, HeaderNames}
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import v1.models.nrs.NrsRetrievalData
 import v1.models.requests.IdentifierRequest
@@ -50,38 +50,45 @@ class AuthAction @Inject()(override val authConnector: AuthConnector,
       Retrievals.agentInformation and Retrievals.loginTimes
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
-    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSessionAndRequest(request.headers, request = Some(request))
 
-    {
-      if (appConfig.nrsEnabled) {
-        authorised().retrieve(nrsRetrievals) {
-          case internalId ~ externalId ~ agentCode ~ credentials ~ confidenceLevel ~ nino ~ saUtr ~ name ~
-            dateOfBirth ~ email ~ agentInformation ~ groupIdentifier ~ credentialRole ~ mdtpInformation ~
-            itmpName ~ itmpDateOfBirth ~ itmpAddress ~ affinityGroup ~ credentialStrength ~ loginTimes =>
+    request.headers.get(HeaderNames.authorisation) match {
+      case Some(authHeader) =>
+        {
+          implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request = request, session = request.session).copy(authorization = Some(Authorization(authHeader)))
+          if (appConfig.nrsEnabled) {
+            authorised().retrieve(nrsRetrievals) {
+              case internalId ~ externalId ~ agentCode ~ credentials ~ confidenceLevel ~ nino ~ saUtr ~ name ~
+                dateOfBirth ~ email ~ agentInformation ~ groupIdentifier ~ credentialRole ~ mdtpInformation ~
+                itmpName ~ itmpDateOfBirth ~ itmpAddress ~ affinityGroup ~ credentialStrength ~ loginTimes =>
 
-            val retrievalData = NrsRetrievalData(internalId, externalId, agentCode, credentials, confidenceLevel, nino, saUtr,
-              name, dateOfBirth, email, agentInformation, groupIdentifier, credentialRole, mdtpInformation, itmpName,
-              itmpDateOfBirth, itmpAddress, affinityGroup, credentialStrength, loginTimes)
+                val retrievalData = NrsRetrievalData(internalId, externalId, agentCode, credentials, confidenceLevel, nino, saUtr,
+                  name, dateOfBirth, email, agentInformation, groupIdentifier, credentialRole, mdtpInformation, itmpName,
+                  itmpDateOfBirth, itmpAddress, affinityGroup, credentialStrength, loginTimes)
 
-            credentialMap(request, block, credentials, retrievalData)
+                credentialMap(request, block, credentials, retrievalData)
+            }
+          } else {
+            authorised().retrieve(defaultRetrievals) {
+
+              case credentials ~ confidenceLevel ~ agentInformation ~ loginTimes =>
+
+                val retrievalData = NrsRetrievalData(None, None, None, credentials, confidenceLevel, None, None,
+                  None, None, None, agentInformation, None, None, None, None,
+                  None, None, None, None, loginTimes)
+
+                credentialMap(request, block, credentials, retrievalData)
+            }
+          }
+        } recover {
+          case e =>
+            logger.error(s"An error occurred during auth action: ${e.getMessage}", e)
+            Unauthorized("No Active Session")
         }
-      } else {
-        authorised().retrieve(defaultRetrievals) {
-
-          case credentials ~ confidenceLevel ~ agentInformation ~ loginTimes =>
-
-            val retrievalData = NrsRetrievalData(None, None, None, credentials, confidenceLevel, None, None,
-              None, None, None, agentInformation, None, None, None, None,
-              None, None, None, None, loginTimes)
-
-            credentialMap(request, block, credentials, retrievalData)
-        }
-      }
-    } recover {
-      case e =>
-        logger.error(s"An error occurred during auth action: ${e.getMessage}", e)
-        Unauthorized("No Active Session")
+      case _ =>
+        logger.error(s"An error occurred during auth action: No Authorization header provided")
+        Future(Unauthorized("No Authorization Header Provided"))
     }
+
   }
 
   private def credentialMap[A](request: Request[A], block: IdentifierRequest[A] => Future[Result], credentials: Option[Credentials], retrievalData: NrsRetrievalData): Future[Result] =
