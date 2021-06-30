@@ -17,15 +17,11 @@
 package controllers
 
 import assets.FullReturnITConstants._
-import assets.NrsConstants._
-import com.github.tomakehurst.wiremock.client.WireMock
-import com.github.tomakehurst.wiremock.client.WireMock._
+import assets.IntegrationNrsConstants._
 import play.api.http.Status._
-import play.api.libs.json.Json
 import play.api.Logging
 import stubs.{AuthStub, DESStub, NRSStub}
 import utils.{CreateRequestHelper, CustomMatchers, IntegrationSpecBase}
-
 
 class FullReturnControllerISpec extends IntegrationSpecBase with CreateRequestHelper with CustomMatchers with Logging {
 
@@ -72,11 +68,8 @@ class FullReturnControllerISpec extends IntegrationSpecBase with CreateRequestHe
                 jsonBodyAs(fullReturnDesSuccessJson)
               )
             }
-
           }
         }
-
-
       }
 
       "error is returned from DES" should {
