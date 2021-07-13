@@ -23,10 +23,10 @@ import play.api.libs.json._
 import play.api.mvc.{Request, Result}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendBaseController
-import v1.connectors.ErrorResponse
 import v1.models.Validation.ValidationResult
 import v1.models.errors.ValidationErrorResponseModel
 import v1.models.requests.IdentifierRequest
+import v1.models.ReturnModel
 import v1.services.{NrsService, Submission}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -60,9 +60,9 @@ trait BaseController extends BackendBaseController with Logging {
         service.submit(model).map {
           case Left(err) => Status(err.status)(err.body)
           case Right(response) =>
-            maybeNrsService match {
-              case Some(nrsService) if appConfig.nrsEnabled =>
-                nrsService.send
+            (maybeNrsService, model) match {
+              case (Some(nrsService), returnModel: ReturnModel) if appConfig.nrsEnabled =>
+                nrsService.send(returnModel.reportingCompany.ctutr)
               case _ =>
             }
             Ok(Json.toJson(response))

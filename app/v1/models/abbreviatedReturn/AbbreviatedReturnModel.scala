@@ -29,7 +29,7 @@ case class AbbreviatedReturnModel(declaration: Boolean,
                                   submissionType: SubmissionType,
                                   revisedReturnDetails: Option[RevisedReturnDetailsModel],
                                   groupLevelElections: Option[GroupLevelElectionsModel],
-                                  ukCompanies: Seq[UkCompanyModel]) extends AbbreviatedReturnValidator {
+                                  ukCompanies: Seq[UkCompanyModel]) extends AbbreviatedReturnValidator with ReturnModel {
 
   override val abbreviatedReturnModel: AbbreviatedReturnModel = this
   val publicInfrastructure: Boolean = ukCompanies.map(_.qicElection).exists(identity)

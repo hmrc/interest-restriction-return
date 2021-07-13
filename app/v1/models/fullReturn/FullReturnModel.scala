@@ -39,7 +39,7 @@ case class FullReturnModel(declaration: Boolean,
                             totalRestrictions: BigDecimal,
                             groupLevelAmount: GroupLevelAmountModel,
                             adjustedGroupInterest: Option[AdjustedGroupInterestModel]
-                          ) extends FullReturnValidator {
+                          ) extends FullReturnValidator with ReturnModel {
 
   override val fullReturnModel: FullReturnModel = this
   val totalReactivation: BigDecimal = ukCompanies.flatMap(_.allocatedReactivations.map(_.currentPeriodReactivation)).sum
