@@ -41,7 +41,7 @@ class AppConfigSpec extends BaseSpec  {
 
     "be Some when the nrs Config is present" in {
       val appConfig = appConfigWithNrs
-      appConfig.nrsAuthorisationToken shouldBe Some("Bearer some.token")
+      appConfig.nrsAuthorisationToken shouldBe Some("some.token")
     }
   }
 

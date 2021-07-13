@@ -49,7 +49,7 @@ class AppConfigImpl @Inject()(val servicesConfig: ServicesConfig, configuration:
     case _ => false
   }
   lazy val nrsUrl: Option[String] = configuration.getOptional[Configuration]("microservice.services.nrs").map(_ => servicesConfig.baseUrl("nrs"))
-  lazy val nrsAuthorisationToken: Option[String] = configuration.getOptional[String]("microservice.services.nrs.authorisation-token").map(token => s"Bearer $token")
+  lazy val nrsAuthorisationToken: Option[String] = configuration.getOptional[String]("microservice.services.nrs.apikey")
 
   val apiGatewayContext: String = servicesConfig.getString("api.gateway.context")
 
