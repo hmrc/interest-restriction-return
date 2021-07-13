@@ -42,7 +42,7 @@ class NrsConnectorImpl @Inject()(http: HttpClient, implicit val appConfig: AppCo
     (appConfig.nrsUrl, appConfig.nrsAuthorisationToken) match {
       case (Some(url), Some(token)) => post(nrsPayload, url, token)
       case _ =>
-        logger.error(s"${appConfig.nrsUrl} ${appConfig.nrsAuthorisationToken}")
+        logger.error(s"Nrs config failure: ${appConfig.nrsUrl} ${appConfig.nrsAuthorisationToken}")
         Future.failed(new NrsConfigurationException)
     }
 
