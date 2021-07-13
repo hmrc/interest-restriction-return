@@ -44,7 +44,7 @@ object AppConfigConstants {
   val nrsMap = Map(
     "host" -> "localhost",
     "port" -> "1111",
-    "authorisation-token" -> "some.token",
+    "apikey" -> "some.token",
     "enabled" -> "true"
   )
 
