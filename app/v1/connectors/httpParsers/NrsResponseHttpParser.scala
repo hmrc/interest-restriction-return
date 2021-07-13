@@ -19,8 +19,8 @@ package v1.connectors.httpParsers
 import play.api.Logging
 import v1.connectors.HttpHelper.NrsResponse
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
-import play.api.http.Status.OK
-import v1.connectors.{InvalidSuccessResponse, HttpErrorMessages, UnexpectedFailure}
+import play.api.http.Status.ACCEPTED
+import v1.connectors.{HttpErrorMessages, InvalidSuccessResponse, UnexpectedFailure}
 import v1.models.nrs.NrSubmissionId
 
 object NrsResponseHttpParser extends Logging {
@@ -29,7 +29,7 @@ object NrsResponseHttpParser extends Logging {
 
     override def read(method: String, url: String, response: HttpResponse): NrsResponse = {
       response.status match {
-        case OK =>
+        case ACCEPTED =>
           response.json.validate[NrSubmissionId].fold(
             invalid => {
               logger.error(s"Invalid success response json from NRS - $invalid")
