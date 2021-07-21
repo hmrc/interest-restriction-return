@@ -128,4 +128,10 @@ object UnitNrsConstants {
     nrsAgentInformationValue),
     nrsLoginTimes)
 
+  val fakeResponseWithoutProviderId: NrsRetrievalDataType = new ~(new ~(new ~(
+    None,
+    nrsConfidenceLevel),
+    nrsAgentInformationValue),
+    nrsLoginTimes)
+
 }

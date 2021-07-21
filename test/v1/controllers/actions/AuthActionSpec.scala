@@ -47,10 +47,10 @@ class AuthActionSpec extends BaseSpec {
     "the user is logged in with NO providerId returned" must {
 
       "redirect to unauthorised" in {
-
-        val authAction = new AuthAction(new FakeSuccessAuthConnector[Option[Credentials]](None), bodyParsers, appConfig)
+        val authConnector = new FakeSuccessAuthConnector[UnitNrsConstants.NrsRetrievalDataType](UnitNrsConstants.fakeResponseWithoutProviderId)
+        val authAction = new AuthAction(authConnector, bodyParsers, appConfig)
         val controller = new Harness(authAction)
-        val result = controller.onPageLoad()(fakeRequest)
+        val result = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
 
         status(result) shouldBe UNAUTHORIZED
       }
@@ -74,7 +74,7 @@ class AuthActionSpec extends BaseSpec {
 
         val authAction = new AuthAction(new FakeFailingAuthConnector(new BearerTokenExpired), bodyParsers, appConfig)
         val controller = new Harness(authAction)
-        val result = controller.onPageLoad()(fakeRequest)
+        val result = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
 
         status(result) shouldBe UNAUTHORIZED
       }
@@ -86,7 +86,7 @@ class AuthActionSpec extends BaseSpec {
 
         val authAction = new AuthAction(new FakeFailingAuthConnector(new InsufficientEnrolments), bodyParsers, appConfig)
         val controller = new Harness(authAction)
-        val result = controller.onPageLoad()(fakeRequest)
+        val result = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
 
         status(result) shouldBe UNAUTHORIZED
       }
@@ -98,7 +98,7 @@ class AuthActionSpec extends BaseSpec {
 
         val authAction = new AuthAction(new FakeFailingAuthConnector(new InsufficientConfidenceLevel), bodyParsers, appConfig)
         val controller = new Harness(authAction)
-        val result = controller.onPageLoad()(fakeRequest)
+        val result = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
 
         status(result) shouldBe UNAUTHORIZED
       }
@@ -110,7 +110,7 @@ class AuthActionSpec extends BaseSpec {
 
         val authAction = new AuthAction(new FakeFailingAuthConnector(new UnsupportedAuthProvider), bodyParsers, appConfig)
         val controller = new Harness(authAction)
-        val result = controller.onPageLoad()(fakeRequest)
+        val result = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
 
         status(result) shouldBe UNAUTHORIZED
       }
@@ -122,7 +122,7 @@ class AuthActionSpec extends BaseSpec {
 
         val authAction = new AuthAction(new FakeFailingAuthConnector(new UnsupportedAffinityGroup), bodyParsers, appConfig)
         val controller = new Harness(authAction)
-        val result = controller.onPageLoad()(fakeRequest)
+        val result = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
 
         status(result) shouldBe UNAUTHORIZED
       }
@@ -134,7 +134,7 @@ class AuthActionSpec extends BaseSpec {
 
         val authAction = new AuthAction(new FakeFailingAuthConnector(new UnsupportedCredentialRole), bodyParsers, appConfig)
         val controller = new Harness(authAction)
-        val result = controller.onPageLoad()(fakeRequest)
+        val result = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
 
         status(result) shouldBe UNAUTHORIZED
       }

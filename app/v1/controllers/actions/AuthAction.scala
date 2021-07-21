@@ -66,6 +66,7 @@ class AuthAction @Inject()(override val authConnector: AuthConnector,
                   itmpDateOfBirth, itmpAddress, affinityGroup, credentialStrength, loginTimes)
 
                 credentialMap(request, block, credentials, retrievalData)
+              case _ => throw UnsupportedAuthProvider("Unable to get retrievals")
             }
           } else {
             authorised().retrieve(defaultRetrievals) {
@@ -77,6 +78,7 @@ class AuthAction @Inject()(override val authConnector: AuthConnector,
                   None, None, None, None, loginTimes)
 
                 credentialMap(request, block, credentials, retrievalData)
+              case _ => throw UnsupportedAuthProvider("Unable to get retrievals")
             }
           }
         } recover {
