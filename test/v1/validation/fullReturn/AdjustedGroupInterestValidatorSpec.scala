@@ -201,15 +201,6 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
           leftSideError(model.validate).errorMessage shouldBe GroupRatioError(groupRatio).errorMessage
         }
 
-        "is 100 and qngie is zero" in {
-          val groupRatio: BigDecimal = 100.00
-          val model = adjustedGroupInterestModel.copy(
-            groupRatio = groupRatio,
-            qngie = 0
-          )
-          leftSideError(model.validate).errorMessage shouldBe GroupRatioCalculationError(model).errorMessage
-        }
-
         "is calculated to be negative but not set to 100%" in {
           val groupRatio: BigDecimal = 99.00
           val model = adjustedGroupInterestModel.copy(
@@ -242,14 +233,6 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
         )
         leftSideError(model.validate).errorMessage shouldBe GroupRatioDecimalError(groupRatio).errorMessage
       }
-
-      "is less than the calculated groupRatio" in {
-        val groupRatio: BigDecimal = 0.5
-        val model = adjustedGroupInterestModel.copy(
-          groupRatio = groupRatio
-        )
-        leftSideError(model.validate).errorMessage shouldBe GroupRatioCalculationError(model).errorMessage
-      }
     }
 
     "GroupEBITDA" when {
@@ -279,7 +262,7 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
       )
       val expectedErrors = NonEmptyChain(
         GroupRatioDecimalError(0.621234), QngieDecimalError(5.0122),
-        GroupEBITDADecimalError(8.888), GroupRatioCalculationError(model))
+        GroupEBITDADecimalError(8.888))
 
       model.validate.toEither shouldBe Left(expectedErrors)
     }
@@ -295,7 +278,7 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
         groupEBITDA = groupEBITDA,
         groupRatio = groupRatio
       )
-      val expectedErrors = NonEmptyChain(GroupRatioDecimalError(0.621234), QngieDecimalError(5.0122), GroupRatioCalculationError(model))
+      val expectedErrors = NonEmptyChain(GroupRatioDecimalError(0.621234), QngieDecimalError(5.0122))
       model.validate.toEither shouldBe Left(expectedErrors)
     }
   }
