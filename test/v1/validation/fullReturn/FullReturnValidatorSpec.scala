@@ -271,17 +271,6 @@ class FullReturnValidatorSpec extends BaseSpec {
         ).validate).errorMessage shouldBe InterestAllowanceForPeriodCannotBeNegative(-1).errorMessage
       }
 
-      "Group Ratio is Elected and Adjusted Group Interest details are invalid" in {
-        val adjustedGroupInterestValue = adjustedGroupInterestModel.copy(
-          qngie = 100,
-          groupEBITDA = 200,
-          groupRatio = 60
-        )
-        leftSideError(fullReturnUltimateParentModel.copy(
-          adjustedGroupInterest = Some(adjustedGroupInterestValue)
-        ).validate).errorMessage shouldBe GroupRatioCalculationError(adjustedGroupInterestValue).errorMessage
-      }
-
       "Group Ratio is Elected and Adjusted Group Interest details are not supplied" in {
         leftSideError(fullReturnUltimateParentModel.copy(
           adjustedGroupInterest = None
@@ -292,30 +281,6 @@ class FullReturnValidatorSpec extends BaseSpec {
         leftSideError(fullReturnUltimateParentModel.copy(
           appointedReportingCompany = false
         ).validate).errorMessage shouldBe ReportingCompanyNotAppointed.errorMessage
-      }
-
-      "Group Ratio is Elected and Adjusted Group Interest details are valid" in {
-
-        val adjustedGroupInterestValue = adjustedGroupInterestModel.copy(
-          qngie = 10,
-          groupEBITDA = 345680475,
-          groupRatio = 100
-        )
-
-        val model = fullReturnUltimateParentModel.copy(adjustedGroupInterest = Some(adjustedGroupInterestValue))
-        leftSideError(model.validate).errorMessage shouldBe GroupRatioCalculationError(adjustedGroupInterestValue).errorMessage
-      }
-
-      "Group Ratio is Elected but QNGIQ is invalid" in {
-
-        val adjustedGroupInterestValue = adjustedGroupInterestModel.copy(
-          qngie = 0,
-          groupEBITDA = 345680475,
-          groupRatio = 100
-        )
-
-        val model = fullReturnUltimateParentModel.copy(adjustedGroupInterest = Some(adjustedGroupInterestValue))
-        leftSideError(model.validate).errorMessage shouldBe GroupRatioCalculationError(adjustedGroupInterestValue).errorMessage
       }
 
       "Group Ratio is not Elected and Adjusted Group Interest details are supplied" in {
