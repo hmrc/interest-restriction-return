@@ -398,12 +398,6 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
         }
       }
 
-      "Accounting periods don't cover GPOA" in {
-        val model = restrictionModel
-
-        leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe CompanyAPDoesNotCoverGPOA().errorMessage
-      }
-
     }
   }
 }
