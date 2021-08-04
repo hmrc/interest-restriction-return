@@ -96,7 +96,6 @@ trait AllocatedRestrictionsValidator extends BaseValidation {
       case (_, Some(ap2), Some(ap3)) =>
         combineValidations(
           if (!ap3.isAfter(ap2)) AllocatedRestrictionDateBeforePrevious(3).invalidNec else Some(ap3).validNec,
-          if (ap3.isBefore(groupEndDate)) Ap3BeforeGroupEndDate(ap3, groupEndDate).invalidNec else Some(ap3).validNec,
           if (ap3.minusMonths(12).isAfter(ap2)) AllocatedRestrictionDateGreaterThan12MonthsAfterPrevious(3).invalidNec else Some(ap3).validNec,
           if (ap2.isAfter(groupEndDate)) DateAfterGPOA(3).invalidNec else Some(ap3).validNec
         )
@@ -160,13 +159,6 @@ case class Ap1NotAfterGroupStartDate(ap1Date: LocalDate, groupStartDate: LocalDa
   val path: JsPath = topPath \ "ap1EndDate"
   val errorMessage: String = s"The end date of the first accounting period must be on or after the start date of the group's period of account"
   val value = Some(Json.obj("ap1EndDate" -> ap1Date, "groupStartDate" -> groupStartDate))
-}
-
-case class Ap3BeforeGroupEndDate(ap3Date: LocalDate, groupEndDate: LocalDate)(implicit topPath: JsPath) extends Validation {
-  val code = "END_DATE_AFTER_GROUP_END_DATE"
-  val path: JsPath = topPath \ "ap3EndDate"
-  val errorMessage: String = s"The end date of the third accounting period must be on or after the end date of the group's period of account"
-  val value = Some(Json.obj("ap3EndDate" -> ap3Date, "groupEndDate" -> groupEndDate))
 }
 
 case class DateRangeError(date: LocalDate, jsonAttribute: String)(implicit topPath: JsPath) extends Validation {
