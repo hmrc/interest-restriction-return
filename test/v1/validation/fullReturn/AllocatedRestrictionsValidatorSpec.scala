@@ -345,19 +345,6 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
           leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe AllocatedRestrictionDateGreaterThan12MonthsAfterPrevious(3).errorMessage
         }
 
-        "is supplied with a date less than Group Accounting Period end" in {
-
-          val model = restrictionModel.copy(
-            ap2EndDate = Some(ap2EndDate),
-            disallowanceAp2 = Some(disallowanceAp2),
-            ap3EndDate = Some(groupAccountingPeriod.endDate.minusDays(1)),
-            disallowanceAp3 = Some(disallowanceAp3)
-          )
-
-          leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe
-            Ap3BeforeGroupEndDate(groupAccountingPeriod.endDate.minusDays(1), groupAccountingPeriod.endDate).errorMessage
-        }
-
         "is supplied with a date that is less than the minimum date" in {
 
           val model = restrictionModel.copy(
@@ -396,12 +383,6 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
           leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe
             DateAfterGPOA(3).errorMessage
         }
-      }
-
-      "Accounting periods don't cover GPOA" in {
-        val model = restrictionModel
-
-        leftSideError(model.validate(groupAccountingPeriod)).errorMessage shouldBe CompanyAPDoesNotCoverGPOA().errorMessage
       }
 
     }
