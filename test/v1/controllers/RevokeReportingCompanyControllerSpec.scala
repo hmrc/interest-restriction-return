@@ -100,4 +100,58 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
       }
     }
   }
+
+
+  "RevokeReportingCompanyController.validate()" when {
+    val validateFakeRequest = FakeRequest("POST", "/interest-restriction-return/reporting-company/appoint/validate")
+    "the user is authenticated" when {
+
+      object AuthorisedController extends RevokeReportingCompanyController(
+        authAction = AuthorisedAction,
+        revokeReportingCompanyService = mockRevokeReportingCompanyService,
+        controllerComponents = Helpers.stubControllerComponents(),
+        appConfig = appConfig
+      )
+
+      "a valid payload is submitted" when {
+
+        lazy val validJsonFakeRequest = validateFakeRequest
+          .withBody(revokeReportingCompanyJsonMax)
+          .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
+
+        "return 204 (NO CONTENT)" in {
+          val result = AuthorisedController.validate()(validJsonFakeRequest)
+          status(result) shouldBe Status.NO_CONTENT
+        }
+      }
+
+      "an invalid payload is submitted" when {
+
+        lazy val invalidJsonFakeRequest = validateFakeRequest
+          .withBody(Json.obj())
+          .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
+
+        "return a BAD_REQUEST JSON v1.validation error" in {
+          val result = AuthorisedController.validate()(invalidJsonFakeRequest)
+          status(result) shouldBe Status.BAD_REQUEST
+        }
+      }
+    }
+
+    "the user is unauthenticated" should {
+
+      "return 401 (Unauthorised)" in {
+
+        object UnauthorisedController extends RevokeReportingCompanyController(
+          authAction = UnauthorisedAction,
+          revokeReportingCompanyService = mockRevokeReportingCompanyService,
+          controllerComponents = Helpers.stubControllerComponents(),
+          appConfig = appConfig
+        )
+
+        val result = UnauthorisedController.validate()(fakeRequest.withBody(Json.obj()))
+        status(result) shouldBe Status.UNAUTHORIZED
+      }
+    }
+  }
 }

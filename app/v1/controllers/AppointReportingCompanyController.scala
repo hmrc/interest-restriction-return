@@ -42,4 +42,10 @@ class AppointReportingCompanyController @Inject()(authAction: AuthAction,
       )
     }
   }
+
+  def validate(): Action[JsValue] = authAction.async(parse.json) { implicit request =>
+    withJsonBody[AppointReportingCompanyModel] { appointReportingCompanyModel =>
+      handleValidationForValidationMode(validationModel = appointReportingCompanyModel.validate)
+    }
+  }
 }
