@@ -100,4 +100,61 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
       }
     }
   }
+
+  "AbbreviatedReturnController.validate()" when {
+
+    val fakeRequestForValidate = FakeRequest("POST", "/interest-restriction-return/return/abbreviated/validate")
+
+    "the user is authenticated" when {
+
+      object AuthorisedController extends AbbreviatedReturnController(
+        authAction = AuthorisedAction,
+        abbreviatedReturnService = mockAbbreviatedReturnService,
+        controllerComponents = Helpers.stubControllerComponents(),
+        nrsService = nrsService,
+        appConfig = appConfig
+      )
+
+      "a valid payload is submitted" when {
+
+        lazy val validJsonFakeRequest = fakeRequestForValidate
+          .withBody(abbreviatedReturnUltimateParentJson)
+          .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
+
+        "return 204 (NO_CONTENT)" in {
+          val result = AuthorisedController.validate()(validJsonFakeRequest)
+          status(result) shouldBe Status.NO_CONTENT
+        }
+      }
+
+      "an invalid payload is submitted" when {
+
+        lazy val invalidJsonFakeRequest = fakeRequestForValidate
+          .withBody(Json.obj())
+          .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
+
+        "return a BAD_REQUEST JSON validation error" in {
+          val result = AuthorisedController.validate()(invalidJsonFakeRequest)
+          status(result) shouldBe Status.BAD_REQUEST
+        }
+      }
+    }
+
+    "the user is unauthenticated" should {
+
+      "return 401 (Unauthorised)" in {
+
+        object UnauthorisedController extends AbbreviatedReturnController(
+          authAction = UnauthorisedAction,
+          abbreviatedReturnService = mockAbbreviatedReturnService,
+          controllerComponents = Helpers.stubControllerComponents(),
+          nrsService = nrsService,
+          appConfig = appConfig
+        )
+
+        val result = UnauthorisedController.submitAbbreviatedReturn()(fakeRequest.withBody(Json.obj()))
+        status(result) shouldBe Status.UNAUTHORIZED
+      }
+    }
+  }
 }

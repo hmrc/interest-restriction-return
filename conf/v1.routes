@@ -9,3 +9,5 @@ POST       /return/abbreviated                          v1.controllers.Abbreviat
 POST       /return/full                                 v1.controllers.FullReturnController.submit()
 
 POST       /return/full/validate                        v1.controllers.FullReturnController.validate()
+
+POST       /return/abbreviated/validate                 v1.controllers.AbbreviatedReturnController.validate()
