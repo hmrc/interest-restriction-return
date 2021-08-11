@@ -44,7 +44,7 @@ class AbbreviatedReturnController @Inject()(authAction: AuthAction,
     }
   }
 
-    def validate(): Action[JsValue] = authAction.async(parse.json) { implicit request =>
+  def validate(): Action[JsValue] = authAction.async(parse.json) { implicit request =>
     withJsonBody[AbbreviatedReturnModel] { abbreviatedModel =>
       handleValidationForValidationMode(validationModel = abbreviatedModel.validate)
     }
