@@ -79,4 +79,40 @@ class RevokeReportingCompanyControllerISpec extends IntegrationSpecBase with Cre
       }
     }
   }
+
+  "POST /reporting-company/revoke/validate" when {
+
+    "user is authenticated" when {
+
+      "return NO_CONTENT (204) with the correct body" in {
+
+        AuthStub.authorised()
+
+        val res = postRequest("/reporting-company/revoke/validate", revokeReportingCompanyJson)
+
+        whenReady(res) { result =>
+          verifyNoCall("/submission")
+          result should have(
+            httpStatus(NO_CONTENT)
+          )
+        }
+      }
+    }
+
+    "user is unauthenticated" when {
+
+      "should return UNAUTHORISED (401)" in {
+
+        AuthStub.unauthorised()
+
+        val res = postRequest("/reporting-company/revoke/validate", revokeReportingCompanyJson)
+
+        whenReady(res) { result =>
+          result should have(
+            httpStatus(UNAUTHORIZED)
+          )
+        }
+      }
+    }
+  }
 }

@@ -2,7 +2,11 @@
 
 POST       /reporting-company/appoint                   v1.controllers.AppointReportingCompanyController.appoint()
 
+POST       /reporting-company/appoint/validate          v1.controllers.AppointReportingCompanyController.validate()
+
 POST       /reporting-company/revoke                    v1.controllers.RevokeReportingCompanyController.revoke()
+
+POST       /reporting-company/revoke/validate           v1.controllers.RevokeReportingCompanyController.validate()
 
 POST       /return/abbreviated                          v1.controllers.AbbreviatedReturnController.submitAbbreviatedReturn()
 

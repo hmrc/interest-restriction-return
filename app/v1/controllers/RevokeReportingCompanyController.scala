@@ -43,4 +43,10 @@ class RevokeReportingCompanyController @Inject()(authAction: AuthAction,
       )
     }
   }
+
+  def validate(): Action[JsValue] = authAction.async(parse.json) { implicit request =>
+    withJsonBody[RevokeReportingCompanyModel] { revokeReportingCompanyModel =>
+      handleValidationForValidationMode(validationModel = revokeReportingCompanyModel.validate)
+    }
+  }
 }
