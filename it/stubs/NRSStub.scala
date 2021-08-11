@@ -29,6 +29,6 @@ object NRSStub extends WireMockMethods {
     when(method = POST, uri = url).thenReturn(status = ACCEPTED, body = response)
 
   def error: StubMapping =
-    when(method = POST, uri = url).thenReturn(status = INTERNAL_SERVER_ERROR)
+    when(method = POST, uri = url).thenReturn(status = BAD_REQUEST)
 
 }

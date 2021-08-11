@@ -22,7 +22,7 @@ import play.api.libs.json.JsValue
 import play.api.mvc.{Action, ControllerComponents}
 import v1.controllers.actions.AuthAction
 import v1.models.appointReportingCompany.AppointReportingCompanyModel
-import v1.services.{AppointReportingCompanyService, NrsService}
+import v1.services.AppointReportingCompanyService
 
 import javax.inject.{Inject, Singleton}
 
@@ -34,10 +34,9 @@ class AppointReportingCompanyController @Inject()(authAction: AuthAction,
 
   def appoint(): Action[JsValue] = authAction.async(parse.json) { implicit request =>
     withJsonBody[AppointReportingCompanyModel] { appointReportingCompanyModel =>
-      handleValidation(
+      handleValidationAndSubmit(
         validationModel = appointReportingCompanyModel.validate,
         service = appointReportingCompanyService,
-        controllerName = "AppointReportingCompanyController",
         maybeNrsService = None,
         appConfig = appConfig
       )

@@ -99,4 +99,59 @@ class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
       }
     }
   }
+
+  "FullReturnController.valid()" when {
+    val validateFakeRequest = FakeRequest("POST", "/interest-restriction-return/return/full/validate")
+    "the user is authenticated" when {
+
+      object AuthorisedController extends FullReturnController(
+        authAction = AuthorisedAction,
+        fullReturnService = mockFullReturnService,
+        controllerComponents = Helpers.stubControllerComponents(),
+        nrsService = nrsService,
+        appConfig = appConfig
+      )
+
+      "a valid payload is submitted" when {
+
+        lazy val validJsonFakeRequest = validateFakeRequest
+          .withBody(fullReturnUltimateParentJson)
+          .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
+
+        "return 204 (NO CONTENT)" in {
+          val result = AuthorisedController.validate()(validJsonFakeRequest)
+          status(result) shouldBe Status.NO_CONTENT
+        }
+      }
+
+      "an invalid payload is submitted" when {
+
+        lazy val invalidJsonFakeRequest = validateFakeRequest
+          .withBody(Json.obj())
+          .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
+
+        "return a BAD_REQUEST JSON v1.validation error" in {
+          val result = AuthorisedController.validate()(invalidJsonFakeRequest)
+          status(result) shouldBe Status.BAD_REQUEST
+        }
+      }
+    }
+
+    "the user is unauthenticated" should {
+
+      "return 401 (Unauthorised)" in {
+
+        object UnauthorisedController extends FullReturnController(
+          authAction = UnauthorisedAction,
+          fullReturnService = mockFullReturnService,
+          controllerComponents = Helpers.stubControllerComponents(),
+          nrsService = nrsService,
+          appConfig = appConfig
+        )
+
+        val result = UnauthorisedController.validate()(fakeRequest.withBody(Json.obj()))
+        status(result) shouldBe Status.UNAUTHORIZED
+      }
+    }
+  }
 }
