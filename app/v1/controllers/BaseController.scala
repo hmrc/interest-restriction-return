@@ -47,26 +47,39 @@ trait BaseController extends BackendBaseController with Logging {
         Future.successful(BadRequest(s"Could not parse body due to ${e.getMessage}"))
     }
 
-  def handleValidation[T](validationModel: ValidationResult[T], service: Submission[T], controllerName: String, maybeNrsService: Option[NrsService], appConfig: AppConfig)
-                         (implicit hc: HeaderCarrier, identifierRequest: IdentifierRequest[JsValue]): Future[Result] = {
+  def handleValidation[T](validationModel: ValidationResult[T])(onValidResult: T => Future[Result]): Future[Result] = {
     validationModel match {
       case Invalid(e) =>
-        logger.debug(s"[$controllerName][VALIDATION][FAILURE] Business Rule Errors: ${Json.toJson(ValidationErrorResponseModel(e))}")
-        logger.info(s"[$controllerName][VALIDATION][FAILURE]")
+        logger.debug(s"[VALIDATION][FAILURE] Business Rule Errors: ${Json.toJson(ValidationErrorResponseModel(e))}")
+        logger.info(s"[VALIDATION][FAILURE]")
         val errors = Json.toJson(ValidationErrorResponseModel(e))
         Future.successful(BadRequest(errors))
-      case Valid(model) =>
-        logger.info(s"[$controllerName][VALIDATION][SUCCESS]")
-        service.submit(model).map {
-          case Left(err) => Status(err.status)(err.body)
-          case Right(response) =>
-            (maybeNrsService, model) match {
-              case (Some(nrsService), returnModel: ReturnModel) if appConfig.nrsEnabled =>
-                nrsService.send(returnModel.reportingCompany.ctutr)
-              case _ =>
-            }
-            Ok(Json.toJson(response))
-        }
+      case Valid(model) => 
+        logger.info(s"[VALIDATION][SUCCESS]")
+        onValidResult(model)
+    }  
+  }
+
+  def handleValidationAndSubmit[T](validationModel: ValidationResult[T], service: Submission[T], maybeNrsService: Option[NrsService], appConfig: AppConfig)
+                         (implicit hc: HeaderCarrier, identifierRequest: IdentifierRequest[JsValue]): Future[Result] = {
+    handleValidation(validationModel){ model =>
+      service.submit(model).map {
+        case Left(err) => Status(err.status)(err.body)
+        case Right(response) =>
+          (maybeNrsService, model) match {
+            case (Some(nrsService), returnModel: ReturnModel) if appConfig.nrsEnabled =>
+              nrsService.send(returnModel.reportingCompany.ctutr)
+            case _ =>
+          }
+          Ok(Json.toJson(response))
+      }
+    }
+  }
+
+  def handleValidationForValidationMode[T](validationModel: ValidationResult[T]): Future[Result] = {
+    handleValidation(validationModel){ _ =>
+      logger.info("WE HIT HERE, NO NRS M8")
+      Future.successful(NoContent)
     }
   }
 }

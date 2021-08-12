@@ -2,14 +2,13 @@ is:
   - headers.acceptJson
   - headers.contentTypeJson
   - errors.notFound
-  - errors.downstreamError
   - errors.badRequest
   - errors.invalidBodyType
   - errors.unauthorised
   - errors.invalidAcceptHeader
   - errors.unsupportedVersion
-displayName: Post a Full Interest Restriction Return
-description: Request to submit a Full return for an Interest Restriction Return
+displayName: Validate a Full Interest Restriction Return
+description: Validates the payload for a Full Interest Restriction Return without submitting the return
 (annotations.scope): "write:interest-restriction-return"
 securedBy: [ sec.oauth_2_0: { scopes: [ "write:interest-restriction-return" ] } ]
 body:
@@ -18,14 +17,7 @@ body:
     type: !include schemas/fullReturnSchema.json
     examples:
       example-1:
-        description: Submit a full IRR
+        description: Validate a full IRR
         value: !include examples/return/full/request.json
 responses:
-  200:
-    body:
-      application/json:
-        type: !include schemas/fullReturnResponseSchema.json
-        examples:
-          example-1:
-            description: Typical response received
-            value: !include examples/return/full/response.json
+  204:

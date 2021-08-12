@@ -103,4 +103,45 @@ class AbbreviatedReturnControllerISpec extends IntegrationSpecBase with CreateRe
       }
     }
   }
+
+  "POST /return/abbreviated/validate" when {
+
+    "user is authenticated" when {
+
+      "return OK (204) with the correct body" in {
+
+        AuthStub.authorised()
+        DESStub.abbreviatedReturnSuccess(abbreviatedReturnDesSuccessJson)
+        NRSStub.success(responsePayload)
+
+        val res = postRequest("/return/abbreviated/validate", abbreviatedReturnJson)
+
+        whenReady(res) { result =>
+          verifyNoCall("/submission")
+          result should have(
+            httpStatus(NO_CONTENT)
+          )
+        }
+
+      }
+
+    }
+
+    "user is unauthenticated" when {
+
+      "should return UNAUTHORISED (401)" in {
+
+        AuthStub.unauthorised()
+
+        val res = postRequest("/return/abbreviated/validate", abbreviatedReturnJson)
+
+        whenReady(res) { result =>
+          result should have(
+            httpStatus(UNAUTHORIZED)
+          )
+        }
+      }
+    }
+  }
+
 }

@@ -50,6 +50,10 @@ trait WiremockHelper {
 
   def verifyCall(url: String): Unit = WireMock.verify(postRequestedFor(urlPathEqualTo(url)))
 
+  def verifyCalls(url: String, numberOfCalls: Int): Unit = WireMock.verify(numberOfCalls, postRequestedFor(urlPathEqualTo(url)))
+
+  def verifyNoCall(url: String): Unit = WireMock.verify(0, postRequestedFor(urlPathEqualTo(url)))
+
   def stubGet(url: String, status: Integer, body: String = ""): StubMapping =
     stubFor(get(urlMatching(url))
       .willReturn(

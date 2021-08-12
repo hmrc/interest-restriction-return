@@ -2,13 +2,12 @@ is:
   - headers.acceptJson
   - headers.contentTypeJson
   - errors.notFound
-  - errors.downstreamError
   - errors.badRequest
   - errors.invalidBodyType
   - errors.unauthorised
   - errors.invalidAcceptHeader
   - errors.unsupportedVersion
-displayName: Post an Abbreviated Interest Restriction Return
+displayName: Validate an Abbreviated Interest Restriction Return
 description: Validates the payload for an Abbreviated Interest Restriction Return without submitting the return
 (annotations.scope): "write:interest-restriction-return"
 securedBy: [ sec.oauth_2_0: { scopes: [ "write:interest-restriction-return" ] } ]
@@ -21,11 +20,4 @@ body:
         description: Abbreviated Return
         value: !include examples/return/abbreviatedReturn/request.json
 responses:
-  200:
-    body:
-      application/json:
-        type: !include schemas/abbreviatedReturnResponseSchema.json
-        examples:
-          example-1:
-            description: Typical response received
-            value: !include examples/return/abbreviatedReturn/response.json
+  204:

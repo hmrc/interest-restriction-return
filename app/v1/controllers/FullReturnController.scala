@@ -35,13 +35,19 @@ class FullReturnController @Inject()(authAction: AuthAction,
 
   def submit(): Action[JsValue] = authAction.async(parse.json) { implicit request =>
     withJsonBody[FullReturnModel] { fullReturnModel =>
-      handleValidation(
+      handleValidationAndSubmit(
         validationModel = fullReturnModel.validate,
         service = fullReturnService,
-        controllerName = "FullReturnController",
         maybeNrsService = Some(nrsService),
         appConfig = appConfig
       )
     }
   }
+
+  def validate(): Action[JsValue] = authAction.async(parse.json) { implicit request =>
+    withJsonBody[FullReturnModel] { fullReturnModel =>
+      handleValidationForValidationMode(validationModel = fullReturnModel.validate)
+    }
+  }
+  
 }

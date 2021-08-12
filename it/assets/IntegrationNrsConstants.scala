@@ -23,7 +23,7 @@ import org.joda.time.DateTimeZone.UTC
 import uk.gov.hmrc.auth.core.retrieve._
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
 import uk.gov.hmrc.auth.core._
-import v1.models.nrs.{NrsMetadata, NrsPayload, NrsRetrievalData}
+import v1.models.nrs.{NrsMetadata, NrsPayload, NrsRetrievalData, NrSubmissionId}
 import play.api.libs.json._
 
 import java.lang.String.format
@@ -40,7 +40,7 @@ object IntegrationNrsConstants {
   }
   """
 
-  val responsePayload: JsValue = Json.toJson(s"""{"nrSubmissionId":"${UUID.randomUUID()}"}""")
+  val responsePayload: JsValue = Json.toJson(NrSubmissionId(UUID.randomUUID()))
 
   val nrsInternalIdValue: String = "internalId"
   val nrsExternalIdValue: String = "externalId"

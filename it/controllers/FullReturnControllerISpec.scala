@@ -42,7 +42,7 @@ class FullReturnControllerISpec extends IntegrationSpecBase with CreateRequestHe
             val res = postRequest("/return/full", fullReturnJson)
 
             whenReady(res) { result =>
-              verifyCall("/submission")
+              verifyCalls("/submission", 1)
               result should have(
                 httpStatus(OK),
                 jsonBodyAs(fullReturnDesSuccessJson)
@@ -62,7 +62,7 @@ class FullReturnControllerISpec extends IntegrationSpecBase with CreateRequestHe
             val res = postRequest("/return/full", fullReturnJson)
 
             whenReady(res) { result =>
-              verifyCall("/submission")
+              verifyCalls("/submission", 1)
               result should have(
                 httpStatus(OK),
                 jsonBodyAs(fullReturnDesSuccessJson)
@@ -78,10 +78,12 @@ class FullReturnControllerISpec extends IntegrationSpecBase with CreateRequestHe
 
           AuthStub.authorised()
           DESStub.fullReturnError
+          NRSStub.error
 
           val res = postRequest("/return/full", fullReturnJson)
 
           whenReady(res) { result =>
+            verifyNoCall("/submission")
             result should have(
               httpStatus(INTERNAL_SERVER_ERROR)
             )
@@ -97,6 +99,43 @@ class FullReturnControllerISpec extends IntegrationSpecBase with CreateRequestHe
         AuthStub.unauthorised()
 
         val res = postRequest("/return/full", fullReturnJson)
+
+        whenReady(res) { result =>
+          result should have(
+            httpStatus(UNAUTHORIZED)
+          )
+        }
+      }
+    }
+  }
+
+  "POST /return/full/validate" when {
+
+    "user is authenticated" when {
+
+      "return NO_CONTENT (204) with the correct body" in {
+
+        AuthStub.authorised()
+        NRSStub.error
+
+        val res = postRequest("/return/full/validate", fullReturnJson)
+
+        whenReady(res) { result =>
+          verifyNoCall("/submission")
+          result should have(
+            httpStatus(NO_CONTENT)
+          )
+        }
+      }
+    }
+
+    "user is unauthenticated" when {
+
+      "should return UNAUTHORISED (401)" in {
+
+        AuthStub.unauthorised()
+
+        val res = postRequest("/return/full/validate", fullReturnJson)
 
         whenReady(res) { result =>
           result should have(
