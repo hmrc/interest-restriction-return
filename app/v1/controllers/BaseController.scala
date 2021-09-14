@@ -78,7 +78,6 @@ trait BaseController extends BackendBaseController with Logging {
 
   def handleValidationForValidationMode[T](validationModel: ValidationResult[T]): Future[Result] = {
     handleValidation(validationModel){ _ =>
-      logger.info("WE HIT HERE, NO NRS M8")
       Future.successful(NoContent)
     }
   }
