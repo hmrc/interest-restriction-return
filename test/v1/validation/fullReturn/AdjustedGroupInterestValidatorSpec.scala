@@ -39,7 +39,7 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
 
         val model = adjustedGroupInterestModel.copy(
           qngie = qngie,
-          groupEBITDA = groupEBITDA,
+          groupEBITDA = Some(groupEBITDA),
           groupRatio = groupRatio
         )
         rightSide(model.validate) shouldBe model
@@ -53,7 +53,7 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
 
           val model = adjustedGroupInterestModel.copy(
             qngie = qngie,
-            groupEBITDA = groupEBITDA,
+            groupEBITDA = Some(groupEBITDA),
             groupRatio = 1.00
           )
           rightSide(model.validate) shouldBe model
@@ -66,7 +66,7 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
           val model = adjustedGroupInterestModel.copy(
 
             qngie = qngie,
-            groupEBITDA = groupEBITDA,
+            groupEBITDA = Some(groupEBITDA),
             groupRatio = 50
           )
           rightSide(model.validate) shouldBe model
@@ -80,7 +80,7 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
           val model = adjustedGroupInterestModel.copy(
 
             qngie = qngie,
-            groupEBITDA = groupEBITDA,
+            groupEBITDA = Some(groupEBITDA),
             groupRatio = groupRatio
           )
           rightSide(model.validate) shouldBe model
@@ -106,7 +106,7 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
           val model = adjustedGroupInterestModel.copy(
 
             qngie = qngie,
-            groupEBITDA = groupEBITDA,
+            groupEBITDA = Some(groupEBITDA),
             groupRatio = groupRatio
           )
           rightSide(model.validate) shouldBe model
@@ -119,7 +119,7 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
 
           val model = adjustedGroupInterestModel.copy(
             qngie = qngie,
-            groupEBITDA = groupEBITDA,
+            groupEBITDA = Some(groupEBITDA),
             groupRatio = groupRatio
           )
           rightSide(model.validate) shouldBe model
@@ -132,7 +132,7 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
 
           val model = adjustedGroupInterestModel.copy(
             qngie = qngie,
-            groupEBITDA = groupEBITDA,
+            groupEBITDA = Some(groupEBITDA),
             groupRatio = groupRatio
           )
           val result = model.validate
@@ -147,7 +147,7 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
 
           val model = adjustedGroupInterestModel.copy(
             qngie = qngie,
-            groupEBITDA = groupEBITDA,
+            groupEBITDA = Some(groupEBITDA),
             groupRatio = groupRatio
           )
           val result = model.validate
@@ -169,7 +169,7 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
         "is calculated to be negative" in {
           val model = adjustedGroupInterestModel.copy(
             qngie = -1,
-            groupEBITDA = 1,
+            groupEBITDA = Some(1),
             groupRatio = 1
           )
           leftSideError(model.validate).errorMessage shouldBe NegativeQNGIEError(groupRatio).errorMessage
@@ -185,7 +185,7 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
           val model = adjustedGroupInterestModel.copy(
 
             qngie = qngie,
-            groupEBITDA = groupEBITDA,
+            groupEBITDA = Some(groupEBITDA),
             groupRatio = groupRatio
           )
           leftSideError(model.validate).errorMessage shouldBe GroupEBITDADecimalError(groupRatio).errorMessage
@@ -205,7 +205,7 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
           val groupRatio: BigDecimal = 99.00
           val model = adjustedGroupInterestModel.copy(
             qngie = -1,
-            groupEBITDA = 1,
+            groupEBITDA = Some(1),
             groupRatio = groupRatio
           )
           leftSideError(model.validate).errorMessage shouldBe NegativeQNGIEError(groupRatio).errorMessage
@@ -228,7 +228,7 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
         val model = adjustedGroupInterestModel.copy(
 
           qngie = qngie,
-          groupEBITDA = groupEBITDA,
+          groupEBITDA = Some(groupEBITDA),
           groupRatio = groupRatio
         )
         leftSideError(model.validate).errorMessage shouldBe GroupRatioDecimalError(groupRatio).errorMessage
@@ -238,13 +238,13 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
     "GroupEBITDA" when {
       "is negative" in {
         val groupEBITDA: BigDecimal = -1
-        val model = adjustedGroupInterestModel.copy(groupEBITDA = groupEBITDA)
+        val model = adjustedGroupInterestModel.copy(groupEBITDA = Some(groupEBITDA))
         leftSideError(model.validate).errorMessage shouldBe NegativeOrZeroGroupEBITDAError(groupEBITDA).errorMessage
       }
 
       "is zero" in {
         val groupEBITDA: BigDecimal = 0
-        val model = adjustedGroupInterestModel.copy(groupEBITDA = groupEBITDA)
+        val model = adjustedGroupInterestModel.copy(groupEBITDA = Some(groupEBITDA))
         leftSideError(model.validate).errorMessage shouldBe NegativeOrZeroGroupEBITDAError(groupEBITDA).errorMessage
       }
     }
@@ -257,7 +257,7 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
       val model = adjustedGroupInterestModel.copy(
 
         qngie = qngie,
-        groupEBITDA = groupEBITDA,
+        groupEBITDA = Some(groupEBITDA),
         groupRatio = groupRatio
       )
       val expectedErrors = NonEmptyChain(
@@ -275,7 +275,7 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
       val model = adjustedGroupInterestModel.copy(
 
         qngie = qngie,
-        groupEBITDA = groupEBITDA,
+        groupEBITDA = Some(groupEBITDA),
         groupRatio = groupRatio
       )
       val expectedErrors = NonEmptyChain(GroupRatioDecimalError(0.621234), QngieDecimalError(5.0122))

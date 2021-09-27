@@ -17,11 +17,12 @@
 package models
 
 import assets.AgentDetailsConstants._
-import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 import v1.models.AgentDetailsModel
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class AgentDetailsModelSpec extends WordSpec with Matchers {
+class AgentDetailsModelSpec extends AnyWordSpec with Matchers {
 
   "AgentDetailsModel" must {
 

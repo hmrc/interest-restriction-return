@@ -17,11 +17,12 @@
 package models.fullReturn
 
 import assets.fullReturn.AllocatedRestrictionsConstants._
-import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 import v1.models.fullReturn.AllocatedRestrictionsModel
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class AllocatedRestrictionsModelSpec extends WordSpec with Matchers {
+class AllocatedRestrictionsModelSpec extends AnyWordSpec with Matchers {
 
   "AllocatedRestrictionsModel" must {
 

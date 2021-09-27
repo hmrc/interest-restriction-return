@@ -23,7 +23,6 @@ import v1.models.fullReturn.AdjustedGroupInterestModel
 import v1.validation.BaseValidation
 
 import scala.math.BigDecimal
-import scala.math.BigDecimal.RoundingMode
 
 trait AdjustedGroupInterestValidator extends BaseValidation {
 
@@ -57,32 +56,19 @@ trait AdjustedGroupInterestValidator extends BaseValidation {
     }
   }
 
-  private def validateGroupEBITDA(implicit path: JsPath): ValidationResult[BigDecimal] = {
-    if (adjustedGroupInterestModel.groupEBITDA % 0.01 != 0) {
-      GroupEBITDADecimalError(adjustedGroupInterestModel.groupEBITDA).invalidNec
-    } else {
-      adjustedGroupInterestModel.groupEBITDA.validNec
+  private def validateGroupEBITDA(implicit path: JsPath): ValidationResult[Option[BigDecimal]] = {
+    adjustedGroupInterestModel.groupEBITDA match {
+      case Some(ebitda) if ebitda % 0.01 != 0 => GroupEBITDADecimalError(ebitda).invalidNec
+      case _ => adjustedGroupInterestModel.groupEBITDA.validNec
     }
   }
 
   private def validateGroupRatioCalculation(implicit path: JsPath): ValidationResult[BigDecimal] = {
     (adjustedGroupInterestModel.qngie, adjustedGroupInterestModel.groupEBITDA, adjustedGroupInterestModel.groupRatio) match {
-      case (_, groupEBITDA, groupRatio) if groupEBITDA <= 0 && groupRatio == 100 =>
-        adjustedGroupInterestModel.groupRatio.validNec
-      case (_, groupEBITDA, groupRatio) if groupEBITDA <= 0 && groupRatio != 100 =>
+      case (_, Some(groupEBITDA), groupRatio) if groupEBITDA <= 0 && groupRatio != 100 =>
         NegativeOrZeroGroupEBITDAError(groupRatio).invalidNec
       case _ => adjustedGroupInterestModel.groupRatio.validNec
     }
-  }
-
-  private def groupRatioCalculationDoesntMatch(qngie: BigDecimal, groupEBITDA: BigDecimal, groupRatio: BigDecimal): Boolean = {
-    val hasDecimals = groupRatio.toString.contains(".")
-    val decimalPlaces = if (hasDecimals) {
-      groupRatio.toString.length - groupRatio.toString.indexOf(".") - 1
-    } else {
-      0
-    }
-    groupRatio != ((qngie / groupEBITDA) * 100).min(100).setScale(decimalPlaces, RoundingMode.DOWN)
   }
 
   def validate(implicit path: JsPath): ValidationResult[AdjustedGroupInterestModel] =

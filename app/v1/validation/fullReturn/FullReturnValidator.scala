@@ -193,6 +193,23 @@ trait FullReturnValidator extends BaseValidation {
 
   }
 
+  private def validateGroupEbitda: ValidationResult[_] = {
+    val groupInterest = fullReturnModel.adjustedGroupInterest
+    val groupRatioIsElected = fullReturnModel.groupLevelElections.groupRatio.isElected
+    val blendedIsElected = fullReturnModel.groupLevelElections.groupRatio.groupRatioBlended.map(_.isElected) match {
+      case Some(true) => true
+      case _ => false
+    }
+
+    groupInterest match {
+      case Some(AdjustedGroupInterestModel(qngie, None, groupRatio)) if groupRatioIsElected && !blendedIsElected => 
+        GroupEBITDANotSupplied.invalidNec
+      case _ => 
+        fullReturnModel.adjustedGroupInterest.validNec
+    }
+
+  }
+
   def validateReactivationCapSubjectToReactivations: ValidationResult[_] =
     if (!fullReturnModel.groupSubjectToInterestReactivation && fullReturnModel.groupLevelAmount.interestReactivationCap > 0) {
       ReactivationCapNotSubjectToReactivations(fullReturnModel.groupLevelAmount.interestReactivationCap).invalidNec
@@ -234,7 +251,8 @@ trait FullReturnValidator extends BaseValidation {
       validateDeclaration,
       validateNetTaxInterest,
       validateTotalRestrictionsDoesntExceedAggNetTaxInterestExpense,
-      validateReactivationCapSubjectToReactivations
+      validateReactivationCapSubjectToReactivations,
+      validateGroupEbitda
     ).map(_ => fullReturnModel)
   }
 }
@@ -302,6 +320,13 @@ case object AdjustedNetGroupInterestNotSupplied extends Validation {
   val code = "ADJUSTED_GROUP_INTEREST_NOT_SUPPLIED"
   val errorMessage: String = "Group ratio % elected so qngie, group-EBITDA and group ratio should be provided"
   val path: JsPath = JsPath \ "adjustedGroupInterest"
+  val value: Option[JsValue] = None
+}
+
+case object GroupEBITDANotSupplied extends Validation {
+  val code = "GROUP_EBITDA_NOT_SUPPLIED"
+  val errorMessage: String = "Group ratio is elected so group EBITDA should be required. Optional if group ratio blended elected."
+  val path: JsPath = JsPath \ "adjustedGroupInterest" \ "groupEBITDA"
   val value: Option[JsValue] = None
 }
 

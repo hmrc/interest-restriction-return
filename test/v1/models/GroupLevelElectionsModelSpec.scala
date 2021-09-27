@@ -17,11 +17,12 @@
 package v1.models
 
 import assets.GroupLevelElectionsConstants._
-import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 import assets.NonConsolidatedInvestmentElectionConstants._
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class GroupLevelElectionsModelSpec extends WordSpec with Matchers {
+class GroupLevelElectionsModelSpec extends AnyWordSpec with Matchers {
 
   "GroupLevelElectionsModel" must {
 

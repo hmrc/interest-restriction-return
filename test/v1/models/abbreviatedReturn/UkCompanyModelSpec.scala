@@ -17,11 +17,12 @@
 package models.abbreviatedReturn
 
 import assets.abbreviatedReturn.UkCompanyConstants._
-import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 import v1.models.abbreviatedReturn.UkCompanyModel
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class UkCompanyModelSpec extends WordSpec with Matchers {
+class UkCompanyModelSpec extends AnyWordSpec with Matchers {
 
   "UkCompanyModel" must {
 

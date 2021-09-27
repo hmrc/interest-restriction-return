@@ -17,11 +17,12 @@
 package models
 
 import assets.DeemedParentConstants._
-import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 import v1.models.DeemedParentModel
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class DeemedParentModelSpec extends WordSpec with Matchers {
+class DeemedParentModelSpec extends AnyWordSpec with Matchers {
 
   "DeemedParentModel" must {
 

@@ -17,10 +17,11 @@
 package v1.models
 
 import assets.InvestorGroupConstants._
-import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class InvestorGroupModelSpec extends WordSpec with Matchers {
+class InvestorGroupModelSpec extends AnyWordSpec with Matchers {
 
   "InvestorGroupModel" must {
 

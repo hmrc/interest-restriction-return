@@ -16,12 +16,13 @@
 
 package models
 
-import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 import assets.IdentityOfCompanySubmittingConstants._
 import v1.models.IdentityOfCompanySubmittingModel
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class IdentityOfCompanySubmittingModelSpec extends WordSpec with Matchers {
+class IdentityOfCompanySubmittingModelSpec extends AnyWordSpec with Matchers {
 
   "IdentityOfCompanySubmittingModel" must {
 

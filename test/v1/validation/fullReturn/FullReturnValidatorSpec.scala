@@ -21,6 +21,7 @@ import assets.GroupLevelElectionsConstants._
 import assets.GroupRatioConstants._
 import assets.ParentCompanyConstants._
 import assets.ReportingCompanyConstants._
+import assets.GroupRatioBlendedConstants._
 import assets.fullReturn.AdjustedGroupInterestConstants._
 import assets.fullReturn.AllocatedReactivationsConstants._
 import assets.fullReturn.AllocatedRestrictionsConstants._
@@ -55,6 +56,13 @@ class FullReturnValidatorSpec extends BaseSpec {
             groupSubjectToInterestReactivation = false,
             groupLevelAmount = groupLevelAmount,
             ukCompanies = Seq.fill(7)(ukCompanyModelMin))
+        rightSide(model.validate) shouldBe model
+      }
+
+      "Group Ratio is Elected, Blended is elected and Group EBITDA is not supplied" in {
+        val model = fullReturnUltimateParentModel.copy(
+          adjustedGroupInterest = fullReturnUltimateParentModel.adjustedGroupInterest.map(_.copy(groupEBITDA = None))
+        )
         rightSide(model.validate) shouldBe model
       }
     }
@@ -464,6 +472,21 @@ class FullReturnValidatorSpec extends BaseSpec {
         val model = fullReturnModelMin.copy(groupSubjectToInterestReactivation = false)
         leftSideError(model.validate).errorMessage shouldBe ReactivationCapNotSubjectToReactivations(
           fullReturnUltimateParentModel.groupLevelAmount.interestReactivationCap).errorMessage
+      }
+
+      "Group Ratio is Elected, Blended is not elected and Group EBITDA is not supplied" in {
+
+        val groupLevelElections = fullReturnUltimateParentModel.groupLevelElections.copy(
+          groupRatio = fullReturnUltimateParentModel.groupLevelElections.groupRatio.copy(
+            groupRatioBlended = Some(groupRatioBlendedModelMin)
+          )
+        )
+
+        val model = fullReturnUltimateParentModel.copy(
+          adjustedGroupInterest = fullReturnUltimateParentModel.adjustedGroupInterest.map(_.copy(groupEBITDA = None)),
+          groupLevelElections = groupLevelElections
+        )
+        leftSideError(model.validate).errorMessage shouldBe GroupEBITDANotSupplied.errorMessage
       }
     }
   }

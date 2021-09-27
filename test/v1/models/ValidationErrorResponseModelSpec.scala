@@ -16,13 +16,14 @@
 
 package models
 
-import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json._
 import v1.models.errors.{ValidationErrorResponseModel, ErrorResponseModel}
 import v1.validation.fullReturn._
 import cats.data.{NonEmptyChain, Chain}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class ValidationErrorResponseModelSpec extends WordSpec with Matchers {
+class ValidationErrorResponseModelSpec extends AnyWordSpec with Matchers {
 
   "Validation Error Response" should {
 

@@ -16,15 +16,23 @@
 
 package v1.models.fullReturn
 
-import play.api.libs.json.Json
+import play.api.libs.json._
 import v1.validation.fullReturn.AdjustedGroupInterestValidator
 
 case class AdjustedGroupInterestModel(qngie: BigDecimal,
-                                      groupEBITDA: BigDecimal,
+                                      groupEBITDA: Option[BigDecimal],
                                       groupRatio: BigDecimal) extends AdjustedGroupInterestValidator{
   override val adjustedGroupInterestModel: AdjustedGroupInterestModel = this
 }
 
 object AdjustedGroupInterestModel {
-  implicit val format = Json.format[AdjustedGroupInterestModel]
+  implicit val adjustedGroupInterestModelReads = Json.reads[AdjustedGroupInterestModel]
+  implicit val adjustedGroupInterestModelWrites: Writes[AdjustedGroupInterestModel] = Writes { models =>
+    val ebitda = models.groupEBITDA.getOrElse(BigDecimal(0))
+    JsObject(Json.obj(
+      "qngie" -> models.qngie,
+      "groupEBITDA" -> ebitda,
+      "groupRatio" -> models.groupRatio
+    ).fields.filterNot(_._2 == JsNull))
+  }
 }

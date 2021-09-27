@@ -17,11 +17,12 @@
 package models
 
 import assets.UltimateParentConstants._
-import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 import v1.models.UltimateParentModel
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class UltimateParentModelSpec extends WordSpec with Matchers {
+class UltimateParentModelSpec extends AnyWordSpec with Matchers {
 
   "UltimateParentModel" when {
 

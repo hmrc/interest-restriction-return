@@ -28,13 +28,25 @@ object AdjustedGroupInterestConstants extends BaseConstants {
 
   val adjustedGroupInterestModel = AdjustedGroupInterestModel(
     qngie = qngie,
-    groupEBITDA = groupEBITDA,
+    groupEBITDA = Some(groupEBITDA),
     groupRatio = groupRatio
   )
 
   val adjustedGroupInterestJson = Json.obj(
     "qngie" -> qngie,
     "groupEBITDA" -> groupEBITDA,
+    "groupRatio" -> groupRatio
+  )
+
+  val adjustedGroupInterestModelNoEbitda = AdjustedGroupInterestModel(
+    qngie = qngie,
+    groupEBITDA = None,
+    groupRatio = groupRatio
+  )
+
+  val adjustedGroupInterestJsonNoEbitda = Json.obj(
+    "qngie" -> qngie,
+    "groupEBITDA" -> 0,
     "groupRatio" -> groupRatio
   )
 
