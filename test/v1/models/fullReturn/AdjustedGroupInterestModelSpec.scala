@@ -16,21 +16,30 @@
 
 package models.fullReturn
 
-import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 import assets.fullReturn.AdjustedGroupInterestConstants._
 import v1.models.fullReturn.AdjustedGroupInterestModel
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class AdjustedGroupInterestModelSpec extends WordSpec with Matchers {
+class AdjustedGroupInterestModelSpec extends AnyWordSpec with Matchers {
 
   "AdjustedGroupInterestModel" must {
 
-    "correctly write to json" in {
+    "correctly write to json" when {
+      "groupEbitda is present" in {
+        val expectedValue = adjustedGroupInterestJson
+        val actualValue = Json.toJson(adjustedGroupInterestModel)
 
-      val expectedValue = adjustedGroupInterestJson
-      val actualValue = Json.toJson(adjustedGroupInterestModel)
+        actualValue shouldBe expectedValue
+      }
 
-      actualValue shouldBe expectedValue
+      "groupEbitda is not present" in {
+        val expectedValue = adjustedGroupInterestJsonNoEbitda
+        val actualValue = Json.toJson(adjustedGroupInterestModelNoEbitda)
+
+        actualValue shouldBe expectedValue
+      }
     }
 
     "correctly read from Json" in {

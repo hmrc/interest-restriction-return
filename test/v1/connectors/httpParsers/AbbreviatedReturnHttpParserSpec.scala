@@ -19,13 +19,14 @@ package v1.connectors.httpParsers
 import assets.abbreviatedReturn.AbbreviatedReturnConstants.ackRef
 import v1.connectors.httpParsers.AbbreviatedReturnHttpParser.AbbreviatedReturnReads
 import v1.connectors.{DesSuccessResponse, InvalidSuccessResponse, UnexpectedFailure}
-import org.scalatest.{Matchers, WordSpec}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.http.Status
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.http.HttpResponse
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class AbbreviatedReturnHttpParserSpec extends WordSpec with Matchers with GuiceOneAppPerSuite  {
+class AbbreviatedReturnHttpParserSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite  {
 
   val ackRefResponse: JsValue = Json.obj("acknowledgementReference" -> ackRef)
 

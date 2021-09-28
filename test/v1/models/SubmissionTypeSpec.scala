@@ -16,12 +16,13 @@
 
 package v1.models
 
-import org.scalatest.{Matchers, WordSpec}
 import org.scalatest.TryValues._
 import play.api.libs.json.{JsPath, JsString, JsResultException, JsonValidationError}
 import scala.util.Try
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class SubmissionTypeSpec extends WordSpec with Matchers {
+class SubmissionTypeSpec extends AnyWordSpec with Matchers {
   "SubmissionType" should {
     "error when an incorrect value is entered" in {
       val json = JsString("Something incorrect")

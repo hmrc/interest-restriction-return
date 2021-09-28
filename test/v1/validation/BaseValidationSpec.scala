@@ -18,12 +18,13 @@ package v1.validation
 
 import cats.data.Validated.Valid
 import cats.implicits._
-import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.{JsPath, JsString}
 import utils.BaseSpec
 import v1.models.Validation
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class BaseValidationSpec extends WordSpec with Matchers with BaseSpec {
+class BaseValidationSpec extends AnyWordSpec with Matchers with BaseSpec {
 
   implicit val topPath = JsPath \ "path"
 

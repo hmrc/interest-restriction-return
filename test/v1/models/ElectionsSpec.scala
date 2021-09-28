@@ -16,13 +16,14 @@
 
 package v1.models
 
-import org.scalatest.{Matchers, WordSpec}
 import org.scalatest.TryValues._
 import play.api.libs.json.{JsonValidationError, JsPath, JsResultException, JsString}
 
 import scala.util.Try
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class ElectionsSpec extends WordSpec with Matchers {
+class ElectionsSpec extends AnyWordSpec with Matchers {
   "ElectionDecision" should {
     "valid" when {
       "groupRatioBlended is entered" in {

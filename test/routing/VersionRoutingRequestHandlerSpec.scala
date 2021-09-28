@@ -19,7 +19,7 @@ package routing
 import com.typesafe.config.ConfigFactory
 import mocks.MockAppConfig
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.{Inside, Matchers}
+import org.scalatest.Inside
 import play.api.Configuration
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.{HttpConfiguration, HttpFilters}
@@ -32,6 +32,7 @@ import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import uk.gov.hmrc.play.bootstrap.config.HttpAuditEvent
 import utils.{BaseSpec, ErrorHandler}
 import v1.models.errors.ErrorResponses._
+import org.scalatest.matchers.should.Matchers
 
 class VersionRoutingRequestHandlerSpec extends BaseSpec with Matchers with MockFactory with Inside with MockAppConfig {
   test =>

@@ -16,10 +16,11 @@
 
 package utils
 
-import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.{JsString, Json, Format}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class ReadStringWithTrimSpec extends WordSpec with Matchers {
+class ReadStringWithTrimSpec extends AnyWordSpec with Matchers {
 
   case class TestModelOurReads(someString: String, someInt: Int)
   object TestModelOurReads {

@@ -16,12 +16,13 @@
 
 package models.fullReturn
 
-import org.scalatest.{Matchers, WordSpec}
 import assets.fullReturn.GroupLevelAmountConstants._
 import play.api.libs.json.Json
 import v1.models.fullReturn.GroupLevelAmountModel
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class GroupLevelAmountModelSpec extends WordSpec with Matchers {
+class GroupLevelAmountModelSpec extends AnyWordSpec with Matchers {
 
   "GroupLevelAmountModel" must {
 

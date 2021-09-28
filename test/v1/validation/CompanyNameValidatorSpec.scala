@@ -16,11 +16,12 @@
 
 package v1.validation
 
-import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.JsPath
 import v1.models.CompanyNameModel
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class CompanyNameValidatorSpec extends WordSpec with Matchers {
+class CompanyNameValidatorSpec extends AnyWordSpec with Matchers {
 
   implicit val path = JsPath \ "some" \ "path"
 

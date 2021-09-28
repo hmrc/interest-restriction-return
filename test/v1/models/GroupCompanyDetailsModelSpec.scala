@@ -17,11 +17,12 @@
 package models
 
 import assets.GroupCompanyDetailsConstants._
-import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 import v1.models.GroupCompanyDetailsModel
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class GroupCompanyDetailsModelSpec extends WordSpec with Matchers {
+class GroupCompanyDetailsModelSpec extends AnyWordSpec with Matchers {
 
   "GroupCompanyDetailsModel" must {
 

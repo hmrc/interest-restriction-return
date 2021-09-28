@@ -17,11 +17,12 @@
 package models
 
 import assets.ConsolidatedPartnershipConstants._
-import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 import v1.models.ConsolidatedPartnershipModel
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class ConsolidatedPartnershipModelSpec extends WordSpec with Matchers {
+class ConsolidatedPartnershipModelSpec extends AnyWordSpec with Matchers {
 
   "ConsolidatedPartnershipModel" must {
 

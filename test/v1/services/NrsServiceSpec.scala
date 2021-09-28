@@ -21,7 +21,6 @@ import assets.UnitNrsConstants
 import com.google.common.io.BaseEncoding.base64
 import org.joda.time.DateTime
 import org.joda.time.format.{DateTimeFormat, DateTimeFormatter}
-import org.scalatest.{AsyncWordSpec, Matchers}
 import play.api.libs.json._
 import play.api.test.{FakeHeaders, FakeRequest}
 import v1.connectors.UnexpectedFailure
@@ -32,6 +31,8 @@ import v1.services.mocks.MockNrsConnector
 import java.nio.charset.StandardCharsets.UTF_8
 import java.util.UUID
 import scala.concurrent.Future
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AsyncWordSpec
 
 class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
 

@@ -21,14 +21,15 @@ import assets.abbreviatedReturn.AbbreviatedReturnConstants._
 import assets.AgentDetailsConstants._
 import assets.GroupCompanyDetailsConstants._
 import assets.ReportingCompanyConstants._
-import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.{JsObject, Json, Writes}
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
 import v1.models.{Original, SubmissionType}
 import assets.abbreviatedReturn.UkCompanyConstants._
 import utils.JsonFormatters
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class AbbreviatedReturnModelSpec extends WordSpec with Matchers with BaseConstants with JsonFormatters {
+class AbbreviatedReturnModelSpec extends AnyWordSpec with Matchers with BaseConstants with JsonFormatters {
 
   implicit val abbreviatedFormatter: Writes[AbbreviatedReturnModel] = abbreviatedReturnWrites
 

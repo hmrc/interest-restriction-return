@@ -17,10 +17,11 @@
 package v1.models
 
 import assets.GroupRatioConstants._
-import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class GroupRatioModelSpec extends WordSpec with Matchers {
+class GroupRatioModelSpec extends AnyWordSpec with Matchers {
 
   "GroupRatioModel" must {
 

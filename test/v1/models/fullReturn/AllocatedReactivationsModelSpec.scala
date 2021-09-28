@@ -17,11 +17,12 @@
 package models.fullReturn
 
 import assets.fullReturn.AllocatedReactivationsConstants._
-import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 import v1.models.fullReturn.AllocatedReactivationsModel
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class AllocatedReactivationsModelSpec extends WordSpec with Matchers {
+class AllocatedReactivationsModelSpec extends AnyWordSpec with Matchers {
 
   "AllocatedReactivationsModel" must {
 

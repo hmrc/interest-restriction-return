@@ -19,13 +19,11 @@ package utils
 import assets.BaseConstants
 import assets.UnitNrsConstants
 import config.AppConfig
-import org.scalatest.Matchers
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.mvc.BodyParsers
 import play.api.test.FakeRequest
 import uk.gov.hmrc.auth.core.MissingBearerToken
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.test.UnitSpec
 import v1.controllers.actions.mocks.{Authorised, Unauthorised}
 import v1.models.Validation
 import v1.models.Validation.ValidationResult
@@ -36,6 +34,7 @@ import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
 import v1.connectors.NrsConnector
 import v1.services.{DateTimeService, NrsService}
+import org.scalatest.matchers.should.Matchers
 
 trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with MaterializerSupport with BaseConstants {
 
