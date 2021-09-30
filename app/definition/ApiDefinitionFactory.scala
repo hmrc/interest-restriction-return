@@ -16,7 +16,7 @@
 
 package definition
 
-import config.{AppConfig, FeatureSwitch}
+import config.AppConfig
 import definition.Versions._
 import javax.inject.{Inject, Singleton}
 import play.api.Logging
@@ -42,7 +42,7 @@ class ApiDefinitionFactory @Inject()(appConfig: AppConfig) extends Logging {
         context = appConfig.apiGatewayContext,
         categories = Seq("CORPORATION_TAX"),
         versions = Seq(
-          APIVersion(version = VERSION_1, access = buildWhiteListingAccess(), status = buildAPIStatus(VERSION_1), endpointsEnabled = appConfig.endpointsEnabled)
+          APIVersion(version = VERSION_1, access = None, status = buildAPIStatus(VERSION_1), endpointsEnabled = appConfig.endpointsEnabled)
         ),
         requiresTrust = None
       )
@@ -56,8 +56,4 @@ class ApiDefinitionFactory @Inject()(appConfig: AppConfig) extends Logging {
       }
   }
 
-  private[definition] def buildWhiteListingAccess(): Option[Access] = {
-    val featureSwitch = FeatureSwitch(appConfig.featureSwitch)
-    if (featureSwitch.isWhiteListingEnabled) Some(Access("PRIVATE", featureSwitch.whiteListedApplicationIds)) else None
-  }
 }
