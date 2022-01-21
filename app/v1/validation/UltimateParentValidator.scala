@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,7 +57,7 @@ def validateSingleCompanyDetailSupplied(implicit path: JsPath): ValidationResult
 
   def validate(implicit path: JsPath): ValidationResult[UltimateParentModel] =
     combineValidations(validateSingleCompanyDetailSupplied,
-      validateUkCompanyDetails, 
+      validateUkCompanyDetails,
       validateNonUkCompanyDetails,
       ultimateParentModel.companyName.validate(path \ "companyName"),
       optionValidations(ultimateParentModel.ctutr.map(_.validate(path \ "ctutr"))),

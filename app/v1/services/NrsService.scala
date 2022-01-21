@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,8 @@ import scala.concurrent.{ExecutionContext, Future}
 import scala.concurrent.duration.{Duration, MILLISECONDS}
 
 @Singleton
-class NrsService @Inject()(nrsConnector: NrsConnector, dateTimeService: DateTimeService)(implicit ec: ExecutionContext) extends HttpErrorFunctions with Logging {
+class NrsService @Inject()(nrsConnector: NrsConnector, dateTimeService: DateTimeService)
+                          (implicit ec: ExecutionContext) extends HttpErrorFunctions with Logging {
 
   private val searchKey = "reportingCompanyCTUTR"
   private val applicationJson = "application/json"
@@ -45,6 +46,7 @@ class NrsService @Inject()(nrsConnector: NrsConnector, dateTimeService: DateTime
   private val AuthorizationHeader = "Authorization"
 
   private val MaxRetries = 2
+  private val delayInMillis = 500
 
   def send[A](ctutr: UTRModel)(implicit identifierRequest: IdentifierRequest[A]): Future[NrsResponse] = {
 
@@ -65,14 +67,14 @@ class NrsService @Inject()(nrsConnector: NrsConnector, dateTimeService: DateTime
 
     val nrsPayload: NrsPayload = NrsPayload(base64().encode(payloadAsString.getBytes(UTF_8)), nrsMetadata)
 
-    val delay = Duration(500, MILLISECONDS)
+    val delay = Duration(delayInMillis, MILLISECONDS)
     attemptSubmission(nrsPayload, delay, MaxRetries)
   }
 
   private def attemptSubmission(nrsPayload: NrsPayload, delay: Duration, retries: Int): Future[NrsResponse] = {
     logger.info(s"Attempting NRS submission ${MaxRetries - retries + 1} retries left: $retries")
     val result = nrsConnector.send(nrsPayload)
-    result.flatMap{ 
+    result.flatMap{
       case Left(e) if e.status >= 500 && e.status < 600 && retries > 0 =>
         Thread.sleep(delay.toMillis)
         attemptSubmission(nrsPayload, delay, retries - 1)

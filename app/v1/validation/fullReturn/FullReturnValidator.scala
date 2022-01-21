@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -137,7 +137,7 @@ trait FullReturnValidator extends BaseValidation {
     }
   }
 
-  private def validateGroupEstimateReason: ValidationResult[Option[String]] = 
+  private def validateGroupEstimateReason: ValidationResult[Option[String]] =
     (fullReturnModel.returnContainsEstimates, fullReturnModel.groupEstimateReason) match {
       case (false, Some(reason)) => EstimateReasonSupplied(reason).invalidNec
       case (true, Some(reason)) if !groupEstimateReasonIsValidLength(reason) => EstimateReasonLengthError(reason).invalidNec
@@ -145,7 +145,7 @@ trait FullReturnValidator extends BaseValidation {
       case _ => fullReturnModel.groupEstimateReason.validNec
     }
 
-  private def validateCompanyEstimateReasons: ValidationResult[_] = 
+  private def validateCompanyEstimateReasons: ValidationResult[_] =
     (fullReturnModel.returnContainsEstimates, fullReturnModel.ukCompanies.zipWithIndex) match {
       case (false, companies) if companies.exists(_._1.companyEstimateReason.nonEmpty) => combineValidations(companies.collect {
         case (company, i) => company.companyEstimateReason match {
@@ -202,9 +202,9 @@ trait FullReturnValidator extends BaseValidation {
     }
 
     groupInterest match {
-      case Some(AdjustedGroupInterestModel(qngie, None, groupRatio)) if groupRatioIsElected && !blendedIsElected => 
+      case Some(AdjustedGroupInterestModel(_, None, _)) if groupRatioIsElected && !blendedIsElected =>
         GroupEBITDANotSupplied.invalidNec
-      case _ => 
+      case _ =>
         fullReturnModel.adjustedGroupInterest.validNec
     }
 

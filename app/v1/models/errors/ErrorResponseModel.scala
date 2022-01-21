@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ case class ErrorResponseModel(code: String, message: String, path: Option[String
 
 object ErrorResponseModel {
   implicit val writes: Writes[ErrorResponseModel] = Json.writes[ErrorResponseModel]
-  def apply(validation: Validation): ErrorResponseModel = 
+  def apply(validation: Validation): ErrorResponseModel =
     ErrorResponseModel(
       code = validation.code,
       message = validation.errorMessage,

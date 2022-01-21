@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import play.api.libs.json.{JsPath, Json}
+import play.api.libs.json.{JsPath, JsValue, Json}
 import v1.models.Validation.ValidationResult
 import v1.models.{LegalEntityIdentifierModel, Validation}
 
@@ -40,5 +40,5 @@ trait LegalEntityIdentifierValidator extends BaseValidation {
 case class LegalEntityIdentifierCharacterError(lei: LegalEntityIdentifierModel)(implicit val path: JsPath) extends Validation {
   val code = "LEI_CHARACTER"
   val errorMessage: String = s"Legal entity identifier must be 18 uppercase letters followed by 2 numbers"
-  val value = Some(Json.toJson(lei))
+  val value: Option[JsValue] = Some(Json.toJson(lei))
 }

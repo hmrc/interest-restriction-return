@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ class NrsConnectorImpl @Inject()(http: HttpClient, implicit val appConfig: AppCo
 
   private val XApiKey = "X-API-Key"
 
-  def send[A](nrsPayload: NrsPayload): Future[NrsResponse] = 
+  def send[A](nrsPayload: NrsPayload): Future[NrsResponse] =
     (appConfig.nrsUrl, appConfig.nrsAuthorisationToken) match {
       case (Some(url), Some(token)) => post(nrsPayload, url, token)
       case _ =>
@@ -50,7 +50,8 @@ class NrsConnectorImpl @Inject()(http: HttpClient, implicit val appConfig: AppCo
     implicit val hc: HeaderCarrier = HeaderCarrier()
 
     logger.info(s"Sending request to NRS service. Url: $url")
-    val result = http.POST[NrsPayload, NrsResponse](s"$url/submission", payload, Seq[(String, String)](("Content-Type", "application/json"), (XApiKey, authToken)))
+    val result = http.POST[NrsPayload, NrsResponse](s"$url/submission", payload,
+      Seq[(String, String)](("Content-Type", "application/json"), (XApiKey, authToken)))
     result.onComplete {
       case Success(response) => logger.info(s"Response received from NRS service: ${response}")
       case Failure(e) => logger.error(s"Call to NRS service failed url=$url, exception=$e", e)

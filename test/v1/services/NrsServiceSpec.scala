@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,12 +27,13 @@ import v1.connectors.UnexpectedFailure
 import v1.models.nrs._
 import v1.models.requests.IdentifierRequest
 import v1.services.mocks.MockNrsConnector
-
 import java.nio.charset.StandardCharsets.UTF_8
 import java.util.UUID
+
 import scala.concurrent.Future
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AsyncWordSpec
+import uk.gov.hmrc.auth.core.AffinityGroup
 
 class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
 
@@ -43,7 +44,7 @@ class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
   val request = IdentifierRequest[String](
     request = fullRequest,
     identifier = "123",
-    nrsRetrievalData = UnitNrsConstants.nrsRetrievalData
+    nrsRetrievalData = UnitNrsConstants.nrsRetrievalData(Some(AffinityGroup.Organisation))
   )
   val expectedNrsMetadata = new NrsMetadata(
     businessId = "irr",

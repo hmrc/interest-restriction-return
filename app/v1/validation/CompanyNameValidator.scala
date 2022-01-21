@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import play.api.libs.json.{JsPath, JsString}
+import play.api.libs.json.{JsPath, JsString, JsValue}
 import v1.models.Validation.ValidationResult
 import v1.models.{CompanyNameModel, Validation}
 
@@ -27,7 +27,7 @@ trait CompanyNameValidator extends BaseValidation {
   val companyNameModel: CompanyNameModel
 
   private def validateCompanyNameLength(implicit topPath: JsPath): ValidationResult[String] = {
-    if (companyNameModel.name.length >= 1 && companyNameModel.name.length <= 160) {
+    if (companyNameModel.name.nonEmpty && companyNameModel.name.length <= 160) {
       companyNameModel.name.validNec
     } else {
       CompanyNameLengthError(companyNameModel.name).invalidNec
@@ -49,11 +49,11 @@ trait CompanyNameValidator extends BaseValidation {
 case class CompanyNameLengthError(name: String)(implicit val path: JsPath) extends Validation {
   val code = "COMPANY_NAME_LENGTH"
   val errorMessage: String = s"Company name must be 1 to 160 characters long"
-  val value = Some(JsString(name))
+  val value: Option[JsValue] = Some(JsString(name))
 }
 
 case class CompanyNameCharactersError(name: String)(implicit val path: JsPath) extends Validation {
   val code = "COMPANY_NAME_CHARACTERS"
   val errorMessage: String = s"Company name contains invalid characters"
-  val value = Some(JsString(name))
+  val value: Option[JsValue] = Some(JsString(name))
 }

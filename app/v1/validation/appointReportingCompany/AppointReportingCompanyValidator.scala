@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package v1.validation.appointReportingCompany
 
-import play.api.libs.json.{Json, JsPath}
+import play.api.libs.json.{JsPath, JsValue, Json}
 import v1.models.Validation.ValidationResult
 import v1.models.appointReportingCompany.AppointReportingCompanyModel
 import v1.models.{IdentityOfCompanySubmittingModel, UltimateParentModel, Validation}
@@ -48,9 +48,10 @@ trait AppointReportingCompanyValidator extends BaseValidation {
 
   private def validateDuplicateAuthorisingCompanies: ValidationResult[Seq[AuthorisingCompanyModel]] = {
     val duplicatesExist = appointReportingCompanyModel.authorisingCompanies.distinct.size != appointReportingCompanyModel.authorisingCompanies.size
-    duplicatesExist match {
-      case true => AuthorisingCompaniesContainsDuplicates.invalidNec
-      case false => appointReportingCompanyModel.authorisingCompanies.validNec
+    if(duplicatesExist){
+      AuthorisingCompaniesContainsDuplicates.invalidNec
+    } else {
+      appointReportingCompanyModel.authorisingCompanies.validNec
     }
   }
 
@@ -88,19 +89,20 @@ case object IdentityOfAppointingCompanyIsNotSupplied extends Validation {
   val code = "IDENTITY_APPOINTING_COMPANY_NOT_SUPPLIED"
   val errorMessage: String = "Appointing company must be supplied if it's not the same as the reporting company"
   val path: JsPath = JsPath \ "identifyOfAppointingCompany"
-  val value = None
+  val value: Option[JsValue] = None
 }
 
 case class IdentityOfAppointingCompanyIsSupplied(identityOfCompanySubmittingModel: IdentityOfCompanySubmittingModel) extends Validation {
   val code = "IDENTITY_APPOINTING_COMPANY_SUPPLIED"
   val errorMessage: String = "Appointing company not needed as it is the same as the reporting company"
   val path: JsPath = JsPath \ "identifyOfAppointingCompany"
-  val value = Some(Json.toJson(identityOfCompanySubmittingModel))
+  val value: Option[JsValue] = Some(Json.toJson(identityOfCompanySubmittingModel))
 }
 
 case class DeclaredFiftyPercentOfEligibleCompanies(declaration: Boolean) extends Validation {
   val code = "DECLARATION_FALSE"
-  val errorMessage: String = "Declaration is not valid so will not be submitted. You need to confirm the listed companies constitute at least 50% of the eligible companies."
+  val errorMessage: String = "Declaration is not valid so will not be submitted. " +
+    "You need to confirm the listed companies constitute at least 50% of the eligible companies."
   val path: JsPath = JsPath \ "declaration"
-  val value = Some(Json.toJson(declaration))
+  val value: Option[JsValue] = Some(Json.toJson(declaration))
 }

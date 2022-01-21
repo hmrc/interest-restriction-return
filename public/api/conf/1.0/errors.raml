@@ -91,4 +91,15 @@ traits:
               unsupportedVersion:
                 description: The requested resource could not be found.
                 value:
-                  code: NOT_FOUND       
+                  code: NOT_FOUND
+  forbiddenIndividuals:
+    responses:
+      403:
+        body:
+          application/json:
+            type: types.errorResponse
+            examples:
+              unsupportedVersion:
+                description: You are unable to access this service as an individual. This service is only available to individual companies or groups of companies.
+                value:
+                  code: FORBIDDEN

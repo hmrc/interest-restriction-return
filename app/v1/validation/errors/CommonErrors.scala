@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,33 +67,34 @@ case class UltimateParentCompanyIsSupplied(ultimateParentModel: UltimateParentMo
   val code = "ULTIMATE_PARENT_SUPPLIED"
   val errorMessage: String = "Ultimate parent company not needed as it is the same as the reporting company"
   val path: JsPath = JsPath \ "ultimateParentCompany"
-  val value = Some(Json.toJson(ultimateParentModel))
+  val value: Option[JsValue] = Some(Json.toJson(ultimateParentModel))
 }
 
 case object UltimateParentCompanyIsNotSupplied extends Validation {
   val code = "ULTIMATE_PARENT_NOT_SUPPLIED"
   val errorMessage: String = "Ultimate parent company must be entered if it is not the same as the reporting company"
   val path: JsPath = JsPath \ "ultimateParentCompany"
-  val value = None
+  val value: Option[JsValue] = None
 }
 
 case object AuthorisingCompaniesEmpty extends Validation {
   val code = "AUTHORISING_COMPANIES_EMPTY"
   val errorMessage: String = "Enter at least 1 authorising company"
   val path: JsPath = JsPath \ "authorisingCompanies"
-  val value = None
+  val value: Option[JsValue] = None
 }
 
 case object AuthorisingCompaniesContainsDuplicates extends Validation {
   val code = "AUTHORISING_COMPANIES_DUPLICATES"
   val errorMessage: String = "Authorising companies contain duplicate information"
-  val path = JsPath \ "authorisingCompanies"
-  val value = None
+  val path: JsPath = JsPath \ "authorisingCompanies"
+  val value: Option[JsValue] = None
 }
 
 case class ReturnDeclarationError(declaration: Boolean) extends Validation {
   val code = "RETURN_DECLARATION_FALSE"
-  val errorMessage: String = "Declaration is not valid so will not be submitted. You need to confirm that the return is correct and complete to the best of your knowledge"
+  val errorMessage: String = "Declaration is not valid so will not be submitted. " +
+    "You need to confirm that the return is correct and complete to the best of your knowledge"
   val path: JsPath = JsPath \ "declaration"
   val value: Option[JsValue] = Some(Json.toJson(declaration))
 }

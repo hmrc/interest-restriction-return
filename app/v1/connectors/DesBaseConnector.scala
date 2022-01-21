@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,8 @@ trait DesBaseConnector {
   def desHc(implicit hc: HeaderCarrier, appConfig: AppConfig, request: IdentifierRequest[_]): HeaderCarrier = {
     val correlationId = UUID.randomUUID()
     logger.debug(s"Prepping message with correlationId header: $correlationId")
-    hc.withExtraHeaders(appConfig.desEnvironmentHeader, "providerId" -> request.identifier, "correlationId" -> correlationId.toString, "Authorization" -> appConfig.desAuthorisationToken)
+    hc.withExtraHeaders(appConfig.desEnvironmentHeader, "providerId" -> request.identifier,
+      "correlationId" -> correlationId.toString, "Authorization" -> appConfig.desAuthorisationToken)
   }
 
   def handleHttpResponse(response: HttpResponse, parserName: String, unexpectedErrorMessage: String): SubmissionResponse = {

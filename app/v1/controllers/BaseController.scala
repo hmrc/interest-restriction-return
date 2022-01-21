@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,10 +54,10 @@ trait BaseController extends BackendBaseController with Logging {
         logger.info(s"[VALIDATION][FAILURE]")
         val errors = Json.toJson(ValidationErrorResponseModel(e))
         Future.successful(BadRequest(errors))
-      case Valid(model) => 
+      case Valid(model) =>
         logger.info(s"[VALIDATION][SUCCESS]")
         onValidResult(model)
-    }  
+    }
   }
 
   def handleValidationAndSubmit[T](validationModel: ValidationResult[T], service: Submission[T], maybeNrsService: Option[NrsService], appConfig: AppConfig)

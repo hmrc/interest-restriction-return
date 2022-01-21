@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,7 +64,7 @@ object UnitNrsConstants {
                                   Some("postCode"),
                                   Some("countryName"),
                                   Some("countryCode")))
-  val nrsAffinityGroup = Some(AffinityGroup.Individual)
+
   val nrsCredentialStrength = Some("STRONG")
 
   val CURRENT_TIME_IN_MILLIS = 1530442800000L
@@ -76,7 +76,8 @@ object UnitNrsConstants {
 
   val nrsLoginTimes = LoginTimes(currentLoginTime, Some(previousLoginTime))
 
-  val nrsRetrievalData = NrsRetrievalData(
+  def nrsRetrievalData(nrsAffinityGroup: Option[AffinityGroup]) = {
+    NrsRetrievalData(
     internalId = Some(nrsInternalIdValue),
     externalId = Some(nrsExternalIdValue),
     agentCode = Some(nrsAgentCodeValue),
@@ -97,41 +98,42 @@ object UnitNrsConstants {
     affinityGroup = nrsAffinityGroup,
     credentialStrength = nrsCredentialStrength,
     loginTimes = nrsLoginTimes
-  )
+  )}
 
-  val metadata = NrsMetadata(
+  def metadata(nrsAffinityGroup: Option[AffinityGroup]) = NrsMetadata(
     businessId = "irr",
     notableEvent = "irr-submission",
     payloadContentType = "application/json",
     payloadSha256Checksum = sha256Hash(jsonPayload),
     userSubmissionTimestamp = new DateTime(Clock.systemUTC().instant().toEpochMilli, DateTimeZone.UTC).toString,
-    identityData = nrsRetrievalData,
+    identityData = nrsRetrievalData(nrsAffinityGroup),
     userAuthToken = "Bearer 123",
     headerData = Json.obj(),
     searchKeys = JsObject(Map[String, JsValue]("searchKey" -> JsString("searchValue")))
   )
 
-  val payload = NrsPayload(
+  def payload(nrsAffinityGroup: Option[AffinityGroup]) = NrsPayload(
     payload = jsonPayload,
-    metadata = metadata
+    metadata = metadata(nrsAffinityGroup)
   )
 
   def sha256Hash(text: String) : String =  {
     format("%064x", new BigInteger(1, getInstance("SHA-256").digest(text.getBytes("UTF-8"))))
   }
 
-  type NrsRetrievalDataType = Option[Credentials] ~ ConfidenceLevel ~ AgentInformation ~ LoginTimes
+  type NrsRetrievalDataType = Option[Credentials] ~ ConfidenceLevel ~ AgentInformation ~ LoginTimes ~ Option[AffinityGroup]
 
-  val fakeResponse: NrsRetrievalDataType = new ~(new ~(new ~(
+  def fakeResponse(nrsAffinityGroup: Option[AffinityGroup]): NrsRetrievalDataType = new ~(new ~(new ~(new ~(
     nrsCredentials,
     nrsConfidenceLevel),
     nrsAgentInformationValue),
-    nrsLoginTimes)
+    nrsLoginTimes),
+    nrsAffinityGroup)
 
-  val fakeResponseWithoutProviderId: NrsRetrievalDataType = new ~(new ~(new ~(
+  def fakeResponseWithoutProviderId(nrsAffinityGroup: Option[AffinityGroup]): NrsRetrievalDataType = new ~(new ~(new ~(new ~(
     None,
     nrsConfidenceLevel),
     nrsAgentInformationValue),
-    nrsLoginTimes)
-
+    nrsLoginTimes),
+    nrsAffinityGroup)
 }

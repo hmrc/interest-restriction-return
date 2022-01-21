@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,12 @@
 package v1.controllers
 
 import assets.abbreviatedReturn.AbbreviatedReturnConstants._
-import v1.connectors.{DesSuccessResponse, UnexpectedFailure}
 import play.api.http.Status
 import play.api.libs.json.Json
 import play.api.test.{FakeRequest, Helpers}
-import v1.services.mocks.MockAbbreviatedReturnService
 import utils.BaseSpec
+import v1.connectors.{DesSuccessResponse, UnexpectedFailure}
+import v1.services.mocks.MockAbbreviatedReturnService
 
 class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with BaseSpec {
 

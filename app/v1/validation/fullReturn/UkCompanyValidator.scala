@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -119,7 +119,7 @@ trait UkCompanyValidator extends BaseValidation {
     }
   }
 
-  private def validateCompanyEstimateReason(implicit path: JsPath): ValidationResult[Option[String]] = 
+  private def validateCompanyEstimateReason(implicit path: JsPath): ValidationResult[Option[String]] =
     ukCompany.companyEstimateReason match {
       case Some(reason) if !companyEstimateReasonIsValidLength(reason) => CompanyEstimateReasonLengthError(reason).invalidNec
       case Some(reason) if !companyEstimateReasonHasValidCharacters(reason) => CompanyEstimateReasonCharacterError(reason).invalidNec
@@ -171,7 +171,8 @@ case class NetTaxInterestIncomeDecimalError(netTaxInterestIncome: BigDecimal)(im
   val value = Some(Json.toJson(netTaxInterestIncome))
 }
 
-case class ExpenseAndIncomeBothNotGreaterThanZero(netTaxInterestExpense: BigDecimal, netTaxInterestIncome: BigDecimal)(implicit val path: JsPath) extends Validation {
+case class ExpenseAndIncomeBothNotGreaterThanZero(netTaxInterestExpense: BigDecimal,
+                                                  netTaxInterestIncome: BigDecimal)(implicit val path: JsPath) extends Validation {
   val code = "EXPENSE_AND_INCOME"
   val errorMessage: String = "A company cannot have both net tax interest expense and net tax interest income"
   val value = Some(Json.toJson(("netTaxInterestExpense: " + netTaxInterestExpense, "netTaxInterestIncome: " + netTaxInterestIncome)))
