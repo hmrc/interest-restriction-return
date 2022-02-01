@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import play.api.Logging
 class ApiDefinitionFactory @Inject()(appConfig: AppConfig) extends Logging {
 
   private val writeScope = "write:interest-restriction-return"
+  private val confidenceLevel = 50
 
   lazy val definition: Definition =
     Definition(
@@ -33,7 +34,7 @@ class ApiDefinitionFactory @Inject()(appConfig: AppConfig) extends Logging {
           key = writeScope,
           name = "Create and Update your Interest Restriction Return information",
           description = "Allow write access to Interest Restriction Return data",
-          confidenceLevel = 200
+          confidenceLevel = confidenceLevel
         )
       ),
       api = APIDefinition(

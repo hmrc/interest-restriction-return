@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,25 +16,25 @@
 
 package utils
 
-import assets.BaseConstants
-import assets.UnitNrsConstants
+import akka.japi.Option.Some
+import assets.{BaseConstants, UnitNrsConstants}
 import config.AppConfig
+import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api.Application
+import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.mvc.BodyParsers
 import play.api.test.FakeRequest
-import uk.gov.hmrc.auth.core.MissingBearerToken
+import uk.gov.hmrc.auth.core.{AffinityGroup, MissingBearerToken}
 import uk.gov.hmrc.http.HeaderCarrier
+import v1.connectors.NrsConnector
 import v1.controllers.actions.mocks.{Authorised, Unauthorised}
 import v1.models.Validation
 import v1.models.Validation.ValidationResult
 import v1.models.requests.IdentifierRequest
+import v1.services.{DateTimeService, NrsService}
 
 import scala.concurrent.ExecutionContext
-import play.api.Application
-import play.api.inject.guice.GuiceApplicationBuilder
-import v1.connectors.NrsConnector
-import v1.services.{DateTimeService, NrsService}
-import org.scalatest.matchers.should.Matchers
 
 trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with MaterializerSupport with BaseConstants {
 
@@ -45,7 +45,7 @@ trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with Mate
       .build()
 
   lazy val fakeRequest = FakeRequest("GET", "/")
-  lazy implicit val identifierRequest = IdentifierRequest(fakeRequest, "id", UnitNrsConstants.nrsRetrievalData)
+  lazy implicit val identifierRequest = IdentifierRequest(fakeRequest, "id", UnitNrsConstants.nrsRetrievalData(Some(AffinityGroup.Organisation)))
   lazy val injector = app.injector
   lazy val bodyParsers = injector.instanceOf[BodyParsers.Default]
   lazy val appConfig = injector.instanceOf[AppConfig]
@@ -55,8 +55,8 @@ trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with Mate
   lazy val nrsService = new NrsService(nrsConnector = nrsConnector, dateTimeService = dateTimeService)
   lazy implicit val headerCarrier: HeaderCarrier = HeaderCarrier()
 
-  val fakeAuthResponse = UnitNrsConstants.fakeResponse
-  object AuthorisedAction extends Authorised[UnitNrsConstants.NrsRetrievalDataType](fakeAuthResponse, bodyParsers, appConfig)
+  def fakeAuthResponse(nrsAffinityGroup: Option[AffinityGroup]) = UnitNrsConstants.fakeResponse(nrsAffinityGroup)
+  object AuthorisedAction extends Authorised[UnitNrsConstants.NrsRetrievalDataType](fakeAuthResponse(Some(AffinityGroup.Organisation)), bodyParsers, appConfig)
   object UnauthorisedAction extends Unauthorised(new MissingBearerToken, bodyParsers, appConfig)
 
   def rightSide[A](validationResult: ValidationResult[A]): A = validationResult.toEither.right.get

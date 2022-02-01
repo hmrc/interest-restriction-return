@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import play.api.libs.json.{JsPath, Json}
+import play.api.libs.json.{JsPath, JsValue, Json}
 import v1.models.Validation.ValidationResult
 import v1.models.{UTRModel, Validation}
 
@@ -32,7 +32,8 @@ trait UTRValidator extends BaseValidation {
 
     def checkSum = {
 
-      val utrSum = (utrInts(1) * 6) + (utrInts(2) * 7) + (utrInts(3) * 8) + (utrInts(4) * 9) + (utrInts(5) * 10) + (utrInts(6) * 5) + (utrInts(7) * 4) + (utrInts(8) * 3) + (utrInts(9) * 2)
+      val utrSum = (utrInts(1) * 6) + (utrInts(2) * 7) + (utrInts(3) * 8) + (utrInts(4) * 9) + (utrInts(5) * 10) +
+        (utrInts(6) * 5) + (utrInts(7) * 4) + (utrInts(8) * 3) + (utrInts(9) * 2)
 
       val utrCalc = 11 - (utrSum % 11)
 
@@ -54,11 +55,11 @@ trait UTRValidator extends BaseValidation {
 case class UTRChecksumError(utrValue: UTRModel)(implicit val path: JsPath) extends Validation {
   val code = "UTR_CHECKSUM"
   val errorMessage: String = "UTR given is not valid"
-  val value = Some(Json.toJson(utrValue))
+  val value: Option[JsValue] = Some(Json.toJson(utrValue))
 }
 
 case class UTRLengthError(utrValue: UTRModel)(implicit val path: JsPath) extends Validation {
   val code = "UTR_LENGTH"
   val errorMessage: String = s"UTR must be 10 numeric characters"
-  val value = Some(Json.toJson(utrValue))
+  val value: Option[JsValue] = Some(Json.toJson(utrValue))
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package v1.validation.fullReturn
 
-import play.api.libs.json.{JsPath, Json}
+import play.api.libs.json.{JsPath, JsValue, Json}
 import v1.models.Validation
 import v1.models.Validation.ValidationResult
 import v1.models.fullReturn.GroupLevelAmountModel
@@ -40,8 +40,10 @@ trait GroupLevelAmountValidator extends BaseValidation {
       validateDecimalPlaces(groupLevelAmount.interestReactivationCap, ReactivationCapDecimalError(groupLevelAmount.interestReactivationCap)),
       validatePositive(groupLevelAmount.interestAllowanceForPeriod, InterestAllowanceForPeriodCannotBeNegative(groupLevelAmount.interestAllowanceForPeriod)),
       validateDecimalPlaces(groupLevelAmount.interestAllowanceForPeriod, InterestAllowanceForPeriodDecimalError(groupLevelAmount.interestAllowanceForPeriod)),
-      validatePositive(groupLevelAmount.interestAllowanceBroughtForward, InterestAllowanceBroughtForwardCannotBeNegative(groupLevelAmount.interestAllowanceBroughtForward)),
-      validateDecimalPlaces(groupLevelAmount.interestAllowanceBroughtForward, InterestAllowanceBroughtForwardDecimalError(groupLevelAmount.interestAllowanceBroughtForward)),
+      validatePositive(groupLevelAmount.interestAllowanceBroughtForward,
+        InterestAllowanceBroughtForwardCannotBeNegative(groupLevelAmount.interestAllowanceBroughtForward)),
+      validateDecimalPlaces(groupLevelAmount.interestAllowanceBroughtForward,
+        InterestAllowanceBroughtForwardDecimalError(groupLevelAmount.interestAllowanceBroughtForward)),
       validatePositive(groupLevelAmount.interestCapacityForPeriod, InterestCapacityForPeriodCannotBeNegative(groupLevelAmount.interestCapacityForPeriod)),
       validateDecimalPlaces(groupLevelAmount.interestCapacityForPeriod, InterestCapacityForPeriodDecimalError(groupLevelAmount.interestCapacityForPeriod))
     ).mapN((_,_,_,_,_,_,_,_) => groupLevelAmount)
@@ -91,14 +93,14 @@ case class InterestAllowanceBroughtForwardDecimalError(amt: BigDecimal)(implicit
 
 case class InterestCapacityForPeriodCannotBeNegative(amt: BigDecimal)(implicit topPath: JsPath) extends Validation {
   val code = "INTEREST_CAP_PERIOD_NEGATIVE"
-  val path = topPath \ s"interestCapacityForPeriod"
+  val path: JsPath = topPath \ s"interestCapacityForPeriod"
   val errorMessage: String = s"Interest capacity for the period must be a positive number or zero"
-  val value = Some(Json.toJson(amt))
+  val value: Option[JsValue] = Some(Json.toJson(amt))
 }
 
 case class InterestCapacityForPeriodDecimalError(amt: BigDecimal)(implicit topPath: JsPath) extends Validation {
   val code = "INTEREST_CAP_PERIOD_DECIMAL"
-  val path = topPath \ s"interestCapacityForPeriod"
+  val path: JsPath = topPath \ s"interestCapacityForPeriod"
   val errorMessage: String = s"Interest capacity for the period must be to 2 decimal places or less"
-  val value = Some(Json.toJson(amt))
+  val value: Option[JsValue] = Some(Json.toJson(amt))
 }

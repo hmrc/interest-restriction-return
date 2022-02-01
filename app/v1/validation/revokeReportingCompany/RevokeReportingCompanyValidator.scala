@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package v1.validation.revokeReportingCompany
 
-import play.api.libs.json.{JsBoolean, JsPath, Json}
+import play.api.libs.json.{JsBoolean, JsPath, JsValue, Json}
 import v1.models.Validation.ValidationResult
 import v1.models.revokeReportingCompany.RevokeReportingCompanyModel
 import v1.models.{IdentityOfCompanySubmittingModel, UltimateParentModel, Validation}
@@ -89,19 +89,20 @@ trait RevokeReportingCompanyValidator extends BaseValidation {
 case object CompanyMakingAppointmentMustSupplyDetails extends Validation {
   val code = "COMPANY_MAKING_REVOCATION_NOT_SUPPLIED"
   val errorMessage: String = "If the reporting company is not revoking itself, details of the company making revocation must be provided"
-  val path = JsPath \ "companyMakingRevocation"
-  val value = None
+  val path: JsPath = JsPath \ "companyMakingRevocation"
+  val value: Option[JsValue] = None
 }
 
 case class DeclaredFiftyPercentOfEligibleCompanies(declaration: Boolean) extends Validation {
   val code = "DECLARATION_FALSE"
-  val errorMessage: String = "Declaration is not valid so will not be submitted. You need to confirm the listed companies constitute at least 50% of the eligible companies."
+  val errorMessage: String = "Declaration is not valid so will not be submitted. " +
+    "You need to confirm the listed companies constitute at least 50% of the eligible companies."
   val path: JsPath = JsPath \ "declaration"
-  val value = Some(JsBoolean(declaration))
+  val value: Option[JsValue] = Some(JsBoolean(declaration))
 }
 
 case class DetailsNotNeededIfCompanyRevokingItself(companyMakingRevocation: IdentityOfCompanySubmittingModel)(implicit val path: JsPath) extends Validation {
   val code = "COMPANY_NOT_NEEDED"
   val errorMessage: String = "Reporting company not needed as it is the same the company making the revocation"
-  val value = Some(Json.toJson(companyMakingRevocation))
+  val value: Some[JsValue] = Some(Json.toJson(companyMakingRevocation))
 }

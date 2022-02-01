@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,10 +31,10 @@ object ValidationErrorResponseModel {
   val BAD_REQUEST_ERROR_MESSAGE = "Request contains validation errors"
 
   def apply(errors: Seq[(JsPath, Seq[JsonValidationError])]): ValidationErrorResponseModel = {
-    val validationErrors = errors.map {
-      case (path, errs) => 
+    val validationErrors = errors.flatMap {
+      case (path, errs) =>
         errs.flatMap(_.messages).map(message => ErrorResponseModel(code = VALIDATION_ERROR_CODE, message = message, path = Some(path.toString)))
-    }.flatten
+    }
 
     errorsToValidationResponse(validationErrors)
   }
@@ -46,7 +46,7 @@ object ValidationErrorResponseModel {
 
   def errorsToValidationResponse(errors: Seq[ErrorResponseModel]): ValidationErrorResponseModel =
     errors match {
-      case error :: Nil => 
+      case error :: Nil =>
         ValidationErrorResponseModel(
           code = error.code,
           message = error.message,
@@ -54,7 +54,7 @@ object ValidationErrorResponseModel {
           value = error.value,
           errors = None
         )
-      case _ => 
+      case _ =>
         ValidationErrorResponseModel(
           code = BAD_REQUEST_ERROR_CODE,
           message = BAD_REQUEST_ERROR_MESSAGE,
@@ -65,5 +65,3 @@ object ValidationErrorResponseModel {
     }
 
 }
-
-

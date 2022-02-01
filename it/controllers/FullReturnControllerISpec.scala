@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +18,8 @@ package controllers
 
 import assets.FullReturnITConstants._
 import assets.IntegrationNrsConstants._
-import play.api.http.Status._
 import play.api.Logging
+import play.api.http.Status._
 import stubs.{AuthStub, DESStub, NRSStub}
 import utils.{CreateRequestHelper, CustomMatchers, IntegrationSpecBase}
 

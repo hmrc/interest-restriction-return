@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -77,13 +77,14 @@ trait AllocatedRestrictionsValidator extends BaseValidation {
     (allocatedRestrictionsModel.ap1EndDate, allocatedRestrictionsModel.ap2EndDate) match {
       case (ap1, Some(ap2)) =>
         combineValidations(
-          if (!ap2.isAfter(ap1))
+          if (!ap2.isAfter(ap1)) {
             AllocatedRestrictionDateBeforePrevious(2).invalidNec
-          else Some(ap2).validNec,
-          if (ap2.minusMonths(12).isAfter(ap1))
-            AllocatedRestrictionDateGreaterThan12MonthsAfterPrevious(2).invalidNec
-          else Some(ap2).validNec,
-          if (ap1.isAfter(groupEndDate)) DateAfterGPOA(2).invalidNec else Some(ap2).validNec
+          } else {Some(ap2).validNec},
+          if (ap2.minusMonths(12).isAfter(ap1)) {
+              AllocatedRestrictionDateGreaterThan12MonthsAfterPrevious(2).invalidNec
+            }
+          else {Some(ap2).validNec},
+          if (ap1.isAfter(groupEndDate)) {DateAfterGPOA(2).invalidNec} else {Some(ap2).validNec}
         )
       case _ =>
         None.validNec

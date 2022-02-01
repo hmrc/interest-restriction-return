@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,13 @@
 
 package v1.controllers.actions
 
+import akka.japi.Option.Some
+import assets.UnitNrsConstants
 import play.api.mvc.{Action, AnyContent, Results}
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core._
 import utils.BaseSpec
 import v1.connectors.mocks.{FakeFailingAuthConnector, FakeSuccessAuthConnector}
-import assets.UnitNrsConstants
 
 class AuthActionSpec extends BaseSpec {
 
@@ -33,20 +34,48 @@ class AuthActionSpec extends BaseSpec {
 
     "the user is logged in with providerId returned" must {
 
-      "successfully carry out request" in {
-        val authConnector = new FakeSuccessAuthConnector[UnitNrsConstants.NrsRetrievalDataType](UnitNrsConstants.fakeResponse)
+      "successfully carry out a request for Organisations" in {
+        val authConnector = new FakeSuccessAuthConnector[UnitNrsConstants.NrsRetrievalDataType](UnitNrsConstants.fakeResponse(Some(AffinityGroup.Organisation)))
         val authAction = new AuthAction(authConnector, bodyParsers, appConfig)
         val controller = new Harness(authAction)
         val result = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
 
         status(result) shouldBe OK
       }
+
+      "successfully carry out a request for Agents" in {
+        val authConnector = new FakeSuccessAuthConnector[UnitNrsConstants.NrsRetrievalDataType](UnitNrsConstants.fakeResponse(Some(AffinityGroup.Agent)))
+        val authAction = new AuthAction(authConnector, bodyParsers, appConfig)
+        val controller = new Harness(authAction)
+        val result = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
+
+        status(result) shouldBe OK
+      }
+
+      "return a 403 FORBIDDEN if they are an individual" in {
+        val authConnector = new FakeSuccessAuthConnector[UnitNrsConstants.NrsRetrievalDataType](UnitNrsConstants.fakeResponse(Some(AffinityGroup.Individual)))
+        val authAction = new AuthAction(authConnector, bodyParsers, appConfig)
+        val controller = new Harness(authAction)
+        val result = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
+
+        status(result) shouldBe FORBIDDEN
+      }
+
+      " return a 401 UNAUTHORIZED if they have not supplied an Affinity Group" in {
+        val authConnector = new FakeSuccessAuthConnector[UnitNrsConstants.NrsRetrievalDataType](UnitNrsConstants.fakeResponse(None))
+        val authAction = new AuthAction(authConnector, bodyParsers, appConfig)
+        val controller = new Harness(authAction)
+        val result = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
+
+        status(result) shouldBe UNAUTHORIZED
+      }
     }
 
     "the user is logged in with NO providerId returned" must {
 
       "redirect to unauthorised" in {
-        val authConnector = new FakeSuccessAuthConnector[UnitNrsConstants.NrsRetrievalDataType](UnitNrsConstants.fakeResponseWithoutProviderId)
+        val authConnector = new FakeSuccessAuthConnector[UnitNrsConstants.NrsRetrievalDataType](
+          UnitNrsConstants.fakeResponseWithoutProviderId(Some(AffinityGroup.Organisation)))
         val authAction = new AuthAction(authConnector, bodyParsers, appConfig)
         val controller = new Harness(authAction)
         val result = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
@@ -84,18 +113,6 @@ class AuthActionSpec extends BaseSpec {
       "redirect the user to the unauthorised page" in {
 
         val authAction = new AuthAction(new FakeFailingAuthConnector(new InsufficientEnrolments), bodyParsers, appConfig)
-        val controller = new Harness(authAction)
-        val result = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
-
-        status(result) shouldBe UNAUTHORIZED
-      }
-    }
-
-    "the user doesn't have sufficient confidence level" must {
-
-      "redirect the user to the unauthorised page" in {
-
-        val authAction = new AuthAction(new FakeFailingAuthConnector(new InsufficientConfidenceLevel), bodyParsers, appConfig)
         val controller = new Harness(authAction)
         val result = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
 
