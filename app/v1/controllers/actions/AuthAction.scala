@@ -19,6 +19,7 @@ package v1.controllers.actions
 import com.google.inject.Inject
 import config.AppConfig
 import play.api.Logging
+import play.api.libs.json.Json
 import play.api.mvc.Results._
 import play.api.mvc._
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Individual, Organisation}
@@ -56,7 +57,7 @@ class AuthAction @Inject()(override val authConnector: AuthConnector,
         retrievalData(request, block)
       case _ =>
         logger.warn(s"An error occurred during auth action: No Authorization header provided")
-        Future.successful(Unauthorized("No Authorization Header Provided"))
+        Future.successful(Unauthorized)
     }
   }
 
@@ -86,12 +87,12 @@ class AuthAction @Inject()(override val authConnector: AuthConnector,
     }
   }).recover {
     case e => logger.error(s"An error occurred during auth action: ${e.getMessage}", e)
-      Unauthorized("No Active Session")
+      Unauthorized
   }
 
   private def authorisedRetrievalFailure: Future[Result] = {
     logger.warn(s"An error occurred during auth action: No Authorization header provided")
-    Future.successful(Unauthorized("No Authorization Header Provided"))
+    Future.successful(Unauthorized)
   }
 
   private def credentialMap[A](request: Request[A], block: IdentifierRequest[A] => Future[Result], credentials: Option[Credentials],
@@ -100,16 +101,17 @@ class AuthAction @Inject()(override val authConnector: AuthConnector,
       case Some(Organisation) | Some(Agent) => credentials.map { credential => block(IdentifierRequest(request, credential.providerId, retrievalData))
       }.getOrElse {
         logger.warn(s"No Active Session")
-        Future.successful(Unauthorized("No Active Session"))}
+        Future.successful(Unauthorized)}
       case Some(Individual) => forbiddenIndividuals
       case _ => logger.warn(s"User did not provide affinity group")
-        Future.successful(Unauthorized("No Authorization Header Provided"))
+        Future.successful(Unauthorized)
     }
   }
 
   private def forbiddenIndividuals: Future[Result] = Future.successful {
     logger.warn(s"User with an affinity group type of Individual tried to access IRR")
-    Forbidden("You are unable to access this service as an individual. This service is only available to individual companies or groups of companies.")
+    Forbidden(Json.parse(
+      "You are unable to access this service as an individual. This service is only available to individual companies or groups of companies."))
   }
 
 }

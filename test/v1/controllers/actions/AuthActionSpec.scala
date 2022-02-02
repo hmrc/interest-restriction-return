@@ -59,6 +59,7 @@ class AuthActionSpec extends BaseSpec {
         val result = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
 
         status(result) shouldBe FORBIDDEN
+        bodyOf(result) should contain "You are unable to access this service as an individual. This service is only available to individual companies or groups of companies."
       }
 
       " return a 401 UNAUTHORIZED if they have not supplied an Affinity Group" in {
