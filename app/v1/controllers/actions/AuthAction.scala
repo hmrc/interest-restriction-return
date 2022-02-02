@@ -30,6 +30,8 @@ import uk.gov.hmrc.http.{Authorization, HeaderCarrier, HeaderNames}
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import v1.models.nrs.NrsRetrievalData
 import v1.models.requests.IdentifierRequest
+import v1.models
+import v1.models.authAction.ForbiddenIndividualsError
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -110,8 +112,7 @@ class AuthAction @Inject()(override val authConnector: AuthConnector,
 
   private def forbiddenIndividuals: Future[Result] = Future.successful {
     logger.warn(s"User with an affinity group type of Individual tried to access IRR")
-    Forbidden(Json.parse(
-      "You are unable to access this service as an individual. This service is only available to individual companies or groups of companies."))
+    Forbidden(Json.toJson(ForbiddenIndividualsError()))
   }
 
 }
