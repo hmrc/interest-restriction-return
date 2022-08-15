@@ -20,3 +20,5 @@ addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.5.1")
 addSbtPlugin("org.lyranthe.sbt" % "partial-unification" % "1.1.2")
 
 addSbtPlugin("ch.epfl.scala" % "sbt-scalafix" % "0.9.18-1")
+
+addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.6.3")

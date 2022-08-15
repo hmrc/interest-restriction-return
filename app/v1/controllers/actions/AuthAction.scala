@@ -28,10 +28,9 @@ import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
 import uk.gov.hmrc.auth.core.retrieve.{Credentials, ~}
 import uk.gov.hmrc.http.{Authorization, HeaderCarrier, HeaderNames}
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
+import v1.models.authAction.ForbiddenIndividualsError
 import v1.models.nrs.NrsRetrievalData
 import v1.models.requests.IdentifierRequest
-import v1.models
-import v1.models.authAction.ForbiddenIndividualsError
 
 import scala.concurrent.{ExecutionContext, Future}
 
