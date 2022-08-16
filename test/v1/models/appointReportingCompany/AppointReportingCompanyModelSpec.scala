@@ -32,7 +32,7 @@ class AppointReportingCompanyModelSpec extends AnyWordSpec with Matchers with Ba
       "With Max values" in {
 
         val expectedValue = appointReportingCompanyJsonMax
-        val actualValue = Json.toJson(appointReportingCompanyModelMax)
+        val actualValue   = Json.toJson(appointReportingCompanyModelMax)
 
         actualValue shouldBe expectedValue
       }
@@ -40,7 +40,7 @@ class AppointReportingCompanyModelSpec extends AnyWordSpec with Matchers with Ba
       "With Min values" in {
 
         val expectedValue = appointReportingCompanyJsonMin
-        val actualValue = Json.toJson(appointReportingCompanyModelMin)
+        val actualValue   = Json.toJson(appointReportingCompanyModelMin)
 
         actualValue shouldBe expectedValue
       }
@@ -51,7 +51,7 @@ class AppointReportingCompanyModelSpec extends AnyWordSpec with Matchers with Ba
       "With Max values" in {
 
         val expectedValue = appointReportingCompanyModelMax
-        val actualValue = appointReportingCompanyJsonMax.as[AppointReportingCompanyModel]
+        val actualValue   = appointReportingCompanyJsonMax.as[AppointReportingCompanyModel]
 
         actualValue shouldBe expectedValue
       }
@@ -59,7 +59,7 @@ class AppointReportingCompanyModelSpec extends AnyWordSpec with Matchers with Ba
       "With Min values" in {
 
         val expectedValue = appointReportingCompanyModelMin
-        val actualValue = appointReportingCompanyJsonMin.as[AppointReportingCompanyModel]
+        val actualValue   = appointReportingCompanyJsonMin.as[AppointReportingCompanyModel]
 
         actualValue shouldBe expectedValue
       }

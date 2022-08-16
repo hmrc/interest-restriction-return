@@ -29,14 +29,16 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
   "FullReturnConnector.submit using fullReturnModelMax" when {
     def setup(response: SubmissionResponse): FullReturnConnector = {
       val desUrl = "http://localhost:9262/organisations/interest-restrictions-return/full"
-      mockHttpPost[FullReturnModel, Either[ErrorResponse, DesSuccessResponse]](desUrl, fullReturnUltimateParentModel)(response)
+      mockHttpPost[FullReturnModel, Either[ErrorResponse, DesSuccessResponse]](desUrl, fullReturnUltimateParentModel)(
+        response
+      )
       new FullReturnConnector(mockHttpClient, appConfig)
     }
 
     "submission is successful" should {
       "return a Right(SuccessResponse)" in {
         val connector = setup(Right(DesSuccessResponse("ackRef")))
-        val result = connector.submit(fullReturnUltimateParentModel)
+        val result    = connector.submit(fullReturnUltimateParentModel)
 
         await(result) shouldBe Right(DesSuccessResponse("ackRef"))
       }
@@ -45,7 +47,7 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
     "update is unsuccessful" should {
       "return a Left(UnexpectedFailure)" in {
         val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-        val result = connector.submit(fullReturnUltimateParentModel)
+        val result    = connector.submit(fullReturnUltimateParentModel)
 
         await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
       }
@@ -63,7 +65,7 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
     "submission is successful" should {
       "return a Right(SuccessResponse)" in {
         val connector = setup(Right(DesSuccessResponse(ackRef)))
-        val result = connector.submit(fullReturnModelMin)
+        val result    = connector.submit(fullReturnModelMin)
 
         await(result) shouldBe Right(DesSuccessResponse(ackRef))
       }
@@ -72,7 +74,7 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
     "update is unsuccessful" should {
       "return a Left(UnexpectedFailure)" in {
         val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-        val result = connector.submit(fullReturnModelMin)
+        val result    = connector.submit(fullReturnModelMin)
 
         await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
       }

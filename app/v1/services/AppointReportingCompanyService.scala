@@ -27,12 +27,14 @@ import v1.models.requests.IdentifierRequest
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class AppointReportingCompanyService @Inject()(appointReportingCompanyConnector: AppointReportingCompanyConnector)
-  extends Submission[AppointReportingCompanyModel] with Logging {
+class AppointReportingCompanyService @Inject() (appointReportingCompanyConnector: AppointReportingCompanyConnector)
+    extends Submission[AppointReportingCompanyModel]
+    with Logging {
 
-  override def submit(appointReportingCompany: AppointReportingCompanyModel)
-                     (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] =
-    appointReportingCompanyConnector.appoint(appointReportingCompany).map{ resp =>
+  override def submit(
+    appointReportingCompany: AppointReportingCompanyModel
+  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] =
+    appointReportingCompanyConnector.appoint(appointReportingCompany).map { resp =>
       logger.info("Successfully sent a appoint reporting company payload")
       resp
     }

@@ -22,9 +22,9 @@ import javax.inject.{Inject, Singleton}
 import play.api.Logging
 
 @Singleton
-class ApiDefinitionFactory @Inject()(appConfig: AppConfig) extends Logging {
+class ApiDefinitionFactory @Inject() (appConfig: AppConfig) extends Logging {
 
-  private val writeScope = "write:interest-restriction-return"
+  private val writeScope      = "write:interest-restriction-return"
   private val confidenceLevel = 50
 
   lazy val definition: Definition =
@@ -43,18 +43,23 @@ class ApiDefinitionFactory @Inject()(appConfig: AppConfig) extends Logging {
         context = appConfig.apiGatewayContext,
         categories = Seq("CORPORATION_TAX"),
         versions = Seq(
-          APIVersion(version = VERSION_1, access = None, status = buildAPIStatus(VERSION_1), endpointsEnabled = appConfig.endpointsEnabled)
+          APIVersion(
+            version = VERSION_1,
+            access = None,
+            status = buildAPIStatus(VERSION_1),
+            endpointsEnabled = appConfig.endpointsEnabled
+          )
         ),
         requiresTrust = None
       )
     )
 
-  private[definition] def buildAPIStatus(version: String): APIStatus = {
-    APIStatus.parser.lift(appConfig.apiStatus(version))
+  private[definition] def buildAPIStatus(version: String): APIStatus =
+    APIStatus.parser
+      .lift(appConfig.apiStatus(version))
       .getOrElse {
         logger.error(s"No API Status found in config. Reverting to Alpha")
         APIStatus.ALPHA
       }
-  }
 
 }

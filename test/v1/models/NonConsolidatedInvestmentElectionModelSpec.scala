@@ -31,7 +31,7 @@ class NonConsolidatedInvestmentElectionModelSpec extends AnyWordSpec with Matche
       "max values given" in {
 
         val expectedValue = nonConsolidatedInvestmentJsonMax
-        val actualValue = Json.toJson(nonConsolidatedInvestmentModelMax)
+        val actualValue   = Json.toJson(nonConsolidatedInvestmentModelMax)
 
         actualValue shouldBe expectedValue
       }
@@ -39,7 +39,7 @@ class NonConsolidatedInvestmentElectionModelSpec extends AnyWordSpec with Matche
       "min values given" in {
 
         val expectedValue = nonConsolidatedInvestmentJsonMin
-        val actualValue = Json.toJson(nonConsolidatedInvestmentModelMin)
+        val actualValue   = Json.toJson(nonConsolidatedInvestmentModelMin)
 
         actualValue shouldBe expectedValue
       }
@@ -49,18 +49,17 @@ class NonConsolidatedInvestmentElectionModelSpec extends AnyWordSpec with Matche
 
       "max values given" in {
         val expectedValue = nonConsolidatedInvestmentModelMax
-        val actualValue = nonConsolidatedInvestmentJsonMax.as[NonConsolidatedInvestmentElectionModel]
+        val actualValue   = nonConsolidatedInvestmentJsonMax.as[NonConsolidatedInvestmentElectionModel]
 
         actualValue shouldBe expectedValue
       }
 
       "min values given" in {
         val expectedValue = nonConsolidatedInvestmentModelMin
-        val actualValue = nonConsolidatedInvestmentJsonMin.as[NonConsolidatedInvestmentElectionModel]
+        val actualValue   = nonConsolidatedInvestmentJsonMin.as[NonConsolidatedInvestmentElectionModel]
 
         actualValue shouldBe expectedValue
       }
     }
   }
 }
-

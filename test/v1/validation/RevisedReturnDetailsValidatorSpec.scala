@@ -29,22 +29,30 @@ class RevisedReturnDetailsValidatorSpec extends BaseSpec {
     "return invalid" when {
 
       "Return type is Revised and the revised return details are less than 1 character long" in {
-        leftSideError(RevisedReturnDetailsModel("").validate).errorMessage shouldBe RevisedReturnDetailsLengthError("").errorMessage
+        leftSideError(RevisedReturnDetailsModel("").validate).errorMessage shouldBe RevisedReturnDetailsLengthError(
+          ""
+        ).errorMessage
       }
 
       "Return type is Revised and the revised return details are more than 5000 character longs" in {
-        leftSideError(RevisedReturnDetailsModel("a" * 5001).validate).errorMessage shouldBe RevisedReturnDetailsLengthError("a" * 5001).errorMessage
+        leftSideError(
+          RevisedReturnDetailsModel("a" * 5001).validate
+        ).errorMessage shouldBe RevisedReturnDetailsLengthError("a" * 5001).errorMessage
       }
 
       "Return type is Revised and the revised return details contains invalid characters" in {
         val returnDetails = "ʰʲʺ£$%˦˫qwNew!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is" +
           " 160 characters no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
-        leftSideError(RevisedReturnDetailsModel(returnDetails).validate).errorMessage shouldBe RevisedReturnDetailsCharacterError(returnDetails).errorMessage
+        leftSideError(
+          RevisedReturnDetailsModel(returnDetails).validate
+        ).errorMessage shouldBe RevisedReturnDetailsCharacterError(returnDetails).errorMessage
       }
 
       "Return type is Revised and the revised return details contain an end of line character" in {
         val returnDetails = "\n"
-        leftSideError(RevisedReturnDetailsModel(returnDetails).validate).errorMessage shouldBe RevisedReturnDetailsCharacterError(returnDetails).errorMessage
+        leftSideError(
+          RevisedReturnDetailsModel(returnDetails).validate
+        ).errorMessage shouldBe RevisedReturnDetailsCharacterError(returnDetails).errorMessage
       }
     }
   }

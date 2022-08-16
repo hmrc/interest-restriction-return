@@ -37,16 +37,21 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 
 class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
 
-  val formatter: DateTimeFormatter = DateTimeFormat.forPattern("dd/MM/yyyy")
-  val dateTime: DateTime = formatter.parseDateTime("01/01/2021")
-  val fullRequest = FakeRequest("GET", "/", FakeHeaders(Seq("Authorization" -> "Bearer 123")), FullReturnConstants.fullReturnModelMax.toString)
-  val payloadAsString = fullRequest.body.toString
-  val request = IdentifierRequest[String](
+  val formatter: DateTimeFormatter   = DateTimeFormat.forPattern("dd/MM/yyyy")
+  val dateTime: DateTime             = formatter.parseDateTime("01/01/2021")
+  val fullRequest                    = FakeRequest(
+    "GET",
+    "/",
+    FakeHeaders(Seq("Authorization" -> "Bearer 123")),
+    FullReturnConstants.fullReturnModelMax.toString
+  )
+  val payloadAsString                = fullRequest.body.toString
+  val request                        = IdentifierRequest[String](
     request = fullRequest,
     identifier = "123",
     nrsRetrievalData = UnitNrsConstants.nrsRetrievalData(Some(AffinityGroup.Organisation))
   )
-  val expectedNrsMetadata = new NrsMetadata(
+  val expectedNrsMetadata            = new NrsMetadata(
     businessId = "irr",
     notableEvent = "interest-restriction-return",
     payloadContentType = "application/json",
@@ -55,7 +60,11 @@ class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
     userAuthToken = "Bearer 123",
     identityData = request.nrsRetrievalData,
     headerData = new JsObject(request.request.headers.toMap.map(x => x._1 -> JsString(x._2 mkString ","))),
-    searchKeys = JsObject(Map[String, JsValue]("reportingCompanyCTUTR" -> JsString(FullReturnConstants.fullReturnModelMax.reportingCompany.ctutr.utr)))
+    searchKeys = JsObject(
+      Map[String, JsValue](
+        "reportingCompanyCTUTR" -> JsString(FullReturnConstants.fullReturnModelMax.reportingCompany.ctutr.utr)
+      )
+    )
   )
   val expectedNrsPayload: NrsPayload = NrsPayload(base64().encode(payloadAsString.getBytes(UTF_8)), expectedNrsMetadata)
 
@@ -64,7 +73,7 @@ class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
   }
 
   "The service should parse the metadata correctly with the auth information" in {
-    val connector = mockNrsConnector()
+    val connector  = mockNrsConnector()
     mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Right(NrSubmissionId(UUID.randomUUID()))))
     val nrsService = new NrsService(connector, TestDateTimeService)
 
@@ -73,7 +82,7 @@ class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
   }
 
   "If the service returns a 400 error response, it should return it without trying again" in {
-    val connector = mockNrsConnector()
+    val connector  = mockNrsConnector()
     mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Left(UnexpectedFailure(400, "Error occurred"))))
     val nrsService = new NrsService(connector, TestDateTimeService)
 
@@ -82,7 +91,7 @@ class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
   }
 
   "If the service returns a 499 error response, it should return it without trying again" in {
-    val connector = mockNrsConnector()
+    val connector  = mockNrsConnector()
     mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Left(UnexpectedFailure(499, "Error occurred"))))
     val nrsService = new NrsService(connector, TestDateTimeService)
 
@@ -91,8 +100,8 @@ class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
   }
 
   "If the service returns a 500 error response, it should try again" in {
-    val connector = mockNrsConnector()
-    val uuid = UUID.randomUUID()
+    val connector  = mockNrsConnector()
+    val uuid       = UUID.randomUUID()
     mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Left(UnexpectedFailure(500, "Error occurred"))))
     mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Right(NrSubmissionId(uuid))))
     val nrsService = new NrsService(connector, TestDateTimeService)
@@ -102,8 +111,8 @@ class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
   }
 
   "If the service returns a 599 error response, it should try again" in {
-    val connector = mockNrsConnector()
-    val uuid = UUID.randomUUID()
+    val connector  = mockNrsConnector()
+    val uuid       = UUID.randomUUID()
     mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Left(UnexpectedFailure(599, "Error occurred"))))
     mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Right(NrSubmissionId(uuid))))
     val nrsService = new NrsService(connector, TestDateTimeService)
@@ -113,8 +122,8 @@ class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
   }
 
   "If the service returns a 500 error response twice, it should try again" in {
-    val connector = mockNrsConnector()
-    val uuid = UUID.randomUUID()
+    val connector  = mockNrsConnector()
+    val uuid       = UUID.randomUUID()
     mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Left(UnexpectedFailure(500, "Error occurred"))))
     mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Left(UnexpectedFailure(500, "Error occurred"))))
     mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Right(NrSubmissionId(uuid))))
@@ -125,8 +134,8 @@ class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
   }
 
   "If the service returns a 599 error response twice, it should try again" in {
-    val connector = mockNrsConnector()
-    val uuid = UUID.randomUUID()
+    val connector  = mockNrsConnector()
+    val uuid       = UUID.randomUUID()
     mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Left(UnexpectedFailure(599, "Error occurred"))))
     mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Left(UnexpectedFailure(599, "Error occurred"))))
     mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Right(NrSubmissionId(uuid))))
@@ -137,7 +146,7 @@ class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
   }
 
   "If the service returns a 500 error response three times, it should NOT try again" in {
-    val connector = mockNrsConnector()
+    val connector  = mockNrsConnector()
     mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Left(UnexpectedFailure(500, "Error occurred"))))
     mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Left(UnexpectedFailure(500, "Error occurred"))))
     mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Left(UnexpectedFailure(500, "Error occurred"))))
@@ -148,7 +157,7 @@ class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
   }
 
   "If the service returns a 599 error response three times, it should NOT try again" in {
-    val connector = mockNrsConnector()
+    val connector  = mockNrsConnector()
     mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Left(UnexpectedFailure(599, "Error occurred"))))
     mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Left(UnexpectedFailure(599, "Error occurred"))))
     mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Left(UnexpectedFailure(599, "Error occurred"))))

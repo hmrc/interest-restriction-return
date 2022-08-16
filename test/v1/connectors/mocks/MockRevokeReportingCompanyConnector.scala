@@ -29,9 +29,9 @@ trait MockRevokeReportingCompanyConnector extends MockFactory {
 
   lazy val mockRevokeReportingCompanyConnector: RevokeReportingCompanyConnector = mock[RevokeReportingCompanyConnector]
 
-  def mockRevokeReportingCompany(model: RevokeReportingCompanyModel)(response: SubmissionResponse): Unit = {
-    (mockRevokeReportingCompanyConnector.revoke(_: RevokeReportingCompanyModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
+  def mockRevokeReportingCompany(model: RevokeReportingCompanyModel)(response: SubmissionResponse): Unit =
+    (mockRevokeReportingCompanyConnector
+      .revoke(_: RevokeReportingCompanyModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
       .expects(model, *, *, *)
       .returns(Future.successful(response))
-  }
 }

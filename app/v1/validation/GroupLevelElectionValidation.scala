@@ -27,13 +27,9 @@ trait GroupLevelElectionValidation extends BaseValidation {
   val groupLevelElectionsModel: GroupLevelElectionsModel
 
   def validate(implicit path: JsPath): ValidationResult[GroupLevelElectionsModel] =
-    (groupLevelElectionsModel.groupRatio.validate,
+    (
+      groupLevelElectionsModel.groupRatio.validate,
       groupLevelElectionsModel.interestAllowanceNonConsolidatedInvestment.validate,
       groupLevelElectionsModel.interestAllowanceConsolidatedPartnership.validate
-      ).mapN((_,_,_) => groupLevelElectionsModel)
+    ).mapN((_, _, _) => groupLevelElectionsModel)
 }
-
-
-
-
-

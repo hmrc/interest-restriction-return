@@ -16,7 +16,6 @@
 
 package v1.controllers
 
-
 import config.AppConfig
 import play.api.libs.json.JsValue
 import play.api.mvc.{Action, ControllerComponents}
@@ -27,11 +26,13 @@ import v1.services.{FullReturnService, NrsService}
 import javax.inject.{Inject, Singleton}
 
 @Singleton()
-class FullReturnController @Inject()(authAction: AuthAction,
-                                     fullReturnService: FullReturnService,
-                                     nrsService: NrsService,
-                                     appConfig: AppConfig,
-                                     override val controllerComponents: ControllerComponents) extends BaseController {
+class FullReturnController @Inject() (
+  authAction: AuthAction,
+  fullReturnService: FullReturnService,
+  nrsService: NrsService,
+  appConfig: AppConfig,
+  override val controllerComponents: ControllerComponents
+) extends BaseController {
 
   def submit(): Action[JsValue] = authAction.async(parse.json) { implicit request =>
     withJsonBody[FullReturnModel] { fullReturnModel =>

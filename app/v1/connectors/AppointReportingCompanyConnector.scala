@@ -31,19 +31,26 @@ import v1.models.requests.IdentifierRequest
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class AppointReportingCompanyConnector @Inject()(httpClient: HttpClient,
-                                                 implicit val appConfig: AppConfig) extends DesBaseConnector with Logging {
+class AppointReportingCompanyConnector @Inject() (httpClient: HttpClient, implicit val appConfig: AppConfig)
+    extends DesBaseConnector
+    with Logging {
 
   private[connectors] lazy val appointUrl = s"${appConfig.desUrl}/organisations/interest-restrictions-return/appoint"
 
-  def appoint(appointReportingCompanyModel: AppointReportingCompanyModel)
-             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
+  def appoint(
+    appointReportingCompanyModel: AppointReportingCompanyModel
+  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
     logger.debug(s"URL: $appointUrl")
     val receivedSize = request.headers.get(HeaderNames.CONTENT_LENGTH)
-    val jsonSize = Json.stringify(Json.toJson(appointReportingCompanyModel)(AppointReportingCompanyModel.format)).length
+    val jsonSize     = Json.stringify(Json.toJson(appointReportingCompanyModel)(AppointReportingCompanyModel.format)).length
     logger.debug(s"Size of content received: $receivedSize sent: $jsonSize")
 
-    httpClient.POST(appointUrl, appointReportingCompanyModel)(AppointReportingCompanyModel.format, AppointReportingCompanyReads, desHc, ec)
+    httpClient.POST(appointUrl, appointReportingCompanyModel)(
+      AppointReportingCompanyModel.format,
+      AppointReportingCompanyReads,
+      desHc,
+      ec
+    )
   }
 
 }

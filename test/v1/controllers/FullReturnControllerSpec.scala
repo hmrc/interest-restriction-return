@@ -31,13 +31,14 @@ class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
   "FullReturnController.submit()" when {
     "the user is authenticated" when {
 
-      object AuthorisedController extends FullReturnController(
-        authAction = AuthorisedAction,
-        fullReturnService = mockFullReturnService,
-        controllerComponents = Helpers.stubControllerComponents(),
-        nrsService = nrsService,
-        appConfig = appConfig
-      )
+      object AuthorisedController
+          extends FullReturnController(
+            authAction = AuthorisedAction,
+            fullReturnService = mockFullReturnService,
+            controllerComponents = Helpers.stubControllerComponents(),
+            nrsService = nrsService,
+            appConfig = appConfig
+          )
 
       "a valid payload is submitted" when {
 
@@ -60,7 +61,9 @@ class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
           "an error response is returned from the service" should {
 
             "return the Error" in {
-              mockFullReturn(fullReturnUltimateParentModel)(Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
+              mockFullReturn(fullReturnUltimateParentModel)(
+                Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err"))
+              )
 
               val result = AuthorisedController.submit()(validJsonFakeRequest)
               status(result) shouldBe Status.INTERNAL_SERVER_ERROR
@@ -86,13 +89,14 @@ class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
 
       "return 401 (Unauthorised)" in {
 
-        object UnauthorisedController extends FullReturnController(
-          authAction = UnauthorisedAction,
-          fullReturnService = mockFullReturnService,
-          controllerComponents = Helpers.stubControllerComponents(),
-          nrsService = nrsService,
-          appConfig = appConfig
-        )
+        object UnauthorisedController
+            extends FullReturnController(
+              authAction = UnauthorisedAction,
+              fullReturnService = mockFullReturnService,
+              controllerComponents = Helpers.stubControllerComponents(),
+              nrsService = nrsService,
+              appConfig = appConfig
+            )
 
         val result = UnauthorisedController.submit()(fakeRequest.withBody(Json.obj()))
         status(result) shouldBe Status.UNAUTHORIZED
@@ -104,13 +108,14 @@ class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
     val validateFakeRequest = FakeRequest("POST", "/interest-restriction-return/return/full/validate")
     "the user is authenticated" when {
 
-      object AuthorisedController extends FullReturnController(
-        authAction = AuthorisedAction,
-        fullReturnService = mockFullReturnService,
-        controllerComponents = Helpers.stubControllerComponents(),
-        nrsService = nrsService,
-        appConfig = appConfig
-      )
+      object AuthorisedController
+          extends FullReturnController(
+            authAction = AuthorisedAction,
+            fullReturnService = mockFullReturnService,
+            controllerComponents = Helpers.stubControllerComponents(),
+            nrsService = nrsService,
+            appConfig = appConfig
+          )
 
       "a valid payload is submitted" when {
 
@@ -141,13 +146,14 @@ class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
 
       "return 401 (Unauthorised)" in {
 
-        object UnauthorisedController extends FullReturnController(
-          authAction = UnauthorisedAction,
-          fullReturnService = mockFullReturnService,
-          controllerComponents = Helpers.stubControllerComponents(),
-          nrsService = nrsService,
-          appConfig = appConfig
-        )
+        object UnauthorisedController
+            extends FullReturnController(
+              authAction = UnauthorisedAction,
+              fullReturnService = mockFullReturnService,
+              controllerComponents = Helpers.stubControllerComponents(),
+              nrsService = nrsService,
+              appConfig = appConfig
+            )
 
         val result = UnauthorisedController.validate()(fakeRequest.withBody(Json.obj()))
         status(result) shouldBe Status.UNAUTHORIZED

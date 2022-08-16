@@ -28,8 +28,8 @@ object RevisedReturnDetailsModel {
 
   implicit val reads: Reads[RevisedReturnDetailsModel] = JsPath.read[String].map(RevisedReturnDetailsModel.apply)
 
-  implicit val writes: Writes[RevisedReturnDetailsModel] = Writes {
-    model => JsString(model.details)
+  implicit val writes: Writes[RevisedReturnDetailsModel] = Writes { model =>
+    JsString(model.details)
   }
 
 }

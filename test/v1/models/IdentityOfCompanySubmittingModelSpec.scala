@@ -31,7 +31,7 @@ class IdentityOfCompanySubmittingModelSpec extends AnyWordSpec with Matchers {
       "max values given" in {
 
         val expectedValue = identityOfCompanySubmittingJsonMax
-        val actualValue = Json.toJson(identityOfCompanySubmittingModelMax)
+        val actualValue   = Json.toJson(identityOfCompanySubmittingModelMax)
 
         actualValue shouldBe expectedValue
       }
@@ -39,7 +39,7 @@ class IdentityOfCompanySubmittingModelSpec extends AnyWordSpec with Matchers {
       "min values given" in {
 
         val expectedValue = identityOfCompanySubmittingJsonMin
-        val actualValue = Json.toJson(identityOfCompanySubmittingModelMin)
+        val actualValue   = Json.toJson(identityOfCompanySubmittingModelMin)
 
         actualValue shouldBe expectedValue
       }
@@ -50,7 +50,7 @@ class IdentityOfCompanySubmittingModelSpec extends AnyWordSpec with Matchers {
       "max values given" in {
 
         val expectedValue = identityOfCompanySubmittingModelMax
-        val actualValue = identityOfCompanySubmittingJsonMax.as[IdentityOfCompanySubmittingModel]
+        val actualValue   = identityOfCompanySubmittingJsonMax.as[IdentityOfCompanySubmittingModel]
 
         actualValue shouldBe expectedValue
       }
@@ -58,7 +58,7 @@ class IdentityOfCompanySubmittingModelSpec extends AnyWordSpec with Matchers {
       "min values given" in {
 
         val expectedValue = identityOfCompanySubmittingModelMin
-        val actualValue = identityOfCompanySubmittingJsonMin.as[IdentityOfCompanySubmittingModel]
+        val actualValue   = identityOfCompanySubmittingJsonMin.as[IdentityOfCompanySubmittingModel]
 
         actualValue shouldBe expectedValue
       }

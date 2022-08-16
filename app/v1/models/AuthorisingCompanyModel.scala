@@ -19,9 +19,8 @@ package v1.models
 import play.api.libs.json.Json
 import v1.validation.AuthorisingCompanyValidator
 
-case class AuthorisingCompanyModel(companyName: CompanyNameModel,
-                                   utr: UTRModel,
-                                   consenting: Option[Boolean]) extends AuthorisingCompanyValidator {
+case class AuthorisingCompanyModel(companyName: CompanyNameModel, utr: UTRModel, consenting: Option[Boolean])
+    extends AuthorisingCompanyValidator {
   override val authorisingCompanyModel: AuthorisingCompanyModel = this
 }
 

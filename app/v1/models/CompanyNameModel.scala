@@ -16,7 +16,7 @@
 
 package v1.models
 
-import play.api.libs.json.{JsPath, Reads, Writes, JsString}
+import play.api.libs.json.{JsPath, JsString, Reads, Writes}
 import v1.validation.CompanyNameValidator
 import utils.ReadStringWithTrim.stringReads
 
@@ -28,9 +28,8 @@ object CompanyNameModel {
 
   implicit val reads: Reads[CompanyNameModel] = JsPath.read[String].map(CompanyNameModel.apply)
 
-  implicit val writes: Writes[CompanyNameModel] = Writes {
-    model => JsString(model.name)
+  implicit val writes: Writes[CompanyNameModel] = Writes { model =>
+    JsString(model.name)
   }
 
 }
-

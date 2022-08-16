@@ -33,7 +33,6 @@ object Parameter {
 
 case class PublishingException(message: String) extends Exception(message)
 
-
 sealed trait APIStatus
 
 object APIStatus {
@@ -59,12 +58,14 @@ object APIVersion {
   implicit val formatAPIVersion: OFormat[APIVersion] = Json.format[APIVersion]
 }
 
-case class APIDefinition(name: String,
-                         description: String,
-                         context: String,
-                         categories: Seq[String],
-                         versions: Seq[APIVersion],
-                         requiresTrust: Option[Boolean]) {
+case class APIDefinition(
+  name: String,
+  description: String,
+  context: String,
+  categories: Seq[String],
+  versions: Seq[APIVersion],
+  requiresTrust: Option[Boolean]
+) {
 
   require(name.nonEmpty, "name is required")
   require(context.nonEmpty, "context is required")
@@ -72,9 +73,8 @@ case class APIDefinition(name: String,
   require(versions.nonEmpty, "at least one version is required")
   require(uniqueVersions, "version numbers must be unique")
 
-  private def uniqueVersions = {
+  private def uniqueVersions =
     !versions.map(_.version).groupBy(identity).mapValues(_.size).exists(_._2 > 1)
-  }
 }
 
 object APIDefinition {

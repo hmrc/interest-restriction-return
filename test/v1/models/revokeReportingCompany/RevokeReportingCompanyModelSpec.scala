@@ -31,7 +31,7 @@ class RevokeReportingCompanyModelSpec extends AnyWordSpec with Matchers with Bas
       "max values given" in {
 
         val expectedValue = revokeReportingCompanyJsonMax
-        val actualValue = Json.toJson(revokeReportingCompanyModelMax)
+        val actualValue   = Json.toJson(revokeReportingCompanyModelMax)
 
         actualValue shouldBe expectedValue
       }
@@ -39,7 +39,7 @@ class RevokeReportingCompanyModelSpec extends AnyWordSpec with Matchers with Bas
       "min values given" in {
 
         val expectedValue = revokeReportingCompanyJsonMin
-        val actualValue = Json.toJson(revokeReportingCompanyModelMin)
+        val actualValue   = Json.toJson(revokeReportingCompanyModelMin)
 
         actualValue shouldBe expectedValue
       }
@@ -50,7 +50,7 @@ class RevokeReportingCompanyModelSpec extends AnyWordSpec with Matchers with Bas
       "max values given" in {
 
         val expectedValue = revokeReportingCompanyModelMax
-        val actualValue = revokeReportingCompanyJsonMax.as[RevokeReportingCompanyModel]
+        val actualValue   = revokeReportingCompanyJsonMax.as[RevokeReportingCompanyModel]
 
         actualValue shouldBe expectedValue
       }
@@ -58,7 +58,7 @@ class RevokeReportingCompanyModelSpec extends AnyWordSpec with Matchers with Bas
       "min values given" in {
 
         val expectedValue = revokeReportingCompanyModelMin
-        val actualValue = revokeReportingCompanyJsonMin.as[RevokeReportingCompanyModel]
+        val actualValue   = revokeReportingCompanyJsonMin.as[RevokeReportingCompanyModel]
 
         actualValue shouldBe expectedValue
       }

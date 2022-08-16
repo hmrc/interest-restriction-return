@@ -39,40 +39,52 @@ class ReportingCompanyValidatorSpec extends BaseSpec {
       "Company name" when {
 
         "Company name is empty" in {
-          leftSideError(reportingCompanyModel.copy(
-            companyName = CompanyNameModel("")).validate).errorMessage shouldBe CompanyNameLengthError("").errorMessage
+          leftSideError(
+            reportingCompanyModel.copy(companyName = CompanyNameModel("")).validate
+          ).errorMessage shouldBe CompanyNameLengthError("").errorMessage
         }
 
         "Company name contains invalid characters" in {
-          leftSideError(reportingCompanyModel.copy(
-            companyName = CompanyNameModel("ʰʲʺ˦˫˥ʺ˦˫˥")).validate).errorMessage shouldBe CompanyNameCharactersError("ʰʲʺ˦˫˥ʺ˦˫˥").errorMessage
+          leftSideError(
+            reportingCompanyModel.copy(companyName = CompanyNameModel("ʰʲʺ˦˫˥ʺ˦˫˥")).validate
+          ).errorMessage shouldBe CompanyNameCharactersError("ʰʲʺ˦˫˥ʺ˦˫˥").errorMessage
         }
 
-        s"Company name is longer that ${companyNameMaxLength}" in {
-          leftSideError(reportingCompanyModel.copy(
-            companyName = companyNameTooLong).validate).errorMessage shouldBe CompanyNameLengthError("a" * (companyNameMaxLength + 1)).errorMessage
+        s"Company name is longer that $companyNameMaxLength" in {
+          leftSideError(
+            reportingCompanyModel.copy(companyName = companyNameTooLong).validate
+          ).errorMessage shouldBe CompanyNameLengthError("a" * (companyNameMaxLength + 1)).errorMessage
         }
       }
 
       "CTUTR is invalid" in {
-        leftSideError(reportingCompanyModel.copy(ctutr = invalidUtr).validate).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
+        leftSideError(reportingCompanyModel.copy(ctutr = invalidUtr).validate).errorMessage shouldBe UTRChecksumError(
+          invalidUtr
+        ).errorMessage
       }
 
       "CTUTR is empty" in {
-        leftSideError(reportingCompanyModel.copy(ctutr = UTRModel("")).validate).errorMessage shouldBe UTRLengthError(UTRModel("")).errorMessage
+        leftSideError(reportingCompanyModel.copy(ctutr = UTRModel("")).validate).errorMessage shouldBe UTRLengthError(
+          UTRModel("")
+        ).errorMessage
       }
 
       "CTUTR is contains invalid characters" in {
-        leftSideError(reportingCompanyModel.copy(
-          ctutr = UTRModel("ʰʲʺ˦˫˥ʺ˦˫˥")).validate).errorMessage shouldBe UTRChecksumError(UTRModel("ʰʲʺ˦˫˥ʺ˦˫˥")).errorMessage
+        leftSideError(
+          reportingCompanyModel.copy(ctutr = UTRModel("ʰʲʺ˦˫˥ʺ˦˫˥")).validate
+        ).errorMessage shouldBe UTRChecksumError(UTRModel("ʰʲʺ˦˫˥ʺ˦˫˥")).errorMessage
       }
 
       "CTUTR is to short" in {
-        leftSideError(reportingCompanyModel.copy(ctutr = UTRModel("1")).validate).errorMessage shouldBe UTRLengthError(invalidShortUtr).errorMessage
+        leftSideError(reportingCompanyModel.copy(ctutr = UTRModel("1")).validate).errorMessage shouldBe UTRLengthError(
+          invalidShortUtr
+        ).errorMessage
       }
 
       "CTUTR is to long" in {
-        leftSideError(reportingCompanyModel.copy(ctutr = UTRModel("11234567890")).validate).errorMessage shouldBe UTRLengthError(invalidLongUtr).errorMessage
+        leftSideError(
+          reportingCompanyModel.copy(ctutr = UTRModel("11234567890")).validate
+        ).errorMessage shouldBe UTRLengthError(invalidLongUtr).errorMessage
       }
     }
   }

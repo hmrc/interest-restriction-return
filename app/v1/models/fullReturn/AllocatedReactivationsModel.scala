@@ -26,4 +26,3 @@ case class AllocatedReactivationsModel(currentPeriodReactivation: BigDecimal) ex
 object AllocatedReactivationsModel {
   implicit val format = Json.format[AllocatedReactivationsModel]
 }
-

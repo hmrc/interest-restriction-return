@@ -40,7 +40,7 @@ trait UTRValidator extends BaseValidation {
       if (utrCalc > 9) utrCalc - 9 else utrCalc
     }
 
-    if(utrModel.utr.length != 10) {
+    if (utrModel.utr.length != 10) {
       UTRLengthError(utrModel).invalidNec
     } else {
       if (checkSum == utrInts(0)) {
@@ -53,13 +53,13 @@ trait UTRValidator extends BaseValidation {
 }
 
 case class UTRChecksumError(utrValue: UTRModel)(implicit val path: JsPath) extends Validation {
-  val code = "UTR_CHECKSUM"
-  val errorMessage: String = "UTR given is not valid"
+  val code                   = "UTR_CHECKSUM"
+  val errorMessage: String   = "UTR given is not valid"
   val value: Option[JsValue] = Some(Json.toJson(utrValue))
 }
 
 case class UTRLengthError(utrValue: UTRModel)(implicit val path: JsPath) extends Validation {
-  val code = "UTR_LENGTH"
-  val errorMessage: String = s"UTR must be 10 numeric characters"
+  val code                   = "UTR_LENGTH"
+  val errorMessage: String   = s"UTR must be 10 numeric characters"
   val value: Option[JsValue] = Some(Json.toJson(utrValue))
 }

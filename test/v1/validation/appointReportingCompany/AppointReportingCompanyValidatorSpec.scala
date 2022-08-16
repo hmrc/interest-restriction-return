@@ -34,15 +34,21 @@ class AppointReportingCompanyValidatorSpec extends BaseSpec {
       "Identity of Appointing Company is supplied" should {
 
         "Return invalid, as it should not be supplied" in {
-          val model = appointReportingCompanyModelMin.copy(identityOfAppointingCompany = Some(identityOfCompanySubmittingModelMax))
-          leftSideError(model.validate).errorMessage shouldBe IdentityOfAppointingCompanyIsSupplied(identityOfCompanySubmittingModelMax).errorMessage
+          val model = appointReportingCompanyModelMin.copy(identityOfAppointingCompany =
+            Some(identityOfCompanySubmittingModelMax)
+          )
+          leftSideError(model.validate).errorMessage shouldBe IdentityOfAppointingCompanyIsSupplied(
+            identityOfCompanySubmittingModelMax
+          ).errorMessage
         }
       }
 
       "Identity of Appointing Company is NOT supplied" should {
 
         "Return valid" in {
-          val model = appointReportingCompanyModelMin.copy(reportingCompany = reportingCompanyModel.copy(sameAsUltimateParent = true))
+          val model = appointReportingCompanyModelMin.copy(reportingCompany =
+            reportingCompanyModel.copy(sameAsUltimateParent = true)
+          )
           rightSide(model.validate) shouldBe model
         }
       }
@@ -81,7 +87,9 @@ class AppointReportingCompanyValidatorSpec extends BaseSpec {
             reportingCompany = reportingCompanyModel.copy(sameAsUltimateParent = true),
             ultimateParentCompany = Some(ultimateParentModelUkCompany)
           )
-          leftSideError(model.validate).errorMessage shouldBe UltimateParentCompanyIsSupplied(ultimateParentModelMax).errorMessage
+          leftSideError(model.validate).errorMessage shouldBe UltimateParentCompanyIsSupplied(
+            ultimateParentModelMax
+          ).errorMessage
         }
       }
 
@@ -130,14 +138,15 @@ class AppointReportingCompanyValidatorSpec extends BaseSpec {
     "authorisingCompanies" should {
 
       "cause an error when the list contains duplicates" in {
-        val companies = Seq(authorisingCompanyModel, authorisingCompanyModel)
+        val companies    = Seq(authorisingCompanyModel, authorisingCompanyModel)
         val testingModel = appointReportingCompanyModelMax.copy(authorisingCompanies = companies)
 
         leftSideError(testingModel.validate).errorMessage shouldBe AuthorisingCompaniesContainsDuplicates.errorMessage
       }
 
       "not cause an error when there are no duplicates" in {
-        val companies = Seq(authorisingCompanyModel, authorisingCompanyModel.copy(companyName = CompanyNameModel("Company ABC")))
+        val companies    =
+          Seq(authorisingCompanyModel, authorisingCompanyModel.copy(companyName = CompanyNameModel("Company ABC")))
         val testingModel = appointReportingCompanyModelMax.copy(authorisingCompanies = companies)
 
         rightSide(testingModel.validate) shouldBe testingModel

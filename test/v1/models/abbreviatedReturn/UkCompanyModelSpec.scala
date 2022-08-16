@@ -29,7 +29,7 @@ class UkCompanyModelSpec extends AnyWordSpec with Matchers {
     "correctly write to json" in {
 
       val expectedValue = ukCompanyJson
-      val actualValue = Json.toJson(ukCompanyModel)
+      val actualValue   = Json.toJson(ukCompanyModel)
 
       actualValue shouldBe expectedValue
     }
@@ -37,10 +37,9 @@ class UkCompanyModelSpec extends AnyWordSpec with Matchers {
     "correctly read from Json" in {
 
       val expectedValue = ukCompanyModel
-      val actualValue = ukCompanyJson.as[UkCompanyModel]
+      val actualValue   = ukCompanyJson.as[UkCompanyModel]
 
       actualValue shouldBe expectedValue
     }
   }
 }
-

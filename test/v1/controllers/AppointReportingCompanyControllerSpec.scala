@@ -32,12 +32,13 @@ class AppointReportingCompanyControllerSpec extends MockAppointReportingCompanyS
 
     "the user is authenticated" when {
 
-      object AuthorisedController extends AppointReportingCompanyController(
-        authAction = AuthorisedAction,
-        appointReportingCompanyService = mockAppointReportingCompanyService,
-        controllerComponents = Helpers.stubControllerComponents(),
-        appConfig = appConfig
-      )
+      object AuthorisedController
+          extends AppointReportingCompanyController(
+            authAction = AuthorisedAction,
+            appointReportingCompanyService = mockAppointReportingCompanyService,
+            controllerComponents = Helpers.stubControllerComponents(),
+            appConfig = appConfig
+          )
 
       "a valid payload is submitted" when {
 
@@ -60,7 +61,9 @@ class AppointReportingCompanyControllerSpec extends MockAppointReportingCompanyS
           "an error response is returned from the appoint reporting company service" should {
 
             "return the Error" in {
-              mockAppointReportingCompany(appointReportingCompanyModelMax)(Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
+              mockAppointReportingCompany(appointReportingCompanyModelMax)(
+                Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err"))
+              )
 
               val result = AuthorisedController.appoint()(validJsonFakeRequest)
               status(result) shouldBe Status.INTERNAL_SERVER_ERROR
@@ -86,12 +89,13 @@ class AppointReportingCompanyControllerSpec extends MockAppointReportingCompanyS
 
       "return 401 (Unauthorised)" in {
 
-        object UnauthorisedController extends AppointReportingCompanyController(
-          authAction = UnauthorisedAction,
-          appointReportingCompanyService = mockAppointReportingCompanyService,
-          controllerComponents = Helpers.stubControllerComponents(),
-          appConfig = appConfig
-        )
+        object UnauthorisedController
+            extends AppointReportingCompanyController(
+              authAction = UnauthorisedAction,
+              appointReportingCompanyService = mockAppointReportingCompanyService,
+              controllerComponents = Helpers.stubControllerComponents(),
+              appConfig = appConfig
+            )
 
         val result = UnauthorisedController.appoint()(fakeRequest.withBody(Json.obj()))
         status(result) shouldBe Status.UNAUTHORIZED
@@ -103,12 +107,13 @@ class AppointReportingCompanyControllerSpec extends MockAppointReportingCompanyS
     val validateFakeRequest = FakeRequest("POST", "/interest-restriction-return/reporting-company/appoint/validate")
     "the user is authenticated" when {
 
-      object AuthorisedController extends AppointReportingCompanyController(
-        authAction = AuthorisedAction,
-        appointReportingCompanyService = mockAppointReportingCompanyService,
-        controllerComponents = Helpers.stubControllerComponents(),
-        appConfig = appConfig
-      )
+      object AuthorisedController
+          extends AppointReportingCompanyController(
+            authAction = AuthorisedAction,
+            appointReportingCompanyService = mockAppointReportingCompanyService,
+            controllerComponents = Helpers.stubControllerComponents(),
+            appConfig = appConfig
+          )
 
       "a valid payload is submitted" when {
 
@@ -139,12 +144,13 @@ class AppointReportingCompanyControllerSpec extends MockAppointReportingCompanyS
 
       "return 401 (Unauthorised)" in {
 
-        object UnauthorisedController extends AppointReportingCompanyController(
-          authAction = UnauthorisedAction,
-          appointReportingCompanyService = mockAppointReportingCompanyService,
-          controllerComponents = Helpers.stubControllerComponents(),
-          appConfig = appConfig
-        )
+        object UnauthorisedController
+            extends AppointReportingCompanyController(
+              authAction = UnauthorisedAction,
+              appointReportingCompanyService = mockAppointReportingCompanyService,
+              controllerComponents = Helpers.stubControllerComponents(),
+              appConfig = appConfig
+            )
 
         val result = UnauthorisedController.validate()(fakeRequest.withBody(Json.obj()))
         status(result) shouldBe Status.UNAUTHORIZED

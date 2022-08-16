@@ -30,7 +30,7 @@ class InvestorGroupModelSpec extends AnyWordSpec with Matchers {
       "no elections are provided" in {
 
         val expectedValue = investorGroupsJsonMin
-        val actualValue = Json.toJson(investorGroupsModelMin)
+        val actualValue   = Json.toJson(investorGroupsModelMin)
 
         actualValue shouldBe expectedValue
       }
@@ -38,7 +38,7 @@ class InvestorGroupModelSpec extends AnyWordSpec with Matchers {
       "fixed ratio elections are given" in {
 
         val expectedValue = investorGroupsFixedRatioJson
-        val actualValue = Json.toJson(investorGroupsFixedRatioModel)
+        val actualValue   = Json.toJson(investorGroupsFixedRatioModel)
 
         actualValue shouldBe expectedValue
       }
@@ -46,7 +46,7 @@ class InvestorGroupModelSpec extends AnyWordSpec with Matchers {
       "Group ratio elections are given" in {
 
         val expectedValue = investorGroupsGroupRatioJson
-        val actualValue = Json.toJson(investorGroupsGroupRatioModel)
+        val actualValue   = Json.toJson(investorGroupsGroupRatioModel)
 
         actualValue shouldBe expectedValue
       }
@@ -57,7 +57,7 @@ class InvestorGroupModelSpec extends AnyWordSpec with Matchers {
       "no elections are provided" in {
 
         val expectedValue = investorGroupsModelMin
-        val actualValue = investorGroupsJsonMin.as[InvestorGroupModel]
+        val actualValue   = investorGroupsJsonMin.as[InvestorGroupModel]
 
         actualValue shouldBe expectedValue
       }
@@ -65,7 +65,7 @@ class InvestorGroupModelSpec extends AnyWordSpec with Matchers {
       "fixed ratio elections are given" in {
 
         val expectedValue = investorGroupsFixedRatioModel
-        val actualValue = investorGroupsFixedRatioJson.as[InvestorGroupModel]
+        val actualValue   = investorGroupsFixedRatioJson.as[InvestorGroupModel]
 
         actualValue shouldBe expectedValue
       }
@@ -73,7 +73,7 @@ class InvestorGroupModelSpec extends AnyWordSpec with Matchers {
       "Group ratio elections are given" in {
 
         val expectedValue = investorGroupsGroupRatioModel
-        val actualValue = investorGroupsGroupRatioJson.as[InvestorGroupModel]
+        val actualValue   = investorGroupsGroupRatioJson.as[InvestorGroupModel]
 
         actualValue shouldBe expectedValue
       }

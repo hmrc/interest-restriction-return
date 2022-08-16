@@ -31,7 +31,7 @@ class UkCompanyModelSpec extends AnyWordSpec with Matchers {
       "max values given" in {
 
         val expectedValue = ukCompanyReactivationJsonMax
-        val actualValue = Json.toJson(ukCompanyModelReactivationMax)
+        val actualValue   = Json.toJson(ukCompanyModelReactivationMax)
 
         actualValue shouldBe expectedValue
       }
@@ -39,7 +39,7 @@ class UkCompanyModelSpec extends AnyWordSpec with Matchers {
       "min values given" in {
 
         val expectedValue = ukCompanyJsonMin
-        val actualValue = Json.toJson(ukCompanyModelMin)
+        val actualValue   = Json.toJson(ukCompanyModelMin)
 
         actualValue shouldBe expectedValue
       }
@@ -50,7 +50,7 @@ class UkCompanyModelSpec extends AnyWordSpec with Matchers {
       "max values given" in {
 
         val expectedValue = ukCompanyModelReactivationMax
-        val actualValue = ukCompanyReactivationJsonMax.as[UkCompanyModel]
+        val actualValue   = ukCompanyReactivationJsonMax.as[UkCompanyModel]
 
         actualValue shouldBe expectedValue
       }
@@ -58,7 +58,7 @@ class UkCompanyModelSpec extends AnyWordSpec with Matchers {
       "min values given" in {
 
         val expectedValue = ukCompanyModelMin
-        val actualValue = ukCompanyJsonMin.as[UkCompanyModel]
+        val actualValue   = ukCompanyJsonMin.as[UkCompanyModel]
 
         actualValue shouldBe expectedValue
       }

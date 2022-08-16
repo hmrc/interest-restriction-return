@@ -29,18 +29,22 @@ import utils.ErrorHandler
 import v1.models.errors.ErrorResponses._
 
 @Singleton
-class VersionRoutingRequestHandler @Inject()(versionRoutingMap: VersionRoutingMap,
-                                             errorHandler: ErrorHandler,
-                                             httpConfiguration: HttpConfiguration,
-                                             config: AppConfig,
-                                             filters: HttpFilters,
-                                             action: DefaultActionBuilder)
-    extends DefaultHttpRequestHandler(new DefaultWebCommands,
-                                      None,
-                                      versionRoutingMap.defaultRouter,
-                                      errorHandler,
-                                      httpConfiguration,
-                                      filters.filters) with Logging {
+class VersionRoutingRequestHandler @Inject() (
+  versionRoutingMap: VersionRoutingMap,
+  errorHandler: ErrorHandler,
+  httpConfiguration: HttpConfiguration,
+  config: AppConfig,
+  filters: HttpFilters,
+  action: DefaultActionBuilder
+) extends DefaultHttpRequestHandler(
+      new DefaultWebCommands,
+      None,
+      versionRoutingMap.defaultRouter,
+      errorHandler,
+      httpConfiguration,
+      filters.filters
+    )
+    with Logging {
 
   private val featureSwitch = FeatureSwitch(config.featureSwitch)
 
@@ -58,14 +62,14 @@ class VersionRoutingRequestHandler @Inject()(versionRoutingMap: VersionRoutingMa
           case Some(versionRouter) if featureSwitch.isVersionEnabled(version) =>
             logger.debug(s"Routing with version: $version")
             routeWith(versionRouter)(request)
-          case Some(_) =>
+          case Some(_)                                                        =>
             logger.debug(s"Version: $version is not enabled")
             Some(unsupportedVersionAction)
-          case None =>
+          case None                                                           =>
             logger.debug(s"No mapping found in router for version: $version")
             Some(unsupportedVersionAction)
         }
-      case None => Some(invalidAcceptHeaderError)
+      case None          => Some(invalidAcceptHeaderError)
     }
 
     documentHandler orElse apiHandler

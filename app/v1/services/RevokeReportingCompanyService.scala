@@ -27,12 +27,14 @@ import v1.models.revokeReportingCompany.RevokeReportingCompanyModel
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class RevokeReportingCompanyService @Inject()(revokeReportingCompanyConnector: RevokeReportingCompanyConnector)
-  extends Submission[RevokeReportingCompanyModel] with Logging {
+class RevokeReportingCompanyService @Inject() (revokeReportingCompanyConnector: RevokeReportingCompanyConnector)
+    extends Submission[RevokeReportingCompanyModel]
+    with Logging {
 
-  override def submit (revokeReportingCompany: RevokeReportingCompanyModel)
-                      (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] =
-    revokeReportingCompanyConnector.revoke(revokeReportingCompany).map{ resp =>
+  override def submit(
+    revokeReportingCompany: RevokeReportingCompanyModel
+  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] =
+    revokeReportingCompanyConnector.revoke(revokeReportingCompany).map { resp =>
       logger.info("Successfully sent a revoke reporting company payload")
       resp
     }

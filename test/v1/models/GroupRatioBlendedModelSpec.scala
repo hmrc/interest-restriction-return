@@ -30,7 +30,7 @@ class GroupRatioBlendedModelSpec extends AnyWordSpec with Matchers {
       "max values given" in {
 
         val expectedValue = groupRatioBlendedJsonMax
-        val actualValue = Json.toJson(groupRatioBlendedModelMax)
+        val actualValue   = Json.toJson(groupRatioBlendedModelMax)
 
         actualValue shouldBe expectedValue
       }
@@ -38,7 +38,7 @@ class GroupRatioBlendedModelSpec extends AnyWordSpec with Matchers {
       "min values given" in {
 
         val expectedValue = groupRatioBlendedJsonMin
-        val actualValue = Json.toJson(groupRatioBlendedModelMin)
+        val actualValue   = Json.toJson(groupRatioBlendedModelMin)
 
         actualValue shouldBe expectedValue
       }
@@ -49,7 +49,7 @@ class GroupRatioBlendedModelSpec extends AnyWordSpec with Matchers {
       "max values given" in {
 
         val expectedValue = groupRatioBlendedModelMax
-        val actualValue = groupRatioBlendedJsonMax.as[GroupRatioBlendedModel]
+        val actualValue   = groupRatioBlendedJsonMax.as[GroupRatioBlendedModel]
 
         actualValue shouldBe expectedValue
       }
@@ -57,11 +57,10 @@ class GroupRatioBlendedModelSpec extends AnyWordSpec with Matchers {
       "min values given" in {
 
         val expectedValue = groupRatioBlendedModelMin
-        val actualValue = groupRatioBlendedJsonMin.as[GroupRatioBlendedModel]
+        val actualValue   = groupRatioBlendedJsonMin.as[GroupRatioBlendedModel]
 
         actualValue shouldBe expectedValue
       }
     }
   }
 }
-

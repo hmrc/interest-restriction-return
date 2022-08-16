@@ -24,8 +24,8 @@ object IdentityOfCompanySubmittingConstants extends BaseConstants {
   val countryCode = "US"
 
   val identityOfCompanySubmittingJsonMax = Json.obj(
-    "companyName" -> companyName,
-    "ctutr" -> ctutr,
+    "companyName"           -> companyName,
+    "ctutr"                 -> ctutr,
     "legalEntityIdentifier" -> lei
   )
 

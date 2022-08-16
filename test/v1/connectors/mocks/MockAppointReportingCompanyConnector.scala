@@ -27,11 +27,12 @@ import scala.concurrent.{ExecutionContext, Future}
 
 trait MockAppointReportingCompanyConnector extends MockFactory {
 
-  lazy val mockAppointReportingCompanyConnector: AppointReportingCompanyConnector = mock[AppointReportingCompanyConnector]
+  lazy val mockAppointReportingCompanyConnector: AppointReportingCompanyConnector =
+    mock[AppointReportingCompanyConnector]
 
-  def mockAppointReportingCompany(model: AppointReportingCompanyModel)(response: SubmissionResponse): Unit = {
-    (mockAppointReportingCompanyConnector.appoint(_: AppointReportingCompanyModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
+  def mockAppointReportingCompany(model: AppointReportingCompanyModel)(response: SubmissionResponse): Unit =
+    (mockAppointReportingCompanyConnector
+      .appoint(_: AppointReportingCompanyModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
       .expects(model, *, *, *)
       .returns(Future.successful(response))
-  }
 }

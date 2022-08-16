@@ -42,8 +42,8 @@ class NrsConnectorSpec extends MockHttpClient with BaseSpec {
     "nrs config is not setup" should {
       "return a failure" in {
         val connector = new NrsConnectorImpl(mockHttpClient, appConfig)
-        val result = connector.send(nrsPayload)
-        
+        val result    = connector.send(nrsPayload)
+
         recoverToSucceededIf[NrsConfigurationException](result)
       }
     }
@@ -51,7 +51,7 @@ class NrsConnectorSpec extends MockHttpClient with BaseSpec {
     "submission is successful" should {
       "return a Right(SuccessResponse)" in {
         val connector = setup(Right(NrSubmissionId(submissionId)), appConfigWithNrs)
-        val result = connector.send(nrsPayload)
+        val result    = connector.send(nrsPayload)
 
         await(result) shouldBe Right(NrSubmissionId(submissionId))
       }
@@ -60,7 +60,7 @@ class NrsConnectorSpec extends MockHttpClient with BaseSpec {
     "update is unsuccessful" should {
       "return a Left(UnexpectedFailure)" in {
         val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")), appConfigWithNrs)
-        val result = connector.send(nrsPayload)
+        val result    = connector.send(nrsPayload)
 
         await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
       }

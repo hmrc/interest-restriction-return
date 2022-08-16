@@ -31,8 +31,8 @@ object ConsolidatedPartnershipConstants extends BaseConstants {
   )
 
   val consolidatedPartnershipsJsonMax = Json.obj(
-    "isElected" -> true,
-    "isActive" -> true,
+    "isElected"                -> true,
+    "isActive"                 -> true,
     "consolidatedPartnerships" -> Json.arr(partnershipJson)
   )
 
@@ -44,6 +44,6 @@ object ConsolidatedPartnershipConstants extends BaseConstants {
 
   val consolidatedPartnershipsJsonMin = Json.obj(
     "isElected" -> false,
-    "isActive" -> false
+    "isActive"  -> false
   )
 }

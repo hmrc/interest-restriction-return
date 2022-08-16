@@ -40,7 +40,9 @@ class PartnershipValidatorSpec extends BaseValidationSpec {
         "is greater than 160" in {
           val model = partnershipModel.copy(partnershipName = CompanyNameModel("a" * (32767 + 1)))
 
-          model.validate.toEither.left.get.head.errorMessage shouldBe CompanyNameLengthError("a" * (32767 + 1)).errorMessage
+          model.validate.toEither.left.get.head.errorMessage shouldBe CompanyNameLengthError(
+            "a" * (32767 + 1)
+          ).errorMessage
         }
 
         "isElected is true and partnership names are given" in {
@@ -52,7 +54,7 @@ class PartnershipValidatorSpec extends BaseValidationSpec {
 
       "sautr" when {
         "is populated and invalid" in {
-          val utr = UTRModel("11234567890")
+          val utr   = UTRModel("11234567890")
           val model = partnershipModel.copy(sautr = Some(utr))
           model.validate.toEither.left.get.head.errorMessage shouldBe UTRLengthError(utr).errorMessage
         }

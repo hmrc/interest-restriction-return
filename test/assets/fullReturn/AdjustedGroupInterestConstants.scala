@@ -22,9 +22,9 @@ import v1.models.fullReturn.AdjustedGroupInterestModel
 
 object AdjustedGroupInterestConstants extends BaseConstants {
 
-  val qngie: BigDecimal = 100
+  val qngie: BigDecimal       = 100
   val groupEBITDA: BigDecimal = 200
-  val groupRatio: BigDecimal = (qngie / groupEBITDA) * 100
+  val groupRatio: BigDecimal  = (qngie / groupEBITDA) * 100
 
   val adjustedGroupInterestModel = AdjustedGroupInterestModel(
     qngie = qngie,
@@ -33,9 +33,9 @@ object AdjustedGroupInterestConstants extends BaseConstants {
   )
 
   val adjustedGroupInterestJson = Json.obj(
-    "qngie" -> qngie,
+    "qngie"       -> qngie,
     "groupEBITDA" -> groupEBITDA,
-    "groupRatio" -> groupRatio
+    "groupRatio"  -> groupRatio
   )
 
   val adjustedGroupInterestModelNoEbitda = AdjustedGroupInterestModel(
@@ -45,9 +45,9 @@ object AdjustedGroupInterestConstants extends BaseConstants {
   )
 
   val adjustedGroupInterestJsonNoEbitda = Json.obj(
-    "qngie" -> qngie,
+    "qngie"       -> qngie,
     "groupEBITDA" -> 0,
-    "groupRatio" -> groupRatio
+    "groupRatio"  -> groupRatio
   )
 
 }

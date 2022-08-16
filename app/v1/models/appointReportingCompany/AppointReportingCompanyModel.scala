@@ -20,19 +20,21 @@ import play.api.libs.json.Json
 import v1.models._
 import v1.validation.appointReportingCompany.AppointReportingCompanyValidator
 
-case class AppointReportingCompanyModel(agentDetails: AgentDetailsModel,
-                                        reportingCompany: ReportingCompanyModel,
-                                        authorisingCompanies: Seq[AuthorisingCompanyModel],
-                                        isReportingCompanyAppointingItself: Boolean,
-                                        identityOfAppointingCompany: Option[IdentityOfCompanySubmittingModel],
-                                        ultimateParentCompany: Option[UltimateParentModel],
-                                        accountingPeriod: AccountingPeriodModel,
-                                        declaration: Boolean) extends AppointReportingCompanyValidator {
+case class AppointReportingCompanyModel(
+  agentDetails: AgentDetailsModel,
+  reportingCompany: ReportingCompanyModel,
+  authorisingCompanies: Seq[AuthorisingCompanyModel],
+  isReportingCompanyAppointingItself: Boolean,
+  identityOfAppointingCompany: Option[IdentityOfCompanySubmittingModel],
+  ultimateParentCompany: Option[UltimateParentModel],
+  accountingPeriod: AccountingPeriodModel,
+  declaration: Boolean
+) extends AppointReportingCompanyValidator {
 
   override val appointReportingCompanyModel: AppointReportingCompanyModel = this
 }
 
-object AppointReportingCompanyModel{
+object AppointReportingCompanyModel {
 
   implicit val format = Json.format[AppointReportingCompanyModel]
 }

@@ -20,14 +20,16 @@ import play.api.libs.json.Json
 import v1.models._
 import v1.validation.revokeReportingCompany.RevokeReportingCompanyValidator
 
-case class RevokeReportingCompanyModel(agentDetails: AgentDetailsModel,
-                                       reportingCompany: ReportingCompanyModel,
-                                       isReportingCompanyRevokingItself: Boolean,
-                                       companyMakingRevocation: Option[IdentityOfCompanySubmittingModel],
-                                       ultimateParentCompany: Option[UltimateParentModel],
-                                       accountingPeriod: AccountingPeriodModel,
-                                       authorisingCompanies: Seq[AuthorisingCompanyModel],
-                                       declaration: Boolean) extends RevokeReportingCompanyValidator {
+case class RevokeReportingCompanyModel(
+  agentDetails: AgentDetailsModel,
+  reportingCompany: ReportingCompanyModel,
+  isReportingCompanyRevokingItself: Boolean,
+  companyMakingRevocation: Option[IdentityOfCompanySubmittingModel],
+  ultimateParentCompany: Option[UltimateParentModel],
+  accountingPeriod: AccountingPeriodModel,
+  authorisingCompanies: Seq[AuthorisingCompanyModel],
+  declaration: Boolean
+) extends RevokeReportingCompanyValidator {
 
   override val revokeReportingCompanyModel: RevokeReportingCompanyModel = this
 }

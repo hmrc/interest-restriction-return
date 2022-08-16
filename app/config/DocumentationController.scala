@@ -24,9 +24,11 @@ import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendBaseController
 
 @Singleton
-class DocumentationController @Inject()(interestRestrictionReturnApiDefinition: ApiDefinitionFactory,
-                                        override val controllerComponents: ControllerComponents, assets: Assets)
-  extends BackendBaseController {
+class DocumentationController @Inject() (
+  interestRestrictionReturnApiDefinition: ApiDefinitionFactory,
+  override val controllerComponents: ControllerComponents,
+  assets: Assets
+) extends BackendBaseController {
 
   def definition(): Action[AnyContent] = Action {
     Ok(Json.toJson(interestRestrictionReturnApiDefinition.definition))

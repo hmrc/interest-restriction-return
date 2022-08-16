@@ -31,10 +31,10 @@ class BaseControllerSpec extends BaseSpec {
     implicit val fmt: Format[DummyModel] = Json.format[DummyModel]
   }
 
-  class DummyController @Inject()(override val controllerComponents: ControllerComponents) extends BaseController
+  class DummyController @Inject() (override val controllerComponents: ControllerComponents) extends BaseController
   object TestBaseController extends DummyController(Helpers.stubControllerComponents())
 
-  val validJsonRequest = fakeRequest.withBody(Json.obj("x" -> "foo", "y" -> "bar"))
+  val validJsonRequest   = fakeRequest.withBody(Json.obj("x" -> "foo", "y" -> "bar"))
   val invalidJsonRequest = fakeRequest.withBody(Json.obj("x" -> "foo"))
 
   "BaseController.withJsonBody" should {
@@ -43,9 +43,8 @@ class BaseControllerSpec extends BaseSpec {
 
       "return an OK" in {
 
-        val actual: Future[Result] = TestBaseController.withJsonBody[DummyModel](
-          _ => Future.successful(Ok("Success"))
-        )(validJsonRequest, implicitly, implicitly)
+        val actual: Future[Result] = TestBaseController
+          .withJsonBody[DummyModel](_ => Future.successful(Ok("Success")))(validJsonRequest, implicitly, implicitly)
 
         await(bodyOf(actual)) shouldBe "Success"
       }
@@ -55,13 +54,12 @@ class BaseControllerSpec extends BaseSpec {
 
       "return `path.missing` if a mandatory property is missing" in {
 
-        val actual: Future[Result] = TestBaseController.withJsonBody[DummyModel](
-          _ => Future.successful(Ok("Success"))
-        )(invalidJsonRequest, implicitly, implicitly)
+        val actual: Future[Result] = TestBaseController
+          .withJsonBody[DummyModel](_ => Future.successful(Ok("Success")))(invalidJsonRequest, implicitly, implicitly)
 
         await(jsonBodyOf(actual)) shouldBe Json.obj(
-          "path" -> "/y",
-          "code" -> "JSON_VALIDATION_ERROR",
+          "path"    -> "/y",
+          "code"    -> "JSON_VALIDATION_ERROR",
           "message" -> "error.path.missing"
         )
       }

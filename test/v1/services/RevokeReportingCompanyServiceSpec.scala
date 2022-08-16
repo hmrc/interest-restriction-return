@@ -37,7 +37,7 @@ class RevokeReportingCompanyServiceSpec extends MockRevokeReportingCompanyConnec
       "return a Right(SuccessResponse)" in {
 
         val service = setup(Right(DesSuccessResponse("ackRef")))
-        val result = service.submit(revokeReportingCompanyModelMax)
+        val result  = service.submit(revokeReportingCompanyModelMax)
 
         await(result) shouldBe Right(DesSuccessResponse("ackRef"))
       }
@@ -48,7 +48,7 @@ class RevokeReportingCompanyServiceSpec extends MockRevokeReportingCompanyConnec
       "return a Left(UnexpectedFailure)" in {
 
         val service = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-        val result = service.submit(revokeReportingCompanyModelMax)
+        val result  = service.submit(revokeReportingCompanyModelMax)
 
         await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
       }

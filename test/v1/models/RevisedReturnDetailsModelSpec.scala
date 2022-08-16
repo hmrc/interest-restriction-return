@@ -24,11 +24,11 @@ class RevisedReturnDetailsModelSpec extends AnyWordSpec with Matchers {
   "RevisedReturnDetailsModel" should {
     "trim the whitespace in the name" in {
 
-    val expectedValue = RevisedReturnDetailsModel("Some details")
-    val json = JsString(" Some details ")
-    val actualValue = json.as[RevisedReturnDetailsModel]
+      val expectedValue = RevisedReturnDetailsModel("Some details")
+      val json          = JsString(" Some details ")
+      val actualValue   = json.as[RevisedReturnDetailsModel]
 
-    actualValue shouldBe expectedValue
+      actualValue shouldBe expectedValue
     }
   }
 }

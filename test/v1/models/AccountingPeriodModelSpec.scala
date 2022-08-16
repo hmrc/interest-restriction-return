@@ -29,7 +29,7 @@ class AccountingPeriodModelSpec extends AnyWordSpec with Matchers {
     "correctly write to json" in {
 
       val expectedValue = accountingPeriodJson
-      val actualValue = Json.toJson(accountingPeriodModel)
+      val actualValue   = Json.toJson(accountingPeriodModel)
 
       actualValue shouldBe expectedValue
     }
@@ -37,7 +37,7 @@ class AccountingPeriodModelSpec extends AnyWordSpec with Matchers {
     "correctly read from Json" in {
 
       val expectedValue = accountingPeriodModel
-      val actualValue = accountingPeriodJson.as[AccountingPeriodModel]
+      val actualValue   = accountingPeriodJson.as[AccountingPeriodModel]
 
       actualValue shouldBe expectedValue
     }
@@ -46,11 +46,11 @@ class AccountingPeriodModelSpec extends AnyWordSpec with Matchers {
 
       val invalidJson = Json.obj(
         "startDate" -> 20190101,
-        "endDate" -> endDate
+        "endDate"   -> endDate
       )
 
       val expectedValue = JsError(JsPath \ "startDate", "error.expected.jsstring")
-      val actualValue = invalidJson.validate[AccountingPeriodModel]
+      val actualValue   = invalidJson.validate[AccountingPeriodModel]
 
       actualValue shouldBe expectedValue
     }
@@ -59,11 +59,11 @@ class AccountingPeriodModelSpec extends AnyWordSpec with Matchers {
 
       val invalidJson = Json.obj(
         "startDate" -> "2019-1-01",
-        "endDate" -> endDate
+        "endDate"   -> endDate
       )
 
       val expectedValue = JsError(JsPath \ "startDate", "Date must be in ISO Date format YYYY-MM-DD")
-      val actualValue = invalidJson.validate[AccountingPeriodModel]
+      val actualValue   = invalidJson.validate[AccountingPeriodModel]
 
       actualValue shouldBe expectedValue
     }
@@ -72,14 +72,13 @@ class AccountingPeriodModelSpec extends AnyWordSpec with Matchers {
 
       val invalidJson = Json.obj(
         "startDate" -> "2019-02-29",
-        "endDate" -> endDate
+        "endDate"   -> endDate
       )
 
       val expectedValue = JsError(JsPath \ "startDate", "Date must be a valid date")
-      val actualValue = invalidJson.validate[AccountingPeriodModel]
+      val actualValue   = invalidJson.validate[AccountingPeriodModel]
 
       actualValue shouldBe expectedValue
     }
   }
 }
-

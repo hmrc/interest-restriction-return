@@ -21,7 +21,7 @@ import assets.GroupLevelElectionsConstants._
 import assets.GroupRatioConstants._
 import assets.NonConsolidatedInvestmentElectionConstants._
 import play.api.libs.json.JsPath
-import v1.models.{NonConsolidatedInvestmentModel, PartnershipModel, UTRModel, CompanyNameModel}
+import v1.models.{CompanyNameModel, NonConsolidatedInvestmentModel, PartnershipModel, UTRModel}
 
 class GroupLevelElectionValidatorSpec extends BaseValidationSpec {
 
@@ -37,19 +37,20 @@ class GroupLevelElectionValidatorSpec extends BaseValidationSpec {
         rightSide(groupLevelElectionsModelMax.validate) shouldBe groupLevelElectionsModelMax
       }
 
-        "groupRatio vaidation doesnt flag errors" in {
-          val model = groupLevelElectionsModelMax.copy(
-            groupRatio = groupRatioModelMax.copy(
-              isElected = false,
-              groupRatioBlended = None,
-              groupEBITDAChargeableGains = true
-            )
+      "groupRatio vaidation doesnt flag errors" in {
+        val model = groupLevelElectionsModelMax.copy(
+          groupRatio = groupRatioModelMax.copy(
+            isElected = false,
+            groupRatioBlended = None,
+            groupEBITDAChargeableGains = true
           )
+        )
 
-          rightSide(model.validate) shouldBe groupLevelElectionsModelMax.copy(
-            groupRatio = groupRatioModelMax.copy(
-              isElected = false, groupRatioBlended = None, groupEBITDAChargeableGains = true))
-        }
+        rightSide(model.validate) shouldBe groupLevelElectionsModelMax.copy(
+          groupRatio =
+            groupRatioModelMax.copy(isElected = false, groupRatioBlended = None, groupEBITDAChargeableGains = true)
+        )
+      }
     }
 
     "Return Invalid" when {
@@ -69,7 +70,8 @@ class GroupLevelElectionValidatorSpec extends BaseValidationSpec {
         val model = groupLevelElectionsModelMax.copy(
           interestAllowanceConsolidatedPartnership = consolidatedPartnershipsModelMax.copy(
             isElected = true,
-            consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = CompanyNameModel(""), sautr = Some(sautrFake))))
+            consolidatedPartnerships =
+              Some(Seq(PartnershipModel(partnershipName = CompanyNameModel(""), sautr = Some(sautrFake))))
           )
         )
 

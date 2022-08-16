@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import play.api.libs.json.{Json, JsPath}
+import play.api.libs.json.{JsPath, Json}
 import v1.models.Validation.ValidationResult
 import v1.models.{DeemedParentModel, Validation}
 
@@ -27,7 +27,8 @@ trait DeemedParentValidator extends BaseValidation {
   val deemedParentModel: DeemedParentModel
 
   def validateSingleCompanyDetailSupplied(implicit path: JsPath): ValidationResult[DeemedParentModel] = {
-    val numberOfDetailsSupplied = Seq(deemedParentModel.ctutr, deemedParentModel.sautr, deemedParentModel.countryOfIncorporation).flatten.length
+    val numberOfDetailsSupplied =
+      Seq(deemedParentModel.ctutr, deemedParentModel.sautr, deemedParentModel.countryOfIncorporation).flatten.length
     if (numberOfDetailsSupplied > 1) {
       DeemedParentWrongDetailsSuppliedError(deemedParentModel).invalidNec
     } else {
@@ -56,7 +57,8 @@ trait DeemedParentValidator extends BaseValidation {
   }
 
   def validate(implicit path: JsPath): ValidationResult[DeemedParentModel] =
-    combineValidations(validateSingleCompanyDetailSupplied,
+    combineValidations(
+      validateSingleCompanyDetailSupplied,
       validateUkCompanyDetails,
       validateNonUkCompanyDetails,
       deemedParentModel.companyName.validate(path \ "companyName"),
@@ -64,23 +66,25 @@ trait DeemedParentValidator extends BaseValidation {
       optionValidations(deemedParentModel.sautr.map(_.validate(path \ "sautr"))),
       optionValidations(deemedParentModel.countryOfIncorporation.map(_.validate(path \ "countryOfIncorporation"))),
       optionValidations(deemedParentModel.legalEntityIdentifier.map(_.validate(path \ "legalEntityIdentifier")))
-      ).map(_ => deemedParentModel)
+    ).map(_ => deemedParentModel)
 }
 
-case class DeemedParentWrongDetailsSuppliedError(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
-  val code = "DEEMED_PARENT_DETAILS"
+case class DeemedParentWrongDetailsSuppliedError(model: DeemedParentModel)(implicit val path: JsPath)
+    extends Validation {
+  val code                 = "DEEMED_PARENT_DETAILS"
   val errorMessage: String = "Deemed parent must have either a CTUTR, a SAUTR or a country code"
-  val value = Some(Json.toJson(model))
+  val value                = Some(Json.toJson(model))
 }
 
-case class NonUKDeemedParentMissingCountryOfIncorporation(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
-  val code = "DEEMED_PARENT_COUNTRY"
+case class NonUKDeemedParentMissingCountryOfIncorporation(model: DeemedParentModel)(implicit val path: JsPath)
+    extends Validation {
+  val code                 = "DEEMED_PARENT_COUNTRY"
   val errorMessage: String = "Enter a country of incorporation where the deemed parent is non-UK"
-  val value = Some(Json.toJson(model))
+  val value                = Some(Json.toJson(model))
 }
 
 case class UKDeemedMissingUTR(model: DeemedParentModel)(implicit val path: JsPath) extends Validation {
-  val code = "DEEMED_PARENT_UTR"
+  val code                 = "DEEMED_PARENT_UTR"
   val errorMessage: String = "Enter a UTR where the deemed parent is UK"
-  val value = Some(Json.toJson(model))
+  val value                = Some(Json.toJson(model))
 }

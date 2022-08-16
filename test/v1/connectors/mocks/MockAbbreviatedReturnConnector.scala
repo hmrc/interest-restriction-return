@@ -29,9 +29,13 @@ trait MockAbbreviatedReturnConnector extends MockFactory {
 
   lazy val mockAbbreviatedReturnConnector: AbbreviatedReturnConnector = mock[AbbreviatedReturnConnector]
 
-  def mockAbbreviatedReturn(model: AbbreviatedReturnModel)(response: SubmissionResponse): Unit = {
-    (mockAbbreviatedReturnConnector.submitAbbreviatedReturn(_: AbbreviatedReturnModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
+  def mockAbbreviatedReturn(model: AbbreviatedReturnModel)(response: SubmissionResponse): Unit =
+    (mockAbbreviatedReturnConnector
+      .submitAbbreviatedReturn(_: AbbreviatedReturnModel)(
+        _: HeaderCarrier,
+        _: ExecutionContext,
+        _: IdentifierRequest[_]
+      ))
       .expects(model, *, *, *)
       .returns(Future.successful(response))
-  }
 }

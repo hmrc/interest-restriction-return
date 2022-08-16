@@ -20,8 +20,8 @@ import play.api.libs.json.Json
 import v1.validation.AgentDetailsValidator
 import utils.ReadStringWithTrim.stringReads
 
-case class AgentDetailsModel(agentActingOnBehalfOfCompany: Boolean,
-                             agentName: Option[String]) extends AgentDetailsValidator {
+case class AgentDetailsModel(agentActingOnBehalfOfCompany: Boolean, agentName: Option[String])
+    extends AgentDetailsValidator {
   override val agentDetailsModel = this
 }
 

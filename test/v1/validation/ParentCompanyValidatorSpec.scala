@@ -65,8 +65,16 @@ class ParentCompanyValidatorSpec extends BaseValidationSpec {
 
       "Return invalid if more than 3 deemed Parents" in {
 
-        val model = parentCompanyModelDeemedMin.copy(deemedParent = Some(
-          Seq(deemedParentModelUkCompany, deemedParentModelUkCompany, deemedParentModelUkCompany, deemedParentModelUkCompany)))
+        val model = parentCompanyModelDeemedMin.copy(deemedParent =
+          Some(
+            Seq(
+              deemedParentModelUkCompany,
+              deemedParentModelUkCompany,
+              deemedParentModelUkCompany,
+              deemedParentModelUkCompany
+            )
+          )
+        )
 
         leftSideError(model.parentCompanyModel.validate).errorMessage shouldBe MaxThreeDeemedParents(model).errorMessage
       }

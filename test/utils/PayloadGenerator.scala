@@ -36,19 +36,21 @@ object PayloadGenerator extends App {
     val authorisingCompanies = Seq.fill(amount)(
       authorisingCompanyModel.copy(
         companyName = CompanyNameModel(s"Company name ${UUID.randomUUID()}")
-      ))
+      )
+    )
 
     val appointJson = appointReportingCompanyModelMax.copy(authorisingCompanies = authorisingCompanies)
-    val jsonString = Json.toJson(appointJson).toString()
+    val jsonString  = Json.toJson(appointJson).toString()
 
     generateFile(jsonString, filePath)
   }
 
-  def generateRevokePayload(amount: Int, filePath: String): Unit= {
+  def generateRevokePayload(amount: Int, filePath: String): Unit = {
     val authorisingCompanies = Seq.fill(amount)(
       authorisingCompanyModel.copy(
         companyName = CompanyNameModel(s"Company name ${UUID.randomUUID()}")
-      ))
+      )
+    )
 
     val revokeJson = revokeReportingCompanyModelMax.copy(authorisingCompanies = authorisingCompanies)
     val jsonString = Json.toJson(revokeJson).toString()
@@ -58,7 +60,7 @@ object PayloadGenerator extends App {
 
   private def generateFile(jsonString: String, filePath: String): Unit = {
     val file = new File(filePath)
-    if(file.exists()) {
+    if (file.exists()) {
       file.delete()
     }
     file.createNewFile()
@@ -69,8 +71,8 @@ object PayloadGenerator extends App {
 
   args.toList match {
     case "appoint" :: amount :: filePath :: _ => generateAppointPayload(amount.toInt, filePath)
-    case "revoke" :: amount :: filePath :: _ => generateRevokePayload(amount.toInt, filePath)
-    case _ => println("Run with <appoint|revoke> <amount> <filePath>")
+    case "revoke" :: amount :: filePath :: _  => generateRevokePayload(amount.toInt, filePath)
+    case _                                    => println("Run with <appoint|revoke> <amount> <filePath>")
   }
 
 }

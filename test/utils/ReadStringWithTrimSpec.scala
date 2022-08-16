@@ -16,7 +16,7 @@
 
 package utils
 
-import play.api.libs.json.{JsString, Json, Format}
+import play.api.libs.json.{Format, JsString, Json}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -25,14 +25,16 @@ class ReadStringWithTrimSpec extends AnyWordSpec with Matchers {
   case class TestModelOurReads(someString: String, someInt: Int)
   object TestModelOurReads {
     import utils.ReadStringWithTrim.stringReads
-    implicit val format: Format[TestModelOurReads] = Format[TestModelOurReads](Json.reads[TestModelOurReads], Json.writes[TestModelOurReads])
+    implicit val format: Format[TestModelOurReads] =
+      Format[TestModelOurReads](Json.reads[TestModelOurReads], Json.writes[TestModelOurReads])
   }
 
   case class TestModelDefaultReads(someString: String, someInt: Int)
   object TestModelDefaultReads {
-    implicit val format: Format[TestModelDefaultReads] = Format[TestModelDefaultReads](Json.reads[TestModelDefaultReads], Json.writes[TestModelDefaultReads])
+    implicit val format: Format[TestModelDefaultReads] =
+      Format[TestModelDefaultReads](Json.reads[TestModelDefaultReads], Json.writes[TestModelDefaultReads])
   }
-  
+
   "stringReads" should {
     "trim a top level string where it is imported" in {
       val testJson = JsString(" Some string ")
@@ -45,7 +47,7 @@ class ReadStringWithTrimSpec extends AnyWordSpec with Matchers {
     "trim a nested string where it is imported" in {
       val testJson = Json.obj(
         "someString" -> " Some string ",
-        "someInt" -> 123
+        "someInt"    -> 123
       )
       testJson.as[TestModelDefaultReads] shouldBe TestModelDefaultReads(" Some string ", 123)
       testJson.as[TestModelOurReads] shouldBe TestModelOurReads("Some string", 123)

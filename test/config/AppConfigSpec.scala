@@ -19,7 +19,7 @@ package config
 import utils.BaseSpec
 import assets.AppConfigConstants._
 
-class AppConfigSpec extends BaseSpec  {
+class AppConfigSpec extends BaseSpec {
 
   "nrsUrl" should {
     "be None when the nrs Config isn't present " in {
@@ -56,6 +56,5 @@ class AppConfigSpec extends BaseSpec  {
       appConfig.nrsEnabled shouldBe true
     }
   }
-
 
 }

@@ -26,43 +26,39 @@ trait NonConsolidatedInvestmentValidator extends BaseValidation {
 
   val nonConsolidatedInvestmentModel: NonConsolidatedInvestmentModel
 
-  private def validateInvestmentName(implicit path: JsPath): ValidationResult[String] = {
-    if (nonConsolidatedInvestmentModel.investmentName.length >= 1 && nonConsolidatedInvestmentModel.investmentName.length <= 5000) {
+  private def validateInvestmentName(implicit path: JsPath): ValidationResult[String] =
+    if (
+      nonConsolidatedInvestmentModel.investmentName.length >= 1 && nonConsolidatedInvestmentModel.investmentName.length <= 5000
+    ) {
       nonConsolidatedInvestmentModel.investmentName.validNec
     } else {
       NonConsolidatedInvestmentNameLengthError(nonConsolidatedInvestmentModel.investmentName).invalidNec
     }
-  }
 
   private def validateCompanyNameCharacters(implicit path: JsPath): ValidationResult[String] = {
     val regex = "^[ -~¢-¥©®±×÷‐₠-₿−-∝≈≠≣-≥]*$".r
     nonConsolidatedInvestmentModel.investmentName match {
-      case regex(_ *) => nonConsolidatedInvestmentModel.investmentName.validNec
-      case _ => NonConsolidatedInvestmentNameCharacterError(nonConsolidatedInvestmentModel.investmentName).invalidNec
+      case regex(_*) => nonConsolidatedInvestmentModel.investmentName.validNec
+      case _         => NonConsolidatedInvestmentNameCharacterError(nonConsolidatedInvestmentModel.investmentName).invalidNec
     }
   }
 
-  def validate(implicit path: JsPath): ValidationResult[NonConsolidatedInvestmentModel] = {
+  def validate(implicit path: JsPath): ValidationResult[NonConsolidatedInvestmentModel] =
     (validateInvestmentName, validateCompanyNameCharacters).mapN((_, _) => nonConsolidatedInvestmentModel)
-  }
 }
 
-case class NonConsolidatedInvestmentNameLengthError(investmentName: String)(implicit topPath: JsPath) extends Validation {
-  val code = "INVESTMENT_LENGTH"
+case class NonConsolidatedInvestmentNameLengthError(investmentName: String)(implicit topPath: JsPath)
+    extends Validation {
+  val code                 = "INVESTMENT_LENGTH"
   val errorMessage: String = s"Investment name must be between 1 and 5000 characters"
-  val path = topPath \ "investmentName"
-  val value = Some(Json.toJson(investmentName))
+  val path                 = topPath \ "investmentName"
+  val value                = Some(Json.toJson(investmentName))
 }
 
-case class NonConsolidatedInvestmentNameCharacterError(investmentName: String)(implicit topPath: JsPath) extends Validation {
-  val code = "INVESTMENT_CHARACTERS"
+case class NonConsolidatedInvestmentNameCharacterError(investmentName: String)(implicit topPath: JsPath)
+    extends Validation {
+  val code                 = "INVESTMENT_CHARACTERS"
   val errorMessage: String = "Investment name contains invalid characters"
-  val path = topPath \ "investmentName"
-  val value = Some(Json.toJson(investmentName))
+  val path                 = topPath \ "investmentName"
+  val value                = Some(Json.toJson(investmentName))
 }
-
-
-
-
-
-

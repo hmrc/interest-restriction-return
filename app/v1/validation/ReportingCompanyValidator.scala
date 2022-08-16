@@ -27,7 +27,8 @@ trait ReportingCompanyValidator extends BaseValidation {
   val reportingCompanyModel: ReportingCompanyModel
 
   def validate(implicit path: JsPath): ValidationResult[ReportingCompanyModel] =
-    (reportingCompanyModel.companyName.validate(path \ "companyName"),
+    (
+      reportingCompanyModel.companyName.validate(path \ "companyName"),
       reportingCompanyModel.ctutr.validate(path \ "ctutr")
-      ).mapN((_,_) => reportingCompanyModel)
+    ).mapN((_, _) => reportingCompanyModel)
 }

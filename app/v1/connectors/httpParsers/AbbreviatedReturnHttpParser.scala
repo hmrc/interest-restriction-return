@@ -25,8 +25,7 @@ object AbbreviatedReturnHttpParser extends DesBaseConnector with Logging {
 
   implicit object AbbreviatedReturnReads extends HttpReads[SubmissionResponse] {
 
-    override def read(method: String, url: String, response: HttpResponse): SubmissionResponse = {
-      handleHttpResponse(response,"AbbreviatedReturnHttpParser",HttpErrorMessages.ABBREVIATED_ERROR)
-    }
+    override def read(method: String, url: String, response: HttpResponse): SubmissionResponse =
+      handleHttpResponse(response, "AbbreviatedReturnHttpParser", HttpErrorMessages.ABBREVIATED_ERROR)
   }
 }

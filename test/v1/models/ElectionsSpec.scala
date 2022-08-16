@@ -17,7 +17,7 @@
 package v1.models
 
 import org.scalatest.TryValues._
-import play.api.libs.json.{JsonValidationError, JsPath, JsResultException, JsString}
+import play.api.libs.json.{JsPath, JsResultException, JsString, JsonValidationError}
 
 import scala.util.Try
 import org.scalatest.matchers.should.Matchers
@@ -27,35 +27,35 @@ class ElectionsSpec extends AnyWordSpec with Matchers {
   "ElectionDecision" should {
     "valid" when {
       "groupRatioBlended is entered" in {
-        val json = JsString("groupRatioBlended")
+        val json   = JsString("groupRatioBlended")
         val result = Try(json.as[Elections])
 
         result.isSuccess shouldEqual true
       }
 
       "groupEBITDA is entered" in {
-        val json = JsString("groupEBITDA")
+        val json   = JsString("groupEBITDA")
         val result = Try(json.as[Elections])
 
         result.isSuccess shouldEqual true
       }
 
       "interestAllowanceAlternativeCalculation is entered" in {
-        val json = JsString("interestAllowanceAlternativeCalculation")
+        val json   = JsString("interestAllowanceAlternativeCalculation")
         val result = Try(json.as[Elections])
 
         result.isSuccess shouldEqual true
       }
 
       "interestAllowanceNonConsolidatedInvestment is entered" in {
-        val json = JsString("interestAllowanceNonConsolidatedInvestment")
+        val json   = JsString("interestAllowanceNonConsolidatedInvestment")
         val result = Try(json.as[Elections])
 
         result.isSuccess shouldEqual true
       }
 
       "interestAllowanceConsolidatedPartnership is entered" in {
-        val json = JsString("interestAllowanceConsolidatedPartnership")
+        val json   = JsString("interestAllowanceConsolidatedPartnership")
         val result = Try(json.as[Elections])
 
         result.isSuccess shouldEqual true
@@ -64,10 +64,12 @@ class ElectionsSpec extends AnyWordSpec with Matchers {
 
     "invalid" when {
       "an incorrect value is entered" in {
-        val json = JsString("Something incorrect")
+        val json   = JsString("Something incorrect")
         val result = Try(json.as[Elections])
 
-        result.failure.exception shouldEqual JsResultException(Seq((JsPath, Seq(JsonValidationError(s"Unknown value for Elections")))))
+        result.failure.exception shouldEqual JsResultException(
+          Seq((JsPath, Seq(JsonValidationError(s"Unknown value for Elections"))))
+        )
       }
     }
   }

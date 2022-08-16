@@ -25,8 +25,7 @@ object RevokeReportingCompanyHttpParser extends DesBaseConnector with Logging {
 
   implicit object RevokeReportingCompanyReads extends HttpReads[SubmissionResponse] {
 
-    override def read(method: String, url: String, response: HttpResponse): SubmissionResponse = {
-      handleHttpResponse(response,"RevokeReportingCompanyHttpParser",HttpErrorMessages.REVOKE_ERROR)
-    }
+    override def read(method: String, url: String, response: HttpResponse): SubmissionResponse =
+      handleHttpResponse(response, "RevokeReportingCompanyHttpParser", HttpErrorMessages.REVOKE_ERROR)
   }
 }

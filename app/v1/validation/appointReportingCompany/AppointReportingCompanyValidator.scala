@@ -30,25 +30,30 @@ trait AppointReportingCompanyValidator extends BaseValidation {
 
   val appointReportingCompanyModel: AppointReportingCompanyModel
 
-  private def validateIdentityOfAppointingCompany: ValidationResult[Option[IdentityOfCompanySubmittingModel]] = {
-    (appointReportingCompanyModel.isReportingCompanyAppointingItself, appointReportingCompanyModel.identityOfAppointingCompany) match {
+  private def validateIdentityOfAppointingCompany: ValidationResult[Option[IdentityOfCompanySubmittingModel]] =
+    (
+      appointReportingCompanyModel.isReportingCompanyAppointingItself,
+      appointReportingCompanyModel.identityOfAppointingCompany
+    ) match {
       case (true, Some(appointingCompany)) => IdentityOfAppointingCompanyIsSupplied(appointingCompany).invalidNec
-      case (false, None) => IdentityOfAppointingCompanyIsNotSupplied.invalidNec
-      case _ => appointReportingCompanyModel.identityOfAppointingCompany.validNec
+      case (false, None)                   => IdentityOfAppointingCompanyIsNotSupplied.invalidNec
+      case _                               => appointReportingCompanyModel.identityOfAppointingCompany.validNec
     }
-  }
 
-  private def validateUltimateParentCompany: ValidationResult[Option[UltimateParentModel]] = {
-    (appointReportingCompanyModel.reportingCompany.sameAsUltimateParent, appointReportingCompanyModel.ultimateParentCompany) match {
+  private def validateUltimateParentCompany: ValidationResult[Option[UltimateParentModel]] =
+    (
+      appointReportingCompanyModel.reportingCompany.sameAsUltimateParent,
+      appointReportingCompanyModel.ultimateParentCompany
+    ) match {
       case (true, Some(parent)) => UltimateParentCompanyIsSupplied(parent).invalidNec
-      case (false, None) => UltimateParentCompanyIsNotSupplied.invalidNec
-      case _ => appointReportingCompanyModel.ultimateParentCompany.validNec
+      case (false, None)        => UltimateParentCompanyIsNotSupplied.invalidNec
+      case _                    => appointReportingCompanyModel.ultimateParentCompany.validNec
     }
-  }
 
   private def validateDuplicateAuthorisingCompanies: ValidationResult[Seq[AuthorisingCompanyModel]] = {
-    val duplicatesExist = appointReportingCompanyModel.authorisingCompanies.distinct.size != appointReportingCompanyModel.authorisingCompanies.size
-    if(duplicatesExist){
+    val duplicatesExist =
+      appointReportingCompanyModel.authorisingCompanies.distinct.size != appointReportingCompanyModel.authorisingCompanies.size
+    if (duplicatesExist) {
       AuthorisingCompaniesContainsDuplicates.invalidNec
     } else {
       appointReportingCompanyModel.authorisingCompanies.validNec
@@ -57,7 +62,8 @@ trait AppointReportingCompanyValidator extends BaseValidation {
 
   private def validateDeclaration: ValidationResult[Boolean] = {
     val declaration = appointReportingCompanyModel.declaration
-    if(declaration) declaration.validNec else {
+    if (declaration) declaration.validNec
+    else {
       DeclaredFiftyPercentOfEligibleCompanies(declaration).invalidNec
     }
   }
@@ -65,44 +71,51 @@ trait AppointReportingCompanyValidator extends BaseValidation {
   def validate: ValidationResult[AppointReportingCompanyModel] = {
 
     val validatedAuthorisingCompanies =
-      if(appointReportingCompanyModel.authorisingCompanies.isEmpty) AuthorisingCompaniesEmpty.invalidNec else {
-        combineValidations(appointReportingCompanyModel.authorisingCompanies.zipWithIndex.map {
-          case (a, i) => a.validate(JsPath \ s"authorisingCompanies[$i]")
-        }:_*)
+      if (appointReportingCompanyModel.authorisingCompanies.isEmpty) AuthorisingCompaniesEmpty.invalidNec
+      else {
+        combineValidations(appointReportingCompanyModel.authorisingCompanies.zipWithIndex.map { case (a, i) =>
+          a.validate(JsPath \ s"authorisingCompanies[$i]")
+        }: _*)
       }
 
-    combineValidations(appointReportingCompanyModel.agentDetails.validate(JsPath \ "agentDetails"),
+    combineValidations(
+      appointReportingCompanyModel.agentDetails.validate(JsPath \ "agentDetails"),
       appointReportingCompanyModel.reportingCompany.validate(JsPath \ "reportingCompany"),
       validatedAuthorisingCompanies,
-      optionValidations(appointReportingCompanyModel.ultimateParentCompany.map(_.validate(JsPath \ "ultimateParentCompany"))),
-      optionValidations(appointReportingCompanyModel.identityOfAppointingCompany.map(_.validate(JsPath \ "identityOfAppointingCompany"))),
+      optionValidations(
+        appointReportingCompanyModel.ultimateParentCompany.map(_.validate(JsPath \ "ultimateParentCompany"))
+      ),
+      optionValidations(
+        appointReportingCompanyModel.identityOfAppointingCompany.map(_.validate(JsPath \ "identityOfAppointingCompany"))
+      ),
       appointReportingCompanyModel.accountingPeriod.validate(JsPath \ "accountingPeriod"),
       validateIdentityOfAppointingCompany,
       validateUltimateParentCompany,
       validateDuplicateAuthorisingCompanies,
       validateDeclaration
-      ).map(_ => appointReportingCompanyModel)
+    ).map(_ => appointReportingCompanyModel)
   }
 }
 
 case object IdentityOfAppointingCompanyIsNotSupplied extends Validation {
-  val code = "IDENTITY_APPOINTING_COMPANY_NOT_SUPPLIED"
-  val errorMessage: String = "Appointing company must be supplied if it's not the same as the reporting company"
-  val path: JsPath = JsPath \ "identifyOfAppointingCompany"
+  val code                   = "IDENTITY_APPOINTING_COMPANY_NOT_SUPPLIED"
+  val errorMessage: String   = "Appointing company must be supplied if it's not the same as the reporting company"
+  val path: JsPath           = JsPath \ "identifyOfAppointingCompany"
   val value: Option[JsValue] = None
 }
 
-case class IdentityOfAppointingCompanyIsSupplied(identityOfCompanySubmittingModel: IdentityOfCompanySubmittingModel) extends Validation {
-  val code = "IDENTITY_APPOINTING_COMPANY_SUPPLIED"
-  val errorMessage: String = "Appointing company not needed as it is the same as the reporting company"
-  val path: JsPath = JsPath \ "identifyOfAppointingCompany"
+case class IdentityOfAppointingCompanyIsSupplied(identityOfCompanySubmittingModel: IdentityOfCompanySubmittingModel)
+    extends Validation {
+  val code                   = "IDENTITY_APPOINTING_COMPANY_SUPPLIED"
+  val errorMessage: String   = "Appointing company not needed as it is the same as the reporting company"
+  val path: JsPath           = JsPath \ "identifyOfAppointingCompany"
   val value: Option[JsValue] = Some(Json.toJson(identityOfCompanySubmittingModel))
 }
 
 case class DeclaredFiftyPercentOfEligibleCompanies(declaration: Boolean) extends Validation {
-  val code = "DECLARATION_FALSE"
-  val errorMessage: String = "Declaration is not valid so will not be submitted. " +
+  val code                   = "DECLARATION_FALSE"
+  val errorMessage: String   = "Declaration is not valid so will not be submitted. " +
     "You need to confirm the listed companies constitute at least 50% of the eligible companies."
-  val path: JsPath = JsPath \ "declaration"
+  val path: JsPath           = JsPath \ "declaration"
   val value: Option[JsValue] = Some(Json.toJson(declaration))
 }

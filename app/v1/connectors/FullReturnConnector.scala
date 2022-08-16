@@ -29,17 +29,20 @@ import v1.models.requests.IdentifierRequest
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class FullReturnConnector @Inject()(httpClient: HttpClient,
-                                    implicit val appConfig: AppConfig) extends DesBaseConnector with Logging with JsonFormatters {
+class FullReturnConnector @Inject() (httpClient: HttpClient, implicit val appConfig: AppConfig)
+    extends DesBaseConnector
+    with Logging
+    with JsonFormatters {
 
   private[connectors] lazy val fullReturnUrl = s"${appConfig.desUrl}/organisations/interest-restrictions-return/full"
 
-  def submit(fullReturnModel: FullReturnModel)
-            (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
+  def submit(
+    fullReturnModel: FullReturnModel
+  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
 
     logger.debug(s"URL: $fullReturnUrl")
     val receivedSize = request.headers.get(HeaderNames.CONTENT_LENGTH)
-    val jsonSize = Json.stringify(Json.toJson(fullReturnModel)).length
+    val jsonSize     = Json.stringify(Json.toJson(fullReturnModel)).length
     logger.debug(s"Size of content received: $receivedSize sent: $jsonSize")
 
     httpClient.POST(fullReturnUrl, fullReturnModel)(fullReturnWrites, FullReturnReads, desHc, ec)

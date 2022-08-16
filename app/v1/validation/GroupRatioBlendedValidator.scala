@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import play.api.libs.json.{Json, JsPath}
+import play.api.libs.json.{JsPath, Json}
 import v1.models.Validation.ValidationResult
 import v1.models.{GroupRatioBlendedModel, InvestorGroupModel, Validation}
 
@@ -26,40 +26,41 @@ trait GroupRatioBlendedValidator extends BaseValidation {
 
   val groupRatioBlendedModel: GroupRatioBlendedModel
 
-  private def validateGroupRatioBlended(implicit path: JsPath): ValidationResult[GroupRatioBlendedModel] = {
-    (groupRatioBlendedModel.isElected,  groupRatioBlendedModel.investorGroups.isDefined) match {
+  private def validateGroupRatioBlended(implicit path: JsPath): ValidationResult[GroupRatioBlendedModel] =
+    (groupRatioBlendedModel.isElected, groupRatioBlendedModel.investorGroups.isDefined) match {
       case (false, true) => GroupRatioBlendedNotElectedError(groupRatioBlendedModel).invalidNec
-      case _ => groupRatioBlendedModel.validNec
+      case _             => groupRatioBlendedModel.validNec
     }
-  }
 
   def validate(implicit path: JsPath): ValidationResult[GroupRatioBlendedModel] = {
 
     val investorGroupsValidation: ValidationResult[Option[InvestorGroupModel]] =
-      optionValidations(groupRatioBlendedModel.investorGroups.map(investors =>
-        if(investors.isEmpty) InvestorGroupsEmpty().invalidNec else {
-          combineValidations(investors.zipWithIndex.map {
-            case (a, i) => a.validate(JsPath \ s"investorGroups[$i]")
-          }: _*)
-        }
-      ))
+      optionValidations(
+        groupRatioBlendedModel.investorGroups.map(investors =>
+          if (investors.isEmpty) InvestorGroupsEmpty().invalidNec
+          else {
+            combineValidations(investors.zipWithIndex.map { case (a, i) =>
+              a.validate(JsPath \ s"investorGroups[$i]")
+            }: _*)
+          }
+        )
+      )
 
-    (validateGroupRatioBlended,
-      investorGroupsValidation).mapN((_,_) => groupRatioBlendedModel)
+    (validateGroupRatioBlended, investorGroupsValidation).mapN((_, _) => groupRatioBlendedModel)
   }
 }
 
-
-case class GroupRatioBlendedNotElectedError(groupRatioBlended: GroupRatioBlendedModel)(implicit val topPath: JsPath) extends Validation {
-  val code = "INVESTOR_GROUPS_SUPPLIED"
+case class GroupRatioBlendedNotElectedError(groupRatioBlended: GroupRatioBlendedModel)(implicit val topPath: JsPath)
+    extends Validation {
+  val code                 = "INVESTOR_GROUPS_SUPPLIED"
   val errorMessage: String = "Group ratio blended not elected so supply investor group not required"
-  val path: JsPath = topPath \ "groupRatioBlended"
-  val value = Some(Json.toJson(groupRatioBlended))
+  val path: JsPath         = topPath \ "groupRatioBlended"
+  val value                = Some(Json.toJson(groupRatioBlended))
 }
 
 case class InvestorGroupsEmpty()(implicit val topPath: JsPath) extends Validation {
-  val code = "INVESTOR_GROUPS_EMPTY"
+  val code                 = "INVESTOR_GROUPS_EMPTY"
   val errorMessage: String = "Investor groups must have at least 1 investor"
-  val path: JsPath = topPath \ "investorGroups"
-  val value = None
+  val path: JsPath         = topPath \ "investorGroups"
+  val value                = None
 }

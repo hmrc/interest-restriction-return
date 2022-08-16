@@ -26,4 +26,3 @@ object ReadStringWithTrim {
     def reads(js: JsValue): JsResult[String] = Reads.StringReads.reads(js).map(_.trim)
   }
 }
-

@@ -34,12 +34,12 @@ object SubmissionType {
 
   implicit val writes: Writes[SubmissionType] = Writes {
     case Original => JsString(Original.toString)
-    case Revised => JsString(Revised.toString)
+    case Revised  => JsString(Revised.toString)
   }
 
   implicit val reads: Reads[SubmissionType] = Reads {
     case JsString(Original.toString) => JsSuccess(Original)
-    case JsString(Revised.toString) => JsSuccess(Revised)
-    case _ => JsError(s"Valid submission types are ${Original.toString} and ${Revised.toString}")
+    case JsString(Revised.toString)  => JsSuccess(Revised)
+    case _                           => JsError(s"Valid submission types are ${Original.toString} and ${Revised.toString}")
   }
 }

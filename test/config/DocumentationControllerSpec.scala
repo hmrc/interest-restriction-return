@@ -30,16 +30,16 @@ import play.api.mvc.{ControllerComponents, Result}
 
 import scala.concurrent.Future
 
-class DocumentationControllerSpec extends BaseSpec  {
+class DocumentationControllerSpec extends BaseSpec {
 
   val selfAssessmentApiDefinition: ApiDefinitionFactory = new ApiDefinitionFactory(TestHelper.mockConfig)
-  val controller: DocumentationController = TestHelper.controller(selfAssessmentApiDefinition)
+  val controller: DocumentationController               = TestHelper.controller(selfAssessmentApiDefinition)
 
   "definition" must {
     "return the definition file" in {
-      val expectedJson  = Json.toJson(selfAssessmentApiDefinition.definition)
+      val expectedJson           = Json.toJson(selfAssessmentApiDefinition.definition)
       val result: Future[Result] = controller.definition()(fakeRequest)
-      status(result) shouldBe Status.OK
+      status(result)        shouldBe Status.OK
       contentAsJson(result) shouldBe expectedJson
     }
   }
@@ -47,9 +47,11 @@ class DocumentationControllerSpec extends BaseSpec  {
   "raml" must {
     "return the raml documentation" in {
       val result: Future[Result] = controller.raml("1.0", "application.raml")(fakeRequest)
-      val raml =
-        scala.io.Source.fromInputStream(getClass().getResourceAsStream("/public/api/conf/1.0/application.raml")).mkString
-      status(result) shouldBe Status.OK
+      val raml                   =
+        scala.io.Source
+          .fromInputStream(getClass().getResourceAsStream("/public/api/conf/1.0/application.raml"))
+          .mkString
+      status(result)          shouldBe Status.OK
       contentAsString(result) shouldBe raml
     }
   }
@@ -57,9 +59,11 @@ class DocumentationControllerSpec extends BaseSpec  {
   "conf" must {
     "return conf documentation" in {
       val result: Future[Result] = controller.conf("1.0", "abbreviatedReturn.raml")(fakeRequest)
-      val raml =
-        scala.io.Source.fromInputStream(getClass().getResourceAsStream("/public/api/conf/1.0/abbreviatedReturn.raml")).mkString
-      status(result) shouldBe Status.OK
+      val raml                   =
+        scala.io.Source
+          .fromInputStream(getClass().getResourceAsStream("/public/api/conf/1.0/abbreviatedReturn.raml"))
+          .mkString
+      status(result)          shouldBe Status.OK
       contentAsString(result) shouldBe raml
     }
   }
@@ -70,8 +74,7 @@ object TestHelper extends MockAppConfig {
 
   def mockConfig: AppConfig = {
     MockedAppConfig.apiGatewayContext.returns("gateway")
-    MockedAppConfig.featureSwitch.returns(Some(Configuration(ConfigFactory.parseString(
-      """
+    MockedAppConfig.featureSwitch.returns(Some(Configuration(ConfigFactory.parseString("""
         |version-1.enabled = true
         |version-2.enabled = true
       """.stripMargin))))
@@ -95,7 +98,7 @@ object TestHelper extends MockAppConfig {
 
   def controller(selfAssessmentApiDefinition: ApiDefinitionFactory): DocumentationController = {
     lazy val mockCc: ControllerComponents = fakeApplication.injector.instanceOf[ControllerComponents]
-    lazy val mockAssets: Assets = fakeApplication.injector.instanceOf[Assets]
+    lazy val mockAssets: Assets           = fakeApplication.injector.instanceOf[Assets]
     new DocumentationController(selfAssessmentApiDefinition, mockCc, mockAssets)
   }
 }

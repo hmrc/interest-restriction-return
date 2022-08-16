@@ -17,7 +17,7 @@
 package v1.validation
 
 import play.api.libs.json.JsPath
-import v1.models.{ConsolidatedPartnershipModel, PartnershipModel, UTRModel, CompanyNameModel}
+import v1.models.{CompanyNameModel, ConsolidatedPartnershipModel, PartnershipModel, UTRModel}
 
 class ConsolidatedPartnershipValidatorSpec extends BaseValidationSpec {
 
@@ -29,20 +29,32 @@ class ConsolidatedPartnershipValidatorSpec extends BaseValidationSpec {
     "Return valid" when {
 
       "isElected is true and a Seq of partnerships are given" in {
-        val model = ConsolidatedPartnershipModel(isElected = true, isActive = true,
-          consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = CompanyNameModel("Partner 1"), sautr = Some(sautrFake)))))
+        val model = ConsolidatedPartnershipModel(
+          isElected = true,
+          isActive = true,
+          consolidatedPartnerships =
+            Some(Seq(PartnershipModel(partnershipName = CompanyNameModel("Partner 1"), sautr = Some(sautrFake))))
+        )
         rightSide(model.validate) shouldBe model
       }
 
       "isElected is false and some partnerships are given" in {
-        val model = ConsolidatedPartnershipModel(isElected = false, isActive = true,
-          consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = CompanyNameModel("Partner 1"), sautr = Some(sautrFake)))))
+        val model = ConsolidatedPartnershipModel(
+          isElected = false,
+          isActive = true,
+          consolidatedPartnerships =
+            Some(Seq(PartnershipModel(partnershipName = CompanyNameModel("Partner 1"), sautr = Some(sautrFake))))
+        )
         rightSide(model.validate) shouldBe model
       }
 
       "isActive is false and some partnerships are given" in {
-        val model = ConsolidatedPartnershipModel(isElected = true, isActive = false,
-          consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = CompanyNameModel("Partner 1"), sautr = Some(sautrFake)))))
+        val model = ConsolidatedPartnershipModel(
+          isElected = true,
+          isActive = false,
+          consolidatedPartnerships =
+            Some(Seq(PartnershipModel(partnershipName = CompanyNameModel("Partner 1"), sautr = Some(sautrFake))))
+        )
         rightSide(model.validate) shouldBe model
       }
     }
@@ -65,64 +77,101 @@ class ConsolidatedPartnershipValidatorSpec extends BaseValidationSpec {
       }
 
       "isElected is false & isActive is false and some partnerships without a CompanyNameModel are given" in {
-        val model = ConsolidatedPartnershipModel(isElected = false, isActive = false,
-          consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = CompanyNameModel(""), sautr = Some(sautrFake)))))
+        val model = ConsolidatedPartnershipModel(
+          isElected = false,
+          isActive = false,
+          consolidatedPartnerships =
+            Some(Seq(PartnershipModel(partnershipName = CompanyNameModel(""), sautr = Some(sautrFake))))
+        )
         leftSideError(model.validate).errorMessage shouldBe ConsolidatedPartnershipsSupplied(model).errorMessage
       }
 
       "consolidatedPartnerships is invalid due to no name" in {
-        val model = ConsolidatedPartnershipModel(isElected = true, isActive = true,
-          consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = CompanyNameModel(""), sautr = Some(sautrFake)))))
+        val model = ConsolidatedPartnershipModel(
+          isElected = true,
+          isActive = true,
+          consolidatedPartnerships =
+            Some(Seq(PartnershipModel(partnershipName = CompanyNameModel(""), sautr = Some(sautrFake))))
+        )
         leftSideError(model.validate).errorMessage shouldBe CompanyNameLengthError("").errorMessage
       }
 
       "consolidatedPartnerships is invalid due to invalid characters" in {
-        val model = ConsolidatedPartnershipModel(isElected = true, isActive = true,
-          consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = CompanyNameModel("ʰʲʺ£$%˦˫qw"), sautr = Some(sautrFake)))))
+        val model = ConsolidatedPartnershipModel(
+          isElected = true,
+          isActive = true,
+          consolidatedPartnerships =
+            Some(Seq(PartnershipModel(partnershipName = CompanyNameModel("ʰʲʺ£$%˦˫qw"), sautr = Some(sautrFake))))
+        )
         leftSideError(model.validate).errorMessage shouldBe CompanyNameCharactersError("ʰʲʺ£$%˦˫qw").errorMessage
       }
 
       "consolidatedPartnerships is empty" in {
-        val model = ConsolidatedPartnershipModel(isElected = true, isActive = true, consolidatedPartnerships = Some(Nil))
+        val model =
+          ConsolidatedPartnershipModel(isElected = true, isActive = true, consolidatedPartnerships = Some(Nil))
         leftSideError(model.validate).errorMessage shouldBe ConsolidatedPartnershipsEmpty().errorMessage
       }
 
       "SAUTR is invalid" in {
 
-        val model = ConsolidatedPartnershipModel(isElected = true, isActive = true,
-          consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = CompanyNameModel("Partner 1"), sautr = Some(invalidUtr)))))
+        val model = ConsolidatedPartnershipModel(
+          isElected = true,
+          isActive = true,
+          consolidatedPartnerships =
+            Some(Seq(PartnershipModel(partnershipName = CompanyNameModel("Partner 1"), sautr = Some(invalidUtr))))
+        )
 
         leftSideError(model.validate).errorMessage shouldBe UTRChecksumError(UTRModel("ʰʲʺ£$%˦˫qw")).errorMessage
       }
 
       "SAUTR contains invalid characters" in {
 
-        val model = ConsolidatedPartnershipModel(isElected = true, isActive = true,
-          consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = CompanyNameModel("Partner 1"), sautr = Some(UTRModel("ʰʲʺ£$%˦˫qw"))))))
+        val model = ConsolidatedPartnershipModel(
+          isElected = true,
+          isActive = true,
+          consolidatedPartnerships = Some(
+            Seq(PartnershipModel(partnershipName = CompanyNameModel("Partner 1"), sautr = Some(UTRModel("ʰʲʺ£$%˦˫qw"))))
+          )
+        )
 
         leftSideError(model.validate).errorMessage shouldBe UTRChecksumError(UTRModel("ʰʲʺ£$%˦˫qw")).errorMessage
       }
 
       "SAUTR is empty" in {
 
-        val model = ConsolidatedPartnershipModel(isElected = true, isActive = true,
-          consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = CompanyNameModel("Partner 1"), sautr = Some(UTRModel(""))))))
+        val model = ConsolidatedPartnershipModel(
+          isElected = true,
+          isActive = true,
+          consolidatedPartnerships =
+            Some(Seq(PartnershipModel(partnershipName = CompanyNameModel("Partner 1"), sautr = Some(UTRModel("")))))
+        )
 
         leftSideError(model.validate).errorMessage shouldBe UTRLengthError(UTRModel("")).errorMessage
       }
 
       "SAUTR is to short" in {
 
-        val model = ConsolidatedPartnershipModel(isElected = true, isActive = true,
-          consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = CompanyNameModel("Partner 1"), sautr = Some(UTRModel("1"))))))
+        val model = ConsolidatedPartnershipModel(
+          isElected = true,
+          isActive = true,
+          consolidatedPartnerships =
+            Some(Seq(PartnershipModel(partnershipName = CompanyNameModel("Partner 1"), sautr = Some(UTRModel("1")))))
+        )
 
         leftSideError(model.validate).errorMessage shouldBe UTRLengthError(invalidShortUtr).errorMessage
       }
 
       "SAUTR is to long" in {
 
-        val model = ConsolidatedPartnershipModel(isElected = true, isActive = true,
-          consolidatedPartnerships = Some(Seq(PartnershipModel(partnershipName = CompanyNameModel("Partner 1"), sautr = Some(UTRModel("11234567890"))))))
+        val model = ConsolidatedPartnershipModel(
+          isElected = true,
+          isActive = true,
+          consolidatedPartnerships = Some(
+            Seq(
+              PartnershipModel(partnershipName = CompanyNameModel("Partner 1"), sautr = Some(UTRModel("11234567890")))
+            )
+          )
+        )
 
         leftSideError(model.validate).errorMessage shouldBe UTRLengthError(invalidLongUtr).errorMessage
       }

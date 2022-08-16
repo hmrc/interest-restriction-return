@@ -20,23 +20,26 @@ import play.api.libs.json._
 import v1.models._
 import v1.validation.abbreviatedReturn.AbbreviatedReturnValidator
 
-case class AbbreviatedReturnModel(declaration: Boolean,
-                                  appointedReportingCompany: Boolean,
-                                  agentDetails: AgentDetailsModel,
-                                  reportingCompany: ReportingCompanyModel,
-                                  parentCompany: Option[ParentCompanyModel],
-                                  groupCompanyDetails: GroupCompanyDetailsModel,
-                                  submissionType: SubmissionType,
-                                  revisedReturnDetails: Option[RevisedReturnDetailsModel],
-                                  groupLevelElections: Option[GroupLevelElectionsModel],
-                                  ukCompanies: Seq[UkCompanyModel]) extends AbbreviatedReturnValidator with ReturnModel {
+case class AbbreviatedReturnModel(
+  declaration: Boolean,
+  appointedReportingCompany: Boolean,
+  agentDetails: AgentDetailsModel,
+  reportingCompany: ReportingCompanyModel,
+  parentCompany: Option[ParentCompanyModel],
+  groupCompanyDetails: GroupCompanyDetailsModel,
+  submissionType: SubmissionType,
+  revisedReturnDetails: Option[RevisedReturnDetailsModel],
+  groupLevelElections: Option[GroupLevelElectionsModel],
+  ukCompanies: Seq[UkCompanyModel]
+) extends AbbreviatedReturnValidator
+    with ReturnModel {
 
   override val abbreviatedReturnModel: AbbreviatedReturnModel = this
-  val publicInfrastructure: Boolean = ukCompanies.map(_.qicElection).exists(identity)
-  val numberOfUkCompanies: Int = ukCompanies.size
+  val publicInfrastructure: Boolean                           = ukCompanies.map(_.qicElection).exists(identity)
+  val numberOfUkCompanies: Int                                = ukCompanies.size
 }
 
 object AbbreviatedReturnModel {
-  implicit val abbreviatedReturnReads: Reads[AbbreviatedReturnModel] = Json.reads[AbbreviatedReturnModel]
+  implicit val abbreviatedReturnReads: Reads[AbbreviatedReturnModel]   = Json.reads[AbbreviatedReturnModel]
   implicit val abbreviatedReturnWrites: Writes[AbbreviatedReturnModel] = Json.writes[AbbreviatedReturnModel]
 }

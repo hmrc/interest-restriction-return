@@ -39,8 +39,10 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
       }
 
       "a Reporting Company is being revoked by another company and supplies their details" in {
-        val testingModel = revokeReportingCompanyModelMax.copy(isReportingCompanyRevokingItself = false,
-          companyMakingRevocation = Some(identityOfCompanySubmittingModelMax))
+        val testingModel = revokeReportingCompanyModelMax.copy(
+          isReportingCompanyRevokingItself = false,
+          companyMakingRevocation = Some(identityOfCompanySubmittingModelMax)
+        )
 
         rightSide(testingModel.validate) shouldBe testingModel
       }
@@ -48,13 +50,15 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
       "a revoking company is the same as the ultimate parent, and ultimate parent was not supplied, " in {
         val testingModel = revokeReportingCompanyModelMax.copy(
           reportingCompany = revokeReportingCompanyModelMax.reportingCompany.copy(sameAsUltimateParent = true),
-          ultimateParentCompany = None)
+          ultimateParentCompany = None
+        )
 
         rightSide(testingModel.validate) shouldBe testingModel
       }
 
       "appointingCompanies does not contain duplicates" in {
-        val companies = Seq(authorisingCompanyModel, authorisingCompanyModel.copy(companyName = CompanyNameModel("Company ABC")))
+        val companies    =
+          Seq(authorisingCompanyModel, authorisingCompanyModel.copy(companyName = CompanyNameModel("Company ABC")))
         val testingModel = revokeReportingCompanyModelMax.copy(authorisingCompanies = companies)
 
         rightSide(testingModel.validate) shouldBe testingModel
@@ -65,7 +69,8 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
 
       "a revoking company is the same as the ultimate parent, and ultimate parent was supplied, " in {
         val testingModel = revokeReportingCompanyModelMax.copy(
-          reportingCompany = revokeReportingCompanyModelMax.reportingCompany.copy(sameAsUltimateParent = true))
+          reportingCompany = revokeReportingCompanyModelMax.reportingCompany.copy(sameAsUltimateParent = true)
+        )
 
         leftSideErrorLength(testingModel.validate) shouldBe 1
 
@@ -108,7 +113,10 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
       }
 
       "the declaration hasn't been declared and the company is revoking itself but still supplies revoking company details" in {
-        val testModel = revokeReportingCompanyModelMax.copy(declaration = false, companyMakingRevocation = Some(identityOfCompanySubmittingModelMax))
+        val testModel = revokeReportingCompanyModelMax.copy(
+          declaration = false,
+          companyMakingRevocation = Some(identityOfCompanySubmittingModelMax)
+        )
 
         leftSideErrorLength(testModel.validate) shouldBe 2
 
@@ -120,8 +128,10 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
       }
 
       "a Company revokes itself but still supplies the revoking company details" in {
-        val testModel = revokeReportingCompanyModelMax.copy(isReportingCompanyRevokingItself = true,
-          companyMakingRevocation = Some(identityOfCompanySubmittingModelMax))
+        val testModel = revokeReportingCompanyModelMax.copy(
+          isReportingCompanyRevokingItself = true,
+          companyMakingRevocation = Some(identityOfCompanySubmittingModelMax)
+        )
 
         leftSideErrorLength(testModel.validate) shouldBe 1
 
@@ -130,7 +140,7 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
       }
 
       "appointingCompanies contains duplicates" in {
-        val companies = Seq(authorisingCompanyModel, authorisingCompanyModel)
+        val companies    = Seq(authorisingCompanyModel, authorisingCompanyModel)
         val testingModel = revokeReportingCompanyModelMax.copy(authorisingCompanies = companies)
 
         leftSideError(testingModel.validate).errorMessage shouldBe AuthorisingCompaniesContainsDuplicates.errorMessage
@@ -139,59 +149,95 @@ class RevokeReportingCompanyValidatorSpec extends BaseSpec {
       "CompanyMakingRevocation's CompanyName contains invalid characters" in {
 
         val companyNameInvalid = CompanyNameModel("ʰʲʺ˦˫˥ʺ˦˫˥")
-        val identityOfComp = identityOfCompanySubmittingModelMax.copy(companyName = companyNameInvalid)
-        val testModel = revokeReportingCompanyModelMax.copy(isReportingCompanyRevokingItself = true, companyMakingRevocation = Some(identityOfComp))
+        val identityOfComp     = identityOfCompanySubmittingModelMax.copy(companyName = companyNameInvalid)
+        val testModel          = revokeReportingCompanyModelMax.copy(
+          isReportingCompanyRevokingItself = true,
+          companyMakingRevocation = Some(identityOfComp)
+        )
 
-        leftSideError(testModel.validate).errorMessage shouldBe DetailsNotNeededIfCompanyRevokingItself(identityOfComp).errorMessage
+        leftSideError(testModel.validate).errorMessage shouldBe DetailsNotNeededIfCompanyRevokingItself(
+          identityOfComp
+        ).errorMessage
       }
 
       "CompanyMakingRevocation's CompanyNameis too long" in {
 
         val identityOfComp = identityOfCompanySubmittingModelMax.copy(companyName = companyNameTooLong)
-        val testModel = revokeReportingCompanyModelMax.copy(isReportingCompanyRevokingItself = true, companyMakingRevocation = Some(identityOfComp))
+        val testModel      = revokeReportingCompanyModelMax.copy(
+          isReportingCompanyRevokingItself = true,
+          companyMakingRevocation = Some(identityOfComp)
+        )
 
-        leftSideError(testModel.validate).errorMessage shouldBe DetailsNotNeededIfCompanyRevokingItself(identityOfComp).errorMessage
+        leftSideError(testModel.validate).errorMessage shouldBe DetailsNotNeededIfCompanyRevokingItself(
+          identityOfComp
+        ).errorMessage
       }
 
       "CompanyMakingRevocation's CompanyName is empty" in {
 
         val companyNameInvalid = CompanyNameModel("")
-        val identityOfComp = identityOfCompanySubmittingModelMax.copy(companyName = companyNameInvalid)
-        val testModel = revokeReportingCompanyModelMax.copy(isReportingCompanyRevokingItself = true, companyMakingRevocation = Some(identityOfComp))
+        val identityOfComp     = identityOfCompanySubmittingModelMax.copy(companyName = companyNameInvalid)
+        val testModel          = revokeReportingCompanyModelMax.copy(
+          isReportingCompanyRevokingItself = true,
+          companyMakingRevocation = Some(identityOfComp)
+        )
 
-        leftSideError(testModel.validate).errorMessage shouldBe DetailsNotNeededIfCompanyRevokingItself(identityOfComp).errorMessage
+        leftSideError(testModel.validate).errorMessage shouldBe DetailsNotNeededIfCompanyRevokingItself(
+          identityOfComp
+        ).errorMessage
       }
 
       "CompanyMakingRevocation's ctutr is empty" in {
 
         val identityOfComp = identityOfCompanySubmittingModelMax.copy(ctutr = Some(UTRModel("")))
-        val testModel = revokeReportingCompanyModelMax.copy(isReportingCompanyRevokingItself = true, companyMakingRevocation = Some(identityOfComp))
+        val testModel      = revokeReportingCompanyModelMax.copy(
+          isReportingCompanyRevokingItself = true,
+          companyMakingRevocation = Some(identityOfComp)
+        )
 
-        leftSideError(testModel.validate).errorMessage shouldBe DetailsNotNeededIfCompanyRevokingItself(identityOfComp).errorMessage
+        leftSideError(testModel.validate).errorMessage shouldBe DetailsNotNeededIfCompanyRevokingItself(
+          identityOfComp
+        ).errorMessage
       }
 
       "CompanyMakingRevocation's ctutr is too long" in {
 
         val identityOfComp = identityOfCompanySubmittingModelMax.copy(ctutr = Some(invalidLongUtr))
-        val testModel = revokeReportingCompanyModelMax.copy(isReportingCompanyRevokingItself = true, companyMakingRevocation = Some(identityOfComp))
+        val testModel      = revokeReportingCompanyModelMax.copy(
+          isReportingCompanyRevokingItself = true,
+          companyMakingRevocation = Some(identityOfComp)
+        )
 
-        leftSideError(testModel.validate).errorMessage shouldBe DetailsNotNeededIfCompanyRevokingItself(identityOfComp).errorMessage
+        leftSideError(testModel.validate).errorMessage shouldBe DetailsNotNeededIfCompanyRevokingItself(
+          identityOfComp
+        ).errorMessage
       }
 
       "CompanyMakingRevocation's Country of Incorporation is empty" in {
 
-        val identityOfComp = identityOfCompanySubmittingModelMax.copy(countryOfIncorporation = Some(CountryCodeModel("")))
-        val testModel = revokeReportingCompanyModelMax.copy(isReportingCompanyRevokingItself = true, companyMakingRevocation = Some(identityOfComp))
+        val identityOfComp =
+          identityOfCompanySubmittingModelMax.copy(countryOfIncorporation = Some(CountryCodeModel("")))
+        val testModel      = revokeReportingCompanyModelMax.copy(
+          isReportingCompanyRevokingItself = true,
+          companyMakingRevocation = Some(identityOfComp)
+        )
 
-        leftSideError(testModel.validate).errorMessage shouldBe DetailsNotNeededIfCompanyRevokingItself(identityOfComp).errorMessage
+        leftSideError(testModel.validate).errorMessage shouldBe DetailsNotNeededIfCompanyRevokingItself(
+          identityOfComp
+        ).errorMessage
       }
 
       "CompanyMakingRevocation's Country of Incorporation is an invalid country code" in {
 
         val identityOfComp = identityOfCompanySubmittingModelMax.copy(countryOfIncorporation = Some(invalidCountryCode))
-        val testModel = revokeReportingCompanyModelMax.copy(isReportingCompanyRevokingItself = true, companyMakingRevocation = Some(identityOfComp))
+        val testModel      = revokeReportingCompanyModelMax.copy(
+          isReportingCompanyRevokingItself = true,
+          companyMakingRevocation = Some(identityOfComp)
+        )
 
-        leftSideError(testModel.validate).errorMessage shouldBe DetailsNotNeededIfCompanyRevokingItself(identityOfComp).errorMessage
+        leftSideError(testModel.validate).errorMessage shouldBe DetailsNotNeededIfCompanyRevokingItself(
+          identityOfComp
+        ).errorMessage
       }
     }
   }

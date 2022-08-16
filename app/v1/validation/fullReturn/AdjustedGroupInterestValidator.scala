@@ -40,83 +40,85 @@ trait AdjustedGroupInterestValidator extends BaseValidation {
     }
   }
 
-  private def validateQngieNegative(implicit path: JsPath): ValidationResult[BigDecimal] = {
+  private def validateQngieNegative(implicit path: JsPath): ValidationResult[BigDecimal] =
     if (adjustedGroupInterestModel.qngie < 0) {
       NegativeQNGIEError(adjustedGroupInterestModel.qngie).invalidNec
     } else {
       adjustedGroupInterestModel.qngie.validNec
     }
-  }
 
-  private def validateQngieDecimal(implicit path: JsPath): ValidationResult[BigDecimal] = {
+  private def validateQngieDecimal(implicit path: JsPath): ValidationResult[BigDecimal] =
     if (adjustedGroupInterestModel.qngie % 0.01 != 0) {
       QngieDecimalError(adjustedGroupInterestModel.qngie).invalidNec
     } else {
       adjustedGroupInterestModel.qngie.validNec
     }
-  }
 
-  private def validateGroupEBITDA(implicit path: JsPath): ValidationResult[Option[BigDecimal]] = {
+  private def validateGroupEBITDA(implicit path: JsPath): ValidationResult[Option[BigDecimal]] =
     adjustedGroupInterestModel.groupEBITDA match {
       case Some(ebitda) if ebitda % 0.01 != 0 => GroupEBITDADecimalError(ebitda).invalidNec
       case _ => adjustedGroupInterestModel.groupEBITDA.validNec
     }
-  }
 
-  private def validateGroupRatioCalculation(implicit path: JsPath): ValidationResult[BigDecimal] = {
-    (adjustedGroupInterestModel.qngie, adjustedGroupInterestModel.groupEBITDA, adjustedGroupInterestModel.groupRatio) match {
+  private def validateGroupRatioCalculation(implicit path: JsPath): ValidationResult[BigDecimal] =
+    (
+      adjustedGroupInterestModel.qngie,
+      adjustedGroupInterestModel.groupEBITDA,
+      adjustedGroupInterestModel.groupRatio
+    ) match {
       case (_, Some(groupEBITDA), groupRatio) if groupEBITDA <= 0 && groupRatio != 100 =>
         NegativeOrZeroGroupEBITDAError(groupRatio).invalidNec
-      case _ => adjustedGroupInterestModel.groupRatio.validNec
+      case _                                                                           => adjustedGroupInterestModel.groupRatio.validNec
     }
-  }
 
   def validate(implicit path: JsPath): ValidationResult[AdjustedGroupInterestModel] =
-    (validateGroupRatio,
+    (
+      validateGroupRatio,
       validateQngieDecimal,
       validateQngieNegative,
       validateGroupEBITDA,
-      validateGroupRatioCalculation).mapN((_, _, _, _, _) => adjustedGroupInterestModel)
+      validateGroupRatioCalculation
+    ).mapN((_, _, _, _, _) => adjustedGroupInterestModel)
 }
 
 case class QngieDecimalError(qngie: BigDecimal)(implicit topPath: JsPath) extends Validation {
-  val code = "QNGIE_DECIMAL"
+  val code                 = "QNGIE_DECIMAL"
   val errorMessage: String = "QNGIE must be to 2 decimal places or less"
-  val path: JsPath = topPath \ "qngie"
-  val value = Some(Json.toJson(qngie))
+  val path: JsPath         = topPath \ "qngie"
+  val value                = Some(Json.toJson(qngie))
 }
 
 case class GroupEBITDADecimalError(groupEBITDA: BigDecimal)(implicit topPath: JsPath) extends Validation {
-  val code = "EBITDA_DECIMAL"
-  val errorMessage: String = "Group EBITDA must be to 2 decimal places or less"
-  val path: JsPath = topPath \ "groupEBITDA"
+  val code                   = "EBITDA_DECIMAL"
+  val errorMessage: String   = "Group EBITDA must be to 2 decimal places or less"
+  val path: JsPath           = topPath \ "groupEBITDA"
   val value: Option[JsValue] = Some(Json.toJson(groupEBITDA))
 }
 
 case class GroupRatioDecimalError(groupEBITDA: BigDecimal)(implicit topPath: JsPath) extends Validation {
-  val code = "GROUP_RATIO_DECIMAL"
-  val errorMessage: String = "Group ratio must be to 5 decimal places or less"
-  val path: JsPath = topPath \ "groupRatio"
+  val code                   = "GROUP_RATIO_DECIMAL"
+  val errorMessage: String   = "Group ratio must be to 5 decimal places or less"
+  val path: JsPath           = topPath \ "groupRatio"
   val value: Option[JsValue] = Some(Json.toJson(groupEBITDA))
 }
 
 case class GroupRatioError(groupRatio: BigDecimal)(implicit topPath: JsPath) extends Validation {
-  val code = "GROUP_RATIO_RANGE"
-  val errorMessage: String = "Group ratio must be between 0% and 100%"
-  val path: JsPath = topPath \ "groupRatio"
+  val code                   = "GROUP_RATIO_RANGE"
+  val errorMessage: String   = "Group ratio must be between 0% and 100%"
+  val path: JsPath           = topPath \ "groupRatio"
   val value: Option[JsValue] = Some(Json.toJson(groupRatio))
 }
 
 case class NegativeOrZeroGroupEBITDAError(groupEBITDA: BigDecimal)(implicit topPath: JsPath) extends Validation {
-  val code = "EBITDA_NEGATIVE"
-  val errorMessage: String = "If group EBITDA is negative or zero, set group ratio to 100"
-  val path: JsPath = topPath \ "groupEBITDA"
+  val code                   = "EBITDA_NEGATIVE"
+  val errorMessage: String   = "If group EBITDA is negative or zero, set group ratio to 100"
+  val path: JsPath           = topPath \ "groupEBITDA"
   val value: Option[JsValue] = Some(Json.toJson(groupEBITDA))
 }
 
 case class NegativeQNGIEError(groupRatio: BigDecimal)(implicit topPath: JsPath) extends Validation {
-  val code = "QNGIE_NEGATIVE"
-  val errorMessage: String = "QNGIE must be a positive number"
-  val path: JsPath = topPath \ "qngie"
+  val code                   = "QNGIE_NEGATIVE"
+  val errorMessage: String   = "QNGIE must be a positive number"
+  val path: JsPath           = topPath \ "qngie"
   val value: Option[JsValue] = Some(Json.toJson(groupRatio))
 }

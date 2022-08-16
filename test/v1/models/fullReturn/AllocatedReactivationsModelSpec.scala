@@ -29,7 +29,7 @@ class AllocatedReactivationsModelSpec extends AnyWordSpec with Matchers {
     "correctly write to json" in {
 
       val expectedValue = allocatedReactivationsJson
-      val actualValue = Json.toJson(allocatedReactivationsModel)
+      val actualValue   = Json.toJson(allocatedReactivationsModel)
 
       actualValue shouldBe expectedValue
     }
@@ -37,7 +37,7 @@ class AllocatedReactivationsModelSpec extends AnyWordSpec with Matchers {
     "correctly read from Json" in {
 
       val expectedValue = allocatedReactivationsModel
-      val actualValue = allocatedReactivationsJson.as[AllocatedReactivationsModel]
+      val actualValue   = allocatedReactivationsJson.as[AllocatedReactivationsModel]
 
       actualValue shouldBe expectedValue
     }

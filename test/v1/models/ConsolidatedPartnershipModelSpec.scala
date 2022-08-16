@@ -31,7 +31,7 @@ class ConsolidatedPartnershipModelSpec extends AnyWordSpec with Matchers {
       "max values given" in {
 
         val expectedValue = consolidatedPartnershipsJsonMax
-        val actualValue = Json.toJson(consolidatedPartnershipsModelMax)
+        val actualValue   = Json.toJson(consolidatedPartnershipsModelMax)
 
         actualValue shouldBe expectedValue
       }
@@ -39,7 +39,7 @@ class ConsolidatedPartnershipModelSpec extends AnyWordSpec with Matchers {
       "min values given" in {
 
         val expectedValue = consolidatedPartnershipsJsonMin
-        val actualValue = Json.toJson(consolidatedPartnershipsModelMin)
+        val actualValue   = Json.toJson(consolidatedPartnershipsModelMin)
 
         actualValue shouldBe expectedValue
       }
@@ -48,7 +48,7 @@ class ConsolidatedPartnershipModelSpec extends AnyWordSpec with Matchers {
 
         val expectedValue = Json.obj(
           "isElected" -> false,
-          "isActive" -> false
+          "isActive"  -> false
         )
 
         val actualValue = Json.toJson(consolidatedPartnershipsModelMin)
@@ -61,7 +61,7 @@ class ConsolidatedPartnershipModelSpec extends AnyWordSpec with Matchers {
       "max values given" in {
 
         val expectedValue = consolidatedPartnershipsModelMax
-        val actualValue = consolidatedPartnershipsJsonMax.as[ConsolidatedPartnershipModel]
+        val actualValue   = consolidatedPartnershipsJsonMax.as[ConsolidatedPartnershipModel]
 
         actualValue shouldBe expectedValue
       }
@@ -69,11 +69,10 @@ class ConsolidatedPartnershipModelSpec extends AnyWordSpec with Matchers {
       "min values given" in {
 
         val expectedValue = consolidatedPartnershipsModelMin
-        val actualValue = consolidatedPartnershipsJsonMin.as[ConsolidatedPartnershipModel]
+        val actualValue   = consolidatedPartnershipsJsonMin.as[ConsolidatedPartnershipModel]
 
         actualValue shouldBe expectedValue
       }
     }
   }
 }
-

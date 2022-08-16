@@ -19,13 +19,14 @@ package v1.models
 import play.api.libs.json.{Format, Json}
 import v1.validation.UltimateParentValidator
 
-case class UltimateParentModel(companyName: CompanyNameModel,
-                               isUk: Boolean,
-                               ctutr: Option[UTRModel],
-                               sautr: Option[UTRModel],
-                               countryOfIncorporation: Option[CountryCodeModel],
-                               legalEntityIdentifier: Option[LegalEntityIdentifierModel]
-                              ) extends UltimateParentValidator {
+case class UltimateParentModel(
+  companyName: CompanyNameModel,
+  isUk: Boolean,
+  ctutr: Option[UTRModel],
+  sautr: Option[UTRModel],
+  countryOfIncorporation: Option[CountryCodeModel],
+  legalEntityIdentifier: Option[LegalEntityIdentifierModel]
+) extends UltimateParentValidator {
   override val ultimateParentModel: UltimateParentModel = this
 }
 
@@ -33,4 +34,3 @@ object UltimateParentModel {
 
   implicit def format: Format[UltimateParentModel] = Json.format[UltimateParentModel]
 }
-

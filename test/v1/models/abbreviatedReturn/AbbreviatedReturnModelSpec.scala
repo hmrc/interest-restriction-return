@@ -40,7 +40,7 @@ class AbbreviatedReturnModelSpec extends AnyWordSpec with Matchers with BaseCons
       "max values given" in {
 
         val expectedValue = withoutAppointedReportingCompany(abbreviatedReturnUltimateParentJson)
-        val actualValue = Json.toJson(abbreviatedReturnUltimateParentModel)
+        val actualValue   = Json.toJson(abbreviatedReturnUltimateParentModel)
 
         actualValue shouldBe expectedValue
       }
@@ -48,30 +48,30 @@ class AbbreviatedReturnModelSpec extends AnyWordSpec with Matchers with BaseCons
       "min values given" in {
 
         val expectedValue = withoutAppointedReportingCompany(abbreviatedReturnJsonMin)
-        val actualValue = Json.toJson(abbreviatedReturnModelMin)
+        val actualValue   = Json.toJson(abbreviatedReturnModelMin)
 
         actualValue shouldBe expectedValue
       }
 
       "All data is included in the Json.toJson" in {
         val expectedValue = Json.obj(
-          "declaration" -> true,
-          "agentDetails" -> agentDetailsJsonMin,
-          "reportingCompany" -> reportingCompanyJson,
+          "declaration"          -> true,
+          "agentDetails"         -> agentDetailsJsonMin,
+          "reportingCompany"     -> reportingCompanyJson,
           "publicInfrastructure" -> true,
-          "groupCompanyDetails" -> groupCompanyDetailsJson,
-          "submissionType" -> Json.toJson[SubmissionType](Original),
-          "ukCompanies" -> Seq(ukCompanyJson),
-          "numberOfUkCompanies" -> 1
+          "groupCompanyDetails"  -> groupCompanyDetailsJson,
+          "submissionType"       -> Json.toJson[SubmissionType](Original),
+          "ukCompanies"          -> Seq(ukCompanyJson),
+          "numberOfUkCompanies"  -> 1
         )
-        val actualValue = Json.toJson(abbreviatedReturnModelMin)
+        val actualValue   = Json.toJson(abbreviatedReturnModelMin)
         actualValue shouldBe expectedValue
       }
     }
 
     "not pass the appointedReportingCompany boolean" when {
       "writing json" in {
-        val parsedJson: JsObject = Json.toJson(abbreviatedReturnUltimateParentModel).as[JsObject]
+        val parsedJson: JsObject                             = Json.toJson(abbreviatedReturnUltimateParentModel).as[JsObject]
         val appointedReportingCompanyOption: Option[Boolean] = (parsedJson \ "appointedReportingCompany").asOpt[Boolean]
         appointedReportingCompanyOption shouldBe None
       }
@@ -82,7 +82,7 @@ class AbbreviatedReturnModelSpec extends AnyWordSpec with Matchers with BaseCons
       "max values given" in {
 
         val expectedValue = abbreviatedReturnUltimateParentModel
-        val actualValue = abbreviatedReturnUltimateParentJson.as[AbbreviatedReturnModel]
+        val actualValue   = abbreviatedReturnUltimateParentJson.as[AbbreviatedReturnModel]
 
         actualValue shouldBe expectedValue
       }
@@ -90,7 +90,7 @@ class AbbreviatedReturnModelSpec extends AnyWordSpec with Matchers with BaseCons
       "min values given" in {
 
         val expectedValue = abbreviatedReturnModelMin
-        val actualValue = abbreviatedReturnJsonMin.as[AbbreviatedReturnModel]
+        val actualValue   = abbreviatedReturnJsonMin.as[AbbreviatedReturnModel]
 
         actualValue shouldBe expectedValue
       }
@@ -99,37 +99,38 @@ class AbbreviatedReturnModelSpec extends AnyWordSpec with Matchers with BaseCons
     "deriving the publicInfrastructure" when {
 
       "there is a single company with qic set to true" in {
-        val company = ukCompanyModel.copy(qicElection = true)
+        val company           = ukCompanyModel.copy(qicElection = true)
         val abbreviatedReturn = abbreviatedReturnModelMin.copy(ukCompanies = Seq(company))
 
         abbreviatedReturn.publicInfrastructure shouldBe true
       }
 
       "there is a single company with qic set to false" in {
-        val company = ukCompanyModel.copy(qicElection = false)
+        val company           = ukCompanyModel.copy(qicElection = false)
         val abbreviatedReturn = abbreviatedReturnModelMin.copy(ukCompanies = Seq(company))
 
         abbreviatedReturn.publicInfrastructure shouldBe false
       }
 
       "there are multiple companies with qic set to true" in {
-        val company = ukCompanyModel.copy(qicElection = true)
+        val company           = ukCompanyModel.copy(qicElection = true)
         val abbreviatedReturn = abbreviatedReturnModelMin.copy(ukCompanies = Seq(company, company, company))
 
         abbreviatedReturn.publicInfrastructure shouldBe true
       }
 
       "there are multiple companies with qic set to false" in {
-        val company = ukCompanyModel.copy(qicElection = false)
+        val company           = ukCompanyModel.copy(qicElection = false)
         val abbreviatedReturn = abbreviatedReturnModelMin.copy(ukCompanies = Seq(company, company, company))
 
         abbreviatedReturn.publicInfrastructure shouldBe false
       }
 
       "there are companies with a mixture of qic to set to true and false" in {
-        val trueCompany = ukCompanyModel.copy(qicElection = true)
-        val falseCompany = ukCompanyModel.copy(qicElection = false)
-        val abbreviatedReturn = abbreviatedReturnModelMin.copy(ukCompanies = Seq(trueCompany, falseCompany, falseCompany))
+        val trueCompany       = ukCompanyModel.copy(qicElection = true)
+        val falseCompany      = ukCompanyModel.copy(qicElection = false)
+        val abbreviatedReturn =
+          abbreviatedReturnModelMin.copy(ukCompanies = Seq(trueCompany, falseCompany, falseCompany))
 
         abbreviatedReturn.publicInfrastructure shouldBe true
       }

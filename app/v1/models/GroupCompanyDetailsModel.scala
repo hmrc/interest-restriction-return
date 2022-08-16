@@ -25,13 +25,18 @@ case class GroupCompanyDetailsModel(accountingPeriod: AccountingPeriodModel) ext
 
 object GroupCompanyDetailsModel {
   val writes: Writes[GroupCompanyDetailsModel] = Writes { models =>
-    JsObject(Json.obj(
-      "totalCompanies" -> 1,
-      "accountingPeriod" -> models.accountingPeriod
-    ).fields.filterNot(_._2 == JsNull))
+    JsObject(
+      Json
+        .obj(
+          "totalCompanies"   -> 1,
+          "accountingPeriod" -> models.accountingPeriod
+        )
+        .fields
+        .filterNot(_._2 == JsNull)
+    )
   }
 
-  implicit val format: Format[GroupCompanyDetailsModel] = Format[GroupCompanyDetailsModel](Json.reads[GroupCompanyDetailsModel], writes)
+  implicit val format: Format[GroupCompanyDetailsModel] =
+    Format[GroupCompanyDetailsModel](Json.reads[GroupCompanyDetailsModel], writes)
 
 }
-

@@ -18,7 +18,7 @@ package assets
 
 import play.api.libs.json.{JsString, Json}
 import v1.models.Elections._
-import v1.models.{InvestorGroupModel, CompanyNameModel}
+import v1.models.{CompanyNameModel, InvestorGroupModel}
 
 object InvestorGroupConstants {
 
@@ -27,7 +27,7 @@ object InvestorGroupConstants {
   val groupRatioElectionList = allValues.toList
   val fixedRatioElectionList = fixedRatioValues.toList
 
-  val allValuesJson = Json.arr(
+  val allValuesJson        = Json.arr(
     JsString(GroupRatioBlended.toString),
     JsString(GroupEBITDA.toString),
     JsString(InterestAllowanceAlternativeCalculation.toString),

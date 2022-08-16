@@ -30,9 +30,9 @@ trait AllocatedReactivationsValidator extends BaseValidation {
 
   def validate(implicit path: JsPath): ValidationResult[AllocatedReactivationsModel] = {
     val reactivations = allocatedReactivationsModel.currentPeriodReactivation
-    if(reactivations < 0) {
+    if (reactivations < 0) {
       AllocatedReactivationsCannotBeNegative(reactivations).invalidNec
-    } else if(reactivations % 0.01 != 0) {
+    } else if (reactivations % 0.01 != 0) {
       AllocatedReactivationsDecimalError(reactivations).invalidNec
     } else {
       reactivations.validNec
@@ -40,16 +40,18 @@ trait AllocatedReactivationsValidator extends BaseValidation {
   }.map(_ => allocatedReactivationsModel)
 }
 
-case class AllocatedReactivationsCannotBeNegative(currentPeriodReactivation: BigDecimal)(implicit topPath: JsPath) extends Validation {
-  val code = "REACTIVATIONS_NEGATIVE"
-  val path = topPath \ "currentPeriodReactivation"
+case class AllocatedReactivationsCannotBeNegative(currentPeriodReactivation: BigDecimal)(implicit topPath: JsPath)
+    extends Validation {
+  val code                 = "REACTIVATIONS_NEGATIVE"
+  val path                 = topPath \ "currentPeriodReactivation"
   val errorMessage: String = s"Current period reactivation must be a positive number"
-  val value = Some(Json.toJson(currentPeriodReactivation))
+  val value                = Some(Json.toJson(currentPeriodReactivation))
 }
 
-case class AllocatedReactivationsDecimalError(currentPeriodReactivation: BigDecimal)(implicit topPath: JsPath) extends Validation {
-  val code = "REACTIVATIONS_DECIMAL"
-  val path = topPath \ "currentPeriodReactivation"
+case class AllocatedReactivationsDecimalError(currentPeriodReactivation: BigDecimal)(implicit topPath: JsPath)
+    extends Validation {
+  val code                 = "REACTIVATIONS_DECIMAL"
+  val path                 = topPath \ "currentPeriodReactivation"
   val errorMessage: String = s"Current period reactivation must be to 2 decimal places or less"
-  val value = Some(Json.toJson(currentPeriodReactivation))
+  val value                = Some(Json.toJson(currentPeriodReactivation))
 }

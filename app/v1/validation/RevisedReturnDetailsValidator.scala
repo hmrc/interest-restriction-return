@@ -26,37 +26,36 @@ trait RevisedReturnDetailsValidator extends BaseValidation {
 
   val revisedReturnDetailsModel: RevisedReturnDetailsModel
 
-  private def revisedReturnDetailsIsValidLength: Boolean = (revisedReturnDetailsModel.details.length >= 1 && revisedReturnDetailsModel.details.length <= 5000)
+  private def revisedReturnDetailsIsValidLength: Boolean =
+    revisedReturnDetailsModel.details.length >= 1 && revisedReturnDetailsModel.details.length <= 5000
 
   private def revisedReturnDetailsHasValidCharacters: Boolean = {
     val regex = "^[ -~¢-¥©®±×÷‐₠-₿−-∝≈≠≣-≥]*$".r
     revisedReturnDetailsModel.details match {
-      case regex(_ *) => true
-      case _ => false
+      case regex(_*) => true
+      case _         => false
     }
   }
 
-  def validate(implicit path: JsPath): ValidationResult[RevisedReturnDetailsModel] = {
+  def validate(implicit path: JsPath): ValidationResult[RevisedReturnDetailsModel] =
     revisedReturnDetailsModel.details match {
-      case details if !revisedReturnDetailsIsValidLength => RevisedReturnDetailsLengthError(details).invalidNec
+      case details if !revisedReturnDetailsIsValidLength      => RevisedReturnDetailsLengthError(details).invalidNec
       case details if !revisedReturnDetailsHasValidCharacters => RevisedReturnDetailsCharacterError(details).invalidNec
-      case _ => revisedReturnDetailsModel.validNec
+      case _                                                  => revisedReturnDetailsModel.validNec
     }
-  }
 
 }
 
 case class RevisedReturnDetailsLengthError(details: String)(implicit topPath: JsPath) extends Validation {
-  val code = "REVISION_DETAILS_LENGTH"
+  val code                 = "REVISION_DETAILS_LENGTH"
   val errorMessage: String = s"Revised return details must be between 1 and 5,000 characters"
-  val path = topPath \ "revisedReturnDetails"
-  val value = Some(Json.toJson(details))
+  val path                 = topPath \ "revisedReturnDetails"
+  val value                = Some(Json.toJson(details))
 }
 
 case class RevisedReturnDetailsCharacterError(details: String)(implicit topPath: JsPath) extends Validation {
-  val code = "REVISION_DETAILS_CHARACTERS"
+  val code                 = "REVISION_DETAILS_CHARACTERS"
   val errorMessage: String = "Revised return details contains invalid characters"
-  val path = topPath \ "revisedReturnDetails"
-  val value = Some(Json.toJson(details))
+  val path                 = topPath \ "revisedReturnDetails"
+  val value                = Some(Json.toJson(details))
 }
-

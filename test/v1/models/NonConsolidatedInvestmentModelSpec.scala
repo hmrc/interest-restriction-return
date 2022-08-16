@@ -24,10 +24,10 @@ class NonConsolidatedInvestmentModelSpec extends AnyWordSpec with Matchers {
   "NonConsolidatedInvestmentModel" should {
     "trim the whitespace in the name" in {
 
-    val expectedValue = nonConsolidatedModel
-    val actualValue = nonConsolidatedJsonWhitespace.as[NonConsolidatedInvestmentModel]
+      val expectedValue = nonConsolidatedModel
+      val actualValue   = nonConsolidatedJsonWhitespace.as[NonConsolidatedInvestmentModel]
 
-    actualValue shouldBe expectedValue
+      actualValue shouldBe expectedValue
     }
   }
 }

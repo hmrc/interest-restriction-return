@@ -65,11 +65,13 @@ object ParentCompanyConstants {
 
   val parentCompanyModelDeemedMax = ParentCompanyModel(
     ultimateParent = None,
-    deemedParent = Some(Seq(
-      deemedParentModelUkCompany,
-      deemedParentModelUkPartnership,
-      deemedParentModelMax
-    ))
+    deemedParent = Some(
+      Seq(
+        deemedParentModelUkCompany,
+        deemedParentModelUkPartnership,
+        deemedParentModelMax
+      )
+    )
   )
 
   val parentCompanyModelDeemedUkCompany = ParentCompanyModel(
@@ -89,14 +91,14 @@ object ParentCompanyConstants {
 
   val parentCompanyJsonMax = Json.obj(
     "ultimateParent" -> ultimateParentJsonMax,
-    "deemedParent" -> Seq(deemedParentJsonMax)
+    "deemedParent"   -> Seq(deemedParentJsonMax)
   )
 
   val parentCompanyJsonMin = Json.obj(
-  "deemedParent" -> Seq(deemedParentJsonMin, deemedParentJsonMin)
+    "deemedParent" -> Seq(deemedParentJsonMin, deemedParentJsonMin)
   )
 
-  val parentCompanyJsonUltMax= Json.obj(
+  val parentCompanyJsonUltMax = Json.obj(
     "ultimateParent" -> ultimateParentJsonMax
   )
 
@@ -136,5 +138,3 @@ object ParentCompanyConstants {
     "deemedParent" -> Seq(deemedParentJsonUkPartnership)
   )
 }
-
-

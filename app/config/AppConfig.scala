@@ -37,18 +37,21 @@ trait AppConfig {
 }
 
 @Singleton
-class AppConfigImpl @Inject()(val servicesConfig: ServicesConfig, configuration: Configuration) extends AppConfig {
+class AppConfigImpl @Inject() (val servicesConfig: ServicesConfig, configuration: Configuration) extends AppConfig {
 
-  lazy val desUrl: String = servicesConfig.baseUrl("des")
-  lazy val desAuthorisationToken: String = s"Bearer ${servicesConfig.getString("microservice.services.des.authorisation-token")}"
-  lazy val desEnvironmentHeader: (String, String) = "Environment" -> servicesConfig.getString("microservice.services.des.environment")
+  lazy val desUrl: String                         = servicesConfig.baseUrl("des")
+  lazy val desAuthorisationToken: String          =
+    s"Bearer ${servicesConfig.getString("microservice.services.des.authorisation-token")}"
+  lazy val desEnvironmentHeader: (String, String) =
+    "Environment" -> servicesConfig.getString("microservice.services.des.environment")
   lazy val appName: String = servicesConfig.getString("appName")
 
-  lazy val nrsEnabled: Boolean = configuration.getOptional[Boolean]("microservice.services.nrs.enabled") match {
+  lazy val nrsEnabled: Boolean                   = configuration.getOptional[Boolean]("microservice.services.nrs.enabled") match {
     case Some(true) => true
-    case _ => false
+    case _          => false
   }
-  lazy val nrsUrl: Option[String] = configuration.getOptional[Configuration]("microservice.services.nrs").map(_ => servicesConfig.baseUrl("nrs"))
+  lazy val nrsUrl: Option[String]                =
+    configuration.getOptional[Configuration]("microservice.services.nrs").map(_ => servicesConfig.baseUrl("nrs"))
   lazy val nrsAuthorisationToken: Option[String] = configuration.getOptional[String]("microservice.services.nrs.apikey")
 
   val apiGatewayContext: String = servicesConfig.getString("api.gateway.context")

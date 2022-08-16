@@ -31,7 +31,7 @@ class ParentCompanyModelSpec extends AnyWordSpec with Matchers {
       "max values given" in {
 
         val expectedValue = parentCompanyJsonDeemedUkCompany
-        val actualValue = Json.toJson(parentCompanyModelDeemedUkCompany)
+        val actualValue   = Json.toJson(parentCompanyModelDeemedUkCompany)
 
         actualValue shouldBe expectedValue
       }
@@ -39,7 +39,7 @@ class ParentCompanyModelSpec extends AnyWordSpec with Matchers {
       "min values given" in {
 
         val expectedValue = parentCompanyJsonMin
-        val actualValue = Json.toJson(parentCompanyModelMin)
+        val actualValue   = Json.toJson(parentCompanyModelMin)
 
         actualValue shouldBe expectedValue
       }
@@ -50,7 +50,7 @@ class ParentCompanyModelSpec extends AnyWordSpec with Matchers {
       "max values given" in {
 
         val expectedValue = parentCompanyModelDeemedUkCompany
-        val actualValue = parentCompanyJsonDeemedUkCompany.as[ParentCompanyModel]
+        val actualValue   = parentCompanyJsonDeemedUkCompany.as[ParentCompanyModel]
 
         actualValue shouldBe expectedValue
       }
@@ -58,7 +58,7 @@ class ParentCompanyModelSpec extends AnyWordSpec with Matchers {
       "min values given" in {
 
         val expectedValue = parentCompanyModelMin
-        val actualValue = parentCompanyJsonDeemedMin.as[ParentCompanyModel]
+        val actualValue   = parentCompanyJsonDeemedMin.as[ParentCompanyModel]
 
         actualValue shouldBe expectedValue
       }

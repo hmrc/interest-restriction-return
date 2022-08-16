@@ -27,11 +27,3 @@ case class NonConsolidatedInvestmentModel(investmentName: String) extends NonCon
 object NonConsolidatedInvestmentModel {
   implicit val format = Json.format[NonConsolidatedInvestmentModel]
 }
-
-
-
-
-
-
-
-

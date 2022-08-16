@@ -20,20 +20,27 @@ import cats.data.NonEmptyChain
 import play.api.libs.json._
 import v1.models.Validation
 
-case class ValidationErrorResponseModel(code: String, message: String, path: Option[String], value: Option[JsValue], errors: Option[Seq[ErrorResponseModel]])
+case class ValidationErrorResponseModel(
+  code: String,
+  message: String,
+  path: Option[String],
+  value: Option[JsValue],
+  errors: Option[Seq[ErrorResponseModel]]
+)
 
 object ValidationErrorResponseModel {
 
   implicit val writes: Writes[ValidationErrorResponseModel] = Json.writes[ValidationErrorResponseModel]
 
-  val VALIDATION_ERROR_CODE = "JSON_VALIDATION_ERROR"
-  val BAD_REQUEST_ERROR_CODE = "INVALID_REQUEST"
+  val VALIDATION_ERROR_CODE     = "JSON_VALIDATION_ERROR"
+  val BAD_REQUEST_ERROR_CODE    = "INVALID_REQUEST"
   val BAD_REQUEST_ERROR_MESSAGE = "Request contains validation errors"
 
   def apply(errors: Seq[(JsPath, Seq[JsonValidationError])]): ValidationErrorResponseModel = {
-    val validationErrors = errors.flatMap {
-      case (path, errs) =>
-        errs.flatMap(_.messages).map(message => ErrorResponseModel(code = VALIDATION_ERROR_CODE, message = message, path = Some(path.toString)))
+    val validationErrors = errors.flatMap { case (path, errs) =>
+      errs
+        .flatMap(_.messages)
+        .map(message => ErrorResponseModel(code = VALIDATION_ERROR_CODE, message = message, path = Some(path.toString)))
     }
 
     errorsToValidationResponse(validationErrors)
@@ -54,7 +61,7 @@ object ValidationErrorResponseModel {
           value = error.value,
           errors = None
         )
-      case _ =>
+      case _            =>
         ValidationErrorResponseModel(
           code = BAD_REQUEST_ERROR_CODE,
           message = BAD_REQUEST_ERROR_MESSAGE,

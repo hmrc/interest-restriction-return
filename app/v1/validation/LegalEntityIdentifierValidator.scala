@@ -29,16 +29,17 @@ trait LegalEntityIdentifierValidator extends BaseValidation {
   private def validateValue(implicit path: JsPath): ValidationResult[LegalEntityIdentifierModel] = {
     val regex = "^[0-9A-Z]{18}[0-9]{2}$".r
     legalEntityIdentifierModel.code match {
-      case regex(_ *) => legalEntityIdentifierModel.validNec
-      case _ => LegalEntityIdentifierCharacterError(legalEntityIdentifierModel).invalidNec
+      case regex(_*) => legalEntityIdentifierModel.validNec
+      case _         => LegalEntityIdentifierCharacterError(legalEntityIdentifierModel).invalidNec
     }
   }
 
   def validate(implicit path: JsPath): ValidationResult[LegalEntityIdentifierModel] = combineValidations(validateValue)
 }
 
-case class LegalEntityIdentifierCharacterError(lei: LegalEntityIdentifierModel)(implicit val path: JsPath) extends Validation {
-  val code = "LEI_CHARACTER"
-  val errorMessage: String = s"Legal entity identifier must be 18 uppercase letters followed by 2 numbers"
+case class LegalEntityIdentifierCharacterError(lei: LegalEntityIdentifierModel)(implicit val path: JsPath)
+    extends Validation {
+  val code                   = "LEI_CHARACTER"
+  val errorMessage: String   = s"Legal entity identifier must be 18 uppercase letters followed by 2 numbers"
   val value: Option[JsValue] = Some(Json.toJson(lei))
 }

@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import play.api.libs.json.{Json, JsPath}
+import play.api.libs.json.{JsPath, Json}
 import v1.models.Validation.ValidationResult
 import v1.models.{NonConsolidatedInvestmentElectionModel, NonConsolidatedInvestmentModel, Validation}
 
@@ -26,54 +26,63 @@ trait NonConsolidatedInvestmentElectionValidator extends BaseValidation {
 
   val nonConsolidatedInvestmentElectionModel: NonConsolidatedInvestmentElectionModel
 
-  private def validateNonConsolidatedInvestment(implicit path: JsPath): ValidationResult[NonConsolidatedInvestmentElectionModel] = {
-    (nonConsolidatedInvestmentElectionModel.isElected, nonConsolidatedInvestmentElectionModel.nonConsolidatedInvestments.isDefined) match {
+  private def validateNonConsolidatedInvestment(implicit
+    path: JsPath
+  ): ValidationResult[NonConsolidatedInvestmentElectionModel] =
+    (
+      nonConsolidatedInvestmentElectionModel.isElected,
+      nonConsolidatedInvestmentElectionModel.nonConsolidatedInvestments.isDefined
+    ) match {
       case (false, true) => NonConsolidatedInvestmentSupplied(nonConsolidatedInvestmentElectionModel).invalidNec
       case (true, false) => NonConsolidatedInvestmentNotSupplied(nonConsolidatedInvestmentElectionModel).invalidNec
-      case _ => nonConsolidatedInvestmentElectionModel.validNec
+      case _             => nonConsolidatedInvestmentElectionModel.validNec
     }
-  }
 
   def validate(implicit path: JsPath): ValidationResult[NonConsolidatedInvestmentElectionModel] = {
 
     val nonConsolidatedInvestmentsValidation: ValidationResult[Option[NonConsolidatedInvestmentModel]] =
-      optionValidations(nonConsolidatedInvestmentElectionModel.nonConsolidatedInvestments.map(nonConsolidatedInvestments =>
-        if(nonConsolidatedInvestments.isEmpty) NonConsolidatedInvestmentEmpty().invalidNec else {
-          combineValidations(nonConsolidatedInvestments.zipWithIndex.map {
-            case (a, i) => a.validate(JsPath \ s"nonConsolidatedInvestments[$i]")
-          }: _*)
-        }
-      ))
+      optionValidations(
+        nonConsolidatedInvestmentElectionModel.nonConsolidatedInvestments.map(nonConsolidatedInvestments =>
+          if (nonConsolidatedInvestments.isEmpty) NonConsolidatedInvestmentEmpty().invalidNec
+          else {
+            combineValidations(nonConsolidatedInvestments.zipWithIndex.map { case (a, i) =>
+              a.validate(JsPath \ s"nonConsolidatedInvestments[$i]")
+            }: _*)
+          }
+        )
+      )
 
-    (validateNonConsolidatedInvestment,
-      nonConsolidatedInvestmentsValidation).mapN((_,_) => nonConsolidatedInvestmentElectionModel)
+    (validateNonConsolidatedInvestment, nonConsolidatedInvestmentsValidation).mapN((_, _) =>
+      nonConsolidatedInvestmentElectionModel
+    )
   }
 }
 
-case class NonConsolidatedInvestmentSupplied(nonConsolidatedInvestmentElectionModel: NonConsolidatedInvestmentElectionModel)
-                                            (implicit val topPath: JsPath) extends Validation {
-  val code = "INVESTMENT_SUPPLIED"
-  val errorMessage: String = "Interest allowance (non-consolidated investments) election not made, so no details of non-consolidated investments needed"
-  val path: JsPath = topPath \ "nonConsolidatedInvestments"
-  val value = Some(Json.toJson(nonConsolidatedInvestmentElectionModel))
+case class NonConsolidatedInvestmentSupplied(
+  nonConsolidatedInvestmentElectionModel: NonConsolidatedInvestmentElectionModel
+)(implicit val topPath: JsPath)
+    extends Validation {
+  val code                 = "INVESTMENT_SUPPLIED"
+  val errorMessage: String =
+    "Interest allowance (non-consolidated investments) election not made, so no details of non-consolidated investments needed"
+  val path: JsPath         = topPath \ "nonConsolidatedInvestments"
+  val value                = Some(Json.toJson(nonConsolidatedInvestmentElectionModel))
 }
 
-case class NonConsolidatedInvestmentNotSupplied(nonConsolidatedInvestmentElectionModel: NonConsolidatedInvestmentElectionModel)
-                                               (implicit val topPath: JsPath) extends Validation {
-  val code = "INVESTMENT_NOT_SUPPLIED"
-  val errorMessage: String = "Interest allowance (non-consolidated investments) election made, add at least 1 non-consolidated investment"
-  val path: JsPath = topPath \ "nonConsolidatedInvestments"
-  val value = Some(Json.toJson(nonConsolidatedInvestmentElectionModel))
+case class NonConsolidatedInvestmentNotSupplied(
+  nonConsolidatedInvestmentElectionModel: NonConsolidatedInvestmentElectionModel
+)(implicit val topPath: JsPath)
+    extends Validation {
+  val code                 = "INVESTMENT_NOT_SUPPLIED"
+  val errorMessage: String =
+    "Interest allowance (non-consolidated investments) election made, add at least 1 non-consolidated investment"
+  val path: JsPath         = topPath \ "nonConsolidatedInvestments"
+  val value                = Some(Json.toJson(nonConsolidatedInvestmentElectionModel))
 }
 
 case class NonConsolidatedInvestmentEmpty()(implicit val topPath: JsPath) extends Validation {
-  val code = "INVESTMENT_EMPTY"
+  val code                 = "INVESTMENT_EMPTY"
   val errorMessage: String = "Non consolidated investments elected so add at least 1 investment"
-  val path: JsPath = topPath \ "nonConsolidatedInvestments"
-  val value = None
+  val path: JsPath         = topPath \ "nonConsolidatedInvestments"
+  val value                = None
 }
-
-
-
-
-
