@@ -53,12 +53,12 @@ object AllocatedRestrictionsConstants {
   )
 
   val allocatedRestrictionsJson = Json.obj(
-    "ap1EndDate" -> ap1EndDate,
-    "ap2EndDate" -> ap2EndDate,
-    "ap3EndDate" -> ap3EndDate,
-    "disallowanceAp1" -> disallowanceAp1,
-    "disallowanceAp2" -> disallowanceAp2,
-    "disallowanceAp3" -> disallowanceAp3,
+    "ap1EndDate"         -> ap1EndDate,
+    "ap2EndDate"         -> ap2EndDate,
+    "ap3EndDate"         -> ap3EndDate,
+    "disallowanceAp1"    -> disallowanceAp1,
+    "disallowanceAp2"    -> disallowanceAp2,
+    "disallowanceAp3"    -> disallowanceAp3,
     "totalDisallowances" -> (disallowanceAp1 + disallowanceAp2 + disallowanceAp3)
   )
 }

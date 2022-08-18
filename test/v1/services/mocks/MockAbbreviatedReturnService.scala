@@ -29,9 +29,9 @@ trait MockAbbreviatedReturnService extends MockFactory {
 
   lazy val mockAbbreviatedReturnService: AbbreviatedReturnService = mock[AbbreviatedReturnService]
 
-  def mockAbbreviatedReturn(model: AbbreviatedReturnModel)(response: SubmissionResponse): Unit = {
-    (mockAbbreviatedReturnService.submit(_: AbbreviatedReturnModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
+  def mockAbbreviatedReturn(model: AbbreviatedReturnModel)(response: SubmissionResponse): Unit =
+    (mockAbbreviatedReturnService
+      .submit(_: AbbreviatedReturnModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
       .expects(model, *, *, *)
       .returns(Future.successful(response))
-  }
 }

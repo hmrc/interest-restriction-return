@@ -26,19 +26,18 @@ trait CompanyNameValidator extends BaseValidation {
 
   val companyNameModel: CompanyNameModel
 
-  private def validateCompanyNameLength(implicit topPath: JsPath): ValidationResult[String] = {
+  private def validateCompanyNameLength(implicit topPath: JsPath): ValidationResult[String] =
     if (companyNameModel.name.nonEmpty && companyNameModel.name.length <= 160) {
       companyNameModel.name.validNec
     } else {
       CompanyNameLengthError(companyNameModel.name).invalidNec
     }
-  }
 
   private def validateCompanyNameCharacters(implicit topPath: JsPath): ValidationResult[String] = {
     val regex = "^[ -~¡-ÿĀ-ʯḀ-ỿ‐-―‘-‟₠-₿ÅK]*$".r
     companyNameModel.name match {
-      case regex(_ *) => companyNameModel.name.validNec
-      case _ => CompanyNameCharactersError(companyNameModel.name).invalidNec
+      case regex(_*) => companyNameModel.name.validNec
+      case _         => CompanyNameCharactersError(companyNameModel.name).invalidNec
     }
   }
 
@@ -47,13 +46,13 @@ trait CompanyNameValidator extends BaseValidation {
 }
 
 case class CompanyNameLengthError(name: String)(implicit val path: JsPath) extends Validation {
-  val code = "COMPANY_NAME_LENGTH"
-  val errorMessage: String = s"Company name must be 1 to 160 characters long"
+  val code                   = "COMPANY_NAME_LENGTH"
+  val errorMessage: String   = s"Company name must be 1 to 160 characters long"
   val value: Option[JsValue] = Some(JsString(name))
 }
 
 case class CompanyNameCharactersError(name: String)(implicit val path: JsPath) extends Validation {
-  val code = "COMPANY_NAME_CHARACTERS"
-  val errorMessage: String = s"Company name contains invalid characters"
+  val code                   = "COMPANY_NAME_CHARACTERS"
+  val errorMessage: String   = s"Company name contains invalid characters"
   val value: Option[JsValue] = Some(JsString(name))
 }

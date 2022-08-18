@@ -24,7 +24,7 @@ object AppConfigConstants {
 
   def createAppConfig(configMap: Map[String, Any]): AppConfig = {
     val config: Configuration = Configuration.from(configMap)
-    val servicesConfig = new ServicesConfig(config)
+    val servicesConfig        = new ServicesConfig(config)
     new AppConfigImpl(servicesConfig, config)
   }
 
@@ -33,18 +33,18 @@ object AppConfigConstants {
       "host" -> "localhost",
       "port" -> "8500"
     ),
-    "des" -> Map(
-      "host" -> "localhost",
-      "port" -> "9262",
-      "environment" -> "dev",
+    "des"  -> Map(
+      "host"                -> "localhost",
+      "port"                -> "9262",
+      "environment"         -> "dev",
       "authorisation-token" -> "dev"
     )
   )
 
   val nrsMap = Map(
-    "host" -> "localhost",
-    "port" -> "1111",
-    "apikey" -> "some.token",
+    "host"    -> "localhost",
+    "port"    -> "1111",
+    "apikey"  -> "some.token",
     "enabled" -> "true"
   )
 
@@ -52,21 +52,20 @@ object AppConfigConstants {
     "enabled" -> "false"
   )
 
-
-  val servicesMapWithNrs: Map[String, Map[String, String]] = servicesMap + ("nrs" -> nrsMap)
+  val servicesMapWithNrs: Map[String, Map[String, String]]         = servicesMap + ("nrs" -> nrsMap)
   val servicesMapWithNrsDisabled: Map[String, Map[String, String]] = servicesMap + ("nrs" -> nrsDisabledMap)
 
   def config(serviceMap: Map[String, Map[String, String]]) = Map(
-    "api" -> Map(
-      "1.0" -> Map("status" -> "BETA"),
+    "api"                               -> Map(
+      "1.0"             -> Map("status" -> "BETA"),
       "gateway.context" -> "organisations/interest-restriction"
     ),
     "api-definitions.endpoints.enabled" -> "true",
-    "microservice.services" -> serviceMap
+    "microservice.services"             -> serviceMap
   )
 
-  val appConfigWithNrs = createAppConfig(config(servicesMapWithNrs))
+  val appConfigWithNrs         = createAppConfig(config(servicesMapWithNrs))
   val appConfigWithNrsDisabled = createAppConfig(config(servicesMap))
-  val appConfigWithoutNrs = createAppConfig(config(servicesMap))
-  
+  val appConfigWithoutNrs      = createAppConfig(config(servicesMap))
+
 }

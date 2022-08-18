@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import play.api.libs.json.{Json, JsPath}
+import play.api.libs.json.{JsPath, Json}
 import v1.models.Validation.ValidationResult
 import v1.models.{UltimateParentModel, Validation}
 
@@ -26,8 +26,12 @@ trait UltimateParentValidator extends BaseValidation {
 
   val ultimateParentModel: UltimateParentModel
 
-def validateSingleCompanyDetailSupplied(implicit path: JsPath): ValidationResult[UltimateParentModel] = {
-    val numberOfDetailsSupplied = Seq(ultimateParentModel.ctutr, ultimateParentModel.sautr, ultimateParentModel.countryOfIncorporation).flatten.length
+  def validateSingleCompanyDetailSupplied(implicit path: JsPath): ValidationResult[UltimateParentModel] = {
+    val numberOfDetailsSupplied = Seq(
+      ultimateParentModel.ctutr,
+      ultimateParentModel.sautr,
+      ultimateParentModel.countryOfIncorporation
+    ).flatten.length
     if (numberOfDetailsSupplied > 1) {
       UltimateParentWrongDetailsSuppliedError(ultimateParentModel).invalidNec
     } else {
@@ -56,7 +60,8 @@ def validateSingleCompanyDetailSupplied(implicit path: JsPath): ValidationResult
   }
 
   def validate(implicit path: JsPath): ValidationResult[UltimateParentModel] =
-    combineValidations(validateSingleCompanyDetailSupplied,
+    combineValidations(
+      validateSingleCompanyDetailSupplied,
       validateUkCompanyDetails,
       validateNonUkCompanyDetails,
       ultimateParentModel.companyName.validate(path \ "companyName"),
@@ -67,23 +72,22 @@ def validateSingleCompanyDetailSupplied(implicit path: JsPath): ValidationResult
     ).map(_ => ultimateParentModel)
 }
 
-case class UltimateParentWrongDetailsSuppliedError(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {
-  val code = "ULTIMATE_PARENT_DETAILS"
+case class UltimateParentWrongDetailsSuppliedError(model: UltimateParentModel)(implicit val path: JsPath)
+    extends Validation {
+  val code                 = "ULTIMATE_PARENT_DETAILS"
   val errorMessage: String = "Ultimate parent must have either a CTUTR, a SAUTR or a country code"
-  val value = Some(Json.toJson(model))
+  val value                = Some(Json.toJson(model))
 }
 
-case class NonUKUltimateParentMissingCountryOfIncorporation(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {
-  val code = "ULTIMATE_PARENT_COUNTRY"
+case class NonUKUltimateParentMissingCountryOfIncorporation(model: UltimateParentModel)(implicit val path: JsPath)
+    extends Validation {
+  val code                 = "ULTIMATE_PARENT_COUNTRY"
   val errorMessage: String = "Enter a country of incorporation where the ultimate parent is non-UK"
-  val value = Some(Json.toJson(model))
+  val value                = Some(Json.toJson(model))
 }
 
 case class UKParentMissingUTR(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {
-  val code = "ULTIMATE_PARENT_UTR"
+  val code                 = "ULTIMATE_PARENT_UTR"
   val errorMessage: String = "Enter a UTR where the ultimate parent is UK"
-  val value = Some(Json.toJson(model))
+  val value                = Some(Json.toJson(model))
 }
-
-
-

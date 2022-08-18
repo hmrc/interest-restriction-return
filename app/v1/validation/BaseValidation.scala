@@ -26,26 +26,29 @@ trait BaseValidation {
   import cats.implicits._
 
   def combineValidations[T](validations: ValidationResult[T]*): ValidationResult[T] = {
-    val invalids = validations.collect { case Invalid(invalid) => invalid}
+    val invalids = validations.collect { case Invalid(invalid) => invalid }
     invalids match {
       case seq if seq.isEmpty => validations.head
-      case errors => Invalid(combineInvalids(errors.tail,errors.head))
+      case errors             => Invalid(combineInvalids(errors.tail, errors.head))
     }
   }
 
   def optionValidations[T](validations: Option[ValidationResult[T]]*): ValidationResult[Option[T]] = {
-    val invalids = validations.collect { case Some(Invalid(invalid)) => invalid}
-    val valid = validations.collect { case Some(Valid(v)) => v}
+    val invalids = validations.collect { case Some(Invalid(invalid)) => invalid }
+    val valid    = validations.collect { case Some(Valid(v)) => v }
     invalids match {
-      case seq if seq.isEmpty => if(valid.nonEmpty) Some(valid.head).validNec else None.validNec
-      case errors => Invalid(combineInvalids(errors.tail,errors.head))
+      case seq if seq.isEmpty => if (valid.nonEmpty) Some(valid.head).validNec else None.validNec
+      case errors             => Invalid(combineInvalids(errors.tail, errors.head))
     }
   }
 
   @tailrec
-  private def combineInvalids(errors: Seq[NonEmptyChain[Validation]], combined: NonEmptyChain[Validation]): NonEmptyChain[Validation] = {
-    if(errors.isEmpty) combined else {
+  private def combineInvalids(
+    errors: Seq[NonEmptyChain[Validation]],
+    combined: NonEmptyChain[Validation]
+  ): NonEmptyChain[Validation] =
+    if (errors.isEmpty) combined
+    else {
       combineInvalids(errors.tail, combined.combine(errors.head))
     }
-  }
 }

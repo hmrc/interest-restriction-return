@@ -27,9 +27,9 @@ trait MockNrsConnector extends AsyncMockFactory {
 
   def mockNrsConnector(): NrsConnector = mock[NrsConnector]
 
-  def mockNrsSubmission(nrsPayload: NrsPayload, mockConnector: NrsConnector)(response: Future[NrsResponse]): Unit = {
-    (mockConnector.send(_: NrsPayload))
+  def mockNrsSubmission(nrsPayload: NrsPayload, mockConnector: NrsConnector)(response: Future[NrsResponse]): Unit =
+    (mockConnector
+      .send(_: NrsPayload))
       .expects(nrsPayload)
       .returns(response)
-  }
 }

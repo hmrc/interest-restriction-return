@@ -36,7 +36,7 @@ class AbbreviatedReturnServiceSpec extends MockAbbreviatedReturnConnector with B
       "return a Right(SuccessResponse)" in {
 
         val service = setup(Right(DesSuccessResponse("ackRef")))
-        val result = service.submit(abbreviatedReturnUltimateParentModel)
+        val result  = service.submit(abbreviatedReturnUltimateParentModel)
 
         await(result) shouldBe Right(DesSuccessResponse("ackRef"))
       }
@@ -47,7 +47,7 @@ class AbbreviatedReturnServiceSpec extends MockAbbreviatedReturnConnector with B
       "return a Left(UnexpectedFailure)" in {
 
         val service = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-        val result = service.submit(abbreviatedReturnUltimateParentModel)
+        val result  = service.submit(abbreviatedReturnUltimateParentModel)
 
         await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
       }

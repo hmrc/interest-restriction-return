@@ -16,14 +16,12 @@
 
 package assets
 
-import org.joda.time.{DateTime, DateTimeZone, LocalDate}
+import org.joda.time.{DateTime, DateTimeZone}
 
-import java.time.Clock
-import org.joda.time.DateTimeZone.UTC
+import java.time.{Clock, Instant, LocalDate}
 import uk.gov.hmrc.auth.core.retrieve._
-import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
 import uk.gov.hmrc.auth.core._
-import v1.models.nrs.{NrsMetadata, NrsPayload, NrsRetrievalData, NrSubmissionId}
+import v1.models.nrs.{NrSubmissionId, NrsMetadata, NrsPayload, NrsRetrievalData}
 import play.api.libs.json._
 
 import java.lang.String.format
@@ -76,9 +74,8 @@ object IntegrationNrsConstants {
   val CURRENT_TIME_IN_MILLIS = 1530442800000L
   val PREVIOUS_TIME_IN_MILLIS = 1530464400000L
   val NRS_TIMESTAMP_IN_MILLIS = 1530475200000L
-  val currentLoginTime: DateTime = new DateTime(CURRENT_TIME_IN_MILLIS, UTC)
-  val previousLoginTime: DateTime = new DateTime(PREVIOUS_TIME_IN_MILLIS, UTC)
-  val nrsTimeStamp: DateTime = new DateTime(NRS_TIMESTAMP_IN_MILLIS, UTC)
+  val currentLoginTime: Instant = Instant.ofEpochSecond(CURRENT_TIME_IN_MILLIS)
+  val previousLoginTime: Instant = Instant.ofEpochSecond(PREVIOUS_TIME_IN_MILLIS)
 
   val nrsLoginTimes = LoginTimes(currentLoginTime, Some(previousLoginTime))
 

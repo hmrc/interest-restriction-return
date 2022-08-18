@@ -27,11 +27,14 @@ import v1.models.requests.IdentifierRequest
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class FullReturnService @Inject()(fullReturnConnector: FullReturnConnector) extends Submission[FullReturnModel] with Logging {
+class FullReturnService @Inject() (fullReturnConnector: FullReturnConnector)
+    extends Submission[FullReturnModel]
+    with Logging {
 
-  override def submit(fullReturn: FullReturnModel)
-                     (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] =
-    fullReturnConnector.submit(fullReturn).map{ resp =>
+  override def submit(
+    fullReturn: FullReturnModel
+  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] =
+    fullReturnConnector.submit(fullReturn).map { resp =>
       logger.info("Successfully sent a full return payload")
       resp
     }

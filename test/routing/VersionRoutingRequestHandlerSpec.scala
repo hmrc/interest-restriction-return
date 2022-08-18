@@ -38,38 +38,51 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Matchers with MockF
   test =>
 
   private val defaultRouter = mock[Router]
-  private val v1Router = mock[Router]
-  private val v2Router = mock[Router]
-  private val v3Router = mock[Router]
+  private val v1Router      = mock[Router]
+  private val v2Router      = mock[Router]
+  private val v3Router      = mock[Router]
 
   private val routingMap = new VersionRoutingMap {
     override val defaultRouter: Router = test.defaultRouter
-    override val map = Map("1.0" -> v1Router, "2.0" -> v2Router, "3.0" -> v3Router)
+    override val map                   = Map("1.0" -> v1Router, "2.0" -> v2Router, "3.0" -> v3Router)
   }
 
   class Test(implicit acceptHeader: Option[String]) {
     val httpConfiguration = HttpConfiguration("context")
-    val auditConnector = mock[AuditConnector]
-    val httpAuditEvent = mock[HttpAuditEvent]
-    val configuration = Configuration("appName" -> "myApp", "bootstrap.errorHandler.warnOnly.statusCodes" -> Seq.empty[Int])
+    val auditConnector    = mock[AuditConnector]
+    val httpAuditEvent    = mock[HttpAuditEvent]
+    val configuration     = Configuration(
+      "appName"                                         -> "myApp",
+      "bootstrap.errorHandler.warnOnly.statusCodes"     -> Seq.empty[Int],
+      "bootstrap.errorHandler.suppress4xxErrorMessages" -> false,
+      "bootstrap.errorHandler.suppress5xxErrorMessages" -> false
+    )
 
     private val errorHandler = new ErrorHandler(configuration, auditConnector, httpAuditEvent)
-    private val filters = mock[HttpFilters]
+    private val filters      = mock[HttpFilters]
     (filters.filters _).stubs().returns(Seq.empty)
 
-    MockedAppConfig.featureSwitch.returns(Some(Configuration(ConfigFactory.parseString(
-      """
+    MockedAppConfig.featureSwitch.returns(Some(Configuration(ConfigFactory.parseString("""
         |version-1.enabled = true
         |version-2.enabled = true
       """.stripMargin))))
 
-    val actionBuilder = DefaultActionBuilder(stubBodyParser(AnyContentAsEmpty))
+    val actionBuilder                                = DefaultActionBuilder(stubBodyParser(AnyContentAsEmpty))
     //noinspection ScalaDeprecation
     val requestHandler: VersionRoutingRequestHandler =
-      new VersionRoutingRequestHandler(routingMap, errorHandler, httpConfiguration, mockAppConfig, filters, actionBuilder)
+      new VersionRoutingRequestHandler(
+        routingMap,
+        errorHandler,
+        httpConfiguration,
+        mockAppConfig,
+        filters,
+        actionBuilder
+      )
 
     def stubHandling(router: Router, validPaths: List[String])(handler: Handler) = {
-      val routes: Router.Routes = { case rh: RequestHeader if validPaths.contains(rh.path) => handler}
+      val routes: Router.Routes = {
+        case rh: RequestHeader if validPaths.contains(rh.path) => handler
+      }
 
       (router.routes _)
         .expects()
@@ -103,12 +116,11 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Matchers with MockF
       stubHandling(defaultRouter, List())(handler)
 
       val request: RequestHeader = buildRequest("path")
-      inside(requestHandler.routeRequest(request)) {
-        case Some(a: EssentialAction) =>
-          val result = a.apply(request).run()
+      inside(requestHandler.routeRequest(request)) { case Some(a: EssentialAction) =>
+        val result = a.apply(request).run()
 
-          status(result) shouldBe NOT_ACCEPTABLE
-          contentAsJson(result) shouldBe Json.toJson(InvalidAcceptHeaderError)
+        status(result)        shouldBe NOT_ACCEPTABLE
+        contentAsJson(result) shouldBe Json.toJson(InvalidAcceptHeaderError)
       }
     }
   }
@@ -133,12 +145,11 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Matchers with MockF
 
       private val request = buildRequest("path")
 
-      inside(requestHandler.routeRequest(request)) {
-        case Some(a: EssentialAction) =>
-          val result = a.apply(request).run()
+      inside(requestHandler.routeRequest(request)) { case Some(a: EssentialAction) =>
+        val result = a.apply(request).run()
 
-          status(result) shouldBe NOT_FOUND
-          contentAsJson(result) shouldBe Json.toJson(UnsupportedVersionError)
+        status(result)        shouldBe NOT_FOUND
+        contentAsJson(result) shouldBe Json.toJson(UnsupportedVersionError)
       }
     }
   }
@@ -153,19 +164,18 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Matchers with MockF
         stubHandling(defaultRouter, List())(handler)
 
         private val request = buildRequest("path")
-        inside(requestHandler.routeRequest(request)) {
-          case Some(a: EssentialAction) =>
-            val result = a.apply(request).run()
+        inside(requestHandler.routeRequest(request)) { case Some(a: EssentialAction) =>
+          val result = a.apply(request).run()
 
-            status(result) shouldBe NOT_FOUND
-            contentAsJson(result) shouldBe Json.toJson(UnsupportedVersionError)
+          status(result)        shouldBe NOT_FOUND
+          contentAsJson(result) shouldBe Json.toJson(UnsupportedVersionError)
 
         }
       }
     }
   }
 
-  private def handleWithDefaultRoutes(router: Router)(implicit acceptHeader: Option[String]): Unit = {
+  private def handleWithDefaultRoutes(router: Router)(implicit acceptHeader: Option[String]): Unit =
     "if the request ends with a trailing slash" when {
       "handler found" should {
         "use it" in new Test {
@@ -185,9 +195,8 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Matchers with MockF
         }
       }
     }
-  }
 
-  private def handleWithVersionRoutes(router: Router)(implicit acceptHeader: Option[String]): Unit = {
+  private def handleWithVersionRoutes(router: Router)(implicit acceptHeader: Option[String]): Unit =
     "if the request ends with a trailing slash" when {
       "handler found" should {
         "use it" in new Test {
@@ -211,6 +220,5 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Matchers with MockF
         }
       }
     }
-  }
 
 }

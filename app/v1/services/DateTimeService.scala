@@ -26,7 +26,7 @@ trait DateTimeService {
 
 @Singleton
 class DateTimeServiceImpl extends DateTimeService {
-  val UtcZoneId = ZoneId.of("UTC")
-  def nowUtc(): DateTime = new DateTime(Clock.systemUTC().instant().toEpochMilli, DateTimeZone.UTC)
+  val UtcZoneId                       = ZoneId.of("UTC")
+  def nowUtc(): DateTime              = new DateTime(Clock.systemUTC().instant().toEpochMilli, DateTimeZone.UTC)
   def zonedDateTimeUtc: ZonedDateTime = ZonedDateTime.now(UtcZoneId)
 }

@@ -19,15 +19,16 @@ package v1.models
 import play.api.libs.json.Json
 import v1.validation.GroupRatioValidator
 
-case class GroupRatioModel(isElected: Boolean,
-                           groupEBITDAChargeableGains: Boolean,
-                           activeGroupEBITDAChargeableGains: Boolean,
-                           groupRatioBlended: Option[GroupRatioBlendedModel]
-                          ) extends GroupRatioValidator {
+case class GroupRatioModel(
+  isElected: Boolean,
+  groupEBITDAChargeableGains: Boolean,
+  activeGroupEBITDAChargeableGains: Boolean,
+  groupRatioBlended: Option[GroupRatioBlendedModel]
+) extends GroupRatioValidator {
   override val groupRatioModel = this
 }
 
 object GroupRatioModel {
   implicit val writes = Json.writes[GroupRatioModel]
-  implicit val reads = Json.reads[GroupRatioModel]
+  implicit val reads  = Json.reads[GroupRatioModel]
 }

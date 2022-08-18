@@ -27,7 +27,7 @@ import v1.connectors.mocks.{FakeFailingAuthConnector, FakeSuccessAuthConnector}
 class AuthActionSpec extends BaseSpec {
 
   class Harness(authAction: AuthAction) {
-    def onPageLoad(): Action[AnyContent] = authAction { _ => Results.Ok }
+    def onPageLoad(): Action[AnyContent] = authAction(_ => Results.Ok)
   }
 
   "Auth Action" when {
@@ -35,37 +35,44 @@ class AuthActionSpec extends BaseSpec {
     "the user is logged in with providerId returned" must {
 
       "successfully carry out a request for Organisations" in {
-        val authConnector = new FakeSuccessAuthConnector[UnitNrsConstants.NrsRetrievalDataType](UnitNrsConstants.fakeResponse(Some(AffinityGroup.Organisation)))
-        val authAction = new AuthAction(authConnector, bodyParsers, appConfig)
-        val controller = new Harness(authAction)
-        val result = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
+        val authConnector = new FakeSuccessAuthConnector[UnitNrsConstants.NrsRetrievalDataType](
+          UnitNrsConstants.fakeResponse(Some(AffinityGroup.Organisation))
+        )
+        val authAction    = new AuthAction(authConnector, bodyParsers, appConfig)
+        val controller    = new Harness(authAction)
+        val result        = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
 
         status(result) shouldBe OK
       }
 
       "successfully carry out a request for Agents" in {
-        val authConnector = new FakeSuccessAuthConnector[UnitNrsConstants.NrsRetrievalDataType](UnitNrsConstants.fakeResponse(Some(AffinityGroup.Agent)))
-        val authAction = new AuthAction(authConnector, bodyParsers, appConfig)
-        val controller = new Harness(authAction)
-        val result = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
+        val authConnector = new FakeSuccessAuthConnector[UnitNrsConstants.NrsRetrievalDataType](
+          UnitNrsConstants.fakeResponse(Some(AffinityGroup.Agent))
+        )
+        val authAction    = new AuthAction(authConnector, bodyParsers, appConfig)
+        val controller    = new Harness(authAction)
+        val result        = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
 
         status(result) shouldBe OK
       }
 
       "return a 403 FORBIDDEN if they are an individual" in {
-        val authConnector = new FakeSuccessAuthConnector[UnitNrsConstants.NrsRetrievalDataType](UnitNrsConstants.fakeResponse(Some(AffinityGroup.Individual)))
-        val authAction = new AuthAction(authConnector, bodyParsers, appConfig)
-        val controller = new Harness(authAction)
-        val result = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
+        val authConnector = new FakeSuccessAuthConnector[UnitNrsConstants.NrsRetrievalDataType](
+          UnitNrsConstants.fakeResponse(Some(AffinityGroup.Individual))
+        )
+        val authAction    = new AuthAction(authConnector, bodyParsers, appConfig)
+        val controller    = new Harness(authAction)
+        val result        = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
 
         status(result) shouldBe FORBIDDEN
       }
 
       " return a 401 UNAUTHORIZED if they have not supplied an Affinity Group" in {
-        val authConnector = new FakeSuccessAuthConnector[UnitNrsConstants.NrsRetrievalDataType](UnitNrsConstants.fakeResponse(None))
-        val authAction = new AuthAction(authConnector, bodyParsers, appConfig)
-        val controller = new Harness(authAction)
-        val result = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
+        val authConnector =
+          new FakeSuccessAuthConnector[UnitNrsConstants.NrsRetrievalDataType](UnitNrsConstants.fakeResponse(None))
+        val authAction    = new AuthAction(authConnector, bodyParsers, appConfig)
+        val controller    = new Harness(authAction)
+        val result        = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
 
         status(result) shouldBe UNAUTHORIZED
       }
@@ -75,10 +82,11 @@ class AuthActionSpec extends BaseSpec {
 
       "redirect to unauthorised" in {
         val authConnector = new FakeSuccessAuthConnector[UnitNrsConstants.NrsRetrievalDataType](
-          UnitNrsConstants.fakeResponseWithoutProviderId(Some(AffinityGroup.Organisation)))
-        val authAction = new AuthAction(authConnector, bodyParsers, appConfig)
-        val controller = new Harness(authAction)
-        val result = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
+          UnitNrsConstants.fakeResponseWithoutProviderId(Some(AffinityGroup.Organisation))
+        )
+        val authAction    = new AuthAction(authConnector, bodyParsers, appConfig)
+        val controller    = new Harness(authAction)
+        val result        = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
 
         status(result) shouldBe UNAUTHORIZED
       }
@@ -90,7 +98,7 @@ class AuthActionSpec extends BaseSpec {
 
         val authAction = new AuthAction(new FakeFailingAuthConnector(new MissingBearerToken), bodyParsers, appConfig)
         val controller = new Harness(authAction)
-        val result = controller.onPageLoad()(fakeRequest)
+        val result     = controller.onPageLoad()(fakeRequest)
 
         status(result) shouldBe UNAUTHORIZED
       }
@@ -102,7 +110,7 @@ class AuthActionSpec extends BaseSpec {
 
         val authAction = new AuthAction(new FakeFailingAuthConnector(new BearerTokenExpired), bodyParsers, appConfig)
         val controller = new Harness(authAction)
-        val result = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
+        val result     = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
 
         status(result) shouldBe UNAUTHORIZED
       }
@@ -112,9 +120,10 @@ class AuthActionSpec extends BaseSpec {
 
       "redirect the user to the unauthorised page" in {
 
-        val authAction = new AuthAction(new FakeFailingAuthConnector(new InsufficientEnrolments), bodyParsers, appConfig)
+        val authAction =
+          new AuthAction(new FakeFailingAuthConnector(new InsufficientEnrolments), bodyParsers, appConfig)
         val controller = new Harness(authAction)
-        val result = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
+        val result     = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
 
         status(result) shouldBe UNAUTHORIZED
       }
@@ -124,9 +133,10 @@ class AuthActionSpec extends BaseSpec {
 
       "redirect the user to the unauthorised page" in {
 
-        val authAction = new AuthAction(new FakeFailingAuthConnector(new UnsupportedAuthProvider), bodyParsers, appConfig)
+        val authAction =
+          new AuthAction(new FakeFailingAuthConnector(new UnsupportedAuthProvider), bodyParsers, appConfig)
         val controller = new Harness(authAction)
-        val result = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
+        val result     = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
 
         status(result) shouldBe UNAUTHORIZED
       }
@@ -136,9 +146,10 @@ class AuthActionSpec extends BaseSpec {
 
       "redirect the user to the unauthorised page" in {
 
-        val authAction = new AuthAction(new FakeFailingAuthConnector(new UnsupportedAffinityGroup), bodyParsers, appConfig)
+        val authAction =
+          new AuthAction(new FakeFailingAuthConnector(new UnsupportedAffinityGroup), bodyParsers, appConfig)
         val controller = new Harness(authAction)
-        val result = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
+        val result     = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
 
         status(result) shouldBe UNAUTHORIZED
       }
@@ -148,9 +159,10 @@ class AuthActionSpec extends BaseSpec {
 
       "redirect the user to the unauthorised page" in {
 
-        val authAction = new AuthAction(new FakeFailingAuthConnector(new UnsupportedCredentialRole), bodyParsers, appConfig)
+        val authAction =
+          new AuthAction(new FakeFailingAuthConnector(new UnsupportedCredentialRole), bodyParsers, appConfig)
         val controller = new Harness(authAction)
-        val result = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
+        val result     = controller.onPageLoad()(fakeRequest.withHeaders("Authorization" -> "test"))
 
         status(result) shouldBe UNAUTHORIZED
       }

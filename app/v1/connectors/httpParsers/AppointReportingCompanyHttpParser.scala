@@ -25,8 +25,7 @@ object AppointReportingCompanyHttpParser extends DesBaseConnector with Logging {
 
   implicit object AppointReportingCompanyReads extends HttpReads[SubmissionResponse] {
 
-    override def read(method: String, url: String, response: HttpResponse): SubmissionResponse = {
-      handleHttpResponse(response,"AppointReportingCompanyHttpParser",HttpErrorMessages.APPOINT_ERROR)
-    }
+    override def read(method: String, url: String, response: HttpResponse): SubmissionResponse =
+      handleHttpResponse(response, "AppointReportingCompanyHttpParser", HttpErrorMessages.APPOINT_ERROR)
   }
 }

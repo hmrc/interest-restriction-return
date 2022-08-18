@@ -31,7 +31,7 @@ class GroupLevelElectionsModelSpec extends AnyWordSpec with Matchers {
       "max values given" in {
 
         val expectedValue = groupLevelElectionsJsonMax
-        val actualValue = Json.toJson(groupLevelElectionsModelMax)
+        val actualValue   = Json.toJson(groupLevelElectionsModelMax)
 
         actualValue shouldBe expectedValue
       }
@@ -39,17 +39,17 @@ class GroupLevelElectionsModelSpec extends AnyWordSpec with Matchers {
       "All data is included in the Json.toJson" in {
 
         val expectedValue = Json.obj(
-          "groupRatio" -> Json.obj(
-            "isElected" -> false,
-            "groupEBITDAChargeableGains" -> false,
-            "activeGroupEBITDAChargeableGains" -> false,
+          "groupRatio"                                    -> Json.obj(
+            "isElected"                        -> false,
+            "groupEBITDAChargeableGains"       -> false,
+            "activeGroupEBITDAChargeableGains" -> false
           ),
-          "interestAllowanceAlternativeCalculation" -> true,
+          "interestAllowanceAlternativeCalculation"       -> true,
           "activeInterestAllowanceAlternativeCalculation" -> true,
-          "interestAllowanceNonConsolidatedInvestment" -> nonConsolidatedInvestmentJsonMin,
-          "interestAllowanceConsolidatedPartnership" -> Json.obj(
+          "interestAllowanceNonConsolidatedInvestment"    -> nonConsolidatedInvestmentJsonMin,
+          "interestAllowanceConsolidatedPartnership"      -> Json.obj(
             "isElected" -> false,
-            "isActive" -> false
+            "isActive"  -> false
           )
         )
 
@@ -63,7 +63,7 @@ class GroupLevelElectionsModelSpec extends AnyWordSpec with Matchers {
       "max values given" in {
 
         val expectedValue = groupLevelElectionsModelMax
-        val actualValue = groupLevelElectionsJsonMax.as[GroupLevelElectionsModel]
+        val actualValue   = groupLevelElectionsJsonMax.as[GroupLevelElectionsModel]
 
         actualValue shouldBe expectedValue
       }

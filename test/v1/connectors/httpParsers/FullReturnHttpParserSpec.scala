@@ -17,7 +17,7 @@
 package v1.connectors.httpParsers
 
 import assets.fullReturn.FullReturnConstants._
-import v1.connectors.{InvalidSuccessResponse, DesSuccessResponse, UnexpectedFailure}
+import v1.connectors.{DesSuccessResponse, InvalidSuccessResponse, UnexpectedFailure}
 import v1.connectors.httpParsers.FullReturnHttpParser.FullReturnReads
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.http.Status
@@ -26,7 +26,7 @@ import uk.gov.hmrc.http.HttpResponse
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
-class FullReturnHttpParserSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite  {
+class FullReturnHttpParserSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite {
 
   val ackRefResponse = Json.obj("acknowledgementReference" -> ackRef)
 
@@ -37,7 +37,8 @@ class FullReturnHttpParserSpec extends AnyWordSpec with Matchers with GuiceOneAp
       "return a Right containing an acknowledgementReference" in {
 
         val expectedResult = Right(DesSuccessResponse(ackRef))
-        val actualResult = FullReturnReads.read("", "", HttpResponse(Status.CREATED, ackRefResponse, Map.empty[String,Seq[String]]))
+        val actualResult   =
+          FullReturnReads.read("", "", HttpResponse(Status.CREATED, ackRefResponse, Map.empty[String, Seq[String]]))
 
         actualResult shouldBe expectedResult
       }
@@ -48,28 +49,36 @@ class FullReturnHttpParserSpec extends AnyWordSpec with Matchers with GuiceOneAp
       "return a Left(InvalidSuccessResponse)" in {
 
         val expectedResult = Left(InvalidSuccessResponse)
-        val actualResult = FullReturnReads.read("", "", HttpResponse(Status.CREATED, Json.obj(), Map.empty[String,Seq[String]]))
+        val actualResult   =
+          FullReturnReads.read("", "", HttpResponse(Status.CREATED, Json.obj(), Map.empty[String, Seq[String]]))
 
         actualResult shouldBe expectedResult
       }
     }
     "given any other status" should {
 
-      val expectedResult = Left(UnexpectedFailure(
-        Status.INTERNAL_SERVER_ERROR,
-        s"Status ${Status.INTERNAL_SERVER_ERROR} Error returned when trying to submit a full return"
-      ))
+      val expectedResult = Left(
+        UnexpectedFailure(
+          Status.INTERNAL_SERVER_ERROR,
+          s"Status ${Status.INTERNAL_SERVER_ERROR} Error returned when trying to submit a full return"
+        )
+      )
 
       "return a Left(UnexpectedFailure) for a 500" in {
 
-        val actualResult = FullReturnReads.read("", "", HttpResponse(Status.INTERNAL_SERVER_ERROR, Json.obj(), Map.empty[String,Seq[String]]))
+        val actualResult = FullReturnReads.read(
+          "",
+          "",
+          HttpResponse(Status.INTERNAL_SERVER_ERROR, Json.obj(), Map.empty[String, Seq[String]])
+        )
 
         actualResult shouldBe expectedResult
       }
 
       "return a Left(UnexpectedFailure) for a 200" in {
 
-        val actualResult = FullReturnReads.read("", "", HttpResponse(Status.OK, ackRefResponse, Map.empty[String,Seq[String]]))
+        val actualResult =
+          FullReturnReads.read("", "", HttpResponse(Status.OK, ackRefResponse, Map.empty[String, Seq[String]]))
 
         actualResult shouldBe expectedResult
       }

@@ -29,16 +29,16 @@ class BaseValidationSpec extends AnyWordSpec with Matchers with BaseSpec {
   implicit val topPath = JsPath \ "path"
 
   case class TestError()(implicit topPath: JsPath) extends Validation {
-    val code = "CODE_BAD"
-    val errorMessage: String = "error"
-    val path: JsPath = topPath \ "path"
+    val code                    = "CODE_BAD"
+    val errorMessage: String    = "error"
+    val path: JsPath            = topPath \ "path"
     val value: Option[JsString] = Some(JsString("bad"))
   }
 
   case class TestError1()(implicit topPath: JsPath) extends Validation {
-    val code = "CODE_BAD1"
-    val errorMessage: String = "error1"
-    val path: JsPath = topPath \ "path1"
+    val code                    = "CODE_BAD1"
+    val errorMessage: String    = "error1"
+    val path: JsPath            = topPath \ "path1"
     val value: Option[JsString] = Some(JsString("bad1"))
   }
 
@@ -49,15 +49,15 @@ class BaseValidationSpec extends AnyWordSpec with Matchers with BaseSpec {
 
       val result = baseValidation.combineValidations(Valid("ok"))
 
-     rightSide(result) shouldBe "ok"
+      rightSide(result) shouldBe "ok"
     }
 
     "return 2 invalids if there are 2 errors" in {
 
-      val result = baseValidation.combineValidations(TestError().invalidNec,TestError1().invalidNec)
+      val result = baseValidation.combineValidations(TestError().invalidNec, TestError1().invalidNec)
 
-      leftSideError(result).errorMessage shouldBe "error"
-      leftSideError(result,1).errorMessage shouldBe "error1"
+      leftSideError(result).errorMessage    shouldBe "error"
+      leftSideError(result, 1).errorMessage shouldBe "error1"
     }
   }
 
@@ -78,11 +78,15 @@ class BaseValidationSpec extends AnyWordSpec with Matchers with BaseSpec {
 
     "return 3 invalids if there are 3 errors" in {
 
-      val result = baseValidation.optionValidations(Some(TestError().invalidNec),Some(TestError1().invalidNec),Some(TestError1().invalidNec))
+      val result = baseValidation.optionValidations(
+        Some(TestError().invalidNec),
+        Some(TestError1().invalidNec),
+        Some(TestError1().invalidNec)
+      )
 
-      leftSideError(result).errorMessage shouldBe "error"
-      leftSideError(result,1).errorMessage shouldBe "error1"
-      leftSideError(result,2).errorMessage shouldBe "error1"
+      leftSideError(result).errorMessage    shouldBe "error"
+      leftSideError(result, 1).errorMessage shouldBe "error1"
+      leftSideError(result, 2).errorMessage shouldBe "error1"
     }
 
     "return Right(None) if there are no valids or invalids" in {

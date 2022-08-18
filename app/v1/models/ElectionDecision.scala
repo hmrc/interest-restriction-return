@@ -33,13 +33,13 @@ case object Revoke extends ElectionDecision {
 object ElectionDecision {
 
   implicit val writes: Writes[ElectionDecision] = Writes {
-    case Elect => JsString(Elect.toString)
+    case Elect  => JsString(Elect.toString)
     case Revoke => JsString(Revoke.toString)
   }
 
   implicit val reads: Reads[ElectionDecision] = Reads {
-    case JsString(Elect.toString) => JsSuccess(Elect)
+    case JsString(Elect.toString)  => JsSuccess(Elect)
     case JsString(Revoke.toString) => JsSuccess(Revoke)
-    case _ => JsError("Unknown ElectionDecision")
+    case _                         => JsError("Unknown ElectionDecision")
   }
 }

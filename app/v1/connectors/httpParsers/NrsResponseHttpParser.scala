@@ -27,20 +27,21 @@ object NrsResponseHttpParser extends Logging {
 
   implicit object RevokeReportingCompanyReads extends HttpReads[NrsResponse] {
 
-    override def read(method: String, url: String, response: HttpResponse): NrsResponse = {
+    override def read(method: String, url: String, response: HttpResponse): NrsResponse =
       response.status match {
         case ACCEPTED =>
-          response.json.validate[NrSubmissionId].fold(
-            invalid => {
-              logger.error(s"Invalid success response json from NRS - $invalid")
-              Left(InvalidSuccessResponse)
-            },
-            valid => Right(valid)
-          )
-        case status =>
+          response.json
+            .validate[NrSubmissionId]
+            .fold(
+              invalid => {
+                logger.error(s"Invalid success response json from NRS - $invalid")
+                Left(InvalidSuccessResponse)
+              },
+              valid => Right(valid)
+            )
+        case status   =>
           logger.error(s"Unexpected response from NRS, status $status returned with body ${response.body}")
-          Left(UnexpectedFailure(status,s"Status $status ${HttpErrorMessages.NRS_ERROR}"))
+          Left(UnexpectedFailure(status, s"Status $status ${HttpErrorMessages.NRS_ERROR}"))
       }
-    }
   }
 }

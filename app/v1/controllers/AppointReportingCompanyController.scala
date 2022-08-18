@@ -16,7 +16,6 @@
 
 package v1.controllers
 
-
 import config.AppConfig
 import play.api.libs.json.JsValue
 import play.api.mvc.{Action, ControllerComponents}
@@ -27,10 +26,12 @@ import v1.services.AppointReportingCompanyService
 import javax.inject.{Inject, Singleton}
 
 @Singleton()
-class AppointReportingCompanyController @Inject()(authAction: AuthAction,
-                                                  appointReportingCompanyService: AppointReportingCompanyService,
-                                                  appConfig: AppConfig,
-                                                  override val controllerComponents: ControllerComponents) extends BaseController {
+class AppointReportingCompanyController @Inject() (
+  authAction: AuthAction,
+  appointReportingCompanyService: AppointReportingCompanyService,
+  appConfig: AppConfig,
+  override val controllerComponents: ControllerComponents
+) extends BaseController {
 
   def appoint(): Action[JsValue] = authAction.async(parse.json) { implicit request =>
     withJsonBody[AppointReportingCompanyModel] { appointReportingCompanyModel =>

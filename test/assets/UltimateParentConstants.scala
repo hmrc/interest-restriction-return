@@ -69,33 +69,33 @@ object UltimateParentConstants extends BaseConstants {
   )
 
   val ultimateParentJsonMax = Json.obj(
-    "companyName" -> companyName,
-    "isUk" -> true,
-    "ctutr" -> ctutr,
-    "sautr" -> sautr,
+    "companyName"            -> companyName,
+    "isUk"                   -> true,
+    "ctutr"                  -> ctutr,
+    "sautr"                  -> sautr,
     "countryOfIncorporation" -> nonUkCountryCode
   )
 
   val ultimateParentJsonMin = Json.obj(
     "companyName" -> companyName,
-    "isUk" -> true
+    "isUk"        -> true
   )
 
   val ultimateParentJsonUkCompany = Json.obj(
     "companyName" -> companyName,
-    "isUk" -> true,
-    "ctutr" -> ctutr
+    "isUk"        -> true,
+    "ctutr"       -> ctutr
   )
 
   val ultimateParentJsonNonUkCompany = Json.obj(
-    "companyName" -> companyName,
-    "isUk" -> true,
+    "companyName"            -> companyName,
+    "isUk"                   -> true,
     "countryOfIncorporation" -> nonUkCountryCode
   )
 
   val ultimateParentJsonUkPartnership = Json.obj(
     "companyName" -> companyName,
-    "isUk" -> true,
-    "sautr" -> ctutr
+    "isUk"        -> true,
+    "sautr"       -> ctutr
   )
 }

@@ -32,33 +32,37 @@ trait RevokeReportingCompanyValidator extends BaseValidation {
 
   private def validateReportingCompanyRevokeItself(implicit path: JsPath): ValidationResult[Boolean] = {
     val revokeItself = revokeReportingCompanyModel.isReportingCompanyRevokingItself
-    val company = revokeReportingCompanyModel.companyMakingRevocation
+    val company      = revokeReportingCompanyModel.companyMakingRevocation
     (revokeItself, company) match {
-      case (true,Some(details)) => DetailsNotNeededIfCompanyRevokingItself(details).invalidNec
-      case (false,None) => CompanyMakingAppointmentMustSupplyDetails.invalidNec
-      case _ => revokeItself.validNec
+      case (true, Some(details)) => DetailsNotNeededIfCompanyRevokingItself(details).invalidNec
+      case (false, None)         => CompanyMakingAppointmentMustSupplyDetails.invalidNec
+      case _                     => revokeItself.validNec
     }
   }
 
   private def validateDeclaration: ValidationResult[Boolean] = {
     val declaration = revokeReportingCompanyModel.declaration
-    if(declaration) declaration.validNec else {
+    if (declaration) declaration.validNec
+    else {
       DeclaredFiftyPercentOfEligibleCompanies(declaration).invalidNec
     }
   }
 
-  private def validateUltimateParentCompany: ValidationResult[Option[UltimateParentModel]] = {
-    (revokeReportingCompanyModel.reportingCompany.sameAsUltimateParent, revokeReportingCompanyModel.ultimateParentCompany) match {
+  private def validateUltimateParentCompany: ValidationResult[Option[UltimateParentModel]] =
+    (
+      revokeReportingCompanyModel.reportingCompany.sameAsUltimateParent,
+      revokeReportingCompanyModel.ultimateParentCompany
+    ) match {
       case (true, Some(parent)) => UltimateParentCompanyIsSupplied(parent).invalidNec
-      case (false, None) => UltimateParentCompanyIsNotSupplied.invalidNec
-      case _ => revokeReportingCompanyModel.ultimateParentCompany.validNec
+      case (false, None)        => UltimateParentCompanyIsNotSupplied.invalidNec
+      case _                    => revokeReportingCompanyModel.ultimateParentCompany.validNec
     }
-  }
 
   private def validateDuplicateAuthorisingCompanies: ValidationResult[Seq[AuthorisingCompanyModel]] = {
-    val duplicatesExist = revokeReportingCompanyModel.authorisingCompanies.distinct.size != revokeReportingCompanyModel.authorisingCompanies.size
+    val duplicatesExist =
+      revokeReportingCompanyModel.authorisingCompanies.distinct.size != revokeReportingCompanyModel.authorisingCompanies.size
     duplicatesExist match {
-      case true => AuthorisingCompaniesContainsDuplicates.invalidNec
+      case true  => AuthorisingCompaniesContainsDuplicates.invalidNec
       case false => revokeReportingCompanyModel.authorisingCompanies.validNec
     }
   }
@@ -66,43 +70,52 @@ trait RevokeReportingCompanyValidator extends BaseValidation {
   def validate: ValidationResult[RevokeReportingCompanyModel] = {
 
     val validatedAuthorisingCompanies =
-      if(revokeReportingCompanyModel.authorisingCompanies.isEmpty) AuthorisingCompaniesEmpty.invalidNec else {
-        combineValidations(revokeReportingCompanyModel.authorisingCompanies.zipWithIndex.map {
-          case (a, i) => a.validate(JsPath \ s"authorisingCompanies[$i]")
-        }:_*)
+      if (revokeReportingCompanyModel.authorisingCompanies.isEmpty) AuthorisingCompaniesEmpty.invalidNec
+      else {
+        combineValidations(revokeReportingCompanyModel.authorisingCompanies.zipWithIndex.map { case (a, i) =>
+          a.validate(JsPath \ s"authorisingCompanies[$i]")
+        }: _*)
       }
 
-    combineValidations(revokeReportingCompanyModel.agentDetails.validate(JsPath \ "agentDetails"),
+    combineValidations(
+      revokeReportingCompanyModel.agentDetails.validate(JsPath \ "agentDetails"),
       revokeReportingCompanyModel.reportingCompany.validate(JsPath \ "reportingCompany"),
       validateReportingCompanyRevokeItself(JsPath \ "isReportingCompanyRevokingItself"),
-      optionValidations(revokeReportingCompanyModel.companyMakingRevocation.map(_.validate(JsPath \ "companyMakingRevocation"))),
+      optionValidations(
+        revokeReportingCompanyModel.companyMakingRevocation.map(_.validate(JsPath \ "companyMakingRevocation"))
+      ),
       validateUltimateParentCompany,
-      optionValidations(revokeReportingCompanyModel.ultimateParentCompany.map(_.validate(JsPath \ "ultimateParentCompany"))),
+      optionValidations(
+        revokeReportingCompanyModel.ultimateParentCompany.map(_.validate(JsPath \ "ultimateParentCompany"))
+      ),
       revokeReportingCompanyModel.accountingPeriod.validate(JsPath \ "accountingPeriod"),
       validatedAuthorisingCompanies,
       validateDeclaration,
       validateDuplicateAuthorisingCompanies
-      ).map(_ => revokeReportingCompanyModel)
+    ).map(_ => revokeReportingCompanyModel)
   }
 }
 
 case object CompanyMakingAppointmentMustSupplyDetails extends Validation {
-  val code = "COMPANY_MAKING_REVOCATION_NOT_SUPPLIED"
-  val errorMessage: String = "If the reporting company is not revoking itself, details of the company making revocation must be provided"
-  val path: JsPath = JsPath \ "companyMakingRevocation"
+  val code                   = "COMPANY_MAKING_REVOCATION_NOT_SUPPLIED"
+  val errorMessage: String   =
+    "If the reporting company is not revoking itself, details of the company making revocation must be provided"
+  val path: JsPath           = JsPath \ "companyMakingRevocation"
   val value: Option[JsValue] = None
 }
 
 case class DeclaredFiftyPercentOfEligibleCompanies(declaration: Boolean) extends Validation {
-  val code = "DECLARATION_FALSE"
-  val errorMessage: String = "Declaration is not valid so will not be submitted. " +
+  val code                   = "DECLARATION_FALSE"
+  val errorMessage: String   = "Declaration is not valid so will not be submitted. " +
     "You need to confirm the listed companies constitute at least 50% of the eligible companies."
-  val path: JsPath = JsPath \ "declaration"
+  val path: JsPath           = JsPath \ "declaration"
   val value: Option[JsValue] = Some(JsBoolean(declaration))
 }
 
-case class DetailsNotNeededIfCompanyRevokingItself(companyMakingRevocation: IdentityOfCompanySubmittingModel)(implicit val path: JsPath) extends Validation {
-  val code = "COMPANY_NOT_NEEDED"
+case class DetailsNotNeededIfCompanyRevokingItself(companyMakingRevocation: IdentityOfCompanySubmittingModel)(implicit
+  val path: JsPath
+) extends Validation {
+  val code                 = "COMPANY_NOT_NEEDED"
   val errorMessage: String = "Reporting company not needed as it is the same the company making the revocation"
   val value: Some[JsValue] = Some(Json.toJson(companyMakingRevocation))
 }

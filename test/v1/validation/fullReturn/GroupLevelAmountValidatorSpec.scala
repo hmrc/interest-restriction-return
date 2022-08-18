@@ -38,7 +38,7 @@ class GroupLevelAmountValidatorSpec extends BaseSpec {
       "interestReactivationCap is < 0" in {
         val result = leftSideError(groupLevelAmountModel.copy(interestReactivationCap = -0.1).validate)
         result.errorMessage shouldBe ReactivationCapCannotBeNegative(-0.1).errorMessage
-        result.path shouldBe path \ "interestReactivationCap"
+        result.path         shouldBe path \ "interestReactivationCap"
       }
 
       "interestReactivationCap is >2 decimal places" in {
@@ -49,18 +49,20 @@ class GroupLevelAmountValidatorSpec extends BaseSpec {
       "interestAllowanceBroughtForward is < 0" in {
         val result = leftSideError(groupLevelAmountModel.copy(interestAllowanceBroughtForward = -0.1).validate)
         result.errorMessage shouldBe InterestAllowanceBroughtForwardCannotBeNegative(-0.1).errorMessage
-        result.path shouldBe path \ "interestAllowanceBroughtForward"
+        result.path         shouldBe path \ "interestAllowanceBroughtForward"
       }
 
       "interestAllowanceBroughtForward is >2 decimal places" in {
-        leftSideError(groupLevelAmountModel.copy(interestAllowanceBroughtForward = 1.111).validate).errorMessage shouldBe
+        leftSideError(
+          groupLevelAmountModel.copy(interestAllowanceBroughtForward = 1.111).validate
+        ).errorMessage shouldBe
           InterestAllowanceBroughtForwardDecimalError(1.111).errorMessage
       }
 
       "interestAllowanceForPeriod is < 0" in {
         val result = leftSideError(groupLevelAmountModel.copy(interestAllowanceForPeriod = -0.1).validate)
         result.errorMessage shouldBe InterestAllowanceForPeriodCannotBeNegative(-0.1).errorMessage
-        result.path shouldBe path \ "interestAllowanceForPeriod"
+        result.path         shouldBe path \ "interestAllowanceForPeriod"
       }
 
       "interestAllowanceForPeriod is >2 decimal places" in {
@@ -71,7 +73,7 @@ class GroupLevelAmountValidatorSpec extends BaseSpec {
       "interestCapacityForPeriod is < 0" in {
         val result = leftSideError(groupLevelAmountModel.copy(interestCapacityForPeriod = -0.1).validate)
         result.errorMessage shouldBe InterestCapacityForPeriodCannotBeNegative(-0.1).errorMessage
-        result.path shouldBe path \ "interestCapacityForPeriod"
+        result.path         shouldBe path \ "interestCapacityForPeriod"
       }
 
       "interestCapacityForPeriod is >2 decimal places" in {

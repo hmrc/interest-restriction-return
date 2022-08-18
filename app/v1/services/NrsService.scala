@@ -36,16 +36,17 @@ import scala.concurrent.{ExecutionContext, Future}
 import scala.concurrent.duration.{Duration, MILLISECONDS}
 
 @Singleton
-class NrsService @Inject()(nrsConnector: NrsConnector, dateTimeService: DateTimeService)
-                          (implicit ec: ExecutionContext) extends HttpErrorFunctions with Logging {
+class NrsService @Inject() (nrsConnector: NrsConnector, dateTimeService: DateTimeService)(implicit ec: ExecutionContext)
+    extends HttpErrorFunctions
+    with Logging {
 
-  private val searchKey = "reportingCompanyCTUTR"
-  private val applicationJson = "application/json"
-  private val businessIdValue = "irr"
-  private val notableEventValue = "interest-restriction-return"
+  private val searchKey           = "reportingCompanyCTUTR"
+  private val applicationJson     = "application/json"
+  private val businessIdValue     = "irr"
+  private val notableEventValue   = "interest-restriction-return"
   private val AuthorizationHeader = "Authorization"
 
-  private val MaxRetries = 2
+  private val MaxRetries    = 2
   private val delayInMillis = 500
 
   def send[A](ctutr: UTRModel)(implicit identifierRequest: IdentifierRequest[A]): Future[NrsResponse] = {
@@ -54,7 +55,8 @@ class NrsService @Inject()(nrsConnector: NrsConnector, dateTimeService: DateTime
 
     val searchValue = ctutr.utr
 
-    val nrsMetadata = new NrsMetadata(businessId = businessIdValue,
+    val nrsMetadata = new NrsMetadata(
+      businessId = businessIdValue,
       notableEvent = notableEventValue,
       payloadContentType = applicationJson,
       payloadSha256Checksum = sha256Hash(payloadAsString), // This should come from the end user NOT us
@@ -74,11 +76,11 @@ class NrsService @Inject()(nrsConnector: NrsConnector, dateTimeService: DateTime
   private def attemptSubmission(nrsPayload: NrsPayload, delay: Duration, retries: Int): Future[NrsResponse] = {
     logger.info(s"Attempting NRS submission ${MaxRetries - retries + 1} retries left: $retries")
     val result = nrsConnector.send(nrsPayload)
-    result.flatMap{
+    result.flatMap {
       case Left(e) if e.status >= 500 && e.status < 600 && retries > 0 =>
         Thread.sleep(delay.toMillis)
         attemptSubmission(nrsPayload, delay, retries - 1)
-      case response => Future.successful(response)
+      case response                                                    => Future.successful(response)
     } recoverWith {
       case e: Exception if retries > 0 =>
         logger.error(s"Error occurred during NRS submission: ${e.getMessage}", e)
@@ -87,9 +89,8 @@ class NrsService @Inject()(nrsConnector: NrsConnector, dateTimeService: DateTime
     }
   }
 
-  private def sha256Hash(text: String) : String =  {
+  private def sha256Hash(text: String): String =
     format("%064x", new BigInteger(1, getInstance("SHA-256").digest(text.getBytes("UTF-8"))))
-  }
 
 }
 

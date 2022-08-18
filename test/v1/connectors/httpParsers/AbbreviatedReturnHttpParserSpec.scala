@@ -26,7 +26,7 @@ import uk.gov.hmrc.http.HttpResponse
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
-class AbbreviatedReturnHttpParserSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite  {
+class AbbreviatedReturnHttpParserSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite {
 
   val ackRefResponse: JsValue = Json.obj("acknowledgementReference" -> ackRef)
 
@@ -37,7 +37,11 @@ class AbbreviatedReturnHttpParserSpec extends AnyWordSpec with Matchers with Gui
       "return a Right containing an acknowledgementReference" in {
 
         val expectedResult = Right(DesSuccessResponse(ackRef))
-        val actualResult = AbbreviatedReturnReads.read("", "", HttpResponse(Status.CREATED, ackRefResponse, Map.empty[String,Seq[String]]))
+        val actualResult   = AbbreviatedReturnReads.read(
+          "",
+          "",
+          HttpResponse(Status.CREATED, ackRefResponse, Map.empty[String, Seq[String]])
+        )
 
         actualResult shouldBe expectedResult
       }
@@ -48,30 +52,37 @@ class AbbreviatedReturnHttpParserSpec extends AnyWordSpec with Matchers with Gui
       "return a Left(InvalidSuccessResponse)" in {
 
         val expectedResult = Left(InvalidSuccessResponse)
-        val actualResult = AbbreviatedReturnReads.read("", "", HttpResponse(Status.CREATED, Json.obj(), Map.empty[String,Seq[String]]))
+        val actualResult   =
+          AbbreviatedReturnReads.read("", "", HttpResponse(Status.CREATED, Json.obj(), Map.empty[String, Seq[String]]))
 
         actualResult shouldBe expectedResult
       }
     }
 
-
     "given any other status" should {
 
-      val expectedResult = Left(UnexpectedFailure(
-        Status.INTERNAL_SERVER_ERROR,
-        s"Status ${Status.INTERNAL_SERVER_ERROR} Error returned when trying to submit abbreviated return"
-      ))
+      val expectedResult = Left(
+        UnexpectedFailure(
+          Status.INTERNAL_SERVER_ERROR,
+          s"Status ${Status.INTERNAL_SERVER_ERROR} Error returned when trying to submit abbreviated return"
+        )
+      )
 
       "return a Left(UnexpectedFailure) for a 500" in {
 
-        val actualResult = AbbreviatedReturnReads.read("", "", HttpResponse(Status.INTERNAL_SERVER_ERROR, Json.obj(), Map.empty[String,Seq[String]]))
+        val actualResult = AbbreviatedReturnReads.read(
+          "",
+          "",
+          HttpResponse(Status.INTERNAL_SERVER_ERROR, Json.obj(), Map.empty[String, Seq[String]])
+        )
 
         actualResult shouldBe expectedResult
       }
 
       "return a Left(UnexpectedFailure) for a 200" in {
 
-        val actualResult = AbbreviatedReturnReads.read("", "", HttpResponse(Status.OK, ackRefResponse, Map.empty[String,Seq[String]]))
+        val actualResult =
+          AbbreviatedReturnReads.read("", "", HttpResponse(Status.OK, ackRefResponse, Map.empty[String, Seq[String]]))
 
         actualResult shouldBe expectedResult
       }

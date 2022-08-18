@@ -27,19 +27,21 @@ class CountryCodeValidatorSpec extends BaseSpec {
   "Country Code Validation" when {
 
     "Country Code is supplied and is not the correct length as its too short" in {
-      val model  = CountryCodeModel("A")
+      val model = CountryCodeModel("A")
       leftSideError(model.validate, 0).errorMessage shouldBe CountryCodeLengthError(model).errorMessage
       leftSideError(model.validate, 1).errorMessage shouldBe CountryCodeValueError(model).errorMessage
     }
 
     "Country Code is supplied and is not the correct length as its too long" in {
-      val model  = CountryCodeModel("AAA")
+      val model = CountryCodeModel("AAA")
       leftSideError(model.validate, 0).errorMessage shouldBe CountryCodeLengthError(model).errorMessage
       leftSideError(model.validate, 1).errorMessage shouldBe CountryCodeValueError(model).errorMessage
     }
 
     "Invalid Country Code supplied" in {
-      leftSideError(invalidCountryCode.validate).errorMessage shouldBe CountryCodeValueError(invalidCountryCode).errorMessage
+      leftSideError(invalidCountryCode.validate).errorMessage shouldBe CountryCodeValueError(
+        invalidCountryCode
+      ).errorMessage
     }
 
     "Valid Country Code supplied" in {
@@ -49,31 +51,45 @@ class CountryCodeValidatorSpec extends BaseSpec {
 
   "Country Code Invalid List" when {
     "DD" in {
-      leftSideError(CountryCodeModel("DD").validate).errorMessage shouldBe CountryCodeValueError(CountryCodeModel("DD")).errorMessage
+      leftSideError(CountryCodeModel("DD").validate).errorMessage shouldBe CountryCodeValueError(
+        CountryCodeModel("DD")
+      ).errorMessage
     }
 
     "EU" in {
-      leftSideError(CountryCodeModel("EU").validate).errorMessage shouldBe CountryCodeValueError(CountryCodeModel("EU")).errorMessage
+      leftSideError(CountryCodeModel("EU").validate).errorMessage shouldBe CountryCodeValueError(
+        CountryCodeModel("EU")
+      ).errorMessage
     }
 
     "NT" in {
-      leftSideError(CountryCodeModel("NT").validate).errorMessage shouldBe CountryCodeValueError(CountryCodeModel("NT")).errorMessage
+      leftSideError(CountryCodeModel("NT").validate).errorMessage shouldBe CountryCodeValueError(
+        CountryCodeModel("NT")
+      ).errorMessage
     }
 
     "TP" in {
-      leftSideError(CountryCodeModel("TP").validate).errorMessage shouldBe CountryCodeValueError(CountryCodeModel("TP")).errorMessage
+      leftSideError(CountryCodeModel("TP").validate).errorMessage shouldBe CountryCodeValueError(
+        CountryCodeModel("TP")
+      ).errorMessage
     }
 
     "UK" in {
-      leftSideError(CountryCodeModel("UK").validate).errorMessage shouldBe CountryCodeValueError(CountryCodeModel("UK")).errorMessage
+      leftSideError(CountryCodeModel("UK").validate).errorMessage shouldBe CountryCodeValueError(
+        CountryCodeModel("UK")
+      ).errorMessage
     }
 
     "UN" in {
-      leftSideError(CountryCodeModel("UN").validate).errorMessage shouldBe CountryCodeValueError(CountryCodeModel("UN")).errorMessage
+      leftSideError(CountryCodeModel("UN").validate).errorMessage shouldBe CountryCodeValueError(
+        CountryCodeModel("UN")
+      ).errorMessage
     }
 
     "GB" in {
-      leftSideError(CountryCodeModel("GB").validate).errorMessage shouldBe CountryCodeCantBeGB(CountryCodeModel("GB")).errorMessage
+      leftSideError(CountryCodeModel("GB").validate).errorMessage shouldBe CountryCodeCantBeGB(
+        CountryCodeModel("GB")
+      ).errorMessage
     }
   }
 }

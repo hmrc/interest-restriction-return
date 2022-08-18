@@ -29,7 +29,7 @@ class AllocatedRestrictionsModelSpec extends AnyWordSpec with Matchers {
     "correctly write to json" in {
 
       val expectedValue = allocatedRestrictionsJson
-      val actualValue = Json.toJson(allocatedRestrictionsModel)
+      val actualValue   = Json.toJson(allocatedRestrictionsModel)
 
       actualValue shouldBe expectedValue
     }
@@ -37,7 +37,7 @@ class AllocatedRestrictionsModelSpec extends AnyWordSpec with Matchers {
     "correctly read from Json" in {
 
       val expectedValue = allocatedRestrictionsModel
-      val actualValue = allocatedRestrictionsJson.as[AllocatedRestrictionsModel]
+      val actualValue   = allocatedRestrictionsJson.as[AllocatedRestrictionsModel]
 
       actualValue shouldBe expectedValue
     }

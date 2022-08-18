@@ -29,9 +29,9 @@ trait MockAppointReportingCompanyService extends MockFactory {
 
   lazy val mockAppointReportingCompanyService: AppointReportingCompanyService = mock[AppointReportingCompanyService]
 
-  def mockAppointReportingCompany(model: AppointReportingCompanyModel)(response: SubmissionResponse): Unit = {
-    (mockAppointReportingCompanyService.submit(_: AppointReportingCompanyModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
+  def mockAppointReportingCompany(model: AppointReportingCompanyModel)(response: SubmissionResponse): Unit =
+    (mockAppointReportingCompanyService
+      .submit(_: AppointReportingCompanyModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
       .expects(model, *, *, *)
       .returns(Future.successful(response))
-  }
 }

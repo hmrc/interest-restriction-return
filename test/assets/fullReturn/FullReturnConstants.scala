@@ -30,9 +30,9 @@ import v1.models.{Original, Revised, RevisedReturnDetailsModel, SubmissionType}
 
 object FullReturnConstants {
 
-  val ackRef = "ackRef"
-  val revisedReturnDetails = RevisedReturnDetailsModel("some details")
-  val angie: BigDecimal = 1.11
+  val ackRef                         = "ackRef"
+  val revisedReturnDetails           = RevisedReturnDetailsModel("some details")
+  val angie: BigDecimal              = 1.11
   val totalReactivations: BigDecimal = ukCompanyModelReactivationMax.allocatedReactivations.foldLeft[BigDecimal](0) {
     (total, company) => total + company.currentPeriodReactivation
   }
@@ -65,26 +65,26 @@ object FullReturnConstants {
   )
 
   val fullReturnJsonMax: JsObject = Json.obj(
-    "declaration" -> true,
-    "appointedReportingCompany" -> true,
-    "agentDetails" -> agentDetailsJsonMax,
-    "reportingCompany" -> reportingCompanyJson,
-    "parentCompany" -> parentCompanyJsonUltUkCompany,
-    "publicInfrastructure" -> true,
-    "groupCompanyDetails" -> groupCompanyDetailsJson,
-    "submissionType" -> Json.toJson[SubmissionType](Revised),
-    "revisedReturnDetails" -> revisedReturnDetails,
-    "groupLevelElections" -> groupLevelElectionsJsonMax,
-    "ukCompanies" -> Seq(ukCompanyJsonMax, ukCompanyJsonMin),
-    "angie" -> angie,
-    "returnContainsEstimates" -> true,
-    "groupEstimateReason" -> "Some reason",
+    "declaration"                        -> true,
+    "appointedReportingCompany"          -> true,
+    "agentDetails"                       -> agentDetailsJsonMax,
+    "reportingCompany"                   -> reportingCompanyJson,
+    "parentCompany"                      -> parentCompanyJsonUltUkCompany,
+    "publicInfrastructure"               -> true,
+    "groupCompanyDetails"                -> groupCompanyDetailsJson,
+    "submissionType"                     -> Json.toJson[SubmissionType](Revised),
+    "revisedReturnDetails"               -> revisedReturnDetails,
+    "groupLevelElections"                -> groupLevelElectionsJsonMax,
+    "ukCompanies"                        -> Seq(ukCompanyJsonMax, ukCompanyJsonMin),
+    "angie"                              -> angie,
+    "returnContainsEstimates"            -> true,
+    "groupEstimateReason"                -> "Some reason",
     "groupSubjectToInterestRestrictions" -> false,
     "groupSubjectToInterestReactivation" -> true,
-    "totalReactivation" -> fullReturnModelMax.totalReactivation,
-    "totalRestrictions" -> 0,
-    "groupLevelAmount" -> groupLevelAmountJson,
-    "adjustedGroupInterest" -> adjustedGroupInterestJson
+    "totalReactivation"                  -> fullReturnModelMax.totalReactivation,
+    "totalRestrictions"                  -> 0,
+    "groupLevelAmount"                   -> groupLevelAmountJson,
+    "adjustedGroupInterest"              -> adjustedGroupInterestJson
   )
 
   val fullReturnNetTaxExpenseModelMax: FullReturnModel = FullReturnModel(
@@ -109,31 +109,31 @@ object FullReturnConstants {
   )
 
   val fullReturnNetTaxExpenseJsonMax: JsObject = Json.obj(
-    "declaration" -> true,
-    "appointedReportingCompany" -> true,
-    "agentDetails" -> agentDetailsJsonMax,
-    "reportingCompany" -> reportingCompanyJson,
-    "parentCompany" -> parentCompanyJsonUltUkCompany,
-    "publicInfrastructure" -> true,
-    "groupCompanyDetails" -> groupCompanyDetailsJson,
-    "submissionType" -> Json.toJson[SubmissionType](Revised),
-    "revisedReturnDetails" -> revisedReturnDetails,
-    "groupLevelElections" -> groupLevelElectionsJsonMax,
-    "ukCompanies" -> Seq(ukCompanyJsonMax, ukCompanyJsonMax, ukCompanyJsonMax, ukCompanyJsonMin),
-    "numberOfUkCompanies" -> 4,
-    "angie" -> angie,
-    "returnContainsEstimates" -> true,
-    "groupEstimateReason" -> "Some reason",
+    "declaration"                        -> true,
+    "appointedReportingCompany"          -> true,
+    "agentDetails"                       -> agentDetailsJsonMax,
+    "reportingCompany"                   -> reportingCompanyJson,
+    "parentCompany"                      -> parentCompanyJsonUltUkCompany,
+    "publicInfrastructure"               -> true,
+    "groupCompanyDetails"                -> groupCompanyDetailsJson,
+    "submissionType"                     -> Json.toJson[SubmissionType](Revised),
+    "revisedReturnDetails"               -> revisedReturnDetails,
+    "groupLevelElections"                -> groupLevelElectionsJsonMax,
+    "ukCompanies"                        -> Seq(ukCompanyJsonMax, ukCompanyJsonMax, ukCompanyJsonMax, ukCompanyJsonMin),
+    "numberOfUkCompanies"                -> 4,
+    "angie"                              -> angie,
+    "returnContainsEstimates"            -> true,
+    "groupEstimateReason"                -> "Some reason",
     "groupSubjectToInterestRestrictions" -> false,
     "groupSubjectToInterestReactivation" -> true,
-    "totalReactivation" -> totalReactivations * 3,
-    "totalRestrictions" -> 0,
-    "groupLevelAmount" -> groupLevelAmountJson,
-    "adjustedGroupInterest" -> adjustedGroupInterestJson,
-    "aggregateNetTaxInterest" -> -10,
-    "aggregateAllocatedRestrictions" -> 18,
-    "aggregateTaxEBITDA" -> 20,
-    "aggregateAllocatedReactivations" -> 6
+    "totalReactivation"                  -> totalReactivations * 3,
+    "totalRestrictions"                  -> 0,
+    "groupLevelAmount"                   -> groupLevelAmountJson,
+    "adjustedGroupInterest"              -> adjustedGroupInterestJson,
+    "aggregateNetTaxInterest"            -> -10,
+    "aggregateAllocatedRestrictions"     -> 18,
+    "aggregateTaxEBITDA"                 -> 20,
+    "aggregateAllocatedReactivations"    -> 6
   )
 
   val fullReturnNetTaxIncomeModelMax: FullReturnModel = FullReturnModel(
@@ -158,31 +158,31 @@ object FullReturnConstants {
   )
 
   val fullReturnNetTaxIncomeJsonMax: JsObject = Json.obj(
-    "declaration" -> true,
-    "appointedReportingCompany" -> true,
-    "agentDetails" -> agentDetailsJsonMax,
-    "reportingCompany" -> reportingCompanyJson,
-    "parentCompany" -> parentCompanyJsonUltUkCompany,
-    "publicInfrastructure" -> true,
-    "groupCompanyDetails" -> groupCompanyDetailsJson,
-    "submissionType" -> Json.toJson[SubmissionType](Revised),
-    "revisedReturnDetails" -> revisedReturnDetails,
-    "groupLevelElections" -> groupLevelElectionsJsonMax,
-    "ukCompanies" -> Seq(ukCompanyJsonMin, ukCompanyJsonMin, ukCompanyJsonMin, ukCompanyJsonMax),
-    "numberOfUkCompanies" -> 4,
-    "angie" -> angie,
-    "returnContainsEstimates" -> true,
-    "groupEstimateReason" -> "Some reason",
+    "declaration"                        -> true,
+    "appointedReportingCompany"          -> true,
+    "agentDetails"                       -> agentDetailsJsonMax,
+    "reportingCompany"                   -> reportingCompanyJson,
+    "parentCompany"                      -> parentCompanyJsonUltUkCompany,
+    "publicInfrastructure"               -> true,
+    "groupCompanyDetails"                -> groupCompanyDetailsJson,
+    "submissionType"                     -> Json.toJson[SubmissionType](Revised),
+    "revisedReturnDetails"               -> revisedReturnDetails,
+    "groupLevelElections"                -> groupLevelElectionsJsonMax,
+    "ukCompanies"                        -> Seq(ukCompanyJsonMin, ukCompanyJsonMin, ukCompanyJsonMin, ukCompanyJsonMax),
+    "numberOfUkCompanies"                -> 4,
+    "angie"                              -> angie,
+    "returnContainsEstimates"            -> true,
+    "groupEstimateReason"                -> "Some reason",
     "groupSubjectToInterestRestrictions" -> false,
     "groupSubjectToInterestReactivation" -> true,
-    "totalReactivation" -> totalReactivations,
-    "totalRestrictions" -> 0,
-    "groupLevelAmount" -> groupLevelAmountJson,
-    "adjustedGroupInterest" -> adjustedGroupInterestJson,
-    "aggregateNetTaxInterest" -> 130,
-    "aggregateAllocatedRestrictions" -> 6,
-    "aggregateTaxEBITDA" -> 20,
-    "aggregateAllocatedReactivations" -> 2
+    "totalReactivation"                  -> totalReactivations,
+    "totalRestrictions"                  -> 0,
+    "groupLevelAmount"                   -> groupLevelAmountJson,
+    "adjustedGroupInterest"              -> adjustedGroupInterestJson,
+    "aggregateNetTaxInterest"            -> 130,
+    "aggregateAllocatedRestrictions"     -> 6,
+    "aggregateTaxEBITDA"                 -> 20,
+    "aggregateAllocatedReactivations"    -> 2
   )
 
   // Ultimate Parent Model and Json.
@@ -197,43 +197,44 @@ object FullReturnConstants {
     submissionType = Revised,
     revisedReturnDetails = Some(revisedReturnDetails),
     groupLevelElections = groupLevelElectionsModelMax,
-    ukCompanies = Seq(ukCompanyModelReactivationMax, ukCompanyModelReactivationMax), // Net Tax Income =  2 * £30 = £60.00
+    ukCompanies =
+      Seq(ukCompanyModelReactivationMax, ukCompanyModelReactivationMax), // Net Tax Income =  2 * £30 = £60.00
     angie = angie,
     returnContainsEstimates = true,
     groupEstimateReason = Some("Some reason"),
     groupSubjectToInterestRestrictions = false,
     groupSubjectToInterestReactivation = true,
     totalRestrictions = 0,
-    groupLevelAmount = groupLevelAmountModel,  //Reactivation Capactiy = £300
+    groupLevelAmount = groupLevelAmountModel, //Reactivation Capactiy = £300
     adjustedGroupInterest = Some(adjustedGroupInterestModel)
   )
 
   val fullReturnUltimateParentJson: JsObject = Json.obj(
-    "declaration" -> true,
-    "appointedReportingCompany" -> true,
-    "agentDetails" -> agentDetailsJsonMax,
-    "reportingCompany" -> reportingCompanyJson,
-    "parentCompany" -> parentCompanyJsonUltUkCompany,
-    "publicInfrastructure" -> true,
-    "groupCompanyDetails" -> groupCompanyDetailsJson,
-    "submissionType" -> Json.toJson[SubmissionType](Revised),
-    "revisedReturnDetails" -> revisedReturnDetails,
-    "groupLevelElections" -> groupLevelElectionsJsonMax,
-    "ukCompanies" -> Seq(ukCompanyReactivationJsonMax, ukCompanyReactivationJsonMax),
-    "numberOfUkCompanies" -> 2,
-    "angie" -> angie,
-    "returnContainsEstimates" -> true,
-    "groupEstimateReason" -> "Some reason",
+    "declaration"                        -> true,
+    "appointedReportingCompany"          -> true,
+    "agentDetails"                       -> agentDetailsJsonMax,
+    "reportingCompany"                   -> reportingCompanyJson,
+    "parentCompany"                      -> parentCompanyJsonUltUkCompany,
+    "publicInfrastructure"               -> true,
+    "groupCompanyDetails"                -> groupCompanyDetailsJson,
+    "submissionType"                     -> Json.toJson[SubmissionType](Revised),
+    "revisedReturnDetails"               -> revisedReturnDetails,
+    "groupLevelElections"                -> groupLevelElectionsJsonMax,
+    "ukCompanies"                        -> Seq(ukCompanyReactivationJsonMax, ukCompanyReactivationJsonMax),
+    "numberOfUkCompanies"                -> 2,
+    "angie"                              -> angie,
+    "returnContainsEstimates"            -> true,
+    "groupEstimateReason"                -> "Some reason",
     "groupSubjectToInterestRestrictions" -> false,
     "groupSubjectToInterestReactivation" -> true,
-    "totalReactivation" -> totalReactivations * 2,
-    "totalRestrictions" -> 0,
-    "groupLevelAmount" -> groupLevelAmountJson,
-    "adjustedGroupInterest" -> adjustedGroupInterestJson,
-    "aggregateNetTaxInterest" -> 100,
-    "aggregateAllocatedRestrictions" -> 0,
-    "aggregateTaxEBITDA" -> 10,
-    "aggregateAllocatedReactivations" -> 4
+    "totalReactivation"                  -> totalReactivations * 2,
+    "totalRestrictions"                  -> 0,
+    "groupLevelAmount"                   -> groupLevelAmountJson,
+    "adjustedGroupInterest"              -> adjustedGroupInterestJson,
+    "aggregateNetTaxInterest"            -> 100,
+    "aggregateAllocatedRestrictions"     -> 0,
+    "aggregateTaxEBITDA"                 -> 10,
+    "aggregateAllocatedReactivations"    -> 4
   )
 
   // Deemed Model and Json
@@ -282,27 +283,27 @@ object FullReturnConstants {
   )
 
   val fullReturnJsonMin: JsObject = Json.obj(
-    "declaration" -> true,
-    "appointedReportingCompany" -> true,
-    "agentDetails" -> agentDetailsJsonMin,
-    "reportingCompany" -> reportingCompanySameJson,
-    "publicInfrastructure" -> true,
-    "groupCompanyDetails" -> groupCompanyDetailsJson,
-    "submissionType" -> Json.toJson[SubmissionType](Original),
-    "ukCompanies" -> Seq(ukCompanyJsonMin),
-    "numberOfUkCompanies" -> 1,
-    "angie" -> 0,
-    "groupLevelElections" -> groupLevelElectionsJsonMin,
-    "returnContainsEstimates" -> true,
-    "groupEstimateReason" -> "Some reason",
+    "declaration"                        -> true,
+    "appointedReportingCompany"          -> true,
+    "agentDetails"                       -> agentDetailsJsonMin,
+    "reportingCompany"                   -> reportingCompanySameJson,
+    "publicInfrastructure"               -> true,
+    "groupCompanyDetails"                -> groupCompanyDetailsJson,
+    "submissionType"                     -> Json.toJson[SubmissionType](Original),
+    "ukCompanies"                        -> Seq(ukCompanyJsonMin),
+    "numberOfUkCompanies"                -> 1,
+    "angie"                              -> 0,
+    "groupLevelElections"                -> groupLevelElectionsJsonMin,
+    "returnContainsEstimates"            -> true,
+    "groupEstimateReason"                -> "Some reason",
     "groupSubjectToInterestRestrictions" -> false,
     "groupSubjectToInterestReactivation" -> true,
-    "totalReactivation" -> 0,
-    "totalRestrictions" -> 0,
-    "groupLevelAmount" -> groupLevelAmountJson,
-    "aggregateNetTaxInterest" -> 50,
-    "aggregateAllocatedRestrictions" -> 0,
-    "aggregateTaxEBITDA" -> 5,
-    "aggregateAllocatedReactivations" -> 0
+    "totalReactivation"                  -> 0,
+    "totalRestrictions"                  -> 0,
+    "groupLevelAmount"                   -> groupLevelAmountJson,
+    "aggregateNetTaxInterest"            -> 50,
+    "aggregateAllocatedRestrictions"     -> 0,
+    "aggregateTaxEBITDA"                 -> 5,
+    "aggregateAllocatedReactivations"    -> 0
   )
 }

@@ -19,9 +19,8 @@ package v1.models
 import play.api.libs.json.Json
 import v1.validation.ReportingCompanyValidator
 
-case class ReportingCompanyModel(companyName: CompanyNameModel,
-                                 ctutr: UTRModel,
-                                 sameAsUltimateParent: Boolean) extends ReportingCompanyValidator {
+case class ReportingCompanyModel(companyName: CompanyNameModel, ctutr: UTRModel, sameAsUltimateParent: Boolean)
+    extends ReportingCompanyValidator {
   override val reportingCompanyModel: ReportingCompanyModel = this
 }
 

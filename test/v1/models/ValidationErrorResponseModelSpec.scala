@@ -17,9 +17,9 @@
 package models
 
 import play.api.libs.json._
-import v1.models.errors.{ValidationErrorResponseModel, ErrorResponseModel}
+import v1.models.errors.{ErrorResponseModel, ValidationErrorResponseModel}
 import v1.validation.fullReturn._
-import cats.data.{NonEmptyChain, Chain}
+import cats.data.{Chain, NonEmptyChain}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -27,8 +27,8 @@ class ValidationErrorResponseModelSpec extends AnyWordSpec with Matchers {
 
   "Validation Error Response" should {
 
-    val errors: Seq[(JsPath, Seq[JsonValidationError])] = Seq(
-      JsPath \ "FOO" -> Seq(JsonValidationError(Seq("BAR", "Snakes")), JsonValidationError(Seq("bye", "hello"))))
+    val errors: Seq[(JsPath, Seq[JsonValidationError])] =
+      Seq(JsPath \ "FOO" -> Seq(JsonValidationError(Seq("BAR", "Snakes")), JsonValidationError(Seq("bye", "hello"))))
 
     "be successfully constructed given a sequence of Json validation errors" in {
 
@@ -40,7 +40,7 @@ class ValidationErrorResponseModelSpec extends AnyWordSpec with Matchers {
       )
 
       val expected = ValidationErrorResponseModel(
-        code = "INVALID_REQUEST", 
+        code = "INVALID_REQUEST",
         message = "Request contains validation errors",
         errors = Some(expectedErrors),
         path = None,
@@ -53,28 +53,28 @@ class ValidationErrorResponseModelSpec extends AnyWordSpec with Matchers {
     "serialise Json Validation Errors to Json correctly" in {
 
       val expected = Json.obj(
-        "code" -> "INVALID_REQUEST",
+        "code"    -> "INVALID_REQUEST",
         "message" -> "Request contains validation errors",
-        "errors" -> Json.arr(
+        "errors"  -> Json.arr(
           Json.obj(
-            "code" -> "JSON_VALIDATION_ERROR",
+            "code"    -> "JSON_VALIDATION_ERROR",
             "message" -> "BAR",
-            "path" -> "/FOO"
-          ), 
+            "path"    -> "/FOO"
+          ),
           Json.obj(
-            "code" -> "JSON_VALIDATION_ERROR",
+            "code"    -> "JSON_VALIDATION_ERROR",
             "message" -> "Snakes",
-            "path" -> "/FOO"
-          ), 
+            "path"    -> "/FOO"
+          ),
           Json.obj(
-            "code" -> "JSON_VALIDATION_ERROR",
+            "code"    -> "JSON_VALIDATION_ERROR",
             "message" -> "bye",
-            "path" -> "/FOO"
-          ), 
+            "path"    -> "/FOO"
+          ),
           Json.obj(
-            "code" -> "JSON_VALIDATION_ERROR",
+            "code"    -> "JSON_VALIDATION_ERROR",
             "message" -> "hello",
-            "path" -> "/FOO"
+            "path"    -> "/FOO"
           )
         )
       )
@@ -82,7 +82,7 @@ class ValidationErrorResponseModelSpec extends AnyWordSpec with Matchers {
       Json.toJson(ValidationErrorResponseModel(errors)) shouldBe expected
     }
 
-    val apiErrors = Seq(NegativeAngieError(-123), TotalRestrictionsDecimalError(33.22222))
+    val apiErrors     = Seq(NegativeAngieError(-123), TotalRestrictionsDecimalError(33.22222))
     val apiErrorChain = NonEmptyChain.fromChainUnsafe(
       Chain.fromSeq(apiErrors)
     )
@@ -90,12 +90,22 @@ class ValidationErrorResponseModelSpec extends AnyWordSpec with Matchers {
     "be successfully constructed given a sequence of our Validation Errors" in {
 
       val expectedErrors = Seq(
-        ErrorResponseModel(code = "NEGATIVE_ANGIE", message = "ANGIE must be a positive number", path = Some("/angie"), value = Some(Json.toJson(-123))),
-        ErrorResponseModel(code = "TOTAL_RESTRICTIONS_DECIMAL", message = "Total restrictions must be to 2 decimal places or less", path = Some("/totalRestrictions"), value = Some(Json.toJson(33.22222)))
+        ErrorResponseModel(
+          code = "NEGATIVE_ANGIE",
+          message = "ANGIE must be a positive number",
+          path = Some("/angie"),
+          value = Some(Json.toJson(-123))
+        ),
+        ErrorResponseModel(
+          code = "TOTAL_RESTRICTIONS_DECIMAL",
+          message = "Total restrictions must be to 2 decimal places or less",
+          path = Some("/totalRestrictions"),
+          value = Some(Json.toJson(33.22222))
+        )
       )
 
       val expected = ValidationErrorResponseModel(
-        code = "INVALID_REQUEST", 
+        code = "INVALID_REQUEST",
         message = "Request contains validation errors",
         errors = Some(expectedErrors),
         path = None,
@@ -108,20 +118,20 @@ class ValidationErrorResponseModelSpec extends AnyWordSpec with Matchers {
     "serialise our Validation Errors to Json correctly" in {
 
       val expected = Json.obj(
-        "code" -> "INVALID_REQUEST",
+        "code"    -> "INVALID_REQUEST",
         "message" -> "Request contains validation errors",
-        "errors" -> Json.arr(
+        "errors"  -> Json.arr(
           Json.obj(
-            "code" -> "NEGATIVE_ANGIE",
+            "code"    -> "NEGATIVE_ANGIE",
             "message" -> "ANGIE must be a positive number",
-            "path" -> "/angie",
-            "value" -> -123
-          ), 
+            "path"    -> "/angie",
+            "value"   -> -123
+          ),
           Json.obj(
-            "code" -> "TOTAL_RESTRICTIONS_DECIMAL",
+            "code"    -> "TOTAL_RESTRICTIONS_DECIMAL",
             "message" -> "Total restrictions must be to 2 decimal places or less",
-            "path" -> "/totalRestrictions",
-            "value" -> 33.22222
+            "path"    -> "/totalRestrictions",
+            "value"   -> 33.22222
           )
         )
       )
@@ -129,17 +139,17 @@ class ValidationErrorResponseModelSpec extends AnyWordSpec with Matchers {
       Json.toJson(ValidationErrorResponseModel(apiErrorChain)) shouldBe expected
     }
 
-    val singleApiError = Seq(TotalRestrictionsDecimalError(33.22222))
+    val singleApiError      = Seq(TotalRestrictionsDecimalError(33.22222))
     val singleApiErrorChain = NonEmptyChain.fromChainUnsafe(
       Chain.fromSeq(singleApiError)
     )
 
     "be successfully constructed given a single Validation Errors" in {
       val expected = ValidationErrorResponseModel(
-        code = "TOTAL_RESTRICTIONS_DECIMAL", 
+        code = "TOTAL_RESTRICTIONS_DECIMAL",
         message = "Total restrictions must be to 2 decimal places or less",
         errors = None,
-        path = Some("/totalRestrictions"), 
+        path = Some("/totalRestrictions"),
         value = Some(Json.toJson(33.22222))
       )
 
@@ -149,12 +159,12 @@ class ValidationErrorResponseModelSpec extends AnyWordSpec with Matchers {
     "serialise a single validation error to Json correctly" in {
 
       val expected = Json.obj(
-        "code" -> "TOTAL_RESTRICTIONS_DECIMAL",
+        "code"    -> "TOTAL_RESTRICTIONS_DECIMAL",
         "message" -> "Total restrictions must be to 2 decimal places or less",
-        "path" -> "/totalRestrictions",
-        "value" -> 33.22222
+        "path"    -> "/totalRestrictions",
+        "value"   -> 33.22222
       )
-        
+
       Json.toJson(ValidationErrorResponseModel(singleApiErrorChain)) shouldBe expected
     }
   }

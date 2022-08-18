@@ -27,8 +27,8 @@ object LegalEntityIdentifierModel {
 
   implicit val reads: Reads[LegalEntityIdentifierModel] = JsPath.read[String].map(LegalEntityIdentifierModel.apply)
 
-  implicit val writes: Writes[LegalEntityIdentifierModel] = Writes {
-    model => JsString(model.code)
+  implicit val writes: Writes[LegalEntityIdentifierModel] = Writes { model =>
+    JsString(model.code)
   }
 
 }

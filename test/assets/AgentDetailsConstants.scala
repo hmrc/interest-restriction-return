@@ -25,7 +25,7 @@ object AgentDetailsConstants {
 
   val agentDetailsJsonMax = Json.obj(
     "agentActingOnBehalfOfCompany" -> true,
-    "agentName" -> agentName
+    "agentName"                    -> agentName
   )
 
   val agentDetailsModelMax = AgentDetailsModel(
@@ -44,7 +44,7 @@ object AgentDetailsConstants {
 
   val agentDetailsJsonWhitespaceName = Json.obj(
     "agentActingOnBehalfOfCompany" -> true,
-    "agentName" -> " some agent "
+    "agentName"                    -> " some agent "
   )
 
 }

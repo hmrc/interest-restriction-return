@@ -25,20 +25,14 @@ trait PartnershipValidator extends BaseValidation {
 
   val partnershipModel: PartnershipModel
 
-  def validateSautr(implicit path: JsPath): ValidationResult[_] = {
+  def validateSautr(implicit path: JsPath): ValidationResult[_] =
     partnershipModel.sautr match {
       case Some(utr) => utr.validate(path \ "sautr")
-      case None => partnershipModel.validNec
+      case None      => partnershipModel.validNec
     }
-  }
 
-  def validate(implicit path: JsPath): ValidationResult[PartnershipModel] = {
-    (partnershipModel.partnershipName.validate(path \ "partnershipName"),
-    validateSautr).mapN((_,_) => partnershipModel)
-  }
+  def validate(implicit path: JsPath): ValidationResult[PartnershipModel] =
+    (partnershipModel.partnershipName.validate(path \ "partnershipName"), validateSautr).mapN((_, _) =>
+      partnershipModel
+    )
 }
-
-
-
-
-

@@ -19,18 +19,11 @@ package v1.models
 import play.api.libs.json._
 import v1.validation.InvestorGroupValidator
 
-
-case class InvestorGroupModel(groupName: CompanyNameModel,
-                              elections: Option[List[Elections]]
-                             ) extends InvestorGroupValidator
-{
+case class InvestorGroupModel(groupName: CompanyNameModel, elections: Option[List[Elections]])
+    extends InvestorGroupValidator {
   override val investorGroupModel = this
 }
 
 object InvestorGroupModel {
   implicit val format = Json.format[InvestorGroupModel]
 }
-
-
-
-

@@ -30,7 +30,7 @@ class GroupRatioModelSpec extends AnyWordSpec with Matchers {
       "max values given" in {
 
         val expectedValue = groupRatioJsonMax
-        val actualValue = Json.toJson(groupRatioModelMax)
+        val actualValue   = Json.toJson(groupRatioModelMax)
 
         actualValue shouldBe expectedValue
       }
@@ -38,9 +38,9 @@ class GroupRatioModelSpec extends AnyWordSpec with Matchers {
       "All data is included in the Json.toJson" in {
 
         val expectedValue = Json.obj(
-          "isElected" -> false,
-          "groupEBITDAChargeableGains" -> false,
-          "activeGroupEBITDAChargeableGains" -> false,
+          "isElected"                        -> false,
+          "groupEBITDAChargeableGains"       -> false,
+          "activeGroupEBITDAChargeableGains" -> false
         )
 
         val actualValue = Json.toJson(groupRatioModelMin)
@@ -52,7 +52,7 @@ class GroupRatioModelSpec extends AnyWordSpec with Matchers {
       "max values given" in {
 
         val expectedValue = groupRatioModelMax
-        val actualValue = groupRatioJsonMax.as[GroupRatioModel]
+        val actualValue   = groupRatioJsonMax.as[GroupRatioModel]
 
         actualValue shouldBe expectedValue
       }

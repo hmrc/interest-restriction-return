@@ -25,8 +25,7 @@ object FullReturnHttpParser extends DesBaseConnector with Logging {
 
   implicit object FullReturnReads extends HttpReads[SubmissionResponse] {
 
-    override def read(method: String, url: String, response: HttpResponse): SubmissionResponse = {
-      handleHttpResponse(response,"FullReturnHttpParser",HttpErrorMessages.FULL_ERROR)
-    }
+    override def read(method: String, url: String, response: HttpResponse): SubmissionResponse =
+      handleHttpResponse(response, "FullReturnHttpParser", HttpErrorMessages.FULL_ERROR)
   }
 }

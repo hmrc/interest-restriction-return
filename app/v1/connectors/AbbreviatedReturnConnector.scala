@@ -30,18 +30,27 @@ import utils.JsonFormatters
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class AbbreviatedReturnConnector @Inject()(httpClient: HttpClient,
-                                           implicit val appConfig: AppConfig) extends DesBaseConnector with Logging with JsonFormatters {
+class AbbreviatedReturnConnector @Inject() (httpClient: HttpClient, implicit val appConfig: AppConfig)
+    extends DesBaseConnector
+    with Logging
+    with JsonFormatters {
 
-  private[connectors] lazy val abbreviatedReturnUrl = s"${appConfig.desUrl}/organisations/interest-restrictions-return/abbreviated"
+  private[connectors] lazy val abbreviatedReturnUrl =
+    s"${appConfig.desUrl}/organisations/interest-restrictions-return/abbreviated"
 
-  def submitAbbreviatedReturn(abbreviatedReturnModel: AbbreviatedReturnModel)
-                             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
+  def submitAbbreviatedReturn(
+    abbreviatedReturnModel: AbbreviatedReturnModel
+  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
     logger.debug(s"URL: $abbreviatedReturnUrl")
     val receivedSize = request.headers.get(HeaderNames.CONTENT_LENGTH)
-    val jsonSize = Json.stringify(Json.toJson(abbreviatedReturnModel)).length
+    val jsonSize     = Json.stringify(Json.toJson(abbreviatedReturnModel)).length
     logger.debug(s"Size of content received: $receivedSize sent: $jsonSize")
 
-    httpClient.POST(abbreviatedReturnUrl, abbreviatedReturnModel)(abbreviatedReturnWrites, AbbreviatedReturnReads, desHc, ec)
+    httpClient.POST(abbreviatedReturnUrl, abbreviatedReturnModel)(
+      abbreviatedReturnWrites,
+      AbbreviatedReturnReads,
+      desHc,
+      ec
+    )
   }
 }

@@ -28,9 +28,9 @@ import scala.concurrent.{ExecutionContext, Future}
 trait MockFullReturnService extends MockFactory {
   lazy val mockFullReturnService: FullReturnService = mock[FullReturnService]
 
-  def mockFullReturn(model: FullReturnModel)(response: SubmissionResponse): Unit = {
-    (mockFullReturnService.submit(_: FullReturnModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
+  def mockFullReturn(model: FullReturnModel)(response: SubmissionResponse): Unit =
+    (mockFullReturnService
+      .submit(_: FullReturnModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
       .expects(model, *, *, *)
       .returns(Future.successful(response))
-  }
 }

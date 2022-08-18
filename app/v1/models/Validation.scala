@@ -29,4 +29,3 @@ trait Validation {
 object Validation {
   type ValidationResult[A] = ValidatedNec[Validation, A]
 }
-

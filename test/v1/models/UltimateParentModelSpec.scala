@@ -31,7 +31,7 @@ class UltimateParentModelSpec extends AnyWordSpec with Matchers {
       "max values given" in {
 
         val expectedValue = ultimateParentJsonMax
-        val actualValue = Json.toJson(ultimateParentModelMax)
+        val actualValue   = Json.toJson(ultimateParentModelMax)
 
         actualValue shouldBe expectedValue
       }
@@ -39,7 +39,7 @@ class UltimateParentModelSpec extends AnyWordSpec with Matchers {
       "min values given" in {
 
         val expectedValue = ultimateParentJsonMin
-        val actualValue = Json.toJson(ultimateParentModelMin)
+        val actualValue   = Json.toJson(ultimateParentModelMin)
 
         actualValue shouldBe expectedValue
       }
@@ -50,7 +50,7 @@ class UltimateParentModelSpec extends AnyWordSpec with Matchers {
       "max values given" in {
 
         val expectedValue = ultimateParentModelMax
-        val actualValue = ultimateParentJsonMax.as[UltimateParentModel]
+        val actualValue   = ultimateParentJsonMax.as[UltimateParentModel]
 
         actualValue shouldBe expectedValue
       }
@@ -58,11 +58,10 @@ class UltimateParentModelSpec extends AnyWordSpec with Matchers {
       "min values given" in {
 
         val expectedValue = ultimateParentModelMin
-        val actualValue = ultimateParentJsonMin.as[UltimateParentModel]
+        val actualValue   = ultimateParentJsonMin.as[UltimateParentModel]
 
         actualValue shouldBe expectedValue
       }
     }
   }
 }
-

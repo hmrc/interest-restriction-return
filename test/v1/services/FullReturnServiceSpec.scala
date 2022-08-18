@@ -39,7 +39,7 @@ class FullReturnServiceSpec extends MockFullReturnConnector with BaseSpec {
         "return a Right(SuccessResponse)" in {
 
           val service = setup(Right(DesSuccessResponse("ackRef")))
-          val result = service.submit(fullReturnUltimateParentModel)
+          val result  = service.submit(fullReturnUltimateParentModel)
 
           await(result) shouldBe Right(DesSuccessResponse("ackRef"))
         }
@@ -50,7 +50,7 @@ class FullReturnServiceSpec extends MockFullReturnConnector with BaseSpec {
         "return a Left(UnexpectedFailure)" in {
 
           val service = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-          val result = service.submit(fullReturnUltimateParentModel)
+          val result  = service.submit(fullReturnUltimateParentModel)
 
           await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
         }
@@ -69,7 +69,7 @@ class FullReturnServiceSpec extends MockFullReturnConnector with BaseSpec {
         "return a Right(SuccessResponse)" in {
 
           val service = setup(Right(DesSuccessResponse("ackRef")))
-          val result = service.submit(fullReturnModelMin)
+          val result  = service.submit(fullReturnModelMin)
 
           await(result) shouldBe Right(DesSuccessResponse("ackRef"))
         }
@@ -80,7 +80,7 @@ class FullReturnServiceSpec extends MockFullReturnConnector with BaseSpec {
         "return a Left(UnexpectedFailure)" in {
 
           val service = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-          val result = service.submit(fullReturnModelMin)
+          val result  = service.submit(fullReturnModelMin)
 
           await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
         }

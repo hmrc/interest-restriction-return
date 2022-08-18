@@ -20,13 +20,14 @@ import java.time.LocalDate
 import play.api.libs.json.{Format, JsNull, JsObject, Json, Writes}
 import v1.validation.fullReturn.AllocatedRestrictionsValidator
 
-case class AllocatedRestrictionsModel(ap1EndDate: LocalDate,
-                                      ap2EndDate: Option[LocalDate],
-                                      ap3EndDate: Option[LocalDate],
-                                      disallowanceAp1: BigDecimal,
-                                      disallowanceAp2: Option[BigDecimal],
-                                      disallowanceAp3: Option[BigDecimal]
-                                     ) extends AllocatedRestrictionsValidator {
+case class AllocatedRestrictionsModel(
+  ap1EndDate: LocalDate,
+  ap2EndDate: Option[LocalDate],
+  ap3EndDate: Option[LocalDate],
+  disallowanceAp1: BigDecimal,
+  disallowanceAp2: Option[BigDecimal],
+  disallowanceAp3: Option[BigDecimal]
+) extends AllocatedRestrictionsValidator {
   override val allocatedRestrictionsModel: AllocatedRestrictionsModel = this
 
   val totalDisallowances: BigDecimal = disallowanceAp1 + disallowanceAp2.getOrElse(0) + disallowanceAp3.getOrElse(0)
@@ -35,17 +36,22 @@ case class AllocatedRestrictionsModel(ap1EndDate: LocalDate,
 object AllocatedRestrictionsModel {
 
   val writes: Writes[AllocatedRestrictionsModel] = Writes { model =>
-    JsObject(Json.obj(
-      "ap1EndDate" -> model.ap1EndDate,
-      "ap2EndDate" -> model.ap2EndDate,
-      "ap3EndDate" -> model.ap3EndDate,
-      "disallowanceAp1" -> model.disallowanceAp1,
-      "disallowanceAp2" -> model.disallowanceAp2,
-      "disallowanceAp3" -> model.disallowanceAp3,
-      "totalDisallowances" -> model.totalDisallowances
-    ).fields.filterNot(_._2 == JsNull))
+    JsObject(
+      Json
+        .obj(
+          "ap1EndDate"         -> model.ap1EndDate,
+          "ap2EndDate"         -> model.ap2EndDate,
+          "ap3EndDate"         -> model.ap3EndDate,
+          "disallowanceAp1"    -> model.disallowanceAp1,
+          "disallowanceAp2"    -> model.disallowanceAp2,
+          "disallowanceAp3"    -> model.disallowanceAp3,
+          "totalDisallowances" -> model.totalDisallowances
+        )
+        .fields
+        .filterNot(_._2 == JsNull)
+    )
   }
 
-  implicit val format: Format[AllocatedRestrictionsModel] = Format[AllocatedRestrictionsModel](Json.reads[AllocatedRestrictionsModel], writes)
+  implicit val format: Format[AllocatedRestrictionsModel] =
+    Format[AllocatedRestrictionsModel](Json.reads[AllocatedRestrictionsModel], writes)
 }
-

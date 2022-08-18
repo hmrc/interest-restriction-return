@@ -27,7 +27,8 @@ trait AuthorisingCompanyValidator extends BaseValidation {
   val authorisingCompanyModel: AuthorisingCompanyModel
 
   def validate(implicit path: JsPath): ValidationResult[AuthorisingCompanyModel] =
-    (authorisingCompanyModel.companyName.validate(path \ "companyName"),
+    (
+      authorisingCompanyModel.companyName.validate(path \ "companyName"),
       authorisingCompanyModel.utr.validate(path \ "utr")
-      ).mapN((_,_) => authorisingCompanyModel)
+    ).mapN((_, _) => authorisingCompanyModel)
 }

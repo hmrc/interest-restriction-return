@@ -19,9 +19,10 @@ package v1.models
 import play.api.libs.json.Json
 import v1.validation.NonConsolidatedInvestmentElectionValidator
 
-case class NonConsolidatedInvestmentElectionModel(isElected: Boolean,
-                                                  nonConsolidatedInvestments: Option[Seq[NonConsolidatedInvestmentModel]])
-  extends NonConsolidatedInvestmentElectionValidator {
+case class NonConsolidatedInvestmentElectionModel(
+  isElected: Boolean,
+  nonConsolidatedInvestments: Option[Seq[NonConsolidatedInvestmentModel]]
+) extends NonConsolidatedInvestmentElectionValidator {
 
   override val nonConsolidatedInvestmentElectionModel = this
 }

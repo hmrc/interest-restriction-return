@@ -17,7 +17,7 @@
 package v1.validation
 
 import play.api.libs.json.JsPath
-import v1.models.{GroupRatioBlendedModel, CompanyNameModel}
+import v1.models.{CompanyNameModel, GroupRatioBlendedModel}
 import assets.InvestorGroupConstants._
 
 class GroupRatioBlendedValidatorSpec extends BaseValidationSpec {
@@ -57,7 +57,10 @@ class GroupRatioBlendedValidatorSpec extends BaseValidationSpec {
       }
 
       "investorGroup contains v1.validation errors" in {
-        val model = GroupRatioBlendedModel(isElected = true, investorGroups = Some(Seq(investorGroupsModelMin.copy(groupName = CompanyNameModel("")))))
+        val model = GroupRatioBlendedModel(
+          isElected = true,
+          investorGroups = Some(Seq(investorGroupsModelMin.copy(groupName = CompanyNameModel(""))))
+        )
         leftSideError(model.validate).errorMessage shouldBe CompanyNameLengthError("").errorMessage
       }
     }

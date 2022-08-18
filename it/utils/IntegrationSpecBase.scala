@@ -18,11 +18,13 @@ package utils
 
 import org.scalatest._
 import org.scalatest.concurrent.{Eventually, IntegrationPatience, ScalaFutures}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.{Application, Environment, Mode}
 import play.api.inject.guice.GuiceApplicationBuilder
 
-trait IntegrationSpecBase extends WordSpec
+trait IntegrationSpecBase extends AnyWordSpec
   with GivenWhenThen with TestSuite with ScalaFutures with IntegrationPatience with Matchers
   with WiremockHelper
   with GuiceOneServerPerSuite

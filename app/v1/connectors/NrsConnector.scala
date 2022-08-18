@@ -22,7 +22,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.HttpClient
 import play.api.Logging
 import v1.models.nrs._
-import scala.util.{Success, Failure}
+import scala.util.{Failure, Success}
 import v1.connectors.HttpHelper.NrsResponse
 import v1.connectors.httpParsers.NrsResponseHttpParser._
 
@@ -33,14 +33,16 @@ trait NrsConnector {
 }
 
 @Singleton
-class NrsConnectorImpl @Inject()(http: HttpClient, implicit val appConfig: AppConfig)(implicit ec: ExecutionContext) extends NrsConnector with Logging {
+class NrsConnectorImpl @Inject() (http: HttpClient, implicit val appConfig: AppConfig)(implicit ec: ExecutionContext)
+    extends NrsConnector
+    with Logging {
 
   private val XApiKey = "X-API-Key"
 
   def send[A](nrsPayload: NrsPayload): Future[NrsResponse] =
     (appConfig.nrsUrl, appConfig.nrsAuthorisationToken) match {
       case (Some(url), Some(token)) => post(nrsPayload, url, token)
-      case _ =>
+      case _                        =>
         logger.error(s"Nrs config failure: ${appConfig.nrsUrl} ${appConfig.nrsAuthorisationToken}")
         Future.failed(new NrsConfigurationException)
     }
@@ -50,14 +52,18 @@ class NrsConnectorImpl @Inject()(http: HttpClient, implicit val appConfig: AppCo
     implicit val hc: HeaderCarrier = HeaderCarrier()
 
     logger.info(s"Sending request to NRS service. Url: $url")
-    val result = http.POST[NrsPayload, NrsResponse](s"$url/submission", payload,
-      Seq[(String, String)](("Content-Type", "application/json"), (XApiKey, authToken)))
+    val result = http.POST[NrsPayload, NrsResponse](
+      s"$url/submission",
+      payload,
+      Seq[(String, String)](("Content-Type", "application/json"), (XApiKey, authToken))
+    )
     result.onComplete {
-      case Success(response) => logger.info(s"Response received from NRS service: ${response}")
-      case Failure(e) => logger.error(s"Call to NRS service failed url=$url, exception=$e", e)
+      case Success(response) => logger.info(s"Response received from NRS service: $response")
+      case Failure(e)        => logger.error(s"Call to NRS service failed url=$url, exception=$e", e)
     }
     result
   }
 }
 
-class NrsConfigurationException extends Exception("NRS URL and token needs to be configured in the application.conf", None.orNull)
+class NrsConfigurationException
+    extends Exception("NRS URL and token needs to be configured in the application.conf", None.orNull)

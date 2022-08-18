@@ -27,12 +27,14 @@ import v1.models.requests.IdentifierRequest
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class AbbreviatedReturnService @Inject()(abbreviatedReturnConnector: AbbreviatedReturnConnector)
-  extends Submission[AbbreviatedReturnModel] with Logging {
+class AbbreviatedReturnService @Inject() (abbreviatedReturnConnector: AbbreviatedReturnConnector)
+    extends Submission[AbbreviatedReturnModel]
+    with Logging {
 
-  override def submit(abbreviatedReturn: AbbreviatedReturnModel)
-             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] =
-    abbreviatedReturnConnector.submitAbbreviatedReturn(abbreviatedReturn).map{ resp =>
+  override def submit(
+    abbreviatedReturn: AbbreviatedReturnModel
+  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] =
+    abbreviatedReturnConnector.submitAbbreviatedReturn(abbreviatedReturn).map { resp =>
       logger.info("Successfully sent a abbreviated return payload")
       resp
     }

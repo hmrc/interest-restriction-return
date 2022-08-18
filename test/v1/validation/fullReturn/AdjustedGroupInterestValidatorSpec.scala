@@ -33,9 +33,9 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
       }
 
       "Group EBITDA is zero and group ratio is 100" in {
-        val qngie: BigDecimal = 100.0
+        val qngie: BigDecimal       = 100.0
         val groupEBITDA: BigDecimal = 0.0
-        val groupRatio: BigDecimal = 100.0
+        val groupRatio: BigDecimal  = 100.0
 
         val model = adjustedGroupInterestModel.copy(
           qngie = qngie,
@@ -48,7 +48,7 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
       "Group Ratio" when {
 
         "is 1%" in {
-          val qngie = 100.0
+          val qngie       = 100.0
           val groupEBITDA = 10000
 
           val model = adjustedGroupInterestModel.copy(
@@ -60,11 +60,10 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
         }
 
         "is 50%" in {
-          val qngie = 100.0
+          val qngie       = 100.0
           val groupEBITDA = 200
 
           val model = adjustedGroupInterestModel.copy(
-
             qngie = qngie,
             groupEBITDA = Some(groupEBITDA),
             groupRatio = 50
@@ -73,12 +72,11 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
         }
 
         "is > 100 and is capped" in {
-          val qngie = 100000.0
+          val qngie       = 100000.0
           val groupEBITDA = 10.0
-          val groupRatio = 100
+          val groupRatio  = 100
 
           val model = adjustedGroupInterestModel.copy(
-
             qngie = qngie,
             groupEBITDA = Some(groupEBITDA),
             groupRatio = groupRatio
@@ -87,7 +85,7 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
         }
 
         "GroupRatio & QNGIE are zero" in {
-          val qngie = 0
+          val qngie      = 0
           val groupRatio = 0
 
           val model = adjustedGroupInterestModel.copy(
@@ -99,12 +97,11 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
         }
 
         "has a decimal which is a round number" in {
-          val qngie = 5.0
+          val qngie       = 5.0
           val groupEBITDA = 8.0
-          val groupRatio = 62.5
+          val groupRatio  = 62.5
 
           val model = adjustedGroupInterestModel.copy(
-
             qngie = qngie,
             groupEBITDA = Some(groupEBITDA),
             groupRatio = groupRatio
@@ -113,9 +110,9 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
         }
 
         "has no decimal places" in {
-          val qngie = 100
+          val qngie       = 100
           val groupEBITDA = 200
-          val groupRatio = 50
+          val groupRatio  = 50
 
           val model = adjustedGroupInterestModel.copy(
             qngie = qngie,
@@ -126,11 +123,11 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
         }
 
         "has five decimal places" in {
-          val qngie = 100.04
+          val qngie       = 100.04
           val groupEBITDA = 260.15
-          val groupRatio = 38.45473
+          val groupRatio  = 38.45473
 
-          val model = adjustedGroupInterestModel.copy(
+          val model  = adjustedGroupInterestModel.copy(
             qngie = qngie,
             groupEBITDA = Some(groupEBITDA),
             groupRatio = groupRatio
@@ -141,11 +138,11 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
 
         "only provides some decimal places" in {
 
-          val qngie = 100.04
+          val qngie       = 100.04
           val groupEBITDA = 260.15
-          val groupRatio = 38.45
+          val groupRatio  = 38.45
 
-          val model = adjustedGroupInterestModel.copy(
+          val model  = adjustedGroupInterestModel.copy(
             qngie = qngie,
             groupEBITDA = Some(groupEBITDA),
             groupRatio = groupRatio
@@ -160,7 +157,7 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
       "qngie" when {
         "has more than two decimal places" in {
           val qngie: BigDecimal = 100.111
-          val model = adjustedGroupInterestModel.copy(
+          val model             = adjustedGroupInterestModel.copy(
             qngie = qngie
           )
           leftSideError(model.validate).errorMessage shouldBe QngieDecimalError(qngie).errorMessage
@@ -178,12 +175,11 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
 
       "Group EBITDA" when {
         "has more than two decimal places" in {
-          val qngie = 5.0
+          val qngie       = 5.0
           val groupEBITDA = 8.888
-          val groupRatio = 0.62
+          val groupRatio  = 0.62
 
           val model = adjustedGroupInterestModel.copy(
-
             qngie = qngie,
             groupEBITDA = Some(groupEBITDA),
             groupRatio = groupRatio
@@ -195,7 +191,7 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
       "Group Ratio" when {
         "is negative" in {
           val groupRatio: BigDecimal = -100.00
-          val model = adjustedGroupInterestModel.copy(
+          val model                  = adjustedGroupInterestModel.copy(
             groupRatio = groupRatio
           )
           leftSideError(model.validate).errorMessage shouldBe GroupRatioError(groupRatio).errorMessage
@@ -203,7 +199,7 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
 
         "is calculated to be negative but not set to 100%" in {
           val groupRatio: BigDecimal = 99.00
-          val model = adjustedGroupInterestModel.copy(
+          val model                  = adjustedGroupInterestModel.copy(
             qngie = -1,
             groupEBITDA = Some(1),
             groupRatio = groupRatio
@@ -214,19 +210,18 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
 
       "is greater than 100" in {
         val groupRatio: BigDecimal = 100.01
-        val model = adjustedGroupInterestModel.copy(
+        val model                  = adjustedGroupInterestModel.copy(
           groupRatio = groupRatio
         )
         leftSideError(model.validate).errorMessage shouldBe GroupRatioError(groupRatio).errorMessage
       }
 
       "has more than five decimal places" in {
-        val qngie = 5.0
+        val qngie       = 5.0
         val groupEBITDA = 8.0
-        val groupRatio = 0.625555
+        val groupRatio  = 0.625555
 
         val model = adjustedGroupInterestModel.copy(
-
           qngie = qngie,
           groupEBITDA = Some(groupEBITDA),
           groupRatio = groupRatio
@@ -238,42 +233,39 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
     "GroupEBITDA" when {
       "is negative" in {
         val groupEBITDA: BigDecimal = -1
-        val model = adjustedGroupInterestModel.copy(groupEBITDA = Some(groupEBITDA))
+        val model                   = adjustedGroupInterestModel.copy(groupEBITDA = Some(groupEBITDA))
         leftSideError(model.validate).errorMessage shouldBe NegativeOrZeroGroupEBITDAError(groupEBITDA).errorMessage
       }
 
       "is zero" in {
         val groupEBITDA: BigDecimal = 0
-        val model = adjustedGroupInterestModel.copy(groupEBITDA = Some(groupEBITDA))
+        val model                   = adjustedGroupInterestModel.copy(groupEBITDA = Some(groupEBITDA))
         leftSideError(model.validate).errorMessage shouldBe NegativeOrZeroGroupEBITDAError(groupEBITDA).errorMessage
       }
     }
 
     "All fields fail validation" in {
-      val qngie = 5.0122
+      val qngie       = 5.0122
       val groupEBITDA = 8.888
-      val groupRatio = 0.621234
+      val groupRatio  = 0.621234
 
-      val model = adjustedGroupInterestModel.copy(
-
+      val model          = adjustedGroupInterestModel.copy(
         qngie = qngie,
         groupEBITDA = Some(groupEBITDA),
         groupRatio = groupRatio
       )
-      val expectedErrors = NonEmptyChain(
-        GroupRatioDecimalError(0.621234), QngieDecimalError(5.0122),
-        GroupEBITDADecimalError(8.888))
+      val expectedErrors =
+        NonEmptyChain(GroupRatioDecimalError(0.621234), QngieDecimalError(5.0122), GroupEBITDADecimalError(8.888))
 
       model.validate.toEither shouldBe Left(expectedErrors)
     }
 
     "Multiple fields fail validation" in {
-      val qngie = 5.0122
+      val qngie       = 5.0122
       val groupEBITDA = 8.88
-      val groupRatio = 0.621234
+      val groupRatio  = 0.621234
 
-      val model = adjustedGroupInterestModel.copy(
-
+      val model          = adjustedGroupInterestModel.copy(
         qngie = qngie,
         groupEBITDA = Some(groupEBITDA),
         groupRatio = groupRatio

@@ -32,12 +32,13 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
 
     "the user is authenticated" when {
 
-      object AuthorisedController extends RevokeReportingCompanyController(
-        authAction = AuthorisedAction,
-        revokeReportingCompanyService = mockRevokeReportingCompanyService,
-        controllerComponents = Helpers.stubControllerComponents(),
-        appConfig = appConfig
-      )
+      object AuthorisedController
+          extends RevokeReportingCompanyController(
+            authAction = AuthorisedAction,
+            revokeReportingCompanyService = mockRevokeReportingCompanyService,
+            controllerComponents = Helpers.stubControllerComponents(),
+            appConfig = appConfig
+          )
 
       "a valid payload is submitted" when {
 
@@ -60,8 +61,8 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
           "an error response is returned from the revoke reporting company service" should {
 
             "return the Error" in {
-              mockRevokeReportingCompany(revokeReportingCompanyModelMax)(Left(
-                UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err"))
+              mockRevokeReportingCompany(revokeReportingCompanyModelMax)(
+                Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err"))
               )
 
               val result = AuthorisedController.revoke()(validJsonFakeRequest)
@@ -88,12 +89,13 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
 
       "return 401 (Unauthorised)" in {
 
-        object UnauthorisedController extends RevokeReportingCompanyController(
-          authAction = UnauthorisedAction,
-          revokeReportingCompanyService = mockRevokeReportingCompanyService,
-          controllerComponents = Helpers.stubControllerComponents(),
-          appConfig = appConfig
-        )
+        object UnauthorisedController
+            extends RevokeReportingCompanyController(
+              authAction = UnauthorisedAction,
+              revokeReportingCompanyService = mockRevokeReportingCompanyService,
+              controllerComponents = Helpers.stubControllerComponents(),
+              appConfig = appConfig
+            )
 
         val result = UnauthorisedController.revoke()(fakeRequest.withBody(Json.obj()))
         status(result) shouldBe Status.UNAUTHORIZED
@@ -101,17 +103,17 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
     }
   }
 
-
   "RevokeReportingCompanyController.validate()" when {
     val validateFakeRequest = FakeRequest("POST", "/interest-restriction-return/reporting-company/appoint/validate")
     "the user is authenticated" when {
 
-      object AuthorisedController extends RevokeReportingCompanyController(
-        authAction = AuthorisedAction,
-        revokeReportingCompanyService = mockRevokeReportingCompanyService,
-        controllerComponents = Helpers.stubControllerComponents(),
-        appConfig = appConfig
-      )
+      object AuthorisedController
+          extends RevokeReportingCompanyController(
+            authAction = AuthorisedAction,
+            revokeReportingCompanyService = mockRevokeReportingCompanyService,
+            controllerComponents = Helpers.stubControllerComponents(),
+            appConfig = appConfig
+          )
 
       "a valid payload is submitted" when {
 
@@ -142,12 +144,13 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
 
       "return 401 (Unauthorised)" in {
 
-        object UnauthorisedController extends RevokeReportingCompanyController(
-          authAction = UnauthorisedAction,
-          revokeReportingCompanyService = mockRevokeReportingCompanyService,
-          controllerComponents = Helpers.stubControllerComponents(),
-          appConfig = appConfig
-        )
+        object UnauthorisedController
+            extends RevokeReportingCompanyController(
+              authAction = UnauthorisedAction,
+              revokeReportingCompanyService = mockRevokeReportingCompanyService,
+              controllerComponents = Helpers.stubControllerComponents(),
+              appConfig = appConfig
+            )
 
         val result = UnauthorisedController.validate()(fakeRequest.withBody(Json.obj()))
         status(result) shouldBe Status.UNAUTHORIZED

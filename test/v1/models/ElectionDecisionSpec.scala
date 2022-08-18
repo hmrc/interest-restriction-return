@@ -17,7 +17,7 @@
 package v1.models
 
 import org.scalatest.TryValues._
-import play.api.libs.json.{JsonValidationError, JsPath, JsResultException, JsString}
+import play.api.libs.json.{JsPath, JsResultException, JsString, JsonValidationError}
 
 import scala.util.Try
 import org.scalatest.matchers.should.Matchers
@@ -27,14 +27,14 @@ class ElectionDecisionSpec extends AnyWordSpec with Matchers {
   "ElectionDecision" should {
     "valid" when {
       "elect is entered" in {
-        val json = JsString("elect")
+        val json   = JsString("elect")
         val result = Try(json.as[ElectionDecision])
 
         result.isSuccess shouldEqual true
       }
 
       "revoke is entered" in {
-        val json = JsString("revoke")
+        val json   = JsString("revoke")
         val result = Try(json.as[ElectionDecision])
 
         result.isSuccess shouldEqual true
@@ -43,10 +43,12 @@ class ElectionDecisionSpec extends AnyWordSpec with Matchers {
 
     "invalid" when {
       "an incorrect value is entered" in {
-        val json = JsString("Something incorrect")
+        val json   = JsString("Something incorrect")
         val result = Try(json.as[ElectionDecision])
 
-        result.failure.exception shouldEqual JsResultException(Seq((JsPath, Seq(JsonValidationError(s"Unknown ElectionDecision")))))
+        result.failure.exception shouldEqual JsResultException(
+          Seq((JsPath, Seq(JsonValidationError(s"Unknown ElectionDecision"))))
+        )
       }
     }
   }

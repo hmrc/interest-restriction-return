@@ -29,45 +29,45 @@ trait AbbreviatedReturnValidator extends BaseValidation {
 
   val abbreviatedReturnModel: AbbreviatedReturnModel
 
-  private def validateRevisedReturnDetails: ValidationResult[_] = {
+  private def validateRevisedReturnDetails: ValidationResult[_] =
     (abbreviatedReturnModel.submissionType, abbreviatedReturnModel.revisedReturnDetails) match {
       case (Original, Some(details)) => RevisedReturnDetailsSupplied(details).invalidNec
-      case (Revised, None) => RevisedReturnDetailsNotSupplied.invalidNec
-      case (Revised, Some(details)) => details.validate(JsPath)
-      case _ => abbreviatedReturnModel.revisedReturnDetails.validNec
+      case (Revised, None)           => RevisedReturnDetailsNotSupplied.invalidNec
+      case (Revised, Some(details))  => details.validate(JsPath)
+      case _                         => abbreviatedReturnModel.revisedReturnDetails.validNec
     }
-  }
 
-  private def validateParentCompany: ValidationResult[Boolean] = {
+  private def validateParentCompany: ValidationResult[Boolean] =
     (abbreviatedReturnModel.reportingCompany.sameAsUltimateParent, abbreviatedReturnModel.parentCompany) match {
       case (true, Some(details)) => ParentCompanyDetailsSupplied(details).invalidNec
-      case (false, None) => ParentCompanyDetailsNotSupplied.invalidNec
-      case _ => abbreviatedReturnModel.appointedReportingCompany.validNec
+      case (false, None)         => ParentCompanyDetailsNotSupplied.invalidNec
+      case _                     => abbreviatedReturnModel.appointedReportingCompany.validNec
     }
-  }
 
-  private def validateAppointedReporter: ValidationResult[Boolean] = {
-    if(abbreviatedReturnModel.appointedReportingCompany) abbreviatedReturnModel.appointedReportingCompany.validNec else {
+  private def validateAppointedReporter: ValidationResult[Boolean] =
+    if (abbreviatedReturnModel.appointedReportingCompany) abbreviatedReturnModel.appointedReportingCompany.validNec
+    else {
       ReportingCompanyNotAppointed.invalidNec
     }
-  }
 
   private def validateDeclaration: ValidationResult[Boolean] =
     abbreviatedReturnModel.declaration match {
-      case true => abbreviatedReturnModel.declaration.validNec
+      case true  => abbreviatedReturnModel.declaration.validNec
       case false => ReturnDeclarationError(abbreviatedReturnModel.declaration).invalidNec
     }
 
   def validate: ValidationResult[AbbreviatedReturnModel] = {
 
     val validatedUkCompanies =
-      if(abbreviatedReturnModel.ukCompanies.isEmpty) UkCompaniesEmpty.invalidNec else {
-        combineValidations(abbreviatedReturnModel.ukCompanies.zipWithIndex.map {
-          case (a, i) => a.validate(JsPath \ s"ukCompanies[$i]")
-        }:_*)
+      if (abbreviatedReturnModel.ukCompanies.isEmpty) UkCompaniesEmpty.invalidNec
+      else {
+        combineValidations(abbreviatedReturnModel.ukCompanies.zipWithIndex.map { case (a, i) =>
+          a.validate(JsPath \ s"ukCompanies[$i]")
+        }: _*)
       }
 
-    combineValidations(abbreviatedReturnModel.agentDetails.validate(JsPath \ "agentDetails"),
+    combineValidations(
+      abbreviatedReturnModel.agentDetails.validate(JsPath \ "agentDetails"),
       abbreviatedReturnModel.reportingCompany.validate(JsPath \ "reportingCompany"),
       optionValidations(abbreviatedReturnModel.parentCompany.map(_.validate(JsPath \ "parentCompany"))),
       abbreviatedReturnModel.groupCompanyDetails.validate(JsPath \ "groupCompanyDetails"),
@@ -77,6 +77,6 @@ trait AbbreviatedReturnValidator extends BaseValidation {
       validateRevisedReturnDetails,
       validateAppointedReporter,
       validateDeclaration
-      ).map(_ => abbreviatedReturnModel)
+    ).map(_ => abbreviatedReturnModel)
   }
 }

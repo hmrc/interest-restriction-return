@@ -67,33 +67,33 @@ object DeemedParentConstants extends BaseConstants {
   )
 
   val deemedParentJsonMax = Json.obj(
-    "companyName" -> companyName,
-    "isUk" -> true,
-    "ctutr" -> ctutr,
-    "sautr" -> sautr,
+    "companyName"            -> companyName,
+    "isUk"                   -> true,
+    "ctutr"                  -> ctutr,
+    "sautr"                  -> sautr,
     "countryOfIncorporation" -> Some(nonUkCountryCode)
   )
 
   val deemedParentJsonMin = Json.obj(
     "companyName" -> companyName,
-     "isUk" -> true
+    "isUk"        -> true
   )
 
   val deemedParentJsonUkCompany = Json.obj(
     "companyName" -> companyName,
-    "isUk" -> true,
-    "ctutr" -> ctutr
+    "isUk"        -> true,
+    "ctutr"       -> ctutr
   )
 
-  val deemedParentJsonNonUkCompany= Json.obj(
-    "companyName" -> companyName,
-    "isUk" -> true,
+  val deemedParentJsonNonUkCompany = Json.obj(
+    "companyName"            -> companyName,
+    "isUk"                   -> true,
     "countryOfIncorporation" -> nonUkCountryCode
   )
 
   val deemedParentJsonUkPartnership = Json.obj(
     "companyName" -> companyName,
-    "isUk" -> true,
-    "sautr" -> sautr
+    "isUk"        -> true,
+    "sautr"       -> sautr
   )
 }

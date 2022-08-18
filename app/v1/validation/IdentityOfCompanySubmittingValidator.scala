@@ -26,11 +26,13 @@ trait IdentityOfCompanySubmittingValidator extends BaseValidation {
 
   val identityOfCompanySubmitting: IdentityOfCompanySubmittingModel
 
-  private def validateIdentityOfCompanySubmitting(implicit path: JsPath): ValidationResult[IdentityOfCompanySubmittingModel] = {
-    val isUk = identityOfCompanySubmitting.ctutr.isDefined
+  private def validateIdentityOfCompanySubmitting(implicit
+    path: JsPath
+  ): ValidationResult[IdentityOfCompanySubmittingModel] = {
+    val isUk    = identityOfCompanySubmitting.ctutr.isDefined
     val isNonUk = identityOfCompanySubmitting.countryOfIncorporation.isDefined
 
-    if(isUk && isNonUk) {
+    if (isUk && isNonUk) {
       CannotBeUkAndNonUk(identityOfCompanySubmitting).invalidNec
     } else {
       identityOfCompanySubmitting.validNec
@@ -38,23 +40,22 @@ trait IdentityOfCompanySubmittingValidator extends BaseValidation {
   }
 
   def validate(implicit path: JsPath): ValidationResult[IdentityOfCompanySubmittingModel] =
-    (validateIdentityOfCompanySubmitting,
+    (
+      validateIdentityOfCompanySubmitting,
       identityOfCompanySubmitting.companyName.validate(path \ "companyName"),
       optionValidations(identityOfCompanySubmitting.ctutr.map(_.validate(path \ "ctutr"))),
-      optionValidations(identityOfCompanySubmitting.countryOfIncorporation.map(_.validate(path \ "countryOfIncorporation"))),
-      optionValidations(identityOfCompanySubmitting.legalEntityIdentifier.map(_.validate(path \ "legalEntityIdentifier")))
-      ).mapN((_,_,_,_,_) => identityOfCompanySubmitting)
+      optionValidations(
+        identityOfCompanySubmitting.countryOfIncorporation.map(_.validate(path \ "countryOfIncorporation"))
+      ),
+      optionValidations(
+        identityOfCompanySubmitting.legalEntityIdentifier.map(_.validate(path \ "legalEntityIdentifier"))
+      )
+    ).mapN((_, _, _, _, _) => identityOfCompanySubmitting)
 }
 
-case class CannotBeUkAndNonUk(companySubmitting: IdentityOfCompanySubmittingModel)(implicit val path: JsPath) extends Validation {
-  val code = "IDENTITY_CTUTR_COUNTRY"
+case class CannotBeUkAndNonUk(companySubmitting: IdentityOfCompanySubmittingModel)(implicit val path: JsPath)
+    extends Validation {
+  val code                 = "IDENTITY_CTUTR_COUNTRY"
   val errorMessage: String = "Company submitting cannot send both a CTUTR and a country of incorporation"
-  val value = Some(Json.toJson(companySubmitting))
+  val value                = Some(Json.toJson(companySubmitting))
 }
-
-
-
-
-
-
-

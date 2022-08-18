@@ -44,98 +44,142 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
 
       "Return type is Original and some details for a revision are supplied" in {
 
-        leftSideError(abbreviatedReturnUltimateParentModel.copy(
-          submissionType = Original,
-          revisedReturnDetails = Some(RevisedReturnDetailsModel("Revision"))
-        ).validate).errorMessage shouldBe RevisedReturnDetailsSupplied(RevisedReturnDetailsModel("Revision")).errorMessage
+        leftSideError(
+          abbreviatedReturnUltimateParentModel
+            .copy(
+              submissionType = Original,
+              revisedReturnDetails = Some(RevisedReturnDetailsModel("Revision"))
+            )
+            .validate
+        ).errorMessage shouldBe RevisedReturnDetailsSupplied(RevisedReturnDetailsModel("Revision")).errorMessage
       }
 
       "Return type is Revised and no details for a revision are supplied" in {
 
-        leftSideError(abbreviatedReturnUltimateParentModel.copy(
-          submissionType = Revised,
-          revisedReturnDetails = None
-        ).validate).errorMessage shouldBe RevisedReturnDetailsNotSupplied.errorMessage
+        leftSideError(
+          abbreviatedReturnUltimateParentModel
+            .copy(
+              submissionType = Revised,
+              revisedReturnDetails = None
+            )
+            .validate
+        ).errorMessage shouldBe RevisedReturnDetailsNotSupplied.errorMessage
       }
 
       "Reporting Company is the same as UPC but Parent Details are supplied" in {
 
-        leftSideError(abbreviatedReturnUltimateParentModel.copy(
-          reportingCompany = reportingCompanyModel.copy(sameAsUltimateParent = true),
-          parentCompany = Some(parentCompanyModelUltUkCompany)
-        ).validate).errorMessage shouldBe ParentCompanyDetailsSupplied(parentCompanyModelUltUkCompany).errorMessage
+        leftSideError(
+          abbreviatedReturnUltimateParentModel
+            .copy(
+              reportingCompany = reportingCompanyModel.copy(sameAsUltimateParent = true),
+              parentCompany = Some(parentCompanyModelUltUkCompany)
+            )
+            .validate
+        ).errorMessage shouldBe ParentCompanyDetailsSupplied(parentCompanyModelUltUkCompany).errorMessage
       }
 
       "Reporting Company is the same as deemed but Parent Details are supplied" in {
 
-        leftSideError(abbreviatedReturnDeemedParentModel.copy(
-          reportingCompany = reportingCompanyModel.copy(sameAsUltimateParent = true),
-          parentCompany = Some(parentCompanyModelDeemedUkCompany)
-        ).validate).errorMessage shouldBe ParentCompanyDetailsSupplied(parentCompanyModelUltUkCompany).errorMessage
+        leftSideError(
+          abbreviatedReturnDeemedParentModel
+            .copy(
+              reportingCompany = reportingCompanyModel.copy(sameAsUltimateParent = true),
+              parentCompany = Some(parentCompanyModelDeemedUkCompany)
+            )
+            .validate
+        ).errorMessage shouldBe ParentCompanyDetailsSupplied(parentCompanyModelUltUkCompany).errorMessage
       }
 
       "Reporting Company is not the same as UPC and UPC is not supplied" in {
 
-        leftSideError(abbreviatedReturnUltimateParentModel.copy(
-          reportingCompany = reportingCompanyModel,
-          parentCompany = None
-        ).validate).errorMessage shouldBe ParentCompanyDetailsNotSupplied.errorMessage
+        leftSideError(
+          abbreviatedReturnUltimateParentModel
+            .copy(
+              reportingCompany = reportingCompanyModel,
+              parentCompany = None
+            )
+            .validate
+        ).errorMessage shouldBe ParentCompanyDetailsNotSupplied.errorMessage
       }
 
       "Agent details are invalid" in {
-        leftSideError(abbreviatedReturnUltimateParentModel.copy(agentDetails = agentDetailsModelMax.copy(
-          agentName = None)).validate).errorMessage shouldBe AgentNameNotSuppliedError().errorMessage
+        leftSideError(
+          abbreviatedReturnUltimateParentModel.copy(agentDetails = agentDetailsModelMax.copy(agentName = None)).validate
+        ).errorMessage shouldBe AgentNameNotSuppliedError().errorMessage
       }
 
       "Reporting Company details are invalid" in {
-        leftSideError(abbreviatedReturnUltimateParentModel.copy(reportingCompany = reportingCompanyModel.copy(
-            companyName = companyNameTooLong)).validate).errorMessage shouldBe CompanyNameLengthError(companyNameTooLong.name).errorMessage
+        leftSideError(
+          abbreviatedReturnUltimateParentModel
+            .copy(reportingCompany = reportingCompanyModel.copy(companyName = companyNameTooLong))
+            .validate
+        ).errorMessage shouldBe CompanyNameLengthError(companyNameTooLong.name).errorMessage
       }
 
       "Parent Company is invalid" in {
-        leftSideError(abbreviatedReturnUltimateParentModel.copy(parentCompany = Some(parentCompanyModelMax)).validate).errorMessage shouldBe
+        leftSideError(
+          abbreviatedReturnUltimateParentModel.copy(parentCompany = Some(parentCompanyModelMax)).validate
+        ).errorMessage shouldBe
           ParentCompanyCanNotBeUltimateAndDeemed(parentCompanyModelMax).errorMessage
       }
 
       "it is not the appointed reporting company" in {
-        leftSideError(abbreviatedReturnUltimateParentModel.copy(appointedReportingCompany = false
-        ).validate).errorMessage shouldBe ReportingCompanyNotAppointed.errorMessage
+        leftSideError(
+          abbreviatedReturnUltimateParentModel.copy(appointedReportingCompany = false).validate
+        ).errorMessage shouldBe ReportingCompanyNotAppointed.errorMessage
       }
 
       "Uk Company details are empty" in {
-        leftSideError(abbreviatedReturnUltimateParentModel.copy(ukCompanies = Seq()
-        ).validate).errorMessage shouldBe UkCompaniesEmpty.errorMessage
+        leftSideError(
+          abbreviatedReturnUltimateParentModel.copy(ukCompanies = Seq()).validate
+        ).errorMessage shouldBe UkCompaniesEmpty.errorMessage
       }
 
       "Uk Company details are invalid" in {
-        leftSideError(abbreviatedReturnUltimateParentModel.copy(
-          ukCompanies = Seq(ukCompanyModel.copy(companyName = companyNameTooLong))
-        ).validate).errorMessage shouldBe CompanyNameLengthError(companyNameTooLong.name).errorMessage
+        leftSideError(
+          abbreviatedReturnUltimateParentModel
+            .copy(
+              ukCompanies = Seq(ukCompanyModel.copy(companyName = companyNameTooLong))
+            )
+            .validate
+        ).errorMessage shouldBe CompanyNameLengthError(companyNameTooLong.name).errorMessage
       }
 
       "Return type is Revised and the revised return details are less than 1 character long" in {
 
-        leftSideError(abbreviatedReturnUltimateParentModel.copy(
-          submissionType = Revised,
-          revisedReturnDetails = Some(RevisedReturnDetailsModel(""))
-        ).validate).errorMessage shouldBe RevisedReturnDetailsLengthError("").errorMessage
+        leftSideError(
+          abbreviatedReturnUltimateParentModel
+            .copy(
+              submissionType = Revised,
+              revisedReturnDetails = Some(RevisedReturnDetailsModel(""))
+            )
+            .validate
+        ).errorMessage shouldBe RevisedReturnDetailsLengthError("").errorMessage
       }
 
       "Return type is Revised and the revised return details are more than 5000 character longs" in {
 
-        leftSideError(abbreviatedReturnUltimateParentModel.copy(
-          submissionType = Revised,
-          revisedReturnDetails = Some(RevisedReturnDetailsModel("a" * 5001))
-        ).validate).errorMessage shouldBe RevisedReturnDetailsLengthError("a" * 5001).errorMessage
+        leftSideError(
+          abbreviatedReturnUltimateParentModel
+            .copy(
+              submissionType = Revised,
+              revisedReturnDetails = Some(RevisedReturnDetailsModel("a" * 5001))
+            )
+            .validate
+        ).errorMessage shouldBe RevisedReturnDetailsLengthError("a" * 5001).errorMessage
       }
 
       "Return type is Revised and the revised return details contains invalid characters" in {
         val returnDetails = "ʰʲʺ£$%˦˫qwNew!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is 160" +
           " no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
-        leftSideError(abbreviatedReturnUltimateParentModel.copy(
-          submissionType = Revised,
-          revisedReturnDetails = Some(RevisedReturnDetailsModel(returnDetails))
-        ).validate).errorMessage shouldBe RevisedReturnDetailsCharacterError(returnDetails).errorMessage
+        leftSideError(
+          abbreviatedReturnUltimateParentModel
+            .copy(
+              submissionType = Revised,
+              revisedReturnDetails = Some(RevisedReturnDetailsModel(returnDetails))
+            )
+            .validate
+        ).errorMessage shouldBe RevisedReturnDetailsCharacterError(returnDetails).errorMessage
       }
 
       "declaration is false" in {

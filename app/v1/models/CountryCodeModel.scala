@@ -27,8 +27,8 @@ object CountryCodeModel {
 
   implicit val reads: Reads[CountryCodeModel] = JsPath.read[String].map(CountryCodeModel.apply)
 
-  implicit val writes: Writes[CountryCodeModel] = Writes {
-    model => JsString(model.code)
+  implicit val writes: Writes[CountryCodeModel] = Writes { model =>
+    JsString(model.code)
   }
 
 }

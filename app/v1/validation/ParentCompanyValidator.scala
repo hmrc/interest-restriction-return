@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import play.api.libs.json.{Json, JsPath}
+import play.api.libs.json.{JsPath, Json}
 import v1.models.Validation.ValidationResult
 import v1.models.{ParentCompanyModel, Validation}
 
@@ -26,9 +26,11 @@ trait ParentCompanyValidator extends BaseValidation {
 
   val parentCompanyModel: ParentCompanyModel
 
-  private def validateParentCompanyCanNotBeUltimateAndDeemed(implicit path: JsPath): ValidationResult[ParentCompanyModel] = {
+  private def validateParentCompanyCanNotBeUltimateAndDeemed(implicit
+    path: JsPath
+  ): ValidationResult[ParentCompanyModel] = {
     val isUltimate = parentCompanyModel.ultimateParent.isDefined
-    val isDeemed = parentCompanyModel.deemedParent.isDefined
+    val isDeemed   = parentCompanyModel.deemedParent.isDefined
 
     if (isUltimate && isDeemed) {
       ParentCompanyCanNotBeUltimateAndDeemed(parentCompanyModel).invalidNec
@@ -40,66 +42,65 @@ trait ParentCompanyValidator extends BaseValidation {
   }
 
   private def validateOnlyTwoOrThreeDeemedParents(implicit path: JsPath): ValidationResult[ParentCompanyModel] = {
-    val numOfDeemedParent = parentCompanyModel.deemedParent.fold(0) { x => x.length }
+    val numOfDeemedParent = parentCompanyModel.deemedParent.fold(0)(x => x.length)
     numOfDeemedParent match {
-      case x if x > 3 => MaxThreeDeemedParents(parentCompanyModel).invalidNec
+      case x if x > 3  => MaxThreeDeemedParents(parentCompanyModel).invalidNec
       case x if x == 1 => MinTwoDeemedParents(parentCompanyModel).invalidNec
-      case _ =>  parentCompanyModel.validNec
+      case _           => parentCompanyModel.validNec
     }
   }
 
   def validate(implicit path: JsPath): ValidationResult[ParentCompanyModel] = {
 
     val validatedDeemedParent = parentCompanyModel.deemedParent.map(deemedParents =>
-      if (deemedParents.isEmpty) DeemedParentsEmpty().invalidNec else {
-        combineValidations(deemedParents.zipWithIndex.map {
-          case (x, i) => x.validate(path \ s"deemedParent[$i]")
+      if (deemedParents.isEmpty) DeemedParentsEmpty().invalidNec
+      else {
+        combineValidations(deemedParents.zipWithIndex.map { case (x, i) =>
+          x.validate(path \ s"deemedParent[$i]")
         }: _*)
-      })
+      }
+    )
 
-    (validateParentCompanyCanNotBeUltimateAndDeemed,
+    (
+      validateParentCompanyCanNotBeUltimateAndDeemed,
       validateOnlyTwoOrThreeDeemedParents,
       optionValidations(parentCompanyModel.ultimateParent.map(_.validate(path \ "ultimateParent"))),
       optionValidations(validatedDeemedParent)
-      ).mapN((_, _, _, _) => parentCompanyModel)
+    ).mapN((_, _, _, _) => parentCompanyModel)
   }
 }
 
-case class ParentCompanyCanNotBeUltimateAndDeemed(model: ParentCompanyModel)(implicit val path: JsPath) extends Validation {
-  val code = "PARENT_ULTIMATE_AND_DEEMED"
+case class ParentCompanyCanNotBeUltimateAndDeemed(model: ParentCompanyModel)(implicit val path: JsPath)
+    extends Validation {
+  val code                 = "PARENT_ULTIMATE_AND_DEEMED"
   val errorMessage: String = "Parent company must be either ultimate or deemed parent"
-  val value = Some(Json.toJson(model))
+  val value                = Some(Json.toJson(model))
 }
 
-case class ParentCompanyBothUltimateAndDeemedEmtpty(model: ParentCompanyModel)(implicit val path: JsPath) extends Validation {
-  val code = "ULTIMATE_AND_DEEMED_EMPTY"
+case class ParentCompanyBothUltimateAndDeemedEmtpty(model: ParentCompanyModel)(implicit val path: JsPath)
+    extends Validation {
+  val code                 = "ULTIMATE_AND_DEEMED_EMPTY"
   val errorMessage: String = "Parent company must be either ultimate or deemed parent"
-  val value = Some(Json.toJson(model))
+  val value                = Some(Json.toJson(model))
 }
 
 case class DeemedParentsEmpty()(implicit topPath: JsPath) extends Validation {
-  val code = "DEEMED_EMPTY"
+  val code                 = "DEEMED_EMPTY"
   val errorMessage: String = "Add at least 1 deemed parent"
-  val path: JsPath = topPath \ "deemedParent"
-  val value = None
+  val path: JsPath         = topPath \ "deemedParent"
+  val value                = None
 }
 
 case class MinTwoDeemedParents(model: ParentCompanyModel)(implicit topPath: JsPath) extends Validation {
-  val code = "DEEMED_MIN"
+  val code                 = "DEEMED_MIN"
   val errorMessage: String = "Minimum number of deemed parents is 2"
-  val path: JsPath = topPath \ "deemedParent"
-  val value = None
+  val path: JsPath         = topPath \ "deemedParent"
+  val value                = None
 }
 
 case class MaxThreeDeemedParents(model: ParentCompanyModel)(implicit topPath: JsPath) extends Validation {
-  val code = "DEEMED_MAX"
+  val code                 = "DEEMED_MAX"
   val errorMessage: String = "Maximum number of deemed parents is 3"
-  val path: JsPath = topPath \ "deemedParent"
-  val value = None
+  val path: JsPath         = topPath \ "deemedParent"
+  val value                = None
 }
-
-
-
-
-
-

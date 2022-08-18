@@ -19,4 +19,5 @@ package v1.models.requests
 import play.api.mvc.{Request, WrappedRequest}
 import v1.models.nrs.NrsRetrievalData
 
-case class IdentifierRequest[A](request: Request[A], identifier: String, nrsRetrievalData: NrsRetrievalData) extends WrappedRequest[A](request)
+case class IdentifierRequest[A](request: Request[A], identifier: String, nrsRetrievalData: NrsRetrievalData)
+    extends WrappedRequest[A](request)

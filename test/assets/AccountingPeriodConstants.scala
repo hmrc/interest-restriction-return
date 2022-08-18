@@ -24,7 +24,7 @@ import v1.models.AccountingPeriodModel
 object AccountingPeriodConstants {
 
   val startDate: LocalDate = LocalDate.now().minusMonths(18)
-  val endDate: LocalDate = startDate.plusMonths(18).minusDays(1)
+  val endDate: LocalDate   = startDate.plusMonths(18).minusDays(1)
 
   val accountingPeriodModel = AccountingPeriodModel(
     startDate = startDate,
@@ -33,6 +33,6 @@ object AccountingPeriodConstants {
 
   val accountingPeriodJson = Json.obj(
     "startDate" -> startDate,
-    "endDate" -> endDate
+    "endDate"   -> endDate
   )
 }

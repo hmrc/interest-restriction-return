@@ -31,19 +31,26 @@ import v1.models.revokeReportingCompany.RevokeReportingCompanyModel
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class RevokeReportingCompanyConnector @Inject()(httpClient: HttpClient,
-                                                implicit val appConfig: AppConfig) extends DesBaseConnector with Logging {
+class RevokeReportingCompanyConnector @Inject() (httpClient: HttpClient, implicit val appConfig: AppConfig)
+    extends DesBaseConnector
+    with Logging {
 
   private[connectors] lazy val revokeUrl = s"${appConfig.desUrl}/organisations/interest-restrictions-return/revoke"
 
-  def revoke(revokeReportingCompanyModel: RevokeReportingCompanyModel)
-             (implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
+  def revoke(
+    revokeReportingCompanyModel: RevokeReportingCompanyModel
+  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
     logger.debug(s"URL: $revokeUrl")
     val receivedSize = request.headers.get(HeaderNames.CONTENT_LENGTH)
-    val jsonSize = Json.stringify(Json.toJson(revokeReportingCompanyModel)(RevokeReportingCompanyModel.format)).length
+    val jsonSize     = Json.stringify(Json.toJson(revokeReportingCompanyModel)(RevokeReportingCompanyModel.format)).length
     logger.debug(s"Size of content received: $receivedSize sent: $jsonSize")
 
-    httpClient.POST(revokeUrl, revokeReportingCompanyModel)(RevokeReportingCompanyModel.format, RevokeReportingCompanyReads, desHc, ec)
+    httpClient.POST(revokeUrl, revokeReportingCompanyModel)(
+      RevokeReportingCompanyModel.format,
+      RevokeReportingCompanyReads,
+      desHc,
+      ec
+    )
   }
 
 }

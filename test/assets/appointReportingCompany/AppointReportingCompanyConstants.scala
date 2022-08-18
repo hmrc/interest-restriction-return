@@ -30,14 +30,14 @@ object AppointReportingCompanyConstants {
   val ackRef = "ackRef"
 
   val appointReportingCompanyJsonMax = Json.obj(
-    "agentDetails" -> agentDetailsJsonMax,
-    "reportingCompany" -> reportingCompanyJson,
-    "authorisingCompanies" -> Json.arr(authorisingCompanyJson),
+    "agentDetails"                       -> agentDetailsJsonMax,
+    "reportingCompany"                   -> reportingCompanyJson,
+    "authorisingCompanies"               -> Json.arr(authorisingCompanyJson),
     "isReportingCompanyAppointingItself" -> false,
-    "identityOfAppointingCompany" -> identityOfCompanySubmittingJsonMax,
-    "ultimateParentCompany" -> ultimateParentJsonUkCompany,
-    "accountingPeriod" -> accountingPeriodJson,
-    "declaration" -> true
+    "identityOfAppointingCompany"        -> identityOfCompanySubmittingJsonMax,
+    "ultimateParentCompany"              -> ultimateParentJsonUkCompany,
+    "accountingPeriod"                   -> accountingPeriodJson,
+    "declaration"                        -> true
   )
 
   val appointReportingCompanyModelMax = AppointReportingCompanyModel(
@@ -50,13 +50,13 @@ object AppointReportingCompanyConstants {
     accountingPeriod = accountingPeriodModel,
     declaration = true
   )
-  val appointReportingCompanyJsonMin = Json.obj(
-    "agentDetails" -> agentDetailsJsonMin,
-    "reportingCompany" -> reportingCompanyJson,
-    "authorisingCompanies" -> Json.arr(authorisingCompanyJson),
+  val appointReportingCompanyJsonMin  = Json.obj(
+    "agentDetails"                       -> agentDetailsJsonMin,
+    "reportingCompany"                   -> reportingCompanyJson,
+    "authorisingCompanies"               -> Json.arr(authorisingCompanyJson),
     "isReportingCompanyAppointingItself" -> true,
-    "accountingPeriod" -> accountingPeriodJson,
-    "declaration" -> true
+    "accountingPeriod"                   -> accountingPeriodJson,
+    "declaration"                        -> true
   )
 
   val appointReportingCompanyModelMin = AppointReportingCompanyModel(

@@ -17,14 +17,14 @@
 package v1.models.nrs
 
 import play.api.libs.json._
-import play.api.libs.json.JodaWrites._
-import play.api.libs.json.JodaReads._
-import org.joda.time.LocalDate
-import java.util.UUID
 import uk.gov.hmrc.auth.core.retrieve._
 import uk.gov.hmrc.auth.core.{AffinityGroup, ConfidenceLevel, CredentialRole}
 
-case class NrsRetrievalData(internalId: Option[String],
+import java.time.LocalDate
+import java.util.UUID
+
+case class NrsRetrievalData(
+  internalId: Option[String],
   externalId: Option[String],
   agentCode: Option[String],
   optionalCredentials: Option[Credentials],
@@ -43,17 +43,18 @@ case class NrsRetrievalData(internalId: Option[String],
   optionalItmpAddress: Option[ItmpAddress],
   affinityGroup: Option[AffinityGroup],
   credentialStrength: Option[String],
-  loginTimes: LoginTimes)
+  loginTimes: LoginTimes
+)
 
 object NrsRetrievalData {
-  implicit val credentialsFormat: OFormat[Credentials] = Json.format[Credentials]
-  implicit val nameFormat: OFormat[Name] = Json.format[Name]
+  implicit val credentialsFormat: OFormat[Credentials]           = Json.format[Credentials]
+  implicit val nameFormat: OFormat[Name]                         = Json.format[Name]
   implicit val agentInformationFormat: OFormat[AgentInformation] = Json.format[AgentInformation]
-  implicit val mdtpInformationFormat: OFormat[MdtpInformation] = Json.format[MdtpInformation]
-  implicit val itmpNameFormat: OFormat[ItmpName] = Json.format[ItmpName]
-  implicit val itmpAddressFormat: OFormat[ItmpAddress] = Json.format[ItmpAddress]
-  implicit val loginTimesFormat: OFormat[LoginTimes] = Json.format[LoginTimes]
-  implicit val nrsRetrievalData: OFormat[NrsRetrievalData] = Json.format[NrsRetrievalData]
+  implicit val mdtpInformationFormat: OFormat[MdtpInformation]   = Json.format[MdtpInformation]
+  implicit val itmpNameFormat: OFormat[ItmpName]                 = Json.format[ItmpName]
+  implicit val itmpAddressFormat: OFormat[ItmpAddress]           = Json.format[ItmpAddress]
+  implicit val loginTimesFormat: OFormat[LoginTimes]             = Json.format[LoginTimes]
+  implicit val nrsRetrievalData: OFormat[NrsRetrievalData]       = Json.format[NrsRetrievalData]
 }
 
 case class NrSubmissionId(nrSubmissionId: UUID) extends AnyVal {
@@ -64,9 +65,17 @@ object NrSubmissionId {
   implicit val format = Json.format[NrSubmissionId]
 }
 
-case class NrsMetadata(businessId: String, notableEvent: String, payloadContentType: String, payloadSha256Checksum: String,
-                       userSubmissionTimestamp: String, identityData: NrsRetrievalData, userAuthToken: String, headerData: JsValue,
-                       searchKeys: JsValue)
+case class NrsMetadata(
+  businessId: String,
+  notableEvent: String,
+  payloadContentType: String,
+  payloadSha256Checksum: String,
+  userSubmissionTimestamp: String,
+  identityData: NrsRetrievalData,
+  userAuthToken: String,
+  headerData: JsValue,
+  searchKeys: JsValue
+)
 
 object NrsMetadata {
   implicit val format = Json.format[NrsMetadata]

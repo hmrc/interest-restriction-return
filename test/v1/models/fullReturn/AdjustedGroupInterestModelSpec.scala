@@ -29,14 +29,14 @@ class AdjustedGroupInterestModelSpec extends AnyWordSpec with Matchers {
     "correctly write to json" when {
       "groupEbitda is present" in {
         val expectedValue = adjustedGroupInterestJson
-        val actualValue = Json.toJson(adjustedGroupInterestModel)
+        val actualValue   = Json.toJson(adjustedGroupInterestModel)
 
         actualValue shouldBe expectedValue
       }
 
       "groupEbitda is not present" in {
         val expectedValue = adjustedGroupInterestJsonNoEbitda
-        val actualValue = Json.toJson(adjustedGroupInterestModelNoEbitda)
+        val actualValue   = Json.toJson(adjustedGroupInterestModelNoEbitda)
 
         actualValue shouldBe expectedValue
       }
@@ -45,7 +45,7 @@ class AdjustedGroupInterestModelSpec extends AnyWordSpec with Matchers {
     "correctly read from Json" in {
 
       val expectedValue = adjustedGroupInterestModel
-      val actualValue = adjustedGroupInterestJson.as[AdjustedGroupInterestModel]
+      val actualValue   = adjustedGroupInterestJson.as[AdjustedGroupInterestModel]
 
       actualValue shouldBe expectedValue
     }

@@ -32,13 +32,14 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
 
     "the user is authenticated" when {
 
-      object AuthorisedController extends AbbreviatedReturnController(
-        authAction = AuthorisedAction,
-        abbreviatedReturnService = mockAbbreviatedReturnService,
-        controllerComponents = Helpers.stubControllerComponents(),
-        nrsService = nrsService,
-        appConfig = appConfig
-      )
+      object AuthorisedController
+          extends AbbreviatedReturnController(
+            authAction = AuthorisedAction,
+            abbreviatedReturnService = mockAbbreviatedReturnService,
+            controllerComponents = Helpers.stubControllerComponents(),
+            nrsService = nrsService,
+            appConfig = appConfig
+          )
 
       "a valid payload is submitted" when {
 
@@ -61,7 +62,9 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
           "an error response is returned from the service" should {
 
             "return the Error" in {
-              mockAbbreviatedReturn(abbreviatedReturnUltimateParentModel)(Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err")))
+              mockAbbreviatedReturn(abbreviatedReturnUltimateParentModel)(
+                Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err"))
+              )
 
               val result = AuthorisedController.submitAbbreviatedReturn()(validJsonFakeRequest)
               status(result) shouldBe Status.INTERNAL_SERVER_ERROR
@@ -87,13 +90,14 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
 
       "return 401 (Unauthorised)" in {
 
-        object UnauthorisedController extends AbbreviatedReturnController(
-          authAction = UnauthorisedAction,
-          abbreviatedReturnService = mockAbbreviatedReturnService,
-          controllerComponents = Helpers.stubControllerComponents(),
-          nrsService = nrsService,
-          appConfig = appConfig
-        )
+        object UnauthorisedController
+            extends AbbreviatedReturnController(
+              authAction = UnauthorisedAction,
+              abbreviatedReturnService = mockAbbreviatedReturnService,
+              controllerComponents = Helpers.stubControllerComponents(),
+              nrsService = nrsService,
+              appConfig = appConfig
+            )
 
         val result = UnauthorisedController.submitAbbreviatedReturn()(fakeRequest.withBody(Json.obj()))
         status(result) shouldBe Status.UNAUTHORIZED
@@ -107,13 +111,14 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
 
     "the user is authenticated" when {
 
-      object AuthorisedController extends AbbreviatedReturnController(
-        authAction = AuthorisedAction,
-        abbreviatedReturnService = mockAbbreviatedReturnService,
-        controllerComponents = Helpers.stubControllerComponents(),
-        nrsService = nrsService,
-        appConfig = appConfig
-      )
+      object AuthorisedController
+          extends AbbreviatedReturnController(
+            authAction = AuthorisedAction,
+            abbreviatedReturnService = mockAbbreviatedReturnService,
+            controllerComponents = Helpers.stubControllerComponents(),
+            nrsService = nrsService,
+            appConfig = appConfig
+          )
 
       "a valid payload is submitted" when {
 
@@ -144,13 +149,14 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
 
       "return 401 (Unauthorised)" in {
 
-        object UnauthorisedController extends AbbreviatedReturnController(
-          authAction = UnauthorisedAction,
-          abbreviatedReturnService = mockAbbreviatedReturnService,
-          controllerComponents = Helpers.stubControllerComponents(),
-          nrsService = nrsService,
-          appConfig = appConfig
-        )
+        object UnauthorisedController
+            extends AbbreviatedReturnController(
+              authAction = UnauthorisedAction,
+              abbreviatedReturnService = mockAbbreviatedReturnService,
+              controllerComponents = Helpers.stubControllerComponents(),
+              nrsService = nrsService,
+              appConfig = appConfig
+            )
 
         val result = UnauthorisedController.submitAbbreviatedReturn()(fakeRequest.withBody(Json.obj()))
         status(result) shouldBe Status.UNAUTHORIZED

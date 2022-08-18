@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import play.api.libs.json.{Json, JsPath}
+import play.api.libs.json.{JsPath, Json}
 import v1.models.Validation.ValidationResult
 import v1.models.{GroupRatioModel, Validation}
 
@@ -26,30 +26,31 @@ trait GroupRatioValidator extends BaseValidation {
 
   val groupRatioModel: GroupRatioModel
 
-  private def validateGroupRatioElected(implicit path: JsPath): ValidationResult[GroupRatioModel] = {
+  private def validateGroupRatioElected(implicit path: JsPath): ValidationResult[GroupRatioModel] =
     (groupRatioModel.isElected, groupRatioModel.groupRatioBlended.isDefined) match {
       case (false, true) => GroupRatioBlendedSupplied(groupRatioModel).invalidNec
       case (true, false) => GroupRatioBlendedNotSupplied().invalidNec
-      case _ => groupRatioModel.validNec
+      case _             => groupRatioModel.validNec
     }
-  }
 
   def validate(implicit path: JsPath): ValidationResult[GroupRatioModel] =
-    (validateGroupRatioElected,
+    (
+      validateGroupRatioElected,
       optionValidations(groupRatioModel.groupRatioBlended.map(_.validate(path \ "groupRatioBlended")))
     ).mapN((_, _) => groupRatioModel)
 }
 
 case class GroupRatioBlendedSupplied(groupRatio: GroupRatioModel)(implicit val topPath: JsPath) extends Validation {
-  val code = "GROUP_RATIO_BLENDED_SUPPLIED"
+  val code                 = "GROUP_RATIO_BLENDED_SUPPLIED"
   val errorMessage: String = "Group ratio not elected, so group ratio blended not needed"
-  val path: JsPath = topPath \ "groupRatioBlended"
-  val value = Some(Json.toJson(groupRatio))
+  val path: JsPath         = topPath \ "groupRatioBlended"
+  val value                = Some(Json.toJson(groupRatio))
 }
 
 case class GroupRatioBlendedNotSupplied()(implicit val topPath: JsPath) extends Validation {
-  val code = "GROUP_RATIO_BLENDED_NOT_SUPPLIED"
-  val errorMessage: String = "If group ratio % is elected, a value for group ratio (blended) election must be true or false"
-  val path: JsPath = topPath \ "groupRatioBlended"
-  val value = None
+  val code                 = "GROUP_RATIO_BLENDED_NOT_SUPPLIED"
+  val errorMessage: String =
+    "If group ratio % is elected, a value for group ratio (blended) election must be true or false"
+  val path: JsPath         = topPath \ "groupRatioBlended"
+  val value                = None
 }

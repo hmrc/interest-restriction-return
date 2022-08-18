@@ -44,30 +44,34 @@ trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with Mate
       .configure("metrics.jvm" -> false)
       .build()
 
-  lazy val fakeRequest = FakeRequest("GET", "/")
-  lazy implicit val identifierRequest = IdentifierRequest(fakeRequest, "id", UnitNrsConstants.nrsRetrievalData(Some(AffinityGroup.Organisation)))
-  lazy val injector = app.injector
-  lazy val bodyParsers = injector.instanceOf[BodyParsers.Default]
-  lazy val appConfig = injector.instanceOf[AppConfig]
-  lazy val dateTimeService = injector.instanceOf[DateTimeService]
-  lazy val nrsConnector = injector.instanceOf[NrsConnector]
-  lazy implicit val ec = injector.instanceOf[ExecutionContext]
-  lazy val nrsService = new NrsService(nrsConnector = nrsConnector, dateTimeService = dateTimeService)
+  lazy val fakeRequest                           = FakeRequest("GET", "/")
+  lazy implicit val identifierRequest            =
+    IdentifierRequest(fakeRequest, "id", UnitNrsConstants.nrsRetrievalData(Some(AffinityGroup.Organisation)))
+  lazy val injector                              = app.injector
+  lazy val bodyParsers                           = injector.instanceOf[BodyParsers.Default]
+  lazy val appConfig                             = injector.instanceOf[AppConfig]
+  lazy val dateTimeService                       = injector.instanceOf[DateTimeService]
+  lazy val nrsConnector                          = injector.instanceOf[NrsConnector]
+  lazy implicit val ec                           = injector.instanceOf[ExecutionContext]
+  lazy val nrsService                            = new NrsService(nrsConnector = nrsConnector, dateTimeService = dateTimeService)
   lazy implicit val headerCarrier: HeaderCarrier = HeaderCarrier()
 
   def fakeAuthResponse(nrsAffinityGroup: Option[AffinityGroup]) = UnitNrsConstants.fakeResponse(nrsAffinityGroup)
-  object AuthorisedAction extends Authorised[UnitNrsConstants.NrsRetrievalDataType](fakeAuthResponse(Some(AffinityGroup.Organisation)), bodyParsers, appConfig)
+  object AuthorisedAction
+      extends Authorised[UnitNrsConstants.NrsRetrievalDataType](
+        fakeAuthResponse(Some(AffinityGroup.Organisation)),
+        bodyParsers,
+        appConfig
+      )
   object UnauthorisedAction extends Unauthorised(new MissingBearerToken, bodyParsers, appConfig)
 
   def rightSide[A](validationResult: ValidationResult[A]): A = validationResult.toEither.right.get
 
-  def leftSideError[A](validationResult: ValidationResult[A], position: Int = 0): Validation = {
+  def leftSideError[A](validationResult: ValidationResult[A], position: Int = 0): Validation =
     validationResult.toEither.left.get.toChain.toList(position)
-  }
 
-  def leftSideErrorLength[A](validationResult: ValidationResult[A]): Int = {
+  def leftSideErrorLength[A](validationResult: ValidationResult[A]): Int =
     validationResult.toEither.left.get.toChain.length.toInt
-  }
 
   def errorMessages(messages: String*) = messages.mkString("|")
 }

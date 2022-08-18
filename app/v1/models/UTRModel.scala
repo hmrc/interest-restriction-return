@@ -19,7 +19,7 @@ package v1.models
 import play.api.libs.json.{JsPath, JsString, Reads, Writes}
 import v1.validation.UTRValidator
 
-case class UTRModel(utr: String) extends UTRValidator{
+case class UTRModel(utr: String) extends UTRValidator {
   override val utrModel = this
 }
 
@@ -27,8 +27,8 @@ object UTRModel {
 
   implicit val reads: Reads[UTRModel] = JsPath.read[String].map(UTRModel.apply)
 
-  implicit val writes: Writes[UTRModel] = Writes {
-    model => JsString(model.utr)
+  implicit val writes: Writes[UTRModel] = Writes { model =>
+    JsString(model.utr)
   }
 
 }

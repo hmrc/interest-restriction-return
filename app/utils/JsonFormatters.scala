@@ -23,47 +23,57 @@ import v1.models.fullReturn.FullReturnModel
 trait JsonFormatters {
 
   implicit val fullReturnWrites: Writes[FullReturnModel] = Writes { models =>
-    JsObject(Json.obj(
-      "declaration" -> models.declaration,
-      "agentDetails" -> models.agentDetails,
-      "reportingCompany" -> models.reportingCompany,
-      "parentCompany" -> models.parentCompany,
-      "publicInfrastructure" -> models.publicInfrastructure,
-      "groupCompanyDetails" -> models.groupCompanyDetails,
-      "submissionType" -> models.submissionType,
-      "revisedReturnDetails" -> models.revisedReturnDetails,
-      "groupLevelElections" -> models.groupLevelElections,
-      "ukCompanies" -> models.ukCompanies,
-      "numberOfUkCompanies" -> models.numberOfUkCompanies,
-      "angie" -> models.angie,
-      "returnContainsEstimates" -> models.returnContainsEstimates,
-      "groupEstimateReason" -> models.groupEstimateReason,
-      "groupSubjectToInterestRestrictions" -> models.groupSubjectToInterestRestrictions,
-      "groupSubjectToInterestReactivation" -> models.groupSubjectToInterestReactivation,
-      "totalReactivation" -> models.totalReactivation,
-      "totalRestrictions" -> models.totalRestrictions,
-      "groupLevelAmount" -> models.groupLevelAmount,
-      "adjustedGroupInterest" -> models.adjustedGroupInterest,
-      "aggregateNetTaxInterest" -> models.aggregateNetTaxInterest,
-      "aggregateAllocatedRestrictions" -> models.aggregateAllocatedRestrictions,
-      "aggregateTaxEBITDA" -> models.aggregateTaxEBITDA,
-      "aggregateAllocatedReactivations" -> models.aggregateAllocatedReactivations
-    ).fields.filterNot(_._2 == JsNull))
+    JsObject(
+      Json
+        .obj(
+          "declaration"                        -> models.declaration,
+          "agentDetails"                       -> models.agentDetails,
+          "reportingCompany"                   -> models.reportingCompany,
+          "parentCompany"                      -> models.parentCompany,
+          "publicInfrastructure"               -> models.publicInfrastructure,
+          "groupCompanyDetails"                -> models.groupCompanyDetails,
+          "submissionType"                     -> models.submissionType,
+          "revisedReturnDetails"               -> models.revisedReturnDetails,
+          "groupLevelElections"                -> models.groupLevelElections,
+          "ukCompanies"                        -> models.ukCompanies,
+          "numberOfUkCompanies"                -> models.numberOfUkCompanies,
+          "angie"                              -> models.angie,
+          "returnContainsEstimates"            -> models.returnContainsEstimates,
+          "groupEstimateReason"                -> models.groupEstimateReason,
+          "groupSubjectToInterestRestrictions" -> models.groupSubjectToInterestRestrictions,
+          "groupSubjectToInterestReactivation" -> models.groupSubjectToInterestReactivation,
+          "totalReactivation"                  -> models.totalReactivation,
+          "totalRestrictions"                  -> models.totalRestrictions,
+          "groupLevelAmount"                   -> models.groupLevelAmount,
+          "adjustedGroupInterest"              -> models.adjustedGroupInterest,
+          "aggregateNetTaxInterest"            -> models.aggregateNetTaxInterest,
+          "aggregateAllocatedRestrictions"     -> models.aggregateAllocatedRestrictions,
+          "aggregateTaxEBITDA"                 -> models.aggregateTaxEBITDA,
+          "aggregateAllocatedReactivations"    -> models.aggregateAllocatedReactivations
+        )
+        .fields
+        .filterNot(_._2 == JsNull)
+    )
   }
 
   implicit val abbreviatedReturnWrites: Writes[AbbreviatedReturnModel] = Writes { models =>
-    JsObject(Json.obj(
-      "declaration" -> models.declaration,
-      "agentDetails" -> models.agentDetails,
-      "reportingCompany" -> models.reportingCompany,
-      "parentCompany" -> models.parentCompany,
-      "publicInfrastructure" -> models.publicInfrastructure,
-      "groupCompanyDetails" -> models.groupCompanyDetails,
-      "submissionType" -> models.submissionType,
-      "revisedReturnDetails" -> models.revisedReturnDetails,
-      "groupLevelElections" -> models.groupLevelElections,
-      "ukCompanies" -> models.ukCompanies,
-      "numberOfUkCompanies" -> models.numberOfUkCompanies
-    ).fields.filterNot(_._2 == JsNull))
+    JsObject(
+      Json
+        .obj(
+          "declaration"          -> models.declaration,
+          "agentDetails"         -> models.agentDetails,
+          "reportingCompany"     -> models.reportingCompany,
+          "parentCompany"        -> models.parentCompany,
+          "publicInfrastructure" -> models.publicInfrastructure,
+          "groupCompanyDetails"  -> models.groupCompanyDetails,
+          "submissionType"       -> models.submissionType,
+          "revisedReturnDetails" -> models.revisedReturnDetails,
+          "groupLevelElections"  -> models.groupLevelElections,
+          "ukCompanies"          -> models.ukCompanies,
+          "numberOfUkCompanies"  -> models.numberOfUkCompanies
+        )
+        .fields
+        .filterNot(_._2 == JsNull)
+    )
   }
 }

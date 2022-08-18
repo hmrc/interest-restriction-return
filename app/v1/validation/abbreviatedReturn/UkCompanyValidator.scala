@@ -28,7 +28,7 @@ trait UkCompanyValidator extends BaseValidation {
   val ukCompany: UkCompanyModel
 
   def validate(implicit path: JsPath): ValidationResult[UkCompanyModel] =
-    (ukCompany.utr.validate(path \ "utr"),
-      ukCompany.companyName.validate(path \ "companyName")
-      ).mapN((_,_) => ukCompany)
+    (ukCompany.utr.validate(path \ "utr"), ukCompany.companyName.validate(path \ "companyName")).mapN((_, _) =>
+      ukCompany
+    )
 }

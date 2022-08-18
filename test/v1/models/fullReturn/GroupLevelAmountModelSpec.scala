@@ -29,7 +29,7 @@ class GroupLevelAmountModelSpec extends AnyWordSpec with Matchers {
     "correctly write to json" in {
 
       val expectedValue = groupLevelAmountJson
-      val actualValue = Json.toJson(groupLevelAmountModel)
+      val actualValue   = Json.toJson(groupLevelAmountModel)
 
       actualValue shouldBe expectedValue
     }
@@ -37,7 +37,7 @@ class GroupLevelAmountModelSpec extends AnyWordSpec with Matchers {
     "correctly read from Json" in {
 
       val expectedValue = groupLevelAmountModel
-      val actualValue = groupLevelAmountJson.as[GroupLevelAmountModel]
+      val actualValue   = groupLevelAmountJson.as[GroupLevelAmountModel]
 
       actualValue shouldBe expectedValue
     }

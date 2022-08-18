@@ -20,17 +20,18 @@ import play.api.libs.json.Json
 import v1.models.{CompanyNameModel, UTRModel}
 import v1.validation.fullReturn.UkCompanyValidator
 
-case class UkCompanyModel(companyName: CompanyNameModel,
-                          utr: UTRModel,
-                          consenting: Boolean,
-                          qicElection: Boolean,
-                          netTaxInterestExpense: BigDecimal,
-                          netTaxInterestIncome: BigDecimal,
-                          taxEBITDA: BigDecimal,
-                          allocatedRestrictions: Option[AllocatedRestrictionsModel],
-                          allocatedReactivations: Option[AllocatedReactivationsModel],
-                          companyEstimateReason: Option[String]
-                         ) extends UkCompanyValidator {
+case class UkCompanyModel(
+  companyName: CompanyNameModel,
+  utr: UTRModel,
+  consenting: Boolean,
+  qicElection: Boolean,
+  netTaxInterestExpense: BigDecimal,
+  netTaxInterestIncome: BigDecimal,
+  taxEBITDA: BigDecimal,
+  allocatedRestrictions: Option[AllocatedRestrictionsModel],
+  allocatedReactivations: Option[AllocatedReactivationsModel],
+  companyEstimateReason: Option[String]
+) extends UkCompanyValidator {
   override val ukCompany: UkCompanyModel = this
 }
 

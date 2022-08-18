@@ -21,34 +21,37 @@ import play.api.libs.json._
 import v1.models._
 import v1.validation.fullReturn.FullReturnValidator
 
-case class FullReturnModel(declaration: Boolean,
-                            appointedReportingCompany: Boolean,
-                            agentDetails: AgentDetailsModel,
-                            reportingCompany: ReportingCompanyModel,
-                            parentCompany: Option[ParentCompanyModel],
-                            groupCompanyDetails: GroupCompanyDetailsModel,
-                            submissionType: SubmissionType,
-                            revisedReturnDetails: Option[RevisedReturnDetailsModel],
-                            groupLevelElections: GroupLevelElectionsModel,
-                            ukCompanies: Seq[UkCompanyModel],
-                            angie: BigDecimal,
-                            returnContainsEstimates: Boolean,
-                            groupEstimateReason: Option[String],
-                            groupSubjectToInterestRestrictions: Boolean,
-                            groupSubjectToInterestReactivation: Boolean,
-                            totalRestrictions: BigDecimal,
-                            groupLevelAmount: GroupLevelAmountModel,
-                            adjustedGroupInterest: Option[AdjustedGroupInterestModel]
-                          ) extends FullReturnValidator with ReturnModel {
+case class FullReturnModel(
+  declaration: Boolean,
+  appointedReportingCompany: Boolean,
+  agentDetails: AgentDetailsModel,
+  reportingCompany: ReportingCompanyModel,
+  parentCompany: Option[ParentCompanyModel],
+  groupCompanyDetails: GroupCompanyDetailsModel,
+  submissionType: SubmissionType,
+  revisedReturnDetails: Option[RevisedReturnDetailsModel],
+  groupLevelElections: GroupLevelElectionsModel,
+  ukCompanies: Seq[UkCompanyModel],
+  angie: BigDecimal,
+  returnContainsEstimates: Boolean,
+  groupEstimateReason: Option[String],
+  groupSubjectToInterestRestrictions: Boolean,
+  groupSubjectToInterestReactivation: Boolean,
+  totalRestrictions: BigDecimal,
+  groupLevelAmount: GroupLevelAmountModel,
+  adjustedGroupInterest: Option[AdjustedGroupInterestModel]
+) extends FullReturnValidator
+    with ReturnModel {
 
-  override val fullReturnModel: FullReturnModel = this
-  val totalReactivation: BigDecimal = ukCompanies.flatMap(_.allocatedReactivations.map(_.currentPeriodReactivation)).sum
-  val publicInfrastructure: Boolean = ukCompanies.map(_.qicElection).exists(identity)
-  val totalTaxInterestIncome: BigDecimal = ukCompanies.map(_.netTaxInterestIncome).sum
-  val totalTaxInterestExpense: BigDecimal = ukCompanies.map(_.netTaxInterestExpense).sum
-  val aggregateNetTaxInterest: BigDecimal = totalTaxInterestIncome - totalTaxInterestExpense
-  val numberOfUkCompanies: Int = ukCompanies.size
-  val aggregateAllocatedRestrictions: BigDecimal = ukCompanies.flatMap(_.allocatedRestrictions.map(_.totalDisallowances)).sum
+  override val fullReturnModel: FullReturnModel   = this
+  val totalReactivation: BigDecimal               = ukCompanies.flatMap(_.allocatedReactivations.map(_.currentPeriodReactivation)).sum
+  val publicInfrastructure: Boolean               = ukCompanies.map(_.qicElection).exists(identity)
+  val totalTaxInterestIncome: BigDecimal          = ukCompanies.map(_.netTaxInterestIncome).sum
+  val totalTaxInterestExpense: BigDecimal         = ukCompanies.map(_.netTaxInterestExpense).sum
+  val aggregateNetTaxInterest: BigDecimal         = totalTaxInterestIncome - totalTaxInterestExpense
+  val numberOfUkCompanies: Int                    = ukCompanies.size
+  val aggregateAllocatedRestrictions: BigDecimal  =
+    ukCompanies.flatMap(_.allocatedRestrictions.map(_.totalDisallowances)).sum
   val aggregateAllocatedReactivations: BigDecimal = totalReactivation
   val aggregateTaxEBITDA: BigDecimal = {
     val totalTaxEBITDA = ukCompanies.map(_.taxEBITDA).sum

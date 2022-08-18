@@ -16,13 +16,13 @@
 
 package v1.models.errors
 
-import play.api.libs.json.{Json, Writes, JsValue}
+import play.api.libs.json.{JsValue, Json, Writes}
 import v1.models.Validation
 
 case class ErrorResponseModel(code: String, message: String, path: Option[String] = None, value: Option[JsValue] = None)
 
 object ErrorResponseModel {
-  implicit val writes: Writes[ErrorResponseModel] = Json.writes[ErrorResponseModel]
+  implicit val writes: Writes[ErrorResponseModel]       = Json.writes[ErrorResponseModel]
   def apply(validation: Validation): ErrorResponseModel =
     ErrorResponseModel(
       code = validation.code,
@@ -35,22 +35,17 @@ object ErrorResponseModel {
 object ErrorResponses {
 
   //Standard Errors
-  val NotFoundError = ErrorResponseModel("MATCHING_RESOURCE_NOT_FOUND", "Matching resource not found")
-  val DownstreamError = ErrorResponseModel("INTERNAL_SERVER_ERROR", "An internal server error occurred")
-  val BadRequestError = ErrorResponseModel("INVALID_REQUEST", "Invalid request")
+  val NotFoundError        = ErrorResponseModel("MATCHING_RESOURCE_NOT_FOUND", "Matching resource not found")
+  val DownstreamError      = ErrorResponseModel("INTERNAL_SERVER_ERROR", "An internal server error occurred")
+  val BadRequestError      = ErrorResponseModel("INVALID_REQUEST", "Invalid request")
   val InvalidBodyTypeError = ErrorResponseModel("INVALID_BODY_TYPE", "Expecting text/json or application/json body")
 
   //Authorisation Errors
-  val UnauthorisedError = ErrorResponseModel("CLIENT_OR_AGENT_NOT_AUTHORISED", "The client and/or agent is not authorised")
+  val UnauthorisedError =
+    ErrorResponseModel("CLIENT_OR_AGENT_NOT_AUTHORISED", "The client and/or agent is not authorised")
 
   // Accept header Errors
   val InvalidAcceptHeaderError = ErrorResponseModel("ACCEPT_HEADER_INVALID", "The accept header is missing or invalid")
-  val UnsupportedVersionError = ErrorResponseModel("NOT_FOUND", "The requested resource could not be found")
+  val UnsupportedVersionError  = ErrorResponseModel("NOT_FOUND", "The requested resource could not be found")
 
 }
-
-
-
-
-
-

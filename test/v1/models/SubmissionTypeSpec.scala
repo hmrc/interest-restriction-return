@@ -17,7 +17,7 @@
 package v1.models
 
 import org.scalatest.TryValues._
-import play.api.libs.json.{JsPath, JsString, JsResultException, JsonValidationError}
+import play.api.libs.json.{JsPath, JsResultException, JsString, JsonValidationError}
 import scala.util.Try
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
@@ -25,10 +25,14 @@ import org.scalatest.wordspec.AnyWordSpec
 class SubmissionTypeSpec extends AnyWordSpec with Matchers {
   "SubmissionType" should {
     "error when an incorrect value is entered" in {
-      val json = JsString("Something incorrect")
+      val json   = JsString("Something incorrect")
       val result = Try(json.as[SubmissionType])
 
-      result.failure.exception shouldEqual JsResultException(Seq((JsPath, Seq(JsonValidationError(s"Valid submission types are ${Original.toString} and ${Revised.toString}")))))
+      result.failure.exception shouldEqual JsResultException(
+        Seq(
+          (JsPath, Seq(JsonValidationError(s"Valid submission types are ${Original.toString} and ${Revised.toString}")))
+        )
+      )
     }
   }
 }

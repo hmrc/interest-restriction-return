@@ -19,8 +19,8 @@ package v1.models
 import play.api.libs.json.Json
 import v1.validation.GroupRatioBlendedValidator
 
-case class GroupRatioBlendedModel(isElected: Boolean,
-                                  investorGroups: Option[Seq[InvestorGroupModel]]) extends GroupRatioBlendedValidator {
+case class GroupRatioBlendedModel(isElected: Boolean, investorGroups: Option[Seq[InvestorGroupModel]])
+    extends GroupRatioBlendedValidator {
   override val groupRatioBlendedModel = this
 }
 

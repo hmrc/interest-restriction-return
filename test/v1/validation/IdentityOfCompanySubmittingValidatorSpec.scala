@@ -38,7 +38,8 @@ class IdentityOfCompanySubmittingValidatorSpec extends BaseSpec {
       "Valid NonUk fields are populated" in {
 
         val model = identityOfCompanySubmittingModelMax.copy(
-          ctutr = None, countryOfIncorporation = Some(nonUkCountryCode)
+          ctutr = None,
+          countryOfIncorporation = Some(nonUkCountryCode)
         )
 
         rightSide(model.validate) shouldBe model
@@ -47,11 +48,10 @@ class IdentityOfCompanySubmittingValidatorSpec extends BaseSpec {
       "Company Name is valid" in {
         val model = identityOfCompanySubmittingModelMax.copy(companyName = companyName)
         rightSide(model.validate) shouldBe model
-       }
+      }
 
       "CTUTR contains invalid characters" in {
-        val model = identityOfCompanySubmittingModelMax.copy(
-          countryOfIncorporation = None, ctutr = Some(ctutr))
+        val model = identityOfCompanySubmittingModelMax.copy(countryOfIncorporation = None, ctutr = Some(ctutr))
 
         rightSide(model.validate) shouldBe model
       }
@@ -81,43 +81,41 @@ class IdentityOfCompanySubmittingValidatorSpec extends BaseSpec {
       }
 
       "CTUTR contains invalid characters" in {
-        val model = identityOfCompanySubmittingModelMax.copy(
-          countryOfIncorporation = None, ctutr = Some(UTRModel("ʰʲʺ˦˫˥ʺ˦˫˥")))
+        val model =
+          identityOfCompanySubmittingModelMax.copy(countryOfIncorporation = None, ctutr = Some(UTRModel("ʰʲʺ˦˫˥ʺ˦˫˥")))
 
         leftSideError(model.validate).errorMessage shouldBe UTRChecksumError(UTRModel("ʰʲʺ˦˫˥ʺ˦˫˥")).errorMessage
       }
 
       "CTUTR is invalid" in {
-        val model = identityOfCompanySubmittingModelMax.copy(
-          countryOfIncorporation = None, ctutr = Some(invalidUtr))
+        val model = identityOfCompanySubmittingModelMax.copy(countryOfIncorporation = None, ctutr = Some(invalidUtr))
 
         leftSideError(model.validate).errorMessage shouldBe UTRChecksumError(invalidUtr).errorMessage
       }
 
       "CTUTR is empty" in {
-        val model = identityOfCompanySubmittingModelMax.copy(
-          countryOfIncorporation = None, ctutr = Some(UTRModel("")))
+        val model = identityOfCompanySubmittingModelMax.copy(countryOfIncorporation = None, ctutr = Some(UTRModel("")))
 
         leftSideError(model.validate).errorMessage shouldBe UTRLengthError(UTRModel("")).errorMessage
       }
 
       "CTUTR is too short" in {
-        val model = identityOfCompanySubmittingModelMax.copy(
-          countryOfIncorporation = None, ctutr = Some(invalidShortUtr))
+        val model =
+          identityOfCompanySubmittingModelMax.copy(countryOfIncorporation = None, ctutr = Some(invalidShortUtr))
 
         leftSideError(model.validate).errorMessage shouldBe UTRLengthError(invalidShortUtr).errorMessage
       }
 
       "CTUTR is too long" in {
-        val model = identityOfCompanySubmittingModelMax.copy(
-          countryOfIncorporation = None, ctutr = Some(invalidLongUtr))
+        val model =
+          identityOfCompanySubmittingModelMax.copy(countryOfIncorporation = None, ctutr = Some(invalidLongUtr))
 
         leftSideError(model.validate).errorMessage shouldBe UTRLengthError(invalidLongUtr).errorMessage
       }
 
       "CountryOfIncorporation is invalid" in {
-        val model = identityOfCompanySubmittingModelMax.copy(
-          ctutr = None, countryOfIncorporation = Some(invalidCountryCode))
+        val model =
+          identityOfCompanySubmittingModelMax.copy(ctutr = None, countryOfIncorporation = Some(invalidCountryCode))
 
         leftSideError(model.validate).errorMessage shouldBe CountryCodeValueError(invalidCountryCode).errorMessage
       }
@@ -128,39 +126,51 @@ class IdentityOfCompanySubmittingValidatorSpec extends BaseSpec {
       }
 
       "LEI is not supplied" in {
-        val model = identityOfCompanySubmittingModelMax.copy(legalEntityIdentifier = Some(LegalEntityIdentifierModel("")))
-        leftSideError(model.validate).errorMessage shouldBe LegalEntityIdentifierCharacterError(LegalEntityIdentifierModel("")).errorMessage
+        val model =
+          identityOfCompanySubmittingModelMax.copy(legalEntityIdentifier = Some(LegalEntityIdentifierModel("")))
+        leftSideError(model.validate).errorMessage shouldBe LegalEntityIdentifierCharacterError(
+          LegalEntityIdentifierModel("")
+        ).errorMessage
       }
 
       "LEI is too long" in {
         val model = identityOfCompanySubmittingModelMax.copy(
-          legalEntityIdentifier = Some(LegalEntityIdentifierModel("QWERTYUIOPASDFGHJq11QWERTYUIOPASDFGHJq11")))
+          legalEntityIdentifier = Some(LegalEntityIdentifierModel("QWERTYUIOPASDFGHJq11QWERTYUIOPASDFGHJq11"))
+        )
 
         leftSideError(model.validate).errorMessage shouldBe LegalEntityIdentifierCharacterError(
-          LegalEntityIdentifierModel("QWERTYUIOPASDFGHJq11QWERTYUIOPASDFGHJq11")).errorMessage
+          LegalEntityIdentifierModel("QWERTYUIOPASDFGHJq11QWERTYUIOPASDFGHJq11")
+        ).errorMessage
       }
 
       "LEI is too short" in {
         val model = identityOfCompanySubmittingModelMax.copy(
-          legalEntityIdentifier = Some(LegalEntityIdentifierModel("QWERTYUIOPA")))
+          legalEntityIdentifier = Some(LegalEntityIdentifierModel("QWERTYUIOPA"))
+        )
 
         leftSideError(model.validate).errorMessage shouldBe LegalEntityIdentifierCharacterError(
-          LegalEntityIdentifierModel("QWERTYUIOPA")).errorMessage
+          LegalEntityIdentifierModel("QWERTYUIOPA")
+        ).errorMessage
       }
 
       "LEI is invalid values" in {
         val model = identityOfCompanySubmittingModelMax.copy(
-          legalEntityIdentifier = Some(LegalEntityIdentifierModel("QWERTYUIOPASDFGHJAA1")))
+          legalEntityIdentifier = Some(LegalEntityIdentifierModel("QWERTYUIOPASDFGHJAA1"))
+        )
 
         leftSideError(model.validate).errorMessage shouldBe LegalEntityIdentifierCharacterError(
-          LegalEntityIdentifierModel("QWERTYUIOPASDFGHJAA1")).errorMessage
+          LegalEntityIdentifierModel("QWERTYUIOPASDFGHJAA1")
+        ).errorMessage
       }
 
       "LEI is contains an invalid character" in {
-        val model = identityOfCompanySubmittingModelMax.copy(legalEntityIdentifier = Some(LegalEntityIdentifierModel("QWERTYUIOPASDFGHJ!11")))
+        val model = identityOfCompanySubmittingModelMax.copy(legalEntityIdentifier =
+          Some(LegalEntityIdentifierModel("QWERTYUIOPASDFGHJ!11"))
+        )
 
         leftSideError(model.validate).errorMessage shouldBe LegalEntityIdentifierCharacterError(
-          LegalEntityIdentifierModel("QWERTYUIOPASDFGHJ!11")).errorMessage
+          LegalEntityIdentifierModel("QWERTYUIOPASDFGHJ!11")
+        ).errorMessage
       }
     }
   }

@@ -36,20 +36,22 @@ trait BaseController extends BackendBaseController with Logging {
 
   implicit val ec: ExecutionContext = controllerComponents.executionContext
 
-  override def withJsonBody[T](f: (T) => Future[Result])(implicit request: Request[JsValue], m: Manifest[T], reads: Reads[T]): Future[Result] =
+  override def withJsonBody[T](
+    f: (T) => Future[Result]
+  )(implicit request: Request[JsValue], m: Manifest[T], reads: Reads[T]): Future[Result] =
     Try(request.body.validate[T]) match {
       case Success(JsSuccess(payload, _)) => f(payload)
-      case Success(JsError(errs)) =>
+      case Success(JsError(errs))         =>
         logger.error(s"Json failure $errs during request on ${request.uri}")
         Future.successful(BadRequest(Json.toJson(ValidationErrorResponseModel(errs))))
-      case Failure(e) =>
+      case Failure(e)                     =>
         logger.error(s"General error occurred during json parsing ${e.getMessage}", e)
         Future.successful(BadRequest(s"Could not parse body due to ${e.getMessage}"))
     }
 
-  def handleValidation[T](validationModel: ValidationResult[T])(onValidResult: T => Future[Result]): Future[Result] = {
+  def handleValidation[T](validationModel: ValidationResult[T])(onValidResult: T => Future[Result]): Future[Result] =
     validationModel match {
-      case Invalid(e) =>
+      case Invalid(e)   =>
         logger.debug(s"[VALIDATION][FAILURE] Business Rule Errors: ${Json.toJson(ValidationErrorResponseModel(e))}")
         logger.info(s"[VALIDATION][FAILURE]")
         val errors = Json.toJson(ValidationErrorResponseModel(e))
@@ -58,27 +60,28 @@ trait BaseController extends BackendBaseController with Logging {
         logger.info(s"[VALIDATION][SUCCESS]")
         onValidResult(model)
     }
-  }
 
-  def handleValidationAndSubmit[T](validationModel: ValidationResult[T], service: Submission[T], maybeNrsService: Option[NrsService], appConfig: AppConfig)
-                         (implicit hc: HeaderCarrier, identifierRequest: IdentifierRequest[JsValue]): Future[Result] = {
-    handleValidation(validationModel){ model =>
+  def handleValidationAndSubmit[T](
+    validationModel: ValidationResult[T],
+    service: Submission[T],
+    maybeNrsService: Option[NrsService],
+    appConfig: AppConfig
+  )(implicit hc: HeaderCarrier, identifierRequest: IdentifierRequest[JsValue]): Future[Result] =
+    handleValidation(validationModel) { model =>
       service.submit(model).map {
-        case Left(err) => Status(err.status)(err.body)
+        case Left(err)       => Status(err.status)(err.body)
         case Right(response) =>
           (maybeNrsService, model) match {
             case (Some(nrsService), returnModel: ReturnModel) if appConfig.nrsEnabled =>
               nrsService.send(returnModel.reportingCompany.ctutr)
-            case _ =>
+            case _                                                                    =>
           }
           Ok(Json.toJson(response))
       }
     }
-  }
 
-  def handleValidationForValidationMode[T](validationModel: ValidationResult[T]): Future[Result] = {
-    handleValidation(validationModel){ _ =>
+  def handleValidationForValidationMode[T](validationModel: ValidationResult[T]): Future[Result] =
+    handleValidation(validationModel) { _ =>
       Future.successful(NoContent)
     }
-  }
 }

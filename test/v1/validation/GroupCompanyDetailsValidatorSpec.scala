@@ -41,9 +41,11 @@ class GroupCompanyDetailsValidatorSpec extends BaseSpec {
       "Accounting Period is invalid" in {
 
         val startDate = LocalDate.now().minusMonths(20)
-        val endDate = LocalDate.now().minusDays(1)
+        val endDate   = LocalDate.now().minusDays(1)
 
-        leftSideError(groupCompanyDetailsModel.copy(accountingPeriod = AccountingPeriodModel(startDate, endDate)).validate).errorMessage shouldBe
+        leftSideError(
+          groupCompanyDetailsModel.copy(accountingPeriod = AccountingPeriodModel(startDate, endDate)).validate
+        ).errorMessage shouldBe
           AccountingPeriod18MonthsMax(endDate).errorMessage
       }
     }

@@ -58,7 +58,7 @@ class FeatureSwitchSpec extends BaseSpec {
 
       "return false for non-version strings" in {
         featureSwitch.isVersionEnabled("x.x") shouldBe false
-        featureSwitch.isVersionEnabled("2x") shouldBe false
+        featureSwitch.isVersionEnabled("2x")  shouldBe false
         featureSwitch.isVersionEnabled("2.x") shouldBe false
       }
     }

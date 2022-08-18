@@ -31,7 +31,7 @@ class AgentDetailsModelSpec extends AnyWordSpec with Matchers {
       "max values given" in {
 
         val expectedValue = agentDetailsJsonMax
-        val actualValue = Json.toJson(agentDetailsModelMax)
+        val actualValue   = Json.toJson(agentDetailsModelMax)
 
         actualValue shouldBe expectedValue
       }
@@ -39,7 +39,7 @@ class AgentDetailsModelSpec extends AnyWordSpec with Matchers {
       "min values given" in {
 
         val expectedValue = agentDetailsJsonMin
-        val actualValue = Json.toJson(agentDetailsModelMin)
+        val actualValue   = Json.toJson(agentDetailsModelMin)
 
         actualValue shouldBe expectedValue
       }
@@ -50,7 +50,7 @@ class AgentDetailsModelSpec extends AnyWordSpec with Matchers {
       "max values given" in {
 
         val expectedValue = agentDetailsModelMax
-        val actualValue = agentDetailsJsonMax.as[AgentDetailsModel]
+        val actualValue   = agentDetailsJsonMax.as[AgentDetailsModel]
 
         actualValue shouldBe expectedValue
       }
@@ -58,7 +58,7 @@ class AgentDetailsModelSpec extends AnyWordSpec with Matchers {
       "min values given" in {
 
         val expectedValue = agentDetailsModelMin
-        val actualValue = agentDetailsJsonMin.as[AgentDetailsModel]
+        val actualValue   = agentDetailsJsonMin.as[AgentDetailsModel]
 
         actualValue shouldBe expectedValue
       }
@@ -70,7 +70,7 @@ class AgentDetailsModelSpec extends AnyWordSpec with Matchers {
       "max values given" in {
 
         val expectedValue = agentDetailsModelMax
-        val actualValue = agentDetailsJsonWhitespaceName.as[AgentDetailsModel]
+        val actualValue   = agentDetailsJsonWhitespaceName.as[AgentDetailsModel]
 
         actualValue shouldBe expectedValue
       }

@@ -24,5 +24,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 trait Submission[T] {
 
-  def submit(submission: T)(implicit hc: HeaderCarrier,ec: ExecutionContext,request: IdentifierRequest[_]): Future[SubmissionResponse]
+  def submit(
+    submission: T
+  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse]
 }
