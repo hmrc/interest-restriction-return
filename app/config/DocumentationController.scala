@@ -34,7 +34,7 @@ class DocumentationController @Inject() (
     Ok(Json.toJson(interestRestrictionReturnApiDefinition.definition))
   }
 
-  def raml(version: String, file: String): Action[AnyContent] =
+  def specification(version: String, file: String): Action[AnyContent] =
     assets.at(s"/public/api/conf/$version", file)
 
   def documentation(version: String, endpointName: String): Action[AnyContent] =
