@@ -32,6 +32,7 @@ trait AllocatedRestrictionsValidator extends BaseValidation {
 
   val MINIMUM_DATE: LocalDate = LocalDate.parse("1900-01-01")
   val MAXIMUM_DATE: LocalDate = LocalDate.parse("2099-12-31")
+  val aYearInMonths           = 12
 
   def validate(groupAccountingPeriod: AccountingPeriodModel)(implicit path: JsPath): ValidationResult[_] =
     (
@@ -98,7 +99,7 @@ trait AllocatedRestrictionsValidator extends BaseValidation {
           if (!ap2.isAfter(ap1)) {
             AllocatedRestrictionDateBeforePrevious(2).invalidNec
           } else { Some(ap2).validNec },
-          if (ap2.minusMonths(12).isAfter(ap1)) {
+          if (ap2.minusMonths(aYearInMonths).isAfter(ap1)) {
             AllocatedRestrictionDateGreaterThan12MonthsAfterPrevious(2).invalidNec
           } else { Some(ap2).validNec },
           if (ap1.isAfter(groupEndDate)) { DateAfterGPOA(2).invalidNec }
@@ -119,8 +120,9 @@ trait AllocatedRestrictionsValidator extends BaseValidation {
       case (_, Some(ap2), Some(ap3)) =>
         combineValidations(
           if (!ap3.isAfter(ap2)) AllocatedRestrictionDateBeforePrevious(3).invalidNec else Some(ap3).validNec,
-          if (ap3.minusMonths(12).isAfter(ap2)) AllocatedRestrictionDateGreaterThan12MonthsAfterPrevious(3).invalidNec
-          else Some(ap3).validNec,
+          if (ap3.minusMonths(aYearInMonths).isAfter(ap2)) {
+            AllocatedRestrictionDateGreaterThan12MonthsAfterPrevious(3).invalidNec
+          } else { Some(ap3).validNec },
           if (ap2.isAfter(groupEndDate)) DateAfterGPOA(3).invalidNec else Some(ap3).validNec
         )
       case _                         =>

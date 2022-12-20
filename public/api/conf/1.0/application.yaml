@@ -3,18 +3,6 @@ info:
   version: '1.0'
   title: Interest Restriction Return
   description: |
-    # Overview
-    The API in its current state supports the following functions:
-
-    - Revoke an existing Reporting Company from submitting Interest Restriction Returns
-    - Appoint a new Reporting Company for submitting Interest Restriction Returns
-    - Submit an Interest Restriction Return (full)
-    - Submit an Interest Restriction Return (abbreviated)
-
-    This API uses User Restricted Endpoints. Please find further details on the [Authorisation](https://developer.service.hmrc.gov.uk/api-documentation/docs/authorisation) page.
-
-    For more information about how to develop your own client applications, including example clients for this API, see [Tutorials](https://developer.service.hmrc.gov.uk/api-documentation/docs/tutorials).
-
     # Support
 
     * Raise non-technical or platform-related issues with the [Software Development Support Team (SDST)](https://developer.service.hmrc.gov.uk/developer/support).
@@ -24,27 +12,749 @@ info:
     # Changelog
 
     You can find the change log on the [interest-restriction-return](https://github.com/hmrc/interest-restriction-return/wiki) wiki page.
-
-    # Versioning
-
-    When an API changes in a way that is backwards-incompatible, we increase the version number of the API.
-
-    See our [reference guide](/api-documentation/docs/reference-guide#versioning) for more on versioning.
-
-    # Errors
-
-    We use standard HTTP status codes to show whether an API request succeeded or not. They are usually in the range:
-
-      - 200 to 299 if it succeeded, including code 202 if it was accepted by an API that needs to wait for further action
-      - 400 to 499 if it failed because of a client error by your application
-      - 500 to 599 if it failed because of an error on our server
-
-    Errors specific to each API are shown in the Endpoints section, under Response. See our [reference guide](https://developer.service.hmrc.gov.uk/api-documentation/docs/reference-guide#errors) for more on errors.
 servers:
   - url: https://test-api.service.hmrc.gov.uk
     description: Sandbox
   - url: https://api.service.hmrc.gov.uk
     description: Production
+paths:
+  /organisations/interest-restriction/reporting-company/appoint:
+    post:
+      summary: Appoint a Reporting Company
+      description: Request to appoint a Reporting Company that can submit Interest Restriction Returns
+      tags:
+        - Reporting Company
+      operationId: appointAReportingCompany
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/contentTypeHeader'
+        - $ref: '#/components/parameters/authorizationHeader'
+      security:
+        - user-restricted:
+            - write:interest-restriction-return
+      requestBody:
+        description: The payload required for the post to be successful
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/organisationsInterestRestrictionReportingCompanyAppointRequest'
+            examples:
+              appointReportingCompany:
+                description: Appoint Reporting Company
+                value:
+                  agentDetails:
+                    agentActingOnBehalfOfCompany: true
+                    agentName: AAgent
+                  reportingCompany:
+                    companyName: ACompany
+                    ctutr: '1123456789'
+                    sameAsUltimateParent: true
+                  isReportingCompanyAppointingItself: false
+                  identityOfAppointingCompany:
+                    companyName: BCompany
+                    ctutr: '9999999999'
+                  authorisingCompanies:
+                    - companyName: CCompany
+                      utr: '5555555555'
+                  accountingPeriod:
+                    startDate: 2018-11-01
+                    endDate: 2019-12-01
+                  declaration: true
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/organisationsInterestRestrictionReportingCompanyAppointResponse'
+              examples:
+                success:
+                  $ref: '#/components/examples/ok'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '500':
+          $ref: '#/components/responses/500'
+      deprecated: false
+  /organisations/interest-restriction/reporting-company/appoint/validate:
+    post:
+      summary: Validate Appointing a Reporting Company
+      description: Validates the payload for Appointing a Reporting Company without submitting the Appoint request
+      tags:
+        - Reporting Company
+      operationId: validateAppointingAReportingCompany
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/contentTypeHeader'
+        - $ref: '#/components/parameters/authorizationHeader'
+      security:
+        - user-restricted:
+            - write:interest-restriction-return
+      requestBody:
+        description: The payload required for the post to be successful
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/organisationsInterestRestrictionReportingCompanyAppointValidateRequest'
+            examples:
+              validateAppointReportingCompany:
+                description: Validate Appointing a Reporting Company
+                value:
+                  agentDetails:
+                    agentActingOnBehalfOfCompany: true
+                    agentName: AAgent
+                  reportingCompany:
+                    companyName: ACompany
+                    ctutr: '1123456789'
+                    sameAsUltimateParent: true
+                  isReportingCompanyAppointingItself: false
+                  identityOfAppointingCompany:
+                    companyName: BCompany
+                    ctutr: '9999999999'
+                  authorisingCompanies:
+                    - companyName: CCompany
+                      utr: '5555555555'
+                  accountingPeriod:
+                    startDate: 2018-11-01
+                    endDate: 2019-12-01
+                  declaration: true
+        required: true
+      responses:
+        '204':
+          description: No Content
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '406':
+          $ref: '#/components/responses/406'
+        '403':
+          $ref: '#/components/responses/403'
+      deprecated: false
+  /organisations/interest-restriction/reporting-company/revoke:
+    post:
+      summary: Revoke a Reporting Company
+      description: Request to revoke a Reporting Company that can submit Interest Restriction Returns
+      tags:
+        - Reporting Company
+      operationId: revokeAReportingCompany
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/contentTypeHeader'
+        - $ref: '#/components/parameters/authorizationHeader'
+      security:
+        - user-restricted:
+            - write:interest-restriction-return
+      requestBody:
+        description: The payload required for the post to be successful
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/organisationsInterestRestrictionReportingCompanyRevokeRequest'
+            examples:
+              revokeReportingCompany:
+                description: Revoke Reporting Company
+                value:
+                  agentDetails:
+                    agentActingOnBehalfOfCompany: true
+                    agentName: AAgent
+                  reportingCompany:
+                    companyName: ACompany
+                    ctutr: '1123456789'
+                    sameAsUltimateParent: false
+                  isReportingCompanyRevokingItself: false
+                  companyMakingRevocation:
+                    companyName: BCompany
+                    ctutr: '9999999999'
+                  ultimateParentCompany:
+                    companyName: CCompany
+                    isUk: true
+                    ctutr: '1123456789'
+                  authorisingCompanies:
+                    - companyName: DCompany
+                      utr: '5555555555'
+                      consenting: true
+                  accountingPeriod:
+                    startDate: 2018-11-01
+                    endDate: 2019-12-01
+                  declaration: true
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/organisationsInterestRestrictionReportingCompanyRevokeResponse'
+              examples:
+                success:
+                  $ref: '#/components/examples/ok'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '406':
+          $ref: '#/components/responses/406'
+        '403':
+          $ref: '#/components/responses/403'
+      deprecated: false
+  /organisations/interest-restriction/reporting-company/revoke/validate:
+    post:
+      summary: Validate Revoking a Reporting Company
+      description: Validates the payload for Revoking a Reporting Company without submitting the Revoke request
+      tags:
+        - Reporting Company
+      operationId: validateRevokingAReportingCompany
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/contentTypeHeader'
+        - $ref: '#/components/parameters/authorizationHeader'
+      security:
+        - user-restricted:
+            - write:interest-restriction-return
+      requestBody:
+        description: The payload required for the post to be successful
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/organisationsInterestRestrictionReportingCompanyRevokeValidateRequest'
+                - description: The payload required for the post to be successful
+            examples:
+              validateRevokeReportingCompany:
+                description: Revoke Reporting Company
+                value:
+                  agentDetails:
+                    agentActingOnBehalfOfCompany: true
+                    agentName: AAgent
+                  reportingCompany:
+                    companyName: ACompany
+                    ctutr: '1123456789'
+                    sameAsUltimateParent: false
+                  isReportingCompanyRevokingItself: false
+                  companyMakingRevocation:
+                    companyName: BCompany
+                    ctutr: '9999999999'
+                  ultimateParentCompany:
+                    companyName: CCompany
+                    isUk: true
+                    ctutr: '1123456789'
+                  authorisingCompanies:
+                    - companyName: DCompany
+                      utr: '5555555555'
+                      consenting: true
+                  accountingPeriod:
+                    startDate: 2018-11-01
+                    endDate: 2019-12-01
+                  declaration: true
+        required: true
+      responses:
+        '204':
+          description: No Content
+        '404':
+          $ref: '#/components/responses/404'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '406':
+          $ref: '#/components/responses/406'
+        '403':
+          $ref: '#/components/responses/403'
+      deprecated: false
+  /organisations/interest-restriction/return/full:
+    post:
+      summary: Post a Full Interest Restriction Return
+      description: Request to submit a Full return for an Interest Restriction Return
+      tags:
+        - Return Submission
+      operationId: postAFullInterestRestrictionReturn
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/contentTypeHeader'
+        - $ref: '#/components/parameters/authorizationHeader'
+      security:
+        - user-restricted:
+            - write:interest-restriction-return
+      requestBody:
+        description: The payload required for the post to be successful
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/organisationsInterestRestrictionReturnFullRequest'
+                - description: The payload required for the post to be successful
+            examples:
+              fullInterestRestrictionReturn:
+                description: Submit a full IRR
+                value:
+                  appointedReportingCompany: true
+                  agentDetails:
+                    agentActingOnBehalfOfCompany: true
+                    agentName: some agent
+                  reportingCompany:
+                    companyName: Company Name ltd
+                    ctutr: '1123456789'
+                    sameAsUltimateParent: false
+                  parentCompany:
+                    ultimateParent:
+                      companyName: Company Name ltd
+                      isUk: true
+                      ctutr: '1123456789'
+                  groupCompanyDetails:
+                    accountingPeriod:
+                      startDate: 2019-02-18
+                      endDate: 2020-08-17
+                  submissionType: revised
+                  revisedReturnDetails: some details
+                  groupLevelElections:
+                    groupRatio:
+                      isElected: true
+                      groupEBITDAChargeableGains: true
+                      activeGroupEBITDAChargeableGains: false
+                      groupRatioBlended:
+                        isElected: true
+                        investorGroups:
+                          - groupName: some investor group
+                            elections:
+                              - groupRatioBlended
+                              - groupEBITDA
+                              - interestAllowanceAlternativeCalculation
+                              - interestAllowanceNonConsolidatedInvestment
+                              - interestAllowanceConsolidatedPartnership
+                          - groupName: some investor group
+                            elections:
+                              - interestAllowanceAlternativeCalculation
+                              - interestAllowanceNonConsolidatedInvestment
+                              - interestAllowanceConsolidatedPartnership
+                    interestAllowanceAlternativeCalculation: true
+                    activeInterestAllowanceAlternativeCalculation: false
+                    interestAllowanceNonConsolidatedInvestment:
+                      isElected: true
+                      nonConsolidatedInvestments:
+                        - investmentName: some Investment
+                    interestAllowanceConsolidatedPartnership:
+                      isElected: true
+                      isActive: false
+                      consolidatedPartnerships:
+                        - partnershipName: some partner
+                          sautr: '1123456789'
+                  ukCompanies:
+                    - companyName: Company Name ltd
+                      utr: '1123456789'
+                      consenting: true
+                      qicElection: true
+                      netTaxInterestExpense: 0
+                      netTaxInterestIncome: 50
+                      taxEBITDA: 5
+                      allocatedReactivations:
+                        currentPeriodReactivation: 2
+                    - companyName: Company Name ltd
+                      utr: '1123456789'
+                      consenting: true
+                      qicElection: true
+                      netTaxInterestExpense: 0
+                      netTaxInterestIncome: 50
+                      taxEBITDA: 5
+                      allocatedReactivations:
+                        currentPeriodReactivation: 2
+                  angie: 1.11
+                  returnContainsEstimates: false
+                  groupSubjectToInterestRestrictions: false
+                  groupSubjectToInterestReactivation: true
+                  totalReactivation: 4
+                  totalRestrictions: 0
+                  groupLevelAmount:
+                    interestReactivationCap: 300
+                    interestAllowanceBroughtForward: 3
+                    interestAllowanceForPeriod: 4
+                    interestCapacityForPeriod: 5
+                  adjustedGroupInterest:
+                    qngie: 100
+                    groupEBITDA: 200
+                    groupRatio: 50
+                  declaration: true
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/organisationsInterestRestrictionReturnFullResponse'
+              examples:
+                success:
+                  $ref: '#/components/examples/ok'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '406':
+          $ref: '#/components/responses/406'
+        '403':
+          $ref: '#/components/responses/403'
+      deprecated: false
+  /organisations/interest-restriction/return/full/validate:
+    post:
+      summary: Validate a Full Interest Restriction Return
+      description: Validates the payload for a Full Interest Restriction Return without submitting the return
+      tags:
+        - Return Submission
+      operationId: validateFullInterestRestrictionReturn
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/contentTypeHeader'
+        - $ref: '#/components/parameters/authorizationHeader'
+      security:
+        - user-restricted:
+            - write:interest-restriction-return
+      requestBody:
+        description: The payload required for the post to be successful
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/organisationsInterestRestrictionReturnFullValidateRequest'
+                - description: The payload required for the post to be successful
+            examples:
+              validateFullInterestRestrictionReturn:
+                description: Validate a full IRR
+                value:
+                  appointedReportingCompany: true
+                  agentDetails:
+                    agentActingOnBehalfOfCompany: true
+                    agentName: some agent
+                  reportingCompany:
+                    companyName: Company Name ltd
+                    ctutr: '1123456789'
+                    sameAsUltimateParent: false
+                  parentCompany:
+                    ultimateParent:
+                      companyName: Company Name ltd
+                      isUk: true
+                      ctutr: '1123456789'
+                  groupCompanyDetails:
+                    accountingPeriod:
+                      startDate: 2019-02-18
+                      endDate: 2020-08-17
+                  submissionType: revised
+                  revisedReturnDetails: some details
+                  groupLevelElections:
+                    groupRatio:
+                      isElected: true
+                      groupEBITDAChargeableGains: true
+                      activeGroupEBITDAChargeableGains: false
+                      groupRatioBlended:
+                        isElected: true
+                        investorGroups:
+                          - groupName: some investor group
+                            elections:
+                              - groupRatioBlended
+                              - groupEBITDA
+                              - interestAllowanceAlternativeCalculation
+                              - interestAllowanceNonConsolidatedInvestment
+                              - interestAllowanceConsolidatedPartnership
+                          - groupName: some investor group
+                            elections:
+                              - interestAllowanceAlternativeCalculation
+                              - interestAllowanceNonConsolidatedInvestment
+                              - interestAllowanceConsolidatedPartnership
+                    interestAllowanceAlternativeCalculation: true
+                    activeInterestAllowanceAlternativeCalculation: false
+                    interestAllowanceNonConsolidatedInvestment:
+                      isElected: true
+                      nonConsolidatedInvestments:
+                        - investmentName: some Investment
+                    interestAllowanceConsolidatedPartnership:
+                      isElected: true
+                      isActive: false
+                      consolidatedPartnerships:
+                        - partnershipName: some partner
+                          sautr: '1123456789'
+                  ukCompanies:
+                    - companyName: Company Name ltd
+                      utr: '1123456789'
+                      consenting: true
+                      qicElection: true
+                      netTaxInterestExpense: 0
+                      netTaxInterestIncome: 50
+                      taxEBITDA: 5
+                      allocatedReactivations:
+                        currentPeriodReactivation: 2
+                    - companyName: Company Name ltd
+                      utr: '1123456789'
+                      consenting: true
+                      qicElection: true
+                      netTaxInterestExpense: 0
+                      netTaxInterestIncome: 50
+                      taxEBITDA: 5
+                      allocatedReactivations:
+                        currentPeriodReactivation: 2
+                  angie: 1.11
+                  returnContainsEstimates: false
+                  groupSubjectToInterestRestrictions: false
+                  groupSubjectToInterestReactivation: true
+                  totalReactivation: 4
+                  totalRestrictions: 0
+                  groupLevelAmount:
+                    interestReactivationCap: 300
+                    interestAllowanceBroughtForward: 3
+                    interestAllowanceForPeriod: 4
+                    interestCapacityForPeriod: 5
+                  adjustedGroupInterest:
+                    qngie: 100
+                    groupEBITDA: 200
+                    groupRatio: 50
+                  declaration: true
+        required: true
+      responses:
+        '204':
+          description: No Content
+        '404':
+          $ref: '#/components/responses/404'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '406':
+          $ref: '#/components/responses/406'
+        '403':
+          $ref: '#/components/responses/403'
+      deprecated: false
+  /organisations/interest-restriction/return/abbreviated:
+    post:
+      summary: Post an Abbreviated Interest Restriction Return
+      description: Validates the payload for an Abbreviated Interest Restriction Return without submitting the return
+      tags:
+        - Return Submission
+      operationId: postAnAbbreviatedInterestRestrictionReturn
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/contentTypeHeader'
+        - $ref: '#/components/parameters/authorizationHeader'
+      security:
+        - user-restricted:
+            - write:interest-restriction-return
+      requestBody:
+        description: The payload required for the post to be successful
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/organisationsInterestRestrictionReturnAbbreviatedRequest'
+            examples:
+              abbreviatedInterestRestrictionReturn:
+                description: Abbreviated Return
+                value:
+                  appointedReportingCompany: true
+                  agentDetails:
+                    agentActingOnBehalfOfCompany: true
+                    agentName: AAgent
+                  reportingCompany:
+                    companyName: ACompany
+                    ctutr: '1123456789'
+                    sameAsUltimateParent: false
+                  parentCompany:
+                    ultimateParent:
+                      companyName: BCompany
+                      isUk: true
+                      ctutr: '1123456789'
+                  groupCompanyDetails:
+                    accountingPeriod:
+                      startDate: 2018-07-27
+                      endDate: 2020-01-26
+                  submissionType: revised
+                  revisedReturnDetails: Reason for revision
+                  groupLevelElections:
+                    groupRatio:
+                      isElected: true
+                      groupEBITDAChargeableGains: true
+                      activeGroupEBITDAChargeableGains: false
+                      groupRatioBlended:
+                        isElected: true
+                        investorGroups:
+                          - groupName: AInvestor
+                          - groupName: BInvestor
+                          - groupName: CInvestor
+                    interestAllowanceAlternativeCalculation: true
+                    activeInterestAllowanceAlternativeCalculation: false
+                    interestAllowanceNonConsolidatedInvestment:
+                      isElected: true
+                      nonConsolidatedInvestments:
+                        - investmentName: AInvestment
+                        - investmentName: BInvestment
+                    interestAllowanceConsolidatedPartnership:
+                      isElected: true
+                      isActive: false
+                      consolidatedPartnerships:
+                        - partnershipName: APartnership
+                          sautr: '1123456789'
+                        - partnershipName: BPartnership
+                          sautr: '1123456789'
+                  ukCompanies:
+                    - companyName: ACompany
+                      utr: '1123456789'
+                      consenting: true
+                      qicElection: false
+                    - companyName: BCompany
+                      utr: '1123456789'
+                      consenting: true
+                      qicElection: false
+                    - companyName: CCompany
+                      utr: '1123456789'
+                      consenting: false
+                      qicElection: true
+                  declaration: true
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/organisationsInterestRestrictionReturnAbbreviatedResponse'
+              examples:
+                success:
+                  $ref: '#/components/examples/ok'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '406':
+          $ref: '#/components/responses/406'
+        '403':
+          $ref: '#/components/responses/403'
+      deprecated: false
+  /organisations/interest-restriction/return/abbreviated/validate:
+    post:
+      summary: Validate an Abbreviated Interest Restriction Return
+      description: Validates the payload for an Abbreviated Interest Restriction Return without submitting the return
+      tags:
+        - Return Submission
+      operationId: validateAnAbbreviatedInterestRestrictionReturn
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/contentTypeHeader'
+        - $ref: '#/components/parameters/authorizationHeader'
+      security:
+        - user-restricted:
+            - write:interest-restriction-return
+      requestBody:
+        description: The payload required for the post to be successful
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/organisationsInterestRestrictionReturnAbbreviatedValidateRequest'
+            examples:
+              validateAnAbbreviatedInterestRestrictionReturn:
+                description: Validate Abbreviated Return
+                value:
+                  appointedReportingCompany: true
+                  agentDetails:
+                    agentActingOnBehalfOfCompany: true
+                    agentName: AAgent
+                  reportingCompany:
+                    companyName: ACompany
+                    ctutr: '1123456789'
+                    sameAsUltimateParent: false
+                  parentCompany:
+                    ultimateParent:
+                      companyName: BCompany
+                      isUk: true
+                      ctutr: '1123456789'
+                  groupCompanyDetails:
+                    accountingPeriod:
+                      startDate: 2018-07-27
+                      endDate: 2020-01-26
+                  submissionType: revised
+                  revisedReturnDetails: Reason for revision
+                  groupLevelElections:
+                    groupRatio:
+                      isElected: true
+                      groupEBITDAChargeableGains: true
+                      activeGroupEBITDAChargeableGains: false
+                      groupRatioBlended:
+                        isElected: true
+                        investorGroups:
+                          - groupName: AInvestor
+                          - groupName: BInvestor
+                          - groupName: CInvestor
+                    interestAllowanceAlternativeCalculation: true
+                    activeInterestAllowanceAlternativeCalculation: false
+                    interestAllowanceNonConsolidatedInvestment:
+                      isElected: true
+                      nonConsolidatedInvestments:
+                        - investmentName: AInvestment
+                        - investmentName: BInvestment
+                    interestAllowanceConsolidatedPartnership:
+                      isElected: true
+                      isActive: false
+                      consolidatedPartnerships:
+                        - partnershipName: APartnership
+                          sautr: '1123456789'
+                        - partnershipName: BPartnership
+                          sautr: '1123456789'
+                  ukCompanies:
+                    - companyName: ACompany
+                      utr: '1123456789'
+                      consenting: true
+                      qicElection: false
+                    - companyName: BCompany
+                      utr: '1123456789'
+                      consenting: true
+                      qicElection: false
+                    - companyName: CCompany
+                      utr: '1123456789'
+                      consenting: false
+                      qicElection: true
+                  declaration: true
+        required: true
+      responses:
+        '204':
+          description: No Content
+        '404':
+          $ref: '#/components/responses/404'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '406':
+          $ref: '#/components/responses/406'
+        '403':
+          $ref: '#/components/responses/403'
+      deprecated: false
 components:
   parameters:
     acceptHeader:
@@ -79,14 +789,14 @@ components:
   securitySchemes:
     user-restricted:
       type: oauth2
-      description: HMRC supports OAuth 2.0 for authenticating User-restricted API requests
+      description: HMRC supports OAuth 2.0 for authenticating [user-restricted](https://developer.service.hmrc.gov.uk/api-documentation/docs/authorisation/user-restricted-endpoints) API requests using an OAuth 2.0 Bearer Token in the Authorization header.
       flows:
         authorizationCode:
           authorizationUrl: https://api.service.hmrc.gov.uk/oauth/authorize
           tokenUrl: https://api.service.hmrc.gov.uk/oauth/token
           refreshUrl: https://api.service.hmrc.gov.uk/oauth/refresh
           scopes:
-            write:interest-restriction-return: Write Interest Restriction Return
+            write:interest-restriction-return: Allow write access to Interest Restriction Return data
   schemas:
     errorResponse:
       title: errorResponse
@@ -97,8 +807,10 @@ components:
       properties:
         code:
           type: string
+          description: The error code
         message:
           type: string
+          description: The error message
     accountingPeriod:
       title: accountingPeriod
       required:
@@ -481,8 +1193,8 @@ components:
         investmentName:
           pattern: ^[ -~¢-¥©®±×÷‐₠-₿−-∝≈≠≣-≥]{1,5000}$
           type: string
-    organisationsInterestRestrictionReportingCompanyAppointrequest:
-      title: organisationsInterestRestrictionReportingCompanyAppointrequest
+    organisationsInterestRestrictionReportingCompanyAppointRequest:
+      title: organisationsInterestRestrictionReportingCompanyAppointRequest
       required:
         - agentDetails
         - reportingCompany
@@ -526,16 +1238,16 @@ components:
           type: boolean
           description: Declaration to confirm the listed companies constitute at least 50% of the eligible companies
       description: Provides the ability to appoint a reporting company for the group
-    organisationsInterestRestrictionReportingCompanyAppointresponse:
-      title: organisationsInterestRestrictionReportingCompanyAppointresponse
+    organisationsInterestRestrictionReportingCompanyAppointResponse:
+      title: organisationsInterestRestrictionReportingCompanyAppointResponse
       required:
         - acknowledgementReference
       type: object
       properties:
         acknowledgementReference:
           type: string
-    organisationsInterestRestrictionReportingCompanyAppointValidaterequest:
-      title: organisationsInterestRestrictionReportingCompanyAppointValidaterequest
+    organisationsInterestRestrictionReportingCompanyAppointValidateRequest:
+      title: organisationsInterestRestrictionReportingCompanyAppointValidateRequest
       required:
         - agentDetails
         - reportingCompany
@@ -579,8 +1291,8 @@ components:
           type: boolean
           description: Declaration to confirm the listed companies constitute at least 50% of the eligible companies
       description: Provides the ability to appoint a reporting company for the group
-    organisationsInterestRestrictionReportingCompanyRevokerequest:
-      title: organisationsInterestRestrictionReportingCompanyRevokerequest
+    organisationsInterestRestrictionReportingCompanyRevokeRequest:
+      title: organisationsInterestRestrictionReportingCompanyRevokeRequest
       required:
         - agentDetails
         - reportingCompany
@@ -624,16 +1336,16 @@ components:
           type: boolean
           description: Declaration to confirm the listed companies constitute at least 50% of the eligible companies
       description: Provides the ability to revoke a reporting company from submitting for the group
-    organisationsInterestRestrictionReportingCompanyRevokeresponse:
-      title: organisationsInterestRestrictionReportingCompanyRevokeresponse
+    organisationsInterestRestrictionReportingCompanyRevokeResponse:
+      title: organisationsInterestRestrictionReportingCompanyRevokeResponse
       required:
         - acknowledgementReference
       type: object
       properties:
         acknowledgementReference:
           type: string
-    organisationsInterestRestrictionReportingCompanyRevokeValidaterequest:
-      title: organisationsInterestRestrictionReportingCompanyRevokeValidaterequest
+    organisationsInterestRestrictionReportingCompanyRevokeValidateRequest:
+      title: organisationsInterestRestrictionReportingCompanyRevokeValidateRequest
       required:
         - agentDetails
         - reportingCompany
@@ -677,8 +1389,8 @@ components:
           type: boolean
           description: Declaration to confirm the listed companies constitute at least 50% of the eligible companies
       description: Provides the ability to revoke a reporting company from submitting for the group
-    organisationsInterestRestrictionReturnAbbreviatedrequest:
-      title: organisationsInterestRestrictionReturnAbbreviatedrequest
+    organisationsInterestRestrictionReturnAbbreviatedRequest:
+      title: organisationsInterestRestrictionReturnAbbreviatedRequest
       required:
         - appointedReportingCompany
         - agentDetails
@@ -723,22 +1435,22 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ukCompany2'
+            $ref: '#/components/schemas/ukCompanyForAbbreviatedRequest'
           description: Details of all the UK companies in the group
         declaration:
           type: boolean
           description: Statement to confirm the truth of the information given
       description: Provides the ability to submit an abbreviated Interest Restriction Return (IRR) for the group
-    organisationsInterestRestrictionReturnAbbreviatedresponse:
-      title: organisationsInterestRestrictionReturnAbbreviatedresponse
+    organisationsInterestRestrictionReturnAbbreviatedResponse:
+      title: organisationsInterestRestrictionReturnAbbreviatedResponse
       required:
         - acknowledgementReference
       type: object
       properties:
         acknowledgementReference:
           type: string
-    organisationsInterestRestrictionReturnAbbreviatedValidaterequest:
-      title: organisationsInterestRestrictionReturnAbbreviatedValidaterequest
+    organisationsInterestRestrictionReturnAbbreviatedValidateRequest:
+      title: organisationsInterestRestrictionReturnAbbreviatedValidateRequest
       required:
         - appointedReportingCompany
         - agentDetails
@@ -783,14 +1495,14 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ukCompany2'
+            $ref: '#/components/schemas/ukCompanyForAbbreviatedRequest'
           description: Details of all the UK companies in the group
         declaration:
           type: boolean
           description: Statement to confirm the truth of the information given
       description: Provides the ability to submit an abbreviated Interest Restriction Return (IRR) for the group
-    organisationsInterestRestrictionReturnFullrequest:
-      title: organisationsInterestRestrictionReturnFullrequest
+    organisationsInterestRestrictionReturnFullRequest:
+      title: organisationsInterestRestrictionReturnFullRequest
       required:
         - appointedReportingCompany
         - agentDetails
@@ -878,8 +1590,8 @@ components:
           type: boolean
           description: Statement to confirm the truth of the information given
       description: Provides the ability to submit a full Interest Restriction Return (IRR) for the group
-    organisationsInterestRestrictionReturnFullresponse:
-      title: organisationsInterestRestrictionReturnFullresponse
+    organisationsInterestRestrictionReturnFullResponse:
+      title: organisationsInterestRestrictionReturnFullResponse
       required:
         - acknowledgementReference
       type: object
@@ -887,8 +1599,8 @@ components:
         acknowledgementReference:
           type: string
           description: Confirmation of submission with reference number
-    organisationsInterestRestrictionReturnFullValidaterequest:
-      title: organisationsInterestRestrictionReturnFullValidaterequest
+    organisationsInterestRestrictionReturnFullValidateRequest:
+      title: organisationsInterestRestrictionReturnFullValidateRequest
       required:
         - appointedReportingCompany
         - agentDetails
@@ -1067,8 +1779,8 @@ components:
         companyEstimateReason:
           type: string
           description: Reasons for company level figures being estimated
-    ukCompany2:
-      title: ukCompany2
+    ukCompanyForAbbreviatedRequest:
+      title: ukCompanyForAbbreviatedRequest
       required:
         - companyName
         - utr
@@ -1274,746 +1986,3 @@ tags:
 
        - Allow an appointed Reporting Company to submit a Full Interest Restriction Return
        - Allow an appointed Reporting Company to submit an Abbreviated Interest Restriction Return
-paths:
-  /organisations/interest-restriction/reporting-company/appoint:
-    post:
-      summary: Appoint a Reporting Company
-      description: Request to appoint a Reporting Company that can submit Interest Restriction Returns
-      tags:
-        - Reporting Company
-      operationId: appointaReportingCompany
-      parameters:
-        - $ref: '#/components/parameters/acceptHeader'
-        - $ref: '#/components/parameters/contentTypeHeader'
-        - $ref: '#/components/parameters/authorizationHeader'
-      security:
-        - user-restricted:
-            - write:interest-restriction-return
-      requestBody:
-        description: The payload required for the post to be successful
-        content:
-          application/json:
-            schema:
-              allOf:
-                - $ref: '#/components/schemas/organisationsInterestRestrictionReportingCompanyAppointrequest'
-                - description: The payload required for the post to be successful
-            examples:
-              appointReportingCompany:
-                description: Appoint Reporting Company
-                value:
-                  agentDetails:
-                    agentActingOnBehalfOfCompany: true
-                    agentName: AAgent
-                  reportingCompany:
-                    companyName: ACompany
-                    ctutr: '1123456789'
-                    sameAsUltimateParent: true
-                  isReportingCompanyAppointingItself: false
-                  identityOfAppointingCompany:
-                    companyName: BCompany
-                    ctutr: '9999999999'
-                  authorisingCompanies:
-                    - companyName: CCompany
-                      utr: '5555555555'
-                  accountingPeriod:
-                    startDate: 2018-11-01
-                    endDate: 2019-12-01
-                  declaration: true
-        required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/organisationsInterestRestrictionReportingCompanyAppointresponse'
-              examples:
-                success:
-                  $ref: '#/components/examples/ok'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '406':
-          $ref: '#/components/responses/406'
-        '500':
-          $ref: '#/components/responses/500'
-      deprecated: false
-  /organisations/interest-restriction/reporting-company/appoint/validate:
-    post:
-      summary: Validate Appointing a Reporting Company
-      description: Validates the payload for Appointing a Reporting Company without submitting the Appoint request
-      tags:
-        - Reporting Company
-      operationId: validateAppointingaReportingCompany
-      parameters:
-        - $ref: '#/components/parameters/acceptHeader'
-        - $ref: '#/components/parameters/contentTypeHeader'
-        - $ref: '#/components/parameters/authorizationHeader'
-      security:
-        - user-restricted:
-            - write:interest-restriction-return
-      requestBody:
-        description: The payload required for the post to be successful
-        content:
-          application/json:
-            schema:
-              allOf:
-                - $ref: '#/components/schemas/organisationsInterestRestrictionReportingCompanyAppointValidaterequest'
-                - description: The payload required for the post to be successful
-            examples:
-              validateAppointReportingCompany:
-                description: Validate Appointing a Reporting Company
-                value:
-                  agentDetails:
-                    agentActingOnBehalfOfCompany: true
-                    agentName: AAgent
-                  reportingCompany:
-                    companyName: ACompany
-                    ctutr: '1123456789'
-                    sameAsUltimateParent: true
-                  isReportingCompanyAppointingItself: false
-                  identityOfAppointingCompany:
-                    companyName: BCompany
-                    ctutr: '9999999999'
-                  authorisingCompanies:
-                    - companyName: CCompany
-                      utr: '5555555555'
-                  accountingPeriod:
-                    startDate: 2018-11-01
-                    endDate: 2019-12-01
-                  declaration: true
-        required: true
-      responses:
-        '204':
-          description: No Content
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '406':
-          $ref: '#/components/responses/406'
-        '403':
-          $ref: '#/components/responses/403'
-      deprecated: false
-  /organisations/interest-restriction/reporting-company/revoke:
-    post:
-      summary: Revoke a Reporting Company
-      description: Request to revoke a Reporting Company that can submit Interest Restriction Returns
-      tags:
-        - Reporting Company
-      operationId: revokeaReportingCompany
-      parameters:
-        - $ref: '#/components/parameters/acceptHeader'
-        - $ref: '#/components/parameters/contentTypeHeader'
-        - $ref: '#/components/parameters/authorizationHeader'
-      security:
-        - user-restricted:
-            - write:interest-restriction-return
-      requestBody:
-        description: The payload required for the post to be successful
-        content:
-          application/json:
-            schema:
-              allOf:
-                - $ref: '#/components/schemas/organisationsInterestRestrictionReportingCompanyRevokerequest'
-                - description: The payload required for the post to be successful
-            examples:
-              revokeReportingCompany:
-                description: Revoke Reporting Company
-                value:
-                  agentDetails:
-                    agentActingOnBehalfOfCompany: true
-                    agentName: AAgent
-                  reportingCompany:
-                    companyName: ACompany
-                    ctutr: '1123456789'
-                    sameAsUltimateParent: false
-                  isReportingCompanyRevokingItself: false
-                  companyMakingRevocation:
-                    companyName: BCompany
-                    ctutr: '9999999999'
-                  ultimateParentCompany:
-                    companyName: CCompany
-                    isUk: true
-                    ctutr: '1123456789'
-                  authorisingCompanies:
-                    - companyName: DCompany
-                      utr: '5555555555'
-                      consenting: true
-                  accountingPeriod:
-                    startDate: 2018-11-01
-                    endDate: 2019-12-01
-                  declaration: true
-        required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/organisationsInterestRestrictionReportingCompanyRevokeresponse'
-              examples:
-                success:
-                  $ref: '#/components/examples/ok'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '406':
-          $ref: '#/components/responses/406'
-        '403':
-          $ref: '#/components/responses/403'
-      deprecated: false
-  /organisations/interest-restriction/reporting-company/revoke/validate:
-    post:
-      summary: Validate Revoking a Reporting Company
-      description: Validates the payload for Revoking a Reporting Company without submitting the Revoke request
-      tags:
-        - Reporting Company
-      operationId: validateRevokingaReportingCompany
-      parameters:
-        - $ref: '#/components/parameters/acceptHeader'
-        - $ref: '#/components/parameters/contentTypeHeader'
-        - $ref: '#/components/parameters/authorizationHeader'
-      security:
-        - user-restricted:
-            - write:interest-restriction-return
-      requestBody:
-        description: The payload required for the post to be successful
-        content:
-          application/json:
-            schema:
-              allOf:
-                - $ref: '#/components/schemas/organisationsInterestRestrictionReportingCompanyRevokeValidaterequest'
-                - description: The payload required for the post to be successful
-            examples:
-              validateRevokeReportingCompany:
-                description: Revoke Reporting Company
-                value:
-                  agentDetails:
-                    agentActingOnBehalfOfCompany: true
-                    agentName: AAgent
-                  reportingCompany:
-                    companyName: ACompany
-                    ctutr: '1123456789'
-                    sameAsUltimateParent: false
-                  isReportingCompanyRevokingItself: false
-                  companyMakingRevocation:
-                    companyName: BCompany
-                    ctutr: '9999999999'
-                  ultimateParentCompany:
-                    companyName: CCompany
-                    isUk: true
-                    ctutr: '1123456789'
-                  authorisingCompanies:
-                    - companyName: DCompany
-                      utr: '5555555555'
-                      consenting: true
-                  accountingPeriod:
-                    startDate: 2018-11-01
-                    endDate: 2019-12-01
-                  declaration: true
-        required: true
-      responses:
-        '204':
-          description: No Content
-        '404':
-          $ref: '#/components/responses/404'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '406':
-          $ref: '#/components/responses/406'
-        '403':
-          $ref: '#/components/responses/403'
-      deprecated: false
-  /organisations/interest-restriction/return/full:
-    post:
-      summary: Post a Full Interest Restriction Return
-      description: Request to submit a Full return for an Interest Restriction Return
-      tags:
-        - Return Submission
-      operationId: postaFullInterestRestrictionReturn
-      parameters:
-        - $ref: '#/components/parameters/acceptHeader'
-        - $ref: '#/components/parameters/contentTypeHeader'
-        - $ref: '#/components/parameters/authorizationHeader'
-      security:
-        - user-restricted:
-            - write:interest-restriction-return
-      requestBody:
-        description: The payload required for the post to be successful
-        content:
-          application/json:
-            schema:
-              allOf:
-                - $ref: '#/components/schemas/organisationsInterestRestrictionReturnFullrequest'
-                - description: The payload required for the post to be successful
-            examples:
-              fullInterestRestrictionReturn:
-                description: Submit a full IRR
-                value:
-                  appointedReportingCompany: true
-                  agentDetails:
-                    agentActingOnBehalfOfCompany: true
-                    agentName: some agent
-                  reportingCompany:
-                    companyName: Company Name ltd
-                    ctutr: '1123456789'
-                    sameAsUltimateParent: false
-                  parentCompany:
-                    ultimateParent:
-                      companyName: Company Name ltd
-                      isUk: true
-                      ctutr: '1123456789'
-                  groupCompanyDetails:
-                    accountingPeriod:
-                      startDate: 2019-02-18
-                      endDate: 2020-08-17
-                  submissionType: revised
-                  revisedReturnDetails: some details
-                  groupLevelElections:
-                    groupRatio:
-                      isElected: true
-                      groupEBITDAChargeableGains: true
-                      activeGroupEBITDAChargeableGains: false
-                      groupRatioBlended:
-                        isElected: true
-                        investorGroups:
-                          - groupName: some investor group
-                            elections:
-                              - groupRatioBlended
-                              - groupEBITDA
-                              - interestAllowanceAlternativeCalculation
-                              - interestAllowanceNonConsolidatedInvestment
-                              - interestAllowanceConsolidatedPartnership
-                          - groupName: some investor group
-                            elections:
-                              - interestAllowanceAlternativeCalculation
-                              - interestAllowanceNonConsolidatedInvestment
-                              - interestAllowanceConsolidatedPartnership
-                    interestAllowanceAlternativeCalculation: true
-                    activeInterestAllowanceAlternativeCalculation: false
-                    interestAllowanceNonConsolidatedInvestment:
-                      isElected: true
-                      nonConsolidatedInvestments:
-                        - investmentName: some Investment
-                    interestAllowanceConsolidatedPartnership:
-                      isElected: true
-                      isActive: false
-                      consolidatedPartnerships:
-                        - partnershipName: some partner
-                          sautr: '1123456789'
-                  ukCompanies:
-                    - companyName: Company Name ltd
-                      utr: '1123456789'
-                      consenting: true
-                      qicElection: true
-                      netTaxInterestExpense: 0
-                      netTaxInterestIncome: 50
-                      taxEBITDA: 5
-                      allocatedReactivations:
-                        currentPeriodReactivation: 2
-                    - companyName: Company Name ltd
-                      utr: '1123456789'
-                      consenting: true
-                      qicElection: true
-                      netTaxInterestExpense: 0
-                      netTaxInterestIncome: 50
-                      taxEBITDA: 5
-                      allocatedReactivations:
-                        currentPeriodReactivation: 2
-                  angie: 1.11
-                  returnContainsEstimates: false
-                  groupSubjectToInterestRestrictions: false
-                  groupSubjectToInterestReactivation: true
-                  totalReactivation: 4
-                  totalRestrictions: 0
-                  groupLevelAmount:
-                    interestReactivationCap: 300
-                    interestAllowanceBroughtForward: 3
-                    interestAllowanceForPeriod: 4
-                    interestCapacityForPeriod: 5
-                  adjustedGroupInterest:
-                    qngie: 100
-                    groupEBITDA: 200
-                    groupRatio: 50
-                  declaration: true
-        required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/organisationsInterestRestrictionReturnFullresponse'
-              examples:
-                success:
-                  $ref: '#/components/examples/ok'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '406':
-          $ref: '#/components/responses/406'
-        '403':
-          $ref: '#/components/responses/403'
-      deprecated: false
-  /organisations/interest-restriction/return/full/validate:
-    post:
-      summary: Validate a Full Interest Restriction Return
-      description: Validates the payload for a Full Interest Restriction Return without submitting the return
-      tags:
-        - Return Submission
-      operationId: validateFullInterestRestrictionReturn
-      parameters:
-        - $ref: '#/components/parameters/acceptHeader'
-        - $ref: '#/components/parameters/contentTypeHeader'
-        - $ref: '#/components/parameters/authorizationHeader'
-      security:
-        - user-restricted:
-            - write:interest-restriction-return
-      requestBody:
-        description: The payload required for the post to be successful
-        content:
-          application/json:
-            schema:
-              allOf:
-                - $ref: '#/components/schemas/organisationsInterestRestrictionReturnFullValidaterequest'
-                - description: The payload required for the post to be successful
-            examples:
-              validateFullInterestRestrictionReturn:
-                description: Validate a full IRR
-                value:
-                  appointedReportingCompany: true
-                  agentDetails:
-                    agentActingOnBehalfOfCompany: true
-                    agentName: some agent
-                  reportingCompany:
-                    companyName: Company Name ltd
-                    ctutr: '1123456789'
-                    sameAsUltimateParent: false
-                  parentCompany:
-                    ultimateParent:
-                      companyName: Company Name ltd
-                      isUk: true
-                      ctutr: '1123456789'
-                  groupCompanyDetails:
-                    accountingPeriod:
-                      startDate: 2019-02-18
-                      endDate: 2020-08-17
-                  submissionType: revised
-                  revisedReturnDetails: some details
-                  groupLevelElections:
-                    groupRatio:
-                      isElected: true
-                      groupEBITDAChargeableGains: true
-                      activeGroupEBITDAChargeableGains: false
-                      groupRatioBlended:
-                        isElected: true
-                        investorGroups:
-                          - groupName: some investor group
-                            elections:
-                              - groupRatioBlended
-                              - groupEBITDA
-                              - interestAllowanceAlternativeCalculation
-                              - interestAllowanceNonConsolidatedInvestment
-                              - interestAllowanceConsolidatedPartnership
-                          - groupName: some investor group
-                            elections:
-                              - interestAllowanceAlternativeCalculation
-                              - interestAllowanceNonConsolidatedInvestment
-                              - interestAllowanceConsolidatedPartnership
-                    interestAllowanceAlternativeCalculation: true
-                    activeInterestAllowanceAlternativeCalculation: false
-                    interestAllowanceNonConsolidatedInvestment:
-                      isElected: true
-                      nonConsolidatedInvestments:
-                        - investmentName: some Investment
-                    interestAllowanceConsolidatedPartnership:
-                      isElected: true
-                      isActive: false
-                      consolidatedPartnerships:
-                        - partnershipName: some partner
-                          sautr: '1123456789'
-                  ukCompanies:
-                    - companyName: Company Name ltd
-                      utr: '1123456789'
-                      consenting: true
-                      qicElection: true
-                      netTaxInterestExpense: 0
-                      netTaxInterestIncome: 50
-                      taxEBITDA: 5
-                      allocatedReactivations:
-                        currentPeriodReactivation: 2
-                    - companyName: Company Name ltd
-                      utr: '1123456789'
-                      consenting: true
-                      qicElection: true
-                      netTaxInterestExpense: 0
-                      netTaxInterestIncome: 50
-                      taxEBITDA: 5
-                      allocatedReactivations:
-                        currentPeriodReactivation: 2
-                  angie: 1.11
-                  returnContainsEstimates: false
-                  groupSubjectToInterestRestrictions: false
-                  groupSubjectToInterestReactivation: true
-                  totalReactivation: 4
-                  totalRestrictions: 0
-                  groupLevelAmount:
-                    interestReactivationCap: 300
-                    interestAllowanceBroughtForward: 3
-                    interestAllowanceForPeriod: 4
-                    interestCapacityForPeriod: 5
-                  adjustedGroupInterest:
-                    qngie: 100
-                    groupEBITDA: 200
-                    groupRatio: 50
-                  declaration: true
-        required: true
-      responses:
-        '204':
-          description: No Content
-        '404':
-          $ref: '#/components/responses/404'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '406':
-          $ref: '#/components/responses/406'
-        '403':
-          $ref: '#/components/responses/403'
-      deprecated: false
-  /organisations/interest-restriction/return/abbreviated:
-    post:
-      summary: Post an Abbreviated Interest Restriction Return
-      description: Validates the payload for an Abbreviated Interest Restriction Return without submitting the return
-      tags:
-        - Return Submission
-      operationId: postanAbbreviatedInterestRestrictionReturn
-      parameters:
-        - $ref: '#/components/parameters/acceptHeader'
-        - $ref: '#/components/parameters/contentTypeHeader'
-        - $ref: '#/components/parameters/authorizationHeader'
-      security:
-        - user-restricted:
-            - write:interest-restriction-return
-      requestBody:
-        description: The payload required for the post to be successful
-        content:
-          application/json:
-            schema:
-              allOf:
-                - $ref: '#/components/schemas/organisationsInterestRestrictionReturnAbbreviatedrequest'
-                - description: The payload required for the post to be successful
-            examples:
-              abbreviatedInterestRestrictionReturn:
-                description: Abbreviated Return
-                value:
-                  appointedReportingCompany: true
-                  agentDetails:
-                    agentActingOnBehalfOfCompany: true
-                    agentName: AAgent
-                  reportingCompany:
-                    companyName: ACompany
-                    ctutr: '1123456789'
-                    sameAsUltimateParent: false
-                  parentCompany:
-                    ultimateParent:
-                      companyName: BCompany
-                      isUk: true
-                      ctutr: '1123456789'
-                  groupCompanyDetails:
-                    accountingPeriod:
-                      startDate: 2018-07-27
-                      endDate: 2020-01-26
-                  submissionType: revised
-                  revisedReturnDetails: Reason for revision
-                  groupLevelElections:
-                    groupRatio:
-                      isElected: true
-                      groupEBITDAChargeableGains: true
-                      activeGroupEBITDAChargeableGains: false
-                      groupRatioBlended:
-                        isElected: true
-                        investorGroups:
-                          - groupName: AInvestor
-                          - groupName: BInvestor
-                          - groupName: CInvestor
-                    interestAllowanceAlternativeCalculation: true
-                    activeInterestAllowanceAlternativeCalculation: false
-                    interestAllowanceNonConsolidatedInvestment:
-                      isElected: true
-                      nonConsolidatedInvestments:
-                        - investmentName: AInvestment
-                        - investmentName: BInvestment
-                    interestAllowanceConsolidatedPartnership:
-                      isElected: true
-                      isActive: false
-                      consolidatedPartnerships:
-                        - partnershipName: APartnership
-                          sautr: '1123456789'
-                        - partnershipName: BPartnership
-                          sautr: '1123456789'
-                  ukCompanies:
-                    - companyName: ACompany
-                      utr: '1123456789'
-                      consenting: true
-                      qicElection: false
-                    - companyName: BCompany
-                      utr: '1123456789'
-                      consenting: true
-                      qicElection: false
-                    - companyName: CCompany
-                      utr: '1123456789'
-                      consenting: false
-                      qicElection: true
-                  declaration: true
-        required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/organisationsInterestRestrictionReturnAbbreviatedresponse'
-              examples:
-                success:
-                  $ref: '#/components/examples/ok'
-        '404':
-          $ref: '#/components/responses/404'
-        '500':
-          $ref: '#/components/responses/500'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '406':
-          $ref: '#/components/responses/406'
-        '403':
-          $ref: '#/components/responses/403'
-      deprecated: false
-  /organisations/interest-restriction/return/abbreviated/validate:
-    post:
-      summary: Validate an Abbreviated Interest Restriction Return
-      description: Validates the payload for an Abbreviated Interest Restriction Return without submitting the return
-      tags:
-        - Return Submission
-      operationId: validateanAbbreviatedInterestRestrictionReturn
-      parameters:
-        - $ref: '#/components/parameters/acceptHeader'
-        - $ref: '#/components/parameters/contentTypeHeader'
-        - $ref: '#/components/parameters/authorizationHeader'
-      security:
-        - user-restricted:
-            - write:interest-restriction-return
-      requestBody:
-        description: The payload required for the post to be successful
-        content:
-          application/json:
-            schema:
-              allOf:
-                - $ref: '#/components/schemas/organisationsInterestRestrictionReturnAbbreviatedValidaterequest'
-                - description: The payload required for the post to be successful
-            examples:
-              validateanAbbreviatedInterestRestrictionReturn:
-                description: Validate Abbreviated Return
-                value:
-                  appointedReportingCompany: true
-                  agentDetails:
-                    agentActingOnBehalfOfCompany: true
-                    agentName: AAgent
-                  reportingCompany:
-                    companyName: ACompany
-                    ctutr: '1123456789'
-                    sameAsUltimateParent: false
-                  parentCompany:
-                    ultimateParent:
-                      companyName: BCompany
-                      isUk: true
-                      ctutr: '1123456789'
-                  groupCompanyDetails:
-                    accountingPeriod:
-                      startDate: 2018-07-27
-                      endDate: 2020-01-26
-                  submissionType: revised
-                  revisedReturnDetails: Reason for revision
-                  groupLevelElections:
-                    groupRatio:
-                      isElected: true
-                      groupEBITDAChargeableGains: true
-                      activeGroupEBITDAChargeableGains: false
-                      groupRatioBlended:
-                        isElected: true
-                        investorGroups:
-                          - groupName: AInvestor
-                          - groupName: BInvestor
-                          - groupName: CInvestor
-                    interestAllowanceAlternativeCalculation: true
-                    activeInterestAllowanceAlternativeCalculation: false
-                    interestAllowanceNonConsolidatedInvestment:
-                      isElected: true
-                      nonConsolidatedInvestments:
-                        - investmentName: AInvestment
-                        - investmentName: BInvestment
-                    interestAllowanceConsolidatedPartnership:
-                      isElected: true
-                      isActive: false
-                      consolidatedPartnerships:
-                        - partnershipName: APartnership
-                          sautr: '1123456789'
-                        - partnershipName: BPartnership
-                          sautr: '1123456789'
-                  ukCompanies:
-                    - companyName: ACompany
-                      utr: '1123456789'
-                      consenting: true
-                      qicElection: false
-                    - companyName: BCompany
-                      utr: '1123456789'
-                      consenting: true
-                      qicElection: false
-                    - companyName: CCompany
-                      utr: '1123456789'
-                      consenting: false
-                      qicElection: true
-                  declaration: true
-        required: true
-      responses:
-        '204':
-          description: No Content
-        '404':
-          $ref: '#/components/responses/404'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '406':
-          $ref: '#/components/responses/406'
-        '403':
-          $ref: '#/components/responses/403'
-      deprecated: false

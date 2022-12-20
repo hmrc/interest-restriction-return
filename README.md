@@ -20,4 +20,4 @@ This code is open source software licensed under the [Apache 2.0 License]("http:
     ```
      http://localhost:9261/api/conf/1.0/application.yaml
     ```
-- Ensure to uncomment the lines 60-63 in application.conf, in case of CORS errors
+- Ensure to uncomment the lines [here](https://github.com/hmrc/individual-benefits/blob/main/conf/application.conf#L60-L63) in application.conf, in case of CORS errors

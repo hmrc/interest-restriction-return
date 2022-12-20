@@ -12,14 +12,12 @@ object AppDependencies {
   )
 
   def test(scope: String = "test, it"): Seq[ModuleID] = Seq(
-    "uk.gov.hmrc"            %% "bootstrap-test-play-28"      % bootstrapPlayVersion,
-    "org.scalatest"          %% "scalatest"                   % "3.2.14",
-    "com.typesafe.play"      %% "play-test"                   % current,
-    "org.pegdown"             % "pegdown"                     % "1.6.0",
-    "org.scalatestplus.play" %% "scalatestplus-play"          % "5.1.0",
-    "org.scalamock"          %% "scalamock-scalatest-support" % "3.6.0",
-    "com.github.tomakehurst"  % "wiremock-standalone"         % "2.27.2",
-    "com.vladsch.flexmark"    % "flexmark-all"                % "0.62.2"
+    "uk.gov.hmrc"           %% "bootstrap-test-play-28"      % bootstrapPlayVersion,
+    "org.scalatest"         %% "scalatest"                   % "3.2.14",
+    "com.typesafe.play"     %% "play-test"                   % current,
+    "org.scalamock"         %% "scalamock-scalatest-support" % "3.6.0",
+    "com.github.tomakehurst" % "wiremock-standalone"         % "2.27.2",
+    "com.vladsch.flexmark"   % "flexmark-all"                % "0.62.2"
   ).map(_ % scope)
 
 }

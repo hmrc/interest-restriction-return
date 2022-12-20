@@ -53,8 +53,9 @@ trait ParentCompanyValidator extends BaseValidation {
   def validate(implicit path: JsPath): ValidationResult[ParentCompanyModel] = {
 
     val validatedDeemedParent = parentCompanyModel.deemedParent.map(deemedParents =>
-      if (deemedParents.isEmpty) DeemedParentsEmpty().invalidNec
-      else {
+      if (deemedParents.isEmpty) {
+        DeemedParentsEmpty().invalidNec
+      } else {
         combineValidations(deemedParents.zipWithIndex.map { case (x, i) =>
           x.validate(path \ s"deemedParent[$i]")
         }: _*)

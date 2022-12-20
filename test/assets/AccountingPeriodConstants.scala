@@ -23,8 +23,10 @@ import v1.models.AccountingPeriodModel
 
 object AccountingPeriodConstants {
 
-  val startDate: LocalDate = LocalDate.now().minusMonths(18)
-  val endDate: LocalDate   = startDate.plusMonths(18).minusDays(1)
+  private val maxAccountingPeriodInMonths = 18
+
+  val startDate: LocalDate = LocalDate.now().minusMonths(maxAccountingPeriodInMonths)
+  val endDate: LocalDate   = startDate.plusMonths(maxAccountingPeriodInMonths).minusDays(1)
 
   val accountingPeriodModel = AccountingPeriodModel(
     startDate = startDate,

@@ -43,8 +43,9 @@ trait ConsolidatedPartnershipValidator extends BaseValidation {
     val consolidatedPartnershipsValidation: ValidationResult[Option[PartnershipModel]] =
       optionValidations(
         consolidatedPartnershipModel.consolidatedPartnerships.map(consolidatedPartnerships =>
-          if (consolidatedPartnerships.isEmpty) ConsolidatedPartnershipsEmpty().invalidNec
-          else {
+          if (consolidatedPartnerships.isEmpty) {
+            ConsolidatedPartnershipsEmpty().invalidNec
+          } else {
             combineValidations(consolidatedPartnerships.zipWithIndex.map { case (a, i) =>
               a.validate(JsPath \ s"consolidatedPartnerships[$i]")
             }: _*)

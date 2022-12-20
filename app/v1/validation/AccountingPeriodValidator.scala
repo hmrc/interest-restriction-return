@@ -59,12 +59,18 @@ trait AccountingPeriodValidator extends BaseValidation {
       EndDateAfterStartDate(accountingPeriodModel.endDate).invalidNec
     }
 
-  private def validateAccountingPeriod18MonthsMax(implicit path: JsPath): ValidationResult[LocalDate] =
-    if (accountingPeriodModel.endDate.isBefore(accountingPeriodModel.startDate.plusMonths(18))) {
+  private def validateAccountingPeriod18MonthsMax(implicit path: JsPath): ValidationResult[LocalDate] = {
+    val validRangeFromCurrentDateInMonths = 18
+    if (
+      accountingPeriodModel.endDate.isBefore(
+        accountingPeriodModel.startDate.plusMonths(validRangeFromCurrentDateInMonths)
+      )
+    ) {
       accountingPeriodModel.endDate.validNec
     } else {
       AccountingPeriod18MonthsMax(accountingPeriodModel.endDate).invalidNec
     }
+  }
 
   def validate(implicit path: JsPath): ValidationResult[AccountingPeriodModel] = {
     val startDateValidations = combineValidations(

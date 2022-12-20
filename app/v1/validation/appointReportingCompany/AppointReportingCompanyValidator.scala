@@ -62,8 +62,9 @@ trait AppointReportingCompanyValidator extends BaseValidation {
 
   private def validateDeclaration: ValidationResult[Boolean] = {
     val declaration = appointReportingCompanyModel.declaration
-    if (declaration) declaration.validNec
-    else {
+    if (declaration) {
+      declaration.validNec
+    } else {
       DeclaredFiftyPercentOfEligibleCompanies(declaration).invalidNec
     }
   }
@@ -71,8 +72,9 @@ trait AppointReportingCompanyValidator extends BaseValidation {
   def validate: ValidationResult[AppointReportingCompanyModel] = {
 
     val validatedAuthorisingCompanies =
-      if (appointReportingCompanyModel.authorisingCompanies.isEmpty) AuthorisingCompaniesEmpty.invalidNec
-      else {
+      if (appointReportingCompanyModel.authorisingCompanies.isEmpty) {
+        AuthorisingCompaniesEmpty.invalidNec
+      } else {
         combineValidations(appointReportingCompanyModel.authorisingCompanies.zipWithIndex.map { case (a, i) =>
           a.validate(JsPath \ s"authorisingCompanies[$i]")
         }: _*)

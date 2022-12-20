@@ -62,11 +62,12 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
         "is 50%" in {
           val qngie       = 100.0
           val groupEBITDA = 200
+          val groupRatio  = 50
 
           val model = adjustedGroupInterestModel.copy(
             qngie = qngie,
             groupEBITDA = Some(groupEBITDA),
-            groupRatio = 50
+            groupRatio = groupRatio
           )
           rightSide(model.validate) shouldBe model
         }

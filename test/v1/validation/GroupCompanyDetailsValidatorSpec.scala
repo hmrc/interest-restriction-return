@@ -39,8 +39,9 @@ class GroupCompanyDetailsValidatorSpec extends BaseSpec {
     "Return invalid" when {
 
       "Accounting Period is invalid" in {
+        val invalidAmountOfMonths = 20
 
-        val startDate = LocalDate.now().minusMonths(20)
+        val startDate = LocalDate.now().minusMonths(invalidAmountOfMonths)
         val endDate   = LocalDate.now().minusDays(1)
 
         leftSideError(

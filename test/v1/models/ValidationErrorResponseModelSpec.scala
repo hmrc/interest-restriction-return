@@ -82,7 +82,7 @@ class ValidationErrorResponseModelSpec extends AnyWordSpec with Matchers {
       Json.toJson(ValidationErrorResponseModel(errors)) shouldBe expected
     }
 
-    val apiErrors     = Seq(NegativeAngieError(-123), TotalRestrictionsDecimalError(33.22222))
+    val apiErrors     = Seq(NegativeAngieError(-1), TotalRestrictionsDecimalError(33.22222))
     val apiErrorChain = NonEmptyChain.fromChainUnsafe(
       Chain.fromSeq(apiErrors)
     )
@@ -94,7 +94,7 @@ class ValidationErrorResponseModelSpec extends AnyWordSpec with Matchers {
           code = "NEGATIVE_ANGIE",
           message = "ANGIE must be a positive number",
           path = Some("/angie"),
-          value = Some(Json.toJson(-123))
+          value = Some(Json.toJson(-1))
         ),
         ErrorResponseModel(
           code = "TOTAL_RESTRICTIONS_DECIMAL",
@@ -125,7 +125,7 @@ class ValidationErrorResponseModelSpec extends AnyWordSpec with Matchers {
             "code"    -> "NEGATIVE_ANGIE",
             "message" -> "ANGIE must be a positive number",
             "path"    -> "/angie",
-            "value"   -> -123
+            "value"   -> -1
           ),
           Json.obj(
             "code"    -> "TOTAL_RESTRICTIONS_DECIMAL",

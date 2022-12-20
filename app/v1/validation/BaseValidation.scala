@@ -47,8 +47,9 @@ trait BaseValidation {
     errors: Seq[NonEmptyChain[Validation]],
     combined: NonEmptyChain[Validation]
   ): NonEmptyChain[Validation] =
-    if (errors.isEmpty) combined
-    else {
+    if (errors.isEmpty) {
+      combined
+    } else {
       combineInvalids(errors.tail, combined.combine(errors.head))
     }
 }

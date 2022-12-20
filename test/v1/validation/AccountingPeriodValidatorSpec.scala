@@ -28,6 +28,7 @@ class AccountingPeriodValidatorSpec extends BaseSpec {
 
   val minimumStartDate = LocalDate.parse("2016-10-01")
   val minimumEndDate   = LocalDate.parse("2017-04-01")
+  val aYearInMonths    = 12
 
   "Accounting Period Validation" when {
 
@@ -37,7 +38,8 @@ class AccountingPeriodValidatorSpec extends BaseSpec {
       }
 
       "Start date is on 2016/10/01" in {
-        val model = accountingPeriodModel.copy(startDate = minimumStartDate, endDate = minimumStartDate.plusMonths(12L))
+        val model =
+          accountingPeriodModel.copy(startDate = minimumStartDate, endDate = minimumStartDate.plusMonths(aYearInMonths))
         rightSide(model.validate) shouldBe model
       }
 
@@ -50,7 +52,7 @@ class AccountingPeriodValidatorSpec extends BaseSpec {
 
         val endDate = LocalDate.now().plusDays(1)
         val model   = accountingPeriodModel.copy(
-          startDate = LocalDate.now().minusMonths(12),
+          startDate = LocalDate.now().minusMonths(aYearInMonths),
           endDate = endDate
         )
         rightSide(model.validate) shouldBe model
@@ -80,9 +82,11 @@ class AccountingPeriodValidatorSpec extends BaseSpec {
       }
 
       "Accounting period is greater than or equal to 18 months" in {
+        val maxAccountingPeriodInMonths           = 18
+        val invalidAccountingPeriodLengthInMonths = 20
 
-        val startDate = LocalDate.now().minusMonths(20)
-        val endDate   = startDate.plusMonths(18)
+        val startDate = LocalDate.now().minusMonths(invalidAccountingPeriodLengthInMonths)
+        val endDate   = startDate.plusMonths(maxAccountingPeriodInMonths)
 
         val model = accountingPeriodModel.copy(
           startDate = startDate,
@@ -94,11 +98,11 @@ class AccountingPeriodValidatorSpec extends BaseSpec {
 
       "Start date is before minimum" in {
 
-        val startDate = minimumStartDate.minusDays(1L)
+        val startDate = minimumStartDate.minusDays(1)
 
         val model = accountingPeriodModel.copy(
           startDate = startDate,
-          endDate = startDate.plusMonths(1L)
+          endDate = startDate.plusMonths(1)
         )
 
         leftSideError(model.validate).errorMessage shouldBe StartDateCannotBeBeforeMinimum(startDate).errorMessage
@@ -108,7 +112,7 @@ class AccountingPeriodValidatorSpec extends BaseSpec {
 
         val model = accountingPeriodModel.copy(
           startDate = minimumStartDate,
-          endDate = minimumEndDate.minusDays(1L)
+          endDate = minimumEndDate.minusDays(1)
         )
 
         leftSideError(model.validate).errorMessage shouldBe EndDateCannotBeBeforeMinimum(endDate).errorMessage
