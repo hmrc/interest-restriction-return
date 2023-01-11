@@ -48,14 +48,15 @@ class FullReturnValidatorSpec extends BaseSpec {
       }
 
       "aggregate net tax interest income and exceeds cap but not subject to reactivations" in {
-        val groupLevelAmount = fullReturnUltimateParentModel.groupLevelAmount.copy(
+        val groupLevelAmount  = fullReturnUltimateParentModel.groupLevelAmount.copy(
           interestReactivationCap = 0
         )
-        val model            = fullReturnUltimateParentModel
+        val numberOfCompanies = 7
+        val model             = fullReturnUltimateParentModel
           .copy(
             groupSubjectToInterestReactivation = false,
             groupLevelAmount = groupLevelAmount,
-            ukCompanies = Seq.fill(7)(ukCompanyModelMin)
+            ukCompanies = Seq.fill(numberOfCompanies)(ukCompanyModelMin)
           )
         rightSide(model.validate) shouldBe model
       }
@@ -291,14 +292,17 @@ class FullReturnValidatorSpec extends BaseSpec {
       }
 
       "Total Net Tax Income is invalid" in {
+        val netTaxInterestIncomeInvalid  = 10
+        val netTaxInterestExpenseInvalid = 9
+
         val model = fullReturnUltimateParentModel.copy(
           groupSubjectToInterestReactivation = false,
           groupSubjectToInterestRestrictions = true,
           totalRestrictions = 1,
           ukCompanies = Seq(
             ukCompanyModelRestrictionMax.copy(
-              netTaxInterestIncome = 10,
-              netTaxInterestExpense = 9,
+              netTaxInterestIncome = netTaxInterestIncomeInvalid,
+              netTaxInterestExpense = netTaxInterestExpenseInvalid,
               allocatedRestrictions = Some(allocatedRestrictionsModel)
             )
           )
@@ -556,7 +560,9 @@ class FullReturnValidatorSpec extends BaseSpec {
       }
 
       "aggregate net tax interest income exceeds the cap" in {
-        val model = fullReturnUltimateParentModel.copy(ukCompanies = Seq.fill(7)(ukCompanyModelReactivationMax))
+        val numberOfCompanies = 7
+        val model             =
+          fullReturnUltimateParentModel.copy(ukCompanies = Seq.fill(numberOfCompanies)(ukCompanyModelReactivationMax))
         leftSideError(model.validate).errorMessage shouldBe AggregateNetTaxInterestIncomeExceedsCap(
           fullReturnUltimateParentModel.groupLevelAmount.interestReactivationCap
         ).errorMessage
@@ -567,15 +573,15 @@ class FullReturnValidatorSpec extends BaseSpec {
           .copy(
             groupSubjectToInterestRestrictions = true,
             groupSubjectToInterestReactivation = false,
-            totalRestrictions = 12,
+            totalRestrictions = 12.0,
             ukCompanies = Seq(
-              ukCompanyModelRestrictionMax.copy(netTaxInterestIncome = 0, netTaxInterestExpense = 6)
+              ukCompanyModelRestrictionMax.copy(netTaxInterestIncome = 0, netTaxInterestExpense = 6.0)
             ),
             groupLevelAmount = groupLevelAmountNoCapModel
           )
         leftSideErrorLength(model.validate)           shouldBe 2
         leftSideError(model.validate, 1).errorMessage shouldBe TotalRestrictionExceedsAggregateNetTaxInterestExpense(
-          10
+          10.0
         ).errorMessage
       }
 
@@ -584,11 +590,11 @@ class FullReturnValidatorSpec extends BaseSpec {
           .copy(
             groupSubjectToInterestRestrictions = true,
             groupSubjectToInterestReactivation = false,
-            totalRestrictions = 6,
+            totalRestrictions = 6.0,
             ukCompanies = Seq(
-              ukCompanyModelRestrictionMax.copy(netTaxInterestIncome = 0, netTaxInterestExpense = 6),
+              ukCompanyModelRestrictionMax.copy(netTaxInterestIncome = 0, netTaxInterestExpense = 6.0),
               ukCompanyModelRestrictionMax
-                .copy(netTaxInterestIncome = 200, netTaxInterestExpense = 0, allocatedRestrictions = None)
+                .copy(netTaxInterestIncome = 200.0, netTaxInterestExpense = 0, allocatedRestrictions = None)
             ),
             groupLevelAmount = groupLevelAmountNoCapModel
           )

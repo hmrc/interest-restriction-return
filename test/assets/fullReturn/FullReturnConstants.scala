@@ -130,7 +130,7 @@ object FullReturnConstants {
     "totalRestrictions"                  -> 0,
     "groupLevelAmount"                   -> groupLevelAmountJson,
     "adjustedGroupInterest"              -> adjustedGroupInterestJson,
-    "aggregateNetTaxInterest"            -> -10,
+    "aggregateNetTaxInterest"            -> -10.0,
     "aggregateAllocatedRestrictions"     -> 18,
     "aggregateTaxEBITDA"                 -> 20,
     "aggregateAllocatedReactivations"    -> 6

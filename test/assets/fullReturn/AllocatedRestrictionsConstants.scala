@@ -24,8 +24,10 @@ import v1.models.fullReturn.AllocatedRestrictionsModel
 
 object AllocatedRestrictionsConstants {
 
+  val aYearInMonths = 12
+
   val ap1EndDate: LocalDate = startDate.plusDays(1)
-  val ap2EndDate: LocalDate = startDate.plusMonths(12)
+  val ap2EndDate: LocalDate = startDate.plusMonths(aYearInMonths)
   val ap3EndDate: LocalDate = endDate
 
   val disallowanceAp1: BigDecimal = 1.00

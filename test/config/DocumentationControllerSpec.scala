@@ -44,27 +44,15 @@ class DocumentationControllerSpec extends BaseSpec {
     }
   }
 
-  "raml" must {
-    "return the raml documentation" in {
-      val result: Future[Result] = controller.raml("1.0", "application.raml")(fakeRequest)
-      val raml                   =
+  "specification" must {
+    "return the yaml documentation" in {
+      val result: Future[Result] = controller.specification("1.0", "application.yaml")(fakeRequest)
+      val spec                   =
         scala.io.Source
-          .fromInputStream(getClass().getResourceAsStream("/public/api/conf/1.0/application.raml"))
+          .fromInputStream(getClass().getResourceAsStream("/public/api/conf/1.0/application.yaml"))
           .mkString
       status(result)          shouldBe Status.OK
-      contentAsString(result) shouldBe raml
-    }
-  }
-
-  "conf" must {
-    "return conf documentation" in {
-      val result: Future[Result] = controller.conf("1.0", "abbreviatedReturn.raml")(fakeRequest)
-      val raml                   =
-        scala.io.Source
-          .fromInputStream(getClass().getResourceAsStream("/public/api/conf/1.0/abbreviatedReturn.raml"))
-          .mkString
-      status(result)          shouldBe Status.OK
-      contentAsString(result) shouldBe raml
+      contentAsString(result) shouldBe spec
     }
   }
 

@@ -37,8 +37,9 @@ trait GroupRatioBlendedValidator extends BaseValidation {
     val investorGroupsValidation: ValidationResult[Option[InvestorGroupModel]] =
       optionValidations(
         groupRatioBlendedModel.investorGroups.map(investors =>
-          if (investors.isEmpty) InvestorGroupsEmpty().invalidNec
-          else {
+          if (investors.isEmpty) {
+            InvestorGroupsEmpty().invalidNec
+          } else {
             combineValidations(investors.zipWithIndex.map { case (a, i) =>
               a.validate(JsPath \ s"investorGroups[$i]")
             }: _*)

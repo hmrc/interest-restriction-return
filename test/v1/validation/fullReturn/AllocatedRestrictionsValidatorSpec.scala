@@ -27,8 +27,9 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
 
   implicit val path = JsPath \ "some" \ "path"
 
-  val MINIMUM_DATE = LocalDate.parse("1900-01-01")
-  val MAXIMUM_DATE = LocalDate.parse("2099-12-31")
+  val MINIMUM_DATE  = LocalDate.parse("1900-01-01")
+  val MAXIMUM_DATE  = LocalDate.parse("2099-12-31")
+  val aYearInMonths = 12
 
   val groupAccountingPeriod = AccountingPeriodModel(
     startDate = ap1EndDate.minusDays(1),
@@ -229,7 +230,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
         "is supplied with a date more than 12 months after Ap1" in {
 
           val model = restrictionModel.copy(
-            ap2EndDate = Some(ap1EndDate.plusMonths(12).plusDays(1)),
+            ap2EndDate = Some(ap1EndDate.plusMonths(aYearInMonths).plusDays(1)),
             disallowanceAp2 = Some(disallowanceAp2)
           )
 
@@ -381,7 +382,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
           val model = restrictionModel.copy(
             ap2EndDate = Some(ap2EndDate),
             disallowanceAp2 = Some(disallowanceAp2),
-            ap3EndDate = Some(ap2EndDate.plusMonths(12).plusDays(1)),
+            ap3EndDate = Some(ap2EndDate.plusMonths(aYearInMonths).plusDays(1)),
             disallowanceAp3 = Some(disallowanceAp3)
           )
 
@@ -418,7 +419,7 @@ class AllocatedRestrictionsValidatorSpec extends BaseSpec {
 
         "is supplied when ap2 supplied with a date later than GPOA" in {
           val model = restrictionModel.copy(
-            ap1EndDate = ap3EndDate.minusDays(5),
+            ap1EndDate = ap3EndDate.minusDays(3), //
             ap2EndDate = Some(ap3EndDate.plusDays(1)),
             ap3EndDate = Some(ap3EndDate.plusDays(2)),
             disallowanceAp2 = Some(disallowanceAp2),

@@ -47,10 +47,10 @@ class ReadStringWithTrimSpec extends AnyWordSpec with Matchers {
     "trim a nested string where it is imported" in {
       val testJson = Json.obj(
         "someString" -> " Some string ",
-        "someInt"    -> 123
+        "someInt"    -> 1
       )
-      testJson.as[TestModelDefaultReads] shouldBe TestModelDefaultReads(" Some string ", 123)
-      testJson.as[TestModelOurReads] shouldBe TestModelOurReads("Some string", 123)
+      testJson.as[TestModelDefaultReads] shouldBe TestModelDefaultReads(" Some string ", 1)
+      testJson.as[TestModelOurReads] shouldBe TestModelOurReads("Some string", 1)
     }
 
   }

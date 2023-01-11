@@ -45,8 +45,9 @@ trait AbbreviatedReturnValidator extends BaseValidation {
     }
 
   private def validateAppointedReporter: ValidationResult[Boolean] =
-    if (abbreviatedReturnModel.appointedReportingCompany) abbreviatedReturnModel.appointedReportingCompany.validNec
-    else {
+    if (abbreviatedReturnModel.appointedReportingCompany) {
+      abbreviatedReturnModel.appointedReportingCompany.validNec
+    } else {
       ReportingCompanyNotAppointed.invalidNec
     }
 
@@ -59,8 +60,9 @@ trait AbbreviatedReturnValidator extends BaseValidation {
   def validate: ValidationResult[AbbreviatedReturnModel] = {
 
     val validatedUkCompanies =
-      if (abbreviatedReturnModel.ukCompanies.isEmpty) UkCompaniesEmpty.invalidNec
-      else {
+      if (abbreviatedReturnModel.ukCompanies.isEmpty) {
+        UkCompaniesEmpty.invalidNec
+      } else {
         combineValidations(abbreviatedReturnModel.ukCompanies.zipWithIndex.map { case (a, i) =>
           a.validate(JsPath \ s"ukCompanies[$i]")
         }: _*)

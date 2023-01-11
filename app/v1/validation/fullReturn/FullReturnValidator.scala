@@ -130,8 +130,9 @@ trait FullReturnValidator extends BaseValidation {
     }
 
   private def validateAppointedReporter: ValidationResult[Boolean] =
-    if (fullReturnModel.appointedReportingCompany) fullReturnModel.appointedReportingCompany.validNec
-    else {
+    if (fullReturnModel.appointedReportingCompany) {
+      fullReturnModel.appointedReportingCompany.validNec
+    } else {
       ReportingCompanyNotAppointed.invalidNec
     }
 
@@ -234,8 +235,9 @@ trait FullReturnValidator extends BaseValidation {
   def validate: ValidationResult[FullReturnModel] = {
 
     val validatedUkCompanies =
-      if (fullReturnModel.ukCompanies.isEmpty) UkCompaniesEmpty.invalidNec
-      else {
+      if (fullReturnModel.ukCompanies.isEmpty) {
+        UkCompaniesEmpty.invalidNec
+      } else {
         combineValidations(fullReturnModel.ukCompanies.zipWithIndex.map { case (a, i) =>
           a.validate(fullReturnModel.groupCompanyDetails.accountingPeriod)(JsPath \ s"ukCompanies[$i]")
         }: _*)

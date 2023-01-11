@@ -29,7 +29,7 @@ trait UTRValidator extends BaseValidation {
   def validate(implicit path: JsPath): ValidationResult[UTRModel] = {
 
     val utrInts = utrModel.utr.map(_.asDigit)
-
+    //scalastyle:off magic.number
     def checkSum = {
 
       val utrSum = (utrInts(1) * 6) + (utrInts(2) * 7) + (utrInts(3) * 8) + (utrInts(4) * 9) + (utrInts(5) * 10) +
@@ -39,6 +39,7 @@ trait UTRValidator extends BaseValidation {
 
       if (utrCalc > 9) utrCalc - 9 else utrCalc
     }
+    //scalastyle:on magic.number
 
     if (utrModel.utr.length != 10) {
       UTRLengthError(utrModel).invalidNec

@@ -33,9 +33,9 @@ class UkCompanyValidatorSpec extends BaseValidationSpec {
   )
 
   val allocatedRestriction                = Some(
-    allocatedRestrictionsModel.copy(disallowanceAp1 = 10, disallowanceAp2 = Some(10), disallowanceAp3 = Some(10.01))
+    allocatedRestrictionsModel.copy(disallowanceAp1 = 10.0, disallowanceAp2 = Some(10.0), disallowanceAp3 = Some(10.01))
   )
-  val allocatedRestrictionOneDisallowance = Some(allocatedRestrictionsModel.copy(disallowanceAp1 = 21))
+  val allocatedRestrictionOneDisallowance = Some(allocatedRestrictionsModel.copy(disallowanceAp1 = 21.0))
 
   "Full UK Company Validation" should {
 

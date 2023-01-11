@@ -43,8 +43,9 @@ trait NonConsolidatedInvestmentElectionValidator extends BaseValidation {
     val nonConsolidatedInvestmentsValidation: ValidationResult[Option[NonConsolidatedInvestmentModel]] =
       optionValidations(
         nonConsolidatedInvestmentElectionModel.nonConsolidatedInvestments.map(nonConsolidatedInvestments =>
-          if (nonConsolidatedInvestments.isEmpty) NonConsolidatedInvestmentEmpty().invalidNec
-          else {
+          if (nonConsolidatedInvestments.isEmpty) {
+            NonConsolidatedInvestmentEmpty().invalidNec
+          } else {
             combineValidations(nonConsolidatedInvestments.zipWithIndex.map { case (a, i) =>
               a.validate(JsPath \ s"nonConsolidatedInvestments[$i]")
             }: _*)
