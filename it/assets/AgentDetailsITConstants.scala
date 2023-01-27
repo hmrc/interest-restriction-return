@@ -24,6 +24,6 @@ object AgentDetailsITConstants {
 
   val agentDetailsJson = Json.obj(
     "agentActingOnBehalfOfCompany" -> true,
-    "agentName" -> agentName
+    "agentName"                    -> agentName
   )
 }

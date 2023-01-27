@@ -21,7 +21,6 @@ import play.api.http.Status._
 import stubs.{AuthStub, DESStub}
 import utils.{CreateRequestHelper, CustomMatchers, IntegrationSpecBase}
 
-
 class RevokeReportingCompanyControllerISpec extends IntegrationSpecBase with CreateRequestHelper with CustomMatchers {
 
   "POST /reporting-company/revoke" when {

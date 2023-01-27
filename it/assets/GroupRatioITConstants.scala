@@ -21,9 +21,10 @@ import play.api.libs.json.Json
 
 object GroupRatioITConstants {
 
-  val groupRatioJson= Json.obj(
-    "isElected" -> true,
+  val groupRatioJson = Json.obj(
+    "isElected"                        -> true,
     "activeGroupEBITDAChargeableGains" -> true,
-    "groupEBITDAChargeableGains" -> Some(true),
-    "groupRatioBlended" -> groupRatioBlendedJson)
+    "groupEBITDAChargeableGains"       -> Some(true),
+    "groupRatioBlended"                -> groupRatioBlendedJson
+  )
 }

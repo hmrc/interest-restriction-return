@@ -20,15 +20,15 @@ import play.api.libs.json.Json
 
 object GroupLevelAmountITConstants {
 
-  val interestReactivationCap = 5
+  val interestReactivationCap         = 5
   val interestAllowanceBroughtForward = 1.0
-  val interestAllowanceForPeriod = 1.0
-  val interestCapacityForPeriod = 1.0
+  val interestAllowanceForPeriod      = 1.0
+  val interestCapacityForPeriod       = 1.0
 
   val groupLevelAmountJson = Json.obj(
-    "interestReactivationCap" -> interestReactivationCap,
+    "interestReactivationCap"         -> interestReactivationCap,
     "interestAllowanceBroughtForward" -> interestAllowanceBroughtForward,
-    "interestAllowanceForPeriod" -> interestAllowanceForPeriod,
-    "interestCapacityForPeriod" -> interestCapacityForPeriod
+    "interestAllowanceForPeriod"      -> interestAllowanceForPeriod,
+    "interestCapacityForPeriod"       -> interestCapacityForPeriod
   )
 }

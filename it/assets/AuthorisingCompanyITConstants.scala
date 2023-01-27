@@ -22,7 +22,7 @@ object AuthorisingCompanyITConstants extends BaseITConstants {
 
   val authorisingCompanyJson = Json.obj(
     "companyName" -> companyName,
-    "utr" -> ctutr,
-    "consenting" -> true
+    "utr"         -> ctutr,
+    "consenting"  -> true
   )
 }

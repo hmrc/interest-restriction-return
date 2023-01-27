@@ -37,5 +37,7 @@ trait MockAppConfig extends MockFactory {
     def nrsUrl: CallHandler[Option[String]]                = (mockAppConfig.nrsUrl _: () => Option[String]).expects()
     def nrsAuthorisationToken: CallHandler[Option[String]] =
       (mockAppConfig.nrsAuthorisationToken _: () => Option[String]).expects()
+    def apiStatus(status: String): CallHandler[String]     = (mockAppConfig.apiStatus: String => String).expects(status)
+    def endpointsEnabled: CallHandler[Boolean]             = (mockAppConfig.endpointsEnabled _: () => Boolean).expects()
   }
 }

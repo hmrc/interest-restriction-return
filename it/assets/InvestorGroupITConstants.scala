@@ -22,7 +22,7 @@ object InvestorGroupITConstants {
 
   val investorName = "some Investor"
 
-  val investorGroupsJson= Json.obj(
+  val investorGroupsJson = Json.obj(
     "groupName" -> investorName
   )
 }

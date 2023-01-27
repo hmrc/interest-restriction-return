@@ -23,12 +23,12 @@ import assets.ConsolidatedPartnershipITConstants._
 
 object GroupLevelElectionsITConstants {
 
-  val groupLevelElectionsJson= Json.obj(
-    "groupRatio" -> groupRatioJson,
+  val groupLevelElectionsJson = Json.obj(
+    "groupRatio"                                    -> groupRatioJson,
     "activeInterestAllowanceAlternativeCalculation" -> true,
-    "interestAllowanceAlternativeCalculation" -> true,
-    "interestAllowanceNonConsolidatedInvestment" -> nonConsolidatedInvestmentJson,
-    "interestAllowanceConsolidatedPartnership" -> consolidatedPartnershipsJson
+    "interestAllowanceAlternativeCalculation"       -> true,
+    "interestAllowanceNonConsolidatedInvestment"    -> nonConsolidatedInvestmentJson,
+    "interestAllowanceConsolidatedPartnership"      -> consolidatedPartnershipsJson
   )
 
 }

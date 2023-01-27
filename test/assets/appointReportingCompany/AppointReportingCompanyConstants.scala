@@ -22,14 +22,14 @@ import assets.AuthorisingCompanyConstants._
 import assets.IdentityOfCompanySubmittingConstants._
 import assets.ReportingCompanyConstants._
 import assets.UltimateParentConstants._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import v1.models.appointReportingCompany.AppointReportingCompanyModel
 
 object AppointReportingCompanyConstants {
 
-  val ackRef = "ackRef"
+  val ackRef: String = "ackRef"
 
-  val appointReportingCompanyJsonMax = Json.obj(
+  val appointReportingCompanyJsonMax: JsObject = Json.obj(
     "agentDetails"                       -> agentDetailsJsonMax,
     "reportingCompany"                   -> reportingCompanyJson,
     "authorisingCompanies"               -> Json.arr(authorisingCompanyJson),
@@ -40,7 +40,24 @@ object AppointReportingCompanyConstants {
     "declaration"                        -> true
   )
 
-  val appointReportingCompanyModelMax = AppointReportingCompanyModel(
+  val appointReportingCompanyJsonMin: JsObject = Json.obj(
+    "agentDetails"                       -> agentDetailsJsonMin,
+    "reportingCompany"                   -> reportingCompanyJson,
+    "authorisingCompanies"               -> Json.arr(authorisingCompanyJson),
+    "isReportingCompanyAppointingItself" -> true,
+    "accountingPeriod"                   -> accountingPeriodJson,
+    "declaration"                        -> true
+  )
+
+  val invalidAppointReportingCompanyJson: JsObject = Json.obj(
+    "agentDetails"                       -> agentDetailsJsonMin,
+    "reportingCompany"                   -> reportingCompanyJson,
+    "isReportingCompanyAppointingItself" -> true,
+    "accountingPeriod"                   -> accountingPeriodJson,
+    "declaration"                        -> true
+  )
+
+  val appointReportingCompanyModelMax: AppointReportingCompanyModel = AppointReportingCompanyModel(
     agentDetails = agentDetailsModelMax,
     reportingCompany = reportingCompanyModel,
     authorisingCompanies = Seq(authorisingCompanyModel),
@@ -50,16 +67,8 @@ object AppointReportingCompanyConstants {
     accountingPeriod = accountingPeriodModel,
     declaration = true
   )
-  val appointReportingCompanyJsonMin  = Json.obj(
-    "agentDetails"                       -> agentDetailsJsonMin,
-    "reportingCompany"                   -> reportingCompanyJson,
-    "authorisingCompanies"               -> Json.arr(authorisingCompanyJson),
-    "isReportingCompanyAppointingItself" -> true,
-    "accountingPeriod"                   -> accountingPeriodJson,
-    "declaration"                        -> true
-  )
 
-  val appointReportingCompanyModelMin = AppointReportingCompanyModel(
+  val appointReportingCompanyModelMin: AppointReportingCompanyModel = AppointReportingCompanyModel(
     agentDetails = agentDetailsModelMin,
     reportingCompany = reportingCompanyModel,
     authorisingCompanies = Seq(authorisingCompanyModel),
@@ -69,5 +78,4 @@ object AppointReportingCompanyConstants {
     accountingPeriod = accountingPeriodModel,
     declaration = true
   )
-
 }

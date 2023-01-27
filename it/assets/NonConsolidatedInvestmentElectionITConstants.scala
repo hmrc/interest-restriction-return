@@ -21,8 +21,7 @@ import play.api.libs.json.Json
 
 object NonConsolidatedInvestmentElectionITConstants {
 
-  val nonConsolidatedInvestmentJson= Json.obj(
-    "isElected" -> true,
-    "nonConsolidatedInvestments" -> Seq(nonConsolidatedJson))
+  val nonConsolidatedInvestmentJson =
+    Json.obj("isElected" -> true, "nonConsolidatedInvestments" -> Seq(nonConsolidatedJson))
 
 }

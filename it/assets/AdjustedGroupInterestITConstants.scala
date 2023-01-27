@@ -20,13 +20,13 @@ import play.api.libs.json.Json
 
 object AdjustedGroupInterestITConstants {
 
-  val qngie: BigDecimal = 100
+  val qngie: BigDecimal       = 100
   val groupEBITDA: BigDecimal = 200
-  val groupRatio: BigDecimal = 50
+  val groupRatio: BigDecimal  = 50
 
   val adjustedGroupInterestJson = Json.obj(
-    "qngie" -> qngie,
+    "qngie"       -> qngie,
     "groupEBITDA" -> groupEBITDA,
-    "groupRatio" -> groupRatio
+    "groupRatio"  -> groupRatio
   )
 }

@@ -27,12 +27,12 @@ object RevokeReportingCompanyITConstants {
   val ackRef = "ackRef"
 
   val revokeReportingCompanyJson = Json.obj(
-    "agentDetails" -> agentDetailsJson,
-    "reportingCompany" -> reportingCompanyJson,
+    "agentDetails"                     -> agentDetailsJson,
+    "reportingCompany"                 -> reportingCompanyJson,
     "isReportingCompanyRevokingItself" -> true,
-    "accountingPeriod" -> accountingPeriodJson,
-    "authorisingCompanies" -> Seq(authorisingCompanyJson),
-    "declaration" -> true
+    "accountingPeriod"                 -> accountingPeriodJson,
+    "authorisingCompanies"             -> Seq(authorisingCompanyJson),
+    "declaration"                      -> true
   )
 
   val revokeReportingCompanyDesSuccessJson = Json.obj(

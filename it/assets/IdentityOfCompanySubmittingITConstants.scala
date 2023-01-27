@@ -22,6 +22,6 @@ object IdentityOfCompanySubmittingITConstants extends BaseITConstants {
 
   val identityOfCompanySubmittingJson = Json.obj(
     "companyName" -> companyName,
-    "ctutr" -> ctutr
+    "ctutr"       -> ctutr
   )
 }

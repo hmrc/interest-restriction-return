@@ -28,13 +28,13 @@ object AppointReportingCompanyITConstants {
   val ackRef = "ackRef"
 
   val appointReportingCompanyJson = Json.obj(
-    "agentDetails" -> agentDetailsJson,
-    "reportingCompany" -> reportingCompanyJson,
-    "authorisingCompanies" -> Json.arr(authorisingCompanyJson),
+    "agentDetails"                       -> agentDetailsJson,
+    "reportingCompany"                   -> reportingCompanyJson,
+    "authorisingCompanies"               -> Json.arr(authorisingCompanyJson),
     "isReportingCompanyAppointingItself" -> false,
-    "identityOfAppointingCompany" -> identityOfCompanySubmittingJson,
-    "accountingPeriod" -> accountingPeriodJson,
-    "declaration" -> true
+    "identityOfAppointingCompany"        -> identityOfCompanySubmittingJson,
+    "accountingPeriod"                   -> accountingPeriodJson,
+    "declaration"                        -> true
   )
 
   val appointReportingCompanyDesSuccessJson = Json.obj(

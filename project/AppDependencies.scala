@@ -1,23 +1,23 @@
-import play.core.PlayVersion.current
 import sbt._
 
 object AppDependencies {
-  private lazy val bootstrapPlayVersion = "7.12.0"
+  private lazy val bootstrapPlayVersion = "7.13.0"
 
-  val compile = Seq(
+  private lazy val compile: Seq[ModuleID] = Seq(
     "uk.gov.hmrc"       %% "bootstrap-backend-play-28" % bootstrapPlayVersion,
     "org.typelevel"     %% "cats-core"                 % "2.9.0",
     "com.chuusai"       %% "shapeless"                 % "2.3.10",
-    "com.typesafe.play" %% "play-json-joda"            % "2.9.3"
+    "com.typesafe.play" %% "play-json-joda"            % "2.9.4"
   )
 
-  def test(scope: String = "test, it"): Seq[ModuleID] = Seq(
+  private lazy val test: Seq[ModuleID] = Seq(
     "uk.gov.hmrc"           %% "bootstrap-test-play-28"      % bootstrapPlayVersion,
-    "org.scalatest"         %% "scalatest"                   % "3.2.14",
-    "com.typesafe.play"     %% "play-test"                   % current,
+    "org.scalatest"         %% "scalatest"                   % "3.2.15",
+    "com.typesafe.play"     %% "play-test"                   % "2.8.19",
     "org.scalamock"         %% "scalamock-scalatest-support" % "3.6.0",
     "com.github.tomakehurst" % "wiremock-standalone"         % "2.27.2",
     "com.vladsch.flexmark"   % "flexmark-all"                % "0.62.2"
-  ).map(_ % scope)
+  ).map(_ % "test, it")
 
+  def apply(): Seq[ModuleID]           = compile ++ test
 }

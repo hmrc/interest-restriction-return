@@ -24,36 +24,42 @@ import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.{Application, Environment, Mode}
 import play.api.inject.guice.GuiceApplicationBuilder
 
-trait IntegrationSpecBase extends AnyWordSpec
-  with GivenWhenThen with TestSuite with ScalaFutures with IntegrationPatience with Matchers
-  with WiremockHelper
-  with GuiceOneServerPerSuite
-  with BeforeAndAfterEach with BeforeAndAfterAll with Eventually {
+trait IntegrationSpecBase
+    extends AnyWordSpec
+    with GivenWhenThen
+    with TestSuite
+    with ScalaFutures
+    with IntegrationPatience
+    with Matchers
+    with WiremockHelper
+    with GuiceOneServerPerSuite
+    with BeforeAndAfterEach
+    with BeforeAndAfterAll
+    with Eventually {
 
   override implicit lazy val app: Application = new GuiceApplicationBuilder()
     .in(Environment.simple(mode = Mode.Dev))
     .configure(config)
     .build
-  val mockHost = WiremockHelper.wiremockHost
-  val mockPort = WiremockHelper.wiremockPort.toString
-  val mockUrl = s"http://$mockHost:$mockPort"
+  val mockHost                                = WiremockHelper.wiremockHost
+  val mockPort                                = WiremockHelper.wiremockPort.toString
+  val mockUrl                                 = s"http://$mockHost:$mockPort"
 
   def config: Map[String, Any] = Map(
-    "application.router" -> "testOnlyDoNotUseInAppConf.Routes",
-    "microservice.services.auth.host" -> mockHost,
-    "microservice.services.auth.port" -> mockPort,
-    "microservice.services.des.host" -> mockHost,
-    "microservice.services.des.port" -> mockPort,
-    "microservice.services.nrs.host" -> mockHost,
-    "microservice.services.nrs.port" -> mockPort,
+    "application.router"                -> "testOnlyDoNotUseInAppConf.Routes",
+    "microservice.services.auth.host"   -> mockHost,
+    "microservice.services.auth.port"   -> mockPort,
+    "microservice.services.des.host"    -> mockHost,
+    "microservice.services.des.port"    -> mockPort,
+    "microservice.services.nrs.host"    -> mockHost,
+    "microservice.services.nrs.port"    -> mockPort,
     "microservice.services.nrs.enabled" -> true,
-    "microservice.services.nrs.apikey" -> "test",
-    "internalServiceHostPatterns" -> Nil
+    "microservice.services.nrs.apikey"  -> "test",
+    "internalServiceHostPatterns"       -> Nil
   )
 
-  override def beforeEach(): Unit = {
+  override def beforeEach(): Unit =
     resetWiremock()
-  }
 
   override def beforeAll(): Unit = {
     super.beforeAll()

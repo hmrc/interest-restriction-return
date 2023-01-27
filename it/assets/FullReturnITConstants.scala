@@ -24,10 +24,9 @@ import assets.GroupLevelElectionsITConstants.groupLevelElectionsJson
 import assets.ReportingCompanyITConstants._
 import assets.UkCompanyITConstants.ukCompanyFullJson
 import play.api.libs.json.Json
-import v1.models.{SubmissionType, Revised}
+import v1.models.{Revised, SubmissionType}
 
 object FullReturnITConstants {
-
 
   val ackRef = "ackRef"
 
@@ -36,24 +35,24 @@ object FullReturnITConstants {
   )
 
   val fullReturnJson = Json.obj(
-    "declaration" -> true,
-    "appointedReportingCompany" -> true,
-    "agentDetails" -> agentDetailsJson,
-    "reportingCompany" -> reportingCompanyJson,
-    "publicInfrastructure" -> true,
-    "groupCompanyDetails" -> groupCompanyDetailsJson,
-    "submissionType" -> Json.toJson[SubmissionType](Revised),
-    "revisedReturnDetails" -> "some details",
-    "groupLevelElections" -> groupLevelElectionsJson,
-    "returnContainsEstimates" -> true,
-    "groupEstimateReason" -> "Some reason",
-    "ukCompanies" -> Seq(ukCompanyFullJson),
-    "angie" -> 1.1,
+    "declaration"                        -> true,
+    "appointedReportingCompany"          -> true,
+    "agentDetails"                       -> agentDetailsJson,
+    "reportingCompany"                   -> reportingCompanyJson,
+    "publicInfrastructure"               -> true,
+    "groupCompanyDetails"                -> groupCompanyDetailsJson,
+    "submissionType"                     -> Json.toJson[SubmissionType](Revised),
+    "revisedReturnDetails"               -> "some details",
+    "groupLevelElections"                -> groupLevelElectionsJson,
+    "returnContainsEstimates"            -> true,
+    "groupEstimateReason"                -> "Some reason",
+    "ukCompanies"                        -> Seq(ukCompanyFullJson),
+    "angie"                              -> 1.1,
     "groupSubjectToInterestRestrictions" -> false,
     "groupSubjectToInterestReactivation" -> true,
-    "totalReactivation" -> 2.22,
-    "totalRestrictions" -> 0,
-    "groupLevelAmount" -> groupLevelAmountJson,
-    "adjustedGroupInterest" -> adjustedGroupInterestJson
+    "totalReactivation"                  -> 2.22,
+    "totalRestrictions"                  -> 0,
+    "groupLevelAmount"                   -> groupLevelAmountJson,
+    "adjustedGroupInterest"              -> adjustedGroupInterestJson
   )
 }

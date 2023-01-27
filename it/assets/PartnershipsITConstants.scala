@@ -21,10 +21,10 @@ import play.api.libs.json.Json
 object PartnershipsITConstants {
 
   val partnerName = "some partner"
-  val sautr = "1123456789"
+  val sautr       = "1123456789"
 
   val partnershipJson = Json.obj(
     "partnershipName" -> partnerName,
-    "sautr" -> sautr
+    "sautr"           -> sautr
   )
 }

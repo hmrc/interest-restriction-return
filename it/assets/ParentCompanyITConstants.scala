@@ -24,6 +24,6 @@ object ParentCompanyITConstants {
 
   val parentCompanyJson = Json.obj(
     "ultimateParent" -> ultimateParentJson,
-    "deemedParent" -> Seq(deemedParentJson, deemedParentJson)
+    "deemedParent"   -> Seq(deemedParentJson, deemedParentJson)
   )
 }

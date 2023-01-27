@@ -20,26 +20,25 @@ import play.api.libs.json.Json
 import assets.AllocatedReactivationsITConstants._
 object UkCompanyITConstants extends BaseITConstants {
 
-
   val netTaxInterestExpense: BigDecimal = 0
-  val netTaxInterestIncome: BigDecimal = 2.22
-  val taxEBITDA: BigDecimal = 3.33
+  val netTaxInterestIncome: BigDecimal  = 2.22
+  val taxEBITDA: BigDecimal             = 3.33
 
   val ukCompanyJson = Json.obj(
     "companyName" -> companyName,
-    "utr" -> ctutr,
-    "consenting" -> true,
+    "utr"         -> ctutr,
+    "consenting"  -> true,
     "qicElection" -> false
   )
 
   val ukCompanyFullJson = Json.obj(
-    "companyName" -> companyName,
-    "utr" -> ctutr,
-    "consenting" -> true,
-    "qicElection" -> false,
-    "netTaxInterestExpense" -> netTaxInterestExpense,
-    "netTaxInterestIncome" -> netTaxInterestIncome,
-    "taxEBITDA" -> taxEBITDA,
+    "companyName"            -> companyName,
+    "utr"                    -> ctutr,
+    "consenting"             -> true,
+    "qicElection"            -> false,
+    "netTaxInterestExpense"  -> netTaxInterestExpense,
+    "netTaxInterestIncome"   -> netTaxInterestIncome,
+    "taxEBITDA"              -> taxEBITDA,
     "allocatedReactivations" -> allocatedReactivationsJson
   )
 }
