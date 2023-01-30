@@ -17,11 +17,11 @@
 package assets
 
 import assets.PartnershipsITConstants._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 
-object ConsolidatedPartnershipITConstants extends BaseITConstants {
+object ConsolidatedPartnershipITConstants {
 
-  val consolidatedPartnershipsJson = Json.obj(
+  val consolidatedPartnershipsJson: JsObject = Json.obj(
     "isElected"                -> true,
     "isActive"                 -> true,
     "consolidatedPartnerships" -> Seq(partnershipJson)

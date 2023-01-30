@@ -23,18 +23,18 @@ import assets.GroupLevelAmountITConstants.groupLevelAmountJson
 import assets.GroupLevelElectionsITConstants.groupLevelElectionsJson
 import assets.ReportingCompanyITConstants._
 import assets.UkCompanyITConstants.ukCompanyFullJson
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import v1.models.{Revised, SubmissionType}
 
 object FullReturnITConstants {
 
-  val ackRef = "ackRef"
+  val ackRef: String = "ackRef"
 
-  val fullReturnDesSuccessJson = Json.obj(
+  val fullReturnDesSuccessJson: JsObject = Json.obj(
     "acknowledgementReference" -> ackRef
   )
 
-  val fullReturnJson = Json.obj(
+  val fullReturnJson: JsObject = Json.obj(
     "declaration"                        -> true,
     "appointedReportingCompany"          -> true,
     "agentDetails"                       -> agentDetailsJson,

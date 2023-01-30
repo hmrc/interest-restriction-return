@@ -17,11 +17,11 @@
 package assets
 
 import assets.NonConsolidatedInvestmentITConstants._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 
 object NonConsolidatedInvestmentElectionITConstants {
 
-  val nonConsolidatedInvestmentJson =
+  val nonConsolidatedInvestmentJson: JsObject =
     Json.obj("isElected" -> true, "nonConsolidatedInvestments" -> Seq(nonConsolidatedJson))
 
 }

@@ -16,13 +16,13 @@
 
 package assets
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 
 object AllocatedReactivationsITConstants {
 
-  val currentPeriodReactivation = 2.22
+  val currentPeriodReactivation: BigDecimal = 2.22
 
-  val allocatedReactivationsJson = Json.obj(
+  val allocatedReactivationsJson: JsObject = Json.obj(
     "currentPeriodReactivation" -> currentPeriodReactivation
   )
 }

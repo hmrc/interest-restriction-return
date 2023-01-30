@@ -16,13 +16,13 @@
 
 package assets
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 
 object ReportingCompanyITConstants extends BaseITConstants {
 
-  val reportingCompanyName = "some reporting company"
+  val reportingCompanyName: String = "some reporting company"
 
-  val reportingCompanyJson = Json.obj(
+  val reportingCompanyJson: JsObject = Json.obj(
     "companyName"          -> reportingCompanyName,
     "ctutr"                -> ctutr,
     "sameAsUltimateParent" -> true

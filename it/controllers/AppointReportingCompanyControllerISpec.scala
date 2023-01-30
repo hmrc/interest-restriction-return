@@ -18,23 +18,22 @@ package controllers
 
 import assets.AppointReportingCompanyITConstants._
 import play.api.http.Status._
+import play.api.libs.ws.WSResponse
 import stubs.{AuthStub, DESStub}
-import utils.{CreateRequestHelper, CustomMatchers, IntegrationSpecBase}
+import utils.IntegrationSpecBase
 
-class AppointReportingCompanyControllerISpec extends IntegrationSpecBase with CreateRequestHelper with CustomMatchers {
+import scala.concurrent.Future
+
+class AppointReportingCompanyControllerISpec extends IntegrationSpecBase {
 
   "POST /reporting-company/appoint" when {
-
     "user is authenticated" when {
-
       "request is successfully processed by DES" should {
-
-        "should return OK (200) with the correct body" in {
-
+        "return OK (200) with the correct body" in {
           AuthStub.authorised()
           DESStub.appointReportingCompanySuccess(appointReportingCompanyDesSuccessJson)
 
-          val res = postRequest("/reporting-company/appoint", appointReportingCompanyJson)
+          val res: Future[WSResponse] = postRequest("/reporting-company/appoint", appointReportingCompanyJson)
 
           whenReady(res) { result =>
             result should have(
@@ -46,13 +45,11 @@ class AppointReportingCompanyControllerISpec extends IntegrationSpecBase with Cr
       }
 
       "error is returned from DES" should {
-
-        "should return the error" in {
-
+        "return the error" in {
           AuthStub.authorised()
           DESStub.appointReportingCompanyError
 
-          val res = postRequest("/reporting-company/appoint", appointReportingCompanyJson)
+          val res: Future[WSResponse] = postRequest("/reporting-company/appoint", appointReportingCompanyJson)
 
           whenReady(res) { result =>
             result should have(
@@ -63,13 +60,11 @@ class AppointReportingCompanyControllerISpec extends IntegrationSpecBase with Cr
       }
     }
 
-    "user is unauthenticated" when {
-
-      "should return UNAUTHORISED (401)" in {
-
+    "user is unauthenticated" should {
+      "return UNAUTHORISED (401)" in {
         AuthStub.unauthorised()
 
-        val res = postRequest("/reporting-company/appoint", appointReportingCompanyJson)
+        val res: Future[WSResponse] = postRequest("/reporting-company/appoint", appointReportingCompanyJson)
 
         whenReady(res) { result =>
           result should have(
@@ -81,14 +76,11 @@ class AppointReportingCompanyControllerISpec extends IntegrationSpecBase with Cr
   }
 
   "POST /reporting-company/appoint/validate" when {
-
-    "user is authenticated" when {
-
-      "return NO_CONTENT (204) with the correct body" in {
-
+    "user is authenticated" should {
+      "return NO_CONTENT (204)" in {
         AuthStub.authorised()
 
-        val res = postRequest("/reporting-company/appoint/validate", appointReportingCompanyJson)
+        val res: Future[WSResponse] = postRequest("/reporting-company/appoint/validate", appointReportingCompanyJson)
 
         whenReady(res) { result =>
           verifyNoCall("/submission")
@@ -99,13 +91,11 @@ class AppointReportingCompanyControllerISpec extends IntegrationSpecBase with Cr
       }
     }
 
-    "user is unauthenticated" when {
-
-      "should return UNAUTHORISED (401)" in {
-
+    "user is unauthenticated" should {
+      "return UNAUTHORISED (401)" in {
         AuthStub.unauthorised()
 
-        val res = postRequest("/reporting-company/appoint/validate", appointReportingCompanyJson)
+        val res: Future[WSResponse] = postRequest("/reporting-company/appoint/validate", appointReportingCompanyJson)
 
         whenReady(res) { result =>
           result should have(

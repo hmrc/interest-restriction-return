@@ -16,13 +16,13 @@
 
 package assets
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 
 object AgentDetailsITConstants {
 
-  val agentName = "some agent"
+  val agentName: String = "some agent"
 
-  val agentDetailsJson = Json.obj(
+  val agentDetailsJson: JsObject = Json.obj(
     "agentActingOnBehalfOfCompany" -> true,
     "agentName"                    -> agentName
   )

@@ -23,7 +23,7 @@ import utils.WireMockMethods
 
 object NRSStub extends WireMockMethods {
 
-  private val url = s"/submission"
+  private val url: String = "/submission"
 
   def success(response: JsValue): StubMapping =
     when(method = POST, uri = url).thenReturn(status = ACCEPTED, body = response)

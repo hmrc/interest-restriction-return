@@ -16,14 +16,14 @@
 
 package assets
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import assets.GroupRatioITConstants._
 import assets.NonConsolidatedInvestmentElectionITConstants._
 import assets.ConsolidatedPartnershipITConstants._
 
 object GroupLevelElectionsITConstants {
 
-  val groupLevelElectionsJson = Json.obj(
+  val groupLevelElectionsJson: JsObject = Json.obj(
     "groupRatio"                                    -> groupRatioJson,
     "activeInterestAllowanceAlternativeCalculation" -> true,
     "interestAllowanceAlternativeCalculation"       -> true,

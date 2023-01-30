@@ -14,15 +14,21 @@
  * limitations under the License.
  */
 
-package assets
+package v1.services
 
-import play.api.libs.json.{JsObject, Json}
+import java.time.ZoneId
 
-object AuthorisingCompanyITConstants extends BaseITConstants {
+import utils.BaseSpec
 
-  val authorisingCompanyJson: JsObject = Json.obj(
-    "companyName" -> companyName,
-    "utr"         -> ctutr,
-    "consenting"  -> true
-  )
+class DateTimeServiceSpec extends BaseSpec {
+
+  private val dateTimeServiceImpl: DateTimeServiceImpl = new DateTimeServiceImpl
+
+  "DateTimeServiceImpl" when {
+    ".zonedDateTimeUtc" should {
+      "return correct zone ID" in {
+        dateTimeServiceImpl.zonedDateTimeUtc.getZone shouldBe ZoneId.of("UTC")
+      }
+    }
+  }
 }

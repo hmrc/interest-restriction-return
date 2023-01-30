@@ -16,13 +16,13 @@
 
 package assets
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 
 object NonConsolidatedInvestmentITConstants {
 
-  val investmentName = "some Investment"
+  val investmentName: String = "some Investment"
 
-  val nonConsolidatedJson = Json.obj(
+  val nonConsolidatedJson: JsObject = Json.obj(
     "investmentName" -> investmentName
   )
 }

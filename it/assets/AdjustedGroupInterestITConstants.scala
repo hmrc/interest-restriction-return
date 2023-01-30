@@ -16,7 +16,7 @@
 
 package assets
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 
 object AdjustedGroupInterestITConstants {
 
@@ -24,7 +24,7 @@ object AdjustedGroupInterestITConstants {
   val groupEBITDA: BigDecimal = 200
   val groupRatio: BigDecimal  = 50
 
-  val adjustedGroupInterestJson = Json.obj(
+  val adjustedGroupInterestJson: JsObject = Json.obj(
     "qngie"       -> qngie,
     "groupEBITDA" -> groupEBITDA,
     "groupRatio"  -> groupRatio

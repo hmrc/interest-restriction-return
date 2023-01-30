@@ -16,13 +16,13 @@
 
 package assets
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 
 object InvestorGroupITConstants {
 
-  val investorName = "some Investor"
+  val investorName: String = "some Investor"
 
-  val investorGroupsJson = Json.obj(
+  val investorGroupsJson: JsObject = Json.obj(
     "groupName" -> investorName
   )
 }

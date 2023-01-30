@@ -18,14 +18,16 @@ package assets
 
 import java.time.LocalDate
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 
 object AccountingPeriodITConstants {
 
-  val startDate: LocalDate = LocalDate.now().minusMonths(18)
+  private val monthsToSubtract: Long = 18
+
+  val startDate: LocalDate = LocalDate.now().minusMonths(monthsToSubtract)
   val endDate: LocalDate   = LocalDate.now().minusDays(1)
 
-  val accountingPeriodJson = Json.obj(
+  val accountingPeriodJson: JsObject = Json.obj(
     "startDate" -> startDate,
     "endDate"   -> endDate
   )

@@ -17,11 +17,11 @@
 package assets
 
 import assets.AccountingPeriodITConstants.accountingPeriodJson
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 
 object GroupCompanyDetailsITConstants {
 
-  val groupCompanyDetailsJson = Json.obj(
+  val groupCompanyDetailsJson: JsObject = Json.obj(
     "totalCompanies"   -> 1,
     "accountingPeriod" -> accountingPeriodJson
   )

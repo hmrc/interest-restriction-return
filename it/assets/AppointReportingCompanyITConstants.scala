@@ -21,13 +21,13 @@ import assets.AgentDetailsITConstants._
 import assets.AuthorisingCompanyITConstants._
 import assets.IdentityOfCompanySubmittingITConstants._
 import assets.ReportingCompanyITConstants._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 
 object AppointReportingCompanyITConstants {
 
-  val ackRef = "ackRef"
+  val ackRef: String = "ackRef"
 
-  val appointReportingCompanyJson = Json.obj(
+  val appointReportingCompanyJson: JsObject = Json.obj(
     "agentDetails"                       -> agentDetailsJson,
     "reportingCompany"                   -> reportingCompanyJson,
     "authorisingCompanies"               -> Json.arr(authorisingCompanyJson),
@@ -37,7 +37,7 @@ object AppointReportingCompanyITConstants {
     "declaration"                        -> true
   )
 
-  val appointReportingCompanyDesSuccessJson = Json.obj(
+  val appointReportingCompanyDesSuccessJson: JsObject = Json.obj(
     "acknowledgementReference" -> ackRef
   )
 }

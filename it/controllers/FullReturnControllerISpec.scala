@@ -18,21 +18,16 @@ package controllers
 
 import assets.FullReturnITConstants._
 import assets.IntegrationNrsConstants._
-import play.api.Logging
 import play.api.http.Status._
 import stubs.{AuthStub, DESStub, NRSStub}
-import utils.{CreateRequestHelper, CustomMatchers, IntegrationSpecBase}
+import utils.IntegrationSpecBase
 
-class FullReturnControllerISpec extends IntegrationSpecBase with CreateRequestHelper with CustomMatchers with Logging {
+class FullReturnControllerISpec extends IntegrationSpecBase {
 
   "POST /return/full" when {
-
     "user is authenticated" when {
-
       "request is successfully processed by DES" when {
-
         "nrs is successful" should {
-
           "return OK (200) with the correct body" in {
 
             AuthStub.authorised()
@@ -52,9 +47,7 @@ class FullReturnControllerISpec extends IntegrationSpecBase with CreateRequestHe
         }
 
         "nrs errors" should {
-
           "return OK (200) with the correct body" in {
-
             AuthStub.authorised()
             DESStub.fullReturnSuccess(fullReturnDesSuccessJson)
             NRSStub.error
@@ -73,9 +66,7 @@ class FullReturnControllerISpec extends IntegrationSpecBase with CreateRequestHe
       }
 
       "error is returned from DES" should {
-
-        "should return the error" in {
-
+        "return the error" in {
           AuthStub.authorised()
           DESStub.fullReturnError
           NRSStub.error
@@ -92,10 +83,8 @@ class FullReturnControllerISpec extends IntegrationSpecBase with CreateRequestHe
       }
     }
 
-    "user is unauthenticated" when {
-
-      "should return UNAUTHORISED (401)" in {
-
+    "user is unauthenticated" should {
+      "return UNAUTHORISED (401)" in {
         AuthStub.unauthorised()
 
         val res = postRequest("/return/full", fullReturnJson)
@@ -110,11 +99,8 @@ class FullReturnControllerISpec extends IntegrationSpecBase with CreateRequestHe
   }
 
   "POST /return/full/validate" when {
-
-    "user is authenticated" when {
-
-      "return NO_CONTENT (204) with the correct body" in {
-
+    "user is authenticated" should {
+      "return NO_CONTENT (204)" in {
         AuthStub.authorised()
         NRSStub.error
 
@@ -129,10 +115,8 @@ class FullReturnControllerISpec extends IntegrationSpecBase with CreateRequestHe
       }
     }
 
-    "user is unauthenticated" when {
-
-      "should return UNAUTHORISED (401)" in {
-
+    "user is unauthenticated" should {
+      "return UNAUTHORISED (401)" in {
         AuthStub.unauthorised()
 
         val res = postRequest("/return/full/validate", fullReturnJson)

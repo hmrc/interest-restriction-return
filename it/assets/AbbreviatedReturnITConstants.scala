@@ -21,18 +21,18 @@ import assets.GroupCompanyDetailsITConstants.groupCompanyDetailsJson
 import assets.GroupLevelElectionsITConstants.groupLevelElectionsJson
 import assets.ReportingCompanyITConstants._
 import assets.UkCompanyITConstants.ukCompanyJson
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import v1.models.{Revised, SubmissionType}
 
 object AbbreviatedReturnITConstants {
 
-  val ackRef = "ackRef"
+  val ackRef: String = "ackRef"
 
-  val abbreviatedReturnDesSuccessJson = Json.obj(
+  val abbreviatedReturnDesSuccessJson: JsObject = Json.obj(
     "acknowledgementReference" -> ackRef
   )
 
-  val abbreviatedReturnJson = Json.obj(
+  val abbreviatedReturnJson: JsObject = Json.obj(
     "declaration"               -> true,
     "appointedReportingCompany" -> true,
     "agentDetails"              -> agentDetailsJson,

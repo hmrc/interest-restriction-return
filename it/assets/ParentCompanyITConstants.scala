@@ -18,11 +18,11 @@ package assets
 
 import assets.UltimateParentITConstants._
 import assets.DeemedParentITConstants._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 
 object ParentCompanyITConstants {
 
-  val parentCompanyJson = Json.obj(
+  val parentCompanyJson: JsObject = Json.obj(
     "ultimateParent" -> ultimateParentJson,
     "deemedParent"   -> Seq(deemedParentJson, deemedParentJson)
   )

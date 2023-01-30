@@ -22,49 +22,76 @@ import utils.BaseSpec
 import v1.connectors.HttpHelper.NrsResponse
 import assets.AppConfigConstants._
 import java.util.UUID
+
 import v1.models.nrs._
 import play.api.http.Status._
 import org.scalatest.RecoverMethods._
+import play.api.libs.json.Writes
+import uk.gov.hmrc.http.{HeaderCarrier, HttpReads}
+
+import scala.concurrent.{ExecutionContext, Future}
 
 class NrsConnectorSpec extends MockHttpClient with BaseSpec {
 
-  val submissionId = UUID.randomUUID()
+  private val submissionId: UUID     = UUID.randomUUID()
+  private val nrsPayload: NrsPayload = mock[NrsPayload]
+  private val nrsUrl: String         = "http://localhost:1111/submission"
 
-  val nrsPayload = mock[NrsPayload]
-
-  "NrsConnector.send" when {
-    def setup(response: NrsResponse, appConfig: AppConfig): NrsConnector = {
-      val nrsUrl = "http://localhost:1111/submission"
-      mockHttpPost[NrsPayload, Either[ErrorResponse, NrSubmissionId]](nrsUrl, nrsPayload)(response)
-      new NrsConnectorImpl(mockHttpClient, appConfig)
-    }
-
-    "nrs config is not setup" should {
-      "return a failure" in {
-        val connector = new NrsConnectorImpl(mockHttpClient, appConfig)
-        val result    = connector.send(nrsPayload)
-
-        recoverToSucceededIf[NrsConfigurationException](result)
+  "NrsConnector" when {
+    ".send" should {
+      def setup(response: NrsResponse, appConfig: AppConfig): NrsConnector = {
+        mockHttpPost[NrsPayload, Either[ErrorResponse, NrSubmissionId]](nrsUrl, nrsPayload)(response)
+        new NrsConnectorImpl(mockHttpClient, appConfig)
       }
-    }
 
-    "submission is successful" should {
-      "return a Right(SuccessResponse)" in {
-        val connector = setup(Right(NrSubmissionId(submissionId)), appConfigWithNrs)
-        val result    = connector.send(nrsPayload)
+      "return NrsConfigurationException" when {
+        "nrs config is not setup" in {
+          val connector: NrsConnectorImpl = new NrsConnectorImpl(mockHttpClient, appConfig)
+          val result: Future[NrsResponse] = connector.send(nrsPayload)
 
-        await(result) shouldBe Right(NrSubmissionId(submissionId))
+          recoverToSucceededIf[NrsConfigurationException](result)
+        }
       }
-    }
 
-    "update is unsuccessful" should {
-      "return a Left(UnexpectedFailure)" in {
-        val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")), appConfigWithNrs)
-        val result    = connector.send(nrsPayload)
+      "return a Right NrSubmissionId" when {
+        "submission is successful" in {
+          val connector: NrsConnector     = setup(Right(NrSubmissionId(submissionId)), appConfigWithNrs)
+          val result: Future[NrsResponse] = connector.send(nrsPayload)
 
-        await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
+          await(result) shouldBe Right(NrSubmissionId(submissionId))
+        }
+      }
+
+      "return a Left UnexpectedFailure" when {
+        "submission is unsuccessful" in {
+          val connector: NrsConnector     = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")), appConfigWithNrs)
+          val result: Future[NrsResponse] = connector.send(nrsPayload)
+
+          await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
+        }
+      }
+
+      "return an exception" in {
+        def mockHttpPost(): Unit =
+          (mockHttpClient
+            .POST(_: String, _: NrsPayload, _: Seq[(String, String)])(
+              _: Writes[NrsPayload],
+              _: HttpReads[NrsResponse],
+              _: HeaderCarrier,
+              _: ExecutionContext
+            ))
+            .expects(nrsUrl, nrsPayload, *, *, *, *, *)
+            .returns(Future.failed(new Exception()))
+
+        mockHttpPost()
+
+        val connector: NrsConnectorImpl = new NrsConnectorImpl(mockHttpClient, appConfigWithNrs)
+        val result: Future[NrsResponse] = connector.send(nrsPayload)
+
+        intercept[Exception] {
+          await(result)
+        }
       }
     }
   }
-
 }

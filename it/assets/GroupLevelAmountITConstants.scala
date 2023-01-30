@@ -16,16 +16,16 @@
 
 package assets
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 
 object GroupLevelAmountITConstants {
 
-  val interestReactivationCap         = 5
-  val interestAllowanceBroughtForward = 1.0
-  val interestAllowanceForPeriod      = 1.0
-  val interestCapacityForPeriod       = 1.0
+  val interestReactivationCap: BigDecimal         = 5
+  val interestAllowanceBroughtForward: BigDecimal = 1.0
+  val interestAllowanceForPeriod: BigDecimal      = 1.0
+  val interestCapacityForPeriod: BigDecimal       = 1.0
 
-  val groupLevelAmountJson = Json.obj(
+  val groupLevelAmountJson: JsObject = Json.obj(
     "interestReactivationCap"         -> interestReactivationCap,
     "interestAllowanceBroughtForward" -> interestAllowanceBroughtForward,
     "interestAllowanceForPeriod"      -> interestAllowanceForPeriod,

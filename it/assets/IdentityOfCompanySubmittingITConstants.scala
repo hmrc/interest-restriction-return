@@ -16,11 +16,11 @@
 
 package assets
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 
 object IdentityOfCompanySubmittingITConstants extends BaseITConstants {
 
-  val identityOfCompanySubmittingJson = Json.obj(
+  val identityOfCompanySubmittingJson: JsObject = Json.obj(
     "companyName" -> companyName,
     "ctutr"       -> ctutr
   )

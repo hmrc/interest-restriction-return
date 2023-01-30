@@ -18,13 +18,15 @@ package assets
 
 import java.time.LocalDate
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import assets.AccountingPeriodITConstants._
 
 object AllocatedRestrictionsITConstants {
 
-  val ap1EndDate: LocalDate = startDate.plusDays(1)
-  val ap2EndDate: LocalDate = startDate.plusMonths(12)
+  private val (daysToAdd, monthsToAdd): (Int, Int) = (1, 12)
+
+  val ap1EndDate: LocalDate = startDate.plusDays(daysToAdd)
+  val ap2EndDate: LocalDate = startDate.plusMonths(monthsToAdd)
   val ap3EndDate: LocalDate = endDate
 
   val disallowanceAp1: BigDecimal    = 1.11
@@ -32,7 +34,7 @@ object AllocatedRestrictionsITConstants {
   val disallowanceAp3: BigDecimal    = 3.33
   val totalDisallowances: BigDecimal = 6.66
 
-  val allocatedRestrictionsJson = Json.obj(
+  val allocatedRestrictionsJson: JsObject = Json.obj(
     "ap1EndDate"         -> ap1EndDate,
     "ap2EndDate"         -> ap2EndDate,
     "ap3EndDate"         -> ap3EndDate,

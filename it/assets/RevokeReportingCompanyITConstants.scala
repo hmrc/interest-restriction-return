@@ -20,13 +20,13 @@ import assets.AccountingPeriodITConstants._
 import assets.AgentDetailsITConstants._
 import assets.AuthorisingCompanyITConstants._
 import assets.ReportingCompanyITConstants._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 
 object RevokeReportingCompanyITConstants {
 
-  val ackRef = "ackRef"
+  val ackRef: String = "ackRef"
 
-  val revokeReportingCompanyJson = Json.obj(
+  val revokeReportingCompanyJson: JsObject = Json.obj(
     "agentDetails"                     -> agentDetailsJson,
     "reportingCompany"                 -> reportingCompanyJson,
     "isReportingCompanyRevokingItself" -> true,
@@ -35,7 +35,7 @@ object RevokeReportingCompanyITConstants {
     "declaration"                      -> true
   )
 
-  val revokeReportingCompanyDesSuccessJson = Json.obj(
+  val revokeReportingCompanyDesSuccessJson: JsObject = Json.obj(
     "acknowledgementReference" -> ackRef
   )
 }

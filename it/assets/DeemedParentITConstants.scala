@@ -16,11 +16,11 @@
 
 package assets
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 
 object DeemedParentITConstants extends BaseITConstants {
 
-  val nonUkCountryCode = "US"
+  val nonUkCountryCode: String = "US"
 
-  val deemedParentJson = Json.obj("companyName" -> companyName, "ctutr" -> ctutr)
+  val deemedParentJson: JsObject = Json.obj("companyName" -> companyName, "ctutr" -> ctutr)
 }
