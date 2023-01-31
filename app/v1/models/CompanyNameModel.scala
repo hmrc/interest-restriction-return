@@ -21,7 +21,7 @@ import v1.validation.CompanyNameValidator
 import utils.ReadStringWithTrim.stringReads
 
 case class CompanyNameModel(name: String) extends CompanyNameValidator {
-  val companyNameModel = this
+  val companyNameModel: CompanyNameModel = this
 }
 
 object CompanyNameModel {

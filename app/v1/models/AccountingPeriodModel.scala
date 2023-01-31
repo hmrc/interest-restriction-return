@@ -20,7 +20,7 @@ import java.time.LocalDate
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.Reads._
-import play.api.libs.json.{Json, _}
+import play.api.libs.json._
 import v1.validation.AccountingPeriodValidator
 
 import scala.util.Try
@@ -37,7 +37,8 @@ object AccountingPeriodModel {
     .filter(JsonValidationError("Date must be a valid date"))(str => Try(LocalDate.parse(str)).isSuccess)
     .map(LocalDate.parse)
 
-  implicit val reads = (readDate("startDate") and readDate("endDate"))(AccountingPeriodModel.apply _)
+  implicit val reads: Reads[AccountingPeriodModel] =
+    (readDate("startDate") and readDate("endDate"))(AccountingPeriodModel.apply _)
 
-  implicit val writes = Json.writes[AccountingPeriodModel]
+  implicit val writes: OWrites[AccountingPeriodModel] = Json.writes[AccountingPeriodModel]
 }

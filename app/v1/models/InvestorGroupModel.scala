@@ -21,9 +21,9 @@ import v1.validation.InvestorGroupValidator
 
 case class InvestorGroupModel(groupName: CompanyNameModel, elections: Option[List[Elections]])
     extends InvestorGroupValidator {
-  override val investorGroupModel = this
+  override val investorGroupModel: InvestorGroupModel = this
 }
 
 object InvestorGroupModel {
-  implicit val format = Json.format[InvestorGroupModel]
+  implicit val format: OFormat[InvestorGroupModel] = Json.format[InvestorGroupModel]
 }

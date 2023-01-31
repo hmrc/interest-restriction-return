@@ -16,7 +16,7 @@
 
 package v1.models
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 import v1.validation.AuthorisingCompanyValidator
 
 case class AuthorisingCompanyModel(companyName: CompanyNameModel, utr: UTRModel, consenting: Option[Boolean])
@@ -25,5 +25,5 @@ case class AuthorisingCompanyModel(companyName: CompanyNameModel, utr: UTRModel,
 }
 
 object AuthorisingCompanyModel {
-  implicit val format = Json.format[AuthorisingCompanyModel]
+  implicit val format: OFormat[AuthorisingCompanyModel] = Json.format[AuthorisingCompanyModel]
 }

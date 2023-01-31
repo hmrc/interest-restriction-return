@@ -27,7 +27,6 @@ import org.scalatestplus.play.BaseOneServerPerSuite
 object WiremockHelper {
   val wiremockPort: Int = 11111
   val wiremockHost: String = "localhost"
-  val wiremockURL: String  = s"http://$wiremockHost:$wiremockPort"
 }
 
 trait WiremockHelper {

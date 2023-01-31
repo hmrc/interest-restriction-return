@@ -72,58 +72,58 @@ trait GroupLevelAmountValidator extends BaseValidation {
 }
 
 case class ReactivationCapCannotBeNegative(amt: BigDecimal)(implicit topPath: JsPath) extends Validation {
-  val code                 = "REACTIVATION_CAP_PERIOD_NEGATIVE"
-  val path                 = topPath \ s"interestReactivationCap"
-  val errorMessage: String = s"Interest reactivation cap must be a positive number or zero"
-  val value                = Some(Json.toJson(amt))
+  val code: String           = "REACTIVATION_CAP_PERIOD_NEGATIVE"
+  val path: JsPath           = topPath \ "interestReactivationCap"
+  val errorMessage: String   = "Interest reactivation cap must be a positive number or zero"
+  val value: Option[JsValue] = Some(Json.toJson(amt))
 }
 
 case class ReactivationCapDecimalError(amt: BigDecimal)(implicit topPath: JsPath) extends Validation {
-  val code                 = "REACTIVATION_CAP_PERIOD_DECIMAL"
-  val path                 = topPath \ s"interestReactivationCap"
-  val errorMessage: String = s"Interest reactivation cap must be to 2 decimal places or less"
-  val value                = Some(Json.toJson(amt))
+  val code: String           = "REACTIVATION_CAP_PERIOD_DECIMAL"
+  val path: JsPath           = topPath \ "interestReactivationCap"
+  val errorMessage: String   = "Interest reactivation cap must be to 2 decimal places or less"
+  val value: Option[JsValue] = Some(Json.toJson(amt))
 }
 
 case class InterestAllowanceForPeriodCannotBeNegative(amt: BigDecimal)(implicit topPath: JsPath) extends Validation {
-  val code                 = "INTEREST_ALLOWANCE_PERIOD_NEGATIVE"
-  val path                 = topPath \ s"interestAllowanceForPeriod"
-  val errorMessage: String = s"Interest allowance for the period must be a positive number or zero"
-  val value                = Some(Json.toJson(amt))
+  val code: String           = "INTEREST_ALLOWANCE_PERIOD_NEGATIVE"
+  val path: JsPath           = topPath \ "interestAllowanceForPeriod"
+  val errorMessage: String   = "Interest allowance for the period must be a positive number or zero"
+  val value: Option[JsValue] = Some(Json.toJson(amt))
 }
 
 case class InterestAllowanceForPeriodDecimalError(amt: BigDecimal)(implicit topPath: JsPath) extends Validation {
-  val code                 = "INTEREST_ALLOWANCE_PERIOD_DECIMAL"
-  val path                 = topPath \ s"interestAllowanceForPeriod"
-  val errorMessage: String = s"Interest allowance for the period must be to 2 decimal places or less"
-  val value                = Some(Json.toJson(amt))
+  val code: String           = "INTEREST_ALLOWANCE_PERIOD_DECIMAL"
+  val path: JsPath           = topPath \ "interestAllowanceForPeriod"
+  val errorMessage: String   = "Interest allowance for the period must be to 2 decimal places or less"
+  val value: Option[JsValue] = Some(Json.toJson(amt))
 }
 
 case class InterestAllowanceBroughtForwardCannotBeNegative(amt: BigDecimal)(implicit topPath: JsPath)
     extends Validation {
-  val code                 = "INTEREST_ALLOWANCE_FORWARD_NEGATIVE"
-  val path                 = topPath \ s"interestAllowanceBroughtForward"
-  val errorMessage: String = s"Interest allowance brought forward must be a positive number or zero"
-  val value                = Some(Json.toJson(amt))
+  val code: String           = "INTEREST_ALLOWANCE_FORWARD_NEGATIVE"
+  val path: JsPath           = topPath \ "interestAllowanceBroughtForward"
+  val errorMessage: String   = "Interest allowance brought forward must be a positive number or zero"
+  val value: Option[JsValue] = Some(Json.toJson(amt))
 }
 
 case class InterestAllowanceBroughtForwardDecimalError(amt: BigDecimal)(implicit topPath: JsPath) extends Validation {
-  val code                 = "INTEREST_ALLOWANCE_FORWARD_DECIMAL"
-  val path                 = topPath \ s"interestAllowanceBroughtForward"
-  val errorMessage: String = s"Interest allowance brought forward must be to 2 decimal places or less"
-  val value                = Some(Json.toJson(amt))
+  val code: String           = "INTEREST_ALLOWANCE_FORWARD_DECIMAL"
+  val path: JsPath           = topPath \ "interestAllowanceBroughtForward"
+  val errorMessage: String   = "Interest allowance brought forward must be to 2 decimal places or less"
+  val value: Option[JsValue] = Some(Json.toJson(amt))
 }
 
 case class InterestCapacityForPeriodCannotBeNegative(amt: BigDecimal)(implicit topPath: JsPath) extends Validation {
-  val code                   = "INTEREST_CAP_PERIOD_NEGATIVE"
-  val path: JsPath           = topPath \ s"interestCapacityForPeriod"
-  val errorMessage: String   = s"Interest capacity for the period must be a positive number or zero"
+  val code: String           = "INTEREST_CAP_PERIOD_NEGATIVE"
+  val path: JsPath           = topPath \ "interestCapacityForPeriod"
+  val errorMessage: String   = "Interest capacity for the period must be a positive number or zero"
   val value: Option[JsValue] = Some(Json.toJson(amt))
 }
 
 case class InterestCapacityForPeriodDecimalError(amt: BigDecimal)(implicit topPath: JsPath) extends Validation {
-  val code                   = "INTEREST_CAP_PERIOD_DECIMAL"
-  val path: JsPath           = topPath \ s"interestCapacityForPeriod"
-  val errorMessage: String   = s"Interest capacity for the period must be to 2 decimal places or less"
+  val code: String           = "INTEREST_CAP_PERIOD_DECIMAL"
+  val path: JsPath           = topPath \ "interestCapacityForPeriod"
+  val errorMessage: String   = "Interest capacity for the period must be to 2 decimal places or less"
   val value: Option[JsValue] = Some(Json.toJson(amt))
 }

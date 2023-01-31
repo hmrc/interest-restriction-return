@@ -16,17 +16,17 @@
 
 package v1.models
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 import v1.validation.AgentDetailsValidator
 import utils.ReadStringWithTrim.stringReads
 
 case class AgentDetailsModel(agentActingOnBehalfOfCompany: Boolean, agentName: Option[String])
     extends AgentDetailsValidator {
-  override val agentDetailsModel = this
+  override val agentDetailsModel: AgentDetailsModel = this
 }
 
 object AgentDetailsModel {
 
-  implicit val format = Json.format[AgentDetailsModel]
+  implicit val format: OFormat[AgentDetailsModel] = Json.format[AgentDetailsModel]
 
 }

@@ -39,7 +39,7 @@ trait LegalEntityIdentifierValidator extends BaseValidation {
 
 case class LegalEntityIdentifierCharacterError(lei: LegalEntityIdentifierModel)(implicit val path: JsPath)
     extends Validation {
-  val code                   = "LEI_CHARACTER"
-  val errorMessage: String   = s"Legal entity identifier must be 18 uppercase letters followed by 2 numbers"
+  val code: String           = "LEI_CHARACTER"
+  val errorMessage: String   = "Legal entity identifier must be 18 uppercase letters followed by 2 numbers"
   val value: Option[JsValue] = Some(Json.toJson(lei))
 }

@@ -20,7 +20,7 @@ import play.api.libs.json.{JsPath, JsString, Reads, Writes}
 import v1.validation.LegalEntityIdentifierValidator
 
 case class LegalEntityIdentifierModel(code: String) extends LegalEntityIdentifierValidator {
-  override val legalEntityIdentifierModel = this
+  override val legalEntityIdentifierModel: LegalEntityIdentifierModel = this
 }
 
 object LegalEntityIdentifierModel {

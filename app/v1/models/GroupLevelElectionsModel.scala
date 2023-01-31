@@ -26,7 +26,7 @@ case class GroupLevelElectionsModel(
   interestAllowanceNonConsolidatedInvestment: NonConsolidatedInvestmentElectionModel,
   interestAllowanceConsolidatedPartnership: ConsolidatedPartnershipModel
 ) extends GroupLevelElectionValidation {
-  override val groupLevelElectionsModel = this
+  override val groupLevelElectionsModel: GroupLevelElectionsModel = this
 
 }
 object GroupLevelElectionsModel {

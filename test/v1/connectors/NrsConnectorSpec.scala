@@ -21,12 +21,14 @@ import v1.connectors.mocks.MockHttpClient
 import utils.BaseSpec
 import v1.connectors.HttpHelper.NrsResponse
 import assets.AppConfigConstants._
+import assets.UnitNrsConstants._
 import java.util.UUID
 
 import v1.models.nrs._
 import play.api.http.Status._
 import org.scalatest.RecoverMethods._
 import play.api.libs.json.Writes
+import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.http.{HeaderCarrier, HttpReads}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -34,7 +36,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class NrsConnectorSpec extends MockHttpClient with BaseSpec {
 
   private val submissionId: UUID     = UUID.randomUUID()
-  private val nrsPayload: NrsPayload = mock[NrsPayload]
+  private val nrsPayload: NrsPayload = payload(Some(AffinityGroup.Organisation))
   private val nrsUrl: String         = "http://localhost:1111/submission"
 
   "NrsConnector" when {

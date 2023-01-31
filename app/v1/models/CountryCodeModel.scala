@@ -20,7 +20,7 @@ import play.api.libs.json.{JsPath, JsString, Reads, Writes}
 import v1.validation.CountryCodeValidator
 
 case class CountryCodeModel(code: String) extends CountryCodeValidator {
-  override val countryCodeModel = this
+  override val countryCodeModel: CountryCodeModel = this
 }
 
 object CountryCodeModel {

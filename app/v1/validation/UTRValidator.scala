@@ -30,7 +30,7 @@ trait UTRValidator extends BaseValidation {
 
     val utrInts = utrModel.utr.map(_.asDigit)
     //scalastyle:off magic.number
-    def checkSum = {
+    def checkSum: Int = {
 
       val utrSum = (utrInts(1) * 6) + (utrInts(2) * 7) + (utrInts(3) * 8) + (utrInts(4) * 9) + (utrInts(5) * 10) +
         (utrInts(6) * 5) + (utrInts(7) * 4) + (utrInts(8) * 3) + (utrInts(9) * 2)
@@ -54,13 +54,13 @@ trait UTRValidator extends BaseValidation {
 }
 
 case class UTRChecksumError(utrValue: UTRModel)(implicit val path: JsPath) extends Validation {
-  val code                   = "UTR_CHECKSUM"
+  val code: String           = "UTR_CHECKSUM"
   val errorMessage: String   = "UTR given is not valid"
   val value: Option[JsValue] = Some(Json.toJson(utrValue))
 }
 
 case class UTRLengthError(utrValue: UTRModel)(implicit val path: JsPath) extends Validation {
-  val code                   = "UTR_LENGTH"
-  val errorMessage: String   = s"UTR must be 10 numeric characters"
+  val code: String           = "UTR_LENGTH"
+  val errorMessage: String   = "UTR must be 10 numeric characters"
   val value: Option[JsValue] = Some(Json.toJson(utrValue))
 }

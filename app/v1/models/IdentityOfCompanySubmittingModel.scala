@@ -16,7 +16,7 @@
 
 package v1.models
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 import v1.validation.IdentityOfCompanySubmittingValidator
 
 case class IdentityOfCompanySubmittingModel(
@@ -29,5 +29,5 @@ case class IdentityOfCompanySubmittingModel(
 }
 
 object IdentityOfCompanySubmittingModel {
-  implicit val format = Json.format[IdentityOfCompanySubmittingModel]
+  implicit val format: OFormat[IdentityOfCompanySubmittingModel] = Json.format[IdentityOfCompanySubmittingModel]
 }

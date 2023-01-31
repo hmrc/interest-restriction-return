@@ -16,7 +16,7 @@
 
 package v1.validation.fullReturn
 
-import play.api.libs.json.{JsPath, Json}
+import play.api.libs.json.{JsPath, JsValue, Json}
 import v1.models.Validation.ValidationResult
 import v1.models.fullReturn.UkCompanyModel
 import v1.models.{AccountingPeriodModel, Validation}
@@ -151,41 +151,41 @@ trait UkCompanyValidator extends BaseValidation {
 }
 
 case class NetTaxInterestExpenseError(netTaxInterestExpense: BigDecimal)(implicit topPath: JsPath) extends Validation {
-  val code                 = "NEGATIVE_EXPENSE"
-  val path                 = topPath \ "netTaxInterestExpense"
-  val errorMessage: String = "Net tax interest expense must be a positive number"
-  val value                = Some(Json.toJson(netTaxInterestExpense))
+  val code: String           = "NEGATIVE_EXPENSE"
+  val path: JsPath           = topPath \ "netTaxInterestExpense"
+  val errorMessage: String   = "Net tax interest expense must be a positive number"
+  val value: Option[JsValue] = Some(Json.toJson(netTaxInterestExpense))
 }
 
 case class NetTaxInterestExpenseDecimalError(netTaxInterestExpense: BigDecimal)(implicit topPath: JsPath)
     extends Validation {
-  val code                 = "EXPENSE_DECIMAL"
-  val path                 = topPath \ "netTaxInterestExpense"
-  val errorMessage: String = "Net tax interest expense must be to 2 decimal places or less"
-  val value                = Some(Json.toJson(netTaxInterestExpense))
+  val code: String           = "EXPENSE_DECIMAL"
+  val path: JsPath           = topPath \ "netTaxInterestExpense"
+  val errorMessage: String   = "Net tax interest expense must be to 2 decimal places or less"
+  val value: Option[JsValue] = Some(Json.toJson(netTaxInterestExpense))
 }
 
 case class NetTaxInterestIncomeError(netTaxInterestIncome: BigDecimal)(implicit topPath: JsPath) extends Validation {
-  val code                 = "NEGATIVE_INCOME"
-  val path                 = topPath \ "netTaxInterestIncome"
-  val errorMessage: String = "Net tax interest income must be a positive number"
-  val value                = Some(Json.toJson(netTaxInterestIncome))
+  val code: String           = "NEGATIVE_INCOME"
+  val path: JsPath           = topPath \ "netTaxInterestIncome"
+  val errorMessage: String   = "Net tax interest income must be a positive number"
+  val value: Option[JsValue] = Some(Json.toJson(netTaxInterestIncome))
 }
 
 case class NetTaxInterestIncomeDecimalError(netTaxInterestIncome: BigDecimal)(implicit topPath: JsPath)
     extends Validation {
-  val code                 = "INCOME_DECIMAL"
-  val path                 = topPath \ "netTaxInterestIncome"
-  val errorMessage: String = "Net tax interest income must be to 2 decimal places or less"
-  val value                = Some(Json.toJson(netTaxInterestIncome))
+  val code: String           = "INCOME_DECIMAL"
+  val path: JsPath           = topPath \ "netTaxInterestIncome"
+  val errorMessage: String   = "Net tax interest income must be to 2 decimal places or less"
+  val value: Option[JsValue] = Some(Json.toJson(netTaxInterestIncome))
 }
 
 case class ExpenseAndIncomeBothNotGreaterThanZero(netTaxInterestExpense: BigDecimal, netTaxInterestIncome: BigDecimal)(
   implicit val path: JsPath
 ) extends Validation {
-  val code                 = "EXPENSE_AND_INCOME"
-  val errorMessage: String = "A company cannot have both net tax interest expense and net tax interest income"
-  val value                = Some(
+  val code: String           = "EXPENSE_AND_INCOME"
+  val errorMessage: String   = "A company cannot have both net tax interest expense and net tax interest income"
+  val value: Option[JsValue] = Some(
     Json.toJson(("netTaxInterestExpense: " + netTaxInterestExpense, "netTaxInterestIncome: " + netTaxInterestIncome))
   )
 }
@@ -193,37 +193,37 @@ case class ExpenseAndIncomeBothNotGreaterThanZero(netTaxInterestExpense: BigDeci
 case class RestrictionNotGreaterThanExpense(netTaxInterestExpense: BigDecimal, allocatedRestriction: BigDecimal)(
   implicit val path: JsPath
 ) extends Validation {
-  val code                 = "RESTRICTION_GREATER_THAN_EXPENSE"
-  val errorMessage: String = "A company cannot have a restriction greater than its net tax-interest expense"
-  val value                = Some(
+  val code: String           = "RESTRICTION_GREATER_THAN_EXPENSE"
+  val errorMessage: String   = "A company cannot have a restriction greater than its net tax-interest expense"
+  val value: Option[JsValue] = Some(
     Json.toJson(("netTaxInterestExpense: " + netTaxInterestExpense, "allocatedRestriction: " + allocatedRestriction))
   )
 }
 
 case class NoTotalNetTaxInterestIncomeDuringRestriction(netTaxIncome: BigDecimal)(implicit val path: JsPath)
     extends Validation {
-  val code                 = "INCOME_AND_RESTRICTION"
-  val errorMessage: String = s"A company with net tax-interest income cannot have a restriction allocated to it"
-  val value                = None
+  val code: String           = "INCOME_AND_RESTRICTION"
+  val errorMessage: String   = "A company with net tax-interest income cannot have a restriction allocated to it"
+  val value: Option[JsValue] = None
 }
 
 case class TaxEBITDADecimalError(netTaxIncome: BigDecimal)(implicit val topPath: JsPath) extends Validation {
-  val code                 = "EBITDA_DECIMAL"
-  val path                 = topPath \ "EBITDA"
-  val errorMessage: String = s"Tax EBITDA must be to 2 decimal places or less"
-  val value                = Some(Json.toJson(netTaxIncome))
+  val code: String           = "EBITDA_DECIMAL"
+  val path: JsPath           = topPath \ "EBITDA"
+  val errorMessage: String   = "Tax EBITDA must be to 2 decimal places or less"
+  val value: Option[JsValue] = Some(Json.toJson(netTaxIncome))
 }
 
 case class CompanyEstimateReasonLengthError(reason: String)(implicit val topPath: JsPath) extends Validation {
-  val code                 = "COMPANY_REASON_LENGTH"
-  val errorMessage: String = s"Estimate reason must be between 1 and 5,000 characters"
-  val path: JsPath         = topPath \ "companyEstimateReason"
-  val value                = Some(Json.toJson(reason))
+  val code: String           = "COMPANY_REASON_LENGTH"
+  val errorMessage: String   = "Estimate reason must be between 1 and 5,000 characters"
+  val path: JsPath           = topPath \ "companyEstimateReason"
+  val value: Option[JsValue] = Some(Json.toJson(reason))
 }
 
 case class CompanyEstimateReasonCharacterError(reason: String)(implicit val topPath: JsPath) extends Validation {
-  val code                 = "COMPANY_REASON_CHARACTERS"
-  val errorMessage: String = "Company estimate reason contains invalid characters"
-  val path: JsPath         = topPath \ "companyEstimateReason"
-  val value                = Some(Json.toJson(reason))
+  val code: String           = "COMPANY_REASON_CHARACTERS"
+  val errorMessage: String   = "Company estimate reason contains invalid characters"
+  val path: JsPath           = topPath \ "companyEstimateReason"
+  val value: Option[JsValue] = Some(Json.toJson(reason))
 }

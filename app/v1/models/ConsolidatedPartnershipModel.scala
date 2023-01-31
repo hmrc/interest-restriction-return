@@ -16,7 +16,7 @@
 
 package v1.models
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 import v1.validation.ConsolidatedPartnershipValidator
 
 case class ConsolidatedPartnershipModel(
@@ -24,9 +24,9 @@ case class ConsolidatedPartnershipModel(
   isActive: Boolean,
   consolidatedPartnerships: Option[Seq[PartnershipModel]]
 ) extends ConsolidatedPartnershipValidator {
-  override val consolidatedPartnershipModel = this
+  override val consolidatedPartnershipModel: ConsolidatedPartnershipModel = this
 }
 
 object ConsolidatedPartnershipModel {
-  implicit val format = Json.format[ConsolidatedPartnershipModel]
+  implicit val format: OFormat[ConsolidatedPartnershipModel] = Json.format[ConsolidatedPartnershipModel]
 }

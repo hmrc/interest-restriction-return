@@ -25,7 +25,8 @@ case class AdjustedGroupInterestModel(qngie: BigDecimal, groupEBITDA: Option[Big
 }
 
 object AdjustedGroupInterestModel {
-  implicit val adjustedGroupInterestModelReads                                      = Json.reads[AdjustedGroupInterestModel]
+  implicit val adjustedGroupInterestModelReads: Reads[AdjustedGroupInterestModel]   =
+    Json.reads[AdjustedGroupInterestModel]
   implicit val adjustedGroupInterestModelWrites: Writes[AdjustedGroupInterestModel] = Writes { models =>
     val ebitda = models.groupEBITDA.getOrElse(BigDecimal(0))
     JsObject(

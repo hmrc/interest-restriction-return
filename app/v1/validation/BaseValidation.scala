@@ -15,6 +15,7 @@
  */
 
 package v1.validation
+
 import cats.data.NonEmptyChain
 import cats.data.Validated.{Invalid, Valid}
 import v1.models.Validation

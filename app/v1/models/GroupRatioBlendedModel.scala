@@ -16,14 +16,14 @@
 
 package v1.models
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 import v1.validation.GroupRatioBlendedValidator
 
 case class GroupRatioBlendedModel(isElected: Boolean, investorGroups: Option[Seq[InvestorGroupModel]])
     extends GroupRatioBlendedValidator {
-  override val groupRatioBlendedModel = this
+  override val groupRatioBlendedModel: GroupRatioBlendedModel = this
 }
 
 object GroupRatioBlendedModel {
-  implicit val format = Json.format[GroupRatioBlendedModel]
+  implicit val format: OFormat[GroupRatioBlendedModel] = Json.format[GroupRatioBlendedModel]
 }

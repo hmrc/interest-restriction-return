@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import play.api.libs.json.{JsPath, Json}
+import play.api.libs.json.{JsPath, JsValue, Json}
 import v1.models.Validation.ValidationResult
 import v1.models.{ParentCompanyModel, Validation}
 
@@ -73,35 +73,35 @@ trait ParentCompanyValidator extends BaseValidation {
 
 case class ParentCompanyCanNotBeUltimateAndDeemed(model: ParentCompanyModel)(implicit val path: JsPath)
     extends Validation {
-  val code                 = "PARENT_ULTIMATE_AND_DEEMED"
-  val errorMessage: String = "Parent company must be either ultimate or deemed parent"
-  val value                = Some(Json.toJson(model))
+  val code: String           = "PARENT_ULTIMATE_AND_DEEMED"
+  val errorMessage: String   = "Parent company must be either ultimate or deemed parent"
+  val value: Option[JsValue] = Some(Json.toJson(model))
 }
 
 case class ParentCompanyBothUltimateAndDeemedEmtpty(model: ParentCompanyModel)(implicit val path: JsPath)
     extends Validation {
-  val code                 = "ULTIMATE_AND_DEEMED_EMPTY"
-  val errorMessage: String = "Parent company must be either ultimate or deemed parent"
-  val value                = Some(Json.toJson(model))
+  val code: String           = "ULTIMATE_AND_DEEMED_EMPTY"
+  val errorMessage: String   = "Parent company must be either ultimate or deemed parent"
+  val value: Option[JsValue] = Some(Json.toJson(model))
 }
 
 case class DeemedParentsEmpty()(implicit topPath: JsPath) extends Validation {
-  val code                 = "DEEMED_EMPTY"
-  val errorMessage: String = "Add at least 1 deemed parent"
-  val path: JsPath         = topPath \ "deemedParent"
-  val value                = None
+  val code: String           = "DEEMED_EMPTY"
+  val errorMessage: String   = "Add at least 1 deemed parent"
+  val path: JsPath           = topPath \ "deemedParent"
+  val value: Option[JsValue] = None
 }
 
 case class MinTwoDeemedParents(model: ParentCompanyModel)(implicit topPath: JsPath) extends Validation {
-  val code                 = "DEEMED_MIN"
-  val errorMessage: String = "Minimum number of deemed parents is 2"
-  val path: JsPath         = topPath \ "deemedParent"
-  val value                = None
+  val code: String           = "DEEMED_MIN"
+  val errorMessage: String   = "Minimum number of deemed parents is 2"
+  val path: JsPath           = topPath \ "deemedParent"
+  val value: Option[JsValue] = None
 }
 
 case class MaxThreeDeemedParents(model: ParentCompanyModel)(implicit topPath: JsPath) extends Validation {
-  val code                 = "DEEMED_MAX"
-  val errorMessage: String = "Maximum number of deemed parents is 3"
-  val path: JsPath         = topPath \ "deemedParent"
-  val value                = None
+  val code                   = "DEEMED_MAX"
+  val errorMessage: String   = "Maximum number of deemed parents is 3"
+  val path: JsPath           = topPath \ "deemedParent"
+  val value: Option[JsValue] = None
 }

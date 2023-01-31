@@ -16,7 +16,7 @@
 
 package v1.models.fullReturn
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 import v1.validation.fullReturn.GroupLevelAmountValidator
 
 case class GroupLevelAmountModel(
@@ -29,5 +29,5 @@ case class GroupLevelAmountModel(
 }
 
 object GroupLevelAmountModel {
-  implicit val format = Json.format[GroupLevelAmountModel]
+  implicit val format: OFormat[GroupLevelAmountModel] = Json.format[GroupLevelAmountModel]
 }

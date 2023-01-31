@@ -20,7 +20,7 @@ import play.api.libs.json.{JsPath, JsString, Reads, Writes}
 import v1.validation.UTRValidator
 
 case class UTRModel(utr: String) extends UTRValidator {
-  override val utrModel = this
+  override val utrModel: UTRModel = this
 }
 
 object UTRModel {

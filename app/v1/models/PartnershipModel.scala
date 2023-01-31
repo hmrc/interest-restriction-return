@@ -16,13 +16,13 @@
 
 package v1.models
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 import v1.validation.PartnershipValidator
 
 case class PartnershipModel(partnershipName: CompanyNameModel, sautr: Option[UTRModel]) extends PartnershipValidator {
-  override val partnershipModel = this
+  override val partnershipModel: PartnershipModel = this
 }
 
 object PartnershipModel {
-  implicit val format = Json.format[PartnershipModel]
+  implicit val format: OFormat[PartnershipModel] = Json.format[PartnershipModel]
 }

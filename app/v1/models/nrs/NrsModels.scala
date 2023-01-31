@@ -62,7 +62,7 @@ case class NrSubmissionId(nrSubmissionId: UUID) extends AnyVal {
 }
 
 object NrSubmissionId {
-  implicit val format = Json.format[NrSubmissionId]
+  implicit val format: OFormat[NrSubmissionId] = Json.format[NrSubmissionId]
 }
 
 case class NrsMetadata(
@@ -78,11 +78,11 @@ case class NrsMetadata(
 )
 
 object NrsMetadata {
-  implicit val format = Json.format[NrsMetadata]
+  implicit val format: OFormat[NrsMetadata] = Json.format[NrsMetadata]
 }
 
 case class NrsPayload(payload: String, metadata: NrsMetadata)
 
 object NrsPayload {
-  implicit val format = Json.format[NrsPayload]
+  implicit val format: OFormat[NrsPayload] = Json.format[NrsPayload]
 }

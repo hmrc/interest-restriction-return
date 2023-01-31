@@ -16,12 +16,11 @@
 
 package v1.connectors.httpParsers
 
-import play.api.Logging
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.{DesBaseConnector, HttpErrorMessages}
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
-object FullReturnHttpParser extends DesBaseConnector with Logging {
+object FullReturnHttpParser extends DesBaseConnector {
 
   implicit object FullReturnReads extends HttpReads[SubmissionResponse] {
 

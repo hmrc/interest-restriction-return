@@ -52,9 +52,10 @@ trait AbbreviatedReturnValidator extends BaseValidation {
     }
 
   private def validateDeclaration: ValidationResult[Boolean] =
-    abbreviatedReturnModel.declaration match {
-      case true  => abbreviatedReturnModel.declaration.validNec
-      case false => ReturnDeclarationError(abbreviatedReturnModel.declaration).invalidNec
+    if (abbreviatedReturnModel.declaration) {
+      abbreviatedReturnModel.declaration.validNec
+    } else {
+      ReturnDeclarationError(abbreviatedReturnModel.declaration).invalidNec
     }
 
   def validate: ValidationResult[AbbreviatedReturnModel] = {

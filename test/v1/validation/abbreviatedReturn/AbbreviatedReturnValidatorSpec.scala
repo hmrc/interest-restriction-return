@@ -109,7 +109,9 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
 
         "Agent details are invalid" in {
           leftSideError(
-            abbreviatedReturnUltimateParentModel.copy(agentDetails = agentDetailsModelMax.copy(agentName = None)).validate
+            abbreviatedReturnUltimateParentModel
+              .copy(agentDetails = agentDetailsModelMax.copy(agentName = None))
+              .validate
           ).errorMessage shouldBe AgentNameNotSuppliedError().errorMessage
         }
 
@@ -173,8 +175,9 @@ class AbbreviatedReturnValidatorSpec extends BaseSpec {
         }
 
         "submissionType 'Revised' and the revised return details contains invalid characters" in {
-          val returnDetails: String = "ʰʲʺ£$%˦˫qwNew!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is 160" +
-            " no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
+          val returnDetails: String =
+            "ʰʲʺ£$%˦˫qwNew!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is 160" +
+              " no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
           leftSideError(
             abbreviatedReturnUltimateParentModel
               .copy(

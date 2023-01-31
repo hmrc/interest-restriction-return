@@ -62,9 +62,10 @@ trait RevokeReportingCompanyValidator extends BaseValidation {
   private def validateDuplicateAuthorisingCompanies: ValidationResult[Seq[AuthorisingCompanyModel]] = {
     val duplicatesExist =
       revokeReportingCompanyModel.authorisingCompanies.distinct.size != revokeReportingCompanyModel.authorisingCompanies.size
-    duplicatesExist match {
-      case true  => AuthorisingCompaniesContainsDuplicates.invalidNec
-      case false => revokeReportingCompanyModel.authorisingCompanies.validNec
+    if (duplicatesExist) {
+      AuthorisingCompaniesContainsDuplicates.invalidNec
+    } else {
+      revokeReportingCompanyModel.authorisingCompanies.validNec
     }
   }
 
@@ -99,7 +100,7 @@ trait RevokeReportingCompanyValidator extends BaseValidation {
 }
 
 case object CompanyMakingAppointmentMustSupplyDetails extends Validation {
-  val code                   = "COMPANY_MAKING_REVOCATION_NOT_SUPPLIED"
+  val code: String           = "COMPANY_MAKING_REVOCATION_NOT_SUPPLIED"
   val errorMessage: String   =
     "If the reporting company is not revoking itself, details of the company making revocation must be provided"
   val path: JsPath           = JsPath \ "companyMakingRevocation"
@@ -107,7 +108,7 @@ case object CompanyMakingAppointmentMustSupplyDetails extends Validation {
 }
 
 case class DeclaredFiftyPercentOfEligibleCompanies(declaration: Boolean) extends Validation {
-  val code                   = "DECLARATION_FALSE"
+  val code: String           = "DECLARATION_FALSE"
   val errorMessage: String   = "Declaration is not valid so will not be submitted. " +
     "You need to confirm the listed companies constitute at least 50% of the eligible companies."
   val path: JsPath           = JsPath \ "declaration"
@@ -117,7 +118,7 @@ case class DeclaredFiftyPercentOfEligibleCompanies(declaration: Boolean) extends
 case class DetailsNotNeededIfCompanyRevokingItself(companyMakingRevocation: IdentityOfCompanySubmittingModel)(implicit
   val path: JsPath
 ) extends Validation {
-  val code                 = "COMPANY_NOT_NEEDED"
+  val code: String         = "COMPANY_NOT_NEEDED"
   val errorMessage: String = "Reporting company not needed as it is the same the company making the revocation"
   val value: Some[JsValue] = Some(Json.toJson(companyMakingRevocation))
 }

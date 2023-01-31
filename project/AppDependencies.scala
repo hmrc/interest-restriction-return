@@ -11,12 +11,12 @@ object AppDependencies {
   )
 
   private lazy val test: Seq[ModuleID] = Seq(
-    "uk.gov.hmrc"           %% "bootstrap-test-play-28"      % bootstrapPlayVersion,
-    "org.scalatest"         %% "scalatest"                   % "3.2.15",
-    "com.typesafe.play"     %% "play-test"                   % "2.8.19",
-    "org.scalamock"         %% "scalamock-scalatest-support" % "3.6.0",
-    "com.github.tomakehurst" % "wiremock-standalone"         % "2.27.2",
-    "com.vladsch.flexmark"   % "flexmark-all"                % "0.62.2"
+    "uk.gov.hmrc"           %% "bootstrap-test-play-28" % bootstrapPlayVersion,
+    "org.scalatest"         %% "scalatest"              % "3.2.15",
+    "com.typesafe.play"     %% "play-test"              % "2.8.19",
+    "org.scalamock"         %% "scalamock"              % "5.2.0",
+    "com.github.tomakehurst" % "wiremock-standalone"    % "2.27.2",
+    "com.vladsch.flexmark"   % "flexmark-all"           % "0.62.2"
   ).map(_ % "test, it")
 
   def apply(): Seq[ModuleID]           = compile ++ test

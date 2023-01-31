@@ -36,11 +36,4 @@ class DocumentationController @Inject() (
 
   def specification(version: String, file: String): Action[AnyContent] =
     assets.at(s"/public/api/conf/$version", file)
-
-  def documentation(version: String, endpointName: String): Action[AnyContent] =
-    assets.at(s"/public/api/documentation/$version", s"${endpointName.replaceAll(" ", "-")}.xml")
-
-  def conf(version: String, file: String): Action[AnyContent] =
-    assets.at(s"/public/api/conf/$version", file)
-
 }

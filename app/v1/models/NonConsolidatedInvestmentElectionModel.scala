@@ -16,7 +16,7 @@
 
 package v1.models
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 import v1.validation.NonConsolidatedInvestmentElectionValidator
 
 case class NonConsolidatedInvestmentElectionModel(
@@ -24,9 +24,10 @@ case class NonConsolidatedInvestmentElectionModel(
   nonConsolidatedInvestments: Option[Seq[NonConsolidatedInvestmentModel]]
 ) extends NonConsolidatedInvestmentElectionValidator {
 
-  override val nonConsolidatedInvestmentElectionModel = this
+  override val nonConsolidatedInvestmentElectionModel: NonConsolidatedInvestmentElectionModel = this
 }
 
 object NonConsolidatedInvestmentElectionModel {
-  implicit val format = Json.format[NonConsolidatedInvestmentElectionModel]
+  implicit val format: OFormat[NonConsolidatedInvestmentElectionModel] =
+    Json.format[NonConsolidatedInvestmentElectionModel]
 }

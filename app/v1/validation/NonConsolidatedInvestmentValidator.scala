@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import play.api.libs.json.{JsPath, Json}
+import play.api.libs.json.{JsPath, JsValue, Json}
 import v1.models.Validation.ValidationResult
 import v1.models.{NonConsolidatedInvestmentModel, Validation}
 
@@ -49,16 +49,16 @@ trait NonConsolidatedInvestmentValidator extends BaseValidation {
 
 case class NonConsolidatedInvestmentNameLengthError(investmentName: String)(implicit topPath: JsPath)
     extends Validation {
-  val code                 = "INVESTMENT_LENGTH"
-  val errorMessage: String = s"Investment name must be between 1 and 5000 characters"
-  val path                 = topPath \ "investmentName"
-  val value                = Some(Json.toJson(investmentName))
+  val code: String           = "INVESTMENT_LENGTH"
+  val errorMessage: String   = "Investment name must be between 1 and 5000 characters"
+  val path: JsPath           = topPath \ "investmentName"
+  val value: Option[JsValue] = Some(Json.toJson(investmentName))
 }
 
 case class NonConsolidatedInvestmentNameCharacterError(investmentName: String)(implicit topPath: JsPath)
     extends Validation {
-  val code                 = "INVESTMENT_CHARACTERS"
-  val errorMessage: String = "Investment name contains invalid characters"
-  val path                 = topPath \ "investmentName"
-  val value                = Some(Json.toJson(investmentName))
+  val code: String           = "INVESTMENT_CHARACTERS"
+  val errorMessage: String   = "Investment name contains invalid characters"
+  val path: JsPath           = topPath \ "investmentName"
+  val value: Option[JsValue] = Some(Json.toJson(investmentName))
 }

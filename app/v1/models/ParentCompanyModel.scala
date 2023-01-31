@@ -16,7 +16,7 @@
 
 package v1.models
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 import v1.validation.ParentCompanyValidator
 
 case class ParentCompanyModel(ultimateParent: Option[UltimateParentModel], deemedParent: Option[Seq[DeemedParentModel]])
@@ -27,5 +27,5 @@ case class ParentCompanyModel(ultimateParent: Option[UltimateParentModel], deeme
 
 object ParentCompanyModel {
 
-  implicit val format = Json.format[ParentCompanyModel]
+  implicit val format: OFormat[ParentCompanyModel] = Json.format[ParentCompanyModel]
 }

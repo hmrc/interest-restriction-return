@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import play.api.libs.json.{JsPath, Json}
+import play.api.libs.json.{JsPath, JsValue, Json}
 import v1.models.Validation.ValidationResult
 import v1.models.{NonConsolidatedInvestmentElectionModel, NonConsolidatedInvestmentModel, Validation}
 
@@ -63,27 +63,27 @@ case class NonConsolidatedInvestmentSupplied(
   nonConsolidatedInvestmentElectionModel: NonConsolidatedInvestmentElectionModel
 )(implicit val topPath: JsPath)
     extends Validation {
-  val code                 = "INVESTMENT_SUPPLIED"
-  val errorMessage: String =
+  val code: String           = "INVESTMENT_SUPPLIED"
+  val errorMessage: String   =
     "Interest allowance (non-consolidated investments) election not made, so no details of non-consolidated investments needed"
-  val path: JsPath         = topPath \ "nonConsolidatedInvestments"
-  val value                = Some(Json.toJson(nonConsolidatedInvestmentElectionModel))
+  val path: JsPath           = topPath \ "nonConsolidatedInvestments"
+  val value: Option[JsValue] = Some(Json.toJson(nonConsolidatedInvestmentElectionModel))
 }
 
 case class NonConsolidatedInvestmentNotSupplied(
   nonConsolidatedInvestmentElectionModel: NonConsolidatedInvestmentElectionModel
 )(implicit val topPath: JsPath)
     extends Validation {
-  val code                 = "INVESTMENT_NOT_SUPPLIED"
-  val errorMessage: String =
+  val code: String           = "INVESTMENT_NOT_SUPPLIED"
+  val errorMessage: String   =
     "Interest allowance (non-consolidated investments) election made, add at least 1 non-consolidated investment"
-  val path: JsPath         = topPath \ "nonConsolidatedInvestments"
-  val value                = Some(Json.toJson(nonConsolidatedInvestmentElectionModel))
+  val path: JsPath           = topPath \ "nonConsolidatedInvestments"
+  val value: Option[JsValue] = Some(Json.toJson(nonConsolidatedInvestmentElectionModel))
 }
 
 case class NonConsolidatedInvestmentEmpty()(implicit val topPath: JsPath) extends Validation {
-  val code                 = "INVESTMENT_EMPTY"
-  val errorMessage: String = "Non consolidated investments elected so add at least 1 investment"
-  val path: JsPath         = topPath \ "nonConsolidatedInvestments"
-  val value                = None
+  val code: String           = "INVESTMENT_EMPTY"
+  val errorMessage: String   = "Non consolidated investments elected so add at least 1 investment"
+  val path: JsPath           = topPath \ "nonConsolidatedInvestments"
+  val value: Option[JsValue] = None
 }

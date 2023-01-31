@@ -62,7 +62,7 @@ trait DesBaseConnector extends Logging {
     response.status match {
       case CREATED =>
         logger.info(s"Successfully created with response $response")
-        logger.debug(s"Status CREATED")
+        logger.debug("Status CREATED")
         logger.debug(s"Json Response: ${response.json}")
         response.json
           .validate[DesSuccessResponse](DesSuccessResponse.fmt)

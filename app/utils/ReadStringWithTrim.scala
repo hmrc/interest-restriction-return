@@ -22,7 +22,5 @@ object ReadStringWithTrim {
 
   object Reads extends DefaultReads
 
-  implicit val stringReads: Reads[String] = new Reads[String] {
-    def reads(js: JsValue): JsResult[String] = Reads.StringReads.reads(js).map(_.trim)
-  }
+  implicit val stringReads: Reads[String] = (js: JsValue) => Reads.StringReads.reads(js).map(_.trim)
 }

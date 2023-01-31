@@ -16,14 +16,14 @@
 
 package v1.models
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 import v1.validation.NonConsolidatedInvestmentValidator
 import utils.ReadStringWithTrim.stringReads
 
 case class NonConsolidatedInvestmentModel(investmentName: String) extends NonConsolidatedInvestmentValidator {
-  override val nonConsolidatedInvestmentModel = this
+  override val nonConsolidatedInvestmentModel: NonConsolidatedInvestmentModel = this
 }
 
 object NonConsolidatedInvestmentModel {
-  implicit val format = Json.format[NonConsolidatedInvestmentModel]
+  implicit val format: OFormat[NonConsolidatedInvestmentModel] = Json.format[NonConsolidatedInvestmentModel]
 }

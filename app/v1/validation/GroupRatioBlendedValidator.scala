@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import play.api.libs.json.{JsPath, Json}
+import play.api.libs.json.{JsPath, JsValue, Json}
 import v1.models.Validation.ValidationResult
 import v1.models.{GroupRatioBlendedModel, InvestorGroupModel, Validation}
 
@@ -53,15 +53,15 @@ trait GroupRatioBlendedValidator extends BaseValidation {
 
 case class GroupRatioBlendedNotElectedError(groupRatioBlended: GroupRatioBlendedModel)(implicit val topPath: JsPath)
     extends Validation {
-  val code                 = "INVESTOR_GROUPS_SUPPLIED"
-  val errorMessage: String = "Group ratio blended not elected so supply investor group not required"
-  val path: JsPath         = topPath \ "groupRatioBlended"
-  val value                = Some(Json.toJson(groupRatioBlended))
+  val code: String           = "INVESTOR_GROUPS_SUPPLIED"
+  val errorMessage: String   = "Group ratio blended not elected so supply investor group not required"
+  val path: JsPath           = topPath \ "groupRatioBlended"
+  val value: Option[JsValue] = Some(Json.toJson(groupRatioBlended))
 }
 
 case class InvestorGroupsEmpty()(implicit val topPath: JsPath) extends Validation {
-  val code                 = "INVESTOR_GROUPS_EMPTY"
-  val errorMessage: String = "Investor groups must have at least 1 investor"
-  val path: JsPath         = topPath \ "investorGroups"
-  val value                = None
+  val code: String           = "INVESTOR_GROUPS_EMPTY"
+  val errorMessage: String   = "Investor groups must have at least 1 investor"
+  val path: JsPath           = topPath \ "investorGroups"
+  val value: Option[JsValue] = None
 }

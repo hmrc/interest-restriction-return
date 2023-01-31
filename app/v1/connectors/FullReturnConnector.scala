@@ -17,7 +17,6 @@
 package v1.connectors
 
 import config.AppConfig
-import play.api.Logging
 import play.api.http.HeaderNames
 import play.api.libs.json.Json
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
@@ -31,7 +30,6 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class FullReturnConnector @Inject() (httpClient: HttpClient, implicit val appConfig: AppConfig)
     extends DesBaseConnector
-    with Logging
     with JsonFormatters {
 
   private[connectors] lazy val fullReturnUrl = s"${appConfig.desUrl}/organisations/interest-restrictions-return/full"

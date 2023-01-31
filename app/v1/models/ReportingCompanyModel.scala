@@ -16,7 +16,7 @@
 
 package v1.models
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 import v1.validation.ReportingCompanyValidator
 
 case class ReportingCompanyModel(companyName: CompanyNameModel, ctutr: UTRModel, sameAsUltimateParent: Boolean)
@@ -25,5 +25,5 @@ case class ReportingCompanyModel(companyName: CompanyNameModel, ctutr: UTRModel,
 }
 
 object ReportingCompanyModel {
-  implicit val format = Json.format[ReportingCompanyModel]
+  implicit val format: OFormat[ReportingCompanyModel] = Json.format[ReportingCompanyModel]
 }

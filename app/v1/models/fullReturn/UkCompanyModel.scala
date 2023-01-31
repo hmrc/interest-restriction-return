@@ -16,7 +16,7 @@
 
 package v1.models.fullReturn
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 import v1.models.{CompanyNameModel, UTRModel}
 import v1.validation.fullReturn.UkCompanyValidator
 
@@ -36,5 +36,5 @@ case class UkCompanyModel(
 }
 
 object UkCompanyModel {
-  implicit val format = Json.format[UkCompanyModel]
+  implicit val format: OFormat[UkCompanyModel] = Json.format[UkCompanyModel]
 }
