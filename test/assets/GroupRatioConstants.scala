@@ -17,32 +17,32 @@
 package assets
 
 import assets.GroupRatioBlendedConstants._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import v1.models.GroupRatioModel
 
 object GroupRatioConstants {
 
-  val groupRatioJsonMax = Json.obj(
+  val groupRatioJsonMax: JsObject = Json.obj(
     "isElected"                        -> true,
     "groupEBITDAChargeableGains"       -> Some(true),
     "groupRatioBlended"                -> groupRatioBlendedJsonMax,
     "activeGroupEBITDAChargeableGains" -> true
   )
 
-  val groupRatioModelMax = GroupRatioModel(
+  val groupRatioModelMax: GroupRatioModel = GroupRatioModel(
     isElected = true,
     groupEBITDAChargeableGains = true,
     groupRatioBlended = Some(groupRatioBlendedModelMax),
     activeGroupEBITDAChargeableGains = true
   )
 
-  val groupRatioJsonMin = Json.obj(
+  val groupRatioJsonMin: JsObject = Json.obj(
     "isElected"                        -> false,
     "groupEBITDAChargeableGains"       -> false,
     "activeGroupEBITDAChargeableGains" -> false
   )
 
-  val groupRatioModelMin = GroupRatioModel(
+  val groupRatioModelMin: GroupRatioModel = GroupRatioModel(
     isElected = false,
     groupEBITDAChargeableGains = false,
     groupRatioBlended = None,

@@ -16,19 +16,18 @@
 
 package assets.fullReturn
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import v1.models.fullReturn.AllocatedReactivationsModel
 
 object AllocatedReactivationsConstants {
 
-  val currentPeriodReactivation  = 2.00
-  val incorrectTotalReactivation = 10
+  val currentPeriodReactivation: BigDecimal = 2.00
 
-  val allocatedReactivationsModel = AllocatedReactivationsModel(
+  val allocatedReactivationsModel: AllocatedReactivationsModel = AllocatedReactivationsModel(
     currentPeriodReactivation = currentPeriodReactivation
   )
 
-  val allocatedReactivationsJson = Json.obj(
+  val allocatedReactivationsJson: JsObject = Json.obj(
     "currentPeriodReactivation" -> currentPeriodReactivation
   )
 }

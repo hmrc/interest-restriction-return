@@ -25,41 +25,43 @@ class FeatureSwitchSpec extends BaseSpec {
   private def createFeatureSwitch(config: String) =
     FeatureSwitch(Some(Configuration(ConfigFactory.parseString(config))))
 
-  "version enabled" when {
-    "no config" must {
-      val featureSwitch = FeatureSwitch(None)
+  "FeatureSwitch" when {
+    ".isVersionEnabled" when {
+      "no config" must {
+        val featureSwitch = FeatureSwitch(None)
 
-      "return false" in {
-        featureSwitch.isVersionEnabled("1.0") shouldBe false
+        "return false" in {
+          featureSwitch.isVersionEnabled("1.0") shouldBe false
+        }
       }
-    }
 
-    "no config value" must {
-      val featureSwitch = createFeatureSwitch("")
+      "no config value" must {
+        val featureSwitch = createFeatureSwitch("")
 
-      "return false" in {
-        featureSwitch.isVersionEnabled("1.0") shouldBe false
+        "return false" in {
+          featureSwitch.isVersionEnabled("1.0") shouldBe false
+        }
       }
-    }
 
-    "config set" must {
-      val featureSwitch = createFeatureSwitch("""
-          |version-1.enabled = false
-          |version-2.enabled = true
+      "config set" must {
+        val featureSwitch = createFeatureSwitch("""
+                                                  |version-1.enabled = false
+                                                  |version-2.enabled = true
         """.stripMargin)
 
-      "return false for disabled versions" in {
-        featureSwitch.isVersionEnabled("1.0") shouldBe false
-      }
+        "return false for disabled versions" in {
+          featureSwitch.isVersionEnabled("1.0") shouldBe false
+        }
 
-      "return true for enabled versions" in {
-        featureSwitch.isVersionEnabled("2.0") shouldBe true
-      }
+        "return true for enabled versions" in {
+          featureSwitch.isVersionEnabled("2.0") shouldBe true
+        }
 
-      "return false for non-version strings" in {
-        featureSwitch.isVersionEnabled("x.x") shouldBe false
-        featureSwitch.isVersionEnabled("2x")  shouldBe false
-        featureSwitch.isVersionEnabled("2.x") shouldBe false
+        "return false for non-version strings" in {
+          featureSwitch.isVersionEnabled("x.x") shouldBe false
+          featureSwitch.isVersionEnabled("2x")  shouldBe false
+          featureSwitch.isVersionEnabled("2.x") shouldBe false
+        }
       }
     }
   }

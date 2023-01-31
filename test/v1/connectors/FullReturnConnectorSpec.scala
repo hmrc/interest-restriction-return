@@ -17,66 +17,68 @@
 package v1.connectors
 
 import assets.fullReturn.FullReturnConstants._
-import v1.connectors.HttpHelper.SubmissionResponse
-import v1.connectors.mocks.MockHttpClient
 import play.api.http.Status._
 import utils.BaseSpec
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.mocks.MockHttpClient
 import v1.models.fullReturn.FullReturnModel
 
+import scala.concurrent.Future
+
 class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
-  "FullReturnConnector.submit using fullReturnModelMax" when {
-    def setup(response: SubmissionResponse): FullReturnConnector = {
-      val desUrl = "http://localhost:9262/organisations/interest-restrictions-return/full"
-      mockHttpPost[FullReturnModel, Either[ErrorResponse, DesSuccessResponse]](desUrl, fullReturnUltimateParentModel)(
-        response
-      )
-      new FullReturnConnector(mockHttpClient, appConfig)
-    }
 
-    "submission is successful" should {
-      "return a Right(SuccessResponse)" in {
-        val connector = setup(Right(DesSuccessResponse("ackRef")))
-        val result    = connector.submit(fullReturnUltimateParentModel)
+  "FullReturnConnector.submit" which {
+    "uses fullReturnModelMax" when {
+      def setup(response: SubmissionResponse): FullReturnConnector = {
+        val desUrl: String = "http://localhost:9262/organisations/interest-restrictions-return/full"
+        mockHttpPost[FullReturnModel, Either[ErrorResponse, DesSuccessResponse]](desUrl, fullReturnUltimateParentModel)(
+          response
+        )
+        new FullReturnConnector(mockHttpClient, appConfig)
+      }
 
-        await(result) shouldBe Right(DesSuccessResponse("ackRef"))
+      "submission is successful" should {
+        "return a Right(SuccessResponse)" in {
+          val connector: FullReturnConnector     = setup(Right(DesSuccessResponse("ackRef")))
+          val result: Future[SubmissionResponse] = connector.submit(fullReturnUltimateParentModel)
+
+          await(result) shouldBe Right(DesSuccessResponse("ackRef"))
+        }
+      }
+
+      "submission is unsuccessful" should {
+        "return a Left(UnexpectedFailure)" in {
+          val connector: FullReturnConnector     = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
+          val result: Future[SubmissionResponse] = connector.submit(fullReturnUltimateParentModel)
+
+          await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
+        }
       }
     }
 
-    "update is unsuccessful" should {
-      "return a Left(UnexpectedFailure)" in {
-        val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-        val result    = connector.submit(fullReturnUltimateParentModel)
-
-        await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
+    "uses fullReturnModelMin" when {
+      def setup(response: SubmissionResponse): FullReturnConnector = {
+        val desUrl: String = "http://localhost:9262/organisations/interest-restrictions-return/full"
+        mockHttpPost[FullReturnModel, Either[ErrorResponse, DesSuccessResponse]](desUrl, fullReturnModelMin)(response)
+        new FullReturnConnector(mockHttpClient, appConfig)
       }
-    }
-  }
 
-  "FullReturnConnector.submit using fullReturnModelMin" when {
+      "submission is successful" should {
+        "return a Right(SuccessResponse)" in {
+          val connector: FullReturnConnector     = setup(Right(DesSuccessResponse(ackRef)))
+          val result: Future[SubmissionResponse] = connector.submit(fullReturnModelMin)
 
-    def setup(response: SubmissionResponse): FullReturnConnector = {
-      val desUrl = "http://localhost:9262/organisations/interest-restrictions-return/full"
-      mockHttpPost[FullReturnModel, Either[ErrorResponse, DesSuccessResponse]](desUrl, fullReturnModelMin)(response)
-      new FullReturnConnector(mockHttpClient, appConfig)
-    }
-
-    "submission is successful" should {
-      "return a Right(SuccessResponse)" in {
-        val connector = setup(Right(DesSuccessResponse(ackRef)))
-        val result    = connector.submit(fullReturnModelMin)
-
-        await(result) shouldBe Right(DesSuccessResponse(ackRef))
+          await(result) shouldBe Right(DesSuccessResponse(ackRef))
+        }
       }
-    }
 
-    "update is unsuccessful" should {
-      "return a Left(UnexpectedFailure)" in {
-        val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-        val result    = connector.submit(fullReturnModelMin)
+      "submission is unsuccessful" should {
+        "return a Left(UnexpectedFailure)" in {
+          val connector: FullReturnConnector     = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
+          val result: Future[SubmissionResponse] = connector.submit(fullReturnModelMin)
 
-        await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
+          await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
+        }
       }
     }
   }

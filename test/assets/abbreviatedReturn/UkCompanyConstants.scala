@@ -17,19 +17,19 @@
 package assets.abbreviatedReturn
 
 import assets.BaseConstants
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import v1.models.abbreviatedReturn.UkCompanyModel
 
 object UkCompanyConstants extends BaseConstants {
 
-  val ukCompanyModel = UkCompanyModel(
+  val ukCompanyModel: UkCompanyModel = UkCompanyModel(
     companyName = companyName,
     utr = ctutr,
     consenting = true,
     qicElection = true
   )
 
-  val ukCompanyJson = Json.obj(
+  val ukCompanyJson: JsObject = Json.obj(
     "companyName" -> companyName,
     "utr"         -> ctutr,
     "consenting"  -> true,

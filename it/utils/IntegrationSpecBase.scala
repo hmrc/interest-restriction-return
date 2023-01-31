@@ -46,7 +46,7 @@ trait IntegrationSpecBase
   private val mockPort: String = WiremockHelper.wiremockPort.toString
 
   private def config: Map[String, Any] = Map(
-    "application.router"                -> "testOnlyDoNotUseInAppConf.Routes",
+    "play.http.router"                  -> "testOnlyDoNotUseInAppConf.Routes",
     "microservice.services.auth.host"   -> mockHost,
     "microservice.services.auth.port"   -> mockPort,
     "microservice.services.des.host"    -> mockHost,

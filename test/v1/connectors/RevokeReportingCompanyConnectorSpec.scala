@@ -24,11 +24,13 @@ import play.api.http.Status._
 import utils.BaseSpec
 import v1.models.revokeReportingCompany.RevokeReportingCompanyModel
 
-class RevokeReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec {
-  "RevokeReportingCompanyConnector.revoke" when {
+import scala.concurrent.Future
 
+class RevokeReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec {
+
+  "RevokeReportingCompanyConnector.revoke" when {
     def setup(response: SubmissionResponse): RevokeReportingCompanyConnector = {
-      val desUrl = "http://localhost:9262/organisations/interest-restrictions-return/revoke"
+      val desUrl: String = "http://localhost:9262/organisations/interest-restrictions-return/revoke"
       mockHttpPost[RevokeReportingCompanyModel, Either[ErrorResponse, DesSuccessResponse]](
         desUrl,
         revokeReportingCompanyModelMax
@@ -38,17 +40,17 @@ class RevokeReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec {
 
     "revokement is successful" should {
       "return a Right(SuccessResponse)" in {
-        val connector = setup(Right(DesSuccessResponse(ackRef)))
-        val result    = connector.revoke(revokeReportingCompanyModelMax)
+        val connector: RevokeReportingCompanyConnector = setup(Right(DesSuccessResponse(ackRef)))
+        val result: Future[SubmissionResponse]         = connector.revoke(revokeReportingCompanyModelMax)
 
         await(result) shouldBe Right(DesSuccessResponse(ackRef))
       }
     }
 
-    "update is unsuccessful" should {
+    "revokement is unsuccessful" should {
       "return a Left(UnexpectedFailure)" in {
-        val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-        val result    = connector.revoke(revokeReportingCompanyModelMax)
+        val connector: RevokeReportingCompanyConnector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
+        val result: Future[SubmissionResponse]         = connector.revoke(revokeReportingCompanyModelMax)
 
         await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
       }

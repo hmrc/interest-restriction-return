@@ -28,7 +28,7 @@ object AppConfigConstants {
     new AppConfigImpl(servicesConfig, config)
   }
 
-  val servicesMap = Map(
+  val servicesMap: Map[String, Map[String, String]] = Map(
     "auth" -> Map(
       "host" -> "localhost",
       "port" -> "8500"
@@ -41,19 +41,14 @@ object AppConfigConstants {
     )
   )
 
-  val nrsMap = Map(
+  val nrsMap: Map[String, String] = Map(
     "host"    -> "localhost",
     "port"    -> "1111",
     "apikey"  -> "some.token",
     "enabled" -> "true"
   )
 
-  val nrsDisabledMap = Map(
-    "enabled" -> "false"
-  )
-
-  val servicesMapWithNrs: Map[String, Map[String, String]]         = servicesMap + ("nrs" -> nrsMap)
-  val servicesMapWithNrsDisabled: Map[String, Map[String, String]] = servicesMap + ("nrs" -> nrsDisabledMap)
+  val servicesMapWithNrs: Map[String, Map[String, String]] = servicesMap + ("nrs" -> nrsMap)
 
   def config(serviceMap: Map[String, Map[String, String]]) = Map(
     "api"                               -> Map(
@@ -64,8 +59,6 @@ object AppConfigConstants {
     "microservice.services"             -> serviceMap
   )
 
-  val appConfigWithNrs         = createAppConfig(config(servicesMapWithNrs))
-  val appConfigWithNrsDisabled = createAppConfig(config(servicesMap))
-  val appConfigWithoutNrs      = createAppConfig(config(servicesMap))
-
+  val appConfigWithNrs: AppConfig    = createAppConfig(config(servicesMapWithNrs))
+  val appConfigWithoutNrs: AppConfig = createAppConfig(config(servicesMap))
 }

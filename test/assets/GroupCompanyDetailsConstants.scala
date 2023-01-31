@@ -17,18 +17,17 @@
 package assets
 
 import assets.AccountingPeriodConstants.{accountingPeriodJson, accountingPeriodModel}
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import v1.models.GroupCompanyDetailsModel
 
 object GroupCompanyDetailsConstants {
 
-  val groupCompanyDetailsJson = Json.obj(
+  val groupCompanyDetailsJson: JsObject = Json.obj(
     "totalCompanies"   -> 1,
     "accountingPeriod" -> accountingPeriodJson
   )
 
-  val groupCompanyDetailsModel = GroupCompanyDetailsModel(
+  val groupCompanyDetailsModel: GroupCompanyDetailsModel = GroupCompanyDetailsModel(
     accountingPeriod = accountingPeriodModel
   )
-
 }

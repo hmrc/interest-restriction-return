@@ -22,45 +22,47 @@ import play.api.http.Status._
 import play.api.libs.json.{JsObject, Json}
 import uk.gov.hmrc.http.HttpResponse
 import utils.BaseSpec
+import v1.connectors.HttpHelper.NrsResponse
 import v1.connectors.httpParsers.NrsResponseHttpParser.RevokeReportingCompanyReads
 import v1.connectors.{InvalidSuccessResponse, UnexpectedFailure}
 import v1.models.nrs.NrSubmissionId
 
 class NrsResponseHttpParserSpec extends BaseSpec {
 
-  val nrSubmissionId: JsObject = Json.obj("nrSubmissionId" -> "5f4bdbef-0417-47a6-ac9e-ffc5a4905f7f")
+  private val nrSubmissionId: JsObject = Json.obj("nrSubmissionId" -> "5f4bdbef-0417-47a6-ac9e-ffc5a4905f7f")
 
   "NrsResponseHttpParser" when {
-    ".RevokeReportingCompanyReads" should {
+    "RevokeReportingCompanyReads.read" should {
       "return a Right NrsResponse containing a nrSubmissionId" when {
         "receiving a 202 ACCEPTED with a valid nrSubmissionId response" in {
-          val expectedResult = Right(NrSubmissionId(UUID.fromString("5f4bdbef-0417-47a6-ac9e-ffc5a4905f7f")))
-          val actualResult   =
+          val expectedResult: NrsResponse =
+            Right(NrSubmissionId(UUID.fromString("5f4bdbef-0417-47a6-ac9e-ffc5a4905f7f")))
+          val actualResult: NrsResponse   =
             RevokeReportingCompanyReads.read("", "", HttpResponse(ACCEPTED, nrSubmissionId, Map("" -> Seq(""))))
 
           actualResult shouldBe expectedResult
         }
       }
 
-      "return Left InvalidSuccessResponse" when {
+      "return a Left InvalidSuccessResponse" when {
         "receiving a 202 ACCEPTED with an invalid nrSubmissionId response" in {
-          val expectedResult = Left(InvalidSuccessResponse)
-          val actualResult   =
+          val expectedResult: NrsResponse = Left(InvalidSuccessResponse)
+          val actualResult: NrsResponse   =
             RevokeReportingCompanyReads.read("", "", HttpResponse(ACCEPTED, JsObject.empty, Map("" -> Seq(""))))
 
           actualResult shouldBe expectedResult
         }
       }
 
-      "return Left UnexpectedFailure" when {
+      "return a Left UnexpectedFailure" when {
         "receiving a 500 INTERNAL_SERVER_ERROR with an invalid nrSubmissionId response" in {
-          val expectedResult = Left(
+          val expectedResult: NrsResponse = Left(
             UnexpectedFailure(
               status = INTERNAL_SERVER_ERROR,
               body = s"Status $INTERNAL_SERVER_ERROR Error returned when trying to submit Non Repudiation Submission"
             )
           )
-          val actualResult   = RevokeReportingCompanyReads.read(
+          val actualResult                = RevokeReportingCompanyReads.read(
             "",
             "",
             HttpResponse(INTERNAL_SERVER_ERROR, JsObject.empty, Map("" -> Seq("")))

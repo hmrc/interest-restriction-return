@@ -22,16 +22,16 @@ import assets.GroupLevelElectionsConstants._
 import assets.ParentCompanyConstants._
 import assets.ReportingCompanyConstants._
 import assets.abbreviatedReturn.UkCompanyConstants._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
 import v1.models.{Original, Revised, RevisedReturnDetailsModel, SubmissionType}
 import v1.models.SubmissionType._
 
 object AbbreviatedReturnConstants {
 
-  val ackRef = "ackRef"
+  val ackRef: String = "ackRef"
 
-  val abbreviatedReturnUltimateParentJson = Json.obj(
+  val abbreviatedReturnUltimateParentJson: JsObject = Json.obj(
     "declaration"               -> true,
     "appointedReportingCompany" -> true,
     "agentDetails"              -> agentDetailsJsonMax,
@@ -46,7 +46,7 @@ object AbbreviatedReturnConstants {
     "numberOfUkCompanies"       -> 1
   )
 
-  val abbreviatedReturnUltimateParentModel = AbbreviatedReturnModel(
+  val abbreviatedReturnUltimateParentModel: AbbreviatedReturnModel = AbbreviatedReturnModel(
     declaration = true,
     appointedReportingCompany = true,
     agentDetails = agentDetailsModelMax,
@@ -59,7 +59,7 @@ object AbbreviatedReturnConstants {
     ukCompanies = Seq(ukCompanyModel)
   )
 
-  val abbreviatedReturnDeemedParentJson = Json.obj(
+  val abbreviatedReturnDeemedParentJson: JsObject = Json.obj(
     "declaration"               -> true,
     "appointedReportingCompany" -> true,
     "agentDetails"              -> agentDetailsJsonMax,
@@ -74,7 +74,7 @@ object AbbreviatedReturnConstants {
     "numberOfUkCompanies"       -> 1
   )
 
-  val abbreviatedReturnDeemedParentModel = AbbreviatedReturnModel(
+  val abbreviatedReturnDeemedParentModel: AbbreviatedReturnModel = AbbreviatedReturnModel(
     declaration = true,
     appointedReportingCompany = true,
     agentDetails = agentDetailsModelMax,
@@ -87,7 +87,7 @@ object AbbreviatedReturnConstants {
     ukCompanies = Seq(ukCompanyModel)
   )
 
-  val abbreviatedReturnJsonMin = Json.obj(
+  val abbreviatedReturnJsonMin: JsObject = Json.obj(
     "declaration"               -> true,
     "appointedReportingCompany" -> true,
     "agentDetails"              -> agentDetailsJsonMin,
@@ -99,7 +99,7 @@ object AbbreviatedReturnConstants {
     "numberOfUkCompanies"       -> 1
   )
 
-  val abbreviatedReturnModelMin = AbbreviatedReturnModel(
+  val abbreviatedReturnModelMin: AbbreviatedReturnModel = AbbreviatedReturnModel(
     declaration = true,
     appointedReportingCompany = true,
     agentDetails = agentDetailsModelMin,

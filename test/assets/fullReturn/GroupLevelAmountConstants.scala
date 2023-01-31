@@ -16,7 +16,7 @@
 
 package assets.fullReturn
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import v1.models.fullReturn.GroupLevelAmountModel
 
 object GroupLevelAmountConstants {
@@ -26,25 +26,24 @@ object GroupLevelAmountConstants {
   val interestAllowanceForPeriod: BigDecimal      = 4.00
   val interestCapacityForPeriod: BigDecimal       = 5.00
 
-  val groupLevelAmountModel = GroupLevelAmountModel(
+  val groupLevelAmountModel: GroupLevelAmountModel = GroupLevelAmountModel(
     interestReactivationCap = interestReactivationCap,
     interestAllowanceBroughtForward = interestAllowanceBroughtForward,
     interestAllowanceForPeriod = interestAllowanceForPeriod,
     interestCapacityForPeriod = interestCapacityForPeriod
   )
 
-  val groupLevelAmountJson = Json.obj(
+  val groupLevelAmountJson: JsObject = Json.obj(
     "interestReactivationCap"         -> interestReactivationCap,
     "interestAllowanceBroughtForward" -> interestAllowanceBroughtForward,
     "interestAllowanceForPeriod"      -> interestAllowanceForPeriod,
     "interestCapacityForPeriod"       -> interestCapacityForPeriod
   )
 
-  val groupLevelAmountNoCapModel = GroupLevelAmountModel(
+  val groupLevelAmountNoCapModel: GroupLevelAmountModel = GroupLevelAmountModel(
     interestReactivationCap = 0,
     interestAllowanceBroughtForward = interestAllowanceBroughtForward,
     interestAllowanceForPeriod = interestAllowanceForPeriod,
     interestCapacityForPeriod = interestCapacityForPeriod
   )
-
 }

@@ -20,19 +20,18 @@ import v1.models.{CompanyNameModel, CountryCodeModel, LegalEntityIdentifierModel
 
 trait BaseConstants {
 
-  val ctutr                   = UTRModel("1123456789")
-  val sautr                   = UTRModel("1123456789")
-  val lei                     = LegalEntityIdentifierModel("ABCDEFGHIJKLMNOPQR12")
-  val invalidUtr              = UTRModel("1999999999")
-  val invalidShortUtr         = UTRModel("1")
-  val invalidLongUtr          = UTRModel("11234567890")
-  val companyName             = CompanyNameModel("Company Name ltd")
-  val companyNameMaxLength    = 160
-  val companyNameTooLong      = CompanyNameModel("a" * (companyNameMaxLength + 1))
-  val companyNameIsZero       = CompanyNameModel("")
-  val nonUkCountryCode        = CountryCodeModel("US")
-  val invalidCountryCode      = CountryCodeModel("AA")
-  val invalidEmptyCountryCode = CountryCodeModel("")
-  val invalidLei              = LegalEntityIdentifierModel("ABCDEFGHIJKLMNOPQRAA")
-
+  val ctutr: UTRModel                           = UTRModel("1123456789")
+  val sautr: UTRModel                           = UTRModel("1123456789")
+  val lei: LegalEntityIdentifierModel           = LegalEntityIdentifierModel("ABCDEFGHIJKLMNOPQR12")
+  val invalidUtr: UTRModel                      = UTRModel("1999999999")
+  val invalidShortUtr: UTRModel                 = UTRModel("1")
+  val invalidLongUtr: UTRModel                  = UTRModel("11234567890")
+  val companyName: CompanyNameModel             = CompanyNameModel("Company Name ltd")
+  val companyNameMaxLength: Int                 = 160
+  val companyNameTooLong: CompanyNameModel      = CompanyNameModel("a" * (companyNameMaxLength + 1))
+  val companyNameIsZero: CompanyNameModel       = CompanyNameModel("")
+  val nonUkCountryCode: CountryCodeModel        = CountryCodeModel("US")
+  val invalidCountryCode: CountryCodeModel      = CountryCodeModel("AA")
+  val invalidEmptyCountryCode: CountryCodeModel = CountryCodeModel("")
+  val invalidLei: LegalEntityIdentifierModel    = LegalEntityIdentifierModel("ABCDEFGHIJKLMNOPQRAA")
 }

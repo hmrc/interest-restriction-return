@@ -18,7 +18,6 @@ package utils
 
 import java.time.Instant
 
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Configuration
 import play.api.libs.json.Json
 import play.api.mvc.{AnyContentAsEmpty, RequestHeader}
@@ -37,7 +36,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.control.NoStackTrace
 
-class ErrorHandlerSpec extends UnitSpec with GuiceOneAppPerSuite {
+class ErrorHandlerSpec extends UnitSpec {
 
   private def versionHeader: (String, String) = ACCEPT -> "application/vnd.hmrc.1.0+json"
 

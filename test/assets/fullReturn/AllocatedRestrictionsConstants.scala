@@ -19,12 +19,12 @@ package assets.fullReturn
 import java.time.LocalDate
 
 import assets.AccountingPeriodConstants._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import v1.models.fullReturn.AllocatedRestrictionsModel
 
 object AllocatedRestrictionsConstants {
 
-  val aYearInMonths = 12
+  val aYearInMonths: Long = 12
 
   val ap1EndDate: LocalDate = startDate.plusDays(1)
   val ap2EndDate: LocalDate = startDate.plusMonths(aYearInMonths)
@@ -36,7 +36,7 @@ object AllocatedRestrictionsConstants {
 
   val incorrectDisallowances: BigDecimal = 10.00
 
-  val allocatedRestrictionsModel = AllocatedRestrictionsModel(
+  val allocatedRestrictionsModel: AllocatedRestrictionsModel = AllocatedRestrictionsModel(
     ap1EndDate = ap1EndDate,
     ap2EndDate = Some(ap2EndDate),
     ap3EndDate = Some(ap3EndDate),
@@ -45,7 +45,7 @@ object AllocatedRestrictionsConstants {
     disallowanceAp3 = Some(disallowanceAp3)
   )
 
-  val zeroAllocatedRestrictionsModel = AllocatedRestrictionsModel(
+  val zeroAllocatedRestrictionsModel: AllocatedRestrictionsModel = AllocatedRestrictionsModel(
     ap1EndDate = ap1EndDate,
     ap2EndDate = None,
     ap3EndDate = None,
@@ -54,7 +54,7 @@ object AllocatedRestrictionsConstants {
     disallowanceAp3 = None
   )
 
-  val allocatedRestrictionsJson = Json.obj(
+  val allocatedRestrictionsJson: JsObject = Json.obj(
     "ap1EndDate"         -> ap1EndDate,
     "ap2EndDate"         -> ap2EndDate,
     "ap3EndDate"         -> ap3EndDate,

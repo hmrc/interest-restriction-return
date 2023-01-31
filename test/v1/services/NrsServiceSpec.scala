@@ -56,7 +56,7 @@ class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
     identifier = "123",
     nrsRetrievalData = UnitNrsConstants.nrsRetrievalData(Some(AffinityGroup.Organisation))
   )
-  private val expectedNrsMetadata                = new NrsMetadata(
+  private val expectedNrsMetadata: NrsMetadata   = new NrsMetadata(
     businessId = "irr",
     notableEvent = "interest-restriction-return",
     payloadContentType = "application/json",

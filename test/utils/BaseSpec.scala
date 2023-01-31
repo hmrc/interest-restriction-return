@@ -16,14 +16,17 @@
 
 package utils
 
+import akka.actor.ActorSystem
 import akka.japi.Option.Some
+import assets.UnitNrsConstants.NrsRetrievalDataType
 import assets.{BaseConstants, UnitNrsConstants}
 import config.AppConfig
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Application
+import play.api.inject.Injector
 import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.mvc.BodyParsers
+import play.api.mvc.{AnyContentAsEmpty, BodyParsers}
 import play.api.test.FakeRequest
 import uk.gov.hmrc.auth.core.{AffinityGroup, MissingBearerToken}
 import uk.gov.hmrc.http.HeaderCarrier
@@ -36,7 +39,7 @@ import v1.services.{DateTimeService, NrsService}
 
 import scala.concurrent.ExecutionContext
 
-trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with MaterializerSupport with BaseConstants {
+trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with BaseConstants {
 
   implicit override lazy val app: Application =
     new GuiceApplicationBuilder()
@@ -44,19 +47,23 @@ trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with Mate
       .configure("metrics.jvm" -> false)
       .build()
 
-  lazy val fakeRequest                           = FakeRequest("GET", "/")
-  lazy implicit val identifierRequest            =
-    IdentifierRequest(fakeRequest, "id", UnitNrsConstants.nrsRetrievalData(Some(AffinityGroup.Organisation)))
-  lazy val injector                              = app.injector
-  lazy val bodyParsers                           = injector.instanceOf[BodyParsers.Default]
-  lazy val appConfig                             = injector.instanceOf[AppConfig]
-  lazy val dateTimeService                       = injector.instanceOf[DateTimeService]
-  lazy val nrsConnector                          = injector.instanceOf[NrsConnector]
-  lazy implicit val ec                           = injector.instanceOf[ExecutionContext]
-  lazy val nrsService                            = new NrsService(nrsConnector = nrsConnector, dateTimeService = dateTimeService)
-  lazy implicit val headerCarrier: HeaderCarrier = HeaderCarrier()
+  lazy val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/")
 
-  def fakeAuthResponse(nrsAffinityGroup: Option[AffinityGroup]) = UnitNrsConstants.fakeResponse(nrsAffinityGroup)
+  lazy implicit val identifierRequest: IdentifierRequest[AnyContentAsEmpty.type] =
+    IdentifierRequest(fakeRequest, "id", UnitNrsConstants.nrsRetrievalData(Some(AffinityGroup.Organisation)))
+  lazy val injector: Injector                                                    = app.injector
+  lazy val bodyParsers: BodyParsers.Default                                      = injector.instanceOf[BodyParsers.Default]
+  lazy val appConfig: AppConfig                                                  = injector.instanceOf[AppConfig]
+  lazy val dateTimeService: DateTimeService                                      = injector.instanceOf[DateTimeService]
+  lazy val nrsConnector: NrsConnector                                            = injector.instanceOf[NrsConnector]
+  lazy implicit val ec: ExecutionContext                                         = injector.instanceOf[ExecutionContext]
+  lazy val nrsService: NrsService                                                =
+    new NrsService(nrsConnector = nrsConnector, dateTimeService = dateTimeService)
+  lazy implicit val headerCarrier: HeaderCarrier                                 = HeaderCarrier()
+  lazy implicit val system: ActorSystem                                          = ActorSystem("Sys")
+
+  def fakeAuthResponse(nrsAffinityGroup: Option[AffinityGroup]): NrsRetrievalDataType =
+    UnitNrsConstants.fakeResponse(nrsAffinityGroup)
   object AuthorisedAction
       extends Authorised[UnitNrsConstants.NrsRetrievalDataType](
         fakeAuthResponse(Some(AffinityGroup.Organisation)),
@@ -73,5 +80,5 @@ trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with Mate
   def leftSideErrorLength[A](validationResult: ValidationResult[A]): Int =
     validationResult.toEither.left.get.toChain.length.toInt
 
-  def errorMessages(messages: String*) = messages.mkString("|")
+  def errorMessages(messages: String*): String = messages.mkString("|")
 }

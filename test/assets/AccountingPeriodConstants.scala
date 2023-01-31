@@ -18,22 +18,22 @@ package assets
 
 import java.time.LocalDate
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import v1.models.AccountingPeriodModel
 
 object AccountingPeriodConstants {
 
-  private val maxAccountingPeriodInMonths = 18
+  private val maxAccountingPeriodInMonths: Long = 18
 
   val startDate: LocalDate = LocalDate.now().minusMonths(maxAccountingPeriodInMonths)
   val endDate: LocalDate   = startDate.plusMonths(maxAccountingPeriodInMonths).minusDays(1)
 
-  val accountingPeriodModel = AccountingPeriodModel(
+  val accountingPeriodModel: AccountingPeriodModel = AccountingPeriodModel(
     startDate = startDate,
     endDate = endDate
   )
 
-  val accountingPeriodJson = Json.obj(
+  val accountingPeriodJson: JsObject = Json.obj(
     "startDate" -> startDate,
     "endDate"   -> endDate
   )

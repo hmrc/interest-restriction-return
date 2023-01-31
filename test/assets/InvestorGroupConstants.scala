@@ -16,57 +16,56 @@
 
 package assets
 
-import play.api.libs.json.{JsString, Json}
+import play.api.libs.json.{JsArray, JsObject, JsString, Json}
 import v1.models.Elections._
-import v1.models.{CompanyNameModel, InvestorGroupModel}
+import v1.models.{CompanyNameModel, Elections, InvestorGroupModel}
 
 object InvestorGroupConstants {
 
-  val groupName = "some investor group"
+  val groupName: String = "some investor group"
 
-  val groupRatioElectionList = allValues.toList
-  val fixedRatioElectionList = fixedRatioValues.toList
+  val groupRatioElectionList: List[Elections] = allValues.toList
+  val fixedRatioElectionList: List[Elections] = fixedRatioValues.toList
 
-  val allValuesJson        = Json.arr(
+  val allValuesJson: JsArray        = Json.arr(
     JsString(GroupRatioBlended.toString),
     JsString(GroupEBITDA.toString),
     JsString(InterestAllowanceAlternativeCalculation.toString),
     JsString(InterestAllowanceNonConsolidatedInvestment.toString),
     JsString(InterestAllowanceConsolidatedPartnership.toString)
   )
-  val fixedRatioValuesJson = Json.arr(
+  val fixedRatioValuesJson: JsArray = Json.arr(
     JsString(InterestAllowanceAlternativeCalculation.toString),
     JsString(InterestAllowanceNonConsolidatedInvestment.toString),
     JsString(InterestAllowanceConsolidatedPartnership.toString)
   )
 
-  val investorGroupsGroupRatioModel = InvestorGroupModel(
+  val investorGroupsGroupRatioModel: InvestorGroupModel = InvestorGroupModel(
     groupName = CompanyNameModel(groupName),
     elections = Some(groupRatioElectionList)
   )
 
-  val investorGroupsFixedRatioModel = InvestorGroupModel(
+  val investorGroupsFixedRatioModel: InvestorGroupModel = InvestorGroupModel(
     groupName = CompanyNameModel(groupName),
     elections = Some(fixedRatioElectionList)
   )
 
-  val investorGroupsModelMin = InvestorGroupModel(
+  val investorGroupsModelMin: InvestorGroupModel = InvestorGroupModel(
     groupName = CompanyNameModel(groupName),
     elections = None
   )
 
-  val investorGroupsJsonMin = Json.obj(
+  val investorGroupsJsonMin: JsObject = Json.obj(
     "groupName" -> groupName
   )
 
-  val investorGroupsGroupRatioJson = Json.obj(
+  val investorGroupsGroupRatioJson: JsObject = Json.obj(
     "groupName" -> groupName,
     "elections" -> allValuesJson
   )
 
-  val investorGroupsFixedRatioJson = Json.obj(
+  val investorGroupsFixedRatioJson: JsObject = Json.obj(
     "groupName" -> groupName,
     "elections" -> fixedRatioValuesJson
   )
-
 }
