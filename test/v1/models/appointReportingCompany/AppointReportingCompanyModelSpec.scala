@@ -16,14 +16,12 @@
 
 package models.appointReportingCompany
 
-import assets.BaseConstants
 import assets.appointReportingCompany.AppointReportingCompanyConstants._
-import org.scalatest.wordspec.AnyWordSpec
 import play.api.libs.json.Json
 import v1.models.appointReportingCompany.AppointReportingCompanyModel
-import org.scalatest.matchers.should.Matchers
+import utils.BaseSpec
 
-class AppointReportingCompanyModelSpec extends AnyWordSpec with Matchers with BaseConstants {
+class AppointReportingCompanyModelSpec extends BaseSpec {
 
   "AppointReportingCompanyModel" must {
 

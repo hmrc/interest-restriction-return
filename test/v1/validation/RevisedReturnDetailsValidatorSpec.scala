@@ -22,9 +22,9 @@ import v1.models.RevisedReturnDetailsModel
 
 class RevisedReturnDetailsValidatorSpec extends BaseSpec {
 
-  implicit val path = JsPath \ "some" \ "path"
+  implicit val path: JsPath = JsPath \ "some" \ "path"
 
-  "RevisedReturnDetails Validation" should {
+  "RevisedReturnDetailsValidator" should {
 
     "return invalid" when {
 

@@ -19,12 +19,11 @@ package models
 import assets.ReportingCompanyConstants._
 import play.api.libs.json.Json
 import v1.models.ReportingCompanyModel
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
+import utils.BaseSpec
 
-class ReportingCompanyModelSpec extends AnyWordSpec with Matchers {
+class ReportingCompanyModelSpec extends BaseSpec {
 
-  "AgentDetailsModel" must {
+  "ReportingCompanyModel" must {
 
     "correctly write to json" in {
 

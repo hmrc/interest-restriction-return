@@ -22,7 +22,7 @@ import utils.BaseSpec
 
 class AllocatedReactivationsValidatorSpec extends BaseSpec {
 
-  implicit val path = JsPath \ "some" \ "path"
+  implicit val path: JsPath = JsPath \ "some" \ "path"
 
   "AllocatedReactivationsValidator" should {
 

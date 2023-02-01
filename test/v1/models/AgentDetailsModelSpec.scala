@@ -19,10 +19,9 @@ package models
 import assets.AgentDetailsConstants._
 import play.api.libs.json.Json
 import v1.models.AgentDetailsModel
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
+import utils.BaseSpec
 
-class AgentDetailsModelSpec extends AnyWordSpec with Matchers {
+class AgentDetailsModelSpec extends BaseSpec {
 
   "AgentDetailsModel" must {
 

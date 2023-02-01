@@ -36,7 +36,7 @@ import v1.validation.errors._
 
 class FullReturnValidatorSpec extends BaseSpec {
 
-  implicit val path = JsPath \ "some" \ "path"
+  implicit val path: JsPath = JsPath \ "some" \ "path"
 
   "FullReturnValidator" should {
 

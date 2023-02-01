@@ -18,142 +18,118 @@ package v1.controllers
 
 import assets.appointReportingCompany.AppointReportingCompanyConstants._
 import v1.connectors.{DesSuccessResponse, UnexpectedFailure}
-import play.api.http.Status
-import play.api.libs.json.Json
+import play.api.http.Status._
+import play.api.libs.json.{JsObject, Json}
+import play.api.mvc.{AnyContentAsEmpty, Result}
 import play.api.test.{FakeRequest, Helpers}
 import v1.services.mocks.MockAppointReportingCompanyService
 import utils.BaseSpec
+import v1.controllers.actions.AuthAction
+
+import scala.concurrent.Future
 
 class AppointReportingCompanyControllerSpec extends MockAppointReportingCompanyService with BaseSpec {
 
-  override lazy val fakeRequest = FakeRequest("POST", "/interest-restriction-return/reporting-company/appoint")
+  override lazy val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(
+    method = "POST",
+    path = "/interest-restriction-return/reporting-company/appoint"
+  )
 
-  "AppointReportingCompanyController.appoint()" when {
+  private val fakeRequestForValidate: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(
+    method = "POST",
+    path = "/interest-restriction-return/reporting-company/appoint/validate"
+  )
 
-    "the user is authenticated" when {
+  private lazy val validJsonFakeRequest: FakeRequest[JsObject]              = fakeRequest
+    .withBody(appointReportingCompanyJsonMax)
+    .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
 
-      object AuthorisedController
-          extends AppointReportingCompanyController(
-            authAction = AuthorisedAction,
-            appointReportingCompanyService = mockAppointReportingCompanyService,
-            controllerComponents = Helpers.stubControllerComponents(),
-            appConfig = appConfig
-          )
+  private lazy val validJsonFakeRequestForValidate: FakeRequest[JsObject]   = fakeRequestForValidate
+    .withBody(appointReportingCompanyJsonMax)
+    .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
 
-      "a valid payload is submitted" when {
+  private lazy val invalidJsonFakeRequest: FakeRequest[JsObject]            = fakeRequest
+    .withBody(Json.obj())
+    .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
 
-        lazy val validJsonFakeRequest = fakeRequest
-          .withBody(appointReportingCompanyJsonMax)
-          .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
+  private lazy val invalidJsonFakeRequestForValidate: FakeRequest[JsObject] = fakeRequestForValidate
+    .withBody(Json.obj())
+    .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
 
-        "a success response is returned from the companies house service with no v1.validation errors" when {
-
-          "a success response is returned from the appoint reporting company service" should {
-
-            "return 200 (OK)" in {
-              mockAppointReportingCompany(appointReportingCompanyModelMax)(Right(DesSuccessResponse(ackRef)))
-
-              val result = AuthorisedController.appoint()(validJsonFakeRequest)
-              status(result) shouldBe Status.OK
-            }
-          }
-
-          "an error response is returned from the appoint reporting company service" should {
-
-            "return the Error" in {
-              mockAppointReportingCompany(appointReportingCompanyModelMax)(
-                Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err"))
-              )
-
-              val result = AuthorisedController.appoint()(validJsonFakeRequest)
-              status(result) shouldBe Status.INTERNAL_SERVER_ERROR
-            }
-          }
-        }
-      }
-
-      "an invalid payload is submitted" when {
-
-        lazy val invalidJsonFakeRequest = fakeRequest
-          .withBody(Json.obj())
-          .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
-
-        "return a BAD_REQUEST JSON v1.validation error" in {
-          val result = AuthorisedController.appoint()(invalidJsonFakeRequest)
-          status(result) shouldBe Status.BAD_REQUEST
-        }
-      }
-    }
-
-    "the user is unauthenticated" should {
-
-      "return 401 (Unauthorised)" in {
-
-        object UnauthorisedController
-            extends AppointReportingCompanyController(
-              authAction = UnauthorisedAction,
-              appointReportingCompanyService = mockAppointReportingCompanyService,
-              controllerComponents = Helpers.stubControllerComponents(),
-              appConfig = appConfig
-            )
-
-        val result = UnauthorisedController.appoint()(fakeRequest.withBody(Json.obj()))
-        status(result) shouldBe Status.UNAUTHORIZED
-      }
-    }
+  private class Test(authAction: AuthAction) {
+    val appointReportingCompanyController: AppointReportingCompanyController = new AppointReportingCompanyController(
+      authAction = authAction,
+      appointReportingCompanyService = mockAppointReportingCompanyService,
+      controllerComponents = Helpers.stubControllerComponents(),
+      appConfig = appConfig
+    )
   }
 
-  "AppointReportingCompanyController.validate()" when {
-    val validateFakeRequest = FakeRequest("POST", "/interest-restriction-return/reporting-company/appoint/validate")
-    "the user is authenticated" when {
+  "AppointReportingCompanyController" when {
+    ".appoint" when {
+      "the user is authenticated" when {
+        "a valid payload is submitted" when {
+          "a success response is returned from the companies house service with no validation errors" when {
+            "a success response is returned from the appoint reporting company service" should {
+              "return 200 (OK)" in new Test(AuthorisedAction) {
+                mockAppointReportingCompany(appointReportingCompanyModelMax)(Right(DesSuccessResponse(ackRef)))
 
-      object AuthorisedController
-          extends AppointReportingCompanyController(
-            authAction = AuthorisedAction,
-            appointReportingCompanyService = mockAppointReportingCompanyService,
-            controllerComponents = Helpers.stubControllerComponents(),
-            appConfig = appConfig
-          )
+                val result: Future[Result] = appointReportingCompanyController.appoint()(validJsonFakeRequest)
+                status(result) shouldBe OK
+              }
+            }
 
-      "a valid payload is submitted" when {
+            "an error response is returned from the appoint reporting company service" should {
+              "return the Error" in new Test(AuthorisedAction) {
+                mockAppointReportingCompany(appointReportingCompanyModelMax)(
+                  Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "err"))
+                )
 
-        lazy val validJsonFakeRequest = validateFakeRequest
-          .withBody(appointReportingCompanyJsonMax)
-          .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
+                val result: Future[Result] = appointReportingCompanyController.appoint()(validJsonFakeRequest)
+                status(result) shouldBe INTERNAL_SERVER_ERROR
+              }
+            }
+          }
+        }
 
-        "return 204 (NO CONTENT)" in {
-          val result = AuthorisedController.validate()(validJsonFakeRequest)
-          status(result) shouldBe Status.NO_CONTENT
+        "an invalid payload is submitted" should {
+          "return a BAD_REQUEST JSON validation error" in new Test(AuthorisedAction) {
+            val result: Future[Result] = appointReportingCompanyController.appoint()(invalidJsonFakeRequest)
+            status(result) shouldBe BAD_REQUEST
+          }
         }
       }
 
-      "an invalid payload is submitted" when {
-
-        lazy val invalidJsonFakeRequest = validateFakeRequest
-          .withBody(Json.obj())
-          .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
-
-        "return a BAD_REQUEST JSON v1.validation error" in {
-          val result = AuthorisedController.validate()(invalidJsonFakeRequest)
-          status(result) shouldBe Status.BAD_REQUEST
+      "the user is unauthenticated" should {
+        "return 401 (Unauthorised)" in new Test(UnauthorisedAction) {
+          val result: Future[Result] = appointReportingCompanyController.appoint()(fakeRequest.withBody(Json.obj()))
+          status(result) shouldBe UNAUTHORIZED
         }
       }
     }
 
-    "the user is unauthenticated" should {
+    ".validate" when {
+      "the user is authenticated" when {
+        "a valid payload is submitted" should {
+          "return 204 (NO CONTENT)" in new Test(AuthorisedAction) {
+            val result: Future[Result] = appointReportingCompanyController.validate()(validJsonFakeRequestForValidate)
+            status(result) shouldBe NO_CONTENT
+          }
+        }
 
-      "return 401 (Unauthorised)" in {
+        "an invalid payload is submitted" should {
+          "return a BAD_REQUEST JSON validation error" in new Test(AuthorisedAction) {
+            val result: Future[Result] = appointReportingCompanyController.validate()(invalidJsonFakeRequestForValidate)
+            status(result) shouldBe BAD_REQUEST
+          }
+        }
+      }
 
-        object UnauthorisedController
-            extends AppointReportingCompanyController(
-              authAction = UnauthorisedAction,
-              appointReportingCompanyService = mockAppointReportingCompanyService,
-              controllerComponents = Helpers.stubControllerComponents(),
-              appConfig = appConfig
-            )
-
-        val result = UnauthorisedController.validate()(fakeRequest.withBody(Json.obj()))
-        status(result) shouldBe Status.UNAUTHORIZED
+      "the user is unauthenticated" should {
+        "return 401 (Unauthorised)" in new Test(UnauthorisedAction) {
+          val result: Future[Result] = appointReportingCompanyController.validate()(fakeRequest.withBody(Json.obj()))
+          status(result) shouldBe UNAUTHORIZED
+        }
       }
     }
   }

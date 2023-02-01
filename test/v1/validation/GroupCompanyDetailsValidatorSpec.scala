@@ -25,7 +25,7 @@ import v1.models.AccountingPeriodModel
 
 class GroupCompanyDetailsValidatorSpec extends BaseSpec {
 
-  implicit val path = JsPath \ "some" \ "path"
+  implicit val path: JsPath = JsPath \ "some" \ "path"
 
   "GroupCompanyDetailsValidator" should {
 

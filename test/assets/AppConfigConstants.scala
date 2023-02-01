@@ -50,7 +50,7 @@ object AppConfigConstants {
 
   val servicesMapWithNrs: Map[String, Map[String, String]] = servicesMap + ("nrs" -> nrsMap)
 
-  def config(serviceMap: Map[String, Map[String, String]]) = Map(
+  def config(serviceMap: Map[String, Map[String, String]]): Map[String, Any] = Map(
     "api"                               -> Map(
       "1.0"             -> Map("status" -> "BETA"),
       "gateway.context" -> "organisations/interest-restriction"

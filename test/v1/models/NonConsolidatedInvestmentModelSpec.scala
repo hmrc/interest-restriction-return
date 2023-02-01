@@ -17,10 +17,10 @@
 package v1.models
 
 import assets.NonConsolidatedInvestmentConstants._
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
+import utils.BaseSpec
 
-class NonConsolidatedInvestmentModelSpec extends AnyWordSpec with Matchers {
+class NonConsolidatedInvestmentModelSpec extends BaseSpec {
+
   "NonConsolidatedInvestmentModel" should {
     "trim the whitespace in the name" in {
 

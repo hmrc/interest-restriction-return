@@ -22,9 +22,9 @@ import v1.models.{CompanyNameModel, UTRModel}
 
 class AuthorisingCompanyValidatorSpec extends BaseValidationSpec {
 
-  implicit val path = JsPath \ "some" \ "path"
+  implicit val path: JsPath = JsPath \ "some" \ "path"
 
-  "Authorising Company Validation" should {
+  "AuthorisingCompanyValidator" should {
 
     "Return valid" when {
 

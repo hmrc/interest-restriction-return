@@ -22,9 +22,9 @@ import utils.BaseSpec
 
 class GroupLevelAmountValidatorSpec extends BaseSpec {
 
-  implicit val path = JsPath \ "some" \ "path"
+  implicit val path: JsPath = JsPath \ "some" \ "path"
 
-  "GroupLevelAmount" should {
+  "GroupLevelAmountValidator" should {
 
     "Return valid" when {
 

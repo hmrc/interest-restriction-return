@@ -22,9 +22,9 @@ import play.api.libs.json.JsPath
 
 class ParentCompanyValidatorSpec extends BaseValidationSpec {
 
-  implicit val path = JsPath \ "some" \ "path"
+  implicit val path: JsPath = JsPath \ "some" \ "path"
 
-  "Parent Company Validation" when {
+  "ParentCompanyValidator" when {
 
     "Ultimate and Deemed fields are populated" should {
 

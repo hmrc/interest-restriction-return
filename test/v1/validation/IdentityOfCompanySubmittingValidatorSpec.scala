@@ -23,9 +23,9 @@ import v1.models.{CompanyNameModel, LegalEntityIdentifierModel, UTRModel}
 
 class IdentityOfCompanySubmittingValidatorSpec extends BaseSpec {
 
-  implicit val path = JsPath \ "some" \ "path"
+  implicit val path: JsPath = JsPath \ "some" \ "path"
 
-  "Identity of Company Submitting Validation" should {
+  "IdentityOfCompanySubmittingValidator" should {
 
     "Return valid" when {
 

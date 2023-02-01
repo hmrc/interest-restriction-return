@@ -17,10 +17,10 @@
 package v1.models
 
 import play.api.libs.json.JsString
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
+import utils.BaseSpec
 
-class RevisedReturnDetailsModelSpec extends AnyWordSpec with Matchers {
+class RevisedReturnDetailsModelSpec extends BaseSpec {
+
   "RevisedReturnDetailsModel" should {
     "trim the whitespace in the name" in {
 

@@ -26,9 +26,9 @@ import v1.validation.errors._
 
 class RevokeReportingCompanyValidatorSpec extends BaseSpec {
 
-  implicit val path = JsPath \ "some" \ "path"
+  implicit val path: JsPath = JsPath \ "some" \ "path"
 
-  "Revoke Reporting Company Validation" should {
+  "RevokeReportingCompanyValidator" should {
 
     "Return valid" when {
 

@@ -22,9 +22,9 @@ import v1.models.UTRModel
 
 class UTRValidatorSpec extends BaseSpec {
 
-  implicit val path = JsPath \ "some" \ "path"
+  implicit val path: JsPath = JsPath \ "some" \ "path"
 
-  "UTR Validation" when {
+  "UTRValidator" when {
 
     "UTR is supplied and fails Check Sum" in {
       val model = UTRModel("1234567890")

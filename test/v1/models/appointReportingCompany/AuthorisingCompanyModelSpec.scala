@@ -19,10 +19,9 @@ package models.appointReportingCompany
 import play.api.libs.json.Json
 import assets.AuthorisingCompanyConstants._
 import v1.models.AuthorisingCompanyModel
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
+import utils.BaseSpec
 
-class AuthorisingCompanyModelSpec extends AnyWordSpec with Matchers {
+class AuthorisingCompanyModelSpec extends BaseSpec {
 
   "AuthorisingCompanyModel" must {
 

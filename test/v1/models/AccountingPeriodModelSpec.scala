@@ -19,10 +19,9 @@ package models
 import assets.AccountingPeriodConstants._
 import play.api.libs.json.{JsError, JsPath, Json}
 import v1.models.AccountingPeriodModel
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
+import utils.BaseSpec
 
-class AccountingPeriodModelSpec extends AnyWordSpec with Matchers {
+class AccountingPeriodModelSpec extends BaseSpec {
 
   "AccountingPeriodModel" must {
 

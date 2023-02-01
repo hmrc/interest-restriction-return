@@ -22,9 +22,9 @@ import assets.InvestorGroupConstants._
 
 class GroupRatioBlendedValidatorSpec extends BaseValidationSpec {
 
-  implicit val path = JsPath \ "some" \ "path"
+  implicit val path: JsPath = JsPath \ "some" \ "path"
 
-  "Group Ratio Blended" when {
+  "GroupRatioBlendedValidator" should {
 
     "Return valid" when {
 

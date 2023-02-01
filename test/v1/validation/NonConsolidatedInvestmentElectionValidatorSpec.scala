@@ -21,9 +21,9 @@ import v1.models.{NonConsolidatedInvestmentElectionModel, NonConsolidatedInvestm
 
 class NonConsolidatedInvestmentElectionValidatorSpec extends BaseValidationSpec {
 
-  implicit val path = JsPath \ "some" \ "path"
+  implicit val path: JsPath = JsPath \ "some" \ "path"
 
-  "Non-Consolidated Investment" when {
+  "NonConsolidatedInvestmentElectionValidator" should {
 
     "Return valid" when {
 

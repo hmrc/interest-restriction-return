@@ -19,10 +19,9 @@ package models.fullReturn
 import assets.fullReturn.UkCompanyConstants._
 import play.api.libs.json.Json
 import v1.models.fullReturn.UkCompanyModel
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
+import utils.BaseSpec
 
-class UkCompanyModelSpec extends AnyWordSpec with Matchers {
+class UkCompanyModelSpec extends BaseSpec {
 
   "UkCompanyModel" must {
 

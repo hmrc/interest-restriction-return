@@ -23,69 +23,59 @@ import v1.connectors.mocks.MockFullReturnConnector
 import play.api.http.Status._
 import utils.BaseSpec
 
+import scala.concurrent.Future
+
 class FullReturnServiceSpec extends MockFullReturnConnector with BaseSpec {
 
-  "FullReturnService.submit using fullReturnModelMax" when {
-
-    "fullReturnModelMax is used" when {
-
+  "FullReturnService.submit" which {
+    "uses fullReturnModelMax" when {
       def setup(response: SubmissionResponse): FullReturnService = {
         mockFullReturn(fullReturnUltimateParentModel)(response)
         new FullReturnService(mockFullReturnConnector)
       }
 
-      "appointment is successful" should {
-
+      "submission is successful" should {
         "return a Right(SuccessResponse)" in {
-
-          val service = setup(Right(DesSuccessResponse("ackRef")))
-          val result  = service.submit(fullReturnUltimateParentModel)
+          val service: FullReturnService         = setup(Right(DesSuccessResponse("ackRef")))
+          val result: Future[SubmissionResponse] = service.submit(fullReturnUltimateParentModel)
 
           await(result) shouldBe Right(DesSuccessResponse("ackRef"))
         }
       }
 
-      "update is unsuccessful" should {
-
+      "submission is unsuccessful" should {
         "return a Left(UnexpectedFailure)" in {
-
-          val service = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-          val result  = service.submit(fullReturnUltimateParentModel)
+          val service: FullReturnService         = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
+          val result: Future[SubmissionResponse] = service.submit(fullReturnUltimateParentModel)
 
           await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
         }
       }
     }
 
-    "fullReturnModelMin is used" when {
-
+    "uses fullReturnModelMin" when {
       def setup(response: SubmissionResponse): FullReturnService = {
         mockFullReturn(fullReturnModelMin)(response)
         new FullReturnService(mockFullReturnConnector)
       }
 
-      "appointment is successful" should {
-
+      "submission is successful" should {
         "return a Right(SuccessResponse)" in {
-
-          val service = setup(Right(DesSuccessResponse("ackRef")))
-          val result  = service.submit(fullReturnModelMin)
+          val service: FullReturnService         = setup(Right(DesSuccessResponse("ackRef")))
+          val result: Future[SubmissionResponse] = service.submit(fullReturnModelMin)
 
           await(result) shouldBe Right(DesSuccessResponse("ackRef"))
         }
       }
 
-      "update is unsuccessful" should {
-
+      "submission is unsuccessful" should {
         "return a Left(UnexpectedFailure)" in {
-
-          val service = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-          val result  = service.submit(fullReturnModelMin)
+          val service: FullReturnService         = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
+          val result: Future[SubmissionResponse] = service.submit(fullReturnModelMin)
 
           await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
         }
       }
     }
-
   }
 }

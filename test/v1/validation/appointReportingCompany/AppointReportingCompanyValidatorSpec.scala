@@ -27,7 +27,7 @@ import v1.validation.errors._
 
 class AppointReportingCompanyValidatorSpec extends BaseSpec {
 
-  "Appoint Reporting Company Validation" when {
+  "AppointReportingCompanyValidator" when {
 
     "Reporting Company is appointing itself" when {
 

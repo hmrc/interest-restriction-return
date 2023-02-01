@@ -19,10 +19,9 @@ package models
 import play.api.libs.json.Json
 import assets.IdentityOfCompanySubmittingConstants._
 import v1.models.IdentityOfCompanySubmittingModel
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
+import utils.BaseSpec
 
-class IdentityOfCompanySubmittingModelSpec extends AnyWordSpec with Matchers {
+class IdentityOfCompanySubmittingModelSpec extends BaseSpec {
 
   "IdentityOfCompanySubmittingModel" must {
 

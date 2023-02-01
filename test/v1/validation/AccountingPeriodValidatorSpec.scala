@@ -24,13 +24,13 @@ import utils.BaseSpec
 
 class AccountingPeriodValidatorSpec extends BaseSpec {
 
-  implicit val path = JsPath \ "some" \ "path"
+  implicit val path: JsPath = JsPath \ "some" \ "path"
 
-  val minimumStartDate = LocalDate.parse("2016-10-01")
-  val minimumEndDate   = LocalDate.parse("2017-04-01")
-  val aYearInMonths    = 12
+  private val minimumStartDate: LocalDate = LocalDate.parse("2016-10-01")
+  private val minimumEndDate: LocalDate   = LocalDate.parse("2017-04-01")
+  private val aYearInMonths: Long         = 12
 
-  "Accounting Period Validation" when {
+  "AccountingPeriodValidator" should {
 
     "Return Valid" when {
       "Start date is in the past" in {

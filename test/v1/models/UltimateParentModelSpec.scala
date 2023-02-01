@@ -19,10 +19,9 @@ package models
 import assets.UltimateParentConstants._
 import play.api.libs.json.Json
 import v1.models.UltimateParentModel
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
+import utils.BaseSpec
 
-class UltimateParentModelSpec extends AnyWordSpec with Matchers {
+class UltimateParentModelSpec extends BaseSpec {
 
   "UltimateParentModel" when {
 

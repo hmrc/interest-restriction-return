@@ -25,18 +25,18 @@ import java.time.LocalDate
 
 class AllocatedRestrictionsValidatorSpec extends BaseSpec {
 
-  implicit val path = JsPath \ "some" \ "path"
+  implicit val path: JsPath = JsPath \ "some" \ "path"
 
-  val MINIMUM_DATE  = LocalDate.parse("1900-01-01")
-  val MAXIMUM_DATE  = LocalDate.parse("2099-12-31")
-  val aYearInMonths = 12
+  private val MINIMUM_DATE: LocalDate = LocalDate.parse("1900-01-01")
+  private val MAXIMUM_DATE: LocalDate = LocalDate.parse("2099-12-31")
+  private val aYearInMonths: Long     = 12
 
-  val groupAccountingPeriod = AccountingPeriodModel(
+  private val groupAccountingPeriod: AccountingPeriodModel = AccountingPeriodModel(
     startDate = ap1EndDate.minusDays(1),
     endDate = ap3EndDate
   )
 
-  val restrictionModel = AllocatedRestrictionsModel(
+  private val restrictionModel: AllocatedRestrictionsModel = AllocatedRestrictionsModel(
     ap1EndDate = ap1EndDate,
     disallowanceAp1 = disallowanceAp1,
     ap2EndDate = None,

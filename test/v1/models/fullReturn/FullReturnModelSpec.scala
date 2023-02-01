@@ -16,7 +16,6 @@
 
 package models.fullReturn
 
-import assets.BaseConstants
 import play.api.libs.json.{JsObject, Json, Writes}
 import v1.models.fullReturn.FullReturnModel
 import assets.fullReturn.FullReturnConstants._
@@ -27,11 +26,9 @@ import assets.fullReturn.GroupLevelAmountConstants._
 import assets.fullReturn.UkCompanyConstants._
 import assets.NonConsolidatedInvestmentElectionConstants._
 import v1.models.{Original, SubmissionType}
-import utils.JsonFormatters
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
+import utils.{BaseSpec, JsonFormatters}
 
-class FullReturnModelSpec extends AnyWordSpec with Matchers with BaseConstants with JsonFormatters {
+class FullReturnModelSpec extends BaseSpec with JsonFormatters {
 
   implicit val fullReturnFormatter: Writes[FullReturnModel] = fullReturnWrites
 

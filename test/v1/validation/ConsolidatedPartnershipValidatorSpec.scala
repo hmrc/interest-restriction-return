@@ -21,11 +21,11 @@ import v1.models.{CompanyNameModel, ConsolidatedPartnershipModel, PartnershipMod
 
 class ConsolidatedPartnershipValidatorSpec extends BaseValidationSpec {
 
-  val sautrFake = UTRModel("1123456789")
+  private val sautrFake: UTRModel = UTRModel("1123456789")
 
-  implicit val path = JsPath \ "some" \ "path"
+  implicit val path: JsPath = JsPath \ "some" \ "path"
 
-  "Consolidated Partnership" when {
+  "ConsolidatedPartnershipValidator" should {
     "Return valid" when {
 
       "isElected is true and a Seq of partnerships are given" in {

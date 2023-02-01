@@ -21,9 +21,9 @@ import play.api.libs.json.JsPath
 
 class NonConsolidatedInvestmentValidatorSpec extends BaseValidationSpec {
 
-  implicit val path = JsPath \ "some" \ "path"
+  implicit val path: JsPath = JsPath \ "some" \ "path"
 
-  "Non Consolidated Investment" when {
+  "NonConsolidatedInvestmentValidator" should {
 
     "Return valid" when {
 

@@ -19,10 +19,9 @@ package models.fullReturn
 import play.api.libs.json.Json
 import assets.fullReturn.AdjustedGroupInterestConstants._
 import v1.models.fullReturn.AdjustedGroupInterestModel
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
+import utils.BaseSpec
 
-class AdjustedGroupInterestModelSpec extends AnyWordSpec with Matchers {
+class AdjustedGroupInterestModelSpec extends BaseSpec {
 
   "AdjustedGroupInterestModel" must {
 

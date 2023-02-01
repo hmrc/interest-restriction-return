@@ -19,10 +19,9 @@ package models
 import assets.ConsolidatedPartnershipConstants._
 import play.api.libs.json.Json
 import v1.models.ConsolidatedPartnershipModel
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
+import utils.BaseSpec
 
-class ConsolidatedPartnershipModelSpec extends AnyWordSpec with Matchers {
+class ConsolidatedPartnershipModelSpec extends BaseSpec {
 
   "ConsolidatedPartnershipModel" must {
 

@@ -33,7 +33,6 @@ paths:
         - user-restricted:
             - write:interest-restriction-return
       requestBody:
-        description: The payload required for the post to be successful
         content:
           application/json:
             schema:
@@ -101,7 +100,6 @@ paths:
         - user-restricted:
             - write:interest-restriction-return
       requestBody:
-        description: The payload required for the post to be successful
         content:
           application/json:
             schema:
@@ -161,7 +159,6 @@ paths:
         - user-restricted:
             - write:interest-restriction-return
       requestBody:
-        description: The payload required for the post to be successful
         content:
           application/json:
             schema:
@@ -234,7 +231,6 @@ paths:
         - user-restricted:
             - write:interest-restriction-return
       requestBody:
-        description: The payload required for the post to be successful
         content:
           application/json:
             schema:
@@ -297,7 +293,6 @@ paths:
         - user-restricted:
             - write:interest-restriction-return
       requestBody:
-        description: The payload required for the post to be successful
         content:
           application/json:
             schema:
@@ -433,7 +428,6 @@ paths:
         - user-restricted:
             - write:interest-restriction-return
       requestBody:
-        description: The payload required for the post to be successful
         content:
           application/json:
             schema:
@@ -559,7 +553,6 @@ paths:
         - user-restricted:
             - write:interest-restriction-return
       requestBody:
-        description: The payload required for the post to be successful
         content:
           application/json:
             schema:
@@ -668,7 +661,6 @@ paths:
         - user-restricted:
             - write:interest-restriction-return
       requestBody:
-        description: The payload required for the post to be successful
         content:
           application/json:
             schema:
@@ -796,6 +788,7 @@ components:
             write:interest-restriction-return: Allow write access to Interest Restriction Return data
   schemas:
     abbreviatedReturnSchema:
+      additionalProperties: false
       required:
         - appointedReportingCompany
         - agentDetails
@@ -844,6 +837,7 @@ components:
       description: Provides the ability to submit an abbreviated Interest Restriction Return (IRR) for the group
     accountingPeriod:
       title: accountingPeriod
+      additionalProperties: false
       required:
         - startDate
         - endDate
@@ -860,6 +854,7 @@ components:
       description: The worldwide group's period of account
     adjustedGroupInterest:
       title: adjustedGroupInterest
+      additionalProperties: false
       required:
         - qngie
         - groupEBITDA
@@ -883,6 +878,7 @@ components:
       description: Amount of adjusted group interest
     agentDetails:
       title: agentDetails
+      additionalProperties: false
       required:
         - agentActingOnBehalfOfCompany
       type: object
@@ -896,6 +892,7 @@ components:
           description: Name of the agent where an agent is acting on behalf of the reporting company
     allocatedReactivations:
       title: allocatedReactivations
+      additionalProperties: false
       required:
         - currentPeriodReactivation
       type: object
@@ -907,6 +904,7 @@ components:
       description: Details of reactivations for the group's period of account
     allocatedRestrictions:
       title: allocatedRestrictions
+      additionalProperties: false
       required:
         - ap1EndDate
         - disallowanceAp1
@@ -943,6 +941,7 @@ components:
           description: Total disallowances for all accounting periods
       description: Details of the disallowances for the company's accounting periods
     appointReportingCompanySchema:
+      additionalProperties: false
       required:
         - agentDetails
         - reportingCompany
@@ -973,8 +972,9 @@ components:
           allOf:
             - $ref: '#/components/schemas/identityOfAppointingCompany'
         ultimateParentCompany:
+          title: ultimateParentCompany
           allOf:
-            - $ref: '#/components/schemas/ultimateParentCompany'
+            - $ref: '#/components/schemas/ultimateParent'
         accountingPeriod:
           allOf:
             - $ref: '#/components/schemas/accountingPeriod'
@@ -984,6 +984,7 @@ components:
       description: Provides the ability to appoint a reporting company for the group
     authorisingCompany:
       title: authorisingCompany
+      additionalProperties: false
       required:
         - companyName
         - utr
@@ -1002,6 +1003,7 @@ components:
           description: Indicate whether the authorising company agrees to take on the group's restriction in its Corporation Tax return
     companyMakingRevocation:
       title: companyMakingRevocation
+      additionalProperties: false
       required:
         - companyName
       type: object
@@ -1025,6 +1027,7 @@ components:
       description: Details of the revoking company
     consolidatedPartnership:
       title: consolidatedPartnership
+      additionalProperties: false
       required:
         - partnershipName
       type: object
@@ -1039,6 +1042,7 @@ components:
           description: Partnership's Self Assessment Unique Taxpayer Reference.
     deemedParent:
       title: deemedParent
+      additionalProperties: false
       required:
         - isUk
         - companyName
@@ -1078,6 +1082,7 @@ components:
       type: string
     errorResponse:
       title: errorResponse
+      additionalProperties: false
       required:
         - code
         - message
@@ -1091,6 +1096,7 @@ components:
           description: The error message.
     errorResponse400:
       title: errorResponse
+      additionalProperties: false
       required:
         - code
         - message
@@ -1117,6 +1123,7 @@ components:
           uniqueItems: true
           type: array
           items:
+            additionalProperties: false
             required:
               - code
               - message
@@ -1139,7 +1146,22 @@ components:
                   - type: boolean
                   - type: object
           description: A list of multiple errors. This can be present only when multiple validation errors occur.
+    errorResponse403:
+      title: errorResponse
+      additionalProperties: false
+      required:
+        - code
+        - message
+      type: object
+      properties:
+        code:
+          type: integer
+          description: The error code.
+        message:
+          type: string
+          description: The error message.
     fullReturnSchema:
+      additionalProperties: false
       required:
         - appointedReportingCompany
         - agentDetails
@@ -1223,6 +1245,7 @@ components:
       description: Provides the ability to submit a full Interest Restriction Return (IRR) for the group
     groupCompanyDetails:
       title: groupCompanyDetails
+      additionalProperties: false
       required:
         - accountingPeriod
       type: object
@@ -1233,6 +1256,7 @@ components:
       description: Details of the worldwide group
     groupLevelAmount:
       title: groupLevelAmount
+      additionalProperties: false
       required:
         - interestReactivationCap
         - interestAllowanceBroughtForward
@@ -1263,6 +1287,7 @@ components:
       description: Group level amounts
     groupLevelElections:
       title: groupLevelElections
+      additionalProperties: false
       required:
         - groupRatio
         - interestAllowanceAlternativeCalculation
@@ -1289,6 +1314,7 @@ components:
       description: Details of the calculation methods elected by the group
     groupRatio:
       title: groupRatio
+      additionalProperties: false
       required:
         - isElected
         - groupEBITDAChargeableGains
@@ -1310,6 +1336,7 @@ components:
       description: Details of the group ratio method of calculation
     groupRatioBlended:
       title: groupRatioBlended
+      additionalProperties: false
       required:
         - isElected
       type: object
@@ -1326,6 +1353,7 @@ components:
       description: Details of the blended group ratio method of calculation
     identityOfAppointingCompany:
       title: identityOfAppointingCompany
+      additionalProperties: false
       required:
         - companyName
       type: object
@@ -1349,6 +1377,7 @@ components:
       description: Details of the company appointing the reporting company
     interestAllowanceConsolidatedPartnership:
       title: interestAllowanceConsolidatedPartnership
+      additionalProperties: false
       required:
         - isElected
         - isActive
@@ -1369,6 +1398,7 @@ components:
       description: Details of interest allowance consolidated partnership
     interestAllowanceNonConsolidatedInvestment:
       title: interestAllowanceNonConsolidatedInvestment
+      additionalProperties: false
       required:
         - isElected
       type: object
@@ -1385,6 +1415,7 @@ components:
       description: Details of interest allowance non-consolidated investment
     investorGroup:
       title: investorGroup
+      additionalProperties: false
       required:
         - groupName
       type: object
@@ -1401,6 +1432,7 @@ components:
           description: Elections made by the investor group.
     nonConsolidatedInvestment:
       title: nonConsolidatedInvestment
+      additionalProperties: false
       required:
         - investmentName
       type: object
@@ -1459,9 +1491,11 @@ components:
         - $ref: '#/components/schemas/fullReturnSchema'
     parentCompany:
       title: parentCompany
+      additionalProperties: false
       type: object
       properties:
         ultimateParent:
+          title: ultimateParent
           allOf:
             - $ref: '#/components/schemas/ultimateParent'
         deemedParent:
@@ -1474,6 +1508,7 @@ components:
       description: Details of the parent company, which can be ultimate parent or deemed parent
     reportingCompany:
       title: reportingCompany
+      additionalProperties: false
       required:
         - companyName
         - ctutr
@@ -1493,6 +1528,7 @@ components:
           description: Indicate whether the reporting company is also the ultimate parent company
       description: Details of the reporting company
     responseSchema:
+      additionalProperties: false
       required:
         - acknowledgementReference
       type: object
@@ -1501,6 +1537,7 @@ components:
           type: string
           description: Confirmation of submission with reference number
     revokeReportingCompanySchema:
+      additionalProperties: false
       required:
         - agentDetails
         - reportingCompany
@@ -1524,8 +1561,9 @@ components:
           allOf:
             - $ref: '#/components/schemas/companyMakingRevocation'
         ultimateParentCompany:
+          title: ultimateParentCompany
           allOf:
-            - $ref: '#/components/schemas/ultimateParentCompany'
+            - $ref: '#/components/schemas/ultimateParent'
         accountingPeriod:
           allOf:
             - $ref: '#/components/schemas/accountingPeriod'
@@ -1549,6 +1587,7 @@ components:
       description: Indicate whether this is the first (original) return or an amended (revised) return
     ukCompany:
       title: ukCompany
+      additionalProperties: false
       required:
         - companyName
         - utr
@@ -1595,6 +1634,7 @@ components:
           description: Reasons for company level figures being estimated
     ukCompanyForAbbreviatedRequest:
       title: ukCompanyForAbbreviatedRequest
+      additionalProperties: false
       required:
         - companyName
         - utr
@@ -1617,38 +1657,7 @@ components:
           type: boolean
           description: Indicate whether any of the UK companies in the group has made a qualifying infrastructure company (QIC) election
     ultimateParent:
-      title: ultimateParent
-      required:
-        - isUk
-        - companyName
-      type: object
-      properties:
-        isUk:
-          type: boolean
-          description: Indicate whether the ultimate parent company is a UK company
-        companyName:
-          pattern: ^[ -~¡-ÿĀ-ʯḀ-ỿ‐-―‘-‟₠-₿ÅK]{1,160}$
-          type: string
-          description: Name of the ultimate parent company
-        ctutr:
-          pattern: ^[0-9]{10}$
-          type: string
-          description: Ultimate parent's Corporation Tax Unique Taxpayer Reference.
-        sautr:
-          pattern: ^[0-9]{10}$
-          type: string
-          description: Ultimate parent company's self assessment Unique Taxpayer Reference
-        countryOfIncorporation:
-          type: string
-          description: Country of incorporation where the ultimate parent company is not a UK company. A valid ISO 3166-1 2 Alpha Country Code
-          example: US
-        legalEntityIdentifier:
-          pattern: ^[0-9A-Z]{18}[0-9]{2}$
-          type: string
-          description: A Legal Entity Identifier (LEI); format is as per the ISO 17442 standard - 18 uppercase alphabetic or numeric characters followed by 2 numeric characters
-      description: Details of the ultimate parent company
-    ultimateParentCompany:
-      title: ultimateParentCompany
+      additionalProperties: false
       required:
         - isUk
         - companyName
@@ -1701,7 +1710,7 @@ components:
     forbidden:
       description: You are unable to access this service as an individual. This service is only available to individual companies or groups of companies.
       value:
-        code: FORBIDDEN
+        code: 403
         message: You are unable to access this service as an individual. This service is only available to individual companies or groups of companies.
     matchingResourceNotFound:
       description: Matching resource not found.
@@ -1752,7 +1761,7 @@ components:
         application/json:
           schema:
             allOf:
-              - $ref: '#/components/schemas/errorResponse'
+              - $ref: '#/components/schemas/errorResponse403'
           examples:
             forbidden:
               $ref: '#/components/examples/forbidden'

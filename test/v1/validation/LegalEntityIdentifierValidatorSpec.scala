@@ -22,9 +22,9 @@ import v1.models.LegalEntityIdentifierModel
 
 class LegalEntityIdentifierValidatorSpec extends BaseSpec {
 
-  implicit val path = JsPath \ "some" \ "path"
+  implicit val path: JsPath = JsPath \ "some" \ "path"
 
-  "LEI Validation" when {
+  "LegalEntityIdentifierValidator" when {
 
     "is supplied and contains invalid character" in {
       val model = LegalEntityIdentifierModel("abcdeabcdeabcdeabc!12")

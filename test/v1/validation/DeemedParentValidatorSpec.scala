@@ -23,9 +23,9 @@ import v1.models.{CompanyNameModel, LegalEntityIdentifierModel, UTRModel}
 
 class DeemedParentValidatorSpec extends BaseSpec {
 
-  implicit val path = JsPath \ "some" \ "path"
+  implicit val path: JsPath = JsPath \ "some" \ "path"
 
-  "Deemed Parent Validation" should {
+  "DeemedParentValidator" should {
 
     "Return valid" when {
 

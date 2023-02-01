@@ -19,10 +19,9 @@ package models
 import assets.GroupCompanyDetailsConstants._
 import play.api.libs.json.Json
 import v1.models.GroupCompanyDetailsModel
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
+import utils.BaseSpec
 
-class GroupCompanyDetailsModelSpec extends AnyWordSpec with Matchers {
+class GroupCompanyDetailsModelSpec extends BaseSpec {
 
   "GroupCompanyDetailsModel" must {
 

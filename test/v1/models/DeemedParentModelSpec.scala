@@ -19,10 +19,9 @@ package models
 import assets.DeemedParentConstants._
 import play.api.libs.json.Json
 import v1.models.DeemedParentModel
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
+import utils.BaseSpec
 
-class DeemedParentModelSpec extends AnyWordSpec with Matchers {
+class DeemedParentModelSpec extends BaseSpec {
 
   "DeemedParentModel" must {
 

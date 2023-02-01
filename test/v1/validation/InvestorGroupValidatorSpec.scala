@@ -22,9 +22,9 @@ import v1.models.CompanyNameModel
 
 class InvestorGroupValidatorSpec extends BaseValidationSpec {
 
-  implicit val path = JsPath \ "some" \ "path"
+  implicit val path: JsPath = JsPath \ "some" \ "path"
 
-  "Investor Group" when {
+  "InvestorGroupValidator" should {
 
     "Return valid" when {
 

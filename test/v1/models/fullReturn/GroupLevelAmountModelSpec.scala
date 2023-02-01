@@ -19,10 +19,9 @@ package models.fullReturn
 import assets.fullReturn.GroupLevelAmountConstants._
 import play.api.libs.json.Json
 import v1.models.fullReturn.GroupLevelAmountModel
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
+import utils.BaseSpec
 
-class GroupLevelAmountModelSpec extends AnyWordSpec with Matchers {
+class GroupLevelAmountModelSpec extends BaseSpec {
 
   "GroupLevelAmountModel" must {
 

@@ -23,9 +23,9 @@ import v1.models.{CompanyNameModel, LegalEntityIdentifierModel, UTRModel}
 
 class UltimateParentValidatorSpec extends BaseSpec {
 
-  implicit val path = JsPath \ "some" \ "path"
+  implicit val path: JsPath = JsPath \ "some" \ "path"
 
-  "Ultimate Parent Validation" should {
+  "UltimateParentValidator" should {
 
     "Return valid" when {
 

@@ -19,12 +19,11 @@ package models
 import assets.NonConsolidatedInvestmentElectionConstants._
 import play.api.libs.json.Json
 import v1.models.NonConsolidatedInvestmentElectionModel
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
+import utils.BaseSpec
 
-class NonConsolidatedInvestmentElectionModelSpec extends AnyWordSpec with Matchers {
+class NonConsolidatedInvestmentElectionModelSpec extends BaseSpec {
 
-  "NonConsolidatedInvestmentModel" must {
+  "NonConsolidatedInvestmentElectionModel" must {
 
     "correctly write to json" when {
 

@@ -26,7 +26,7 @@ class AdjustedGroupInterestValidatorSpec extends BaseValidationSpec with BaseSpe
 
   implicit val path: JsPath = JsPath \ "some" \ "path"
 
-  "Adjusted Group Interest Validation" should {
+  "AdjustedGroupInterestValidator" should {
     "Return Valid" when {
       "a valid Adjusted Group Interest Model is validated" in {
         rightSide(adjustedGroupInterestModel.validate) shouldBe adjustedGroupInterestModel

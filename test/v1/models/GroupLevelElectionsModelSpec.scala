@@ -19,10 +19,9 @@ package v1.models
 import assets.GroupLevelElectionsConstants._
 import play.api.libs.json.Json
 import assets.NonConsolidatedInvestmentElectionConstants._
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
+import utils.BaseSpec
 
-class GroupLevelElectionsModelSpec extends AnyWordSpec with Matchers {
+class GroupLevelElectionsModelSpec extends BaseSpec {
 
   "GroupLevelElectionsModel" must {
 

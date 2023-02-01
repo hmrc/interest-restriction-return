@@ -19,10 +19,9 @@ package models.fullReturn
 import assets.fullReturn.AllocatedReactivationsConstants._
 import play.api.libs.json.Json
 import v1.models.fullReturn.AllocatedReactivationsModel
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
+import utils.BaseSpec
 
-class AllocatedReactivationsModelSpec extends AnyWordSpec with Matchers {
+class AllocatedReactivationsModelSpec extends BaseSpec {
 
   "AllocatedReactivationsModel" must {
 

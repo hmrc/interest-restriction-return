@@ -15,14 +15,13 @@
  */
 
 package models.revokeReportingCompany
-import assets.BaseConstants
+
 import assets.revokeReportingCompany.RevokeReportingCompanyConstants._
 import play.api.libs.json.Json
 import v1.models.revokeReportingCompany.RevokeReportingCompanyModel
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
+import utils.BaseSpec
 
-class RevokeReportingCompanyModelSpec extends AnyWordSpec with Matchers with BaseConstants {
+class RevokeReportingCompanyModelSpec extends BaseSpec {
 
   "RevokeReportingCompanyModel" must {
 

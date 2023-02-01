@@ -23,9 +23,9 @@ import v1.models.{CompanyNameModel, UTRModel}
 
 class ReportingCompanyValidatorSpec extends BaseSpec {
 
-  implicit val path = JsPath \ "some" \ "path"
+  implicit val path: JsPath = JsPath \ "some" \ "path"
 
-  "Reporting Company Validation" should {
+  "ReportingCompanyValidator" should {
 
     "Return valid" when {
 

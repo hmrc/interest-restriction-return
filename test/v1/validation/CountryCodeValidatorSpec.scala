@@ -22,9 +22,9 @@ import v1.models.CountryCodeModel
 
 class CountryCodeValidatorSpec extends BaseSpec {
 
-  implicit val path = JsPath \ "some" \ "path"
+  implicit val path: JsPath = JsPath \ "some" \ "path"
 
-  "Country Code Validation" when {
+  "CountryCodeValidator" when {
 
     "Country Code is supplied and is not the correct length as its too short" in {
       val model = CountryCodeModel("A")

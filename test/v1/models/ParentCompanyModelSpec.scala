@@ -19,10 +19,9 @@ package models
 import assets.ParentCompanyConstants._
 import play.api.libs.json.Json
 import v1.models.ParentCompanyModel
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
+import utils.BaseSpec
 
-class ParentCompanyModelSpec extends AnyWordSpec with Matchers {
+class ParentCompanyModelSpec extends BaseSpec {
 
   "ParentCompanyModel" must {
 

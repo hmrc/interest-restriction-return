@@ -18,10 +18,11 @@ package v1.models
 
 import org.scalatest.TryValues._
 import play.api.libs.json._
-import scala.util.Try
-import utils.UnitSpec
 
-class ElectionDecisionSpec extends UnitSpec {
+import scala.util.Try
+import utils.BaseSpec
+
+class ElectionDecisionSpec extends BaseSpec {
 
   "ElectionDecision" when {
     ".reads" should {
