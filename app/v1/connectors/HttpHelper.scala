@@ -30,9 +30,6 @@ object DesSuccessResponse {
   implicit val fmt: OFormat[DesSuccessResponse] = Json.format[DesSuccessResponse]
 }
 
-sealed trait HttpSuccess
-case object ValidCRN extends HttpSuccess
-
 trait ErrorResponse {
   val status: Int
   val body: String
