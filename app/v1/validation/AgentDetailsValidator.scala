@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,28 +61,28 @@ trait AgentDetailsValidator extends BaseValidation {
 }
 
 case class AgentNameLengthError(name: String)(implicit topPath: JsPath) extends Validation {
-  val code                   = "AGENT_NAME_LENGTH"
+  val code: String           = "AGENT_NAME_LENGTH"
   val errorMessage: String   = "Agent name must be between 1 and 160 characters"
   val path: JsPath           = topPath \ "agentName"
   val value: Option[JsValue] = Some(JsString(name))
 }
 
 case class AgentNameNotSuppliedError()(implicit topPath: JsPath) extends Validation {
-  val code                   = "AGENT_NAME_NOT_SUPPLIED"
+  val code: String           = "AGENT_NAME_NOT_SUPPLIED"
   val errorMessage: String   = "Agent acts on behalf of company so agent name needed"
   val path: JsPath           = topPath \ "agentName"
   val value: Option[JsValue] = None
 }
 
 case class AgentNameSuppliedError(name: String)(implicit topPath: JsPath) extends Validation {
-  val code                   = "AGENT_NAME_SUPPLIED"
+  val code: String           = "AGENT_NAME_SUPPLIED"
   val errorMessage: String   = "No agent so agent name not needed"
   val path: JsPath           = topPath \ "agentName"
   val value: Option[JsValue] = Some(JsString(name))
 }
 
 case class AgentNameCharactersError(name: String)(implicit val path: JsPath) extends Validation {
-  val code                   = "AGENT_NAME_CHARACTERS"
-  val errorMessage: String   = s"Agent name contains invalid characters"
+  val code: String           = "AGENT_NAME_CHARACTERS"
+  val errorMessage: String   = "Agent name contains invalid characters"
   val value: Option[JsValue] = Some(JsString(name))
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,32 +23,29 @@ import v1.connectors.mocks.MockAppointReportingCompanyConnector
 import play.api.http.Status._
 import utils.BaseSpec
 
+import scala.concurrent.Future
+
 class AppointReportingCompanyServiceSpec extends MockAppointReportingCompanyConnector with BaseSpec {
 
-  "AppointReportingCompanyService.appoint" when {
-
+  "AppointReportingCompanyService.submit" when {
     def setup(response: SubmissionResponse): AppointReportingCompanyService = {
       mockAppointReportingCompany(appointReportingCompanyModelMax)(response)
       new AppointReportingCompanyService(mockAppointReportingCompanyConnector)
     }
 
-    "appointment is successful" should {
-
+    "submission is successful" should {
       "return a Right(SuccessResponse)" in {
-
-        val service = setup(Right(DesSuccessResponse("ackRef")))
-        val result  = service.submit(appointReportingCompanyModelMax)
+        val service: AppointReportingCompanyService = setup(Right(DesSuccessResponse("ackRef")))
+        val result: Future[SubmissionResponse]      = service.submit(appointReportingCompanyModelMax)
 
         await(result) shouldBe Right(DesSuccessResponse("ackRef"))
       }
     }
 
-    "update is unsuccessful" should {
-
+    "submission is unsuccessful" should {
       "return a Left(UnexpectedFailure)" in {
-
-        val service = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-        val result  = service.submit(appointReportingCompanyModelMax)
+        val service: AppointReportingCompanyService = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
+        val result: Future[SubmissionResponse]      = service.submit(appointReportingCompanyModelMax)
 
         await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
       }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,19 @@
 
 package assets
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import assets.GroupRatioITConstants._
 import assets.NonConsolidatedInvestmentElectionITConstants._
 import assets.ConsolidatedPartnershipITConstants._
 
 object GroupLevelElectionsITConstants {
 
-  val groupLevelElectionsJson= Json.obj(
-    "groupRatio" -> groupRatioJson,
+  val groupLevelElectionsJson: JsObject = Json.obj(
+    "groupRatio"                                    -> groupRatioJson,
     "activeInterestAllowanceAlternativeCalculation" -> true,
-    "interestAllowanceAlternativeCalculation" -> true,
-    "interestAllowanceNonConsolidatedInvestment" -> nonConsolidatedInvestmentJson,
-    "interestAllowanceConsolidatedPartnership" -> consolidatedPartnershipsJson
+    "interestAllowanceAlternativeCalculation"       -> true,
+    "interestAllowanceNonConsolidatedInvestment"    -> nonConsolidatedInvestmentJson,
+    "interestAllowanceConsolidatedPartnership"      -> consolidatedPartnershipsJson
   )
 
 }

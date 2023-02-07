@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,21 +24,20 @@ import play.api.libs.json.Writes
 
 trait WireMockMethods {
 
-  def when(method: HTTPMethod, uri: String, headers: Map[String, String] = Map.empty): Mapping = {
+  def when(method: HTTPMethod, uri: String, headers: Map[String, String] = Map.empty): Mapping =
     new Mapping(method, uri, headers, None)
-  }
 
   class Mapping(method: HTTPMethod, uri: String, headers: Map[String, String], body: Option[String]) {
     private val mapping = {
       val uriMapping = method.wireMockMapping(urlMatching(uri))
 
-      val uriMappingWithHeaders = headers.foldLeft(uriMapping) {
-        case (m, (key, value)) => m.withHeader(key, equalTo(value))
+      val uriMappingWithHeaders = headers.foldLeft(uriMapping) { case (m, (key, value)) =>
+        m.withHeader(key, equalTo(value))
       }
 
       body match {
         case Some(extractedBody) => uriMappingWithHeaders.withRequestBody(equalTo(extractedBody))
-        case None => uriMappingWithHeaders
+        case None                => uriMappingWithHeaders
       }
     }
 
@@ -47,19 +46,18 @@ trait WireMockMethods {
       thenReturnInternal(status, Map.empty, Some(stringBody))
     }
 
-    def thenReturn(status: Int, headers: Map[String, String] = Map.empty): StubMapping = {
+    def thenReturn(status: Int, headers: Map[String, String] = Map.empty): StubMapping =
       thenReturnInternal(status, headers, None)
-    }
 
     private def thenReturnInternal(status: Int, headers: Map[String, String], body: Option[String]): StubMapping = {
       val response = {
-        val statusResponse = aResponse().withStatus(status)
-        val responseWithHeaders = headers.foldLeft(statusResponse) {
-          case (res, (key, value)) => res.withHeader(key, value)
+        val statusResponse      = aResponse().withStatus(status)
+        val responseWithHeaders = headers.foldLeft(statusResponse) { case (res, (key, value)) =>
+          res.withHeader(key, value)
         }
         body match {
           case Some(extractedBody) => responseWithHeaders.withBody(extractedBody)
-          case None => responseWithHeaders
+          case None                => responseWithHeaders
         }
       }
 
@@ -73,17 +71,5 @@ trait WireMockMethods {
 
   case object POST extends HTTPMethod {
     override def wireMockMapping(pattern: UrlPattern): MappingBuilder = post(pattern)
-  }
-
-  case object PUT extends HTTPMethod {
-    override def wireMockMapping(pattern: UrlPattern): MappingBuilder = put(pattern)
-  }
-
-  case object DELETE extends HTTPMethod {
-    override def wireMockMapping(pattern: UrlPattern): MappingBuilder = delete(pattern)
-  }
-
-  case object GET extends HTTPMethod {
-    override def wireMockMapping(pattern: UrlPattern): MappingBuilder = get(pattern)
   }
 }

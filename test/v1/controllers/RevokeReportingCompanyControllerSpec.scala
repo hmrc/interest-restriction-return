@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,142 +18,118 @@ package v1.controllers
 
 import assets.revokeReportingCompany.RevokeReportingCompanyConstants._
 import v1.connectors.{DesSuccessResponse, UnexpectedFailure}
-import play.api.http.Status
-import play.api.libs.json.Json
+import play.api.http.Status._
+import play.api.libs.json.{JsObject, Json}
+import play.api.mvc.{AnyContentAsEmpty, Result}
 import play.api.test.{FakeRequest, Helpers}
 import v1.services.mocks.MockRevokeReportingCompanyService
 import utils.BaseSpec
+import v1.controllers.actions.AuthAction
+
+import scala.concurrent.Future
 
 class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanyService with BaseSpec {
 
-  override lazy val fakeRequest = FakeRequest("POST", "/interest-restriction-return/reporting-company/revoke")
+  override lazy val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(
+    method = "POST",
+    path = "/interest-restriction-return/reporting-company/revoke"
+  )
 
-  "RevokeReportingCompanyController.revoke()" when {
+  private val fakeRequestForValidate: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(
+    method = "POST",
+    path = "/interest-restriction-return/reporting-company/revoke/validate"
+  )
 
-    "the user is authenticated" when {
+  private lazy val validJsonFakeRequest: FakeRequest[JsObject]              = fakeRequest
+    .withBody(revokeReportingCompanyJsonMax)
+    .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
 
-      object AuthorisedController
-          extends RevokeReportingCompanyController(
-            authAction = AuthorisedAction,
-            revokeReportingCompanyService = mockRevokeReportingCompanyService,
-            controllerComponents = Helpers.stubControllerComponents(),
-            appConfig = appConfig
-          )
+  private lazy val validJsonFakeRequestForValidate: FakeRequest[JsObject]   = fakeRequestForValidate
+    .withBody(revokeReportingCompanyJsonMax)
+    .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
 
-      "a valid payload is submitted" when {
+  private lazy val invalidJsonFakeRequest: FakeRequest[JsObject]            = fakeRequest
+    .withBody(Json.obj())
+    .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
 
-        lazy val validJsonFakeRequest = fakeRequest
-          .withBody(revokeReportingCompanyJsonMax)
-          .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
+  private lazy val invalidJsonFakeRequestForValidate: FakeRequest[JsObject] = fakeRequestForValidate
+    .withBody(Json.obj())
+    .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
 
-        "a success response is returned from the companies house service with no validation errors" when {
-
-          "a success response is returned from the revoke reporting company service" should {
-
-            "return 200 (OK)" in {
-              mockRevokeReportingCompany(revokeReportingCompanyModelMax)(Right(DesSuccessResponse(ackRef)))
-
-              val result = AuthorisedController.revoke()(validJsonFakeRequest)
-              status(result) shouldBe Status.OK
-            }
-          }
-
-          "an error response is returned from the revoke reporting company service" should {
-
-            "return the Error" in {
-              mockRevokeReportingCompany(revokeReportingCompanyModelMax)(
-                Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err"))
-              )
-
-              val result = AuthorisedController.revoke()(validJsonFakeRequest)
-              status(result) shouldBe Status.INTERNAL_SERVER_ERROR
-            }
-          }
-        }
-      }
-
-      "an invalid payload is submitted" when {
-
-        lazy val invalidJsonFakeRequest = fakeRequest
-          .withBody(Json.obj())
-          .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
-
-        "return a BAD_REQUEST JSON validation error" in {
-          val result = AuthorisedController.revoke()(invalidJsonFakeRequest)
-          status(result) shouldBe Status.BAD_REQUEST
-        }
-      }
-    }
-
-    "the user is unauthenticated" should {
-
-      "return 401 (Unauthorised)" in {
-
-        object UnauthorisedController
-            extends RevokeReportingCompanyController(
-              authAction = UnauthorisedAction,
-              revokeReportingCompanyService = mockRevokeReportingCompanyService,
-              controllerComponents = Helpers.stubControllerComponents(),
-              appConfig = appConfig
-            )
-
-        val result = UnauthorisedController.revoke()(fakeRequest.withBody(Json.obj()))
-        status(result) shouldBe Status.UNAUTHORIZED
-      }
-    }
+  private class Test(authAction: AuthAction) {
+    val revokeReportingCompanyController: RevokeReportingCompanyController = new RevokeReportingCompanyController(
+      authAction = authAction,
+      revokeReportingCompanyService = mockRevokeReportingCompanyService,
+      controllerComponents = Helpers.stubControllerComponents(),
+      appConfig = appConfig
+    )
   }
 
-  "RevokeReportingCompanyController.validate()" when {
-    val validateFakeRequest = FakeRequest("POST", "/interest-restriction-return/reporting-company/appoint/validate")
-    "the user is authenticated" when {
+  "RevokeReportingCompanyController" when {
+    ".revoke" when {
+      "the user is authenticated" when {
+        "a valid payload is submitted" when {
+          "a success response is returned from the companies house service with no validation errors" when {
+            "a success response is returned from the revoke reporting company service" should {
+              "return 200 (OK)" in new Test(AuthorisedAction) {
+                mockRevokeReportingCompany(revokeReportingCompanyModelMax)(Right(DesSuccessResponse(ackRef)))
 
-      object AuthorisedController
-          extends RevokeReportingCompanyController(
-            authAction = AuthorisedAction,
-            revokeReportingCompanyService = mockRevokeReportingCompanyService,
-            controllerComponents = Helpers.stubControllerComponents(),
-            appConfig = appConfig
-          )
+                val result: Future[Result] = revokeReportingCompanyController.revoke()(validJsonFakeRequest)
+                status(result) shouldBe OK
+              }
+            }
 
-      "a valid payload is submitted" when {
+            "an error response is returned from the revoke reporting company service" should {
+              "return the Error" in new Test(AuthorisedAction) {
+                mockRevokeReportingCompany(revokeReportingCompanyModelMax)(
+                  Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "err"))
+                )
 
-        lazy val validJsonFakeRequest = validateFakeRequest
-          .withBody(revokeReportingCompanyJsonMax)
-          .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
+                val result: Future[Result] = revokeReportingCompanyController.revoke()(validJsonFakeRequest)
+                status(result) shouldBe INTERNAL_SERVER_ERROR
+              }
+            }
+          }
+        }
 
-        "return 204 (NO CONTENT)" in {
-          val result = AuthorisedController.validate()(validJsonFakeRequest)
-          status(result) shouldBe Status.NO_CONTENT
+        "an invalid payload is submitted" should {
+          "return a BAD_REQUEST JSON validation error" in new Test(AuthorisedAction) {
+            val result: Future[Result] = revokeReportingCompanyController.revoke()(invalidJsonFakeRequest)
+            status(result) shouldBe BAD_REQUEST
+          }
         }
       }
 
-      "an invalid payload is submitted" when {
-
-        lazy val invalidJsonFakeRequest = validateFakeRequest
-          .withBody(Json.obj())
-          .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
-
-        "return a BAD_REQUEST JSON v1.validation error" in {
-          val result = AuthorisedController.validate()(invalidJsonFakeRequest)
-          status(result) shouldBe Status.BAD_REQUEST
+      "the user is unauthenticated" should {
+        "return 401 (Unauthorised)" in new Test(UnauthorisedAction) {
+          val result: Future[Result] = revokeReportingCompanyController.revoke()(fakeRequest.withBody(Json.obj()))
+          status(result) shouldBe UNAUTHORIZED
         }
       }
     }
 
-    "the user is unauthenticated" should {
+    ".validate" when {
+      "the user is authenticated" when {
+        "a valid payload is submitted" should {
+          "return 204 (NO CONTENT)" in new Test(AuthorisedAction) {
+            val result: Future[Result] = revokeReportingCompanyController.validate()(validJsonFakeRequestForValidate)
+            status(result) shouldBe NO_CONTENT
+          }
+        }
 
-      "return 401 (Unauthorised)" in {
+        "an invalid payload is submitted" should {
+          "return a BAD_REQUEST JSON validation error" in new Test(AuthorisedAction) {
+            val result: Future[Result] = revokeReportingCompanyController.validate()(invalidJsonFakeRequestForValidate)
+            status(result) shouldBe BAD_REQUEST
+          }
+        }
+      }
 
-        object UnauthorisedController
-            extends RevokeReportingCompanyController(
-              authAction = UnauthorisedAction,
-              revokeReportingCompanyService = mockRevokeReportingCompanyService,
-              controllerComponents = Helpers.stubControllerComponents(),
-              appConfig = appConfig
-            )
-
-        val result = UnauthorisedController.validate()(fakeRequest.withBody(Json.obj()))
-        status(result) shouldBe Status.UNAUTHORIZED
+      "the user is unauthenticated" should {
+        "return 401 (Unauthorised)" in new Test(UnauthorisedAction) {
+          val result: Future[Result] = revokeReportingCompanyController.validate()(fakeRequest.withBody(Json.obj()))
+          status(result) shouldBe UNAUTHORIZED
+        }
       }
     }
   }

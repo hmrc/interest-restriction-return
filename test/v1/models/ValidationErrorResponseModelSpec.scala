@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,11 @@ import play.api.libs.json._
 import v1.models.errors.{ErrorResponseModel, ValidationErrorResponseModel}
 import v1.validation.fullReturn._
 import cats.data.{Chain, NonEmptyChain}
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
+import utils.BaseSpec
 
-class ValidationErrorResponseModelSpec extends AnyWordSpec with Matchers {
+class ValidationErrorResponseModelSpec extends BaseSpec {
 
-  "Validation Error Response" should {
+  "ValidationErrorResponseModel" should {
 
     val errors: Seq[(JsPath, Seq[JsonValidationError])] =
       Seq(JsPath \ "FOO" -> Seq(JsonValidationError(Seq("BAR", "Snakes")), JsonValidationError(Seq("bye", "hello"))))

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,11 +24,13 @@ import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.mocks.MockHttpClient
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
 
-class AbbreviatedReturnConnectorSpec extends MockHttpClient with BaseSpec {
-  "AbbreviatedReturnConnector.submitAbbreviatedReturn" when {
+import scala.concurrent.Future
 
+class AbbreviatedReturnConnectorSpec extends MockHttpClient with BaseSpec {
+
+  "AbbreviatedReturnConnector.submitAbbreviatedReturn" when {
     def setup(response: SubmissionResponse): AbbreviatedReturnConnector = {
-      val desUrl = "http://localhost:9262/organisations/interest-restrictions-return/abbreviated"
+      val desUrl: String = "http://localhost:9262/organisations/interest-restrictions-return/abbreviated"
       mockHttpPost[AbbreviatedReturnModel, Either[ErrorResponse, DesSuccessResponse]](
         desUrl,
         abbreviatedReturnUltimateParentModel
@@ -38,19 +40,19 @@ class AbbreviatedReturnConnectorSpec extends MockHttpClient with BaseSpec {
 
     "submission is successful" should {
       "return a Right(SuccessResponse)" in {
-        val connector = setup(Right(DesSuccessResponse(ackRef)))
-        val result    = connector.submitAbbreviatedReturn(abbreviatedReturnUltimateParentModel)
+        val connector: AbbreviatedReturnConnector = setup(Right(DesSuccessResponse(ackRef)))
+        val result: Future[SubmissionResponse]    = connector.submitAbbreviatedReturn(abbreviatedReturnUltimateParentModel)
 
         await(result) shouldBe Right(DesSuccessResponse(ackRef))
       }
+    }
 
-      "submission is unsuccessful" should {
-        "return a Left(UnexpectedFailure)" in {
-          val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-          val result    = connector.submitAbbreviatedReturn(abbreviatedReturnUltimateParentModel)
+    "submission is unsuccessful" should {
+      "return a Left(UnexpectedFailure)" in {
+        val connector: AbbreviatedReturnConnector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
+        val result: Future[SubmissionResponse]    = connector.submitAbbreviatedReturn(abbreviatedReturnUltimateParentModel)
 
-          await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
-        }
+        await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
       }
     }
   }

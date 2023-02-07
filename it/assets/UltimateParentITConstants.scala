@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 package assets
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 
 object UltimateParentITConstants extends BaseITConstants {
 
-  val registeredCompanyName = "some company"
-  val otherUkTaxReference = "other reference"
+  val registeredCompanyName: String = "some company"
+  val otherUkTaxReference: String   = "other reference"
 
-  val ultimateParentJson= Json.obj(
+  val ultimateParentJson: JsObject = Json.obj(
     "registeredCompanyName" -> registeredCompanyName,
-    "ctutr" -> ctutr
+    "ctutr"                 -> ctutr
   )
 }

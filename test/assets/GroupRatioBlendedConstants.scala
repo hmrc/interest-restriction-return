@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,27 +17,27 @@
 package assets
 
 import assets.InvestorGroupConstants._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import v1.models.GroupRatioBlendedModel
 
 object GroupRatioBlendedConstants {
 
-  val groupRatioBlendedModelMax = GroupRatioBlendedModel(
+  val groupRatioBlendedModelMax: GroupRatioBlendedModel = GroupRatioBlendedModel(
     isElected = true,
     investorGroups = Some(Seq(investorGroupsGroupRatioModel, investorGroupsFixedRatioModel))
   )
 
-  val groupRatioBlendedJsonMax = Json.obj(
+  val groupRatioBlendedJsonMax: JsObject = Json.obj(
     "isElected"      -> true,
     "investorGroups" -> Json.arr(investorGroupsGroupRatioJson, investorGroupsFixedRatioJson)
   )
 
-  val groupRatioBlendedModelMin = GroupRatioBlendedModel(
+  val groupRatioBlendedModelMin: GroupRatioBlendedModel = GroupRatioBlendedModel(
     isElected = false,
     investorGroups = None
   )
 
-  val groupRatioBlendedJsonMin = Json.obj(
+  val groupRatioBlendedJsonMin: JsObject = Json.obj(
     "isElected" -> false
   )
 }

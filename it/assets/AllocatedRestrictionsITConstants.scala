@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,27 +18,29 @@ package assets
 
 import java.time.LocalDate
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import assets.AccountingPeriodITConstants._
 
 object AllocatedRestrictionsITConstants {
 
-  val ap1EndDate: LocalDate = startDate.plusDays(1)
-  val ap2EndDate: LocalDate = startDate.plusMonths(12)
+  private val (daysToAdd, monthsToAdd): (Int, Int) = (1, 12)
+
+  val ap1EndDate: LocalDate = startDate.plusDays(daysToAdd)
+  val ap2EndDate: LocalDate = startDate.plusMonths(monthsToAdd)
   val ap3EndDate: LocalDate = endDate
 
-  val disallowanceAp1: BigDecimal = 1.11
-  val disallowanceAp2: BigDecimal = 2.22
-  val disallowanceAp3: BigDecimal = 3.33
+  val disallowanceAp1: BigDecimal    = 1.11
+  val disallowanceAp2: BigDecimal    = 2.22
+  val disallowanceAp3: BigDecimal    = 3.33
   val totalDisallowances: BigDecimal = 6.66
 
-  val allocatedRestrictionsJson = Json.obj(
-    "ap1EndDate" -> ap1EndDate,
-    "ap2EndDate" -> ap2EndDate,
-    "ap3EndDate" -> ap3EndDate,
-    "disallowanceAp1" -> disallowanceAp1,
-    "disallowanceAp2" -> disallowanceAp2,
-    "disallowanceAp3" -> disallowanceAp3,
+  val allocatedRestrictionsJson: JsObject = Json.obj(
+    "ap1EndDate"         -> ap1EndDate,
+    "ap2EndDate"         -> ap2EndDate,
+    "ap3EndDate"         -> ap3EndDate,
+    "disallowanceAp1"    -> disallowanceAp1,
+    "disallowanceAp2"    -> disallowanceAp2,
+    "disallowanceAp3"    -> disallowanceAp3,
     "totalDisallowances" -> totalDisallowances
   )
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package v1.models.fullReturn
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 import v1.validation.fullReturn.AllocatedReactivationsValidator
 
 case class AllocatedReactivationsModel(currentPeriodReactivation: BigDecimal) extends AllocatedReactivationsValidator {
@@ -24,5 +24,5 @@ case class AllocatedReactivationsModel(currentPeriodReactivation: BigDecimal) ex
 }
 
 object AllocatedReactivationsModel {
-  implicit val format = Json.format[AllocatedReactivationsModel]
+  implicit val format: OFormat[AllocatedReactivationsModel] = Json.format[AllocatedReactivationsModel]
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,38 +17,50 @@
 package v1.models
 
 import org.scalatest.TryValues._
-import play.api.libs.json.{JsPath, JsResultException, JsString, JsonValidationError}
+import play.api.libs.json._
 
 import scala.util.Try
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
+import utils.BaseSpec
 
-class ElectionDecisionSpec extends AnyWordSpec with Matchers {
-  "ElectionDecision" should {
-    "valid" when {
-      "elect is entered" in {
-        val json   = JsString("elect")
-        val result = Try(json.as[ElectionDecision])
+class ElectionDecisionSpec extends BaseSpec {
 
-        result.isSuccess shouldEqual true
+  "ElectionDecision" when {
+    ".reads" should {
+      "be valid" when {
+        "elect is entered" in {
+          val json   = JsString("elect")
+          val result = Try(json.as[ElectionDecision])
+
+          result.isSuccess shouldEqual true
+        }
+
+        "revoke is entered" in {
+          val json   = JsString("revoke")
+          val result = Try(json.as[ElectionDecision])
+
+          result.isSuccess shouldEqual true
+        }
       }
 
-      "revoke is entered" in {
-        val json   = JsString("revoke")
-        val result = Try(json.as[ElectionDecision])
+      "be invalid" when {
+        "an incorrect value is entered" in {
+          val json   = JsString("Something incorrect")
+          val result = Try(json.as[ElectionDecision])
 
-        result.isSuccess shouldEqual true
+          result.failure.exception shouldEqual JsResultException(
+            Seq((JsPath, Seq(JsonValidationError("Unknown ElectionDecision"))))
+          )
+        }
       }
     }
 
-    "invalid" when {
-      "an incorrect value is entered" in {
-        val json   = JsString("Something incorrect")
-        val result = Try(json.as[ElectionDecision])
+    ".writes" should {
+      "produce valid JSON for ELECT" in {
+        Json.toJson[ElectionDecision](Elect) shouldEqual JsString("elect")
+      }
 
-        result.failure.exception shouldEqual JsResultException(
-          Seq((JsPath, Seq(JsonValidationError(s"Unknown ElectionDecision"))))
-        )
+      "produce valid JSON for REVOKE" in {
+        Json.toJson[ElectionDecision](Revoke) shouldEqual JsString("revoke")
       }
     }
   }

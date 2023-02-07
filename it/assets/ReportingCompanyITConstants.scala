@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 package assets
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 
 object ReportingCompanyITConstants extends BaseITConstants {
 
-  val reportingCompanyName = "some reporting company"
+  val reportingCompanyName: String = "some reporting company"
 
-  val reportingCompanyJson = Json.obj(
-    "companyName" -> reportingCompanyName,
-    "ctutr" -> ctutr,
+  val reportingCompanyJson: JsObject = Json.obj(
+    "companyName"          -> reportingCompanyName,
+    "ctutr"                -> ctutr,
     "sameAsUltimateParent" -> true
   )
 }

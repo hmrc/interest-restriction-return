@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,14 +21,14 @@ import assets.AgentDetailsConstants._
 import assets.AuthorisingCompanyConstants._
 import assets.ReportingCompanyConstants._
 import assets.UltimateParentConstants._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import v1.models.revokeReportingCompany.RevokeReportingCompanyModel
 
 object RevokeReportingCompanyConstants {
 
-  val ackRef = "ackRef"
+  val ackRef: String = "ackRef"
 
-  val revokeReportingCompanyModelMax = RevokeReportingCompanyModel(
+  val revokeReportingCompanyModelMax: RevokeReportingCompanyModel = RevokeReportingCompanyModel(
     agentDetails = agentDetailsModelMax,
     reportingCompany = reportingCompanyModel,
     isReportingCompanyRevokingItself = true,
@@ -39,7 +39,7 @@ object RevokeReportingCompanyConstants {
     declaration = true
   )
 
-  val revokeReportingCompanyJsonMax = Json.obj(
+  val revokeReportingCompanyJsonMax: JsObject = Json.obj(
     "agentDetails"                     -> agentDetailsJsonMax,
     "reportingCompany"                 -> reportingCompanyJson,
     "isReportingCompanyRevokingItself" -> true,
@@ -49,7 +49,7 @@ object RevokeReportingCompanyConstants {
     "declaration"                      -> true
   )
 
-  val revokeReportingCompanyModelMin = RevokeReportingCompanyModel(
+  val revokeReportingCompanyModelMin: RevokeReportingCompanyModel = RevokeReportingCompanyModel(
     agentDetails = agentDetailsModelMax,
     reportingCompany = reportingCompanyModel,
     isReportingCompanyRevokingItself = true,
@@ -60,7 +60,7 @@ object RevokeReportingCompanyConstants {
     declaration = true
   )
 
-  val revokeReportingCompanyJsonMin = Json.obj(
+  val revokeReportingCompanyJsonMin: JsObject = Json.obj(
     "agentDetails"                     -> agentDetailsJsonMax,
     "reportingCompany"                 -> reportingCompanyJson,
     "isReportingCompanyRevokingItself" -> true,

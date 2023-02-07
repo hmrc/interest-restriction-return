@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,32 +17,32 @@
 package assets
 
 import assets.PartnershipsConstants._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import v1.models.ConsolidatedPartnershipModel
 
-object ConsolidatedPartnershipConstants extends BaseConstants {
+object ConsolidatedPartnershipConstants {
 
-  val consolidatedPartnerships = "investment1"
+  val consolidatedPartnerships: String = "investment1"
 
-  val consolidatedPartnershipsModelMax = ConsolidatedPartnershipModel(
+  val consolidatedPartnershipsModelMax: ConsolidatedPartnershipModel = ConsolidatedPartnershipModel(
     isElected = true,
     isActive = true,
     consolidatedPartnerships = Some(Seq(partnershipModel))
   )
 
-  val consolidatedPartnershipsJsonMax = Json.obj(
+  val consolidatedPartnershipsJsonMax: JsObject = Json.obj(
     "isElected"                -> true,
     "isActive"                 -> true,
     "consolidatedPartnerships" -> Json.arr(partnershipJson)
   )
 
-  val consolidatedPartnershipsModelMin = ConsolidatedPartnershipModel(
+  val consolidatedPartnershipsModelMin: ConsolidatedPartnershipModel = ConsolidatedPartnershipModel(
     isElected = false,
     isActive = false,
     consolidatedPartnerships = None
   )
 
-  val consolidatedPartnershipsJsonMin = Json.obj(
+  val consolidatedPartnershipsJsonMin: JsObject = Json.obj(
     "isElected" -> false,
     "isActive"  -> false
   )

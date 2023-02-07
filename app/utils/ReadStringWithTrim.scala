@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,5 @@ object ReadStringWithTrim {
 
   object Reads extends DefaultReads
 
-  implicit val stringReads: Reads[String] = new Reads[String] {
-    def reads(js: JsValue): JsResult[String] = Reads.StringReads.reads(js).map(_.trim)
-  }
+  implicit val stringReads: Reads[String] = (js: JsValue) => Reads.StringReads.reads(js).map(_.trim)
 }

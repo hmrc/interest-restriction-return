@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,9 +52,10 @@ trait AbbreviatedReturnValidator extends BaseValidation {
     }
 
   private def validateDeclaration: ValidationResult[Boolean] =
-    abbreviatedReturnModel.declaration match {
-      case true  => abbreviatedReturnModel.declaration.validNec
-      case false => ReturnDeclarationError(abbreviatedReturnModel.declaration).invalidNec
+    if (abbreviatedReturnModel.declaration) {
+      abbreviatedReturnModel.declaration.validNec
+    } else {
+      ReturnDeclarationError(abbreviatedReturnModel.declaration).invalidNec
     }
 
   def validate: ValidationResult[AbbreviatedReturnModel] = {

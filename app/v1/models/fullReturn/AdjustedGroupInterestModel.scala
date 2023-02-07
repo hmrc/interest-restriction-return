@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,8 @@ case class AdjustedGroupInterestModel(qngie: BigDecimal, groupEBITDA: Option[Big
 }
 
 object AdjustedGroupInterestModel {
-  implicit val adjustedGroupInterestModelReads                                      = Json.reads[AdjustedGroupInterestModel]
+  implicit val adjustedGroupInterestModelReads: Reads[AdjustedGroupInterestModel]   =
+    Json.reads[AdjustedGroupInterestModel]
   implicit val adjustedGroupInterestModelWrites: Writes[AdjustedGroupInterestModel] = Writes { models =>
     val ebitda = models.groupEBITDA.getOrElse(BigDecimal(0))
     JsObject(

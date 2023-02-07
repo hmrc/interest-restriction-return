@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import play.api.libs.json.{JsPath, Json}
+import play.api.libs.json.{JsPath, JsValue, Json}
 import v1.models.Validation.ValidationResult
 import v1.models.{IdentityOfCompanySubmittingModel, Validation}
 
@@ -55,7 +55,7 @@ trait IdentityOfCompanySubmittingValidator extends BaseValidation {
 
 case class CannotBeUkAndNonUk(companySubmitting: IdentityOfCompanySubmittingModel)(implicit val path: JsPath)
     extends Validation {
-  val code                 = "IDENTITY_CTUTR_COUNTRY"
-  val errorMessage: String = "Company submitting cannot send both a CTUTR and a country of incorporation"
-  val value                = Some(Json.toJson(companySubmitting))
+  val code: String           = "IDENTITY_CTUTR_COUNTRY"
+  val errorMessage: String   = "Company submitting cannot send both a CTUTR and a country of incorporation"
+  val value: Option[JsValue] = Some(Json.toJson(companySubmitting))
 }

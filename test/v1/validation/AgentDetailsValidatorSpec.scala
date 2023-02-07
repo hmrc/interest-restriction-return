@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,43 +22,43 @@ import v1.models.AgentDetailsModel
 
 class AgentDetailsValidatorSpec extends BaseSpec {
 
-  implicit val path = JsPath \ "some" \ "path"
+  implicit val path: JsPath = JsPath \ "some" \ "path"
 
-  "Agent Details Validation" when {
+  "AgentDetailsValidator" when {
     "passed false and No name should succeed" in {
-      val model = AgentDetailsModel(false, None)
+      val model = AgentDetailsModel(agentActingOnBehalfOfCompany = false, None)
       rightSide(model.validate) shouldBe model
     }
 
     "passed true and Some name (with correct name length) should succeed" in {
-      val model = AgentDetailsModel(true, Some("AgentYang"))
+      val model = AgentDetailsModel(agentActingOnBehalfOfCompany = true, Some("AgentYang"))
       rightSide(model.validate) shouldBe model
     }
 
     "passed true and Some name (with incorrect name length) should not succeed" in {
-      val model = AgentDetailsModel(true, Some(""))
+      val model = AgentDetailsModel(agentActingOnBehalfOfCompany = true, Some(""))
       leftSideError(model.validate).errorMessage shouldBe AgentNameLengthError("").errorMessage
     }
 
     "passed false and Some name (with correct name length) should not succeed" in {
-      val model = AgentDetailsModel(false, Some("Yangksy"))
+      val model = AgentDetailsModel(agentActingOnBehalfOfCompany = false, Some("Yangksy"))
       leftSideError(model.validate).errorMessage shouldBe AgentNameSuppliedError("Yangksy").errorMessage
 
     }
 
     "passed false and Some name (with incorrect name length) should not succeed with 2 errors" in {
-      val model = AgentDetailsModel(false, Some(""))
+      val model = AgentDetailsModel(agentActingOnBehalfOfCompany = false, Some(""))
       leftSideError(model.validate, 0).errorMessage shouldBe AgentNameLengthError("").errorMessage
       leftSideError(model.validate, 1).errorMessage shouldBe AgentNameSuppliedError("").errorMessage
     }
 
     "passed true and None should not succeed" in {
-      val model = AgentDetailsModel(true, None)
+      val model = AgentDetailsModel(agentActingOnBehalfOfCompany = true, None)
       leftSideError(model.validate).errorMessage shouldBe AgentNameNotSuppliedError().errorMessage
     }
 
     "passed true and Some name (with incorrect name length > maxLength) should not succeed" in {
-      val model = AgentDetailsModel(true, Some("a" * 180))
+      val model = AgentDetailsModel(agentActingOnBehalfOfCompany = true, Some("a" * 180))
       leftSideError(model.validate).errorMessage shouldBe AgentNameLengthError("a" * 180).errorMessage
     }
 
@@ -66,18 +66,18 @@ class AgentDetailsValidatorSpec extends BaseSpec {
       val invalidName = "ʰʲʺ£$%˦˫qwNew!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is" +
         " 160 no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
 
-      val model = AgentDetailsModel(true, Some(invalidName))
+      val model = AgentDetailsModel(agentActingOnBehalfOfCompany = true, Some(invalidName))
       leftSideError(model.validate).errorMessage shouldBe AgentNameCharactersError(invalidName).errorMessage
     }
 
     "Passing true and invalid characters should not succeed" in {
-      val model = AgentDetailsModel(true, Some("ʰʲʺ˦˫˥ʺ˦˫˥"))
+      val model = AgentDetailsModel(agentActingOnBehalfOfCompany = true, Some("ʰʲʺ˦˫˥ʺ˦˫˥"))
       leftSideError(model.validate).errorMessage shouldBe AgentNameCharactersError("ʰʲʺ˦˫˥ʺ˦˫˥").errorMessage
     }
 
     "passed true and Some name with an end of line should not succeed" in {
       val invalidName = "\n"
-      val model       = AgentDetailsModel(true, Some(invalidName))
+      val model       = AgentDetailsModel(agentActingOnBehalfOfCompany = true, Some(invalidName))
       leftSideError(model.validate).errorMessage shouldBe AgentNameCharactersError(invalidName).errorMessage
     }
   }

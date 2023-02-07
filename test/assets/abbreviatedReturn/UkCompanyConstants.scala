@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,19 +17,19 @@
 package assets.abbreviatedReturn
 
 import assets.BaseConstants
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import v1.models.abbreviatedReturn.UkCompanyModel
 
 object UkCompanyConstants extends BaseConstants {
 
-  val ukCompanyModel = UkCompanyModel(
+  val ukCompanyModel: UkCompanyModel = UkCompanyModel(
     companyName = companyName,
     utr = ctutr,
     consenting = true,
     qicElection = true
   )
 
-  val ukCompanyJson = Json.obj(
+  val ukCompanyJson: JsObject = Json.obj(
     "companyName" -> companyName,
     "utr"         -> ctutr,
     "consenting"  -> true,

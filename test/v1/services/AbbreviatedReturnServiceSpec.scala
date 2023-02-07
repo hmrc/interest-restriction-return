@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,10 +23,11 @@ import v1.connectors.mocks.MockAbbreviatedReturnConnector
 import play.api.http.Status._
 import utils.BaseSpec
 
+import scala.concurrent.Future
+
 class AbbreviatedReturnServiceSpec extends MockAbbreviatedReturnConnector with BaseSpec {
 
-  "AbbreviatedReturnService.submitsAbbreviatedReturn" when {
-
+  "AbbreviatedReturnService.submit" when {
     def setup(response: SubmissionResponse): AbbreviatedReturnService = {
       mockAbbreviatedReturn(abbreviatedReturnUltimateParentModel)(response)
       new AbbreviatedReturnService(mockAbbreviatedReturnConnector)
@@ -34,20 +35,17 @@ class AbbreviatedReturnServiceSpec extends MockAbbreviatedReturnConnector with B
 
     "submission is successful" should {
       "return a Right(SuccessResponse)" in {
-
-        val service = setup(Right(DesSuccessResponse("ackRef")))
-        val result  = service.submit(abbreviatedReturnUltimateParentModel)
+        val service: AbbreviatedReturnService  = setup(Right(DesSuccessResponse("ackRef")))
+        val result: Future[SubmissionResponse] = service.submit(abbreviatedReturnUltimateParentModel)
 
         await(result) shouldBe Right(DesSuccessResponse("ackRef"))
       }
     }
 
-    "update is unsuccessful" should {
-
+    "submission is unsuccessful" should {
       "return a Left(UnexpectedFailure)" in {
-
-        val service = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-        val result  = service.submit(abbreviatedReturnUltimateParentModel)
+        val service: AbbreviatedReturnService  = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
+        val result: Future[SubmissionResponse] = service.submit(abbreviatedReturnUltimateParentModel)
 
         await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
       }

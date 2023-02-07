@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,25 +19,25 @@ package v1.validation.fullReturn
 import assets.fullReturn.AllocatedRestrictionsConstants._
 import assets.fullReturn.UkCompanyConstants._
 import play.api.libs.json.JsPath
+import v1.models.fullReturn.AllocatedRestrictionsModel
 import v1.models.{AccountingPeriodModel, CompanyNameModel, UTRModel}
 import v1.validation
-import v1.validation.{BaseValidationSpec, CompanyNameCharactersError, CompanyNameLengthError, UTRChecksumError, UTRLengthError}
+import v1.validation._
 
 class UkCompanyValidatorSpec extends BaseValidationSpec {
 
-  implicit val path = JsPath \ "some" \ "path"
+  implicit val path: JsPath = JsPath \ "some" \ "path"
 
-  val groupAccountingPeriod = AccountingPeriodModel(
+  private val groupAccountingPeriod: AccountingPeriodModel = AccountingPeriodModel(
     startDate = ap1EndDate.minusDays(1),
     endDate = ap3EndDate
   )
 
-  val allocatedRestriction                = Some(
+  private val allocatedRestriction: Option[AllocatedRestrictionsModel] = Some(
     allocatedRestrictionsModel.copy(disallowanceAp1 = 10.0, disallowanceAp2 = Some(10.0), disallowanceAp3 = Some(10.01))
   )
-  val allocatedRestrictionOneDisallowance = Some(allocatedRestrictionsModel.copy(disallowanceAp1 = 21.0))
 
-  "Full UK Company Validation" should {
+  "UkCompanyValidator" should {
 
     "Return valid" when {
 

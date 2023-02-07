@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,11 @@
 
 package v1.connectors.httpParsers
 
-import play.api.Logging
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.{DesBaseConnector, HttpErrorMessages}
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
-object FullReturnHttpParser extends DesBaseConnector with Logging {
+object FullReturnHttpParser extends DesBaseConnector {
 
   implicit object FullReturnReads extends HttpReads[SubmissionResponse] {
 

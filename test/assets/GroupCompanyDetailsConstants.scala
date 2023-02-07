@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,18 +17,17 @@
 package assets
 
 import assets.AccountingPeriodConstants.{accountingPeriodJson, accountingPeriodModel}
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import v1.models.GroupCompanyDetailsModel
 
 object GroupCompanyDetailsConstants {
 
-  val groupCompanyDetailsJson = Json.obj(
+  val groupCompanyDetailsJson: JsObject = Json.obj(
     "totalCompanies"   -> 1,
     "accountingPeriod" -> accountingPeriodJson
   )
 
-  val groupCompanyDetailsModel = GroupCompanyDetailsModel(
+  val groupCompanyDetailsModel: GroupCompanyDetailsModel = GroupCompanyDetailsModel(
     accountingPeriod = accountingPeriodModel
   )
-
 }

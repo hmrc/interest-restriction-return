@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,78 +19,70 @@ package v1.connectors.httpParsers
 import assets.appointReportingCompany.AppointReportingCompanyConstants._
 import v1.connectors.httpParsers.AppointReportingCompanyHttpParser.AppointReportingCompanyReads
 import v1.connectors.{DesSuccessResponse, InvalidSuccessResponse, UnexpectedFailure}
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.http.Status
-import play.api.libs.json.Json
+import play.api.http.Status._
+import play.api.libs.json.{JsObject, Json}
 import uk.gov.hmrc.http.HttpResponse
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
+import utils.BaseSpec
+import v1.connectors.HttpHelper.SubmissionResponse
 
-class AppointReportingCompanyHttpParserSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite {
+class AppointReportingCompanyHttpParserSpec extends BaseSpec {
 
-  val ackRefResponse = Json.obj("acknowledgementReference" -> ackRef)
+  private val ackRefResponse: JsObject = Json.obj("acknowledgementReference" -> ackRef)
 
-  "AppointReportingCompanyHttpParser.AppointReportingCompanyReads" when {
+  "AppointReportingCompanyHttpParser" when {
+    "AppointReportingCompanyReads.read" should {
+      "return a Right containing an acknowledgementReference" when {
+        "receiving an 201 CREATED with a valid ackRef response" in {
+          val expectedResult: SubmissionResponse = Right(DesSuccessResponse(ackRef))
+          val actualResult: SubmissionResponse   = AppointReportingCompanyReads.read(
+            "",
+            "",
+            HttpResponse(CREATED, ackRefResponse, Map.empty[String, Seq[String]])
+          )
 
-    "given an (201) with a valid ackRef response" should {
-
-      "return a Right containing an acknowledgementReference" in {
-
-        val expectedResult = Right(DesSuccessResponse(ackRef))
-        val actualResult   = AppointReportingCompanyReads.read(
-          "",
-          "",
-          HttpResponse(Status.CREATED, ackRefResponse, Map.empty[String, Seq[String]])
-        )
-
-        actualResult shouldBe expectedResult
-      }
-    }
-
-    "given an (201) with an invalid ackRef response" should {
-
-      "return a Left(InvalidSuccessResponse)" in {
-
-        val expectedResult = Left(InvalidSuccessResponse)
-        val actualResult   = AppointReportingCompanyReads.read(
-          "",
-          "",
-          HttpResponse(Status.CREATED, Json.obj(), Map.empty[String, Seq[String]])
-        )
-
-        actualResult shouldBe expectedResult
-      }
-    }
-
-    "given any other status" should {
-
-      val expectedResult = Left(
-        UnexpectedFailure(
-          Status.INTERNAL_SERVER_ERROR,
-          s"Status ${Status.INTERNAL_SERVER_ERROR} Error returned when trying to appoint a reporting company"
-        )
-      )
-
-      "return a Left(UnexpectedFailure) for a 500" in {
-
-        val actualResult = AppointReportingCompanyReads.read(
-          "",
-          "",
-          HttpResponse(Status.INTERNAL_SERVER_ERROR, Json.obj(), Map.empty[String, Seq[String]])
-        )
-
-        actualResult shouldBe expectedResult
+          actualResult shouldBe expectedResult
+        }
       }
 
-      "return a Left(UnexpectedFailure) for a 200" in {
+      "return a Left InvalidSuccessResponse" when {
+        "receiving an 201 CREATED with an invalid ackRef response" in {
+          val expectedResult: SubmissionResponse = Left(InvalidSuccessResponse)
+          val actualResult: SubmissionResponse   = AppointReportingCompanyReads.read(
+            "",
+            "",
+            HttpResponse(CREATED, Json.obj(), Map.empty[String, Seq[String]])
+          )
 
-        val actualResult = AppointReportingCompanyReads.read(
-          "",
-          "",
-          HttpResponse(Status.OK, ackRefResponse, Map.empty[String, Seq[String]])
+          actualResult shouldBe expectedResult
+        }
+      }
+
+      "return a Left UnexpectedFailure" when {
+        val expectedResult: SubmissionResponse = Left(
+          UnexpectedFailure(
+            INTERNAL_SERVER_ERROR,
+            s"Status $INTERNAL_SERVER_ERROR Error returned when trying to appoint a reporting company"
+          )
         )
+        "receiving a 500 INTERNAL_SERVER_ERROR with an invalid ackRef response" in {
+          val actualResult: SubmissionResponse = AppointReportingCompanyReads.read(
+            "",
+            "",
+            HttpResponse(INTERNAL_SERVER_ERROR, Json.obj(), Map.empty[String, Seq[String]])
+          )
 
-        actualResult shouldBe expectedResult
+          actualResult shouldBe expectedResult
+        }
+
+        "receiving a 200 OK with a valid ackRef response" in {
+          val actualResult: SubmissionResponse = AppointReportingCompanyReads.read(
+            "",
+            "",
+            HttpResponse(OK, ackRefResponse, Map.empty[String, Seq[String]])
+          )
+
+          actualResult shouldBe expectedResult
+        }
       }
     }
   }

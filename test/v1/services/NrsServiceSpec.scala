@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,39 +23,40 @@ import org.joda.time.DateTime
 import org.joda.time.format.{DateTimeFormat, DateTimeFormatter}
 import play.api.libs.json._
 import play.api.test.{FakeHeaders, FakeRequest}
-import v1.connectors.UnexpectedFailure
+import v1.connectors.{NrsConnector, UnexpectedFailure}
 import v1.models.nrs._
 import v1.models.requests.IdentifierRequest
 import v1.services.mocks.MockNrsConnector
-
 import java.nio.charset.StandardCharsets.UTF_8
 import java.util.UUID
+
 import scala.concurrent.Future
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AsyncWordSpec
 import play.api.http.Status.{BAD_REQUEST, INTERNAL_SERVER_ERROR}
 import uk.gov.hmrc.auth.core.AffinityGroup
+import v1.connectors.HttpHelper.NrsResponse
 
 class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
 
-  val CLIENT_CLOSED_REQUEST   = 499
-  val NETWORK_CONNECT_TIMEOUT = 599
+  private val CLIENT_CLOSED_REQUEST: Int   = 499
+  private val NETWORK_CONNECT_TIMEOUT: Int = 599
 
-  val formatter: DateTimeFormatter   = DateTimeFormat.forPattern("dd/MM/yyyy")
-  val dateTime: DateTime             = formatter.parseDateTime("01/01/2021")
-  val fullRequest                    = FakeRequest(
+  private val formatter: DateTimeFormatter       = DateTimeFormat.forPattern("dd/MM/yyyy")
+  private val dateTime: DateTime                 = formatter.parseDateTime("01/01/2021")
+  private val fullRequest: FakeRequest[String]   = FakeRequest(
     "GET",
     "/",
     FakeHeaders(Seq("Authorization" -> "Bearer 123")),
     FullReturnConstants.fullReturnModelMax.toString
   )
-  val payloadAsString                = fullRequest.body.toString
-  val request                        = IdentifierRequest[String](
+  private val payloadAsString: String            = fullRequest.body.toString
+  private val request: IdentifierRequest[String] = IdentifierRequest[String](
     request = fullRequest,
     identifier = "123",
     nrsRetrievalData = UnitNrsConstants.nrsRetrievalData(Some(AffinityGroup.Organisation))
   )
-  val expectedNrsMetadata            = new NrsMetadata(
+  private val expectedNrsMetadata: NrsMetadata   = new NrsMetadata(
     businessId = "irr",
     notableEvent = "interest-restriction-return",
     payloadContentType = "application/json",
@@ -70,133 +71,167 @@ class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
       )
     )
   )
-  val expectedNrsPayload: NrsPayload = NrsPayload(base64().encode(payloadAsString.getBytes(UTF_8)), expectedNrsMetadata)
+  private val expectedNrsPayload: NrsPayload     =
+    NrsPayload(base64().encode(payloadAsString.getBytes(UTF_8)), expectedNrsMetadata)
 
   object TestDateTimeService extends DateTimeService {
     def nowUtc(): DateTime = dateTime
   }
 
-  "The service should parse the metadata correctly with the auth information" in {
-    val connector  = mockNrsConnector()
-    mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Right(NrSubmissionId(UUID.randomUUID()))))
-    val nrsService = new NrsService(connector, TestDateTimeService)
+  "NrsService" when {
+    ".send" should {
+      "parse the metadata correctly with the auth information" in {
+        val connector: NrsConnector = mockNrsConnector()
+        mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Right(NrSubmissionId(UUID.randomUUID()))))
+        val nrsService: NrsService  = new NrsService(connector, TestDateTimeService)
 
-    val response = nrsService.send(FullReturnConstants.fullReturnModelMax.reportingCompany.ctutr)(request)
-    response.map(_ => succeed)
+        val response: Future[NrsResponse] =
+          nrsService.send(FullReturnConstants.fullReturnModelMax.reportingCompany.ctutr)(request)
+        response.map(_ => succeed)
+      }
+
+      "return 400 error response without trying again" when {
+        "a 400 error response is returned" in {
+          val connector: NrsConnector = mockNrsConnector()
+          mockNrsSubmission(expectedNrsPayload, connector)(
+            Future.successful(Left(UnexpectedFailure(BAD_REQUEST, "Error occurred")))
+          )
+          val nrsService: NrsService  = new NrsService(connector, TestDateTimeService)
+
+          val response: Future[NrsResponse] =
+            nrsService.send(FullReturnConstants.fullReturnModelMax.reportingCompany.ctutr)(request)
+          response.map(_ => succeed)
+        }
+      }
+
+      "return 499 error response without trying again" when {
+        "a 499 error response is returned" in {
+          val connector: NrsConnector = mockNrsConnector()
+          mockNrsSubmission(expectedNrsPayload, connector)(
+            Future.successful(Left(UnexpectedFailure(CLIENT_CLOSED_REQUEST, "Error occurred")))
+          )
+          val nrsService: NrsService  = new NrsService(connector, TestDateTimeService)
+
+          val response: Future[NrsResponse] =
+            nrsService.send(FullReturnConstants.fullReturnModelMax.reportingCompany.ctutr)(request)
+          response.map(_ => succeed)
+        }
+      }
+
+      "try again" when {
+        "a 500 error response is returned" in {
+          val connector: NrsConnector = mockNrsConnector()
+          val uuid: UUID              = UUID.randomUUID()
+          mockNrsSubmission(expectedNrsPayload, connector)(
+            Future.successful(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error occurred")))
+          )
+          mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Right(NrSubmissionId(uuid))))
+          val nrsService: NrsService  = new NrsService(connector, TestDateTimeService)
+
+          val response: Future[NrsResponse] =
+            nrsService.send(FullReturnConstants.fullReturnModelMax.reportingCompany.ctutr)(request)
+          response.map(_ shouldEqual Right(NrSubmissionId(uuid)))
+        }
+
+        "a 599 error response is returned" in {
+          val connector: NrsConnector = mockNrsConnector()
+          val uuid: UUID              = UUID.randomUUID()
+          mockNrsSubmission(expectedNrsPayload, connector)(
+            Future.successful(Left(UnexpectedFailure(NETWORK_CONNECT_TIMEOUT, "Error occurred")))
+          )
+          mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Right(NrSubmissionId(uuid))))
+          val nrsService: NrsService  = new NrsService(connector, TestDateTimeService)
+
+          val response: Future[NrsResponse] =
+            nrsService.send(FullReturnConstants.fullReturnModelMax.reportingCompany.ctutr)(request)
+          response.map(_ shouldEqual Right(NrSubmissionId(uuid)))
+        }
+
+        "a 500 error response is returned twice" in {
+          val connector: NrsConnector = mockNrsConnector()
+          val uuid: UUID              = UUID.randomUUID()
+          mockNrsSubmission(expectedNrsPayload, connector)(
+            Future.successful(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error occurred")))
+          )
+          mockNrsSubmission(expectedNrsPayload, connector)(
+            Future.successful(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error occurred")))
+          )
+          mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Right(NrSubmissionId(uuid))))
+          val nrsService: NrsService  = new NrsService(connector, TestDateTimeService)
+
+          val response: Future[NrsResponse] =
+            nrsService.send(FullReturnConstants.fullReturnModelMax.reportingCompany.ctutr)(request)
+          response.map(_ shouldEqual Right(NrSubmissionId(uuid)))
+        }
+
+        "a 599 error response is returned twice" in {
+          val connector: NrsConnector = mockNrsConnector()
+          val uuid: UUID              = UUID.randomUUID()
+          mockNrsSubmission(expectedNrsPayload, connector)(
+            Future.successful(Left(UnexpectedFailure(NETWORK_CONNECT_TIMEOUT, "Error occurred")))
+          )
+          mockNrsSubmission(expectedNrsPayload, connector)(
+            Future.successful(Left(UnexpectedFailure(NETWORK_CONNECT_TIMEOUT, "Error occurred")))
+          )
+          mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Right(NrSubmissionId(uuid))))
+          val nrsService: NrsService  = new NrsService(connector, TestDateTimeService)
+
+          val response: Future[NrsResponse] =
+            nrsService.send(FullReturnConstants.fullReturnModelMax.reportingCompany.ctutr)(request)
+          response.map(_ shouldEqual Right(NrSubmissionId(uuid)))
+        }
+      }
+
+      "not try again" when {
+        "a 500 error response is returned thrice" in {
+          val connector: NrsConnector = mockNrsConnector()
+          mockNrsSubmission(expectedNrsPayload, connector)(
+            Future.successful(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error occurred")))
+          )
+          mockNrsSubmission(expectedNrsPayload, connector)(
+            Future.successful(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error occurred")))
+          )
+          mockNrsSubmission(expectedNrsPayload, connector)(
+            Future.successful(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error occurred")))
+          )
+          val nrsService: NrsService  = new NrsService(connector, TestDateTimeService)
+
+          val response: Future[NrsResponse] =
+            nrsService.send(FullReturnConstants.fullReturnModelMax.reportingCompany.ctutr)(request)
+          response.map(_ shouldEqual Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error occurred")))
+        }
+
+        "a 599 error response is returned thrice" in {
+          val connector: NrsConnector = mockNrsConnector()
+          mockNrsSubmission(expectedNrsPayload, connector)(
+            Future.successful(Left(UnexpectedFailure(NETWORK_CONNECT_TIMEOUT, "Error occurred")))
+          )
+          mockNrsSubmission(expectedNrsPayload, connector)(
+            Future.successful(Left(UnexpectedFailure(NETWORK_CONNECT_TIMEOUT, "Error occurred")))
+          )
+          mockNrsSubmission(expectedNrsPayload, connector)(
+            Future.successful(Left(UnexpectedFailure(NETWORK_CONNECT_TIMEOUT, "Error occurred")))
+          )
+          val nrsService: NrsService  = new NrsService(connector, TestDateTimeService)
+
+          val response: Future[NrsResponse] =
+            nrsService.send(FullReturnConstants.fullReturnModelMax.reportingCompany.ctutr)(request)
+          response.map(_ shouldEqual Left(UnexpectedFailure(NETWORK_CONNECT_TIMEOUT, "Error occurred")))
+        }
+
+        "an exception is thrown thrice" in {
+          val connector: NrsConnector = mockNrsConnector()
+          mockNrsSubmission(expectedNrsPayload, connector)(Future.failed(new Exception()))
+          mockNrsSubmission(expectedNrsPayload, connector)(Future.failed(new Exception()))
+          mockNrsSubmission(expectedNrsPayload, connector)(Future.failed(new Exception()))
+          val nrsService: NrsService  = new NrsService(connector, TestDateTimeService)
+
+          val response: Future[NrsResponse] =
+            nrsService.send(FullReturnConstants.fullReturnModelMax.reportingCompany.ctutr)(request)
+
+          response.failed.map(_ shouldBe an[Exception])
+        }
+      }
+    }
   }
-
-  "If the service returns a 400 error response, it should return it without trying again" in {
-    val connector  = mockNrsConnector()
-    mockNrsSubmission(expectedNrsPayload, connector)(
-      Future.successful(Left(UnexpectedFailure(BAD_REQUEST, "Error occurred")))
-    )
-    val nrsService = new NrsService(connector, TestDateTimeService)
-
-    val response = nrsService.send(FullReturnConstants.fullReturnModelMax.reportingCompany.ctutr)(request)
-    response.map(_ => succeed)
-  }
-
-  "If the service returns a 499 error response, it should return it without trying again" in {
-    val connector  = mockNrsConnector()
-    mockNrsSubmission(expectedNrsPayload, connector)(
-      Future.successful(Left(UnexpectedFailure(CLIENT_CLOSED_REQUEST, "Error occurred")))
-    )
-    val nrsService = new NrsService(connector, TestDateTimeService)
-
-    val response = nrsService.send(FullReturnConstants.fullReturnModelMax.reportingCompany.ctutr)(request)
-    response.map(_ => succeed)
-  }
-
-  "If the service returns a 500 error response, it should try again" in {
-    val connector  = mockNrsConnector()
-    val uuid       = UUID.randomUUID()
-    mockNrsSubmission(expectedNrsPayload, connector)(
-      Future.successful(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error occurred")))
-    )
-    mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Right(NrSubmissionId(uuid))))
-    val nrsService = new NrsService(connector, TestDateTimeService)
-
-    val response = nrsService.send(FullReturnConstants.fullReturnModelMax.reportingCompany.ctutr)(request)
-    response.map(_ shouldEqual Right(NrSubmissionId(uuid)))
-  }
-
-  "If the service returns a 599 error response, it should try again" in {
-    val connector  = mockNrsConnector()
-    val uuid       = UUID.randomUUID()
-    mockNrsSubmission(expectedNrsPayload, connector)(
-      Future.successful(Left(UnexpectedFailure(NETWORK_CONNECT_TIMEOUT, "Error occurred")))
-    )
-    mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Right(NrSubmissionId(uuid))))
-    val nrsService = new NrsService(connector, TestDateTimeService)
-
-    val response = nrsService.send(FullReturnConstants.fullReturnModelMax.reportingCompany.ctutr)(request)
-    response.map(_ shouldEqual Right(NrSubmissionId(uuid)))
-  }
-
-  "If the service returns a 500 error response twice, it should try again" in {
-    val connector  = mockNrsConnector()
-    val uuid       = UUID.randomUUID()
-    mockNrsSubmission(expectedNrsPayload, connector)(
-      Future.successful(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error occurred")))
-    )
-    mockNrsSubmission(expectedNrsPayload, connector)(
-      Future.successful(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error occurred")))
-    )
-    mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Right(NrSubmissionId(uuid))))
-    val nrsService = new NrsService(connector, TestDateTimeService)
-
-    val response = nrsService.send(FullReturnConstants.fullReturnModelMax.reportingCompany.ctutr)(request)
-    response.map(_ shouldEqual Right(NrSubmissionId(uuid)))
-  }
-
-  "If the service returns a 599 error response twice, it should try again" in {
-    val connector  = mockNrsConnector()
-    val uuid       = UUID.randomUUID()
-    mockNrsSubmission(expectedNrsPayload, connector)(
-      Future.successful(Left(UnexpectedFailure(NETWORK_CONNECT_TIMEOUT, "Error occurred")))
-    )
-    mockNrsSubmission(expectedNrsPayload, connector)(
-      Future.successful(Left(UnexpectedFailure(NETWORK_CONNECT_TIMEOUT, "Error occurred")))
-    )
-    mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Right(NrSubmissionId(uuid))))
-    val nrsService = new NrsService(connector, TestDateTimeService)
-
-    val response = nrsService.send(FullReturnConstants.fullReturnModelMax.reportingCompany.ctutr)(request)
-    response.map(_ shouldEqual Right(NrSubmissionId(uuid)))
-  }
-
-  "If the service returns a 500 error response three times, it should NOT try again" in {
-    val connector  = mockNrsConnector()
-    mockNrsSubmission(expectedNrsPayload, connector)(
-      Future.successful(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error occurred")))
-    )
-    mockNrsSubmission(expectedNrsPayload, connector)(
-      Future.successful(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error occurred")))
-    )
-    mockNrsSubmission(expectedNrsPayload, connector)(
-      Future.successful(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error occurred")))
-    )
-    val nrsService = new NrsService(connector, TestDateTimeService)
-
-    val response = nrsService.send(FullReturnConstants.fullReturnModelMax.reportingCompany.ctutr)(request)
-    response.map(_ shouldEqual Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error occurred")))
-  }
-
-  "If the service returns a 599 error response three times, it should NOT try again" in {
-    val connector  = mockNrsConnector()
-    mockNrsSubmission(expectedNrsPayload, connector)(
-      Future.successful(Left(UnexpectedFailure(NETWORK_CONNECT_TIMEOUT, "Error occurred")))
-    )
-    mockNrsSubmission(expectedNrsPayload, connector)(
-      Future.successful(Left(UnexpectedFailure(NETWORK_CONNECT_TIMEOUT, "Error occurred")))
-    )
-    mockNrsSubmission(expectedNrsPayload, connector)(
-      Future.successful(Left(UnexpectedFailure(NETWORK_CONNECT_TIMEOUT, "Error occurred")))
-    )
-    val nrsService = new NrsService(connector, TestDateTimeService)
-
-    val response = nrsService.send(FullReturnConstants.fullReturnModelMax.reportingCompany.ctutr)(request)
-    response.map(_ shouldEqual Left(UnexpectedFailure(NETWORK_CONNECT_TIMEOUT, "Error occurred")))
-  }
-
 }

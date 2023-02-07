@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,32 +16,32 @@
 
 package assets
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import v1.models.ReportingCompanyModel
 
 object ReportingCompanyConstants extends BaseConstants {
 
-  val reportingCompanyName = "some reporting company"
+  val reportingCompanyName: String = "some reporting company"
 
-  val reportingCompanyJson = Json.obj(
+  val reportingCompanyJson: JsObject = Json.obj(
     "companyName"          -> companyName,
     "ctutr"                -> ctutr,
     "sameAsUltimateParent" -> false
   )
 
-  val reportingCompanyModel = ReportingCompanyModel(
+  val reportingCompanyModel: ReportingCompanyModel = ReportingCompanyModel(
     companyName = companyName,
     ctutr = ctutr,
     sameAsUltimateParent = false
   )
 
-  val reportingCompanySameJson = Json.obj(
+  val reportingCompanySameJson: JsObject = Json.obj(
     "companyName"          -> companyName,
     "ctutr"                -> ctutr,
     "sameAsUltimateParent" -> true
   )
 
-  val reportingCompanySameModel = ReportingCompanyModel(
+  val reportingCompanySameModel: ReportingCompanyModel = ReportingCompanyModel(
     companyName = companyName,
     ctutr = ctutr,
     sameAsUltimateParent = true

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,9 +54,9 @@ class VersionRoutingRequestHandler @Inject() (
 
   override def routeRequest(request: RequestHeader): Option[Handler] = {
 
-    def documentHandler = routeWith(versionRoutingMap.defaultRouter)(request)
+    def documentHandler: Option[Handler] = routeWith(versionRoutingMap.defaultRouter)(request)
 
-    def apiHandler = Versions.getFromRequest(request) match {
+    def apiHandler: Option[Handler] = Versions.getFromRequest(request) match {
       case Some(version) =>
         versionRoutingMap.versionRouter(version) match {
           case Some(versionRouter) if featureSwitch.isVersionEnabled(version) =>

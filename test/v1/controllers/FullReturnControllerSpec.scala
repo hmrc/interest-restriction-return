@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,146 +17,120 @@
 package v1.controllers
 
 import assets.fullReturn.FullReturnConstants._
-import play.api.http.Status
-import play.api.libs.json.Json
+import play.api.http.Status._
+import play.api.libs.json.{JsObject, Json}
+import play.api.mvc.{AnyContentAsEmpty, Result}
 import play.api.test.{FakeRequest, Helpers}
 import utils.BaseSpec
 import v1.connectors.{DesSuccessResponse, UnexpectedFailure}
+import v1.controllers.actions.AuthAction
 import v1.services.mocks.MockFullReturnService
+
+import scala.concurrent.Future
 
 class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
 
-  override lazy val fakeRequest = FakeRequest("POST", "/interest-restriction-return/return/full")
+  override lazy val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(
+    method = "POST",
+    path = "/interest-restriction-return/return/full"
+  )
 
-  "FullReturnController.submit()" when {
-    "the user is authenticated" when {
+  private val fakeRequestForValidate: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(
+    method = "POST",
+    path = "/interest-restriction-return/return/full/validate"
+  )
 
-      object AuthorisedController
-          extends FullReturnController(
-            authAction = AuthorisedAction,
-            fullReturnService = mockFullReturnService,
-            controllerComponents = Helpers.stubControllerComponents(),
-            nrsService = nrsService,
-            appConfig = appConfig
-          )
+  private lazy val validJsonFakeRequest: FakeRequest[JsObject]              = fakeRequest
+    .withBody(fullReturnUltimateParentJson)
+    .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
 
-      "a valid payload is submitted" when {
+  private lazy val validJsonFakeRequestForValidate: FakeRequest[JsObject]   = fakeRequestForValidate
+    .withBody(fullReturnUltimateParentJson)
+    .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
 
-        lazy val validJsonFakeRequest = fakeRequest
-          .withBody(fullReturnUltimateParentJson)
-          .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
+  private lazy val invalidJsonFakeRequest: FakeRequest[JsObject]            = fakeRequest
+    .withBody(Json.obj())
+    .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
 
-        "a success response is returned from the companies house service with no v1.validation errors" when {
+  private lazy val invalidJsonFakeRequestForValidate: FakeRequest[JsObject] = fakeRequestForValidate
+    .withBody(Json.obj())
+    .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
 
-          "a success response is returned from the service full return service" should {
-
-            "return 200 (OK)" in {
-              mockFullReturn(fullReturnUltimateParentModel)(Right(DesSuccessResponse(ackRef)))
-
-              val result = AuthorisedController.submit()(validJsonFakeRequest)
-              status(result) shouldBe Status.OK
-            }
-          }
-
-          "an error response is returned from the service" should {
-
-            "return the Error" in {
-              mockFullReturn(fullReturnUltimateParentModel)(
-                Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "err"))
-              )
-
-              val result = AuthorisedController.submit()(validJsonFakeRequest)
-              status(result) shouldBe Status.INTERNAL_SERVER_ERROR
-            }
-          }
-        }
-      }
-
-      "an invalid payload is submitted" when {
-
-        lazy val invalidJsonFakeRequest = fakeRequest
-          .withBody(Json.obj())
-          .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
-
-        "return a BAD_REQUEST JSON v1.validation error" in {
-          val result = AuthorisedController.submit()(invalidJsonFakeRequest)
-          status(result) shouldBe Status.BAD_REQUEST
-        }
-      }
-    }
-
-    "the user is unauthenticated" should {
-
-      "return 401 (Unauthorised)" in {
-
-        object UnauthorisedController
-            extends FullReturnController(
-              authAction = UnauthorisedAction,
-              fullReturnService = mockFullReturnService,
-              controllerComponents = Helpers.stubControllerComponents(),
-              nrsService = nrsService,
-              appConfig = appConfig
-            )
-
-        val result = UnauthorisedController.submit()(fakeRequest.withBody(Json.obj()))
-        status(result) shouldBe Status.UNAUTHORIZED
-      }
-    }
+  private class Test(authAction: AuthAction) {
+    val fullReturnController: FullReturnController = new FullReturnController(
+      authAction = authAction,
+      fullReturnService = mockFullReturnService,
+      controllerComponents = Helpers.stubControllerComponents(),
+      nrsService = nrsService,
+      appConfig = appConfig
+    )
   }
 
-  "FullReturnController.valid()" when {
-    val validateFakeRequest = FakeRequest("POST", "/interest-restriction-return/return/full/validate")
-    "the user is authenticated" when {
+  "FullReturnController" when {
+    ".submit" when {
+      "the user is authenticated" when {
+        "a valid payload is submitted" when {
+          "a success response is returned from the companies house service with no validation errors" when {
+            "a success response is returned from the service full return service" should {
+              "return 200 (OK)" in new Test(AuthorisedAction) {
+                mockFullReturn(fullReturnUltimateParentModel)(Right(DesSuccessResponse(ackRef)))
 
-      object AuthorisedController
-          extends FullReturnController(
-            authAction = AuthorisedAction,
-            fullReturnService = mockFullReturnService,
-            controllerComponents = Helpers.stubControllerComponents(),
-            nrsService = nrsService,
-            appConfig = appConfig
-          )
+                val result: Future[Result] = fullReturnController.submit()(validJsonFakeRequest)
+                status(result) shouldBe OK
+              }
+            }
 
-      "a valid payload is submitted" when {
+            "an error response is returned from the service" should {
+              "return the Error" in new Test(AuthorisedAction) {
+                mockFullReturn(fullReturnUltimateParentModel)(
+                  Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "err"))
+                )
 
-        lazy val validJsonFakeRequest = validateFakeRequest
-          .withBody(fullReturnUltimateParentJson)
-          .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
+                val result: Future[Result] = fullReturnController.submit()(validJsonFakeRequest)
+                status(result) shouldBe INTERNAL_SERVER_ERROR
+              }
+            }
+          }
+        }
 
-        "return 204 (NO CONTENT)" in {
-          val result = AuthorisedController.validate()(validJsonFakeRequest)
-          status(result) shouldBe Status.NO_CONTENT
+        "an invalid payload is submitted" should {
+          "return a BAD_REQUEST JSON validation error" in new Test(AuthorisedAction) {
+            val result: Future[Result] = fullReturnController.submit()(invalidJsonFakeRequest)
+            status(result) shouldBe BAD_REQUEST
+          }
         }
       }
 
-      "an invalid payload is submitted" when {
-
-        lazy val invalidJsonFakeRequest = validateFakeRequest
-          .withBody(Json.obj())
-          .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
-
-        "return a BAD_REQUEST JSON v1.validation error" in {
-          val result = AuthorisedController.validate()(invalidJsonFakeRequest)
-          status(result) shouldBe Status.BAD_REQUEST
+      "the user is unauthenticated" should {
+        "return 401 (Unauthorised)" in new Test(UnauthorisedAction) {
+          val result: Future[Result] = fullReturnController.submit()(fakeRequest.withBody(Json.obj()))
+          status(result) shouldBe UNAUTHORIZED
         }
       }
     }
 
-    "the user is unauthenticated" should {
+    ".validate" when {
+      "the user is authenticated" when {
+        "a valid payload is submitted" should {
+          "return 204 (NO CONTENT)" in new Test(AuthorisedAction) {
+            val result: Future[Result] = fullReturnController.validate()(validJsonFakeRequestForValidate)
+            status(result) shouldBe NO_CONTENT
+          }
+        }
 
-      "return 401 (Unauthorised)" in {
+        "an invalid payload is submitted" should {
+          "return a BAD_REQUEST JSON validation error" in new Test(AuthorisedAction) {
+            val result: Future[Result] = fullReturnController.validate()(invalidJsonFakeRequestForValidate)
+            status(result) shouldBe BAD_REQUEST
+          }
+        }
+      }
 
-        object UnauthorisedController
-            extends FullReturnController(
-              authAction = UnauthorisedAction,
-              fullReturnService = mockFullReturnService,
-              controllerComponents = Helpers.stubControllerComponents(),
-              nrsService = nrsService,
-              appConfig = appConfig
-            )
-
-        val result = UnauthorisedController.validate()(fakeRequest.withBody(Json.obj()))
-        status(result) shouldBe Status.UNAUTHORIZED
+      "the user is unauthenticated" should {
+        "return 401 (Unauthorised)" in new Test(UnauthorisedAction) {
+          val result: Future[Result] = fullReturnController.validate()(fakeRequest.withBody(Json.obj()))
+          status(result) shouldBe UNAUTHORIZED
+        }
       }
     }
   }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -100,7 +100,7 @@ trait AppointReportingCompanyValidator extends BaseValidation {
 }
 
 case object IdentityOfAppointingCompanyIsNotSupplied extends Validation {
-  val code                   = "IDENTITY_APPOINTING_COMPANY_NOT_SUPPLIED"
+  val code: String           = "IDENTITY_APPOINTING_COMPANY_NOT_SUPPLIED"
   val errorMessage: String   = "Appointing company must be supplied if it's not the same as the reporting company"
   val path: JsPath           = JsPath \ "identifyOfAppointingCompany"
   val value: Option[JsValue] = None
@@ -108,14 +108,14 @@ case object IdentityOfAppointingCompanyIsNotSupplied extends Validation {
 
 case class IdentityOfAppointingCompanyIsSupplied(identityOfCompanySubmittingModel: IdentityOfCompanySubmittingModel)
     extends Validation {
-  val code                   = "IDENTITY_APPOINTING_COMPANY_SUPPLIED"
+  val code: String           = "IDENTITY_APPOINTING_COMPANY_SUPPLIED"
   val errorMessage: String   = "Appointing company not needed as it is the same as the reporting company"
   val path: JsPath           = JsPath \ "identifyOfAppointingCompany"
   val value: Option[JsValue] = Some(Json.toJson(identityOfCompanySubmittingModel))
 }
 
 case class DeclaredFiftyPercentOfEligibleCompanies(declaration: Boolean) extends Validation {
-  val code                   = "DECLARATION_FALSE"
+  val code: String           = "DECLARATION_FALSE"
   val errorMessage: String   = "Declaration is not valid so will not be submitted. " +
     "You need to confirm the listed companies constitute at least 50% of the eligible companies."
   val path: JsPath           = JsPath \ "declaration"

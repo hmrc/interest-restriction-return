@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package v1.validation.fullReturn
 
-import play.api.libs.json.{JsPath, Json}
+import play.api.libs.json.{JsPath, JsValue, Json}
 import v1.models.Validation
 import v1.models.Validation.ValidationResult
 import v1.models.fullReturn.AllocatedReactivationsModel
@@ -42,16 +42,16 @@ trait AllocatedReactivationsValidator extends BaseValidation {
 
 case class AllocatedReactivationsCannotBeNegative(currentPeriodReactivation: BigDecimal)(implicit topPath: JsPath)
     extends Validation {
-  val code                 = "REACTIVATIONS_NEGATIVE"
-  val path                 = topPath \ "currentPeriodReactivation"
-  val errorMessage: String = s"Current period reactivation must be a positive number"
-  val value                = Some(Json.toJson(currentPeriodReactivation))
+  val code: String           = "REACTIVATIONS_NEGATIVE"
+  val path: JsPath           = topPath \ "currentPeriodReactivation"
+  val errorMessage: String   = "Current period reactivation must be a positive number"
+  val value: Option[JsValue] = Some(Json.toJson(currentPeriodReactivation))
 }
 
 case class AllocatedReactivationsDecimalError(currentPeriodReactivation: BigDecimal)(implicit topPath: JsPath)
     extends Validation {
-  val code                 = "REACTIVATIONS_DECIMAL"
-  val path                 = topPath \ "currentPeriodReactivation"
-  val errorMessage: String = s"Current period reactivation must be to 2 decimal places or less"
-  val value                = Some(Json.toJson(currentPeriodReactivation))
+  val code: String           = "REACTIVATIONS_DECIMAL"
+  val path: JsPath           = topPath \ "currentPeriodReactivation"
+  val errorMessage: String   = "Current period reactivation must be to 2 decimal places or less"
+  val value: Option[JsValue] = Some(Json.toJson(currentPeriodReactivation))
 }

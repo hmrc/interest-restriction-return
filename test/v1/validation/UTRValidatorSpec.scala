@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,9 +22,9 @@ import v1.models.UTRModel
 
 class UTRValidatorSpec extends BaseSpec {
 
-  implicit val path = JsPath \ "some" \ "path"
+  implicit val path: JsPath = JsPath \ "some" \ "path"
 
-  "UTR Validation" when {
+  "UTRValidator" when {
 
     "UTR is supplied and fails Check Sum" in {
       val model = UTRModel("1234567890")

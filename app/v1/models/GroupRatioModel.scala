@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package v1.models
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OWrites, Reads}
 import v1.validation.GroupRatioValidator
 
 case class GroupRatioModel(
@@ -25,10 +25,10 @@ case class GroupRatioModel(
   activeGroupEBITDAChargeableGains: Boolean,
   groupRatioBlended: Option[GroupRatioBlendedModel]
 ) extends GroupRatioValidator {
-  override val groupRatioModel = this
+  override val groupRatioModel: GroupRatioModel = this
 }
 
 object GroupRatioModel {
-  implicit val writes = Json.writes[GroupRatioModel]
-  implicit val reads  = Json.reads[GroupRatioModel]
+  implicit val writes: OWrites[GroupRatioModel] = Json.writes[GroupRatioModel]
+  implicit val reads: Reads[GroupRatioModel]    = Json.reads[GroupRatioModel]
 }

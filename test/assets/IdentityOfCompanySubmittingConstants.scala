@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,38 +16,38 @@
 
 package assets
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import v1.models.{CountryCodeModel, IdentityOfCompanySubmittingModel}
 
 object IdentityOfCompanySubmittingConstants extends BaseConstants {
 
   val countryCode = "US"
 
-  val identityOfCompanySubmittingJsonMax = Json.obj(
+  val identityOfCompanySubmittingJsonMax: JsObject = Json.obj(
     "companyName"           -> companyName,
     "ctutr"                 -> ctutr,
     "legalEntityIdentifier" -> lei
   )
 
-  val identityOfCompanySubmittingModelMax = IdentityOfCompanySubmittingModel(
+  val identityOfCompanySubmittingModelMax: IdentityOfCompanySubmittingModel = IdentityOfCompanySubmittingModel(
     companyName = companyName,
     ctutr = Some(ctutr),
     countryOfIncorporation = None,
     legalEntityIdentifier = Some(lei)
   )
 
-  val identityOfCompanySubmittingModelNonUk = IdentityOfCompanySubmittingModel(
+  val identityOfCompanySubmittingModelNonUk: IdentityOfCompanySubmittingModel = IdentityOfCompanySubmittingModel(
     companyName = companyName,
     ctutr = None,
     countryOfIncorporation = Some(CountryCodeModel(countryCode)),
     legalEntityIdentifier = None
   )
 
-  val identityOfCompanySubmittingJsonMin = Json.obj(
+  val identityOfCompanySubmittingJsonMin: JsObject = Json.obj(
     "companyName" -> companyName
   )
 
-  val identityOfCompanySubmittingModelMin = IdentityOfCompanySubmittingModel(
+  val identityOfCompanySubmittingModelMin: IdentityOfCompanySubmittingModel = IdentityOfCompanySubmittingModel(
     companyName = companyName,
     ctutr = None,
     countryOfIncorporation = None,

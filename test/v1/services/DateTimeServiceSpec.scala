@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,21 @@
  * limitations under the License.
  */
 
-package utils
+package v1.services
 
-import akka.actor.ActorSystem
+import java.time.ZoneId
 
-trait MaterializerSupport {
-  implicit val system = ActorSystem("Sys")
+import utils.BaseSpec
+
+class DateTimeServiceSpec extends BaseSpec {
+
+  private val dateTimeServiceImpl: DateTimeServiceImpl = new DateTimeServiceImpl
+
+  "DateTimeServiceImpl" when {
+    ".zonedDateTimeUtc" should {
+      "return correct zone ID" in {
+        dateTimeServiceImpl.zonedDateTimeUtc.getZone shouldBe ZoneId.of("UTC")
+      }
+    }
+  }
 }

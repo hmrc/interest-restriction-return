@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,28 +21,28 @@ import assets.GroupCompanyDetailsITConstants.groupCompanyDetailsJson
 import assets.GroupLevelElectionsITConstants.groupLevelElectionsJson
 import assets.ReportingCompanyITConstants._
 import assets.UkCompanyITConstants.ukCompanyJson
-import play.api.libs.json.Json
-import v1.models.{SubmissionType, Revised}
+import play.api.libs.json.{JsObject, Json}
+import v1.models.{Revised, SubmissionType}
 
 object AbbreviatedReturnITConstants {
 
-  val ackRef = "ackRef"
+  val ackRef: String = "ackRef"
 
-  val abbreviatedReturnDesSuccessJson = Json.obj(
+  val abbreviatedReturnDesSuccessJson: JsObject = Json.obj(
     "acknowledgementReference" -> ackRef
   )
 
-  val abbreviatedReturnJson = Json.obj(
-    "declaration" -> true,
+  val abbreviatedReturnJson: JsObject = Json.obj(
+    "declaration"               -> true,
     "appointedReportingCompany" -> true,
-    "agentDetails" -> agentDetailsJson,
-    "reportingCompany" -> reportingCompanyJson,
-    "publicInfrastructure" -> true,
-    "groupCompanyDetails" -> groupCompanyDetailsJson,
-    "submissionType" -> Json.toJson[SubmissionType](Revised),
-    "angie" -> 1.1,
-    "revisedReturnDetails" -> "revised details",
-    "groupLevelElections" -> groupLevelElectionsJson,
-    "ukCompanies" -> Seq(ukCompanyJson)
+    "agentDetails"              -> agentDetailsJson,
+    "reportingCompany"          -> reportingCompanyJson,
+    "publicInfrastructure"      -> true,
+    "groupCompanyDetails"       -> groupCompanyDetailsJson,
+    "submissionType"            -> Json.toJson[SubmissionType](Revised),
+    "angie"                     -> 1.1,
+    "revisedReturnDetails"      -> "revised details",
+    "groupLevelElections"       -> groupLevelElectionsJson,
+    "ukCompanies"               -> Seq(ukCompanyJson)
   )
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,41 +22,39 @@ import v1.models.{CompanyNameModel, UTRModel}
 
 class PartnershipValidatorSpec extends BaseValidationSpec {
 
-  implicit val path = JsPath \ "some" \ "path"
+  implicit val path: JsPath = JsPath \ "some" \ "path"
 
-  "Partnership" when {
-
-    "Return valid" when {
-
-      "isElected is true and no partnership names are given" in {
-        val model = partnershipModel.copy(CompanyNameModel(partnerName))
-        model.validate.toEither.right.get shouldBe model
-      }
-    }
-
-    "Return invalid" when {
-
-      "Partnership Name" when {
-        "is greater than 160" in {
-          val model = partnershipModel.copy(partnershipName = CompanyNameModel("a" * (32767 + 1)))
-
-          model.validate.toEither.left.get.head.errorMessage shouldBe CompanyNameLengthError(
-            "a" * (32767 + 1)
-          ).errorMessage
+  "PartnershipValidator" when {
+    ".validate" should {
+      "return the valid model" when {
+        "partnership name supplied is valid" in {
+          val model = partnershipModel.copy(CompanyNameModel(partnerName))
+          rightSide(model.validate) shouldBe model
         }
 
-        "isElected is true and partnership names are given" in {
-          val model = partnershipModel.copy(partnershipName = CompanyNameModel(""))
-          model.validate.toEither.left.get.head.errorMessage shouldBe CompanyNameLengthError("").errorMessage
+        "sautr is not supplied" in {
+          val model = partnershipModel.copy(sautr = None)
+          rightSide(model.validate) shouldBe model
         }
-
       }
 
-      "sautr" when {
-        "is populated and invalid" in {
+      "return appropriate error message" when {
+        "the length of the partnership name" which {
+          "is supplied is greater than 160" in {
+            val model = partnershipModel.copy(partnershipName = CompanyNameModel("a" * (32767 + 1)))
+            leftSideError(model.validate).errorMessage shouldBe CompanyNameLengthError("a" * (32767 + 1)).errorMessage
+          }
+
+          "is supplied is less than 1" in {
+            val model = partnershipModel.copy(partnershipName = CompanyNameModel(""))
+            leftSideError(model.validate).errorMessage shouldBe CompanyNameLengthError("").errorMessage
+          }
+        }
+
+        "sautr supplied is invalid" in {
           val utr   = UTRModel("11234567890")
           val model = partnershipModel.copy(sautr = Some(utr))
-          model.validate.toEither.left.get.head.errorMessage shouldBe UTRLengthError(utr).errorMessage
+          leftSideError(model.validate).errorMessage shouldBe UTRLengthError(utr).errorMessage
         }
       }
     }

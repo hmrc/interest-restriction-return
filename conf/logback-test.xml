@@ -2,7 +2,7 @@
 <configuration>
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>logs/cest-frontend.log</file>
+        <file>logs/interest-restriction-return.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>[%highlight(%.-4level)] %message %replace(exception=[%xException]){'^exception=\[\]$',''} %date{ISO8601} %n</pattern>
         </encoder>
@@ -52,12 +52,17 @@
 
     <logger name="application" level="ERROR"/>
 
+    <logger name="routing" level="DEBUG"/>
+
+    <logger name="v1.connectors" level="DEBUG"/>
+
+    <logger name="v1.controllers" level="DEBUG"/>
+
     <logger name="connector" level="ERROR">
         <appender-ref ref="STDOUT"/>
     </logger>
 
     <root level="ERROR">
         <appender-ref ref="FILE"/>
-        <appender-ref ref="STDOUT"/>
     </root>
 </configuration>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,12 @@ import org.scalatest.TryValues._
 import play.api.libs.json.{JsPath, JsResultException, JsString, JsonValidationError}
 
 import scala.util.Try
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
+import utils.BaseSpec
 
-class ElectionsSpec extends AnyWordSpec with Matchers {
-  "ElectionDecision" should {
-    "valid" when {
+class ElectionsSpec extends BaseSpec {
+
+  "Elections" should {
+    "be valid" when {
       "groupRatioBlended is entered" in {
         val json   = JsString("groupRatioBlended")
         val result = Try(json.as[Elections])
@@ -62,7 +62,7 @@ class ElectionsSpec extends AnyWordSpec with Matchers {
       }
     }
 
-    "invalid" when {
+    "be invalid" when {
       "an incorrect value is entered" in {
         val json   = JsString("Something incorrect")
         val result = Try(json.as[Elections])

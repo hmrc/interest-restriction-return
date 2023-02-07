@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,30 +16,30 @@
 
 package assets
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import assets.AllocatedReactivationsITConstants._
+
 object UkCompanyITConstants extends BaseITConstants {
 
-
   val netTaxInterestExpense: BigDecimal = 0
-  val netTaxInterestIncome: BigDecimal = 2.22
-  val taxEBITDA: BigDecimal = 3.33
+  val netTaxInterestIncome: BigDecimal  = 2.22
+  val taxEBITDA: BigDecimal             = 3.33
 
-  val ukCompanyJson = Json.obj(
+  val ukCompanyJson: JsObject = Json.obj(
     "companyName" -> companyName,
-    "utr" -> ctutr,
-    "consenting" -> true,
+    "utr"         -> ctutr,
+    "consenting"  -> true,
     "qicElection" -> false
   )
 
-  val ukCompanyFullJson = Json.obj(
-    "companyName" -> companyName,
-    "utr" -> ctutr,
-    "consenting" -> true,
-    "qicElection" -> false,
-    "netTaxInterestExpense" -> netTaxInterestExpense,
-    "netTaxInterestIncome" -> netTaxInterestIncome,
-    "taxEBITDA" -> taxEBITDA,
+  val ukCompanyFullJson: JsObject = Json.obj(
+    "companyName"            -> companyName,
+    "utr"                    -> ctutr,
+    "consenting"             -> true,
+    "qicElection"            -> false,
+    "netTaxInterestExpense"  -> netTaxInterestExpense,
+    "netTaxInterestIncome"   -> netTaxInterestIncome,
+    "taxEBITDA"              -> taxEBITDA,
     "allocatedReactivations" -> allocatedReactivationsJson
   )
 }

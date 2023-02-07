@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import play.api.libs.json.{JsPath, Json}
+import play.api.libs.json.{JsPath, JsValue, Json}
 import v1.models.Validation.ValidationResult
 import v1.models.{UltimateParentModel, Validation}
 
@@ -74,20 +74,20 @@ trait UltimateParentValidator extends BaseValidation {
 
 case class UltimateParentWrongDetailsSuppliedError(model: UltimateParentModel)(implicit val path: JsPath)
     extends Validation {
-  val code                 = "ULTIMATE_PARENT_DETAILS"
-  val errorMessage: String = "Ultimate parent must have either a CTUTR, a SAUTR or a country code"
-  val value                = Some(Json.toJson(model))
+  val code: String           = "ULTIMATE_PARENT_DETAILS"
+  val errorMessage: String   = "Ultimate parent must have either a CTUTR, a SAUTR or a country code"
+  val value: Option[JsValue] = Some(Json.toJson(model))
 }
 
 case class NonUKUltimateParentMissingCountryOfIncorporation(model: UltimateParentModel)(implicit val path: JsPath)
     extends Validation {
-  val code                 = "ULTIMATE_PARENT_COUNTRY"
-  val errorMessage: String = "Enter a country of incorporation where the ultimate parent is non-UK"
-  val value                = Some(Json.toJson(model))
+  val code: String           = "ULTIMATE_PARENT_COUNTRY"
+  val errorMessage: String   = "Enter a country of incorporation where the ultimate parent is non-UK"
+  val value: Option[JsValue] = Some(Json.toJson(model))
 }
 
 case class UKParentMissingUTR(model: UltimateParentModel)(implicit val path: JsPath) extends Validation {
-  val code                 = "ULTIMATE_PARENT_UTR"
-  val errorMessage: String = "Enter a UTR where the ultimate parent is UK"
-  val value                = Some(Json.toJson(model))
+  val code: String           = "ULTIMATE_PARENT_UTR"
+  val errorMessage: String   = "Enter a UTR where the ultimate parent is UK"
+  val value: Option[JsValue] = Some(Json.toJson(model))
 }

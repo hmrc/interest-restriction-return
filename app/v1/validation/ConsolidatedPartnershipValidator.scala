@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import play.api.libs.json.{JsPath, Json}
+import play.api.libs.json.{JsPath, JsValue, Json}
 import v1.models.Validation.ValidationResult
 import v1.models.{ConsolidatedPartnershipModel, PartnershipModel, Validation}
 
@@ -62,27 +62,27 @@ trait ConsolidatedPartnershipValidator extends BaseValidation {
 case class ConsolidatedPartnershipsSupplied(consolidatedPartnershipModel: ConsolidatedPartnershipModel)(implicit
   val topPath: JsPath
 ) extends Validation {
-  val code                 = "PARTNERSHIPS_SUPPLIED"
-  val errorMessage: String =
+  val code: String           = "PARTNERSHIPS_SUPPLIED"
+  val errorMessage: String   =
     "Interest allowance (consolidated partnerships) election not made, so no details of consolidated partnership needed"
-  val path: JsPath         = topPath \ "consolidatedPartnership"
-  val value                = Some(Json.toJson(consolidatedPartnershipModel))
+  val path: JsPath           = topPath \ "consolidatedPartnership"
+  val value: Option[JsValue] = Some(Json.toJson(consolidatedPartnershipModel))
 }
 
 case class ConsolidatedPartnershipsNotSupplied(consolidatedPartnershipModel: ConsolidatedPartnershipModel)(implicit
   val topPath: JsPath
 ) extends Validation {
-  val code                 = "PARTNERSHIPS_NOT_SUPPLIED"
-  val errorMessage: String =
+  val code: String           = "PARTNERSHIPS_NOT_SUPPLIED"
+  val errorMessage: String   =
     "Interest allowance (consolidated partnerships) election made, enter details of at least 1 consolidated partnership"
-  val path: JsPath         = topPath \ "consolidatedPartnership"
-  val value                = Some(Json.toJson(consolidatedPartnershipModel))
+  val path: JsPath           = topPath \ "consolidatedPartnership"
+  val value: Option[JsValue] = Some(Json.toJson(consolidatedPartnershipModel))
 }
 
 case class ConsolidatedPartnershipsEmpty()(implicit val topPath: JsPath) extends Validation {
-  val code                 = "PARTNERSHIPS_EMPTY"
-  val errorMessage: String =
+  val code: String           = "PARTNERSHIPS_EMPTY"
+  val errorMessage: String   =
     "Interest allowance (consolidated partnerships) election made, enter details of at least 1 consolidated partnership"
-  val path: JsPath         = topPath \ "consolidatedPartnership"
-  val value                = None
+  val path: JsPath           = topPath \ "consolidatedPartnership"
+  val value: Option[JsValue] = None
 }

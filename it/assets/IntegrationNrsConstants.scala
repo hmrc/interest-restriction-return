@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,8 +31,8 @@ import java.util.UUID
 
 object IntegrationNrsConstants {
 
-  val jsonPayload =
-  """
+  val jsonPayload: String =
+    """
   {
     "something": "true"
   }
@@ -40,46 +40,47 @@ object IntegrationNrsConstants {
 
   val responsePayload: JsValue = Json.toJson(NrSubmissionId(UUID.randomUUID()))
 
-  val nrsInternalIdValue: String = "internalId"
-  val nrsExternalIdValue: String = "externalId"
-  val nrsAgentCodeValue: String = "agentCode"
-  val nrsCredentials: Option[Credentials] = Some(Credentials(providerId= "providerId", providerType= "providerType"))
+  val nrsInternalIdValue: String                    = "internalId"
+  val nrsExternalIdValue: String                    = "externalId"
+  val nrsAgentCodeValue: String                     = "agentCode"
+  val nrsCredentials: Option[Credentials]           = Some(Credentials(providerId = "providerId", providerType = "providerType"))
   val nrsConfidenceLevel: ConfidenceLevel.L500.type = ConfidenceLevel.L500
-  val nrsNinoValue: String = "ninov"
-  val nrsSaUtrValue: String = "saUtr"
-  val nrsNameValue: Option[Name] = Some(Name(Some("name"), Some("lastname")))
-  val TWENTY_FIVE = 25
-  val nrsDateOfBirth: Option[LocalDate] = Some(LocalDate.now().minusYears(TWENTY_FIVE))
-  val nrsEmailValue: Option[String] = Some("nrsEmailValue")
-  val nrsAgentInformationValue: AgentInformation = AgentInformation(Some("agentId"),
-                                                  Some("agentCode"),
-                                                  Some("agentFriendlyName"))
-  val nrsGroupIdentifierValue = Some("groupIdentifierValue")
-  val nrsCredentialRole = Some(User)
-  val nrsMdtpInformation = MdtpInformation("deviceId", "sessionId")
-  val nrsItmpName = Some(ItmpName(Some("givenName"),
-                            Some("middleName"),
-                            Some("familyName")))
-  val nrsItmpAddress = Some(ItmpAddress(Some("line1"),
-                                  Some("line2"),
-                                  Some("line3"),
-                                  Some("line4"),
-                                  Some("line5"),
-                                  Some("postCode"),
-                                  Some("countryName"),
-                                  Some("countryCode")))
-  val nrsAffinityGroup = Some(AffinityGroup.Organisation)
-  val nrsCredentialStrength = Some("STRONG")
+  val nrsNinoValue: String                          = "ninov"
+  val nrsSaUtrValue: String                         = "saUtr"
+  val nrsNameValue: Option[Name]                    = Some(Name(Some("name"), Some("lastname")))
+  val TWENTY_FIVE: Int                              = 25
+  val nrsDateOfBirth: Option[LocalDate]             = Some(LocalDate.now().minusYears(TWENTY_FIVE))
+  val nrsEmailValue: Option[String]                 = Some("nrsEmailValue")
+  val nrsAgentInformationValue: AgentInformation    =
+    AgentInformation(Some("agentId"), Some("agentCode"), Some("agentFriendlyName"))
+  val nrsGroupIdentifierValue: Option[String]       = Some("groupIdentifierValue")
+  val nrsCredentialRole: Option[User.type]          = Some(User)
+  val nrsMdtpInformation: MdtpInformation           = MdtpInformation("deviceId", "sessionId")
+  val nrsItmpName: Option[ItmpName]                 = Some(ItmpName(Some("givenName"), Some("middleName"), Some("familyName")))
+  val nrsItmpAddress: Option[ItmpAddress]           = Some(
+    ItmpAddress(
+      Some("line1"),
+      Some("line2"),
+      Some("line3"),
+      Some("line4"),
+      Some("line5"),
+      Some("postCode"),
+      Some("countryName"),
+      Some("countryCode")
+    )
+  )
+  val nrsAffinityGroup: Option[AffinityGroup.Organisation.type] = Some(AffinityGroup.Organisation)
+  val nrsCredentialStrength: Option[String]                     = Some("STRONG")
 
-  val CURRENT_TIME_IN_MILLIS = 1530442800000L
-  val PREVIOUS_TIME_IN_MILLIS = 1530464400000L
-  val NRS_TIMESTAMP_IN_MILLIS = 1530475200000L
-  val currentLoginTime: Instant = Instant.ofEpochSecond(CURRENT_TIME_IN_MILLIS)
+  val CURRENT_TIME_IN_MILLIS: Long  = 1530442800000L
+  val PREVIOUS_TIME_IN_MILLIS: Long = 1530464400000L
+  val NRS_TIMESTAMP_IN_MILLIS: Long = 1530475200000L
+  val currentLoginTime: Instant  = Instant.ofEpochSecond(CURRENT_TIME_IN_MILLIS)
   val previousLoginTime: Instant = Instant.ofEpochSecond(PREVIOUS_TIME_IN_MILLIS)
 
-  val nrsLoginTimes = LoginTimes(currentLoginTime, Some(previousLoginTime))
+  val nrsLoginTimes: LoginTimes = LoginTimes(currentLoginTime, Some(previousLoginTime))
 
-  val nrsRetrievalData = NrsRetrievalData(
+  val nrsRetrievalData: NrsRetrievalData = NrsRetrievalData(
     internalId = Some(nrsInternalIdValue),
     externalId = Some(nrsExternalIdValue),
     agentCode = Some(nrsAgentCodeValue),
@@ -102,7 +103,7 @@ object IntegrationNrsConstants {
     loginTimes = nrsLoginTimes
   )
 
-  val metadata = NrsMetadata(
+  val metadata: NrsMetadata = NrsMetadata(
     businessId = "irr",
     notableEvent = "irr-submission",
     payloadContentType = "application/json",
@@ -114,40 +115,74 @@ object IntegrationNrsConstants {
     searchKeys = JsObject(Map[String, JsValue]("searchKey" -> JsString("searchValue")))
   )
 
-  val payload = NrsPayload(
+  val payload: NrsPayload = NrsPayload(
     payload = jsonPayload,
     metadata = metadata
   )
 
-  def sha256Hash(text: String) : String =  {
+  def sha256Hash(text: String): String =
     format("%064x", new BigInteger(1, getInstance("SHA-256").digest(text.getBytes("UTF-8"))))
-  }
 
-  type NrsRetrievalDataType = Option[String] ~ Option[String] ~ Option[String] ~ Option[Credentials] ~ ConfidenceLevel ~ Option[String] ~
-    Option[String] ~ Option[Name] ~ Option[LocalDate] ~ Option[String] ~ AgentInformation ~ Option[String] ~
-    Option[CredentialRole] ~ Option[MdtpInformation] ~ Option[ItmpName] ~ Option[LocalDate] ~ Option[ItmpAddress] ~
-    Option[AffinityGroup] ~ Option[String] ~ LoginTimes
+  type NrsRetrievalDataType =
+    Option[String] ~ Option[String] ~ Option[String] ~ Option[Credentials] ~ ConfidenceLevel ~ Option[String] ~
+      Option[String] ~ Option[Name] ~ Option[LocalDate] ~ Option[String] ~ AgentInformation ~ Option[String] ~
+      Option[CredentialRole] ~ Option[MdtpInformation] ~ Option[ItmpName] ~ Option[LocalDate] ~ Option[ItmpAddress] ~
+      Option[AffinityGroup] ~ Option[String] ~ LoginTimes
 
-  val fakeResponse: NrsRetrievalDataType = new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~( new ~(new ~(
-    Some(nrsInternalIdValue),
-    Some(nrsExternalIdValue)),
-    Some(nrsAgentCodeValue)),
-    nrsCredentials),
-    nrsConfidenceLevel),
-    Some(nrsNinoValue)),
-    Some(nrsSaUtrValue)),
-    nrsNameValue),
-    nrsDateOfBirth),
-    nrsEmailValue),
-    nrsAgentInformationValue),
-    nrsGroupIdentifierValue),
-    nrsCredentialRole),
-    Some(nrsMdtpInformation)),
-    nrsItmpName),
-    nrsDateOfBirth),
-    nrsItmpAddress),
-    nrsAffinityGroup),
-    nrsCredentialStrength),
-    nrsLoginTimes)
-  
+  val fakeResponse: NrsRetrievalDataType = new ~(
+    new ~(
+      new ~(
+        new ~(
+          new ~(
+            new ~(
+              new ~(
+                new ~(
+                  new ~(
+                    new ~(
+                      new ~(
+                        new ~(
+                          new ~(
+                            new ~(
+                              new ~(
+                                new ~(
+                                  new ~(
+                                    new ~(
+                                      new ~(Some(nrsInternalIdValue), Some(nrsExternalIdValue)),
+                                      Some(nrsAgentCodeValue)
+                                    ),
+                                    nrsCredentials
+                                  ),
+                                  nrsConfidenceLevel
+                                ),
+                                Some(nrsNinoValue)
+                              ),
+                              Some(nrsSaUtrValue)
+                            ),
+                            nrsNameValue
+                          ),
+                          nrsDateOfBirth
+                        ),
+                        nrsEmailValue
+                      ),
+                      nrsAgentInformationValue
+                    ),
+                    nrsGroupIdentifierValue
+                  ),
+                  nrsCredentialRole
+                ),
+                Some(nrsMdtpInformation)
+              ),
+              nrsItmpName
+            ),
+            nrsDateOfBirth
+          ),
+          nrsItmpAddress
+        ),
+        nrsAffinityGroup
+      ),
+      nrsCredentialStrength
+    ),
+    nrsLoginTimes
+  )
+
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,12 +21,10 @@ import cats.implicits._
 import play.api.libs.json.{JsPath, JsString}
 import utils.BaseSpec
 import v1.models.Validation
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
 
-class BaseValidationSpec extends AnyWordSpec with Matchers with BaseSpec {
+class BaseValidationSpec extends BaseSpec {
 
-  implicit val topPath = JsPath \ "path"
+  implicit val topPath: JsPath = JsPath \ "path"
 
   case class TestError()(implicit topPath: JsPath) extends Validation {
     val code                    = "CODE_BAD"
@@ -42,7 +40,7 @@ class BaseValidationSpec extends AnyWordSpec with Matchers with BaseSpec {
     val value: Option[JsString] = Some(JsString("bad1"))
   }
 
-  val baseValidation = new BaseValidation {}
+  val baseValidation: BaseValidation = new BaseValidation {}
 
   "combineValidations" should {
     "return a single v1.validation if there are no errors" in {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,5 +37,7 @@ trait MockAppConfig extends MockFactory {
     def nrsUrl: CallHandler[Option[String]]                = (mockAppConfig.nrsUrl _: () => Option[String]).expects()
     def nrsAuthorisationToken: CallHandler[Option[String]] =
       (mockAppConfig.nrsAuthorisationToken _: () => Option[String]).expects()
+    def apiStatus(status: String): CallHandler[String]     = (mockAppConfig.apiStatus: String => String).expects(status)
+    def endpointsEnabled: CallHandler[Boolean]             = (mockAppConfig.endpointsEnabled _: () => Boolean).expects()
   }
 }

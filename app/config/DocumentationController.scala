@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,11 +36,4 @@ class DocumentationController @Inject() (
 
   def specification(version: String, file: String): Action[AnyContent] =
     assets.at(s"/public/api/conf/$version", file)
-
-  def documentation(version: String, endpointName: String): Action[AnyContent] =
-    assets.at(s"/public/api/documentation/$version", s"${endpointName.replaceAll(" ", "-")}.xml")
-
-  def conf(version: String, file: String): Action[AnyContent] =
-    assets.at(s"/public/api/conf/$version", file)
-
 }

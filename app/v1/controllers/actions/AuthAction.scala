@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,79 +63,23 @@ class AuthAction @Inject() (
           .copy(authorization = Some(Authorization(authHeader)))
         retrievalData(request, block)
       case _                =>
-        logger.warn(s"An error occurred during auth action: No Authorization header provided")
+        logger.warn("An error occurred during auth action: No Authorization header provided")
         Future.successful(Unauthorized)
     }
 
   private def retrievalData[A](request: Request[A], block: IdentifierRequest[A] => Future[Result])(implicit
     hc: HeaderCarrier
   ): Future[Result] = (if (appConfig.nrsEnabled) {
-                         authorised().retrieve(nrsRetrievals) {
-                           case internalId ~ externalId ~ agentCode ~ credentials ~ confidenceLevel ~ nino ~ saUtr ~ name ~
-                               dateOfBirth ~ email ~ agentInformation ~ groupIdentifier ~ credentialRole ~ mdtpInformation ~
-                               itmpName ~ itmpDateOfBirth ~ itmpAddress ~ affinityGroup ~ credentialStrength ~ loginTimes =>
-                             val data = NrsRetrievalData(
-                               internalId,
-                               externalId,
-                               agentCode,
-                               credentials,
-                               confidenceLevel,
-                               nino,
-                               saUtr,
-                               name,
-                               dateOfBirth,
-                               email,
-                               agentInformation,
-                               groupIdentifier,
-                               credentialRole,
-                               mdtpInformation,
-                               itmpName,
-                               itmpDateOfBirth,
-                               itmpAddress,
-                               affinityGroup,
-                               credentialStrength,
-                               loginTimes
-                             )
-                             credentialMap(request, block, credentials, data, affinityGroup)
-
-                           case _ => authorisedRetrievalFailure
-                         }
+                         nrsRetrievalData(request, block)
                        } else {
-                         authorised().retrieve(defaultRetrievals) {
-                           case credentials ~ confidenceLevel ~ agentInformation ~ loginTimes ~ affinityGroup =>
-                             val data = NrsRetrievalData(
-                               None,
-                               None,
-                               None,
-                               credentials,
-                               confidenceLevel,
-                               None,
-                               None,
-                               None,
-                               None,
-                               None,
-                               agentInformation,
-                               None,
-                               None,
-                               None,
-                               None,
-                               None,
-                               None,
-                               affinityGroup,
-                               None,
-                               loginTimes
-                             )
-                             credentialMap(request, block, credentials, data, affinityGroup)
-
-                           case _ => authorisedRetrievalFailure
-                         }
+                         defaultRetrievalData(request, block)
                        }).recover { case e =>
     logger.error(s"An error occurred during auth action: ${e.getMessage}", e)
     Unauthorized
   }
 
   private def authorisedRetrievalFailure: Future[Result] = {
-    logger.warn(s"An error occurred during auth action: No Authorization header provided")
+    logger.warn("An error occurred during auth action: No Authorization header provided")
     Future.successful(Unauthorized)
   }
 
@@ -151,18 +95,83 @@ class AuthAction @Inject() (
         credentials
           .map(credential => block(IdentifierRequest(request, credential.providerId, retrievalData)))
           .getOrElse {
-            logger.warn(s"No Active Session")
+            logger.warn("No Active Session")
             Future.successful(Unauthorized)
           }
       case Some(Individual)                 => forbiddenIndividuals
       case _                                =>
-        logger.warn(s"User did not provide affinity group")
+        logger.warn("User did not provide affinity group")
         Future.successful(Unauthorized)
     }
 
   private def forbiddenIndividuals: Future[Result] = Future.successful {
-    logger.warn(s"User with an affinity group type of Individual tried to access IRR")
+    logger.warn("User with an affinity group type of Individual tried to access IRR")
     Forbidden(Json.toJson(ForbiddenIndividualsError()))
   }
 
+  private def nrsRetrievalData[A](request: Request[A], block: IdentifierRequest[A] => Future[Result])(implicit
+    hc: HeaderCarrier
+  ): Future[Result] =
+    authorised().retrieve(nrsRetrievals) {
+      case internalId ~ externalId ~ agentCode ~ credentials ~ confidenceLevel ~ nino ~ saUtr ~ name ~
+          dateOfBirth ~ email ~ agentInformation ~ groupIdentifier ~ credentialRole ~ mdtpInformation ~
+          itmpName ~ itmpDateOfBirth ~ itmpAddress ~ affinityGroup ~ credentialStrength ~ loginTimes =>
+        val data = NrsRetrievalData(
+          internalId,
+          externalId,
+          agentCode,
+          credentials,
+          confidenceLevel,
+          nino,
+          saUtr,
+          name,
+          dateOfBirth,
+          email,
+          agentInformation,
+          groupIdentifier,
+          credentialRole,
+          mdtpInformation,
+          itmpName,
+          itmpDateOfBirth,
+          itmpAddress,
+          affinityGroup,
+          credentialStrength,
+          loginTimes
+        )
+        credentialMap(request, block, credentials, data, affinityGroup)
+
+      case _ => authorisedRetrievalFailure
+    }
+
+  private def defaultRetrievalData[A](request: Request[A], block: IdentifierRequest[A] => Future[Result])(implicit
+    hc: HeaderCarrier
+  ): Future[Result] =
+    authorised().retrieve(defaultRetrievals) {
+      case credentials ~ confidenceLevel ~ agentInformation ~ loginTimes ~ affinityGroup =>
+        val data = NrsRetrievalData(
+          None,
+          None,
+          None,
+          credentials,
+          confidenceLevel,
+          None,
+          None,
+          None,
+          None,
+          None,
+          agentInformation,
+          None,
+          None,
+          None,
+          None,
+          None,
+          None,
+          affinityGroup,
+          None,
+          loginTimes
+        )
+        credentialMap(request, block, credentials, data, affinityGroup)
+
+      case _ => authorisedRetrievalFailure
+    }
 }

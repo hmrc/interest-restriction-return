@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,18 +30,16 @@ import v1.models.{Original, Revised, RevisedReturnDetailsModel, SubmissionType}
 
 object FullReturnConstants {
 
-  val ackRef                         = "ackRef"
-  val revisedReturnDetails           = RevisedReturnDetailsModel("some details")
-  val angie: BigDecimal              = 1.11
-  val totalReactivations: BigDecimal = ukCompanyModelReactivationMax.allocatedReactivations.foldLeft[BigDecimal](0) {
+  val ackRef: String                                  = "ackRef"
+  val revisedReturnDetails: RevisedReturnDetailsModel = RevisedReturnDetailsModel("some details")
+  val angie: BigDecimal                               = 1.11
+  val totalReactivations: BigDecimal                  = ukCompanyModelReactivationMax.allocatedReactivations.foldLeft[BigDecimal](0) {
     (total, company) => total + company.currentPeriodReactivation
   }
 
   val totalRestrictions: BigDecimal = ukCompanyModelRestrictionMax.allocatedRestrictions.foldLeft[BigDecimal](0) {
     (total, company) => total + company.totalDisallowances
   }
-
-  //These models do not pass validation. The ones that do start at Ultimate Parent
 
   val fullReturnModelMax: FullReturnModel = FullReturnModel(
     declaration = true,
@@ -185,8 +183,6 @@ object FullReturnConstants {
     "aggregateAllocatedReactivations"    -> 2
   )
 
-  // Ultimate Parent Model and Json.
-
   val fullReturnUltimateParentModel: FullReturnModel = FullReturnModel(
     declaration = true,
     appointedReportingCompany = true,
@@ -197,15 +193,14 @@ object FullReturnConstants {
     submissionType = Revised,
     revisedReturnDetails = Some(revisedReturnDetails),
     groupLevelElections = groupLevelElectionsModelMax,
-    ukCompanies =
-      Seq(ukCompanyModelReactivationMax, ukCompanyModelReactivationMax), // Net Tax Income =  2 * £30 = £60.00
+    ukCompanies = Seq(ukCompanyModelReactivationMax, ukCompanyModelReactivationMax),
     angie = angie,
     returnContainsEstimates = true,
     groupEstimateReason = Some("Some reason"),
     groupSubjectToInterestRestrictions = false,
     groupSubjectToInterestReactivation = true,
     totalRestrictions = 0,
-    groupLevelAmount = groupLevelAmountModel, //Reactivation Capactiy = £300
+    groupLevelAmount = groupLevelAmountModel,
     adjustedGroupInterest = Some(adjustedGroupInterestModel)
   )
 
@@ -237,7 +232,6 @@ object FullReturnConstants {
     "aggregateAllocatedReactivations"    -> 4
   )
 
-  // Deemed Model and Json
   val fullReturnDeemedParentModel: FullReturnModel = FullReturnModel(
     declaration = true,
     appointedReportingCompany = true,
@@ -258,8 +252,6 @@ object FullReturnConstants {
     groupLevelAmount = groupLevelAmountModel,
     adjustedGroupInterest = Some(adjustedGroupInterestModel)
   )
-
-  // Minimum Model and Json
 
   val fullReturnModelMin: FullReturnModel = FullReturnModel(
     declaration = true,

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import java.security.MessageDigest.getInstance
 
 object UnitNrsConstants {
 
-  val jsonPayload =
+  val jsonPayload: String =
     """
   {
     "something": "true"
@@ -45,16 +45,16 @@ object UnitNrsConstants {
   val nrsNinoValue: String                          = "ninov"
   val nrsSaUtrValue: String                         = "saUtr"
   val nrsNameValue: Option[Name]                    = Some(Name(Some("name"), Some("lastname")))
-  val TWENTY_FIVE                                   = 25
+  val TWENTY_FIVE: Long                             = 25
   val nrsDateOfBirth: Option[LocalDate]             = Some(LocalDate.now().minusYears(TWENTY_FIVE))
   val nrsEmailValue: Option[String]                 = Some("nrsEmailValue")
   val nrsAgentInformationValue: AgentInformation    =
     AgentInformation(Some("agentId"), Some("agentCode"), Some("agentFriendlyName"))
-  val nrsGroupIdentifierValue                       = Some("groupIdentifierValue")
-  val nrsCredentialRole                             = Some(User)
-  val nrsMdtpInformation                            = MdtpInformation("deviceId", "sessionId")
-  val nrsItmpName                                   = Some(ItmpName(Some("givenName"), Some("middleName"), Some("familyName")))
-  val nrsItmpAddress                                = Some(
+  val nrsGroupIdentifierValue: Option[String]       = Some("groupIdentifierValue")
+  val nrsCredentialRole: Option[User.type]          = Some(User)
+  val nrsMdtpInformation: MdtpInformation           = MdtpInformation("deviceId", "sessionId")
+  val nrsItmpName: Option[ItmpName]                 = Some(ItmpName(Some("givenName"), Some("middleName"), Some("familyName")))
+  val nrsItmpAddress: Option[ItmpAddress]           = Some(
     ItmpAddress(
       Some("line1"),
       Some("line2"),
@@ -67,17 +67,17 @@ object UnitNrsConstants {
     )
   )
 
-  val nrsCredentialStrength = Some("STRONG")
+  val nrsCredentialStrength: Option[String] = Some("STRONG")
 
-  val CURRENT_TIME_IN_MILLIS     = 1530442800000L
-  val PREVIOUS_TIME_IN_MILLIS    = 1530464400000L
-  val NRS_TIMESTAMP_IN_MILLIS    = 1530475200000L
-  val currentLoginTime: Instant  = Instant.ofEpochSecond(CURRENT_TIME_IN_MILLIS)
-  val previousLoginTime: Instant = Instant.ofEpochSecond(PREVIOUS_TIME_IN_MILLIS)
+  val CURRENT_TIME_IN_MILLIS: Long  = 1530442800000L
+  val PREVIOUS_TIME_IN_MILLIS: Long = 1530464400000L
+  val NRS_TIMESTAMP_IN_MILLIS: Long = 1530475200000L
+  val currentLoginTime: Instant     = Instant.ofEpochSecond(CURRENT_TIME_IN_MILLIS)
+  val previousLoginTime: Instant    = Instant.ofEpochSecond(PREVIOUS_TIME_IN_MILLIS)
 
-  val nrsLoginTimes = LoginTimes(currentLoginTime, Some(previousLoginTime))
+  val nrsLoginTimes: LoginTimes = LoginTimes(currentLoginTime, Some(previousLoginTime))
 
-  def nrsRetrievalData(nrsAffinityGroup: Option[AffinityGroup]) =
+  def nrsRetrievalData(nrsAffinityGroup: Option[AffinityGroup]): NrsRetrievalData =
     NrsRetrievalData(
       internalId = Some(nrsInternalIdValue),
       externalId = Some(nrsExternalIdValue),
@@ -101,7 +101,7 @@ object UnitNrsConstants {
       loginTimes = nrsLoginTimes
     )
 
-  def metadata(nrsAffinityGroup: Option[AffinityGroup]) = NrsMetadata(
+  def metadata(nrsAffinityGroup: Option[AffinityGroup]): NrsMetadata = NrsMetadata(
     businessId = "irr",
     notableEvent = "irr-submission",
     payloadContentType = "application/json",
@@ -113,7 +113,7 @@ object UnitNrsConstants {
     searchKeys = JsObject(Map[String, JsValue]("searchKey" -> JsString("searchValue")))
   )
 
-  def payload(nrsAffinityGroup: Option[AffinityGroup]) = NrsPayload(
+  def payload(nrsAffinityGroup: Option[AffinityGroup]): NrsPayload = NrsPayload(
     payload = jsonPayload,
     metadata = metadata(nrsAffinityGroup)
   )

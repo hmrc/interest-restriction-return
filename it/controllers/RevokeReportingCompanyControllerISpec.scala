@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,24 +18,22 @@ package controllers
 
 import assets.RevokeReportingCompanyITConstants._
 import play.api.http.Status._
+import play.api.libs.ws.WSResponse
 import stubs.{AuthStub, DESStub}
-import utils.{CreateRequestHelper, CustomMatchers, IntegrationSpecBase}
+import utils.IntegrationSpecBase
 
+import scala.concurrent.Future
 
-class RevokeReportingCompanyControllerISpec extends IntegrationSpecBase with CreateRequestHelper with CustomMatchers {
+class RevokeReportingCompanyControllerISpec extends IntegrationSpecBase {
 
   "POST /reporting-company/revoke" when {
-
     "user is authenticated" when {
-
       "request is successfully processed by DES" should {
-
-        "should return OK (200) with the correct body" in {
-
+        "return OK (200) with the correct body" in {
           AuthStub.authorised()
           DESStub.revokeReportingCompanySuccess(revokeReportingCompanyDesSuccessJson)
 
-          val res = postRequest("/reporting-company/revoke", revokeReportingCompanyJson)
+          val res: Future[WSResponse] = postRequest("/reporting-company/revoke", revokeReportingCompanyJson)
 
           whenReady(res) { result =>
             result should have(
@@ -47,13 +45,11 @@ class RevokeReportingCompanyControllerISpec extends IntegrationSpecBase with Cre
       }
 
       "error is returned from DES" should {
-
-        "should return the error" in {
-
+        "return the error" in {
           AuthStub.authorised()
           DESStub.revokeReportingCompanyError
 
-          val res = postRequest("/reporting-company/revoke", revokeReportingCompanyJson)
+          val res: Future[WSResponse] = postRequest("/reporting-company/revoke", revokeReportingCompanyJson)
 
           whenReady(res) { result =>
             result should have(
@@ -64,12 +60,11 @@ class RevokeReportingCompanyControllerISpec extends IntegrationSpecBase with Cre
       }
     }
 
-    "user is unauthenticated" when {
-
-      "should return UNAUTHORISED (401)" in {
-
+    "user is unauthenticated" should {
+      "return UNAUTHORISED (401)" in {
         AuthStub.unauthorised()
-        val res = postRequest("/reporting-company/revoke", revokeReportingCompanyJson)
+
+        val res: Future[WSResponse] = postRequest("/reporting-company/revoke", revokeReportingCompanyJson)
 
         whenReady(res) { result =>
           result should have(
@@ -81,14 +76,11 @@ class RevokeReportingCompanyControllerISpec extends IntegrationSpecBase with Cre
   }
 
   "POST /reporting-company/revoke/validate" when {
-
-    "user is authenticated" when {
-
-      "return NO_CONTENT (204) with the correct body" in {
-
+    "user is authenticated" should {
+      "return NO_CONTENT (204)" in {
         AuthStub.authorised()
 
-        val res = postRequest("/reporting-company/revoke/validate", revokeReportingCompanyJson)
+        val res: Future[WSResponse] = postRequest("/reporting-company/revoke/validate", revokeReportingCompanyJson)
 
         whenReady(res) { result =>
           verifyNoCall("/submission")
@@ -99,13 +91,11 @@ class RevokeReportingCompanyControllerISpec extends IntegrationSpecBase with Cre
       }
     }
 
-    "user is unauthenticated" when {
-
-      "should return UNAUTHORISED (401)" in {
-
+    "user is unauthenticated" should {
+      "return UNAUTHORISED (401)" in {
         AuthStub.unauthorised()
 
-        val res = postRequest("/reporting-company/revoke/validate", revokeReportingCompanyJson)
+        val res: Future[WSResponse] = postRequest("/reporting-company/revoke/validate", revokeReportingCompanyJson)
 
         whenReady(res) { result =>
           result should have(

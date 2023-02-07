@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,17 @@
 
 package v1.models
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 import v1.validation.AgentDetailsValidator
 import utils.ReadStringWithTrim.stringReads
 
 case class AgentDetailsModel(agentActingOnBehalfOfCompany: Boolean, agentName: Option[String])
     extends AgentDetailsValidator {
-  override val agentDetailsModel = this
+  override val agentDetailsModel: AgentDetailsModel = this
 }
 
 object AgentDetailsModel {
 
-  implicit val format = Json.format[AgentDetailsModel]
+  implicit val format: OFormat[AgentDetailsModel] = Json.format[AgentDetailsModel]
 
 }

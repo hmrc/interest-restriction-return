@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,17 @@
 
 package assets
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 
 object AdjustedGroupInterestITConstants {
 
-  val qngie: BigDecimal = 100
+  val qngie: BigDecimal       = 100
   val groupEBITDA: BigDecimal = 200
-  val groupRatio: BigDecimal = 50
+  val groupRatio: BigDecimal  = 50
 
-  val adjustedGroupInterestJson = Json.obj(
-    "qngie" -> qngie,
+  val adjustedGroupInterestJson: JsObject = Json.obj(
+    "qngie"       -> qngie,
     "groupEBITDA" -> groupEBITDA,
-    "groupRatio" -> groupRatio
+    "groupRatio"  -> groupRatio
   )
 }

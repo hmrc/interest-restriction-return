@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -85,13 +85,20 @@ class ErrorHandler @Inject() (
     logger.error(s"Internal server error in version 1, for (${request.method}) [${request.uri}] -> ", ex)
 
     val (status, errorCode, eventType) = ex match {
-      case _: NotFoundException      => (NOT_FOUND, NotFoundError, "ResourceNotFound")
-      case _: AuthorisationException => (UNAUTHORIZED, UnauthorisedError, "ClientError")
-      case _: JsValidationException  => (BAD_REQUEST, BadRequestError, "ServerValidationError")
-      case e: HttpException          => (e.responseCode, BadRequestError, "ServerValidationError")
-      case e: Upstream4xxResponse    => (e.reportAs, BadRequestError, "ServerValidationError")
-      case e: Upstream5xxResponse    => (e.reportAs, DownstreamError, "ServerInternalError")
-      case _                         => (INTERNAL_SERVER_ERROR, DownstreamError, "ServerInternalError")
+      case _: NotFoundException                                                                       =>
+        (NOT_FOUND, NotFoundError, "ResourceNotFound")
+      case _: AuthorisationException                                                                  =>
+        (UNAUTHORIZED, UnauthorisedError, "ClientError")
+      case _: JsValidationException                                                                   =>
+        (BAD_REQUEST, BadRequestError, "ServerValidationError")
+      case e: HttpException                                                                           =>
+        (e.responseCode, BadRequestError, "ServerValidationError")
+      case e: UpstreamErrorResponse if UpstreamErrorResponse.Upstream4xxResponse.unapply(e).isDefined =>
+        (e.reportAs, BadRequestError, "ServerValidationError")
+      case e: UpstreamErrorResponse if UpstreamErrorResponse.Upstream5xxResponse.unapply(e).isDefined =>
+        (e.reportAs, DownstreamError, "ServerInternalError")
+      case _                                                                                          =>
+        (INTERNAL_SERVER_ERROR, DownstreamError, "ServerInternalError")
     }
 
     auditConnector.sendEvent(

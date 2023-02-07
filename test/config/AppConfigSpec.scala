@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,40 +21,41 @@ import assets.AppConfigConstants._
 
 class AppConfigSpec extends BaseSpec {
 
-  "nrsUrl" should {
-    "be None when the nrs Config isn't present " in {
-      val appConfig = appConfigWithoutNrs
-      appConfig.nrsUrl shouldBe None
+  "AppConfig" when {
+    ".nrsUrl" should {
+      "be None when the nrs Config isn't present " in {
+        val appConfig = appConfigWithoutNrs
+        appConfig.nrsUrl shouldBe None
+      }
+
+      "be Some when the nrs Config is present" in {
+        val appConfig = appConfigWithNrs
+        appConfig.nrsUrl shouldBe Some("http://localhost:1111")
+      }
     }
 
-    "be Some when the nrs Config is present" in {
-      val appConfig = appConfigWithNrs
-      appConfig.nrsUrl shouldBe Some("http://localhost:1111")
+    ".nrsAuthorisationToken" should {
+      "be None when the nrs Config isn't present " in {
+        val appConfig = appConfigWithoutNrs
+        appConfig.nrsAuthorisationToken shouldBe None
+      }
+
+      "be Some when the nrs Config is present" in {
+        val appConfig = appConfigWithNrs
+        appConfig.nrsAuthorisationToken shouldBe Some("some.token")
+      }
+    }
+
+    ".nrsEnabled" should {
+      "be false when the nrs Config isn't present " in {
+        val appConfig = appConfigWithoutNrs
+        appConfig.nrsEnabled shouldBe false
+      }
+
+      "be true when the nrs Config is present" in {
+        val appConfig = appConfigWithNrs
+        appConfig.nrsEnabled shouldBe true
+      }
     }
   }
-
-  "nrsAuthorisationToken" should {
-    "be None when the nrs Config isn't present " in {
-      val appConfig = appConfigWithoutNrs
-      appConfig.nrsAuthorisationToken shouldBe None
-    }
-
-    "be Some when the nrs Config is present" in {
-      val appConfig = appConfigWithNrs
-      appConfig.nrsAuthorisationToken shouldBe Some("some.token")
-    }
-  }
-
-  "nrsEnabled" should {
-    "be false when the nrs Config isn't present " in {
-      val appConfig = appConfigWithoutNrs
-      appConfig.nrsEnabled shouldBe false
-    }
-
-    "be true when the nrs Config is present" in {
-      val appConfig = appConfigWithNrs
-      appConfig.nrsEnabled shouldBe true
-    }
-  }
-
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,13 +46,13 @@ trait CompanyNameValidator extends BaseValidation {
 }
 
 case class CompanyNameLengthError(name: String)(implicit val path: JsPath) extends Validation {
-  val code                   = "COMPANY_NAME_LENGTH"
-  val errorMessage: String   = s"Company name must be 1 to 160 characters long"
+  val code: String           = "COMPANY_NAME_LENGTH"
+  val errorMessage: String   = "Company name must be 1 to 160 characters long"
   val value: Option[JsValue] = Some(JsString(name))
 }
 
 case class CompanyNameCharactersError(name: String)(implicit val path: JsPath) extends Validation {
-  val code                   = "COMPANY_NAME_CHARACTERS"
-  val errorMessage: String   = s"Company name contains invalid characters"
+  val code: String           = "COMPANY_NAME_CHARACTERS"
+  val errorMessage: String   = "Company name contains invalid characters"
   val value: Option[JsValue] = Some(JsString(name))
 }

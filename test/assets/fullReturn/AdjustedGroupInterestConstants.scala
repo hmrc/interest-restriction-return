@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,38 +16,36 @@
 
 package assets.fullReturn
 
-import assets.BaseConstants
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import v1.models.fullReturn.AdjustedGroupInterestModel
 
-object AdjustedGroupInterestConstants extends BaseConstants {
+object AdjustedGroupInterestConstants {
 
   val qngie: BigDecimal       = 100
   val groupEBITDA: BigDecimal = 200
   val groupRatio: BigDecimal  = (qngie / groupEBITDA) * 100
 
-  val adjustedGroupInterestModel = AdjustedGroupInterestModel(
+  val adjustedGroupInterestModel: AdjustedGroupInterestModel = AdjustedGroupInterestModel(
     qngie = qngie,
     groupEBITDA = Some(groupEBITDA),
     groupRatio = groupRatio
   )
 
-  val adjustedGroupInterestJson = Json.obj(
+  val adjustedGroupInterestJson: JsObject = Json.obj(
     "qngie"       -> qngie,
     "groupEBITDA" -> groupEBITDA,
     "groupRatio"  -> groupRatio
   )
 
-  val adjustedGroupInterestModelNoEbitda = AdjustedGroupInterestModel(
+  val adjustedGroupInterestModelNoEbitda: AdjustedGroupInterestModel = AdjustedGroupInterestModel(
     qngie = qngie,
     groupEBITDA = None,
     groupRatio = groupRatio
   )
 
-  val adjustedGroupInterestJsonNoEbitda = Json.obj(
+  val adjustedGroupInterestJsonNoEbitda: JsObject = Json.obj(
     "qngie"       -> qngie,
     "groupEBITDA" -> 0,
     "groupRatio"  -> groupRatio
   )
-
 }

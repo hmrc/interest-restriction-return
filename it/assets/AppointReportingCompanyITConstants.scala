@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,23 +21,23 @@ import assets.AgentDetailsITConstants._
 import assets.AuthorisingCompanyITConstants._
 import assets.IdentityOfCompanySubmittingITConstants._
 import assets.ReportingCompanyITConstants._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 
 object AppointReportingCompanyITConstants {
 
-  val ackRef = "ackRef"
+  val ackRef: String = "ackRef"
 
-  val appointReportingCompanyJson = Json.obj(
-    "agentDetails" -> agentDetailsJson,
-    "reportingCompany" -> reportingCompanyJson,
-    "authorisingCompanies" -> Json.arr(authorisingCompanyJson),
+  val appointReportingCompanyJson: JsObject = Json.obj(
+    "agentDetails"                       -> agentDetailsJson,
+    "reportingCompany"                   -> reportingCompanyJson,
+    "authorisingCompanies"               -> Json.arr(authorisingCompanyJson),
     "isReportingCompanyAppointingItself" -> false,
-    "identityOfAppointingCompany" -> identityOfCompanySubmittingJson,
-    "accountingPeriod" -> accountingPeriodJson,
-    "declaration" -> true
+    "identityOfAppointingCompany"        -> identityOfCompanySubmittingJson,
+    "accountingPeriod"                   -> accountingPeriodJson,
+    "declaration"                        -> true
   )
 
-  val appointReportingCompanyDesSuccessJson = Json.obj(
+  val appointReportingCompanyDesSuccessJson: JsObject = Json.obj(
     "acknowledgementReference" -> ackRef
   )
 }

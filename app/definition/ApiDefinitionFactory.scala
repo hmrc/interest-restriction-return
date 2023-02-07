@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@ class ApiDefinitionFactory @Inject() (appConfig: AppConfig) extends Logging {
     APIStatus.parser
       .lift(appConfig.apiStatus(version))
       .getOrElse {
-        logger.error(s"No API Status found in config. Reverting to Alpha")
+        logger.error("No API Status found in config. Reverting to Alpha")
         APIStatus.ALPHA
       }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,9 +21,9 @@ import com.typesafe.config.ConfigFactory
 import controllers.Assets
 import definition.ApiDefinitionFactory
 import mocks.MockAppConfig
-import play.api.Configuration
+import play.api.{Application, Configuration}
 import utils.BaseSpec
-import play.api.http.{DefaultHttpErrorHandler, HttpErrorConfig, Status}
+import play.api.http.{DefaultHttpErrorHandler, HttpErrorConfig}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
 import play.api.mvc.{ControllerComponents, Result}
@@ -32,30 +32,31 @@ import scala.concurrent.Future
 
 class DocumentationControllerSpec extends BaseSpec {
 
-  val selfAssessmentApiDefinition: ApiDefinitionFactory = new ApiDefinitionFactory(TestHelper.mockConfig)
-  val controller: DocumentationController               = TestHelper.controller(selfAssessmentApiDefinition)
+  private val selfAssessmentApiDefinition: ApiDefinitionFactory = new ApiDefinitionFactory(TestHelper.mockConfig)
+  private val controller: DocumentationController               = TestHelper.controller(selfAssessmentApiDefinition)
 
-  "definition" must {
-    "return the definition file" in {
-      val expectedJson           = Json.toJson(selfAssessmentApiDefinition.definition)
-      val result: Future[Result] = controller.definition()(fakeRequest)
-      status(result)        shouldBe Status.OK
-      contentAsJson(result) shouldBe expectedJson
+  "DocumentationController" when {
+    ".definition" must {
+      "return the definition file" in {
+        val expectedJson           = Json.toJson(selfAssessmentApiDefinition.definition)
+        val result: Future[Result] = controller.definition()(fakeRequest)
+        status(result)        shouldBe OK
+        contentAsJson(result) shouldBe expectedJson
+      }
+    }
+
+    ".specification" must {
+      "return the yaml documentation" in {
+        val result: Future[Result] = controller.specification("1.0", "application.yaml")(fakeRequest)
+        val spec                   =
+          scala.io.Source
+            .fromInputStream(getClass.getResourceAsStream("/public/api/conf/1.0/application.yaml"))
+            .mkString
+        status(result)          shouldBe OK
+        contentAsString(result) shouldBe spec
+      }
     }
   }
-
-  "specification" must {
-    "return the yaml documentation" in {
-      val result: Future[Result] = controller.specification("1.0", "application.yaml")(fakeRequest)
-      val spec                   =
-        scala.io.Source
-          .fromInputStream(getClass().getResourceAsStream("/public/api/conf/1.0/application.yaml"))
-          .mkString
-      status(result)          shouldBe Status.OK
-      contentAsString(result) shouldBe spec
-    }
-  }
-
 }
 
 object TestHelper extends MockAppConfig {
@@ -73,7 +74,7 @@ object TestHelper extends MockAppConfig {
 
   lazy val errorHandler = new DefaultHttpErrorHandler(HttpErrorConfig(showDevErrors = false, None), None, None)
 
-  lazy val fakeApplication =
+  lazy val fakeApplication: Application =
     new GuiceApplicationBuilder()
       .configure(
         Configuration(

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,11 +21,11 @@ import v1.models.{CompanyNameModel, ConsolidatedPartnershipModel, PartnershipMod
 
 class ConsolidatedPartnershipValidatorSpec extends BaseValidationSpec {
 
-  val sautrFake = UTRModel("1123456789")
+  private val sautrFake: UTRModel = UTRModel("1123456789")
 
-  implicit val path = JsPath \ "some" \ "path"
+  implicit val path: JsPath = JsPath \ "some" \ "path"
 
-  "Consolidated Partnership" when {
+  "ConsolidatedPartnershipValidator" should {
     "Return valid" when {
 
       "isElected is true and a Seq of partnerships are given" in {

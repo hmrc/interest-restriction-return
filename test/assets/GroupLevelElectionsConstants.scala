@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +19,12 @@ package assets
 import assets.ConsolidatedPartnershipConstants._
 import assets.GroupRatioConstants._
 import assets.NonConsolidatedInvestmentElectionConstants._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import v1.models.GroupLevelElectionsModel
 
 object GroupLevelElectionsConstants {
 
-  val groupLevelElectionsJsonMax = Json.obj(
+  val groupLevelElectionsJsonMax: JsObject = Json.obj(
     "groupRatio"                                    -> groupRatioJsonMax,
     "interestAllowanceAlternativeCalculation"       -> true,
     "interestAllowanceNonConsolidatedInvestment"    -> nonConsolidatedInvestmentJsonMax,
@@ -32,7 +32,7 @@ object GroupLevelElectionsConstants {
     "activeInterestAllowanceAlternativeCalculation" -> true
   )
 
-  val groupLevelElectionsModelMax = GroupLevelElectionsModel(
+  val groupLevelElectionsModelMax: GroupLevelElectionsModel = GroupLevelElectionsModel(
     groupRatio = groupRatioModelMax,
     interestAllowanceAlternativeCalculation = true,
     interestAllowanceNonConsolidatedInvestment = nonConsolidatedInvestmentModelMax,
@@ -40,7 +40,7 @@ object GroupLevelElectionsConstants {
     activeInterestAllowanceAlternativeCalculation = true
   )
 
-  val groupLevelElectionsJsonMin = Json.obj(
+  val groupLevelElectionsJsonMin: JsObject = Json.obj(
     "groupRatio"                                    -> groupRatioJsonMin,
     "interestAllowanceAlternativeCalculation"       -> true,
     "interestAllowanceNonConsolidatedInvestment"    -> nonConsolidatedInvestmentJsonMin,
@@ -48,7 +48,7 @@ object GroupLevelElectionsConstants {
     "activeInterestAllowanceAlternativeCalculation" -> true
   )
 
-  val groupLevelElectionsModelMin = GroupLevelElectionsModel(
+  val groupLevelElectionsModelMin: GroupLevelElectionsModel = GroupLevelElectionsModel(
     groupRatio = groupRatioModelMin,
     interestAllowanceAlternativeCalculation = true,
     interestAllowanceNonConsolidatedInvestment = nonConsolidatedInvestmentModelMin,

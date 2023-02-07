@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,11 +25,11 @@ import v1.models.{CompanyNameModel, NonConsolidatedInvestmentModel, PartnershipM
 
 class GroupLevelElectionValidatorSpec extends BaseValidationSpec {
 
-  val sautrFake = UTRModel("1234567890")
+  private val sautrFake: UTRModel = UTRModel("1234567890")
 
-  implicit val path = JsPath \ "some" \ "path"
+  implicit val path: JsPath = JsPath \ "some" \ "path"
 
-  "Group Level Election Validation" when {
+  "GroupLevelElectionValidator" should {
 
     "Return Valid" when {
 
@@ -37,7 +37,7 @@ class GroupLevelElectionValidatorSpec extends BaseValidationSpec {
         rightSide(groupLevelElectionsModelMax.validate) shouldBe groupLevelElectionsModelMax
       }
 
-      "groupRatio vaidation doesnt flag errors" in {
+      "groupRatio validation doesn't flag errors" in {
         val model = groupLevelElectionsModelMax.copy(
           groupRatio = groupRatioModelMax.copy(
             isElected = false,

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,27 +17,29 @@
 package assets
 
 import assets.NonConsolidatedInvestmentConstants._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import v1.models.NonConsolidatedInvestmentElectionModel
 
 object NonConsolidatedInvestmentElectionConstants {
 
-  val nonConsolidatedInvestmentModelMax = NonConsolidatedInvestmentElectionModel(
-    isElected = true,
-    nonConsolidatedInvestments = Some(Seq(nonConsolidatedModel))
-  )
+  val nonConsolidatedInvestmentModelMax: NonConsolidatedInvestmentElectionModel =
+    NonConsolidatedInvestmentElectionModel(
+      isElected = true,
+      nonConsolidatedInvestments = Some(Seq(nonConsolidatedModel))
+    )
 
-  val nonConsolidatedInvestmentJsonMax = Json.obj(
+  val nonConsolidatedInvestmentJsonMax: JsObject = Json.obj(
     "isElected"                  -> true,
     "nonConsolidatedInvestments" -> Json.arr(nonConsolidatedJson)
   )
 
-  val nonConsolidatedInvestmentModelMin = NonConsolidatedInvestmentElectionModel(
-    isElected = false,
-    nonConsolidatedInvestments = None
-  )
+  val nonConsolidatedInvestmentModelMin: NonConsolidatedInvestmentElectionModel =
+    NonConsolidatedInvestmentElectionModel(
+      isElected = false,
+      nonConsolidatedInvestments = None
+    )
 
-  val nonConsolidatedInvestmentJsonMin = Json.obj(
+  val nonConsolidatedInvestmentJsonMin: JsObject = Json.obj(
     "isElected" -> false
   )
 }

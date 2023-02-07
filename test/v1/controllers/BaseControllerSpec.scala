@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,52 +16,91 @@
 
 package v1.controllers
 
+import assets.appointReportingCompany.AppointReportingCompanyConstants._
 import javax.inject.Inject
-import play.api.libs.json.{Format, Json}
+import play.api.http.Status._
+import play.api.libs.json.{JsObject, Json}
 import play.api.mvc._
-import play.api.test.Helpers
+import play.api.test.{FakeRequest, Helpers}
 import utils.BaseSpec
 import play.api.mvc.Results.Ok
+import v1.models.appointReportingCompany.AppointReportingCompanyModel
+
 import scala.concurrent.Future
 
 class BaseControllerSpec extends BaseSpec {
 
-  case class DummyModel(x: String, y: String)
-  object DummyModel {
-    implicit val fmt: Format[DummyModel] = Json.format[DummyModel]
-  }
-
   class DummyController @Inject() (override val controllerComponents: ControllerComponents) extends BaseController
   object TestBaseController extends DummyController(Helpers.stubControllerComponents())
 
-  val validJsonRequest   = fakeRequest.withBody(Json.obj("x" -> "foo", "y" -> "bar"))
-  val invalidJsonRequest = fakeRequest.withBody(Json.obj("x" -> "foo"))
+  class WithJsonBodyTest(json: JsObject) {
+    val request: FakeRequest[JsObject] = fakeRequest.withBody(json)
 
-  "BaseController.withJsonBody" should {
+    val result: Future[Result] = TestBaseController
+      .withJsonBody[AppointReportingCompanyModel](_ => Future.successful(Ok("Success")))(
+        request,
+        implicitly,
+        implicitly
+      )
+  }
 
-    "if provided with a valid JSON body" should {
+  class HandleValidationTest(model: AppointReportingCompanyModel) {
 
-      "return an OK" in {
+    val result: Future[Result] = TestBaseController
+      .handleValidation[AppointReportingCompanyModel](model.validate)(_ => Future.successful(Ok("Success")))
+  }
 
-        val actual: Future[Result] = TestBaseController
-          .withJsonBody[DummyModel](_ => Future.successful(Ok("Success")))(validJsonRequest, implicitly, implicitly)
+  "BaseController" when {
+    ".withJsonBody" should {
+      "return OK with the correct result" when {
+        "the body is a valid JSON and matches the model" in new WithJsonBodyTest(appointReportingCompanyJsonMax) {
+          status(result)        shouldBe OK
+          await(bodyOf(result)) shouldBe "Success"
+        }
+      }
 
-        await(bodyOf(actual)) shouldBe "Success"
+      "return BAD_REQUEST with the appropriate error response" when {
+        "the body is a valid JSON but does not match the model" in new WithJsonBodyTest(
+          invalidAppointReportingCompanyJson
+        ) {
+          status(result)            shouldBe BAD_REQUEST
+          await(jsonBodyOf(result)) shouldBe Json.obj(
+            "path"    -> "/authorisingCompanies",
+            "code"    -> "JSON_VALIDATION_ERROR",
+            "message" -> "error.path.missing"
+          )
+        }
+      }
+
+      "return BAD_REQUEST with an exception message" when {
+        "the body cannot be parsed" in new WithJsonBodyTest(None.orNull) {
+          status(result) shouldBe BAD_REQUEST
+          intercept[Exception] {
+            await(jsonBodyOf(result))
+          }.getMessage     should include("Could not parse body due to null")
+        }
       }
     }
 
-    "if provided with an invalid JSON body" should {
+    ".handleValidation" should {
+      "return OK with the correct result" when {
+        "the validation of the model is successful" in new HandleValidationTest(appointReportingCompanyModelMax) {
+          status(result)        shouldBe OK
+          await(bodyOf(result)) shouldBe "Success"
+        }
+      }
 
-      "return `path.missing` if a mandatory property is missing" in {
-
-        val actual: Future[Result] = TestBaseController
-          .withJsonBody[DummyModel](_ => Future.successful(Ok("Success")))(invalidJsonRequest, implicitly, implicitly)
-
-        await(jsonBodyOf(actual)) shouldBe Json.obj(
-          "path"    -> "/y",
-          "code"    -> "JSON_VALIDATION_ERROR",
-          "message" -> "error.path.missing"
-        )
+      "return BAD_REQUEST with the appropriate error response" when {
+        "the validation of the model fails" in new HandleValidationTest(
+          appointReportingCompanyModelMax.copy(authorisingCompanies = Seq.empty)
+        ) {
+          status(result)            shouldBe BAD_REQUEST
+          await(jsonBodyOf(result)) shouldBe Json.obj(
+            "path"    -> "/authorisingCompanies",
+            "code"    -> "AUTHORISING_COMPANIES_EMPTY",
+            "message" -> "Enter at least 1 authorising company"
+          )
+        }
       }
     }
   }

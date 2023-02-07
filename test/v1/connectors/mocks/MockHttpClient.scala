@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,15 +36,5 @@ trait MockHttpClient extends MockFactory {
         _: ExecutionContext
       ))
       .expects(url, model, *, *, *, *, *)
-      .returns(Future.successful(response))
-
-  def mockHttpGet[A](url: String)(response: A): Unit =
-    (mockHttpClient
-      .GET[A](_: String, _: Seq[(String, String)], _: Seq[(String, String)])(
-        _: HttpReads[A],
-        _: HeaderCarrier,
-        _: ExecutionContext
-      ))
-      .expects(url, *, *, *, *, *)
       .returns(Future.successful(response))
 }

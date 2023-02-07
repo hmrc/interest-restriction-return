@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,10 +24,13 @@ import play.api.http.Status._
 import utils.BaseSpec
 import v1.models.appointReportingCompany.AppointReportingCompanyModel
 
+import scala.concurrent.Future
+
 class AppointReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec {
+
   "AppointReportingCompanyConnector.appoint" when {
     def setup(response: SubmissionResponse): AppointReportingCompanyConnector = {
-      val desUrl = "http://localhost:9262/organisations/interest-restrictions-return/appoint"
+      val desUrl: String = "http://localhost:9262/organisations/interest-restrictions-return/appoint"
       mockHttpPost[AppointReportingCompanyModel, Either[ErrorResponse, DesSuccessResponse]](
         desUrl,
         appointReportingCompanyModelMax
@@ -37,17 +40,17 @@ class AppointReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec 
 
     "appointment is successful" should {
       "return a Right(SuccessResponse)" in {
-        val connector = setup(Right(DesSuccessResponse(ackRef)))
-        val result    = connector.appoint(appointReportingCompanyModelMax)
+        val connector: AppointReportingCompanyConnector = setup(Right(DesSuccessResponse(ackRef)))
+        val result: Future[SubmissionResponse]          = connector.appoint(appointReportingCompanyModelMax)
 
         await(result) shouldBe Right(DesSuccessResponse(ackRef))
       }
     }
 
-    "update is unsuccessful" should {
+    "appointment is unsuccessful" should {
       "return a Left(UnexpectedFailure)" in {
-        val connector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-        val result    = connector.appoint(appointReportingCompanyModelMax)
+        val connector: AppointReportingCompanyConnector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
+        val result: Future[SubmissionResponse]          = connector.appoint(appointReportingCompanyModelMax)
 
         await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
       }

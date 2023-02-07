@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,37 +23,36 @@ import assets.GroupLevelAmountITConstants.groupLevelAmountJson
 import assets.GroupLevelElectionsITConstants.groupLevelElectionsJson
 import assets.ReportingCompanyITConstants._
 import assets.UkCompanyITConstants.ukCompanyFullJson
-import play.api.libs.json.Json
-import v1.models.{SubmissionType, Revised}
+import play.api.libs.json.{JsObject, Json}
+import v1.models.{Revised, SubmissionType}
 
 object FullReturnITConstants {
 
+  val ackRef: String = "ackRef"
 
-  val ackRef = "ackRef"
-
-  val fullReturnDesSuccessJson = Json.obj(
+  val fullReturnDesSuccessJson: JsObject = Json.obj(
     "acknowledgementReference" -> ackRef
   )
 
-  val fullReturnJson = Json.obj(
-    "declaration" -> true,
-    "appointedReportingCompany" -> true,
-    "agentDetails" -> agentDetailsJson,
-    "reportingCompany" -> reportingCompanyJson,
-    "publicInfrastructure" -> true,
-    "groupCompanyDetails" -> groupCompanyDetailsJson,
-    "submissionType" -> Json.toJson[SubmissionType](Revised),
-    "revisedReturnDetails" -> "some details",
-    "groupLevelElections" -> groupLevelElectionsJson,
-    "returnContainsEstimates" -> true,
-    "groupEstimateReason" -> "Some reason",
-    "ukCompanies" -> Seq(ukCompanyFullJson),
-    "angie" -> 1.1,
+  val fullReturnJson: JsObject = Json.obj(
+    "declaration"                        -> true,
+    "appointedReportingCompany"          -> true,
+    "agentDetails"                       -> agentDetailsJson,
+    "reportingCompany"                   -> reportingCompanyJson,
+    "publicInfrastructure"               -> true,
+    "groupCompanyDetails"                -> groupCompanyDetailsJson,
+    "submissionType"                     -> Json.toJson[SubmissionType](Revised),
+    "revisedReturnDetails"               -> "some details",
+    "groupLevelElections"                -> groupLevelElectionsJson,
+    "returnContainsEstimates"            -> true,
+    "groupEstimateReason"                -> "Some reason",
+    "ukCompanies"                        -> Seq(ukCompanyFullJson),
+    "angie"                              -> 1.1,
     "groupSubjectToInterestRestrictions" -> false,
     "groupSubjectToInterestReactivation" -> true,
-    "totalReactivation" -> 2.22,
-    "totalRestrictions" -> 0,
-    "groupLevelAmount" -> groupLevelAmountJson,
-    "adjustedGroupInterest" -> adjustedGroupInterestJson
+    "totalReactivation"                  -> 2.22,
+    "totalRestrictions"                  -> 0,
+    "groupLevelAmount"                   -> groupLevelAmountJson,
+    "adjustedGroupInterest"              -> adjustedGroupInterestJson
   )
 }

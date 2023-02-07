@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package assets.fullReturn
 import assets.BaseConstants
 import assets.fullReturn.AllocatedReactivationsConstants._
 import assets.fullReturn.AllocatedRestrictionsConstants._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import v1.models.fullReturn.UkCompanyModel
 
 object UkCompanyConstants extends BaseConstants {
@@ -28,7 +28,7 @@ object UkCompanyConstants extends BaseConstants {
   val netTaxInterestIncome: BigDecimal  = 50.00
   val taxEBITDA: BigDecimal             = 5.00
 
-  val ukCompanyModelMax = UkCompanyModel(
+  val ukCompanyModelMax: UkCompanyModel = UkCompanyModel(
     companyName = companyName,
     utr = ctutr,
     consenting = true,
@@ -41,7 +41,7 @@ object UkCompanyConstants extends BaseConstants {
     companyEstimateReason = None
   )
 
-  val ukCompanyJsonMax = Json.obj(
+  val ukCompanyJsonMax: JsObject = Json.obj(
     "companyName"            -> companyName,
     "utr"                    -> ctutr,
     "consenting"             -> true,
@@ -53,20 +53,20 @@ object UkCompanyConstants extends BaseConstants {
     "allocatedReactivations" -> allocatedReactivationsJson
   )
 
-  val ukCompanyModelReactivationMax = UkCompanyModel(
+  val ukCompanyModelReactivationMax: UkCompanyModel = UkCompanyModel(
     companyName = companyName,
     utr = ctutr,
     consenting = true,
     qicElection = true,
     netTaxInterestExpense = 0,
-    netTaxInterestIncome = netTaxInterestIncome, // £50
+    netTaxInterestIncome = netTaxInterestIncome,
     taxEBITDA = taxEBITDA,
     allocatedRestrictions = None,
-    allocatedReactivations = Some(allocatedReactivationsModel), // £2.00
+    allocatedReactivations = Some(allocatedReactivationsModel),
     companyEstimateReason = None
   )
 
-  val ukCompanyReactivationJsonMax = Json.obj(
+  val ukCompanyReactivationJsonMax: JsObject = Json.obj(
     "companyName"            -> companyName,
     "utr"                    -> ctutr,
     "consenting"             -> true,
@@ -77,7 +77,7 @@ object UkCompanyConstants extends BaseConstants {
     "allocatedReactivations" -> allocatedReactivationsJson
   )
 
-  val ukCompanyModelRestrictionMax = UkCompanyModel(
+  val ukCompanyModelRestrictionMax: UkCompanyModel = UkCompanyModel(
     companyName = companyName,
     utr = ctutr,
     consenting = true,
@@ -90,7 +90,7 @@ object UkCompanyConstants extends BaseConstants {
     companyEstimateReason = None
   )
 
-  val ukCompanyRestrictionJsonMax = Json.obj(
+  val ukCompanyRestrictionJsonMax: JsObject = Json.obj(
     "companyName"           -> companyName,
     "utr"                   -> ctutr,
     "consenting"            -> true,
@@ -101,7 +101,7 @@ object UkCompanyConstants extends BaseConstants {
     "allocatedRestrictions" -> allocatedRestrictionsJson
   )
 
-  val ukCompanyModelMin = UkCompanyModel(
+  val ukCompanyModelMin: UkCompanyModel = UkCompanyModel(
     companyName = companyName,
     utr = ctutr,
     consenting = true,
@@ -114,7 +114,7 @@ object UkCompanyConstants extends BaseConstants {
     companyEstimateReason = None
   )
 
-  val ukCompanyJsonMin = Json.obj(
+  val ukCompanyJsonMin: JsObject = Json.obj(
     "companyName"           -> companyName,
     "utr"                   -> ctutr,
     "consenting"            -> true,

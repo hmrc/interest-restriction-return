@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import utils.WireMockMethods
 
 object NRSStub extends WireMockMethods {
 
-  private val url = s"/submission"
+  private val url: String = "/submission"
 
   def success(response: JsValue): StubMapping =
     when(method = POST, uri = url).thenReturn(status = ACCEPTED, body = response)

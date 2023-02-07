@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,19 +51,19 @@ trait CountryCodeValidator extends BaseValidation {
 }
 
 case class CountryCodeValueError(countryCode: CountryCodeModel)(implicit val path: JsPath) extends Validation {
-  val code                   = "COUNTRY_CODE_INVALID"
-  val errorMessage: String   = s"Country code must be a valid ISO 3166-1 alpha-2 country code"
+  val code: String           = "COUNTRY_CODE_INVALID"
+  val errorMessage: String   = "Country code must be a valid ISO 3166-1 alpha-2 country code"
   val value: Option[JsValue] = Some(Json.toJson(countryCode))
 }
 
 case class CountryCodeLengthError(countryCode: CountryCodeModel)(implicit val path: JsPath) extends Validation {
-  val code                   = "COUNTRY_CODE_LENGTH"
-  val errorMessage: String   = s"Country code must be 2 letters"
+  val code: String           = "COUNTRY_CODE_LENGTH"
+  val errorMessage: String   = "Country code must be 2 letters"
   val value: Option[JsValue] = Some(Json.toJson(countryCode))
 }
 
 case class CountryCodeCantBeGB(countryCode: CountryCodeModel)(implicit val path: JsPath) extends Validation {
-  val code                   = "COUNTRY_CODE_SHOULD_NOT_BE_ENTERED"
-  val errorMessage: String   = s"Country code should not be entered if GB, use a UTR instead"
+  val code: String           = "COUNTRY_CODE_SHOULD_NOT_BE_ENTERED"
+  val errorMessage: String   = "Country code should not be entered if GB, use a UTR instead"
   val value: Option[JsValue] = Some(Json.toJson(countryCode))
 }

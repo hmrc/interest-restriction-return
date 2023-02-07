@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,7 +62,7 @@ trait DesBaseConnector extends Logging {
     response.status match {
       case CREATED =>
         logger.info(s"Successfully created with response $response")
-        logger.debug(s"Status CREATED")
+        logger.debug("Status CREATED")
         logger.debug(s"Json Response: ${response.json}")
         response.json
           .validate[DesSuccessResponse](DesSuccessResponse.fmt)

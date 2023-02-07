@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 
 package models.abbreviatedReturn
 
-import assets.BaseConstants
 import assets.abbreviatedReturn.AbbreviatedReturnConstants._
 import assets.AgentDetailsConstants._
 import assets.GroupCompanyDetailsConstants._
@@ -25,11 +24,9 @@ import play.api.libs.json.{JsObject, Json, Writes}
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
 import v1.models.{Original, SubmissionType}
 import assets.abbreviatedReturn.UkCompanyConstants._
-import utils.JsonFormatters
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
+import utils.{BaseSpec, JsonFormatters}
 
-class AbbreviatedReturnModelSpec extends AnyWordSpec with Matchers with BaseConstants with JsonFormatters {
+class AbbreviatedReturnModelSpec extends BaseSpec with JsonFormatters {
 
   implicit val abbreviatedFormatter: Writes[AbbreviatedReturnModel] = abbreviatedReturnWrites
 

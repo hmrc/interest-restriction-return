@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,35 +16,34 @@
 
 package assets
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import v1.models.AgentDetailsModel
 
 object AgentDetailsConstants {
 
-  val agentName = "some agent"
+  val agentName: String = "some agent"
 
-  val agentDetailsJsonMax = Json.obj(
+  val agentDetailsJsonMax: JsObject = Json.obj(
     "agentActingOnBehalfOfCompany" -> true,
     "agentName"                    -> agentName
   )
 
-  val agentDetailsModelMax = AgentDetailsModel(
+  val agentDetailsModelMax: AgentDetailsModel = AgentDetailsModel(
     agentActingOnBehalfOfCompany = true,
     agentName = Some(agentName)
   )
 
-  val agentDetailsJsonMin = Json.obj(
+  val agentDetailsJsonMin: JsObject = Json.obj(
     "agentActingOnBehalfOfCompany" -> false
   )
 
-  val agentDetailsModelMin = AgentDetailsModel(
+  val agentDetailsModelMin: AgentDetailsModel = AgentDetailsModel(
     agentActingOnBehalfOfCompany = false,
     agentName = None
   )
 
-  val agentDetailsJsonWhitespaceName = Json.obj(
+  val agentDetailsJsonWhitespaceName: JsObject = Json.obj(
     "agentActingOnBehalfOfCompany" -> true,
     "agentName"                    -> " some agent "
   )
-
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,9 +23,9 @@ import v1.models.{CompanyNameModel, LegalEntityIdentifierModel, UTRModel}
 
 class IdentityOfCompanySubmittingValidatorSpec extends BaseSpec {
 
-  implicit val path = JsPath \ "some" \ "path"
+  implicit val path: JsPath = JsPath \ "some" \ "path"
 
-  "Identity of Company Submitting Validation" should {
+  "IdentityOfCompanySubmittingValidator" should {
 
     "Return valid" when {
 

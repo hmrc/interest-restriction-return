@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,22 +20,22 @@ import assets.AccountingPeriodITConstants._
 import assets.AgentDetailsITConstants._
 import assets.AuthorisingCompanyITConstants._
 import assets.ReportingCompanyITConstants._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 
 object RevokeReportingCompanyITConstants {
 
-  val ackRef = "ackRef"
+  val ackRef: String = "ackRef"
 
-  val revokeReportingCompanyJson = Json.obj(
-    "agentDetails" -> agentDetailsJson,
-    "reportingCompany" -> reportingCompanyJson,
+  val revokeReportingCompanyJson: JsObject = Json.obj(
+    "agentDetails"                     -> agentDetailsJson,
+    "reportingCompany"                 -> reportingCompanyJson,
     "isReportingCompanyRevokingItself" -> true,
-    "accountingPeriod" -> accountingPeriodJson,
-    "authorisingCompanies" -> Seq(authorisingCompanyJson),
-    "declaration" -> true
+    "accountingPeriod"                 -> accountingPeriodJson,
+    "authorisingCompanies"             -> Seq(authorisingCompanyJson),
+    "declaration"                      -> true
   )
 
-  val revokeReportingCompanyDesSuccessJson = Json.obj(
+  val revokeReportingCompanyDesSuccessJson: JsObject = Json.obj(
     "acknowledgementReference" -> ackRef
   )
 }

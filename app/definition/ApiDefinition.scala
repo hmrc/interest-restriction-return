@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -73,7 +73,7 @@ case class APIDefinition(
   require(versions.nonEmpty, "at least one version is required")
   require(uniqueVersions, "version numbers must be unique")
 
-  private def uniqueVersions =
+  private def uniqueVersions: Boolean =
     !versions.map(_.version).groupBy(identity).mapValues(_.size).exists(_._2 > 1)
 }
 

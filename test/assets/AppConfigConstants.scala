@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ object AppConfigConstants {
     new AppConfigImpl(servicesConfig, config)
   }
 
-  val servicesMap = Map(
+  val servicesMap: Map[String, Map[String, String]] = Map(
     "auth" -> Map(
       "host" -> "localhost",
       "port" -> "8500"
@@ -41,21 +41,16 @@ object AppConfigConstants {
     )
   )
 
-  val nrsMap = Map(
+  val nrsMap: Map[String, String] = Map(
     "host"    -> "localhost",
     "port"    -> "1111",
     "apikey"  -> "some.token",
     "enabled" -> "true"
   )
 
-  val nrsDisabledMap = Map(
-    "enabled" -> "false"
-  )
+  val servicesMapWithNrs: Map[String, Map[String, String]] = servicesMap + ("nrs" -> nrsMap)
 
-  val servicesMapWithNrs: Map[String, Map[String, String]]         = servicesMap + ("nrs" -> nrsMap)
-  val servicesMapWithNrsDisabled: Map[String, Map[String, String]] = servicesMap + ("nrs" -> nrsDisabledMap)
-
-  def config(serviceMap: Map[String, Map[String, String]]) = Map(
+  def config(serviceMap: Map[String, Map[String, String]]): Map[String, Any] = Map(
     "api"                               -> Map(
       "1.0"             -> Map("status" -> "BETA"),
       "gateway.context" -> "organisations/interest-restriction"
@@ -64,8 +59,6 @@ object AppConfigConstants {
     "microservice.services"             -> serviceMap
   )
 
-  val appConfigWithNrs         = createAppConfig(config(servicesMapWithNrs))
-  val appConfigWithNrsDisabled = createAppConfig(config(servicesMap))
-  val appConfigWithoutNrs      = createAppConfig(config(servicesMap))
-
+  val appConfigWithNrs: AppConfig    = createAppConfig(config(servicesMapWithNrs))
+  val appConfigWithoutNrs: AppConfig = createAppConfig(config(servicesMap))
 }
