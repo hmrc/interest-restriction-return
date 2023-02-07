@@ -1,9 +1,0 @@
-[
-    {
-        "field": "/accountingPeriod/endDate",
-        "value": "2019-12-01",
-        "errors": [
-            "End Date must be after start date"
-        ]
-    }
-]
