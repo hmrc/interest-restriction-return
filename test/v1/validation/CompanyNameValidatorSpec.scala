@@ -33,7 +33,7 @@ class CompanyNameValidatorSpec extends BaseSpec {
         val model = CompanyNameModel(
           name = ""
         )
-        model.validate.toEither.left.get.head.errorMessage shouldBe CompanyNameLengthError(model.name).errorMessage
+        model.validate.toEither.left.value.head.errorMessage shouldBe CompanyNameLengthError(model.name).errorMessage
       }
 
       "company name is above the maximum length" in {
@@ -41,7 +41,7 @@ class CompanyNameValidatorSpec extends BaseSpec {
         val model = CompanyNameModel(
           name = "a" * 161
         )
-        model.validate.toEither.left.get.head.errorMessage shouldBe CompanyNameLengthError(model.name).errorMessage
+        model.validate.toEither.left.value.head.errorMessage shouldBe CompanyNameLengthError(model.name).errorMessage
       }
 
       "company name contains an invalid character" in {
@@ -49,12 +49,16 @@ class CompanyNameValidatorSpec extends BaseSpec {
           " 160 no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
 
         val model = CompanyNameModel(invalidName)
-        model.validate.toEither.left.get.head.errorMessage shouldBe CompanyNameCharactersError(model.name).errorMessage
+        model.validate.toEither.left.value.head.errorMessage shouldBe CompanyNameCharactersError(
+          model.name
+        ).errorMessage
       }
 
       "company name contains an end of line" in {
         val model = CompanyNameModel("1111\n222222")
-        model.validate.toEither.left.get.head.errorMessage shouldBe CompanyNameCharactersError(model.name).errorMessage
+        model.validate.toEither.left.value.head.errorMessage shouldBe CompanyNameCharactersError(
+          model.name
+        ).errorMessage
       }
     }
   }

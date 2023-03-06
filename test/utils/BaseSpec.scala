@@ -21,6 +21,7 @@ import akka.japi.Option.Some
 import assets.UnitNrsConstants.NrsRetrievalDataType
 import assets.{BaseConstants, UnitNrsConstants}
 import config.AppConfig
+import org.scalatest.EitherValues
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Application
@@ -39,7 +40,7 @@ import v1.services.{DateTimeService, NrsService}
 
 import scala.concurrent.ExecutionContext
 
-trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with BaseConstants {
+trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with BaseConstants with EitherValues {
 
   implicit override lazy val app: Application =
     new GuiceApplicationBuilder()
@@ -72,13 +73,13 @@ trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with Base
       )
   object UnauthorisedAction extends Unauthorised(new MissingBearerToken, bodyParsers, appConfig)
 
-  def rightSide[A](validationResult: ValidationResult[A]): A = validationResult.toEither.right.get
+  def rightSide[A](validationResult: ValidationResult[A]): A = validationResult.toEither.value
 
   def leftSideError[A](validationResult: ValidationResult[A], position: Int = 0): Validation =
-    validationResult.toEither.left.get.toChain.toList(position)
+    validationResult.toEither.left.value.toChain.toList(position)
 
   def leftSideErrorLength[A](validationResult: ValidationResult[A]): Int =
-    validationResult.toEither.left.get.toChain.length.toInt
+    validationResult.toEither.left.value.toChain.length.toInt
 
   def errorMessages(messages: String*): String = messages.mkString("|")
 }

@@ -17,15 +17,16 @@
 package v1.controllers
 
 import assets.appointReportingCompany.AppointReportingCompanyConstants._
-import javax.inject.Inject
 import play.api.http.Status._
 import play.api.libs.json.{JsObject, Json}
+import play.api.mvc.Results.Ok
 import play.api.mvc._
 import play.api.test.{FakeRequest, Helpers}
 import utils.BaseSpec
-import play.api.mvc.Results.Ok
+import v1.controllers.BaseController
 import v1.models.appointReportingCompany.AppointReportingCompanyModel
 
+import javax.inject.Inject
 import scala.concurrent.Future
 
 class BaseControllerSpec extends BaseSpec {

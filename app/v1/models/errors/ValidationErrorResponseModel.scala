@@ -36,7 +36,7 @@ object ValidationErrorResponseModel {
   val BAD_REQUEST_ERROR_CODE    = "INVALID_REQUEST"
   val BAD_REQUEST_ERROR_MESSAGE = "Request contains validation errors"
 
-  def apply(errors: Seq[(JsPath, Seq[JsonValidationError])]): ValidationErrorResponseModel = {
+  def apply(errors: Iterable[(JsPath, Iterable[JsonValidationError])]): ValidationErrorResponseModel = {
     val validationErrors = errors.flatMap { case (path, errs) =>
       errs
         .flatMap(_.messages)
@@ -51,7 +51,7 @@ object ValidationErrorResponseModel {
     errorsToValidationResponse(validationErrors)
   }
 
-  def errorsToValidationResponse(errors: Seq[ErrorResponseModel]): ValidationErrorResponseModel =
+  def errorsToValidationResponse(errors: Iterable[ErrorResponseModel]): ValidationErrorResponseModel =
     errors match {
       case error :: Nil =>
         ValidationErrorResponseModel(
@@ -65,7 +65,7 @@ object ValidationErrorResponseModel {
         ValidationErrorResponseModel(
           code = BAD_REQUEST_ERROR_CODE,
           message = BAD_REQUEST_ERROR_MESSAGE,
-          errors = Some(errors),
+          errors = Some(errors.toList),
           path = None,
           value = None
         )

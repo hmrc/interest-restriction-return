@@ -40,7 +40,7 @@ trait IntegrationSpecBase
   override implicit lazy val app: Application = new GuiceApplicationBuilder()
     .in(Environment.simple(mode = Mode.Dev))
     .configure(config)
-    .build
+    .build()
 
   private val mockHost: String = WiremockHelper.wiremockHost
   private val mockPort: String = WiremockHelper.wiremockPort.toString
