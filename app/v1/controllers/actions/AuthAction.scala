@@ -78,11 +78,6 @@ class AuthAction @Inject() (
     Unauthorized
   }
 
-  private def authorisedRetrievalFailure: Future[Result] = {
-    logger.warn("An error occurred during auth action: No Authorization header provided")
-    Future.successful(Unauthorized)
-  }
-
   private def credentialMap[A](
     request: Request[A],
     block: IdentifierRequest[A] => Future[Result],
@@ -139,8 +134,6 @@ class AuthAction @Inject() (
           loginTimes
         )
         credentialMap(request, block, credentials, data, affinityGroup)
-
-      case _ => authorisedRetrievalFailure
     }
 
   private def defaultRetrievalData[A](request: Request[A], block: IdentifierRequest[A] => Future[Result])(implicit
@@ -171,7 +164,5 @@ class AuthAction @Inject() (
           loginTimes
         )
         credentialMap(request, block, credentials, data, affinityGroup)
-
-      case _ => authorisedRetrievalFailure
     }
 }

@@ -68,7 +68,7 @@ object TestHelper extends MockAppConfig {
         |version-2.enabled = true
       """.stripMargin))))
     (mockAppConfig.apiStatus _).expects("1.0").returns("ALPHA")
-    (mockAppConfig.endpointsEnabled _).expects().returns(true)
+    (() => mockAppConfig.endpointsEnabled).expects().returns(true)
     mockAppConfig
   }
 

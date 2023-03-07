@@ -30,12 +30,12 @@ class InvestorGroupValidatorSpec extends BaseValidationSpec {
 
       "investor names given without elections" in {
         val model = investorGroupsModelMin
-        model.validate.toEither.right.get shouldBe model
+        model.validate.toEither.value shouldBe model
       }
 
       "investor names given with elections" in {
         val model = investorGroupsGroupRatioModel
-        model.validate.toEither.right.get shouldBe model
+        model.validate.toEither.value shouldBe model
       }
     }
 
@@ -45,19 +45,19 @@ class InvestorGroupValidatorSpec extends BaseValidationSpec {
 
         "Investor name is greater than 160" in {
           val model = investorGroupsGroupRatioModel.copy(groupName = CompanyNameModel("a" * (32767 + 1)))
-          model.validate.toEither.left.get.head.errorMessage shouldBe CompanyNameLengthError(
+          model.validate.toEither.left.value.head.errorMessage shouldBe CompanyNameLengthError(
             "a" * (32767 + 1)
           ).errorMessage
         }
 
         "investor name is blank" in {
           val model = investorGroupsGroupRatioModel.copy(groupName = CompanyNameModel(""))
-          model.validate.toEither.left.get.head.errorMessage shouldBe CompanyNameLengthError("").errorMessage
+          model.validate.toEither.left.value.head.errorMessage shouldBe CompanyNameLengthError("").errorMessage
         }
 
         "investor name contains invalid characters" in {
           val model = investorGroupsGroupRatioModel.copy(groupName = CompanyNameModel("ʰʲʺ£$%˦˫qw"))
-          model.validate.toEither.left.get.head.errorMessage shouldBe CompanyNameCharactersError(
+          model.validate.toEither.left.value.head.errorMessage shouldBe CompanyNameCharactersError(
             "ʰʲʺ£$%˦˫qw"
           ).errorMessage
         }

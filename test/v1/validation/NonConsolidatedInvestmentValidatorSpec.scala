@@ -29,7 +29,7 @@ class NonConsolidatedInvestmentValidatorSpec extends BaseValidationSpec {
 
       "isElected is true and no investment names are given" in {
         val model = nonConsolidatedModel.copy(investmentName = investmentName)
-        model.validate.toEither.right.get shouldBe model
+        model.validate.toEither.value shouldBe model
       }
     }
 
@@ -38,14 +38,14 @@ class NonConsolidatedInvestmentValidatorSpec extends BaseValidationSpec {
       "Investment Name" when {
         "is greater than 5000" in {
           val model = nonConsolidatedModel.copy(investmentName = "a" * (32767 + 1))
-          model.validate.toEither.left.get.head.errorMessage shouldBe NonConsolidatedInvestmentNameLengthError(
+          model.validate.toEither.left.value.head.errorMessage shouldBe NonConsolidatedInvestmentNameLengthError(
             "a" * (32767 + 1)
           ).errorMessage
         }
 
         "is zero " in {
           val model = nonConsolidatedModel.copy(investmentName = "")
-          model.validate.toEither.left.get.head.errorMessage shouldBe NonConsolidatedInvestmentNameLengthError(
+          model.validate.toEither.left.value.head.errorMessage shouldBe NonConsolidatedInvestmentNameLengthError(
             ""
           ).errorMessage
         }
@@ -55,7 +55,7 @@ class NonConsolidatedInvestmentValidatorSpec extends BaseValidationSpec {
             " 160 characters no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
 
           val model = nonConsolidatedModel.copy(investmentName = name)
-          model.validate.toEither.left.get.head.errorMessage shouldBe NonConsolidatedInvestmentNameCharacterError(
+          model.validate.toEither.left.value.head.errorMessage shouldBe NonConsolidatedInvestmentNameCharacterError(
             investmentName
           ).errorMessage
         }
@@ -63,14 +63,14 @@ class NonConsolidatedInvestmentValidatorSpec extends BaseValidationSpec {
         "contains an end of line" in {
           val name  = "\n"
           val model = nonConsolidatedModel.copy(investmentName = name)
-          model.validate.toEither.left.get.head.errorMessage shouldBe NonConsolidatedInvestmentNameCharacterError(
+          model.validate.toEither.left.value.head.errorMessage shouldBe NonConsolidatedInvestmentNameCharacterError(
             investmentName
           ).errorMessage
         }
 
         "isElected is true and no investment names are given" in {
           val model = nonConsolidatedModel.copy(investmentName = "")
-          model.validate.toEither.left.get.head.errorMessage shouldBe NonConsolidatedInvestmentNameLengthError(
+          model.validate.toEither.left.value.head.errorMessage shouldBe NonConsolidatedInvestmentNameLengthError(
             ""
           ).errorMessage
         }

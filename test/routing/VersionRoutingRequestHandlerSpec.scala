@@ -60,7 +60,7 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Inside with MockApp
 
     private val errorHandler: ErrorHandler = new ErrorHandler(configuration, auditConnector, httpAuditEvent)
     private val filters: HttpFilters       = mock[HttpFilters]
-    (filters.filters _).stubs().returns(Seq.empty)
+    (() => filters.filters).stubs().returns(Seq.empty)
 
     MockedAppConfig.featureSwitch.returns(Some(Configuration(ConfigFactory.parseString("""
         |version-1.enabled = true
@@ -84,7 +84,7 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Inside with MockApp
         case rh: RequestHeader if validPaths.contains(rh.path) => handler
       }
 
-      (router.routes _)
+      (() => router.routes)
         .expects()
         .returning(routes)
     }
