@@ -25,7 +25,7 @@ import play.api.{Application, Environment, Mode}
 import play.api.inject.guice.GuiceApplicationBuilder
 
 trait IntegrationSpecBase
-  extends AnyWordSpec
+    extends AnyWordSpec
     with GivenWhenThen
     with CreateRequestHelper
     with CustomMatchers
@@ -46,7 +46,6 @@ trait IntegrationSpecBase
   private val mockPort: String = WiremockHelper.wiremockPort.toString
 
   private def config: Map[String, Any] = Map(
-    "play.http.router"                  -> "testOnlyDoNotUseInAppConf.Routes",
     "microservice.services.auth.host"   -> mockHost,
     "microservice.services.auth.port"   -> mockPort,
     "microservice.services.des.host"    -> mockHost,

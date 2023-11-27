@@ -30,8 +30,8 @@ object DESStub extends WireMockMethods {
 
   private val headers: Map[String, String] = Map(
     "Authorization" -> "Bearer dev",
-    "Environment" -> "dev",
-    "providerId" -> "providerId"
+    "Environment"   -> "dev",
+    "providerId"    -> "providerId"
   )
 
   def appointReportingCompanySuccess(response: JsValue): StubMapping =

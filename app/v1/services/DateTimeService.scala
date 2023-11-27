@@ -16,17 +16,16 @@
 
 package v1.services
 
-import java.time.{Clock, ZoneId, ZonedDateTime}
-import org.joda.time.{DateTime, DateTimeZone}
+import java.time.format.DateTimeFormatter
+import java.time.{ZoneOffset, ZonedDateTime}
 import javax.inject.Singleton
 
 trait DateTimeService {
-  def nowUtc(): DateTime
+  def nowUtc(): String
 }
 
 @Singleton
 class DateTimeServiceImpl extends DateTimeService {
-  val UtcZoneId: ZoneId               = ZoneId.of("UTC")
-  def nowUtc(): DateTime              = new DateTime(Clock.systemUTC().instant().toEpochMilli, DateTimeZone.UTC)
-  def zonedDateTimeUtc: ZonedDateTime = ZonedDateTime.now(UtcZoneId)
+  def nowUtc(): String = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT)
+
 }

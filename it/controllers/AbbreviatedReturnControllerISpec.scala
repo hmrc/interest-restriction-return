@@ -19,11 +19,8 @@ package controllers
 import assets.AbbreviatedReturnITConstants._
 import assets.IntegrationNrsConstants._
 import play.api.http.Status._
-import play.api.libs.ws.WSResponse
 import stubs.{AuthStub, DESStub, NRSStub}
 import utils.IntegrationSpecBase
-
-import scala.concurrent.Future
 
 class AbbreviatedReturnControllerISpec extends IntegrationSpecBase {
 
@@ -36,14 +33,12 @@ class AbbreviatedReturnControllerISpec extends IntegrationSpecBase {
             DESStub.abbreviatedReturnSuccess(abbreviatedReturnDesSuccessJson)
             NRSStub.success(responsePayload)
 
-            val res: Future[WSResponse] = postRequest("/return/abbreviated", abbreviatedReturnJson)
+            val result = postRequest("/return/abbreviated", abbreviatedReturnJson)
 
-            whenReady(res) { result =>
-              result should have(
-                httpStatus(OK),
-                jsonBodyAs(abbreviatedReturnDesSuccessJson)
-              )
-            }
+            result should have(
+              httpStatus(OK),
+              jsonBodyAs(abbreviatedReturnDesSuccessJson)
+            )
           }
         }
 
@@ -53,14 +48,12 @@ class AbbreviatedReturnControllerISpec extends IntegrationSpecBase {
             DESStub.abbreviatedReturnSuccess(abbreviatedReturnDesSuccessJson)
             NRSStub.error
 
-            val res: Future[WSResponse] = postRequest("/return/abbreviated", abbreviatedReturnJson)
+            val result = postRequest("/return/abbreviated", abbreviatedReturnJson)
 
-            whenReady(res) { result =>
-              result should have(
-                httpStatus(OK),
-                jsonBodyAs(abbreviatedReturnDesSuccessJson)
-              )
-            }
+            result should have(
+              httpStatus(OK),
+              jsonBodyAs(abbreviatedReturnDesSuccessJson)
+            )
           }
         }
       }
@@ -70,13 +63,11 @@ class AbbreviatedReturnControllerISpec extends IntegrationSpecBase {
           AuthStub.authorised()
           DESStub.abbreviatedReturnError
 
-          val res: Future[WSResponse] = postRequest("/return/abbreviated", abbreviatedReturnJson)
+          val result = postRequest("/return/abbreviated", abbreviatedReturnJson)
 
-          whenReady(res) { result =>
-            result should have(
-              httpStatus(INTERNAL_SERVER_ERROR)
-            )
-          }
+          result should have(
+            httpStatus(INTERNAL_SERVER_ERROR)
+          )
         }
       }
     }
@@ -85,13 +76,11 @@ class AbbreviatedReturnControllerISpec extends IntegrationSpecBase {
       "return UNAUTHORISED (401)" in {
         AuthStub.unauthorised()
 
-        val res: Future[WSResponse] = postRequest("/return/abbreviated", abbreviatedReturnJson)
+        val result = postRequest("/return/abbreviated", abbreviatedReturnJson)
 
-        whenReady(res) { result =>
-          result should have(
-            httpStatus(UNAUTHORIZED)
-          )
-        }
+        result should have(
+          httpStatus(UNAUTHORIZED)
+        )
       }
     }
   }
@@ -103,14 +92,12 @@ class AbbreviatedReturnControllerISpec extends IntegrationSpecBase {
         DESStub.abbreviatedReturnSuccess(abbreviatedReturnDesSuccessJson)
         NRSStub.success(responsePayload)
 
-        val res: Future[WSResponse] = postRequest("/return/abbreviated/validate", abbreviatedReturnJson)
+        val result = postRequest("/return/abbreviated/validate", abbreviatedReturnJson)
 
-        whenReady(res) { result =>
-          verifyNoCall("/submission")
-          result should have(
-            httpStatus(NO_CONTENT)
-          )
-        }
+        result should have(
+          httpStatus(NO_CONTENT)
+        )
+        verifyNoCall("/submission")
       }
     }
 
@@ -118,13 +105,11 @@ class AbbreviatedReturnControllerISpec extends IntegrationSpecBase {
       "return UNAUTHORISED (401)" in {
         AuthStub.unauthorised()
 
-        val res: Future[WSResponse] = postRequest("/return/abbreviated/validate", abbreviatedReturnJson)
+        val result = postRequest("/return/abbreviated/validate", abbreviatedReturnJson)
 
-        whenReady(res) { result =>
-          result should have(
-            httpStatus(UNAUTHORIZED)
-          )
-        }
+        result should have(
+          httpStatus(UNAUTHORIZED)
+        )
       }
     }
   }

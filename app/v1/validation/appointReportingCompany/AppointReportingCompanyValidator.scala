@@ -80,7 +80,7 @@ trait AppointReportingCompanyValidator extends BaseValidation {
         }: _*)
       }
 
-    combineValidations(
+    combineValidations[Any](
       appointReportingCompanyModel.agentDetails.validate(JsPath \ "agentDetails"),
       appointReportingCompanyModel.reportingCompany.validate(JsPath \ "reportingCompany"),
       validatedAuthorisingCompanies,

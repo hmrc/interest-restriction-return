@@ -16,15 +16,13 @@
 
 package definition
 
-import definition.APIStatus.ALPHA
 import utils.BaseSpec
 
 class ApiDefinitionSpec extends BaseSpec {
 
   private val apiVersion: APIVersion = APIVersion(
     version = "a",
-    access = None,
-    status = ALPHA,
+    status = "ALPHA",
     endpointsEnabled = false
   )
 
@@ -33,8 +31,7 @@ class ApiDefinitionSpec extends BaseSpec {
     description = "c",
     context = "d",
     categories = Seq("e"),
-    versions = Seq(apiVersion),
-    requiresTrust = Some(false)
+    versions = Seq(apiVersion)
   )
 
   "APIVersion" should {

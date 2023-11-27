@@ -16,17 +16,15 @@
 
 package assets
 
-import org.joda.time.{DateTime, DateTimeZone}
-
-import java.time.{Clock, Instant, LocalDate}
-import uk.gov.hmrc.auth.core.retrieve._
-import uk.gov.hmrc.auth.core._
-import v1.models.nrs.{NrsMetadata, NrsPayload, NrsRetrievalData}
 import play.api.libs.json._
+import uk.gov.hmrc.auth.core._
+import uk.gov.hmrc.auth.core.retrieve._
+import v1.models.nrs.{NrsMetadata, NrsPayload, NrsRetrievalData}
 
 import java.lang.String.format
 import java.math.BigInteger
 import java.security.MessageDigest.getInstance
+import java.time.{Instant, LocalDate, LocalDateTime}
 
 object UnitNrsConstants {
 
@@ -71,7 +69,6 @@ object UnitNrsConstants {
 
   val CURRENT_TIME_IN_MILLIS: Long  = 1530442800000L
   val PREVIOUS_TIME_IN_MILLIS: Long = 1530464400000L
-  val NRS_TIMESTAMP_IN_MILLIS: Long = 1530475200000L
   val currentLoginTime: Instant     = Instant.ofEpochSecond(CURRENT_TIME_IN_MILLIS)
   val previousLoginTime: Instant    = Instant.ofEpochSecond(PREVIOUS_TIME_IN_MILLIS)
 
@@ -106,7 +103,7 @@ object UnitNrsConstants {
     notableEvent = "irr-submission",
     payloadContentType = "application/json",
     payloadSha256Checksum = sha256Hash(jsonPayload),
-    userSubmissionTimestamp = new DateTime(Clock.systemUTC().instant().toEpochMilli, DateTimeZone.UTC).toString,
+    userSubmissionTimestamp = LocalDateTime.now().toString,
     identityData = nrsRetrievalData(nrsAffinityGroup),
     userAuthToken = "Bearer 123",
     headerData = Json.obj(),

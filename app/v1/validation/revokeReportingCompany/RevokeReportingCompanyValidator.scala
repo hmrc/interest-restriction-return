@@ -80,7 +80,7 @@ trait RevokeReportingCompanyValidator extends BaseValidation {
         }: _*)
       }
 
-    combineValidations(
+    combineValidations[Any](
       revokeReportingCompanyModel.agentDetails.validate(JsPath \ "agentDetails"),
       revokeReportingCompanyModel.reportingCompany.validate(JsPath \ "reportingCompany"),
       validateReportingCompanyRevokeItself(JsPath \ "isReportingCompanyRevokingItself"),

@@ -16,24 +16,24 @@
 
 package utils
 
+import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.play.ServerProvider
 import play.api.http.HeaderNames.ACCEPT
 import play.api.libs.json.JsValue
 import play.api.libs.ws.{DefaultWSCookie, WSClient, WSResponse}
 
-import scala.concurrent.Future
-
-trait CreateRequestHelper extends ServerProvider {
+trait CreateRequestHelper extends ServerProvider with ScalaFutures {
 
   private lazy val ws: WSClient = app.injector.instanceOf(classOf[WSClient])
 
   private val defaultCookie: DefaultWSCookie = DefaultWSCookie("CSRF-Token", "123")
 
-  def postRequest(path: String, formJson: JsValue, follow: Boolean = true): Future[WSResponse] =
+  def postRequest(path: String, formJson: JsValue, follow: Boolean = true): WSResponse =
     ws.url(s"http://localhost:$port$path")
       .withCookies(defaultCookie)
       .withHttpHeaders(ACCEPT -> "application/vnd.hmrc.1.0+json", "Authorization" -> "test")
       .withFollowRedirects(follow)
       .post(formJson)
+      .futureValue
 
 }
