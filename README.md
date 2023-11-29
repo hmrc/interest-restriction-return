@@ -3,22 +3,25 @@
 This is a protected backend microservice that is the conduit between Public facing services and HMRC HoD systems.
 
 ## Running tests
-To compile and run all tests locally run `./run_all_tests.sh`
+To compile and run all tests locally run:
+```bash
+./run_all_tests.sh
+```
 
 ## Viewing Documentation
 ### Locally
 - Run Interest Restriction Return and other required services with the script:
 
-    ```
-     ./run_local_preview_documentation.sh
-    ```
+```bash
+  ./run_local_preview_documentation.sh
+```
 - Navigate to the preview page at http://localhost:9680/api-documentation/docs/openapi/preview
 - Enter the full URL path of the OpenAPI specification file with the appropriate port and version:
 
     ```
      http://localhost:9261/api/conf/1.0/application.yaml
     ```
-- Ensure to uncomment the lines [here](https://github.com/hmrc/interest-restriction-return/blob/main/conf/application.conf#L60-L63) in application.conf, in case of CORS errors
+- Ensure to uncomment the lines [here](https://github.com/hmrc/interest-restriction-return/blob/main/conf/application.conf#L48-L51) in application.conf, in case of CORS errors
 
 ### On Developer Hub
 Full documentation can be found on the [Developer Hub](https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/interest-restriction-return).

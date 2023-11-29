@@ -1,4 +1,5 @@
 import uk.gov.hmrc.DefaultBuildSettings.integrationTestSettings
+import scoverage.ScoverageKeys.*
 
 val appName = "interest-restriction-return"
 
@@ -7,41 +8,25 @@ lazy val microservice = Project(appName, file("."))
   .disablePlugins(JUnitXmlReportPlugin) //Required to prevent https://github.com/scalatest/scalatest/issues/1427
   .settings(
     majorVersion := 0,
-    scalaVersion := "2.13.11",
+    scalaVersion := "2.13.12",
     scalacOptions ++= Seq("-feature", "-language:postfixOps", "-Wconf:src=routes/.*:s"),
     libraryDependencies ++= AppDependencies(),
     // To resolve a bug with version 2.x.x of the scoverage plugin - https://github.com/sbt/sbt/issues/6997
     libraryDependencySchemes += "org.scala-lang.modules" %% "scala-xml" % VersionScheme.Always,
     PlayKeys.playDefaultPort := 9261
   )
-  .settings(scoverageSettings: _*)
-  .settings(inConfig(Test)(testSettings): _*)
+  .settings(scoverageSettings)
   .configs(IntegrationTest)
-  .settings(integrationTestSettings(): _*)
-  .settings(playRoutesSettings)
+  .settings(integrationTestSettings())
 
-lazy val scoverageSettings = {
-  import scoverage._
+lazy val scoverageSettings =
   Seq(
     // Semicolon-separated list of regexs matching classes to exclude
-    ScoverageKeys.coverageExcludedPackages := "<empty>;Reverse.*;config.*;.*(AuthService|BuildInfo|Routes).*",
-    ScoverageKeys.coverageMinimumStmtTotal := 100,
-    ScoverageKeys.coverageFailOnMinimum := true,
-    ScoverageKeys.coverageHighlighting := true
+    coverageExcludedPackages := "<empty>;config.*;.*Routes.*",
+    coverageMinimumStmtTotal := 100,
+    coverageFailOnMinimum := true,
+    coverageHighlighting := true
   )
-}
 
-lazy val testSettings: Seq[Def.Setting[_]] = Seq(
-  fork := true,
-  javaOptions ++= Seq(
-    "-Dconfig.resource=test.application.conf"
-  )
-)
-
-lazy val playRoutesSettings = {
-  import play.sbt.routes.RoutesKeys
-  RoutesKeys.routesImport := Seq.empty
-}
-
-addCommandAlias("scalafmtAll", "all scalafmtSbt scalafmt Test/scalafmt")
-addCommandAlias("scalastyleAll", "all scalastyle Test/scalastyle")
+addCommandAlias("scalafmtAll", "all scalafmtSbt scalafmt Test/scalafmt IntegrationTest/scalafmt")
+addCommandAlias("scalastyleAll", "all scalastyle Test/scalastyle IntegrationTest/scalastyle")

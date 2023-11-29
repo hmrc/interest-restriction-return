@@ -34,15 +34,13 @@ class FullReturnControllerISpec extends IntegrationSpecBase {
             DESStub.fullReturnSuccess(fullReturnDesSuccessJson)
             NRSStub.success(responsePayload)
 
-            val res = postRequest("/return/full", fullReturnJson)
+            val result = postRequest("/return/full", fullReturnJson)
 
-            whenReady(res) { result =>
-              verifyCalls("/submission", 1)
-              result should have(
-                httpStatus(OK),
-                jsonBodyAs(fullReturnDesSuccessJson)
-              )
-            }
+            verifyCalls("/submission", 1)
+            result should have(
+              httpStatus(OK),
+              jsonBodyAs(fullReturnDesSuccessJson)
+            )
           }
         }
 
@@ -52,15 +50,13 @@ class FullReturnControllerISpec extends IntegrationSpecBase {
             DESStub.fullReturnSuccess(fullReturnDesSuccessJson)
             NRSStub.error
 
-            val res = postRequest("/return/full", fullReturnJson)
+            val result = postRequest("/return/full", fullReturnJson)
 
-            whenReady(res) { result =>
-              verifyCalls("/submission", 1)
-              result should have(
-                httpStatus(OK),
-                jsonBodyAs(fullReturnDesSuccessJson)
-              )
-            }
+            verifyCalls("/submission", 1)
+            result should have(
+              httpStatus(OK),
+              jsonBodyAs(fullReturnDesSuccessJson)
+            )
           }
         }
       }
@@ -71,14 +67,12 @@ class FullReturnControllerISpec extends IntegrationSpecBase {
           DESStub.fullReturnError
           NRSStub.error
 
-          val res = postRequest("/return/full", fullReturnJson)
+          val result = postRequest("/return/full", fullReturnJson)
 
-          whenReady(res) { result =>
-            verifyNoCall("/submission")
-            result should have(
-              httpStatus(INTERNAL_SERVER_ERROR)
-            )
-          }
+          verifyNoCall("/submission")
+          result should have(
+            httpStatus(INTERNAL_SERVER_ERROR)
+          )
         }
       }
     }
@@ -87,13 +81,11 @@ class FullReturnControllerISpec extends IntegrationSpecBase {
       "return UNAUTHORISED (401)" in {
         AuthStub.unauthorised()
 
-        val res = postRequest("/return/full", fullReturnJson)
+        val result = postRequest("/return/full", fullReturnJson)
 
-        whenReady(res) { result =>
-          result should have(
-            httpStatus(UNAUTHORIZED)
-          )
-        }
+        result should have(
+          httpStatus(UNAUTHORIZED)
+        )
       }
     }
   }
@@ -104,14 +96,12 @@ class FullReturnControllerISpec extends IntegrationSpecBase {
         AuthStub.authorised()
         NRSStub.error
 
-        val res = postRequest("/return/full/validate", fullReturnJson)
+        val result = postRequest("/return/full/validate", fullReturnJson)
 
-        whenReady(res) { result =>
-          verifyNoCall("/submission")
-          result should have(
-            httpStatus(NO_CONTENT)
-          )
-        }
+        verifyNoCall("/submission")
+        result should have(
+          httpStatus(NO_CONTENT)
+        )
       }
     }
 
@@ -119,13 +109,11 @@ class FullReturnControllerISpec extends IntegrationSpecBase {
       "return UNAUTHORISED (401)" in {
         AuthStub.unauthorised()
 
-        val res = postRequest("/return/full/validate", fullReturnJson)
+        val result = postRequest("/return/full/validate", fullReturnJson)
 
-        whenReady(res) { result =>
-          result should have(
-            httpStatus(UNAUTHORIZED)
-          )
-        }
+        result should have(
+          httpStatus(UNAUTHORIZED)
+        )
       }
     }
   }

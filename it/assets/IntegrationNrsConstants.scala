@@ -16,17 +16,15 @@
 
 package assets
 
-import org.joda.time.{DateTime, DateTimeZone}
-
-import java.time.{Clock, Instant, LocalDate}
-import uk.gov.hmrc.auth.core.retrieve._
-import uk.gov.hmrc.auth.core._
-import v1.models.nrs.{NrSubmissionId, NrsMetadata, NrsPayload, NrsRetrievalData}
 import play.api.libs.json._
+import uk.gov.hmrc.auth.core._
+import uk.gov.hmrc.auth.core.retrieve._
+import v1.models.nrs.{NrSubmissionId, NrsMetadata, NrsPayload, NrsRetrievalData}
 
 import java.lang.String.format
 import java.math.BigInteger
 import java.security.MessageDigest.getInstance
+import java.time.{Instant, LocalDate, LocalDateTime}
 import java.util.UUID
 
 object IntegrationNrsConstants {
@@ -40,24 +38,24 @@ object IntegrationNrsConstants {
 
   val responsePayload: JsValue = Json.toJson(NrSubmissionId(UUID.randomUUID()))
 
-  val nrsInternalIdValue: String                    = "internalId"
-  val nrsExternalIdValue: String                    = "externalId"
-  val nrsAgentCodeValue: String                     = "agentCode"
-  val nrsCredentials: Option[Credentials]           = Some(Credentials(providerId = "providerId", providerType = "providerType"))
-  val nrsConfidenceLevel: ConfidenceLevel.L500.type = ConfidenceLevel.L500
-  val nrsNinoValue: String                          = "ninov"
-  val nrsSaUtrValue: String                         = "saUtr"
-  val nrsNameValue: Option[Name]                    = Some(Name(Some("name"), Some("lastname")))
-  val TWENTY_FIVE: Int                              = 25
-  val nrsDateOfBirth: Option[LocalDate]             = Some(LocalDate.now().minusYears(TWENTY_FIVE))
-  val nrsEmailValue: Option[String]                 = Some("nrsEmailValue")
-  val nrsAgentInformationValue: AgentInformation    =
+  val nrsInternalIdValue: String                                = "internalId"
+  val nrsExternalIdValue: String                                = "externalId"
+  val nrsAgentCodeValue: String                                 = "agentCode"
+  val nrsCredentials: Option[Credentials]                       = Some(Credentials(providerId = "providerId", providerType = "providerType"))
+  val nrsConfidenceLevel: ConfidenceLevel.L500.type             = ConfidenceLevel.L500
+  val nrsNinoValue: String                                      = "ninov"
+  val nrsSaUtrValue: String                                     = "saUtr"
+  val nrsNameValue: Option[Name]                                = Some(Name(Some("name"), Some("lastname")))
+  val TWENTY_FIVE: Int                                          = 25
+  val nrsDateOfBirth: Option[LocalDate]                         = Some(LocalDate.now().minusYears(TWENTY_FIVE))
+  val nrsEmailValue: Option[String]                             = Some("nrsEmailValue")
+  val nrsAgentInformationValue: AgentInformation                =
     AgentInformation(Some("agentId"), Some("agentCode"), Some("agentFriendlyName"))
-  val nrsGroupIdentifierValue: Option[String]       = Some("groupIdentifierValue")
-  val nrsCredentialRole: Option[User.type]          = Some(User)
-  val nrsMdtpInformation: MdtpInformation           = MdtpInformation("deviceId", "sessionId")
-  val nrsItmpName: Option[ItmpName]                 = Some(ItmpName(Some("givenName"), Some("middleName"), Some("familyName")))
-  val nrsItmpAddress: Option[ItmpAddress]           = Some(
+  val nrsGroupIdentifierValue: Option[String]                   = Some("groupIdentifierValue")
+  val nrsCredentialRole: Option[User.type]                      = Some(User)
+  val nrsMdtpInformation: MdtpInformation                       = MdtpInformation("deviceId", "sessionId")
+  val nrsItmpName: Option[ItmpName]                             = Some(ItmpName(Some("givenName"), Some("middleName"), Some("familyName")))
+  val nrsItmpAddress: Option[ItmpAddress]                       = Some(
     ItmpAddress(
       Some("line1"),
       Some("line2"),
@@ -75,8 +73,8 @@ object IntegrationNrsConstants {
   val CURRENT_TIME_IN_MILLIS: Long  = 1530442800000L
   val PREVIOUS_TIME_IN_MILLIS: Long = 1530464400000L
   val NRS_TIMESTAMP_IN_MILLIS: Long = 1530475200000L
-  val currentLoginTime: Instant  = Instant.ofEpochSecond(CURRENT_TIME_IN_MILLIS)
-  val previousLoginTime: Instant = Instant.ofEpochSecond(PREVIOUS_TIME_IN_MILLIS)
+  val currentLoginTime: Instant     = Instant.ofEpochSecond(CURRENT_TIME_IN_MILLIS)
+  val previousLoginTime: Instant    = Instant.ofEpochSecond(PREVIOUS_TIME_IN_MILLIS)
 
   val nrsLoginTimes: LoginTimes = LoginTimes(currentLoginTime, Some(previousLoginTime))
 
@@ -108,7 +106,7 @@ object IntegrationNrsConstants {
     notableEvent = "irr-submission",
     payloadContentType = "application/json",
     payloadSha256Checksum = sha256Hash(jsonPayload),
-    userSubmissionTimestamp = new DateTime(Clock.systemUTC().instant().toEpochMilli, DateTimeZone.UTC).toString,
+    userSubmissionTimestamp = LocalDateTime.now().toString,
     identityData = nrsRetrievalData,
     userAuthToken = "Bearer 123",
     headerData = Json.obj(),

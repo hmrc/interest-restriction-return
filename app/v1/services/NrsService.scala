@@ -60,7 +60,7 @@ class NrsService @Inject() (nrsConnector: NrsConnector, dateTimeService: DateTim
       notableEvent = notableEventValue,
       payloadContentType = applicationJson,
       payloadSha256Checksum = sha256Hash(payloadAsString), // This should come from the end user NOT us
-      userSubmissionTimestamp = dateTimeService.nowUtc().toString,
+      userSubmissionTimestamp = dateTimeService.nowUtc(),
       userAuthToken = identifierRequest.request.headers.get(AuthorizationHeader).getOrElse(""),
       identityData = identifierRequest.nrsRetrievalData,
       headerData = new JsObject(identifierRequest.request.headers.toMap.map(x => x._1 -> JsString(x._2 mkString ","))),

@@ -16,41 +16,38 @@
 
 package v1.services
 
-import assets.fullReturn.FullReturnConstants
 import assets.UnitNrsConstants
+import assets.fullReturn.FullReturnConstants
 import com.google.common.io.BaseEncoding.base64
-import org.joda.time.DateTime
-import org.joda.time.format.{DateTimeFormat, DateTimeFormatter}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AsyncWordSpec
+import play.api.http.Status.{BAD_REQUEST, INTERNAL_SERVER_ERROR}
 import play.api.libs.json._
 import play.api.test.{FakeHeaders, FakeRequest}
+import uk.gov.hmrc.auth.core.AffinityGroup
+import v1.connectors.HttpHelper.NrsResponse
 import v1.connectors.{NrsConnector, UnexpectedFailure}
 import v1.models.nrs._
 import v1.models.requests.IdentifierRequest
 import v1.services.mocks.MockNrsConnector
+
 import java.nio.charset.StandardCharsets.UTF_8
 import java.util.UUID
-
 import scala.concurrent.Future
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AsyncWordSpec
-import play.api.http.Status.{BAD_REQUEST, INTERNAL_SERVER_ERROR}
-import uk.gov.hmrc.auth.core.AffinityGroup
-import v1.connectors.HttpHelper.NrsResponse
 
 class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
 
   private val CLIENT_CLOSED_REQUEST: Int   = 499
   private val NETWORK_CONNECT_TIMEOUT: Int = 599
 
-  private val formatter: DateTimeFormatter       = DateTimeFormat.forPattern("dd/MM/yyyy")
-  private val dateTime: DateTime                 = formatter.parseDateTime("01/01/2021")
+  private val dateTime: String                   = "2015-04-14T11:07:36.639Z"
   private val fullRequest: FakeRequest[String]   = FakeRequest(
     "GET",
     "/",
     FakeHeaders(Seq("Authorization" -> "Bearer 123")),
     FullReturnConstants.fullReturnModelMax.toString
   )
-  private val payloadAsString: String            = fullRequest.body.toString
+  private val payloadAsString: String            = fullRequest.body
   private val request: IdentifierRequest[String] = IdentifierRequest[String](
     request = fullRequest,
     identifier = "123",
@@ -61,7 +58,7 @@ class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
     notableEvent = "interest-restriction-return",
     payloadContentType = "application/json",
     payloadSha256Checksum = UnitNrsConstants.sha256Hash(payloadAsString),
-    userSubmissionTimestamp = dateTime.toString,
+    userSubmissionTimestamp = dateTime,
     userAuthToken = "Bearer 123",
     identityData = request.nrsRetrievalData,
     headerData = new JsObject(request.request.headers.toMap.map(x => x._1 -> JsString(x._2 mkString ","))),
@@ -75,7 +72,7 @@ class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
     NrsPayload(base64().encode(payloadAsString.getBytes(UTF_8)), expectedNrsMetadata)
 
   object TestDateTimeService extends DateTimeService {
-    def nowUtc(): DateTime = dateTime
+    def nowUtc(): String = dateTime
   }
 
   "NrsService" when {

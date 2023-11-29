@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
-sm2 --start ASSETS_FRONTEND IRR_DYNAMIC_STUB AFFINITY_GROUP AUTH AUTHENTICATOR AUTH_LOGIN_STUB AUTH_LOGIN_API USER_DETAILS IDENTITY_VERIFICATION CONTACT_FRONTEND
+sm2 --start IRR_ALL
+sm2 --stop IRR
 
-sbt -Dplay.http.router=testOnlyDoNotUseInAppConf.Routes "run 9261"
+sbt run

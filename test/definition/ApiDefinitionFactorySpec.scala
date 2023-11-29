@@ -16,7 +16,6 @@
 
 package definition
 
-import definition.APIStatus.{ALPHA, BETA}
 import definition.Versions.VERSION_1
 import mocks.MockAppConfig
 import utils.BaseSpec
@@ -55,29 +54,12 @@ class ApiDefinitionFactorySpec extends BaseSpec {
               versions = Seq(
                 APIVersion(
                   version = VERSION_1,
-                  status = BETA,
+                  status = "BETA",
                   endpointsEnabled = true
                 )
-              ),
-              requiresTrust = None
+              )
             )
           )
-      }
-    }
-
-    ".buildAPIStatus" should {
-      "return the correct status" when {
-        "the apiStatus is present and valid" in new Test {
-          MockedAppConfig.apiStatus("1.0") returns "BETA"
-          apiDefinitionFactory.buildAPIStatus(version = "1.0") shouldBe BETA
-        }
-      }
-
-      "default to ALPHA" when {
-        "the apiStatus is present and invalid" in new Test {
-          MockedAppConfig.apiStatus("1.0") returns "HELLO"
-          apiDefinitionFactory.buildAPIStatus(version = "1.0") shouldBe ALPHA
-        }
       }
     }
   }

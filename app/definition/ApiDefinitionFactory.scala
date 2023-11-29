@@ -45,21 +45,11 @@ class ApiDefinitionFactory @Inject() (appConfig: AppConfig) extends Logging {
         versions = Seq(
           APIVersion(
             version = VERSION_1,
-            access = None,
-            status = buildAPIStatus(VERSION_1),
+            status = appConfig.apiStatus(VERSION_1),
             endpointsEnabled = appConfig.endpointsEnabled
           )
-        ),
-        requiresTrust = None
+        )
       )
     )
-
-  private[definition] def buildAPIStatus(version: String): APIStatus =
-    APIStatus.parser
-      .lift(appConfig.apiStatus(version))
-      .getOrElse {
-        logger.error("No API Status found in config. Reverting to Alpha")
-        APIStatus.ALPHA
-      }
 
 }

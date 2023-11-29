@@ -18,11 +18,8 @@ package controllers
 
 import assets.RevokeReportingCompanyITConstants._
 import play.api.http.Status._
-import play.api.libs.ws.WSResponse
 import stubs.{AuthStub, DESStub}
 import utils.IntegrationSpecBase
-
-import scala.concurrent.Future
 
 class RevokeReportingCompanyControllerISpec extends IntegrationSpecBase {
 
@@ -33,14 +30,12 @@ class RevokeReportingCompanyControllerISpec extends IntegrationSpecBase {
           AuthStub.authorised()
           DESStub.revokeReportingCompanySuccess(revokeReportingCompanyDesSuccessJson)
 
-          val res: Future[WSResponse] = postRequest("/reporting-company/revoke", revokeReportingCompanyJson)
+          val result = postRequest("/reporting-company/revoke", revokeReportingCompanyJson)
 
-          whenReady(res) { result =>
-            result should have(
-              httpStatus(OK),
-              jsonBodyAs(revokeReportingCompanyDesSuccessJson)
-            )
-          }
+          result should have(
+            httpStatus(OK),
+            jsonBodyAs(revokeReportingCompanyDesSuccessJson)
+          )
         }
       }
 
@@ -49,13 +44,11 @@ class RevokeReportingCompanyControllerISpec extends IntegrationSpecBase {
           AuthStub.authorised()
           DESStub.revokeReportingCompanyError
 
-          val res: Future[WSResponse] = postRequest("/reporting-company/revoke", revokeReportingCompanyJson)
+          val result = postRequest("/reporting-company/revoke", revokeReportingCompanyJson)
 
-          whenReady(res) { result =>
-            result should have(
-              httpStatus(INTERNAL_SERVER_ERROR)
-            )
-          }
+          result should have(
+            httpStatus(INTERNAL_SERVER_ERROR)
+          )
         }
       }
     }
@@ -64,13 +57,11 @@ class RevokeReportingCompanyControllerISpec extends IntegrationSpecBase {
       "return UNAUTHORISED (401)" in {
         AuthStub.unauthorised()
 
-        val res: Future[WSResponse] = postRequest("/reporting-company/revoke", revokeReportingCompanyJson)
+        val result = postRequest("/reporting-company/revoke", revokeReportingCompanyJson)
 
-        whenReady(res) { result =>
-          result should have(
-            httpStatus(UNAUTHORIZED)
-          )
-        }
+        result should have(
+          httpStatus(UNAUTHORIZED)
+        )
       }
     }
   }
@@ -80,14 +71,12 @@ class RevokeReportingCompanyControllerISpec extends IntegrationSpecBase {
       "return NO_CONTENT (204)" in {
         AuthStub.authorised()
 
-        val res: Future[WSResponse] = postRequest("/reporting-company/revoke/validate", revokeReportingCompanyJson)
+        val result = postRequest("/reporting-company/revoke/validate", revokeReportingCompanyJson)
 
-        whenReady(res) { result =>
-          verifyNoCall("/submission")
-          result should have(
-            httpStatus(NO_CONTENT)
-          )
-        }
+        verifyNoCall("/submission")
+        result should have(
+          httpStatus(NO_CONTENT)
+        )
       }
     }
 
@@ -95,13 +84,11 @@ class RevokeReportingCompanyControllerISpec extends IntegrationSpecBase {
       "return UNAUTHORISED (401)" in {
         AuthStub.unauthorised()
 
-        val res: Future[WSResponse] = postRequest("/reporting-company/revoke/validate", revokeReportingCompanyJson)
+        val result = postRequest("/reporting-company/revoke/validate", revokeReportingCompanyJson)
 
-        whenReady(res) { result =>
-          result should have(
-            httpStatus(UNAUTHORIZED)
-          )
-        }
+        result should have(
+          httpStatus(UNAUTHORIZED)
+        )
       }
     }
   }

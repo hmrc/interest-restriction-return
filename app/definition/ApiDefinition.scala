@@ -16,41 +16,9 @@
 
 package definition
 
-import play.api.libs.json.{Format, Json, OFormat}
-import utils.enums.Enums
+import play.api.libs.json.{Json, OFormat}
 
-case class Access(`type`: String, whitelistedApplicationIds: Seq[String])
-
-object Access {
-  implicit val formatAccess: OFormat[Access] = Json.format[Access]
-}
-
-case class Parameter(name: String, required: Boolean = false)
-
-object Parameter {
-  implicit val formatParameter: OFormat[Parameter] = Json.format[Parameter]
-}
-
-case class PublishingException(message: String) extends Exception(message)
-
-sealed trait APIStatus
-
-object APIStatus {
-
-  case object ALPHA extends APIStatus
-  case object BETA extends APIStatus
-
-  case object STABLE extends APIStatus
-  case object DEPRECATED extends APIStatus
-  case object RETIRED extends APIStatus
-
-  implicit val formatAPIStatus: Format[APIStatus] = Enums.format[APIStatus]
-
-  val parser: PartialFunction[String, APIStatus] = Enums.parser[APIStatus]
-}
-
-case class APIVersion(version: String, access: Option[Access] = None, status: APIStatus, endpointsEnabled: Boolean) {
-
+case class APIVersion(version: String, status: String, endpointsEnabled: Boolean) {
   require(version.nonEmpty, "version is required")
 }
 
@@ -63,8 +31,7 @@ case class APIDefinition(
   description: String,
   context: String,
   categories: Seq[String],
-  versions: Seq[APIVersion],
-  requiresTrust: Option[Boolean]
+  versions: Seq[APIVersion]
 ) {
 
   require(name.nonEmpty, "name is required")
