@@ -16,15 +16,13 @@
 
 package assets
 
+import assets.InvestorGroupITConstants._
 import play.api.libs.json.{JsObject, Json}
 
-object UltimateParentITConstants extends BaseITConstants {
+object GroupRatioBlendedITConstants {
 
-  val registeredCompanyName: String = "some company"
-  val otherUkTaxReference: String   = "other reference"
-
-  val ultimateParentJson: JsObject = Json.obj(
-    "registeredCompanyName" -> registeredCompanyName,
-    "ctutr"                 -> ctutr
+  val groupRatioBlendedJson: JsObject = Json.obj(
+    "isElected"      -> true,
+    "investorGroups" -> Seq(investorGroupsJson)
   )
 }

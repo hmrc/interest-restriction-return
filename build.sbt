@@ -1,7 +1,10 @@
-import uk.gov.hmrc.DefaultBuildSettings.integrationTestSettings
 import scoverage.ScoverageKeys.*
+import uk.gov.hmrc.DefaultBuildSettings
 
 val appName = "interest-restriction-return"
+
+ThisBuild / majorVersion := 0
+ThisBuild / scalaVersion := "2.13.12"
 
 lazy val microservice = Project(appName, file("."))
   .enablePlugins(play.sbt.PlayScala, SbtDistributablesPlugin)
@@ -11,13 +14,14 @@ lazy val microservice = Project(appName, file("."))
     scalaVersion := "2.13.12",
     scalacOptions ++= Seq("-feature", "-language:postfixOps", "-Wconf:src=routes/.*:s"),
     libraryDependencies ++= AppDependencies(),
-    // To resolve a bug with version 2.x.x of the scoverage plugin - https://github.com/sbt/sbt/issues/6997
-    libraryDependencySchemes += "org.scala-lang.modules" %% "scala-xml" % VersionScheme.Always,
     PlayKeys.playDefaultPort := 9261
   )
   .settings(scoverageSettings)
-  .configs(IntegrationTest)
-  .settings(integrationTestSettings())
+
+lazy val it = project
+  .enablePlugins(PlayScala)
+  .dependsOn(microservice % "test->test")
+  .settings(DefaultBuildSettings.itSettings())
 
 lazy val scoverageSettings =
   Seq(
@@ -28,5 +32,5 @@ lazy val scoverageSettings =
     coverageHighlighting := true
   )
 
-addCommandAlias("scalafmtAll", "all scalafmtSbt scalafmt Test/scalafmt IntegrationTest/scalafmt")
-addCommandAlias("scalastyleAll", "all scalastyle Test/scalastyle IntegrationTest/scalastyle")
+addCommandAlias("scalafmtAll", "all scalafmtSbt scalafmt Test/scalafmt it/Test/scalafmt")
+addCommandAlias("scalastyleAll", "all scalastyle Test/scalastyle it/Test/scalastyle")

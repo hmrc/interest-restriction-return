@@ -16,7 +16,6 @@
 
 package v1.controllers.actions
 
-import akka.japi.Option.Some
 import assets.UnitNrsConstants
 import play.api.mvc.{Action, AnyContent, Results}
 import play.api.test.Helpers._

@@ -16,14 +16,19 @@
 
 package assets
 
-import assets.UltimateParentITConstants._
-import assets.DeemedParentITConstants._
 import play.api.libs.json.{JsObject, Json}
 
-object ParentCompanyITConstants {
+import java.time.LocalDate
 
-  val parentCompanyJson: JsObject = Json.obj(
-    "ultimateParent" -> ultimateParentJson,
-    "deemedParent"   -> Seq(deemedParentJson, deemedParentJson)
+object AccountingPeriodITConstants {
+
+  private val monthsToSubtract: Long = 18
+
+  val startDate: LocalDate = LocalDate.now().minusMonths(monthsToSubtract)
+  val endDate: LocalDate   = LocalDate.now().minusDays(1)
+
+  val accountingPeriodJson: JsObject = Json.obj(
+    "startDate" -> startDate,
+    "endDate"   -> endDate
   )
 }

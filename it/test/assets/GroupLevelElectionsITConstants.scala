@@ -16,10 +16,10 @@
 
 package assets
 
-import play.api.libs.json.{JsObject, Json}
+import assets.ConsolidatedPartnershipITConstants._
 import assets.GroupRatioITConstants._
 import assets.NonConsolidatedInvestmentElectionITConstants._
-import assets.ConsolidatedPartnershipITConstants._
+import play.api.libs.json.{JsObject, Json}
 
 object GroupLevelElectionsITConstants {
 

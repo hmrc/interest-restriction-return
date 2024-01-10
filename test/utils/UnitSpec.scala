@@ -16,16 +16,13 @@
 
 package utils
 
-import java.nio.charset.Charset
-
-import akka.stream.Materializer
-import akka.util.ByteString
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.OptionValues
-import play.api.libs.json.{JsValue, Json}
-import play.api.mvc.Result
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
+import play.api.libs.json.{JsValue, Json}
+import play.api.mvc.Result
+import play.api.test.Helpers
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.language.implicitConversions
@@ -46,24 +43,17 @@ trait UnitSpec extends AnyWordSpecLike with Matchers with OptionValues with Mock
 
   def status(of: Result): Int = of.header.status
 
-  def status(of: Future[Result])(implicit timeout: Duration): Int = status(Await.result(of, timeout))
+  def status(of: Future[Result]): Int = status(Await.result(of, defaultTimeout))
 
-  def jsonBodyOf(result: Result)(implicit mat: Materializer): JsValue =
+  def jsonBodyOf(result: Result): JsValue =
     Json.parse(bodyOf(result))
 
-  def jsonBodyOf(resultF: Future[Result])(implicit mat: Materializer): Future[JsValue] =
+  def jsonBodyOf(resultF: Future[Result]): Future[JsValue] =
     resultF.map(jsonBodyOf)
 
-  def bodyOf(result: Result)(implicit mat: Materializer): String = {
-    val bodyBytes: ByteString = await(result.body.consumeData)
-    // We use the default charset to preserve the behaviour of a previous
-    // version of this code, which used new String(Array[Byte]).
-    // If the fact that the previous version used the default charset was an
-    // accident then it may be better to decode in UTF-8 or the charset
-    // specified by the result's headers.
-    bodyBytes.decodeString(Charset.defaultCharset().name)
-  }
+  def bodyOf(result: Result): String =
+    Helpers.contentAsString(result)(Helpers.defaultAwaitTimeout)
 
-  def bodyOf(resultF: Future[Result])(implicit mat: Materializer): Future[String] =
+  def bodyOf(resultF: Future[Result]): Future[String] =
     resultF.map(bodyOf)
 }

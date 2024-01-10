@@ -16,8 +16,8 @@
 
 package assets
 
-import play.api.libs.json.{JsObject, Json}
 import assets.AllocatedReactivationsITConstants._
+import play.api.libs.json.{JsObject, Json}
 
 object UkCompanyITConstants extends BaseITConstants {
 

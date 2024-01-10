@@ -24,7 +24,6 @@ import assets.GroupLevelElectionsITConstants.groupLevelElectionsJson
 import assets.ReportingCompanyITConstants._
 import assets.UkCompanyITConstants.ukCompanyFullJson
 import play.api.libs.json.{JsObject, Json}
-import v1.models.{Revised, SubmissionType}
 
 object FullReturnITConstants {
 
@@ -41,7 +40,7 @@ object FullReturnITConstants {
     "reportingCompany"                   -> reportingCompanyJson,
     "publicInfrastructure"               -> true,
     "groupCompanyDetails"                -> groupCompanyDetailsJson,
-    "submissionType"                     -> Json.toJson[SubmissionType](Revised),
+    "submissionType"                     -> "revised",
     "revisedReturnDetails"               -> "some details",
     "groupLevelElections"                -> groupLevelElectionsJson,
     "returnContainsEstimates"            -> true,
