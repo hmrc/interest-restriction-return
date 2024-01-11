@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package routing
 
 import config.{AppConfig, FeatureSwitch}
 import definition.Versions
-import javax.inject.{Inject, Singleton}
 import play.api.Logging
 import play.api.http.{DefaultHttpRequestHandler, HttpConfiguration, HttpFilters}
 import play.api.libs.json.Json
@@ -27,6 +26,8 @@ import play.api.routing.Router
 import play.core.DefaultWebCommands
 import utils.ErrorHandler
 import v1.models.errors.ErrorResponses._
+
+import javax.inject.{Inject, Singleton}
 
 @Singleton
 class VersionRoutingRequestHandler @Inject() (
@@ -39,7 +40,7 @@ class VersionRoutingRequestHandler @Inject() (
 ) extends DefaultHttpRequestHandler(
       new DefaultWebCommands,
       None,
-      versionRoutingMap.defaultRouter,
+      () => versionRoutingMap.defaultRouter,
       errorHandler,
       httpConfiguration,
       filters.filters
