@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package models.revokeReportingCompany
+package v1.models.revokeReportingCompany
 
-import assets.revokeReportingCompany.RevokeReportingCompanyConstants._
+import data.revokeReportingCompany.RevokeReportingCompanyConstants._
 import play.api.libs.json.Json
 import v1.models.revokeReportingCompany.RevokeReportingCompanyModel
 import utils.BaseSpec

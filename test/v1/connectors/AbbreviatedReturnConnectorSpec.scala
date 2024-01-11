@@ -16,8 +16,8 @@
 
 package v1.connectors
 
-import assets.abbreviatedReturn.AbbreviatedReturnConstants._
-import assets.fullReturn.FullReturnConstants.ackRef
+import data.abbreviatedReturn.AbbreviatedReturnConstants._
+import data.fullReturn.FullReturnConstants.ackRef
 import play.api.http.Status._
 import utils.BaseSpec
 import v1.connectors.HttpHelper.SubmissionResponse

@@ -20,8 +20,8 @@ import config.AppConfig
 import v1.connectors.mocks.MockHttpClient
 import utils.BaseSpec
 import v1.connectors.HttpHelper.NrsResponse
-import assets.AppConfigConstants._
-import assets.UnitNrsConstants._
+import data.AppConfigConstants._
+import data.UnitNrsConstants._
 import java.util.UUID
 
 import v1.models.nrs._

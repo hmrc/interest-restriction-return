@@ -16,7 +16,7 @@
 
 package v1.services
 
-import assets.fullReturn.FullReturnConstants._
+import data.fullReturn.FullReturnConstants._
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.{DesSuccessResponse, UnexpectedFailure}
 import v1.connectors.mocks.MockFullReturnConnector

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package models
+package v1.models
 
-import assets.NonConsolidatedInvestmentElectionConstants._
+import data.NonConsolidatedInvestmentElectionConstants._
 import play.api.libs.json.Json
 import v1.models.NonConsolidatedInvestmentElectionModel
 import utils.BaseSpec

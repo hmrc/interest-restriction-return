@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package models.appointReportingCompany
+package v1.models.appointReportingCompany
 
-import assets.appointReportingCompany.AppointReportingCompanyConstants._
+import data.appointReportingCompany.AppointReportingCompanyConstants._
 import play.api.libs.json.Json
 import v1.models.appointReportingCompany.AppointReportingCompanyModel
 import utils.BaseSpec

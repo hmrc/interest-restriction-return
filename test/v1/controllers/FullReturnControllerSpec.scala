@@ -16,7 +16,7 @@
 
 package v1.controllers
 
-import assets.fullReturn.FullReturnConstants._
+import data.fullReturn.FullReturnConstants._
 import play.api.http.Status._
 import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.{AnyContentAsEmpty, Result}

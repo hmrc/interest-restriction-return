@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package models.fullReturn
+package v1.models.fullReturn
 
-import assets.fullReturn.AllocatedRestrictionsConstants._
+import data.fullReturn.AllocatedRestrictionsConstants._
 import play.api.libs.json.Json
 import v1.models.fullReturn.AllocatedRestrictionsModel
 import utils.BaseSpec

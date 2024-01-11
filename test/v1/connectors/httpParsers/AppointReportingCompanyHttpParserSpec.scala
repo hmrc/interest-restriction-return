@@ -16,7 +16,7 @@
 
 package v1.connectors.httpParsers
 
-import assets.appointReportingCompany.AppointReportingCompanyConstants._
+import data.appointReportingCompany.AppointReportingCompanyConstants._
 import v1.connectors.httpParsers.AppointReportingCompanyHttpParser.AppointReportingCompanyReads
 import v1.connectors.{DesSuccessResponse, InvalidSuccessResponse, UnexpectedFailure}
 import play.api.http.Status._

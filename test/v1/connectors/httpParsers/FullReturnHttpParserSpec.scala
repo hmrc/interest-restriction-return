@@ -16,7 +16,7 @@
 
 package v1.connectors.httpParsers
 
-import assets.fullReturn.FullReturnConstants._
+import data.fullReturn.FullReturnConstants._
 import v1.connectors.{DesSuccessResponse, InvalidSuccessResponse, UnexpectedFailure}
 import v1.connectors.httpParsers.FullReturnHttpParser.FullReturnReads
 import play.api.http.Status._

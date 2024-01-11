@@ -16,7 +16,7 @@
 
 package v1.controllers
 
-import assets.revokeReportingCompany.RevokeReportingCompanyConstants._
+import data.revokeReportingCompany.RevokeReportingCompanyConstants._
 import v1.connectors.{DesSuccessResponse, UnexpectedFailure}
 import play.api.http.Status._
 import play.api.libs.json.{JsObject, Json}

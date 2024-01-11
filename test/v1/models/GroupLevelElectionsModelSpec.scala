@@ -16,9 +16,9 @@
 
 package v1.models
 
-import assets.GroupLevelElectionsConstants._
+import data.GroupLevelElectionsConstants._
 import play.api.libs.json.Json
-import assets.NonConsolidatedInvestmentElectionConstants._
+import data.NonConsolidatedInvestmentElectionConstants._
 import utils.BaseSpec
 
 class GroupLevelElectionsModelSpec extends BaseSpec {

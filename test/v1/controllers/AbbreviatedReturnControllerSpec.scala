@@ -16,7 +16,7 @@
 
 package v1.controllers
 
-import assets.abbreviatedReturn.AbbreviatedReturnConstants._
+import data.abbreviatedReturn.AbbreviatedReturnConstants._
 import play.api.http.Status._
 import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.{AnyContentAsEmpty, Result}

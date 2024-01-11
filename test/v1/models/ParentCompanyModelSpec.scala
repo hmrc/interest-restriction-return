@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package models
+package v1.models
 
-import assets.ParentCompanyConstants._
+import data.ParentCompanyConstants._
 import play.api.libs.json.Json
 import v1.models.ParentCompanyModel
 import utils.BaseSpec

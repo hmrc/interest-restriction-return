@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package models.fullReturn
+package v1.models.fullReturn
 
 import play.api.libs.json.{JsObject, Json, Writes}
 import v1.models.fullReturn.FullReturnModel
-import assets.fullReturn.FullReturnConstants._
-import assets.AgentDetailsConstants._
-import assets.GroupCompanyDetailsConstants._
-import assets.ReportingCompanyConstants._
-import assets.fullReturn.GroupLevelAmountConstants._
-import assets.fullReturn.UkCompanyConstants._
-import assets.NonConsolidatedInvestmentElectionConstants._
+import data.fullReturn.FullReturnConstants._
+import data.AgentDetailsConstants._
+import data.GroupCompanyDetailsConstants._
+import data.ReportingCompanyConstants._
+import data.fullReturn.GroupLevelAmountConstants._
+import data.fullReturn.UkCompanyConstants._
+import data.NonConsolidatedInvestmentElectionConstants._
 import v1.models.{Original, SubmissionType}
 import utils.{BaseSpec, JsonFormatters}
 

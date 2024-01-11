@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package models.appointReportingCompany
+package v1.models.appointReportingCompany
 
 import play.api.libs.json.Json
-import assets.AuthorisingCompanyConstants._
+import data.AuthorisingCompanyConstants._
 import v1.models.AuthorisingCompanyModel
 import utils.BaseSpec
 

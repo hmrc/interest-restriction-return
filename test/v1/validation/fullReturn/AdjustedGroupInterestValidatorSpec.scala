@@ -16,7 +16,7 @@
 
 package v1.validation.fullReturn
 
-import assets.fullReturn.AdjustedGroupInterestConstants._
+import data.fullReturn.AdjustedGroupInterestConstants._
 import cats.data.NonEmptyChain
 import play.api.libs.json.JsPath
 import utils.BaseSpec

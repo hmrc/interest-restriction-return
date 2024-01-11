@@ -16,8 +16,8 @@
 
 package v1.validation.fullReturn
 
-import assets.fullReturn.AllocatedRestrictionsConstants._
-import assets.fullReturn.UkCompanyConstants._
+import data.fullReturn.AllocatedRestrictionsConstants._
+import data.fullReturn.UkCompanyConstants._
 import play.api.libs.json.JsPath
 import v1.models.fullReturn.AllocatedRestrictionsModel
 import v1.models.{AccountingPeriodModel, CompanyNameModel, UTRModel}

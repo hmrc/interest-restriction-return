@@ -16,11 +16,11 @@
 
 package v1.validation.abbreviatedReturn
 
-import assets.AgentDetailsConstants._
-import assets.ParentCompanyConstants._
-import assets.ReportingCompanyConstants._
-import assets.abbreviatedReturn.AbbreviatedReturnConstants._
-import assets.abbreviatedReturn.UkCompanyConstants._
+import data.AgentDetailsConstants._
+import data.ParentCompanyConstants._
+import data.ReportingCompanyConstants._
+import data.abbreviatedReturn.AbbreviatedReturnConstants._
+import data.abbreviatedReturn.UkCompanyConstants._
 import play.api.libs.json.JsPath
 import utils.BaseSpec
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel

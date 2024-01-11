@@ -16,8 +16,8 @@
 
 package controllers
 
-import assets.AbbreviatedReturnITConstants._
-import assets.IntegrationNrsConstants._
+import data.AbbreviatedReturnITConstants._
+import data.IntegrationNrsConstants._
 import play.api.http.Status._
 import stubs.{AuthStub, DESStub, NRSStub}
 import utils.IntegrationSpecBase

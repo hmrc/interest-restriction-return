@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package models
+package v1.models
 
-import assets.DeemedParentConstants._
+import data.DeemedParentConstants._
 import play.api.libs.json.Json
 import v1.models.DeemedParentModel
 import utils.BaseSpec

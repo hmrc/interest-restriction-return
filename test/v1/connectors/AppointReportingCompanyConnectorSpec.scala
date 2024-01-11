@@ -16,8 +16,8 @@
 
 package v1.connectors
 
-import assets.appointReportingCompany.AppointReportingCompanyConstants._
-import assets.fullReturn.FullReturnConstants.ackRef
+import data.appointReportingCompany.AppointReportingCompanyConstants._
+import data.fullReturn.FullReturnConstants.ackRef
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.mocks.MockHttpClient
 import play.api.http.Status._

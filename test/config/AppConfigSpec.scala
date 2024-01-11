@@ -17,7 +17,7 @@
 package config
 
 import utils.BaseSpec
-import assets.AppConfigConstants._
+import data.AppConfigConstants._
 
 class AppConfigSpec extends BaseSpec {
 

@@ -16,8 +16,8 @@
 
 package v1.services
 
-import assets.UnitNrsConstants
-import assets.fullReturn.FullReturnConstants
+import data.UnitNrsConstants
+import data.fullReturn.FullReturnConstants
 import com.google.common.io.BaseEncoding.base64
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AsyncWordSpec

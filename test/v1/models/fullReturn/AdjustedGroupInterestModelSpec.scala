@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package models.fullReturn
+package v1.models.fullReturn
 
 import play.api.libs.json.Json
-import assets.fullReturn.AdjustedGroupInterestConstants._
+import data.fullReturn.AdjustedGroupInterestConstants._
 import v1.models.fullReturn.AdjustedGroupInterestModel
 import utils.BaseSpec
 

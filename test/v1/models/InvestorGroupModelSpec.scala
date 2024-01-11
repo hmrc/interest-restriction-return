@@ -16,7 +16,7 @@
 
 package v1.models
 
-import assets.InvestorGroupConstants._
+import data.InvestorGroupConstants._
 import play.api.libs.json.Json
 import utils.BaseSpec
 

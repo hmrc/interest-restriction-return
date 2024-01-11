@@ -16,7 +16,7 @@
 
 package v1.models
 
-import assets.GroupRatioBlendedConstants._
+import data.GroupRatioBlendedConstants._
 import play.api.libs.json.Json
 import utils.BaseSpec
 

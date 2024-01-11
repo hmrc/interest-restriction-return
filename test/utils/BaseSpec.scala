@@ -16,8 +16,8 @@
 
 package utils
 
-import assets.UnitNrsConstants.NrsRetrievalDataType
-import assets.{BaseConstants, UnitNrsConstants}
+import data.UnitNrsConstants.NrsRetrievalDataType
+import data.{BaseConstants, UnitNrsConstants}
 import config.AppConfig
 import org.apache.pekko.actor.ActorSystem
 import org.scalatest.EitherValues

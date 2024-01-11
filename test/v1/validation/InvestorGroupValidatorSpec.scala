@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import assets.InvestorGroupConstants._
+import data.InvestorGroupConstants._
 import play.api.libs.json.JsPath
 import v1.models.CompanyNameModel
 

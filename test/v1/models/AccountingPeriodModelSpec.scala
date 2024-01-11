@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package models
+package v1.models
 
-import assets.AccountingPeriodConstants._
+import data.AccountingPeriodConstants._
 import play.api.libs.json.{JsError, JsPath, Json}
 import v1.models.AccountingPeriodModel
 import utils.BaseSpec

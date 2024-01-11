@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package models
+package v1.models
 
 import play.api.libs.json.Json
-import assets.IdentityOfCompanySubmittingConstants._
+import data.IdentityOfCompanySubmittingConstants._
 import v1.models.IdentityOfCompanySubmittingModel
 import utils.BaseSpec
 

@@ -16,7 +16,7 @@
 
 package stubs
 
-import assets.IntegrationNrsConstants
+import data.IntegrationNrsConstants
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.Status.{OK, UNAUTHORIZED}
 import utils.WireMockMethods

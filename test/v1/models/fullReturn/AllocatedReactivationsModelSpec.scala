@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package models.fullReturn
+package v1.models.fullReturn
 
-import assets.fullReturn.AllocatedReactivationsConstants._
+import data.fullReturn.AllocatedReactivationsConstants._
 import play.api.libs.json.Json
 import v1.models.fullReturn.AllocatedReactivationsModel
 import utils.BaseSpec

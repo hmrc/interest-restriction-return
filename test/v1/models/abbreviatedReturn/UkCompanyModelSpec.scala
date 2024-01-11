@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package models.abbreviatedReturn
+package v1.models.abbreviatedReturn
 
-import assets.abbreviatedReturn.UkCompanyConstants._
+import data.abbreviatedReturn.UkCompanyConstants._
 import play.api.libs.json.Json
 import v1.models.abbreviatedReturn.UkCompanyModel
 import utils.BaseSpec

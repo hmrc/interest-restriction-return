@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package models
+package v1.models
 
 import play.api.libs.json._
 import v1.models.errors.{ErrorResponseModel, ValidationErrorResponseModel}

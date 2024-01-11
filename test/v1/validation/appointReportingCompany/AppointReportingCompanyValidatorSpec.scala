@@ -16,12 +16,12 @@
 
 package v1.validation.appointReportingCompany
 
-import assets.IdentityOfCompanySubmittingConstants._
-import assets.ReportingCompanyConstants._
-import assets.UltimateParentConstants._
-import assets.appointReportingCompany.AppointReportingCompanyConstants._
+import data.IdentityOfCompanySubmittingConstants._
+import data.ReportingCompanyConstants._
+import data.UltimateParentConstants._
+import data.appointReportingCompany.AppointReportingCompanyConstants._
 import utils.BaseSpec
-import assets.AuthorisingCompanyConstants._
+import data.AuthorisingCompanyConstants._
 import v1.models.CompanyNameModel
 import v1.validation.errors._
 

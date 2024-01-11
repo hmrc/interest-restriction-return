@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package models
+package v1.models
 
-import assets.GroupCompanyDetailsConstants._
+import data.GroupCompanyDetailsConstants._
 import play.api.libs.json.Json
 import v1.models.GroupCompanyDetailsModel
 import utils.BaseSpec

@@ -16,8 +16,8 @@
 
 package v1.validation
 
-import assets.DeemedParentConstants.deemedParentModelUkCompany
-import assets.ParentCompanyConstants._
+import data.DeemedParentConstants.deemedParentModelUkCompany
+import data.ParentCompanyConstants._
 import play.api.libs.json.JsPath
 
 class ParentCompanyValidatorSpec extends BaseValidationSpec {

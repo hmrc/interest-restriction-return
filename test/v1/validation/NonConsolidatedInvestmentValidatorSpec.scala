@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import assets.NonConsolidatedInvestmentConstants._
+import data.NonConsolidatedInvestmentConstants._
 import play.api.libs.json.JsPath
 
 class NonConsolidatedInvestmentValidatorSpec extends BaseValidationSpec {

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package models
+package v1.models
 
-import assets.AgentDetailsConstants._
+import data.AgentDetailsConstants._
 import play.api.libs.json.Json
 import v1.models.AgentDetailsModel
 import utils.BaseSpec

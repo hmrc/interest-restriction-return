@@ -16,18 +16,18 @@
 
 package v1.validation.fullReturn
 
-import assets.AgentDetailsConstants._
-import assets.GroupLevelElectionsConstants._
-import assets.GroupRatioConstants._
-import assets.ParentCompanyConstants._
-import assets.ReportingCompanyConstants._
-import assets.GroupRatioBlendedConstants._
-import assets.fullReturn.AdjustedGroupInterestConstants._
-import assets.fullReturn.AllocatedReactivationsConstants._
-import assets.fullReturn.AllocatedRestrictionsConstants._
-import assets.fullReturn.FullReturnConstants._
-import assets.fullReturn.GroupLevelAmountConstants._
-import assets.fullReturn.UkCompanyConstants._
+import data.AgentDetailsConstants._
+import data.GroupLevelElectionsConstants._
+import data.GroupRatioConstants._
+import data.ParentCompanyConstants._
+import data.ReportingCompanyConstants._
+import data.GroupRatioBlendedConstants._
+import data.fullReturn.AdjustedGroupInterestConstants._
+import data.fullReturn.AllocatedReactivationsConstants._
+import data.fullReturn.AllocatedRestrictionsConstants._
+import data.fullReturn.FullReturnConstants._
+import data.fullReturn.GroupLevelAmountConstants._
+import data.fullReturn.UkCompanyConstants._
 import play.api.libs.json.JsPath
 import utils.BaseSpec
 import v1.models.{Original, Revised, RevisedReturnDetailsModel}

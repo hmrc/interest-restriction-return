@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import assets.ReportingCompanyConstants._
+import data.ReportingCompanyConstants._
 import play.api.libs.json.JsPath
 import utils.BaseSpec
 import v1.models.{CompanyNameModel, UTRModel}

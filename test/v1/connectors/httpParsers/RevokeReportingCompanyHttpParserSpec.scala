@@ -16,7 +16,7 @@
 
 package v1.connectors.httpParsers
 
-import assets.revokeReportingCompany.RevokeReportingCompanyConstants._
+import data.revokeReportingCompany.RevokeReportingCompanyConstants._
 import v1.connectors.httpParsers.RevokeReportingCompanyHttpParser.RevokeReportingCompanyReads
 import v1.connectors.{DesSuccessResponse, InvalidSuccessResponse, UnexpectedFailure}
 import play.api.http.Status._

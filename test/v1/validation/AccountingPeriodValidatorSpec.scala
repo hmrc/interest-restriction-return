@@ -18,7 +18,7 @@ package v1.validation
 
 import java.time.LocalDate
 
-import assets.AccountingPeriodConstants._
+import data.AccountingPeriodConstants._
 import play.api.libs.json.JsPath
 import utils.BaseSpec
 

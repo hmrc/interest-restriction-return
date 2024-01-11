@@ -16,7 +16,7 @@
 
 package v1.models
 
-import assets.NonConsolidatedInvestmentConstants._
+import data.NonConsolidatedInvestmentConstants._
 import utils.BaseSpec
 
 class NonConsolidatedInvestmentModelSpec extends BaseSpec {

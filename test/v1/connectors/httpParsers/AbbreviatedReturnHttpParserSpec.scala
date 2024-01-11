@@ -16,7 +16,7 @@
 
 package v1.connectors.httpParsers
 
-import assets.abbreviatedReturn.AbbreviatedReturnConstants.ackRef
+import data.abbreviatedReturn.AbbreviatedReturnConstants.ackRef
 import v1.connectors.httpParsers.AbbreviatedReturnHttpParser.AbbreviatedReturnReads
 import v1.connectors.{DesSuccessResponse, InvalidSuccessResponse, UnexpectedFailure}
 import play.api.http.Status._

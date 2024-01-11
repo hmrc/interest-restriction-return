@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package models
+package v1.models
 
-import assets.ReportingCompanyConstants._
+import data.ReportingCompanyConstants._
 import play.api.libs.json.Json
 import v1.models.ReportingCompanyModel
 import utils.BaseSpec

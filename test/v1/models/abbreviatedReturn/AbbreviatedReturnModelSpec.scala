@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package models.abbreviatedReturn
+package v1.models.abbreviatedReturn
 
-import assets.abbreviatedReturn.AbbreviatedReturnConstants._
-import assets.AgentDetailsConstants._
-import assets.GroupCompanyDetailsConstants._
-import assets.ReportingCompanyConstants._
+import data.abbreviatedReturn.AbbreviatedReturnConstants._
+import data.AgentDetailsConstants._
+import data.GroupCompanyDetailsConstants._
+import data.ReportingCompanyConstants._
 import play.api.libs.json.{JsObject, Json, Writes}
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
 import v1.models.{Original, SubmissionType}
-import assets.abbreviatedReturn.UkCompanyConstants._
+import data.abbreviatedReturn.UkCompanyConstants._
 import utils.{BaseSpec, JsonFormatters}
 
 class AbbreviatedReturnModelSpec extends BaseSpec with JsonFormatters {

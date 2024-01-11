@@ -16,7 +16,7 @@
 
 package v1.controllers
 
-import assets.appointReportingCompany.AppointReportingCompanyConstants._
+import data.appointReportingCompany.AppointReportingCompanyConstants._
 import play.api.http.Status._
 import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.Results.Ok
@@ -40,8 +40,8 @@ class BaseControllerSpec extends BaseSpec {
     val result: Future[Result] = TestBaseController
       .withJsonBody[AppointReportingCompanyModel](_ => Future.successful(Ok("Success")))(
         request,
-        implicitly,
-        implicitly
+        implicitly[Manifest[AppointReportingCompanyModel]],
+        AppointReportingCompanyModel.format
       )
   }
 

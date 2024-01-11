@@ -16,7 +16,7 @@
 
 package v1.connectors
 
-import assets.fullReturn.FullReturnConstants._
+import data.fullReturn.FullReturnConstants._
 import play.api.http.Status._
 import utils.BaseSpec
 import v1.connectors.HttpHelper.SubmissionResponse

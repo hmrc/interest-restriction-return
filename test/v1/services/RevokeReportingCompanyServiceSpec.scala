@@ -16,7 +16,7 @@
 
 package v1.services
 
-import assets.revokeReportingCompany.RevokeReportingCompanyConstants._
+import data.revokeReportingCompany.RevokeReportingCompanyConstants._
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.{DesSuccessResponse, UnexpectedFailure}
 import v1.connectors.mocks.MockRevokeReportingCompanyConnector

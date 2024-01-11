@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package models.fullReturn
+package v1.models.fullReturn
 
-import assets.fullReturn.GroupLevelAmountConstants._
+import data.fullReturn.GroupLevelAmountConstants._
 import play.api.libs.json.Json
 import v1.models.fullReturn.GroupLevelAmountModel
 import utils.BaseSpec

@@ -16,8 +16,8 @@
 
 package v1.validation
 
-import assets.GroupRatioConstants._
-import assets.GroupRatioBlendedConstants._
+import data.GroupRatioConstants._
+import data.GroupRatioBlendedConstants._
 import play.api.libs.json.JsPath
 
 class GroupRatioValidatorSpec extends BaseValidationSpec {

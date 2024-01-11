@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import assets.DeemedParentConstants._
+import data.DeemedParentConstants._
 import play.api.libs.json.JsPath
 import utils.BaseSpec
 import v1.models.{CompanyNameModel, LegalEntityIdentifierModel, UTRModel}

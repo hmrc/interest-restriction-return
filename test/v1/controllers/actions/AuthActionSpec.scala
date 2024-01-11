@@ -16,7 +16,7 @@
 
 package v1.controllers.actions
 
-import assets.UnitNrsConstants
+import data.UnitNrsConstants
 import play.api.mvc.{Action, AnyContent, Results}
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core._

@@ -16,7 +16,7 @@
 
 package v1.validation.fullReturn
 
-import assets.fullReturn.AllocatedReactivationsConstants._
+import data.fullReturn.AllocatedReactivationsConstants._
 import play.api.libs.json.JsPath
 import utils.BaseSpec
 

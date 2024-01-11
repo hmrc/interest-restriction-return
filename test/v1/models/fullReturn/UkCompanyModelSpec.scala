@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package models.fullReturn
+package v1.models.fullReturn
 
-import assets.fullReturn.UkCompanyConstants._
+import data.fullReturn.UkCompanyConstants._
 import play.api.libs.json.Json
 import v1.models.fullReturn.UkCompanyModel
 import utils.BaseSpec

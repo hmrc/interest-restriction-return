@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package models
+package v1.models
 
-import assets.ConsolidatedPartnershipConstants._
+import data.ConsolidatedPartnershipConstants._
 import play.api.libs.json.Json
 import v1.models.ConsolidatedPartnershipModel
 import utils.BaseSpec
