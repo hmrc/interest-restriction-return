@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,13 +28,13 @@ class CountryCodeValidatorSpec extends BaseSpec {
 
     "Country Code is supplied and is not the correct length as its too short" in {
       val model = CountryCodeModel("A")
-      leftSideError(model.validate, 0).errorMessage shouldBe CountryCodeLengthError(model).errorMessage
+      leftSideError(model.validate).errorMessage    shouldBe CountryCodeLengthError(model).errorMessage
       leftSideError(model.validate, 1).errorMessage shouldBe CountryCodeValueError(model).errorMessage
     }
 
     "Country Code is supplied and is not the correct length as its too long" in {
       val model = CountryCodeModel("AAA")
-      leftSideError(model.validate, 0).errorMessage shouldBe CountryCodeLengthError(model).errorMessage
+      leftSideError(model.validate).errorMessage    shouldBe CountryCodeLengthError(model).errorMessage
       leftSideError(model.validate, 1).errorMessage shouldBe CountryCodeValueError(model).errorMessage
     }
 

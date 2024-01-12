@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ class AgentDetailsValidatorSpec extends BaseSpec {
 
     "passed false and Some name (with incorrect name length) should not succeed with 2 errors" in {
       val model = AgentDetailsModel(agentActingOnBehalfOfCompany = false, Some(""))
-      leftSideError(model.validate, 0).errorMessage shouldBe AgentNameLengthError("").errorMessage
+      leftSideError(model.validate).errorMessage    shouldBe AgentNameLengthError("").errorMessage
       leftSideError(model.validate, 1).errorMessage shouldBe AgentNameSuppliedError("").errorMessage
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package models
+package v1.models
 
-import assets.AccountingPeriodConstants._
+import data.AccountingPeriodConstants._
 import play.api.libs.json.{JsError, JsPath, Json}
 import v1.models.AccountingPeriodModel
 import utils.BaseSpec

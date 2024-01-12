@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package models.fullReturn
+package v1.models.fullReturn
 
-import assets.fullReturn.AllocatedRestrictionsConstants._
+import data.fullReturn.AllocatedRestrictionsConstants._
 import play.api.libs.json.Json
 import v1.models.fullReturn.AllocatedRestrictionsModel
 import utils.BaseSpec

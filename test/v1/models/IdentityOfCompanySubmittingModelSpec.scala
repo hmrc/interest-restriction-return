@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package models
+package v1.models
 
 import play.api.libs.json.Json
-import assets.IdentityOfCompanySubmittingConstants._
+import data.IdentityOfCompanySubmittingConstants._
 import v1.models.IdentityOfCompanySubmittingModel
 import utils.BaseSpec
 

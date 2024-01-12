@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 
 package v1.services
 
-import assets.UnitNrsConstants
-import assets.fullReturn.FullReturnConstants
+import data.UnitNrsConstants
+import data.fullReturn.FullReturnConstants
 import com.google.common.io.BaseEncoding.base64
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AsyncWordSpec

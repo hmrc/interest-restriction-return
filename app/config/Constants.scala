@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,6 @@ package config
 
 object Constants {
 
-  val maxTwoDecimalsRegex            = """^(\d+(\.\d{1,2})?)$"""
-  val intMax                         = 32767
-  val legalEntityIdentifierLength    = 20
   val countryCodeLength              = 2
   val validCountryCodes: Seq[String] = Seq(
     "AD",

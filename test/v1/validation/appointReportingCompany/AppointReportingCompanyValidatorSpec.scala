@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@
 
 package v1.validation.appointReportingCompany
 
-import assets.IdentityOfCompanySubmittingConstants._
-import assets.ReportingCompanyConstants._
-import assets.UltimateParentConstants._
-import assets.appointReportingCompany.AppointReportingCompanyConstants._
+import data.IdentityOfCompanySubmittingConstants._
+import data.ReportingCompanyConstants._
+import data.UltimateParentConstants._
+import data.appointReportingCompany.AppointReportingCompanyConstants._
 import utils.BaseSpec
-import assets.AuthorisingCompanyConstants._
+import data.AuthorisingCompanyConstants._
 import v1.models.CompanyNameModel
 import v1.validation.errors._
 

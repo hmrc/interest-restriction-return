@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,16 +41,15 @@ class ErrorHandlerSpec extends UnitSpec {
   private def versionHeader: (String, String) = ACCEPT -> "application/vnd.hmrc.1.0+json"
 
   private trait Test {
-    val method: String = "some-method"
 
     val requestHeader: FakeRequest[AnyContentAsEmpty.type] = FakeRequest().withHeaders(versionHeader)
 
-    val auditConnector: AuditConnector = mock[AuditConnector]
-    val httpAuditEvent: HttpAuditEvent = mock[HttpAuditEvent]
+    private val auditConnector: AuditConnector = mock[AuditConnector]
+    private val httpAuditEvent: HttpAuditEvent = mock[HttpAuditEvent]
 
-    val eventTags: Map[String, String] = Map("transactionName" -> "event.transactionName")
+    private val eventTags: Map[String, String] = Map("transactionName" -> "event.transactionName")
 
-    val dataEvent: DataEvent = DataEvent(
+    private val dataEvent: DataEvent = DataEvent(
       auditSource = "auditSource",
       auditType = "event.auditType",
       eventId = "",
@@ -69,7 +68,7 @@ class ErrorHandlerSpec extends UnitSpec {
       .expects(*, *, *)
       .returns(Future.successful(Success))
 
-    val configuration: Configuration = Configuration(
+    private val configuration: Configuration = Configuration(
       "appName"                                         -> "myApp",
       "bootstrap.errorHandler.warnOnly.statusCodes"     -> List.empty,
       "bootstrap.errorHandler.suppress4xxErrorMessages" -> false,

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@ import config.AppConfig
 import v1.connectors.mocks.MockHttpClient
 import utils.BaseSpec
 import v1.connectors.HttpHelper.NrsResponse
-import assets.AppConfigConstants._
-import assets.UnitNrsConstants._
+import data.AppConfigConstants._
+import data.UnitNrsConstants._
 import java.util.UUID
 
 import v1.models.nrs._

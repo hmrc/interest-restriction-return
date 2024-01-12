@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package models.fullReturn
+package v1.models.fullReturn
 
 import play.api.libs.json.Json
-import assets.fullReturn.AdjustedGroupInterestConstants._
+import data.fullReturn.AdjustedGroupInterestConstants._
 import v1.models.fullReturn.AdjustedGroupInterestModel
 import utils.BaseSpec
 

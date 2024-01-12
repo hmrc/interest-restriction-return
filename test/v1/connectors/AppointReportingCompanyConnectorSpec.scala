@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 
 package v1.connectors
 
-import assets.appointReportingCompany.AppointReportingCompanyConstants._
-import assets.fullReturn.FullReturnConstants.ackRef
+import data.appointReportingCompany.AppointReportingCompanyConstants._
+import data.fullReturn.FullReturnConstants.ackRef
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.mocks.MockHttpClient
 import play.api.http.Status._

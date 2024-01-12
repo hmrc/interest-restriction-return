@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 package utils
 
-import akka.actor.ActorSystem
-import akka.japi.Option.Some
-import assets.UnitNrsConstants.NrsRetrievalDataType
-import assets.{BaseConstants, UnitNrsConstants}
+import data.UnitNrsConstants.NrsRetrievalDataType
+import data.{BaseConstants, UnitNrsConstants}
 import config.AppConfig
+import org.apache.pekko.actor.ActorSystem
 import org.scalatest.EitherValues
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
@@ -44,7 +43,6 @@ trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with Base
 
   implicit override lazy val app: Application =
     new GuiceApplicationBuilder()
-      .disable(classOf[com.kenshoo.play.metrics.PlayModule])
       .configure("metrics.jvm" -> false)
       .build()
 
@@ -73,7 +71,7 @@ trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with Base
       )
   object UnauthorisedAction extends Unauthorised(new MissingBearerToken, bodyParsers, appConfig)
 
-  def rightSide[A](validationResult: ValidationResult[A]): A = validationResult.toEither.value
+  def rightSide[A](validationResult: ValidationResult[A]): A = validationResult.toOption.get
 
   def leftSideError[A](validationResult: ValidationResult[A], position: Int = 0): Validation =
     validationResult.toEither.left.value.toChain.toList(position)

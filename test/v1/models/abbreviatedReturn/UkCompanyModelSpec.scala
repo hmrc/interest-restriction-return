@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package models.abbreviatedReturn
+package v1.models.abbreviatedReturn
 
-import assets.abbreviatedReturn.UkCompanyConstants._
+import data.abbreviatedReturn.UkCompanyConstants._
 import play.api.libs.json.Json
 import v1.models.abbreviatedReturn.UkCompanyModel
 import utils.BaseSpec

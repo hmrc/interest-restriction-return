@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 
 package v1.validation.revokeReportingCompany
 
-import assets.IdentityOfCompanySubmittingConstants.identityOfCompanySubmittingModelMax
-import assets.revokeReportingCompany.RevokeReportingCompanyConstants.revokeReportingCompanyModelMax
+import data.IdentityOfCompanySubmittingConstants.identityOfCompanySubmittingModelMax
+import data.revokeReportingCompany.RevokeReportingCompanyConstants.revokeReportingCompanyModelMax
 import play.api.libs.json.JsPath
 import utils.BaseSpec
-import assets.AuthorisingCompanyConstants._
+import data.AuthorisingCompanyConstants._
 import v1.models.{CompanyNameModel, CountryCodeModel, UTRModel}
 import v1.validation.errors._
 

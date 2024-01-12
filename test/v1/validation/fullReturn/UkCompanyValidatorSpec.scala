@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 
 package v1.validation.fullReturn
 
-import assets.fullReturn.AllocatedRestrictionsConstants._
-import assets.fullReturn.UkCompanyConstants._
+import data.fullReturn.AllocatedRestrictionsConstants._
+import data.fullReturn.UkCompanyConstants._
 import play.api.libs.json.JsPath
 import v1.models.fullReturn.AllocatedRestrictionsModel
 import v1.models.{AccountingPeriodModel, CompanyNameModel, UTRModel}
