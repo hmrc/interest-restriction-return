@@ -16,7 +16,6 @@
 
 package utils
 
-import org.scalamock.scalatest.MockFactory
 import org.scalatest.OptionValues
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
@@ -27,7 +26,7 @@ import play.api.test.Helpers
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.language.implicitConversions
 
-trait UnitSpec extends AnyWordSpecLike with Matchers with OptionValues with MockFactory {
+trait UnitSpec extends AnyWordSpecLike with Matchers with OptionValues {
 
   import scala.concurrent.duration._
   import scala.concurrent.{Await, Future}

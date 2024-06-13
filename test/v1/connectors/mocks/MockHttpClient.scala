@@ -16,25 +16,22 @@
 
 package v1.connectors.mocks
 
-import org.scalamock.scalatest.MockFactory
-import play.api.libs.json.Writes
-import uk.gov.hmrc.http.{HeaderCarrier, HttpReads}
+import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.http.HttpClient
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
-trait MockHttpClient extends MockFactory {
+trait MockHttpClient extends MockitoSugar {
 
   lazy val mockHttpClient: HttpClient = mock[HttpClient]
 
   def mockHttpPost[I, O](url: String, model: I)(response: O): Unit =
-    (mockHttpClient
-      .POST[I, O](_: String, _: I, _: Seq[(String, String)])(
-        _: Writes[I],
-        _: HttpReads[O],
-        _: HeaderCarrier,
-        _: ExecutionContext
-      ))
-      .expects(url, model, *, *, *, *, *)
-      .returns(Future.successful(response))
+    when(
+      mockHttpClient.POST[I, O](ArgumentMatchers.eq(url), ArgumentMatchers.eq(model), any())(any(), any(), any(), any())
+    )
+      .thenReturn(Future.successful(response))
+
 }

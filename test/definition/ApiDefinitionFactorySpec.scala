@@ -16,25 +16,27 @@
 
 package definition
 
+import config.AppConfig
 import definition.Versions.VERSION_1
-import mocks.MockAppConfig
+import org.mockito.ArgumentMatchers
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar.mock
 import utils.BaseSpec
 
 class ApiDefinitionFactorySpec extends BaseSpec {
 
-  private class Test extends MockAppConfig {
-    val apiDefinitionFactory: ApiDefinitionFactory = new ApiDefinitionFactory(mockAppConfig)
-    MockedAppConfig.apiGatewayContext returns "organisations/interest-restriction"
-  }
+  private val mockAppConfig: AppConfig                   = mock[AppConfig]
+  private val apiDefinitionFactory: ApiDefinitionFactory = new ApiDefinitionFactory(mockAppConfig)
+
+  when(mockAppConfig.apiGatewayContext).thenReturn("organisations/interest-restriction")
+  when(mockAppConfig.apiStatus(ArgumentMatchers.eq("1.0"))).thenReturn("BETA")
+  when(mockAppConfig.endpointsEnabled).thenReturn(true)
 
   "ApiDefinitionFactory" when {
     ".definition" should {
-      "return a valid Definition case class" in new Test {
-        MockedAppConfig.apiStatus("1.0") returns "BETA"
-        MockedAppConfig.endpointsEnabled returns true
-
-        private val writeScope: String   = "write:interest-restriction-return"
-        private val confidenceLevel: Int = 50
+      "return a valid Definition case class" in {
+        val writeScope: String   = "write:interest-restriction-return"
+        val confidenceLevel: Int = 50
 
         apiDefinitionFactory.definition shouldBe
           Definition(

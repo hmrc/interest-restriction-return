@@ -16,21 +16,21 @@
 
 package v1.services.mocks
 
-import org.scalamock.scalatest.MockFactory
-import uk.gov.hmrc.http.HeaderCarrier
+import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.models.fullReturn.FullReturnModel
-import v1.models.requests.IdentifierRequest
 import v1.services.FullReturnService
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
-trait MockFullReturnService extends MockFactory {
+trait MockFullReturnService extends MockitoSugar {
   lazy val mockFullReturnService: FullReturnService = mock[FullReturnService]
 
   def mockFullReturn(model: FullReturnModel)(response: SubmissionResponse): Unit =
-    (mockFullReturnService
-      .submit(_: FullReturnModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
-      .expects(model, *, *, *)
-      .returns(Future.successful(response))
+    when(mockFullReturnService.submit(ArgumentMatchers.eq(model))(any(), any(), any()))
+      .thenReturn(Future.successful(response))
+
 }

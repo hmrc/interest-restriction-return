@@ -16,22 +16,22 @@
 
 package v1.services.mocks
 
-import org.scalamock.scalatest.MockFactory
-import uk.gov.hmrc.http.HeaderCarrier
+import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.models.appointReportingCompany.AppointReportingCompanyModel
-import v1.models.requests.IdentifierRequest
 import v1.services.AppointReportingCompanyService
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
-trait MockAppointReportingCompanyService extends MockFactory {
+trait MockAppointReportingCompanyService extends MockitoSugar {
 
   lazy val mockAppointReportingCompanyService: AppointReportingCompanyService = mock[AppointReportingCompanyService]
 
   def mockAppointReportingCompany(model: AppointReportingCompanyModel)(response: SubmissionResponse): Unit =
-    (mockAppointReportingCompanyService
-      .submit(_: AppointReportingCompanyModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
-      .expects(model, *, *, *)
-      .returns(Future.successful(response))
+    when(mockAppointReportingCompanyService.submit(ArgumentMatchers.eq(model))(any(), any(), any()))
+      .thenReturn(Future.successful(response))
+
 }

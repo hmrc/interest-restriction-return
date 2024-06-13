@@ -16,27 +16,29 @@
 
 package utils
 
-import java.time.Instant
-
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.Configuration
 import play.api.libs.json.Json
-import play.api.mvc.{AnyContentAsEmpty, RequestHeader}
+import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.InsufficientEnrolments
-import uk.gov.hmrc.http.{HeaderCarrier, JsValidationException, NotFoundException}
+import uk.gov.hmrc.http.{JsValidationException, NotFoundException}
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import uk.gov.hmrc.play.audit.http.connector.AuditResult.Success
-import uk.gov.hmrc.play.audit.model.{DataEvent, TruncationLog}
+import uk.gov.hmrc.play.audit.model.DataEvent
 import uk.gov.hmrc.play.bootstrap.config.HttpAuditEvent
 import v1.models.errors.ErrorResponseModel
 import v1.models.errors.ErrorResponses._
 
+import java.time.Instant
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 import scala.util.control.NoStackTrace
 
-class ErrorHandlerSpec extends UnitSpec {
+class ErrorHandlerSpec extends UnitSpec with MockitoSugar {
 
   private def versionHeader: (String, String) = ACCEPT -> "application/vnd.hmrc.1.0+json"
 
@@ -58,15 +60,10 @@ class ErrorHandlerSpec extends UnitSpec {
       generatedAt = Instant.now()
     )
 
-    (httpAuditEvent
-      .dataEvent(_: String, _: String, _: RequestHeader, _: Map[String, String], _: TruncationLog)(_: HeaderCarrier))
-      .expects(*, *, *, *, *, *)
-      .returns(dataEvent)
-
-    (auditConnector
-      .sendEvent(_: DataEvent)(_: HeaderCarrier, _: ExecutionContext))
-      .expects(*, *, *)
-      .returns(Future.successful(Success))
+    when(httpAuditEvent.dataEvent(any(), any(), any(), any(), any())(any()))
+      .thenReturn(dataEvent)
+    when(auditConnector.sendEvent(any())(any(), any()))
+      .thenReturn(Future.successful(Success))
 
     private val configuration: Configuration = Configuration(
       "appName"                                         -> "myApp",

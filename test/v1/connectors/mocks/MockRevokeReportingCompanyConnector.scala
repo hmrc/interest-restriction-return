@@ -16,22 +16,22 @@
 
 package v1.connectors.mocks
 
-import org.scalamock.scalatest.MockFactory
-import uk.gov.hmrc.http.HeaderCarrier
+import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.RevokeReportingCompanyConnector
-import v1.models.requests.IdentifierRequest
 import v1.models.revokeReportingCompany.RevokeReportingCompanyModel
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
-trait MockRevokeReportingCompanyConnector extends MockFactory {
+trait MockRevokeReportingCompanyConnector extends MockitoSugar {
 
   lazy val mockRevokeReportingCompanyConnector: RevokeReportingCompanyConnector = mock[RevokeReportingCompanyConnector]
 
   def mockRevokeReportingCompany(model: RevokeReportingCompanyModel)(response: SubmissionResponse): Unit =
-    (mockRevokeReportingCompanyConnector
-      .revoke(_: RevokeReportingCompanyModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
-      .expects(model, *, *, *)
-      .returns(Future.successful(response))
+    when(mockRevokeReportingCompanyConnector.revoke(ArgumentMatchers.eq(model))(any(), any(), any()))
+      .thenReturn(Future.successful(response))
+
 }

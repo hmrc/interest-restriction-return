@@ -17,21 +17,21 @@
 package v1.connectors
 
 import config.AppConfig
-import v1.connectors.mocks.MockHttpClient
-import utils.BaseSpec
-import v1.connectors.HttpHelper.NrsResponse
 import data.AppConfigConstants._
 import data.UnitNrsConstants._
-import java.util.UUID
-
-import v1.models.nrs._
-import play.api.http.Status._
+import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import org.scalatest.RecoverMethods._
-import play.api.libs.json.Writes
+import play.api.http.Status._
 import uk.gov.hmrc.auth.core.AffinityGroup
-import uk.gov.hmrc.http.{HeaderCarrier, HttpReads}
+import utils.BaseSpec
+import v1.connectors.HttpHelper.NrsResponse
+import v1.connectors.mocks.MockHttpClient
+import v1.models.nrs._
 
-import scala.concurrent.{ExecutionContext, Future}
+import java.util.UUID
+import scala.concurrent.Future
 
 class NrsConnectorSpec extends MockHttpClient with BaseSpec {
 
@@ -75,15 +75,14 @@ class NrsConnectorSpec extends MockHttpClient with BaseSpec {
 
       "return an exception" in {
         def mockHttpPost(): Unit =
-          (mockHttpClient
-            .POST(_: String, _: NrsPayload, _: Seq[(String, String)])(
-              _: Writes[NrsPayload],
-              _: HttpReads[NrsResponse],
-              _: HeaderCarrier,
-              _: ExecutionContext
-            ))
-            .expects(nrsUrl, nrsPayload, *, *, *, *, *)
-            .returns(Future.failed(new Exception()))
+          when(
+            mockHttpClient.POST[NrsPayload, NrsResponse](
+              ArgumentMatchers.eq(nrsUrl),
+              ArgumentMatchers.eq(nrsPayload),
+              any()
+            )(any(), any(), any(), any())
+          )
+            .thenReturn(Future.failed(new Exception()))
 
         mockHttpPost()
 
