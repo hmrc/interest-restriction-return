@@ -16,20 +16,20 @@
 
 package v1.services.mocks
 
-import org.scalamock.scalatest.AsyncMockFactory
+import org.mockito.ArgumentMatchers
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
 import v1.connectors.HttpHelper.NrsResponse
-import v1.models.nrs._
 import v1.connectors.NrsConnector
+import v1.models.nrs._
 
 import scala.concurrent.Future
 
-trait MockNrsConnector extends AsyncMockFactory {
+trait MockNrsConnector extends MockitoSugar {
 
   def mockNrsConnector(): NrsConnector = mock[NrsConnector]
 
   def mockNrsSubmission(nrsPayload: NrsPayload, mockConnector: NrsConnector)(response: Future[NrsResponse]): Unit =
-    (mockConnector
-      .send(_: NrsPayload))
-      .expects(nrsPayload)
-      .returns(response)
+    when(mockConnector.send(ArgumentMatchers.eq(nrsPayload))).thenReturn(response)
+
 }

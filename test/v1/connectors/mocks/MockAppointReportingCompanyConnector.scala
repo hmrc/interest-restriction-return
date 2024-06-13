@@ -16,23 +16,23 @@
 
 package v1.connectors.mocks
 
-import org.scalamock.scalatest.MockFactory
-import uk.gov.hmrc.http.HeaderCarrier
+import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
 import v1.connectors.AppointReportingCompanyConnector
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.models.appointReportingCompany.AppointReportingCompanyModel
-import v1.models.requests.IdentifierRequest
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
-trait MockAppointReportingCompanyConnector extends MockFactory {
+trait MockAppointReportingCompanyConnector extends MockitoSugar {
 
   lazy val mockAppointReportingCompanyConnector: AppointReportingCompanyConnector =
     mock[AppointReportingCompanyConnector]
 
   def mockAppointReportingCompany(model: AppointReportingCompanyModel)(response: SubmissionResponse): Unit =
-    (mockAppointReportingCompanyConnector
-      .appoint(_: AppointReportingCompanyModel)(_: HeaderCarrier, _: ExecutionContext, _: IdentifierRequest[_]))
-      .expects(model, *, *, *)
-      .returns(Future.successful(response))
+    when(mockAppointReportingCompanyConnector.appoint(ArgumentMatchers.eq(model))(any(), any(), any()))
+      .thenReturn(Future.successful(response))
+
 }

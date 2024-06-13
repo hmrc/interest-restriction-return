@@ -16,26 +16,22 @@
 
 package v1.connectors.mocks
 
-import org.scalamock.scalatest.MockFactory
-import uk.gov.hmrc.http.HeaderCarrier
+import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
 import v1.connectors.AbbreviatedReturnConnector
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
-import v1.models.requests.IdentifierRequest
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
-trait MockAbbreviatedReturnConnector extends MockFactory {
+trait MockAbbreviatedReturnConnector extends MockitoSugar {
 
   lazy val mockAbbreviatedReturnConnector: AbbreviatedReturnConnector = mock[AbbreviatedReturnConnector]
 
   def mockAbbreviatedReturn(model: AbbreviatedReturnModel)(response: SubmissionResponse): Unit =
-    (mockAbbreviatedReturnConnector
-      .submitAbbreviatedReturn(_: AbbreviatedReturnModel)(
-        _: HeaderCarrier,
-        _: ExecutionContext,
-        _: IdentifierRequest[_]
-      ))
-      .expects(model, *, *, *)
-      .returns(Future.successful(response))
+    when(mockAbbreviatedReturnConnector.submitAbbreviatedReturn(ArgumentMatchers.eq(model))(any(), any(), any()))
+      .thenReturn(Future.successful(response))
+
 }

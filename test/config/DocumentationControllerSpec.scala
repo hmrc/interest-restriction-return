@@ -16,23 +16,35 @@
 
 package config
 
-import play.api.test.Helpers._
 import com.typesafe.config.ConfigFactory
 import controllers.Assets
 import definition.ApiDefinitionFactory
-import mocks.MockAppConfig
-import play.api.{Application, Configuration}
-import utils.BaseSpec
+import org.mockito.ArgumentMatchers
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.http.{DefaultHttpErrorHandler, HttpErrorConfig}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
 import play.api.mvc.{ControllerComponents, Result}
+import play.api.test.Helpers._
+import play.api.{Application, Configuration}
+import utils.BaseSpec
 
 import scala.concurrent.Future
 
 class DocumentationControllerSpec extends BaseSpec {
 
-  private val selfAssessmentApiDefinition: ApiDefinitionFactory = new ApiDefinitionFactory(TestHelper.mockConfig)
+  private val mockAppConfig: AppConfig = mock[AppConfig]
+
+  when(mockAppConfig.apiGatewayContext).thenReturn("gateway")
+  when(mockAppConfig.featureSwitch).thenReturn(Some(Configuration(ConfigFactory.parseString("""
+                                                                                              |version-1.enabled = true
+                                                                                              |version-2.enabled = true
+      """.stripMargin))))
+  when(mockAppConfig.apiStatus(ArgumentMatchers.eq("1.0"))).thenReturn("ALPHA")
+  when(mockAppConfig.endpointsEnabled).thenReturn(true)
+
+  private val selfAssessmentApiDefinition: ApiDefinitionFactory = new ApiDefinitionFactory(mockAppConfig)
   private val controller: DocumentationController               = TestHelper.controller(selfAssessmentApiDefinition)
 
   "DocumentationController" when {
@@ -59,18 +71,7 @@ class DocumentationControllerSpec extends BaseSpec {
   }
 }
 
-object TestHelper extends MockAppConfig {
-
-  def mockConfig: AppConfig = {
-    MockedAppConfig.apiGatewayContext.returns("gateway")
-    MockedAppConfig.featureSwitch.returns(Some(Configuration(ConfigFactory.parseString("""
-        |version-1.enabled = true
-        |version-2.enabled = true
-      """.stripMargin))))
-    (mockAppConfig.apiStatus _).expects("1.0").returns("ALPHA")
-    (() => mockAppConfig.endpointsEnabled).expects().returns(true)
-    mockAppConfig
-  }
+object TestHelper {
 
   lazy val errorHandler = new DefaultHttpErrorHandler(HttpErrorConfig(showDevErrors = false, None), None, None)
 
