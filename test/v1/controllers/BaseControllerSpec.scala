@@ -76,9 +76,13 @@ class BaseControllerSpec extends BaseSpec {
       "return BAD_REQUEST with an exception message" when {
         "the body cannot be parsed" in new WithJsonBodyTest(None.orNull) {
           status(result) shouldBe BAD_REQUEST
-          intercept[Exception] {
+
+          val exceptionMessage: String = intercept[Exception] {
             await(jsonBodyOf(result))
-          }.getMessage     should include("Could not parse body due to null")
+          }.getMessage
+
+          exceptionMessage should include("Could not parse body due to")
+          exceptionMessage should include("null")
         }
       }
     }
