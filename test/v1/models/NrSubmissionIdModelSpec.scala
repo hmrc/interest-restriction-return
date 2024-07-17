@@ -14,15 +14,29 @@
  * limitations under the License.
  */
 
-package v1.connectors.mocks
+package v1.models
 
-import config.AppConfig
-import org.scalatestplus.mockito.MockitoSugar
-import uk.gov.hmrc.http.client.RequestBuilder
+import utils.BaseSpec
+import v1.models.nrs.NrSubmissionId
 
-trait MockHttpClient extends MockitoSugar {
+import java.util.UUID
 
-  val mockRequestBuilder: RequestBuilder = mock[RequestBuilder]
-  val mockAppConfig: AppConfig           = mock[AppConfig]
+class NrSubmissionIdModelSpec extends BaseSpec {
 
+  "NrSubmissionIdModel" must {
+
+    ".toString" should {
+
+      "return the UUID as a String" in {
+
+        val randomId = UUID.randomUUID()
+
+        val actual = NrSubmissionId(randomId).toString
+
+        val expected = randomId.toString
+
+        actual shouldBe expected
+      }
+    }
+  }
 }

@@ -45,6 +45,7 @@ class FullReturnControllerISpec extends IntegrationSpecBase {
         }
 
         "nrs errors" should {
+
           "return OK (200) with the correct body" in {
             AuthStub.authorised()
             DESStub.fullReturnSuccess(fullReturnDesSuccessJson)

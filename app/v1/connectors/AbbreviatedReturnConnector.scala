@@ -19,17 +19,18 @@ package v1.connectors
 import config.AppConfig
 import play.api.http.HeaderNames
 import play.api.libs.json.Json
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
+import uk.gov.hmrc.http.client.HttpClientV2
+import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
+import utils.JsonFormatters
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.httpParsers.AbbreviatedReturnHttpParser.AbbreviatedReturnReads
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
 import v1.models.requests.IdentifierRequest
-import javax.inject.Inject
-import utils.JsonFormatters
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class AbbreviatedReturnConnector @Inject() (httpClient: HttpClient, implicit val appConfig: AppConfig)
+class AbbreviatedReturnConnector @Inject() (httpClient: HttpClientV2, implicit val appConfig: AppConfig)
     extends DesBaseConnector
     with JsonFormatters {
 
@@ -44,11 +45,10 @@ class AbbreviatedReturnConnector @Inject() (httpClient: HttpClient, implicit val
     val jsonSize     = Json.stringify(Json.toJson(abbreviatedReturnModel)).length
     logger.debug(s"Size of content received: $receivedSize sent: $jsonSize")
 
-    httpClient.POST(abbreviatedReturnUrl, abbreviatedReturnModel)(
-      abbreviatedReturnWrites,
-      AbbreviatedReturnReads,
-      desHc,
-      ec
-    )
+    httpClient
+      .post(url"$abbreviatedReturnUrl")
+      .setHeader(desHeaders: _*)
+      .withBody(Json.toJson(abbreviatedReturnModel))
+      .execute[SubmissionResponse]
   }
 }

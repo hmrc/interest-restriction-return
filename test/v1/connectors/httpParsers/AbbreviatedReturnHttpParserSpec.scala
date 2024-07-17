@@ -46,7 +46,7 @@ class AbbreviatedReturnHttpParserSpec extends BaseSpec {
 
       "return a Left InvalidSuccessResponse" when {
         "receiving an 201 CREATED with an invalid ackRef response" in {
-          val expectedResult: SubmissionResponse = Left(InvalidSuccessResponse)
+          val expectedResult: SubmissionResponse = Left(InvalidSuccessResponse())
           val actualResult: SubmissionResponse   =
             AbbreviatedReturnReads.read("", "", HttpResponse(CREATED, Json.obj(), Map.empty[String, Seq[String]]))
 

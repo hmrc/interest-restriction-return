@@ -17,53 +17,57 @@
 package v1.connectors
 
 import config.AppConfig
-import javax.inject.{Inject, Singleton}
-import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.http.HttpClient
 import play.api.Logging
-import v1.models.nrs._
-import scala.util.{Failure, Success}
+import play.api.libs.json.Json
+import uk.gov.hmrc.http.client.HttpClientV2
+import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
 import v1.connectors.HttpHelper.NrsResponse
-import v1.connectors.httpParsers.NrsResponseHttpParser._
+import v1.models.nrs._
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 trait NrsConnector {
-  def send[A](nrsPayload: NrsPayload): Future[NrsResponse]
+  def send(nrsPayload: NrsPayload): Future[NrsResponse]
 }
 
 @Singleton
-class NrsConnectorImpl @Inject() (http: HttpClient, implicit val appConfig: AppConfig)(implicit ec: ExecutionContext)
-    extends NrsConnector
+class NrsConnectorImpl @Inject() (httpClient: HttpClientV2, implicit val appConfig: AppConfig)(implicit
+  ec: ExecutionContext
+) extends NrsConnector
     with Logging {
 
   private val XApiKey = "X-API-Key"
 
-  def send[A](nrsPayload: NrsPayload): Future[NrsResponse] =
-    (appConfig.nrsUrl, appConfig.nrsAuthorisationToken) match {
-      case (Some(url), Some(token)) => post(nrsPayload, url, token)
-      case _                        =>
-        logger.error(s"Nrs config failure: ${appConfig.nrsUrl} ${appConfig.nrsAuthorisationToken}")
-        Future.failed(new NrsConfigurationException)
-    }
-
-  private def post[A](payload: NrsPayload, url: String, authToken: String): Future[NrsResponse] = {
+  private def post(payload: NrsPayload, url: String, authToken: String): Future[NrSubmissionId] = {
 
     implicit val hc: HeaderCarrier = HeaderCarrier()
 
-    logger.info(s"Sending request to NRS service. Url: $url")
-    val result = http.POST[NrsPayload, NrsResponse](
-      s"$url/submission",
-      payload,
-      Seq[(String, String)](("Content-Type", "application/json"), (XApiKey, authToken))
-    )
-    result.onComplete {
-      case Success(response) => logger.info(s"Response received from NRS service: $response")
-      case Failure(e)        => logger.error(s"Call to NRS service failed url=$url, exception=$e", e)
-    }
-    result
-  }
-}
+    val fullNrsUrl = url + "/submission"
 
-class NrsConfigurationException
-    extends Exception("NRS URL and token needs to be configured in the application.conf", None.orNull)
+    logger.info(s"Sending request to NRS service. Url: $fullNrsUrl")
+
+    httpClient
+      .post(url"$fullNrsUrl")
+      .setHeader("Content-Type" -> "application/json", XApiKey -> authToken)
+      .withBody(Json.toJson(payload))
+      .execute[NrSubmissionId]
+  }
+
+  def send(nrsPayload: NrsPayload): Future[NrsResponse] =
+    (appConfig.nrsUrl, appConfig.nrsAuthorisationToken) match {
+      case (Some(url), Some(token)) =>
+        post(nrsPayload, url, token).map(Right(_))
+      case _                        =>
+        logger.error(
+          s"[NrsConnectorImpl][send]Nrs config failure: ${appConfig.nrsUrl} ${appConfig.nrsAuthorisationToken}"
+        )
+        Future(
+          Left(
+            NrsError(
+              "[NrsConnectorImpl][send] Possibly errors include: NRS URL and token needs to be configured in the application.conf, NrsConfig is disabled, or unexpected error from NRS"
+            )
+          )
+        )
+    }
+}

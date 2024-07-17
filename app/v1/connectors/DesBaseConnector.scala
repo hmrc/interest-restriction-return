@@ -17,10 +17,10 @@
 package v1.connectors
 
 import config.AppConfig
-import v1.connectors.HttpHelper.SubmissionResponse
 import play.api.Logging
 import play.api.http.Status.{CREATED, INTERNAL_SERVER_ERROR}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
+import v1.connectors.HttpHelper.SubmissionResponse
 import v1.models.requests.IdentifierRequest
 
 import java.util.UUID.randomUUID
@@ -29,10 +29,13 @@ trait DesBaseConnector extends Logging {
 
   val uuidIdBeginIndex: Int = 24
 
-  def desHc(implicit hc: HeaderCarrier, appConfig: AppConfig, request: IdentifierRequest[_]): HeaderCarrier = {
+  def desHeaders()(implicit
+    hc: HeaderCarrier,
+    appConfig: AppConfig,
+    request: IdentifierRequest[_]
+  ): Seq[(String, String)] = {
     val correlationId = correlationIdGenerator(hc)
-    logger.debug(s"Prepping message with correlationId header: $correlationId")
-    hc.withExtraHeaders(
+    Seq(
       appConfig.desEnvironmentHeader,
       "providerId"    -> request.identifier,
       "correlationId" -> correlationId,
@@ -68,7 +71,7 @@ trait DesBaseConnector extends Logging {
           .fold(
             invalid => {
               logger.error(s"Invalid Success Response Json - $invalid")
-              Left(InvalidSuccessResponse)
+              Left(InvalidSuccessResponse())
             },
             valid => Right(valid)
           )

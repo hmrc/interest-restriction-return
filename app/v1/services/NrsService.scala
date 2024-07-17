@@ -16,24 +16,23 @@
 
 package v1.services
 
+import com.google.common.io.BaseEncoding.base64
+import play.api.Logging
+import play.api.libs.json.{JsObject, JsString, JsValue}
+import uk.gov.hmrc.http._
+import v1.connectors.HttpHelper.NrsResponse
+import v1.connectors.{NrsConnector, UnexpectedFailure}
+import v1.models.UTRModel
+import v1.models.nrs._
+import v1.models.requests.IdentifierRequest
+
 import java.lang.String.format
 import java.math.BigInteger
 import java.nio.charset.StandardCharsets.UTF_8
 import java.security.MessageDigest.getInstance
-import v1.models.requests.IdentifierRequest
-
 import javax.inject.{Inject, Singleton}
-import com.google.common.io.BaseEncoding.base64
-import play.api.libs.json.{JsObject, JsString, JsValue}
-import v1.connectors.NrsConnector
-import uk.gov.hmrc.http._
-import play.api.Logging
-import v1.models.nrs._
-import v1.connectors.HttpHelper.NrsResponse
-import v1.models.UTRModel
-
-import scala.concurrent.{ExecutionContext, Future}
 import scala.concurrent.duration.{Duration, MILLISECONDS}
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class NrsService @Inject() (nrsConnector: NrsConnector, dateTimeService: DateTimeService)(implicit ec: ExecutionContext)
@@ -67,7 +66,8 @@ class NrsService @Inject() (nrsConnector: NrsConnector, dateTimeService: DateTim
       searchKeys = JsObject(Map[String, JsValue](searchKey -> JsString(searchValue)))
     )
 
-    val nrsPayload: NrsPayload = NrsPayload(base64().encode(payloadAsString.getBytes(UTF_8)), nrsMetadata)
+    val nrsPayload: NrsPayload =
+      NrsPayload(base64().encode(payloadAsString.getBytes(UTF_8)), nrsMetadata)
 
     val delay = Duration(delayInMillis, MILLISECONDS)
     attemptSubmission(nrsPayload, delay, MaxRetries)
@@ -77,10 +77,11 @@ class NrsService @Inject() (nrsConnector: NrsConnector, dateTimeService: DateTim
     logger.info(s"Attempting NRS submission ${MaxRetries - retries + 1} retries left: $retries")
     val result = nrsConnector.send(nrsPayload)
     result.flatMap {
-      case Left(e) if e.status >= 500 && e.status < 600 && retries > 0 =>
+      case Left(e: UnexpectedFailure) if e.status >= 500 && e.status < 600 && retries > 0 =>
         Thread.sleep(delay.toMillis)
         attemptSubmission(nrsPayload, delay, retries - 1)
-      case response                                                    => Future.successful(response)
+      case response                                                                       =>
+        Future.successful(response)
     } recoverWith {
       case e: Exception if retries > 0 =>
         logger.error(s"Error occurred during NRS submission: ${e.getMessage}", e)
@@ -93,5 +94,3 @@ class NrsService @Inject() (nrsConnector: NrsConnector, dateTimeService: DateTim
     format("%064x", new BigInteger(1, getInstance("SHA-256").digest(text.getBytes("UTF-8"))))
 
 }
-
-class NrsAuthenticationException extends Exception("NRS Authentication Data has not been retrieved", None.orNull)

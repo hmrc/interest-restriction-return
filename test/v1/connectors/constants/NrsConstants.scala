@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-package v1.connectors.mocks
+package v1.connectors.constants
 
-import config.AppConfig
-import org.scalatestplus.mockito.MockitoSugar
-import uk.gov.hmrc.http.client.RequestBuilder
+import data.UnitNrsConstants.payload
+import uk.gov.hmrc.auth.core.AffinityGroup
+import v1.models.nrs.NrsPayload
 
-trait MockHttpClient extends MockitoSugar {
+import java.util.UUID
 
-  val mockRequestBuilder: RequestBuilder = mock[RequestBuilder]
-  val mockAppConfig: AppConfig           = mock[AppConfig]
+object NrsConstants {
+
+  val submissionId: UUID     = UUID.randomUUID()
+  val nrsPayload: NrsPayload = payload(Some(AffinityGroup.Organisation))
 
 }

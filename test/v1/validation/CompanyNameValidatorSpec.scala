@@ -17,8 +17,8 @@
 package v1.validation
 
 import play.api.libs.json.JsPath
-import v1.models.CompanyNameModel
 import utils.BaseSpec
+import v1.models.CompanyNameModel
 
 class CompanyNameValidatorSpec extends BaseSpec {
 
@@ -30,35 +30,35 @@ class CompanyNameValidatorSpec extends BaseSpec {
 
       "company name is below the minimum length" in {
 
-        val model = CompanyNameModel(
-          name = ""
-        )
-        model.validate.toEither.left.value.head.errorMessage shouldBe CompanyNameLengthError(model.name).errorMessage
+        val model = CompanyNameModel(name = "")
+
+        model.validate.toEither.left.value.head.errorMessage shouldBe
+          CompanyNameLengthError(model.name).errorMessage
       }
 
       "company name is above the maximum length" in {
 
-        val model = CompanyNameModel(
-          name = "a" * 161
-        )
-        model.validate.toEither.left.value.head.errorMessage shouldBe CompanyNameLengthError(model.name).errorMessage
+        val model = CompanyNameModel(name = "a" * 161)
+
+        model.validate.toEither.left.value.head.errorMessage shouldBe
+          CompanyNameLengthError(model.name).errorMessage
       }
 
       "company name contains an invalid character" in {
+
         val invalidName = "ʰʲʺ£$%˦˫qwNew!£$%^&*()_ComPan\n with spacs Ā to ʯ, Ḁ to ỿ :' ₠ to ₿ Å and K lenth is" +
           " 160 no numbers allowed New!£$%^&*()_ComPany with spaces Ā to ʯ, Ḁ to ỿ"
 
         val model = CompanyNameModel(invalidName)
-        model.validate.toEither.left.value.head.errorMessage shouldBe CompanyNameCharactersError(
-          model.name
-        ).errorMessage
+
+        model.validate.toEither.left.value.head.errorMessage shouldBe
+          CompanyNameCharactersError(model.name).errorMessage
       }
 
       "company name contains an end of line" in {
         val model = CompanyNameModel("1111\n222222")
-        model.validate.toEither.left.value.head.errorMessage shouldBe CompanyNameCharactersError(
-          model.name
-        ).errorMessage
+        model.validate.toEither.left.value.head.errorMessage shouldBe
+          CompanyNameCharactersError(model.name).errorMessage
       }
     }
   }
