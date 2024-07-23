@@ -18,10 +18,9 @@ package routing
 
 import com.typesafe.config.ConfigFactory
 import config.AppConfig
-import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.when
+import org.mockito.{ArgumentMatchers, Mockito}
 import org.scalatest.Inside
-import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.Configuration
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.{HttpConfiguration, HttpFilters}
@@ -41,8 +40,11 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Inside {
   import play.api.routing.sird._
 
   object DefaultHandler extends Handler
+
   object V1Handler extends Handler
+
   object V2Handler extends Handler
+
   object V3Handler extends Handler
 
   private val defaultRouter = Router.from { case GET(p"") =>
@@ -62,34 +64,37 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Inside {
   }
 
   private def routingMap(router: Router) = new VersionRoutingMap {
-    override val defaultRouter: Router    = router
+    override val defaultRouter: Router = router
     override val map: Map[String, Router] = Map("1.0" -> v1Router, "2.0" -> v2Router, "3.0" -> v3Router)
   }
 
-  private val mockAppConfig: AppConfig = mock[AppConfig]
+  private val mockAppConfig: AppConfig = Mockito.mock(classOf[AppConfig])
 
   when(mockAppConfig.apiGatewayContext).thenReturn("gateway")
-  when(mockAppConfig.featureSwitch).thenReturn(Some(Configuration(ConfigFactory.parseString("""
-                                                                                              |version-1.enabled = true
-                                                                                              |version-2.enabled = true
-      """.stripMargin))))
+  when(mockAppConfig.featureSwitch).thenReturn(Some(Configuration(
+    ConfigFactory.parseString(
+      """
+        |version-1.enabled = true
+        |version-2.enabled = true
+      """.stripMargin
+    )
+  )))
   when(mockAppConfig.apiStatus(ArgumentMatchers.eq("1.0"))).thenReturn("ALPHA")
   when(mockAppConfig.endpointsEnabled).thenReturn(true)
 
   class Test(implicit acceptHeader: Option[String]) {
     val httpConfiguration: HttpConfiguration = HttpConfiguration("context")
-    val auditConnector: AuditConnector       = mock[AuditConnector]
-    val httpAuditEvent: HttpAuditEvent       = mock[HttpAuditEvent]
-    val configuration: Configuration         = Configuration(
-      "appName"                                         -> "myApp",
-      "bootstrap.errorHandler.warnOnly.statusCodes"     -> Seq.empty[Int],
+    val auditConnector: AuditConnector = Mockito.mock(classOf[AuditConnector])
+    val httpAuditEvent: HttpAuditEvent = Mockito.mock(classOf[HttpAuditEvent])
+    val configuration: Configuration = Configuration(
+      "appName" -> "myApp",
+      "bootstrap.errorHandler.warnOnly.statusCodes" -> Seq.empty[Int],
       "bootstrap.errorHandler.suppress4xxErrorMessages" -> false,
       "bootstrap.errorHandler.suppress5xxErrorMessages" -> false
     )
 
     private val errorHandler: ErrorHandler = new ErrorHandler(configuration, auditConnector, httpAuditEvent)
-    private val filters: HttpFilters       = mock[HttpFilters]
-    when(filters.filters).thenReturn(Seq.empty)
+    private val mockFilters = Mockito.mock(classOf[HttpFilters])
 
     val actionBuilder: DefaultActionBuilder = DefaultActionBuilder(stubBodyParser(AnyContentAsEmpty))
 
@@ -99,7 +104,7 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Inside {
         errorHandler,
         httpConfiguration,
         mockAppConfig,
-        filters,
+        mockFilters,
         actionBuilder
       )
 
@@ -132,7 +137,7 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Inside {
         inside(requestHandler.routeRequest(request)) { case Some(a: EssentialAction) =>
           val result = a.apply(request).run()
 
-          status(result)        shouldBe NOT_ACCEPTABLE
+          status(result) shouldBe NOT_ACCEPTABLE
           contentAsJson(result) shouldBe Json.toJson(InvalidAcceptHeaderError)
         }
       }
@@ -158,7 +163,7 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Inside {
         inside(requestHandler.routeRequest(request)) { case Some(a: EssentialAction) =>
           val result = a.apply(request).run()
 
-          status(result)        shouldBe NOT_FOUND
+          status(result) shouldBe NOT_FOUND
           contentAsJson(result) shouldBe Json.toJson(UnsupportedVersionError)
         }
       }
@@ -174,7 +179,7 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Inside {
           inside(requestHandler.routeRequest(request)) { case Some(a: EssentialAction) =>
             val result = a.apply(request).run()
 
-            status(result)        shouldBe NOT_FOUND
+            status(result) shouldBe NOT_FOUND
             contentAsJson(result) shouldBe Json.toJson(UnsupportedVersionError)
 
           }

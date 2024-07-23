@@ -20,9 +20,9 @@ import data.UnitNrsConstants.NrsRetrievalDataType
 import data.{BaseConstants, UnitNrsConstants}
 import config.AppConfig
 import org.apache.pekko.actor.ActorSystem
+import org.mockito.Mockito
 import org.scalatest.EitherValues
 import org.scalatest.matchers.should.Matchers
-import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Application
 import play.api.inject.Injector
@@ -44,16 +44,20 @@ import scala.concurrent.ExecutionContext
 
 trait BaseSpec
     extends UnitSpec
-    with MockitoSugar
     with Matchers
     with GuiceOneAppPerSuite
     with BaseConstants
     with EitherValues {
 
-  val mockHttpClient = mock[HttpClientV2]
+  val mockHttpClient: HttpClientV2 = Mockito.mock(classOf[HttpClientV2])
 
   implicit override lazy val app: Application =
     new GuiceApplicationBuilder()
+      .configure(
+        "metrics.jvm" -> false,
+        "metrics.enabled" -> false,
+        "auditing.enabled" -> false
+      )
       .overrides(
         bind[HttpClientV2].toInstance(mockHttpClient)
       )

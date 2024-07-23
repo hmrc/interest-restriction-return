@@ -16,19 +16,19 @@
 
 package v1.connectors.mocks
 
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
-import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.{ArgumentMatchers, Mockito}
 import v1.connectors.FullReturnConnector
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.models.fullReturn.FullReturnModel
 
 import scala.concurrent.Future
 
-trait MockFullReturnConnector extends MockitoSugar {
+trait MockFullReturnConnector {
 
-  lazy val mockFullReturnConnector: FullReturnConnector = mock[FullReturnConnector]
+  lazy val mockFullReturnConnector: FullReturnConnector =
+    Mockito.mock(classOf[FullReturnConnector])
 
   def mockFullReturn(model: FullReturnModel)(response: SubmissionResponse): Unit =
     when(mockFullReturnConnector.submit(ArgumentMatchers.eq(model))(any(), any(), any()))

@@ -16,19 +16,19 @@
 
 package v1.connectors.mocks
 
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
-import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.{ArgumentMatchers, Mockito}
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.RevokeReportingCompanyConnector
 import v1.models.revokeReportingCompany.RevokeReportingCompanyModel
 
 import scala.concurrent.Future
 
-trait MockRevokeReportingCompanyConnector extends MockitoSugar {
+trait MockRevokeReportingCompanyConnector {
 
-  lazy val mockRevokeReportingCompanyConnector: RevokeReportingCompanyConnector = mock[RevokeReportingCompanyConnector]
+  lazy val mockRevokeReportingCompanyConnector: RevokeReportingCompanyConnector =
+    Mockito.mock(classOf[RevokeReportingCompanyConnector])
 
   def mockRevokeReportingCompany(model: RevokeReportingCompanyModel)(response: SubmissionResponse): Unit =
     when(mockRevokeReportingCompanyConnector.revoke(ArgumentMatchers.eq(model))(any(), any(), any()))

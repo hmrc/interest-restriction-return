@@ -16,19 +16,19 @@
 
 package v1.connectors.mocks
 
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
-import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.{ArgumentMatchers, Mockito}
 import v1.connectors.AbbreviatedReturnConnector
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
 
 import scala.concurrent.Future
 
-trait MockAbbreviatedReturnConnector extends MockitoSugar {
+trait MockAbbreviatedReturnConnector {
 
-  lazy val mockAbbreviatedReturnConnector: AbbreviatedReturnConnector = mock[AbbreviatedReturnConnector]
+  lazy val mockAbbreviatedReturnConnector: AbbreviatedReturnConnector =
+    Mockito.mock(classOf[AbbreviatedReturnConnector])
 
   def mockAbbreviatedReturn(model: AbbreviatedReturnModel)(response: SubmissionResponse): Unit =
     when(mockAbbreviatedReturnConnector.submitAbbreviatedReturn(ArgumentMatchers.eq(model))(any(), any(), any()))

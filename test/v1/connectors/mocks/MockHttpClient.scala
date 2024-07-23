@@ -17,12 +17,12 @@
 package v1.connectors.mocks
 
 import config.AppConfig
-import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.Mockito
 import uk.gov.hmrc.http.client.RequestBuilder
 
-trait MockHttpClient extends MockitoSugar {
+trait MockHttpClient {
 
-  val mockRequestBuilder: RequestBuilder = mock[RequestBuilder]
-  val mockAppConfig: AppConfig           = mock[AppConfig]
+  val mockRequestBuilder: RequestBuilder = Mockito.mock(classOf[RequestBuilder])
+  val mockAppConfig: AppConfig = Mockito.mock(classOf[AppConfig])
 
 }

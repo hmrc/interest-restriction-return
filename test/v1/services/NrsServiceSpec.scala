@@ -16,9 +16,9 @@
 
 package v1.services
 
+import com.google.common.io.BaseEncoding.base64
 import data.UnitNrsConstants
 import data.fullReturn.FullReturnConstants
-import com.google.common.io.BaseEncoding.base64
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AsyncWordSpec
 import play.api.http.Status.{BAD_REQUEST, INTERNAL_SERVER_ERROR}
@@ -37,23 +37,24 @@ import scala.concurrent.Future
 
 class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
 
-  private val CLIENT_CLOSED_REQUEST: Int   = 499
+  private val CLIENT_CLOSED_REQUEST: Int = 499
   private val NETWORK_CONNECT_TIMEOUT: Int = 599
 
-  private val dateTime: String                   = "2015-04-14T11:07:36.639Z"
-  private val fullRequest: FakeRequest[String]   = FakeRequest(
-    "GET",
-    "/",
-    FakeHeaders(Seq("Authorization" -> "Bearer 123")),
-    FullReturnConstants.fullReturnModelMax.toString
-  )
-  private val payloadAsString: String            = fullRequest.body
+  private val dateTime: String = "2015-04-14T11:07:36.639Z"
+  private val fullRequest: FakeRequest[String] =
+    FakeRequest(
+      "GET",
+      "/",
+      FakeHeaders(Seq("Authorization" -> "Bearer 123")),
+      FullReturnConstants.fullReturnModelMax.toString
+    )
+  private val payloadAsString: String = fullRequest.body
   private val request: IdentifierRequest[String] = IdentifierRequest[String](
     request = fullRequest,
     identifier = "123",
     nrsRetrievalData = UnitNrsConstants.nrsRetrievalData(Some(AffinityGroup.Organisation))
   )
-  private val expectedNrsMetadata: NrsMetadata   = new NrsMetadata(
+  private val expectedNrsMetadata: NrsMetadata = new NrsMetadata(
     businessId = "irr",
     notableEvent = "interest-restriction-return",
     payloadContentType = "application/json",
@@ -68,7 +69,7 @@ class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
       )
     )
   )
-  private val expectedNrsPayload: NrsPayload     =
+  private val expectedNrsPayload: NrsPayload =
     NrsPayload(base64().encode(payloadAsString.getBytes(UTF_8)), expectedNrsMetadata)
 
   object TestDateTimeService extends DateTimeService {
@@ -80,7 +81,7 @@ class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
       "parse the metadata correctly with the auth information" in {
         val connector: NrsConnector = mockNrsConnector()
         mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Right(NrSubmissionId(UUID.randomUUID()))))
-        val nrsService: NrsService  = new NrsService(connector, TestDateTimeService)
+        val nrsService: NrsService = new NrsService(connector, TestDateTimeService)
 
         val response: Future[NrsResponse] =
           nrsService.send(FullReturnConstants.fullReturnModelMax.reportingCompany.ctutr)(request)
@@ -93,7 +94,7 @@ class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
           mockNrsSubmission(expectedNrsPayload, connector)(
             Future.successful(Left(UnexpectedFailure(BAD_REQUEST, "Error occurred")))
           )
-          val nrsService: NrsService  = new NrsService(connector, TestDateTimeService)
+          val nrsService: NrsService = new NrsService(connector, TestDateTimeService)
 
           val response: Future[NrsResponse] =
             nrsService.send(FullReturnConstants.fullReturnModelMax.reportingCompany.ctutr)(request)
@@ -107,7 +108,7 @@ class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
           mockNrsSubmission(expectedNrsPayload, connector)(
             Future.successful(Left(UnexpectedFailure(CLIENT_CLOSED_REQUEST, "Error occurred")))
           )
-          val nrsService: NrsService  = new NrsService(connector, TestDateTimeService)
+          val nrsService: NrsService = new NrsService(connector, TestDateTimeService)
 
           val response: Future[NrsResponse] =
             nrsService.send(FullReturnConstants.fullReturnModelMax.reportingCompany.ctutr)(request)
@@ -118,12 +119,12 @@ class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
       "try again" when {
         "a 500 error response is returned" in {
           val connector: NrsConnector = mockNrsConnector()
-          val uuid: UUID              = UUID.randomUUID()
+          val uuid: UUID = UUID.randomUUID()
           mockNrsSubmission(expectedNrsPayload, connector)(
             Future.successful(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error occurred")))
           )
           mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Right(NrSubmissionId(uuid))))
-          val nrsService: NrsService  = new NrsService(connector, TestDateTimeService)
+          val nrsService: NrsService = new NrsService(connector, TestDateTimeService)
 
           val response: Future[NrsResponse] =
             nrsService.send(FullReturnConstants.fullReturnModelMax.reportingCompany.ctutr)(request)
@@ -132,12 +133,12 @@ class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
 
         "a 599 error response is returned" in {
           val connector: NrsConnector = mockNrsConnector()
-          val uuid: UUID              = UUID.randomUUID()
+          val uuid: UUID = UUID.randomUUID()
           mockNrsSubmission(expectedNrsPayload, connector)(
             Future.successful(Left(UnexpectedFailure(NETWORK_CONNECT_TIMEOUT, "Error occurred")))
           )
           mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Right(NrSubmissionId(uuid))))
-          val nrsService: NrsService  = new NrsService(connector, TestDateTimeService)
+          val nrsService: NrsService = new NrsService(connector, TestDateTimeService)
 
           val response: Future[NrsResponse] =
             nrsService.send(FullReturnConstants.fullReturnModelMax.reportingCompany.ctutr)(request)
@@ -146,7 +147,7 @@ class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
 
         "a 500 error response is returned twice" in {
           val connector: NrsConnector = mockNrsConnector()
-          val uuid: UUID              = UUID.randomUUID()
+          val uuid: UUID = UUID.randomUUID()
           mockNrsSubmission(expectedNrsPayload, connector)(
             Future.successful(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error occurred")))
           )
@@ -154,7 +155,7 @@ class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
             Future.successful(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error occurred")))
           )
           mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Right(NrSubmissionId(uuid))))
-          val nrsService: NrsService  = new NrsService(connector, TestDateTimeService)
+          val nrsService: NrsService = new NrsService(connector, TestDateTimeService)
 
           val response: Future[NrsResponse] =
             nrsService.send(FullReturnConstants.fullReturnModelMax.reportingCompany.ctutr)(request)
@@ -163,7 +164,7 @@ class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
 
         "a 599 error response is returned twice" in {
           val connector: NrsConnector = mockNrsConnector()
-          val uuid: UUID              = UUID.randomUUID()
+          val uuid: UUID = UUID.randomUUID()
           mockNrsSubmission(expectedNrsPayload, connector)(
             Future.successful(Left(UnexpectedFailure(NETWORK_CONNECT_TIMEOUT, "Error occurred")))
           )
@@ -171,7 +172,7 @@ class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
             Future.successful(Left(UnexpectedFailure(NETWORK_CONNECT_TIMEOUT, "Error occurred")))
           )
           mockNrsSubmission(expectedNrsPayload, connector)(Future.successful(Right(NrSubmissionId(uuid))))
-          val nrsService: NrsService  = new NrsService(connector, TestDateTimeService)
+          val nrsService: NrsService = new NrsService(connector, TestDateTimeService)
 
           val response: Future[NrsResponse] =
             nrsService.send(FullReturnConstants.fullReturnModelMax.reportingCompany.ctutr)(request)
@@ -191,7 +192,7 @@ class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
           mockNrsSubmission(expectedNrsPayload, connector)(
             Future.successful(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error occurred")))
           )
-          val nrsService: NrsService  = new NrsService(connector, TestDateTimeService)
+          val nrsService: NrsService = new NrsService(connector, TestDateTimeService)
 
           val response: Future[NrsResponse] =
             nrsService.send(FullReturnConstants.fullReturnModelMax.reportingCompany.ctutr)(request)
@@ -209,7 +210,7 @@ class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
           mockNrsSubmission(expectedNrsPayload, connector)(
             Future.successful(Left(UnexpectedFailure(NETWORK_CONNECT_TIMEOUT, "Error occurred")))
           )
-          val nrsService: NrsService  = new NrsService(connector, TestDateTimeService)
+          val nrsService: NrsService = new NrsService(connector, TestDateTimeService)
 
           val response: Future[NrsResponse] =
             nrsService.send(FullReturnConstants.fullReturnModelMax.reportingCompany.ctutr)(request)
@@ -221,7 +222,7 @@ class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
           mockNrsSubmission(expectedNrsPayload, connector)(Future.failed(new Exception()))
           mockNrsSubmission(expectedNrsPayload, connector)(Future.failed(new Exception()))
           mockNrsSubmission(expectedNrsPayload, connector)(Future.failed(new Exception()))
-          val nrsService: NrsService  = new NrsService(connector, TestDateTimeService)
+          val nrsService: NrsService = new NrsService(connector, TestDateTimeService)
 
           val response: Future[NrsResponse] =
             nrsService.send(FullReturnConstants.fullReturnModelMax.reportingCompany.ctutr)(request)
