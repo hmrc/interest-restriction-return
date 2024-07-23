@@ -34,25 +34,16 @@ class AbbreviatedReturnConnectorSpec extends BaseSpec with MockHttpClient {
   private trait ConnectorTestSetup {
 
     val desBaseUrl: String = "http://localhost:9262"
-
-    val apiRelativeUrl = "/organisations/interest-restrictions-return/abbreviated"
+    val apiRelativeUrl     = "/organisations/interest-restrictions-return/abbreviated"
+    val fullURL            = s"$desBaseUrl$apiRelativeUrl"
 
     val response: DesSuccessResponse = DesSuccessResponse(ackRef)
 
     lazy val connector: AbbreviatedReturnConnector =
       new AbbreviatedReturnConnector(mockHttpClient, mockAppConfig)
 
-    when(mockRequestBuilder.setHeader(any()))
-      .thenReturn(mockRequestBuilder)
-
-    when(mockRequestBuilder.withBody(any())(any(), any(), any()))
-      .thenReturn(mockRequestBuilder)
-
-    when(mockAppConfig.desUrl)
-      .thenReturn(desBaseUrl)
-
-    when(mockHttpClient.post(ArgumentMatchers.eq(url"${desBaseUrl + apiRelativeUrl}"))(any()))
-      .thenReturn(mockRequestBuilder)
+    mockDesURL(desBaseUrl)
+    mockPostCall(fullURL)
   }
 
   "AbbreviatedReturnConnector" when {

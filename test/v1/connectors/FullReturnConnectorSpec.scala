@@ -17,11 +17,10 @@
 package v1.connectors
 
 import data.fullReturn.FullReturnConstants._
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import play.api.http.Status._
-import uk.gov.hmrc.http.{HttpReads, StringContextOps}
+import uk.gov.hmrc.http.HttpReads
 import utils.BaseSpec
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.mocks.MockHttpClient
@@ -30,28 +29,18 @@ import scala.concurrent.Future
 
 class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
 
+  val desBaseUrl: String = "http://localhost:9262"
+  val apiRelativeUrl     = "/organisations/interest-restrictions-return/full"
+  val fullURL            = s"$desBaseUrl$apiRelativeUrl"
+
   private trait ConnectorTestSetup {
-
-    val desBaseUrl: String = "http://localhost:9262"
-
-    val apiRelativeUrl = "/organisations/interest-restrictions-return/full"
-
     val response: DesSuccessResponse = DesSuccessResponse(ackRef)
 
     lazy val connector: FullReturnConnector =
       new FullReturnConnector(mockHttpClient, mockAppConfig)
 
-    when(mockRequestBuilder.setHeader(any()))
-      .thenReturn(mockRequestBuilder)
-
-    when(mockRequestBuilder.withBody(any())(any(), any(), any()))
-      .thenReturn(mockRequestBuilder)
-
-    when(mockAppConfig.desUrl)
-      .thenReturn(desBaseUrl)
-
-    when(mockHttpClient.post(ArgumentMatchers.eq(url"${desBaseUrl + apiRelativeUrl}"))(any()))
-      .thenReturn(mockRequestBuilder)
+    mockDesURL(desBaseUrl)
+    mockPostCall(fullURL)
   }
 
   "FullReturnConnector.submit" which {

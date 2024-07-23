@@ -31,23 +31,16 @@ import scala.concurrent.Future
 
 class NrsConnectorSpec extends MockHttpClient with BaseSpec {
 
+  val nrsBaseUrl: String = "http://localhost:1111"
+  val apiRelativeUrl     = "/submission"
+  val fullURL            = s"$nrsBaseUrl$apiRelativeUrl"
+
   private trait ConnectorTestSetup {
-
-    val nrsBaseUrl: String = "http://localhost:1111"
-
-    val apiRelativeUrl = "/submission"
 
     lazy val connector: NrsConnectorImpl =
       new NrsConnectorImpl(mockHttpClient, appConfigWithNrs)
 
-    when(mockRequestBuilder.setHeader(any()))
-      .thenReturn(mockRequestBuilder)
-
-    when(mockRequestBuilder.withBody(any())(any(), any(), any()))
-      .thenReturn(mockRequestBuilder)
-
-    when(mockHttpClient.post(ArgumentMatchers.eq(url"${nrsBaseUrl + apiRelativeUrl}"))(any()))
-      .thenReturn(mockRequestBuilder)
+    mockPostCall(fullURL)
   }
 
   "NrsConnector" when {

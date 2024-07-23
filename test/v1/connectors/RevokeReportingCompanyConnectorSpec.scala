@@ -31,33 +31,24 @@ import scala.concurrent.Future
 
 class RevokeReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec {
 
+  val desBaseUrl: String = "http://localhost:9262"
+  val apiRelativeUrl     = "/organisations/interest-restrictions-return/revoke"
+  val fullURL            = s"$desBaseUrl$apiRelativeUrl"
+
   private trait ConnectorTestSetup {
-
-    val desBaseUrl: String = "http://localhost:9262"
-
-    val apiRelativeUrl = "/organisations/interest-restrictions-return/revoke"
 
     val response: DesSuccessResponse = DesSuccessResponse(ackRef)
 
     lazy val connector: RevokeReportingCompanyConnector =
       new RevokeReportingCompanyConnector(mockHttpClient, mockAppConfig)
 
-    when(mockRequestBuilder.setHeader(any()))
-      .thenReturn(mockRequestBuilder)
-
-    when(mockRequestBuilder.withBody(any())(any(), any(), any()))
-      .thenReturn(mockRequestBuilder)
-
-    when(mockAppConfig.desUrl)
-      .thenReturn(desBaseUrl)
-
-    when(mockHttpClient.post(ArgumentMatchers.eq(url"${desBaseUrl + apiRelativeUrl}"))(any()))
-      .thenReturn(mockRequestBuilder)
+    mockDesURL(desBaseUrl)
+    mockPostCall(fullURL)
   }
 
   "RevokeReportingCompanyConnector.revoke" when {
 
-    "revokement is successful" should {
+    "revoke is successful" should {
       "return a Right(SuccessResponse)" in new ConnectorTestSetup {
 
         when(mockRequestBuilder.execute(any[HttpReads[SubmissionResponse]], any()))
@@ -68,7 +59,7 @@ class RevokeReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec {
       }
     }
 
-    "revokement is unsuccessful" should {
+    "revoke is unsuccessful" should {
       "return a Left(UnexpectedFailure)" in new ConnectorTestSetup {
 
         when(mockRequestBuilder.execute(any[HttpReads[SubmissionResponse]], any()))
