@@ -42,20 +42,15 @@ import play.api.inject.bind
 
 import scala.concurrent.ExecutionContext
 
-trait BaseSpec
-    extends UnitSpec
-    with Matchers
-    with GuiceOneAppPerSuite
-    with BaseConstants
-    with EitherValues {
+trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with BaseConstants with EitherValues {
 
   val mockHttpClient: HttpClientV2 = Mockito.mock(classOf[HttpClientV2])
 
   implicit override lazy val app: Application =
     new GuiceApplicationBuilder()
       .configure(
-        "metrics.jvm" -> false,
-        "metrics.enabled" -> false,
+        "metrics.jvm"      -> false,
+        "metrics.enabled"  -> false,
         "auditing.enabled" -> false
       )
       .overrides(

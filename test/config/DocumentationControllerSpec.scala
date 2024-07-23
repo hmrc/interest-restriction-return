@@ -36,8 +36,7 @@ class DocumentationControllerSpec extends BaseSpec {
   private val mockAppConfig: AppConfig = Mockito.mock(classOf[AppConfig])
 
   when(mockAppConfig.apiGatewayContext).thenReturn("gateway")
-  when(mockAppConfig.featureSwitch).thenReturn(Some(Configuration(ConfigFactory.parseString(
-    """
+  when(mockAppConfig.featureSwitch).thenReturn(Some(Configuration(ConfigFactory.parseString("""
       |version-1.enabled = true
       |version-2.enabled = true
       """.stripMargin))))
@@ -45,14 +44,14 @@ class DocumentationControllerSpec extends BaseSpec {
   when(mockAppConfig.endpointsEnabled).thenReturn(true)
 
   private val selfAssessmentApiDefinition: ApiDefinitionFactory = new ApiDefinitionFactory(mockAppConfig)
-  private val controller: DocumentationController = TestHelper.controller(selfAssessmentApiDefinition)
+  private val controller: DocumentationController               = TestHelper.controller(selfAssessmentApiDefinition)
 
   "DocumentationController" when {
     ".definition" must {
       "return the definition file" in {
-        val expectedJson = Json.toJson(selfAssessmentApiDefinition.definition)
+        val expectedJson           = Json.toJson(selfAssessmentApiDefinition.definition)
         val result: Future[Result] = controller.definition()(fakeRequest)
-        status(result) shouldBe OK
+        status(result)        shouldBe OK
         contentAsJson(result) shouldBe expectedJson
       }
     }
@@ -60,11 +59,11 @@ class DocumentationControllerSpec extends BaseSpec {
     ".specification" must {
       "return the yaml documentation" in {
         val result: Future[Result] = controller.specification("1.0", "application.yaml")(fakeRequest)
-        val spec =
+        val spec                   =
           scala.io.Source
             .fromInputStream(getClass.getResourceAsStream("/public/api/conf/1.0/application.yaml"))
             .mkString
-        status(result) shouldBe OK
+        status(result)          shouldBe OK
         contentAsString(result) shouldBe spec
       }
     }
@@ -79,8 +78,7 @@ object TestHelper {
     new GuiceApplicationBuilder()
       .configure(
         Configuration(
-          ConfigFactory.parseString(
-            """
+          ConfigFactory.parseString("""
               | metrics.enabled       = false
                                     """.stripMargin)
         )
@@ -89,7 +87,7 @@ object TestHelper {
 
   def controller(selfAssessmentApiDefinition: ApiDefinitionFactory): DocumentationController = {
     lazy val mockCc: ControllerComponents = fakeApplication.injector.instanceOf[ControllerComponents]
-    lazy val mockAssets: Assets = fakeApplication.injector.instanceOf[Assets]
+    lazy val mockAssets: Assets           = fakeApplication.injector.instanceOf[Assets]
     new DocumentationController(selfAssessmentApiDefinition, mockCc, mockAssets)
   }
 }

@@ -23,6 +23,6 @@ import uk.gov.hmrc.http.client.RequestBuilder
 trait MockHttpClient {
 
   val mockRequestBuilder: RequestBuilder = Mockito.mock(classOf[RequestBuilder])
-  val mockAppConfig: AppConfig = Mockito.mock(classOf[AppConfig])
+  val mockAppConfig: AppConfig           = Mockito.mock(classOf[AppConfig])
 
 }

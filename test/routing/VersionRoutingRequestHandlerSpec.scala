@@ -64,37 +64,41 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Inside {
   }
 
   private def routingMap(router: Router) = new VersionRoutingMap {
-    override val defaultRouter: Router = router
+    override val defaultRouter: Router    = router
     override val map: Map[String, Router] = Map("1.0" -> v1Router, "2.0" -> v2Router, "3.0" -> v3Router)
   }
 
   private val mockAppConfig: AppConfig = Mockito.mock(classOf[AppConfig])
 
   when(mockAppConfig.apiGatewayContext).thenReturn("gateway")
-  when(mockAppConfig.featureSwitch).thenReturn(Some(Configuration(
-    ConfigFactory.parseString(
-      """
+  when(mockAppConfig.featureSwitch).thenReturn(
+    Some(
+      Configuration(
+        ConfigFactory.parseString(
+          """
         |version-1.enabled = true
         |version-2.enabled = true
       """.stripMargin
+        )
+      )
     )
-  )))
+  )
   when(mockAppConfig.apiStatus(ArgumentMatchers.eq("1.0"))).thenReturn("ALPHA")
   when(mockAppConfig.endpointsEnabled).thenReturn(true)
 
   class Test(implicit acceptHeader: Option[String]) {
     val httpConfiguration: HttpConfiguration = HttpConfiguration("context")
-    val auditConnector: AuditConnector = Mockito.mock(classOf[AuditConnector])
-    val httpAuditEvent: HttpAuditEvent = Mockito.mock(classOf[HttpAuditEvent])
-    val configuration: Configuration = Configuration(
-      "appName" -> "myApp",
-      "bootstrap.errorHandler.warnOnly.statusCodes" -> Seq.empty[Int],
+    val auditConnector: AuditConnector       = Mockito.mock(classOf[AuditConnector])
+    val httpAuditEvent: HttpAuditEvent       = Mockito.mock(classOf[HttpAuditEvent])
+    val configuration: Configuration         = Configuration(
+      "appName"                                         -> "myApp",
+      "bootstrap.errorHandler.warnOnly.statusCodes"     -> Seq.empty[Int],
       "bootstrap.errorHandler.suppress4xxErrorMessages" -> false,
       "bootstrap.errorHandler.suppress5xxErrorMessages" -> false
     )
 
     private val errorHandler: ErrorHandler = new ErrorHandler(configuration, auditConnector, httpAuditEvent)
-    private val mockFilters = Mockito.mock(classOf[HttpFilters])
+    private val mockFilters                = Mockito.mock(classOf[HttpFilters])
 
     val actionBuilder: DefaultActionBuilder = DefaultActionBuilder(stubBodyParser(AnyContentAsEmpty))
 
@@ -137,7 +141,7 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Inside {
         inside(requestHandler.routeRequest(request)) { case Some(a: EssentialAction) =>
           val result = a.apply(request).run()
 
-          status(result) shouldBe NOT_ACCEPTABLE
+          status(result)        shouldBe NOT_ACCEPTABLE
           contentAsJson(result) shouldBe Json.toJson(InvalidAcceptHeaderError)
         }
       }
@@ -163,7 +167,7 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Inside {
         inside(requestHandler.routeRequest(request)) { case Some(a: EssentialAction) =>
           val result = a.apply(request).run()
 
-          status(result) shouldBe NOT_FOUND
+          status(result)        shouldBe NOT_FOUND
           contentAsJson(result) shouldBe Json.toJson(UnsupportedVersionError)
         }
       }
@@ -179,7 +183,7 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Inside {
           inside(requestHandler.routeRequest(request)) { case Some(a: EssentialAction) =>
             val result = a.apply(request).run()
 
-            status(result) shouldBe NOT_FOUND
+            status(result)        shouldBe NOT_FOUND
             contentAsJson(result) shouldBe Json.toJson(UnsupportedVersionError)
 
           }
