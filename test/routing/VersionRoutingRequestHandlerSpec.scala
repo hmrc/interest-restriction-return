@@ -68,8 +68,6 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Inside {
     override val map: Map[String, Router] = Map("1.0" -> v1Router, "2.0" -> v2Router, "3.0" -> v3Router)
   }
 
-  private val mockAppConfig: AppConfig = Mockito.mock(classOf[AppConfig])
-
   when(mockAppConfig.apiGatewayContext).thenReturn("gateway")
   when(mockAppConfig.featureSwitch).thenReturn(
     Some(
@@ -127,7 +125,7 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Inside {
     }
 
     "Routing requests with valid version" should {
-      val acceptHeader: Some[String] = Some("application/vnd.hmrc.1.0+json")
+      val acceptHeader: Option[String] = Some("application/vnd.hmrc.1.0+json")
 
       handleWithDefaultRoutes(acceptHeader)
     }
@@ -148,18 +146,18 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Inside {
     }
 
     "Routing requests with v1" should {
-      implicit val acceptHeader: Some[String] = Some("application/vnd.hmrc.1.0+json")
+      implicit val acceptHeader: Option[String] = Some("application/vnd.hmrc.1.0+json")
 
       handleWithVersionRoutes("/v1", V1Handler)
     }
 
     "Routing requests with v2" should {
-      implicit val acceptHeader: Some[String] = Some("application/vnd.hmrc.2.0+json")
+      implicit val acceptHeader: Option[String] = Some("application/vnd.hmrc.2.0+json")
       handleWithVersionRoutes("/v2", V2Handler)
     }
 
     "Routing requests with unsupported version" should {
-      implicit val acceptHeader: Some[String] = Some("application/vnd.hmrc.5.0+json")
+      implicit val acceptHeader: Option[String] = Some("application/vnd.hmrc.5.0+json")
 
       "return 404" in new Test {
         private val request = buildRequest("path")
@@ -174,7 +172,7 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Inside {
     }
 
     "Routing requests for supported version but not enabled" when {
-      implicit val acceptHeader: Some[String] = Some("application/vnd.hmrc.3.0+json")
+      implicit val acceptHeader: Option[String] = Some("application/vnd.hmrc.3.0+json")
 
       "the version has a route for the resource" must {
         "return 404 Not Found" in new Test {

@@ -17,12 +17,26 @@
 package v1.connectors.mocks
 
 import config.AppConfig
-import org.mockito.Mockito
-import uk.gov.hmrc.http.client.RequestBuilder
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.mockito.{ArgumentMatchers, Mockito}
+import uk.gov.hmrc.http.client.{HttpClientV2, RequestBuilder}
+import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
 
 trait MockHttpClient {
 
+  val mockHttpClient: HttpClientV2 = Mockito.mock(classOf[HttpClientV2])
+
   val mockRequestBuilder: RequestBuilder = Mockito.mock(classOf[RequestBuilder])
   val mockAppConfig: AppConfig           = Mockito.mock(classOf[AppConfig])
+
+  def mockDesURL(url: String): Unit =
+    when(mockAppConfig.desUrl).thenReturn(url)
+
+  def mockPostCall(fullURL: String): Unit = {
+    when(mockRequestBuilder.setHeader(any())).thenReturn(mockRequestBuilder)
+    when(mockRequestBuilder.withBody(any())(any(), any(), any())).thenReturn(mockRequestBuilder)
+    when(mockHttpClient.post(ArgumentMatchers.eq(url"$fullURL"))(any[HeaderCarrier]())).thenReturn(mockRequestBuilder)
+  }
 
 }

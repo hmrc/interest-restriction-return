@@ -18,41 +18,29 @@ package v1.connectors
 
 import data.appointReportingCompany.AppointReportingCompanyConstants._
 import data.fullReturn.FullReturnConstants.ackRef
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import play.api.http.Status.INTERNAL_SERVER_ERROR
-import uk.gov.hmrc.http.{HttpReads, StringContextOps}
+import uk.gov.hmrc.http.HttpReads
 import utils.BaseSpec
 import v1.connectors.HttpHelper.SubmissionResponse
-import v1.connectors.mocks.MockHttpClient
 
 import scala.concurrent.Future
 
-class AppointReportingCompanyConnectorSpec extends BaseSpec with MockHttpClient {
+class AppointReportingCompanyConnectorSpec extends BaseSpec {
+
+  val desBaseUrl: String = "http://localhost:9262"
+  val apiRelativeUrl     = "/organisations/interest-restrictions-return/appoint"
+  val fullURL            = s"$desBaseUrl$apiRelativeUrl"
+
+  val response: DesSuccessResponse = DesSuccessResponse(ackRef)
 
   private trait ConnectorTestSetup {
-
-    val desBaseUrl: String = "http://localhost:9262"
-
-    val apiRelativeUrl = "/organisations/interest-restrictions-return/appoint"
-
-    val response: DesSuccessResponse = DesSuccessResponse(ackRef)
+    mockDesURL(desBaseUrl)
+    mockPostCall(fullURL)
 
     lazy val connector: AppointReportingCompanyConnector =
       new AppointReportingCompanyConnector(mockHttpClient, mockAppConfig)
-
-    when(mockRequestBuilder.setHeader(any()))
-      .thenReturn(mockRequestBuilder)
-
-    when(mockRequestBuilder.withBody(any())(any(), any(), any()))
-      .thenReturn(mockRequestBuilder)
-
-    when(mockAppConfig.desUrl)
-      .thenReturn(desBaseUrl)
-
-    when(mockHttpClient.post(ArgumentMatchers.eq(url"${desBaseUrl + apiRelativeUrl}"))(any()))
-      .thenReturn(mockRequestBuilder)
   }
 
   "AppointReportingCompanyConnector" when {

@@ -16,35 +16,38 @@
 
 package utils
 
+import config.AppConfig
 import data.UnitNrsConstants.NrsRetrievalDataType
 import data.{BaseConstants, UnitNrsConstants}
-import config.AppConfig
 import org.apache.pekko.actor.ActorSystem
-import org.mockito.Mockito
 import org.scalatest.EitherValues
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Application
-import play.api.inject.Injector
 import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.inject.{Injector, bind}
 import play.api.mvc.{AnyContentAsEmpty, BodyParsers}
 import play.api.test.FakeRequest
 import uk.gov.hmrc.auth.core.{AffinityGroup, MissingBearerToken}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.client.HttpClientV2
 import v1.connectors.NrsConnector
+import v1.connectors.mocks.MockHttpClient
 import v1.controllers.actions.mocks.{Authorised, Unauthorised}
 import v1.models.Validation
 import v1.models.Validation.ValidationResult
 import v1.models.requests.IdentifierRequest
 import v1.services.{DateTimeService, NrsService}
-import play.api.inject.bind
 
 import scala.concurrent.ExecutionContext
 
-trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with BaseConstants with EitherValues {
-
-  val mockHttpClient: HttpClientV2 = Mockito.mock(classOf[HttpClientV2])
+trait BaseSpec
+    extends UnitSpec
+    with Matchers
+    with GuiceOneAppPerSuite
+    with BaseConstants
+    with EitherValues
+    with MockHttpClient {
 
   implicit override lazy val app: Application =
     new GuiceApplicationBuilder()
@@ -76,12 +79,14 @@ trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with Base
 
   def fakeAuthResponse(nrsAffinityGroup: Option[AffinityGroup]): NrsRetrievalDataType =
     UnitNrsConstants.fakeResponse(nrsAffinityGroup)
+
   object AuthorisedAction
       extends Authorised[UnitNrsConstants.NrsRetrievalDataType](
         fakeAuthResponse(Some(AffinityGroup.Organisation)),
         bodyParsers,
         appConfig
       )
+
   object UnauthorisedAction extends Unauthorised(new MissingBearerToken, bodyParsers, appConfig)
 
   def rightSide[A](validationResult: ValidationResult[A]): A = validationResult.toOption.get

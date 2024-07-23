@@ -19,8 +19,8 @@ package config
 import com.typesafe.config.ConfigFactory
 import controllers.Assets
 import definition.ApiDefinitionFactory
+import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.when
-import org.mockito.{ArgumentMatchers, Mockito}
 import play.api.http.{DefaultHttpErrorHandler, HttpErrorConfig}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
@@ -32,8 +32,6 @@ import utils.BaseSpec
 import scala.concurrent.Future
 
 class DocumentationControllerSpec extends BaseSpec {
-
-  private val mockAppConfig: AppConfig = Mockito.mock(classOf[AppConfig])
 
   when(mockAppConfig.apiGatewayContext).thenReturn("gateway")
   when(mockAppConfig.featureSwitch).thenReturn(Some(Configuration(ConfigFactory.parseString("""

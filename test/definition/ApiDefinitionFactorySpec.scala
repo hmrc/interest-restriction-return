@@ -16,15 +16,13 @@
 
 package definition
 
-import config.AppConfig
 import definition.Versions.VERSION_1
-import org.mockito.{ArgumentMatchers, Mockito}
+import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.when
 import utils.BaseSpec
 
 class ApiDefinitionFactorySpec extends BaseSpec {
 
-  private val mockAppConfig: AppConfig                   = Mockito.mock(classOf[AppConfig])
   private val apiDefinitionFactory: ApiDefinitionFactory = new ApiDefinitionFactory(mockAppConfig)
 
   when(mockAppConfig.apiGatewayContext).thenReturn("organisations/interest-restriction")
