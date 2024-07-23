@@ -18,41 +18,57 @@ package v1.connectors
 
 import data.appointReportingCompany.AppointReportingCompanyConstants._
 import data.fullReturn.FullReturnConstants.ackRef
-import v1.connectors.HttpHelper.SubmissionResponse
-import v1.connectors.mocks.MockHttpClient
-import play.api.http.Status._
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import play.api.http.Status.INTERNAL_SERVER_ERROR
+import uk.gov.hmrc.http.HttpReads
 import utils.BaseSpec
-import v1.models.appointReportingCompany.AppointReportingCompanyModel
+import v1.connectors.HttpHelper.SubmissionResponse
 
 import scala.concurrent.Future
 
-class AppointReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec {
+class AppointReportingCompanyConnectorSpec extends BaseSpec {
 
-  "AppointReportingCompanyConnector.appoint" when {
-    def setup(response: SubmissionResponse): AppointReportingCompanyConnector = {
-      val desUrl: String = "http://localhost:9262/organisations/interest-restrictions-return/appoint"
-      mockHttpPost[AppointReportingCompanyModel, Either[ErrorResponse, DesSuccessResponse]](
-        desUrl,
-        appointReportingCompanyModelMax
-      )(response)
-      new AppointReportingCompanyConnector(mockHttpClient, appConfig)
-    }
+  val desBaseUrl: String = "http://localhost:9262"
+  val apiRelativeUrl     = "/organisations/interest-restrictions-return/appoint"
+  val fullURL            = s"$desBaseUrl$apiRelativeUrl"
 
-    "appointment is successful" should {
-      "return a Right(SuccessResponse)" in {
-        val connector: AppointReportingCompanyConnector = setup(Right(DesSuccessResponse(ackRef)))
-        val result: Future[SubmissionResponse]          = connector.appoint(appointReportingCompanyModelMax)
+  val response: DesSuccessResponse = DesSuccessResponse(ackRef)
 
-        await(result) shouldBe Right(DesSuccessResponse(ackRef))
+  private trait ConnectorTestSetup {
+    mockDesURL(desBaseUrl)
+    mockPostCall(fullURL)
+
+    lazy val connector: AppointReportingCompanyConnector =
+      new AppointReportingCompanyConnector(mockHttpClient, mockAppConfig)
+  }
+
+  "AppointReportingCompanyConnector" when {
+
+    ".appoint()" when {
+
+      "appointment is successful" should {
+
+        "return a Right(DesSuccessResponse)" in new ConnectorTestSetup() {
+
+          when(mockRequestBuilder.execute(any[HttpReads[SubmissionResponse]], any()))
+            .thenReturn(Right(response))
+
+          val result: Future[SubmissionResponse] = connector.appoint(appointReportingCompanyModelMax)
+          await(result) shouldBe Right(DesSuccessResponse(ackRef))
+        }
       }
-    }
 
-    "appointment is unsuccessful" should {
-      "return a Left(UnexpectedFailure)" in {
-        val connector: AppointReportingCompanyConnector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-        val result: Future[SubmissionResponse]          = connector.appoint(appointReportingCompanyModelMax)
+      "appointment is unsuccessful" should {
 
-        await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
+        "return a Left(UnexpectedFailure)" in new ConnectorTestSetup() {
+
+          when(mockRequestBuilder.execute(any[HttpReads[SubmissionResponse]], any()))
+            .thenReturn(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
+
+          val result: Future[SubmissionResponse] = connector.appoint(appointReportingCompanyModelMax)
+          await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
+        }
       }
     }
   }

@@ -14,22 +14,17 @@
  * limitations under the License.
  */
 
-package v1.services.mocks
+package v1.connectors.constants
 
-import org.mockito.Mockito.when
-import org.mockito.{ArgumentMatchers, Mockito}
-import v1.connectors.HttpHelper.NrsResponse
-import v1.connectors.NrsConnector
-import v1.models.nrs._
+import data.UnitNrsConstants.payload
+import uk.gov.hmrc.auth.core.AffinityGroup
+import v1.models.nrs.NrsPayload
 
-import scala.concurrent.Future
+import java.util.UUID
 
-trait MockNrsConnector {
+object NrsConstants {
 
-  def mockNrsConnector(): NrsConnector =
-    Mockito.mock(classOf[NrsConnector])
-
-  def mockNrsSubmission(nrsPayload: NrsPayload, mockConnector: NrsConnector)(response: Future[NrsResponse]): Unit =
-    when(mockConnector.send(ArgumentMatchers.eq(nrsPayload))).thenReturn(response)
+  val submissionId: UUID     = UUID.randomUUID()
+  val nrsPayload: NrsPayload = payload(Some(AffinityGroup.Organisation))
 
 }

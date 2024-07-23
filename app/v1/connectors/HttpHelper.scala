@@ -20,25 +20,27 @@ import play.api.http.Status.INTERNAL_SERVER_ERROR
 import play.api.libs.json.{Json, OFormat}
 import v1.models.nrs.NrSubmissionId
 
+case class DesSuccessResponse(acknowledgementReference: String)
+
+object DesSuccessResponse {
+  implicit val fmt: OFormat[DesSuccessResponse] = Json.format[DesSuccessResponse]
+}
+
 object HttpHelper {
   type SubmissionResponse = Either[ErrorResponse, DesSuccessResponse]
   type NrsResponse        = Either[ErrorResponse, NrSubmissionId]
 }
 
-case class DesSuccessResponse(acknowledgementReference: String)
-object DesSuccessResponse {
-  implicit val fmt: OFormat[DesSuccessResponse] = Json.format[DesSuccessResponse]
-}
+sealed trait ErrorResponse
 
-trait ErrorResponse {
-  val status: Int
-  val body: String
-}
-object InvalidSuccessResponse extends ErrorResponse {
-  override val status: Int  = INTERNAL_SERVER_ERROR
-  override val body: String = HttpErrorMessages.UNEXPECTED_ERROR
-}
-case class UnexpectedFailure(override val status: Int, override val body: String) extends ErrorResponse
+case class NrsError(errorMessage: String) extends ErrorResponse
+
+case class InvalidSuccessResponse(
+  status: Int = INTERNAL_SERVER_ERROR,
+  body: String = HttpErrorMessages.UNEXPECTED_ERROR
+) extends ErrorResponse
+
+case class UnexpectedFailure(status: Int, body: String) extends ErrorResponse
 
 object HttpErrorMessages {
   val ABBREVIATED_ERROR = "Error returned when trying to submit abbreviated return"

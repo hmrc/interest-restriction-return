@@ -18,10 +18,9 @@ package routing
 
 import com.typesafe.config.ConfigFactory
 import config.AppConfig
-import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.when
+import org.mockito.{ArgumentMatchers, Mockito}
 import org.scalatest.Inside
-import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.Configuration
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.{HttpConfiguration, HttpFilters}
@@ -41,8 +40,11 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Inside {
   import play.api.routing.sird._
 
   object DefaultHandler extends Handler
+
   object V1Handler extends Handler
+
   object V2Handler extends Handler
+
   object V3Handler extends Handler
 
   private val defaultRouter = Router.from { case GET(p"") =>
@@ -66,20 +68,26 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Inside {
     override val map: Map[String, Router] = Map("1.0" -> v1Router, "2.0" -> v2Router, "3.0" -> v3Router)
   }
 
-  private val mockAppConfig: AppConfig = mock[AppConfig]
-
   when(mockAppConfig.apiGatewayContext).thenReturn("gateway")
-  when(mockAppConfig.featureSwitch).thenReturn(Some(Configuration(ConfigFactory.parseString("""
-                                                                                              |version-1.enabled = true
-                                                                                              |version-2.enabled = true
-      """.stripMargin))))
+  when(mockAppConfig.featureSwitch).thenReturn(
+    Some(
+      Configuration(
+        ConfigFactory.parseString(
+          """
+        |version-1.enabled = true
+        |version-2.enabled = true
+      """.stripMargin
+        )
+      )
+    )
+  )
   when(mockAppConfig.apiStatus(ArgumentMatchers.eq("1.0"))).thenReturn("ALPHA")
   when(mockAppConfig.endpointsEnabled).thenReturn(true)
 
   class Test(implicit acceptHeader: Option[String]) {
     val httpConfiguration: HttpConfiguration = HttpConfiguration("context")
-    val auditConnector: AuditConnector       = mock[AuditConnector]
-    val httpAuditEvent: HttpAuditEvent       = mock[HttpAuditEvent]
+    val auditConnector: AuditConnector       = Mockito.mock(classOf[AuditConnector])
+    val httpAuditEvent: HttpAuditEvent       = Mockito.mock(classOf[HttpAuditEvent])
     val configuration: Configuration         = Configuration(
       "appName"                                         -> "myApp",
       "bootstrap.errorHandler.warnOnly.statusCodes"     -> Seq.empty[Int],
@@ -88,8 +96,7 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Inside {
     )
 
     private val errorHandler: ErrorHandler = new ErrorHandler(configuration, auditConnector, httpAuditEvent)
-    private val filters: HttpFilters       = mock[HttpFilters]
-    when(filters.filters).thenReturn(Seq.empty)
+    private val mockFilters                = Mockito.mock(classOf[HttpFilters])
 
     val actionBuilder: DefaultActionBuilder = DefaultActionBuilder(stubBodyParser(AnyContentAsEmpty))
 
@@ -99,7 +106,7 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Inside {
         errorHandler,
         httpConfiguration,
         mockAppConfig,
-        filters,
+        mockFilters,
         actionBuilder
       )
 
@@ -118,7 +125,7 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Inside {
     }
 
     "Routing requests with valid version" should {
-      val acceptHeader: Some[String] = Some("application/vnd.hmrc.1.0+json")
+      val acceptHeader: Option[String] = Some("application/vnd.hmrc.1.0+json")
 
       handleWithDefaultRoutes(acceptHeader)
     }
@@ -139,18 +146,18 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Inside {
     }
 
     "Routing requests with v1" should {
-      implicit val acceptHeader: Some[String] = Some("application/vnd.hmrc.1.0+json")
+      implicit val acceptHeader: Option[String] = Some("application/vnd.hmrc.1.0+json")
 
       handleWithVersionRoutes("/v1", V1Handler)
     }
 
     "Routing requests with v2" should {
-      implicit val acceptHeader: Some[String] = Some("application/vnd.hmrc.2.0+json")
+      implicit val acceptHeader: Option[String] = Some("application/vnd.hmrc.2.0+json")
       handleWithVersionRoutes("/v2", V2Handler)
     }
 
     "Routing requests with unsupported version" should {
-      implicit val acceptHeader: Some[String] = Some("application/vnd.hmrc.5.0+json")
+      implicit val acceptHeader: Option[String] = Some("application/vnd.hmrc.5.0+json")
 
       "return 404" in new Test {
         private val request = buildRequest("path")
@@ -165,7 +172,7 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Inside {
     }
 
     "Routing requests for supported version but not enabled" when {
-      implicit val acceptHeader: Some[String] = Some("application/vnd.hmrc.3.0+json")
+      implicit val acceptHeader: Option[String] = Some("application/vnd.hmrc.3.0+json")
 
       "the version has a route for the resource" must {
         "return 404 Not Found" in new Test {

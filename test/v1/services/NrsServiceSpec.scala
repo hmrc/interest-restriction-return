@@ -16,9 +16,9 @@
 
 package v1.services
 
+import com.google.common.io.BaseEncoding.base64
 import data.UnitNrsConstants
 import data.fullReturn.FullReturnConstants
-import com.google.common.io.BaseEncoding.base64
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AsyncWordSpec
 import play.api.http.Status.{BAD_REQUEST, INTERNAL_SERVER_ERROR}
@@ -41,12 +41,13 @@ class NrsServiceSpec extends AsyncWordSpec with MockNrsConnector with Matchers {
   private val NETWORK_CONNECT_TIMEOUT: Int = 599
 
   private val dateTime: String                   = "2015-04-14T11:07:36.639Z"
-  private val fullRequest: FakeRequest[String]   = FakeRequest(
-    "GET",
-    "/",
-    FakeHeaders(Seq("Authorization" -> "Bearer 123")),
-    FullReturnConstants.fullReturnModelMax.toString
-  )
+  private val fullRequest: FakeRequest[String]   =
+    FakeRequest(
+      "GET",
+      "/",
+      FakeHeaders(Seq("Authorization" -> "Bearer 123")),
+      FullReturnConstants.fullReturnModelMax.toString
+    )
   private val payloadAsString: String            = fullRequest.body
   private val request: IdentifierRequest[String] = IdentifierRequest[String](
     request = fullRequest,

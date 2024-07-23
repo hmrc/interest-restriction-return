@@ -16,18 +16,19 @@
 
 package v1.services.mocks
 
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
-import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.{ArgumentMatchers, Mockito}
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.models.fullReturn.FullReturnModel
 import v1.services.FullReturnService
 
 import scala.concurrent.Future
 
-trait MockFullReturnService extends MockitoSugar {
-  lazy val mockFullReturnService: FullReturnService = mock[FullReturnService]
+trait MockFullReturnService {
+
+  lazy val mockFullReturnService: FullReturnService =
+    Mockito.mock(classOf[FullReturnService])
 
   def mockFullReturn(model: FullReturnModel)(response: SubmissionResponse): Unit =
     when(mockFullReturnService.submit(ArgumentMatchers.eq(model))(any(), any(), any()))

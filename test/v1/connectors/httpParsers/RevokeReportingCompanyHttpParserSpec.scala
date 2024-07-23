@@ -46,7 +46,7 @@ class RevokeReportingCompanyHttpParserSpec extends BaseSpec {
 
       "return a Left InvalidSuccessResponse" when {
         "receiving an 201 CREATED with an invalid ackRef response" in {
-          val expectedResult: SubmissionResponse = Left(InvalidSuccessResponse)
+          val expectedResult: SubmissionResponse = Left(InvalidSuccessResponse())
           val actualResult: SubmissionResponse   = RevokeReportingCompanyReads.read(
             "",
             "",

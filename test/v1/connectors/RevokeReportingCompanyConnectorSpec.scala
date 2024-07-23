@@ -18,40 +18,54 @@ package v1.connectors
 
 import data.fullReturn.FullReturnConstants.ackRef
 import data.revokeReportingCompany.RevokeReportingCompanyConstants._
+import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import play.api.http.Status._
+import uk.gov.hmrc.http.{HttpReads, StringContextOps}
+import utils.BaseSpec
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.mocks.MockHttpClient
-import play.api.http.Status._
-import utils.BaseSpec
-import v1.models.revokeReportingCompany.RevokeReportingCompanyModel
 
 import scala.concurrent.Future
 
 class RevokeReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec {
 
+  val desBaseUrl: String = "http://localhost:9262"
+  val apiRelativeUrl     = "/organisations/interest-restrictions-return/revoke"
+  val fullURL            = s"$desBaseUrl$apiRelativeUrl"
+
+  private trait ConnectorTestSetup {
+
+    val response: DesSuccessResponse = DesSuccessResponse(ackRef)
+
+    lazy val connector: RevokeReportingCompanyConnector =
+      new RevokeReportingCompanyConnector(mockHttpClient, mockAppConfig)
+
+    mockDesURL(desBaseUrl)
+    mockPostCall(fullURL)
+  }
+
   "RevokeReportingCompanyConnector.revoke" when {
-    def setup(response: SubmissionResponse): RevokeReportingCompanyConnector = {
-      val desUrl: String = "http://localhost:9262/organisations/interest-restrictions-return/revoke"
-      mockHttpPost[RevokeReportingCompanyModel, Either[ErrorResponse, DesSuccessResponse]](
-        desUrl,
-        revokeReportingCompanyModelMax
-      )(response)
-      new RevokeReportingCompanyConnector(mockHttpClient, appConfig)
-    }
 
-    "revokement is successful" should {
-      "return a Right(SuccessResponse)" in {
-        val connector: RevokeReportingCompanyConnector = setup(Right(DesSuccessResponse(ackRef)))
-        val result: Future[SubmissionResponse]         = connector.revoke(revokeReportingCompanyModelMax)
+    "revoke is successful" should {
+      "return a Right(SuccessResponse)" in new ConnectorTestSetup {
 
+        when(mockRequestBuilder.execute(any[HttpReads[SubmissionResponse]], any()))
+          .thenReturn(Right(response))
+
+        val result: Future[SubmissionResponse] = connector.revoke(revokeReportingCompanyModelMax)
         await(result) shouldBe Right(DesSuccessResponse(ackRef))
       }
     }
 
-    "revokement is unsuccessful" should {
-      "return a Left(UnexpectedFailure)" in {
-        val connector: RevokeReportingCompanyConnector = setup(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
-        val result: Future[SubmissionResponse]         = connector.revoke(revokeReportingCompanyModelMax)
+    "revoke is unsuccessful" should {
+      "return a Left(UnexpectedFailure)" in new ConnectorTestSetup {
 
+        when(mockRequestBuilder.execute(any[HttpReads[SubmissionResponse]], any()))
+          .thenReturn(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
+
+        val result: Future[SubmissionResponse] = connector.revoke(revokeReportingCompanyModelMax)
         await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
       }
     }

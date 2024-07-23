@@ -14,22 +14,29 @@
  * limitations under the License.
  */
 
-package v1.services.mocks
+package v1.models
 
-import org.mockito.Mockito.when
-import org.mockito.{ArgumentMatchers, Mockito}
-import v1.connectors.HttpHelper.NrsResponse
-import v1.connectors.NrsConnector
-import v1.models.nrs._
+import utils.BaseSpec
+import v1.models.nrs.NrSubmissionId
 
-import scala.concurrent.Future
+import java.util.UUID
 
-trait MockNrsConnector {
+class NrSubmissionIdModelSpec extends BaseSpec {
 
-  def mockNrsConnector(): NrsConnector =
-    Mockito.mock(classOf[NrsConnector])
+  "NrSubmissionIdModel" must {
 
-  def mockNrsSubmission(nrsPayload: NrsPayload, mockConnector: NrsConnector)(response: Future[NrsResponse]): Unit =
-    when(mockConnector.send(ArgumentMatchers.eq(nrsPayload))).thenReturn(response)
+    ".toString" should {
 
+      "return the UUID as a String" in {
+
+        val randomId = UUID.randomUUID()
+
+        val actual = NrSubmissionId(randomId).toString
+
+        val expected = randomId.toString
+
+        actual shouldBe expected
+      }
+    }
+  }
 }

@@ -17,8 +17,8 @@
 package utils
 
 import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito
 import org.mockito.Mockito.when
-import org.scalatestplus.mockito.MockitoSugar
 import play.api.Configuration
 import play.api.libs.json.Json
 import play.api.mvc.AnyContentAsEmpty
@@ -38,7 +38,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.util.control.NoStackTrace
 
-class ErrorHandlerSpec extends UnitSpec with MockitoSugar {
+class ErrorHandlerSpec extends UnitSpec {
 
   private def versionHeader: (String, String) = ACCEPT -> "application/vnd.hmrc.1.0+json"
 
@@ -46,8 +46,8 @@ class ErrorHandlerSpec extends UnitSpec with MockitoSugar {
 
     val requestHeader: FakeRequest[AnyContentAsEmpty.type] = FakeRequest().withHeaders(versionHeader)
 
-    private val auditConnector: AuditConnector = mock[AuditConnector]
-    private val httpAuditEvent: HttpAuditEvent = mock[HttpAuditEvent]
+    private val auditConnector: AuditConnector = Mockito.mock(classOf[AuditConnector])
+    private val httpAuditEvent: HttpAuditEvent = Mockito.mock(classOf[HttpAuditEvent])
 
     private val eventTags: Map[String, String] = Map("transactionName" -> "event.transactionName")
 

@@ -16,21 +16,23 @@
 
 package utils
 
+import config.AppConfig
 import data.UnitNrsConstants.NrsRetrievalDataType
 import data.{BaseConstants, UnitNrsConstants}
-import config.AppConfig
 import org.apache.pekko.actor.ActorSystem
 import org.scalatest.EitherValues
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Application
-import play.api.inject.Injector
 import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.inject.{Injector, bind}
 import play.api.mvc.{AnyContentAsEmpty, BodyParsers}
 import play.api.test.FakeRequest
 import uk.gov.hmrc.auth.core.{AffinityGroup, MissingBearerToken}
 import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.client.HttpClientV2
 import v1.connectors.NrsConnector
+import v1.connectors.mocks.MockHttpClient
 import v1.controllers.actions.mocks.{Authorised, Unauthorised}
 import v1.models.Validation
 import v1.models.Validation.ValidationResult
@@ -39,36 +41,52 @@ import v1.services.{DateTimeService, NrsService}
 
 import scala.concurrent.ExecutionContext
 
-trait BaseSpec extends UnitSpec with Matchers with GuiceOneAppPerSuite with BaseConstants with EitherValues {
+trait BaseSpec
+    extends UnitSpec
+    with Matchers
+    with GuiceOneAppPerSuite
+    with BaseConstants
+    with EitherValues
+    with MockHttpClient {
 
   implicit override lazy val app: Application =
     new GuiceApplicationBuilder()
-      .configure("metrics.jvm" -> false)
+      .configure(
+        "metrics.jvm"      -> false,
+        "metrics.enabled"  -> false,
+        "auditing.enabled" -> false
+      )
+      .overrides(
+        bind[HttpClientV2].toInstance(mockHttpClient)
+      )
       .build()
 
   lazy val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/")
 
   lazy implicit val identifierRequest: IdentifierRequest[AnyContentAsEmpty.type] =
     IdentifierRequest(fakeRequest, "id", UnitNrsConstants.nrsRetrievalData(Some(AffinityGroup.Organisation)))
-  lazy val injector: Injector                                                    = app.injector
-  lazy val bodyParsers: BodyParsers.Default                                      = injector.instanceOf[BodyParsers.Default]
-  lazy val appConfig: AppConfig                                                  = injector.instanceOf[AppConfig]
-  lazy val dateTimeService: DateTimeService                                      = injector.instanceOf[DateTimeService]
-  lazy val nrsConnector: NrsConnector                                            = injector.instanceOf[NrsConnector]
-  lazy implicit val ec: ExecutionContext                                         = injector.instanceOf[ExecutionContext]
-  lazy val nrsService: NrsService                                                =
+
+  lazy val injector: Injector                    = app.injector
+  lazy val bodyParsers: BodyParsers.Default      = injector.instanceOf[BodyParsers.Default]
+  lazy val appConfig: AppConfig                  = injector.instanceOf[AppConfig]
+  lazy val dateTimeService: DateTimeService      = injector.instanceOf[DateTimeService]
+  lazy val nrsConnector: NrsConnector            = injector.instanceOf[NrsConnector]
+  lazy implicit val ec: ExecutionContext         = injector.instanceOf[ExecutionContext]
+  lazy val nrsService: NrsService                =
     new NrsService(nrsConnector = nrsConnector, dateTimeService = dateTimeService)
-  lazy implicit val headerCarrier: HeaderCarrier                                 = HeaderCarrier()
-  lazy implicit val system: ActorSystem                                          = ActorSystem("Sys")
+  lazy implicit val headerCarrier: HeaderCarrier = HeaderCarrier()
+  lazy implicit val system: ActorSystem          = ActorSystem("Sys")
 
   def fakeAuthResponse(nrsAffinityGroup: Option[AffinityGroup]): NrsRetrievalDataType =
     UnitNrsConstants.fakeResponse(nrsAffinityGroup)
+
   object AuthorisedAction
       extends Authorised[UnitNrsConstants.NrsRetrievalDataType](
         fakeAuthResponse(Some(AffinityGroup.Organisation)),
         bodyParsers,
         appConfig
       )
+
   object UnauthorisedAction extends Unauthorised(new MissingBearerToken, bodyParsers, appConfig)
 
   def rightSide[A](validationResult: ValidationResult[A]): A = validationResult.toOption.get

@@ -23,10 +23,11 @@ import play.api.libs.json._
 import play.api.mvc.{Request, Result}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendBaseController
+import v1.connectors.UnexpectedFailure
+import v1.models.ReturnModel
 import v1.models.Validation.ValidationResult
 import v1.models.errors.ValidationErrorResponseModel
 import v1.models.requests.IdentifierRequest
-import v1.models.ReturnModel
 import v1.services.{NrsService, Submission}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -69,14 +70,15 @@ trait BaseController extends BackendBaseController with Logging {
   )(implicit hc: HeaderCarrier, identifierRequest: IdentifierRequest[JsValue]): Future[Result] =
     handleValidation(validationModel) { model =>
       service.submit(model).map {
-        case Left(err)       => Status(err.status)(err.body)
-        case Right(response) =>
+        case Left(err: UnexpectedFailure) => Status(err.status)(err.body)
+        case Right(response)              =>
           (maybeNrsService, model) match {
             case (Some(nrsService), returnModel: ReturnModel) if appConfig.nrsEnabled =>
               nrsService.send(returnModel.reportingCompany.ctutr)
+              Ok(Json.toJson(response))
             case _                                                                    =>
+              Ok(Json.toJson(response))
           }
-          Ok(Json.toJson(response))
       }
     }
 

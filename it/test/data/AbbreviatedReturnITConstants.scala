@@ -27,21 +27,23 @@ object AbbreviatedReturnITConstants {
 
   val ackRef: String = "ackRef"
 
-  val abbreviatedReturnDesSuccessJson: JsObject = Json.obj(
-    "acknowledgementReference" -> ackRef
-  )
+  val abbreviatedReturnDesSuccessJson: JsObject =
+    Json.obj(
+      "acknowledgementReference" -> ackRef
+    )
 
-  val abbreviatedReturnJson: JsObject = Json.obj(
-    "declaration"               -> true,
-    "appointedReportingCompany" -> true,
-    "agentDetails"              -> agentDetailsJson,
-    "reportingCompany"          -> reportingCompanyJson,
-    "publicInfrastructure"      -> true,
-    "groupCompanyDetails"       -> groupCompanyDetailsJson,
-    "submissionType"            -> "revised",
-    "angie"                     -> 1.1,
-    "revisedReturnDetails"      -> "revised details",
-    "groupLevelElections"       -> groupLevelElectionsJson,
-    "ukCompanies"               -> Seq(ukCompanyJson)
-  )
+  val abbreviatedReturnJson: JsObject =
+    Json.obj(
+      "declaration"               -> true,
+      "appointedReportingCompany" -> true,
+      "agentDetails"              -> agentDetailsJson,
+      "reportingCompany"          -> reportingCompanyJson,
+      "publicInfrastructure"      -> true,
+      "groupCompanyDetails"       -> groupCompanyDetailsJson,
+      "submissionType"            -> "revised",
+      "angie"                     -> 1.1,
+      "revisedReturnDetails"      -> "revised details",
+      "groupLevelElections"       -> groupLevelElectionsJson,
+      "ukCompanies"               -> Seq(ukCompanyJson)
+    )
 }

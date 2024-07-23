@@ -46,7 +46,7 @@ class NrsResponseHttpParserSpec extends BaseSpec {
 
       "return a Left InvalidSuccessResponse" when {
         "receiving a 202 ACCEPTED with an invalid nrSubmissionId response" in {
-          val expectedResult: NrsResponse = Left(InvalidSuccessResponse)
+          val expectedResult: NrsResponse = Left(InvalidSuccessResponse())
           val actualResult: NrsResponse   =
             RevokeReportingCompanyReads.read("", "", HttpResponse(ACCEPTED, JsObject.empty, Map("" -> Seq(""))))
 

@@ -16,19 +16,19 @@
 
 package v1.services.mocks
 
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
-import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.{ArgumentMatchers, Mockito}
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
 import v1.services.AbbreviatedReturnService
 
 import scala.concurrent.Future
 
-trait MockAbbreviatedReturnService extends MockitoSugar {
+trait MockAbbreviatedReturnService {
 
-  lazy val mockAbbreviatedReturnService: AbbreviatedReturnService = mock[AbbreviatedReturnService]
+  lazy val mockAbbreviatedReturnService: AbbreviatedReturnService =
+    Mockito.mock(classOf[AbbreviatedReturnService])
 
   def mockAbbreviatedReturn(model: AbbreviatedReturnModel)(response: SubmissionResponse): Unit =
     when(mockAbbreviatedReturnService.submit(ArgumentMatchers.eq(model))(any(), any(), any()))

@@ -16,22 +16,27 @@
 
 package v1.connectors.mocks
 
-import org.mockito.ArgumentMatchers
+import config.AppConfig
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
-import org.scalatestplus.mockito.MockitoSugar
-import uk.gov.hmrc.http.HttpClient
+import org.mockito.{ArgumentMatchers, Mockito}
+import uk.gov.hmrc.http.client.{HttpClientV2, RequestBuilder}
+import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
 
-import scala.concurrent.Future
+trait MockHttpClient {
 
-trait MockHttpClient extends MockitoSugar {
+  val mockHttpClient: HttpClientV2 = Mockito.mock(classOf[HttpClientV2])
 
-  lazy val mockHttpClient: HttpClient = mock[HttpClient]
+  val mockRequestBuilder: RequestBuilder = Mockito.mock(classOf[RequestBuilder])
+  val mockAppConfig: AppConfig           = Mockito.mock(classOf[AppConfig])
 
-  def mockHttpPost[I, O](url: String, model: I)(response: O): Unit =
-    when(
-      mockHttpClient.POST[I, O](ArgumentMatchers.eq(url), ArgumentMatchers.eq(model), any())(any(), any(), any(), any())
-    )
-      .thenReturn(Future.successful(response))
+  def mockDesURL(url: String): Unit =
+    when(mockAppConfig.desUrl).thenReturn(url)
+
+  def mockPostCall(fullURL: String): Unit = {
+    when(mockRequestBuilder.setHeader(any())).thenReturn(mockRequestBuilder)
+    when(mockRequestBuilder.withBody(any())(any(), any(), any())).thenReturn(mockRequestBuilder)
+    when(mockHttpClient.post(ArgumentMatchers.eq(url"$fullURL"))(any[HeaderCarrier]())).thenReturn(mockRequestBuilder)
+  }
 
 }
