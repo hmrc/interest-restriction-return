@@ -18,11 +18,10 @@ package v1.connectors
 
 import data.abbreviatedReturn.AbbreviatedReturnConstants._
 import data.fullReturn.FullReturnConstants.ackRef
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import play.api.http.Status._
-import uk.gov.hmrc.http.{HttpReads, StringContextOps}
+import uk.gov.hmrc.http.HttpReads
 import utils.BaseSpec
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.mocks.MockHttpClient

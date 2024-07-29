@@ -22,6 +22,7 @@ import play.api.libs.json.Json
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
 import v1.connectors.HttpHelper.NrsResponse
+import v1.connectors.httpParsers.NrsResponseHttpParser.NrsResponseReads
 import v1.models.nrs._
 
 import javax.inject.{Inject, Singleton}
@@ -39,7 +40,7 @@ class NrsConnectorImpl @Inject() (httpClient: HttpClientV2, implicit val appConf
 
   private val XApiKey = "X-API-Key"
 
-  private def post(payload: NrsPayload, url: String, authToken: String): Future[NrSubmissionId] = {
+  private def post(payload: NrsPayload, url: String, authToken: String): Future[NrsResponse] = {
 
     implicit val hc: HeaderCarrier = HeaderCarrier()
 
@@ -51,21 +52,21 @@ class NrsConnectorImpl @Inject() (httpClient: HttpClientV2, implicit val appConf
       .post(url"$fullNrsUrl")
       .setHeader("Content-Type" -> "application/json", XApiKey -> authToken)
       .withBody(Json.toJson(payload))
-      .execute[NrSubmissionId]
+      .execute[NrsResponse]
   }
 
   def send(nrsPayload: NrsPayload): Future[NrsResponse] =
     (appConfig.nrsUrl, appConfig.nrsAuthorisationToken) match {
       case (Some(url), Some(token)) =>
-        post(nrsPayload, url, token).map(Right(_))
+        post(nrsPayload, url, token)
       case _                        =>
         logger.error(
-          s"[NrsConnectorImpl][send]Nrs config failure: ${appConfig.nrsUrl} ${appConfig.nrsAuthorisationToken}"
+          s"[NrsConnectorImpl][send] NRS config failure: nrsUrl: ${appConfig.nrsUrl} and nrsAuthorisationToken: ${appConfig.nrsAuthorisationToken}"
         )
         Future(
           Left(
             NrsError(
-              "[NrsConnectorImpl][send] Possibly errors include: NRS URL and token needs to be configured in the application.conf, NrsConfig is disabled, or unexpected error from NRS"
+              "[NrsConnectorImpl][send] NRS URL and token need to be configured in the application.conf or NRS is disabled"
             )
           )
         )

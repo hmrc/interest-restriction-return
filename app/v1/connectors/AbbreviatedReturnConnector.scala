@@ -47,7 +47,7 @@ class AbbreviatedReturnConnector @Inject() (httpClient: HttpClientV2, implicit v
 
     httpClient
       .post(url"$abbreviatedReturnUrl")
-      .setHeader(desHeaders: _*)
+      .setHeader(desHeaders(): _*)
       .withBody(Json.toJson(abbreviatedReturnModel))
       .execute[SubmissionResponse]
   }

@@ -44,7 +44,7 @@ class AppointReportingCompanyConnector @Inject() (httpClient: HttpClientV2, impl
 
     httpClient
       .post(url"$appointUrl")
-      .setHeader(desHeaders: _*)
+      .setHeader(desHeaders(): _*)
       .withBody(Json.toJson(appointReportingCompanyModel))
       .execute[SubmissionResponse]
   }
