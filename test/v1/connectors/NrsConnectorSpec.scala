@@ -16,11 +16,10 @@
 
 package v1.connectors
 
-import data.AppConfigConstants._
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
-import uk.gov.hmrc.http.{HttpReads, StringContextOps}
+import play.api.http.Status.INTERNAL_SERVER_ERROR
+import uk.gov.hmrc.http.HttpReads
 import utils.BaseSpec
 import v1.connectors.HttpHelper.NrsResponse
 import v1.connectors.constants.NrsConstants._
@@ -31,14 +30,14 @@ import scala.concurrent.Future
 
 class NrsConnectorSpec extends MockHttpClient with BaseSpec {
 
-  val nrsBaseUrl: String = "http://localhost:1111"
-  val apiRelativeUrl     = "/submission"
-  val fullURL            = s"$nrsBaseUrl$apiRelativeUrl"
+  val nrsBaseUrl: String     = "http://localhost:1111"
+  val apiRelativeUrl: String = "/submission"
+  val fullURL: String        = s"$nrsBaseUrl$apiRelativeUrl"
 
   private trait ConnectorTestSetup {
 
     lazy val connector: NrsConnectorImpl =
-      new NrsConnectorImpl(mockHttpClient, appConfigWithNrs)
+      new NrsConnectorImpl(mockHttpClient, mockAppConfig)
 
     mockPostCall(fullURL)
   }
@@ -47,21 +46,52 @@ class NrsConnectorSpec extends MockHttpClient with BaseSpec {
 
     ".send" should {
 
-      "return NrsConfigurationException" when {
+      "return Left NrsError" when {
 
-        "nrs config is disabled" in {
+        "nrs config is disabled" in new ConnectorTestSetup {
 
           when(mockAppConfig.nrsEnabled)
             .thenReturn(false)
 
-          lazy val connector: NrsConnectorImpl =
-            new NrsConnectorImpl(mockHttpClient, mockAppConfig)
-
           val result: Future[NrsResponse] = connector.send(nrsPayload)
+
           await(result) shouldBe Left(
             NrsError(
-              "[NrsConnectorImpl][send] Possibly errors include: NRS URL and token needs to be configured in the application.conf, " +
-                "NrsConfig is disabled, or unexpected error from NRS"
+              "[NrsConnectorImpl][send] NRS URL and token need to be configured in the application.conf or NRS is disabled"
+            )
+          )
+        }
+
+        "one of the two needed configs are undefined" in new ConnectorTestSetup {
+
+          when(mockAppConfig.nrsUrl)
+            .thenReturn(None)
+
+          when(mockAppConfig.nrsAuthorisationToken)
+            .thenReturn(Some("fake token"))
+
+          val result: Future[NrsResponse] = connector.send(nrsPayload)
+
+          await(result) shouldBe Left(
+            NrsError(
+              "[NrsConnectorImpl][send] NRS URL and token need to be configured in the application.conf or NRS is disabled"
+            )
+          )
+        }
+
+        "both configs are undefined" in new ConnectorTestSetup {
+
+          when(mockAppConfig.nrsUrl)
+            .thenReturn(None)
+
+          when(mockAppConfig.nrsAuthorisationToken)
+            .thenReturn(None)
+
+          val result: Future[NrsResponse] = connector.send(nrsPayload)
+
+          await(result) shouldBe Left(
+            NrsError(
+              "[NrsConnectorImpl][send] NRS URL and token need to be configured in the application.conf or NRS is disabled"
             )
           )
         }
@@ -70,60 +100,34 @@ class NrsConnectorSpec extends MockHttpClient with BaseSpec {
       "return a Right NrSubmissionId" when {
         "submission is successful" in new ConnectorTestSetup {
 
-          when(mockRequestBuilder.execute(any[HttpReads[NrSubmissionId]], any()))
-            .thenReturn(NrSubmissionId(submissionId))
+          when(mockAppConfig.nrsUrl)
+            .thenReturn(Some("http://localhost:1111"))
+
+          when(mockAppConfig.nrsAuthorisationToken)
+            .thenReturn(Some("fake token"))
+
+          when(mockRequestBuilder.execute(any[HttpReads[NrsResponse]], any()))
+            .thenReturn(Right(NrSubmissionId(submissionId)))
 
           val result: Future[NrsResponse] = connector.send(nrsPayload)
           await(result) shouldBe Right(NrSubmissionId(submissionId))
         }
       }
 
-      "return a Left NrsError" when {
+      "return a Left UnexpectedFailure" when {
+        "submission fails" in new ConnectorTestSetup {
+          when(mockAppConfig.nrsUrl)
+            .thenReturn(Some("http://localhost:1111"))
 
-        "both configs are undefined" should {
+          when(mockAppConfig.nrsAuthorisationToken)
+            .thenReturn(Some("fake token"))
 
-          "submission is unsuccessful return a Left(NrsError)" in {
+          when(mockRequestBuilder.execute(any[HttpReads[NrsResponse]], any()))
+            .thenReturn(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
 
-            when(mockAppConfig.nrsUrl)
-              .thenReturn(None)
+          val result: Future[NrsResponse] = connector.send(nrsPayload)
 
-            when(mockAppConfig.nrsAuthorisationToken)
-              .thenReturn(None)
-
-            lazy val connector: NrsConnectorImpl =
-              new NrsConnectorImpl(mockHttpClient, mockAppConfig)
-
-            val result: Future[NrsResponse] = connector.send(nrsPayload)
-            await(result) shouldBe Left(
-              NrsError(
-                "[NrsConnectorImpl][send] Possibly errors include: NRS URL and token needs to be configured in the application.conf, " +
-                  "NrsConfig is disabled, or unexpected error from NRS"
-              )
-            )
-          }
-        }
-
-        "one of the two needed configs are undefined" should {
-
-          "submission is unsuccessful return a Left(NrsError)" in {
-
-            when(mockAppConfig.nrsUrl)
-              .thenReturn(None)
-
-            when(mockAppConfig.nrsAuthorisationToken)
-              .thenReturn(Some("fake token"))
-
-            lazy val connector: NrsConnectorImpl =
-              new NrsConnectorImpl(mockHttpClient, mockAppConfig)
-
-            val result: Future[NrsResponse] = connector.send(nrsPayload)
-            await(result) shouldBe Left(
-              NrsError(
-                "[NrsConnectorImpl][send] Possibly errors include: NRS URL and token needs to be configured in the application.conf, " +
-                  "NrsConfig is disabled, or unexpected error from NRS"
-              )
-            )
-          }
+          await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
         }
       }
     }

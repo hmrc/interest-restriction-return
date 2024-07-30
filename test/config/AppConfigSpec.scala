@@ -17,44 +17,133 @@
 package config
 
 import utils.BaseSpec
-import data.AppConfigConstants._
+import org.mockito.Mockito.{mock, when}
+import play.api.Configuration
+import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 class AppConfigSpec extends BaseSpec {
 
-  "AppConfig" when {
+  private trait Test {
+    val mockServicesConfig: ServicesConfig = mock(classOf[ServicesConfig])
+    val mockConfiguration: Configuration   = mock(classOf[Configuration])
+
+    val appConfigImpl: AppConfigImpl = new AppConfigImpl(mockServicesConfig, mockConfiguration)
+  }
+
+  "AppConfigImpl" when {
+    ".desUrl" should {
+      "return DES URL" in new Test {
+        when(mockServicesConfig.baseUrl("des")).thenReturn("http://localhost:9262")
+
+        appConfigImpl.desUrl shouldBe "http://localhost:9262"
+      }
+    }
+
+    ".desEnvironment" should {
+      "return DES Environment" in new Test {
+        when(mockServicesConfig.getString("microservice.services.des.environment")).thenReturn("dev")
+
+        appConfigImpl.desEnvironment shouldBe ("Environment", "dev")
+      }
+    }
+
+    ".desAuthorisationToken" should {
+      "return DES authorisation token" in new Test {
+        when(mockServicesConfig.getString("microservice.services.des.authorisation-token")).thenReturn("des token")
+
+        appConfigImpl.desAuthorisationToken shouldBe "Bearer des token"
+      }
+    }
+
+    ".apiGatewayContext" should {
+      "return API gateway context" in new Test {
+        when(mockServicesConfig.getString("api.gateway.context")).thenReturn("organisations/interest-restriction")
+
+        appConfigImpl.apiGatewayContext shouldBe "organisations/interest-restriction"
+      }
+    }
+
+    ".apiStatus" should {
+      "return API status" in new Test {
+        when(mockServicesConfig.getString("api.1.0.status")).thenReturn("BETA")
+
+        appConfigImpl.apiStatus("1.0") shouldBe "BETA"
+      }
+    }
+
     ".nrsUrl" should {
-      "be None when the nrs Config isn't present " in {
-        val appConfig = appConfigWithoutNrs
-        appConfig.nrsUrl shouldBe None
+      "return None" when {
+        "nrs is disabled" in new Test {
+          when(mockConfiguration.getOptional[Boolean]("microservice.services.nrs.enabled")).thenReturn(Some(false))
+
+          appConfigImpl.nrsUrl shouldBe None
+        }
+
+        "nrs is enabled but no nrsUrl config value is added" in new Test {
+          when(mockConfiguration.getOptional[Boolean]("microservice.services.nrs.enabled")).thenReturn(Some(true))
+          when(mockConfiguration.getOptional[Configuration]("microservice.services.nrs")).thenReturn(None)
+
+          appConfigImpl.nrsUrl shouldBe None
+        }
       }
 
-      "be Some when the nrs Config is present" in {
-        val appConfig = appConfigWithNrs
-        appConfig.nrsUrl shouldBe Some("http://localhost:1111")
+      "return NRS URL when a nrsUrl config value is added and nrs is enabled" in new Test {
+        when(mockConfiguration.getOptional[Boolean]("microservice.services.nrs.enabled")).thenReturn(Some(true))
+        when(mockConfiguration.getOptional[Configuration]("microservice.services.nrs"))
+          .thenReturn(Some(mockConfiguration))
+        when(mockServicesConfig.baseUrl("nrs")).thenReturn("http://localhost:1111")
+
+        appConfigImpl.nrsUrl shouldBe Some("http://localhost:1111")
       }
     }
 
     ".nrsAuthorisationToken" should {
-      "be None when the nrs Config isn't present " in {
-        val appConfig = appConfigWithoutNrs
-        appConfig.nrsAuthorisationToken shouldBe None
+      "return None when no nrsAuthorisationToken config value is added" in new Test {
+        when(mockConfiguration.getOptional[String]("microservice.services.nrs.apikey")).thenReturn(None)
+
+        appConfigImpl.nrsAuthorisationToken shouldBe None
       }
 
-      "be Some when the nrs Config is present" in {
-        val appConfig = appConfigWithNrs
-        appConfig.nrsAuthorisationToken shouldBe Some("some.token")
+      "return NRS authorisation token when a nrsAuthorisationToken config value is added" in new Test {
+        when(mockConfiguration.getOptional[String]("microservice.services.nrs.apikey")).thenReturn(Some("nrs token"))
+
+        appConfigImpl.nrsAuthorisationToken shouldBe Some("nrs token")
       }
     }
 
     ".nrsEnabled" should {
-      "be false when the nrs Config isn't present " in {
-        val appConfig = appConfigWithoutNrs
-        appConfig.nrsEnabled shouldBe false
+      "return false" when {
+        "no nrsEnabled config value is added" in new Test {
+          when(mockConfiguration.getOptional[Boolean]("microservice.services.nrs.enabled")).thenReturn(None)
+
+          appConfigImpl.nrsEnabled shouldBe false
+        }
+
+        "a nrsEnabled config value 'false' is added" in new Test {
+          when(mockConfiguration.getOptional[Boolean]("microservice.services.nrs.enabled")).thenReturn(Some(false))
+
+          appConfigImpl.nrsEnabled shouldBe false
+        }
       }
 
-      "be true when the nrs Config is present" in {
-        val appConfig = appConfigWithNrs
-        appConfig.nrsEnabled shouldBe true
+      "return true when a nrsEnabled config value 'true' is added" in new Test {
+        when(mockConfiguration.getOptional[Boolean]("microservice.services.nrs.enabled")).thenReturn(Some(true))
+
+        appConfigImpl.nrsEnabled shouldBe true
+      }
+    }
+
+    ".endpointsEnabled" should {
+      "return false" in new Test {
+        when(mockServicesConfig.getBoolean("api-definitions.endpoints.enabled")).thenReturn(false)
+
+        appConfigImpl.endpointsEnabled shouldBe false
+      }
+
+      "return true" in new Test {
+        when(mockServicesConfig.getBoolean("api-definitions.endpoints.enabled")).thenReturn(true)
+
+        appConfigImpl.endpointsEnabled shouldBe true
       }
     }
   }

@@ -47,7 +47,7 @@ class FullReturnConnector @Inject() (httpClient: HttpClientV2, implicit val appC
 
     httpClient
       .post(url"$fullReturnUrl")
-      .setHeader(desHeaders: _*)
+      .setHeader(desHeaders(): _*)
       .withBody(Json.toJson(fullReturnModel))
       .execute[SubmissionResponse]
   }

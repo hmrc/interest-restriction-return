@@ -17,7 +17,6 @@
 package routing
 
 import com.typesafe.config.ConfigFactory
-import config.AppConfig
 import org.mockito.Mockito.when
 import org.mockito.{ArgumentMatchers, Mockito}
 import org.scalatest.Inside
@@ -136,8 +135,8 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Inside {
       "return 406" in new Test {
 
         val request: RequestHeader = buildRequest("path")
-        inside(requestHandler.routeRequest(request)) { case Some(a: EssentialAction) =>
-          val result = a.apply(request).run()
+        inside(requestHandler.routeRequest(request)) { case Some(action: EssentialAction) =>
+          val result = action.apply(request).run()
 
           status(result)        shouldBe NOT_ACCEPTABLE
           contentAsJson(result) shouldBe Json.toJson(InvalidAcceptHeaderError)
@@ -162,8 +161,8 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Inside {
       "return 404" in new Test {
         private val request = buildRequest("path")
 
-        inside(requestHandler.routeRequest(request)) { case Some(a: EssentialAction) =>
-          val result = a.apply(request).run()
+        inside(requestHandler.routeRequest(request)) { case Some(action: EssentialAction) =>
+          val result = action.apply(request).run()
 
           status(result)        shouldBe NOT_FOUND
           contentAsJson(result) shouldBe Json.toJson(UnsupportedVersionError)
@@ -178,8 +177,8 @@ class VersionRoutingRequestHandlerSpec extends BaseSpec with Inside {
         "return 404 Not Found" in new Test {
 
           private val request = buildRequest("path")
-          inside(requestHandler.routeRequest(request)) { case Some(a: EssentialAction) =>
-            val result = a.apply(request).run()
+          inside(requestHandler.routeRequest(request)) { case Some(action: EssentialAction) =>
+            val result = action.apply(request).run()
 
             status(result)        shouldBe NOT_FOUND
             contentAsJson(result) shouldBe Json.toJson(UnsupportedVersionError)

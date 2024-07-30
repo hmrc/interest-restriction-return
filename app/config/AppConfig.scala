@@ -23,8 +23,7 @@ import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 trait AppConfig {
 
   def desUrl: String
-  def appName: String
-  def desEnvironmentHeader: (String, String)
+  def desEnvironment: (String, String)
   def desAuthorisationToken: String
   def apiGatewayContext: String
   def apiStatus(version: String): String
@@ -39,12 +38,11 @@ trait AppConfig {
 @Singleton
 class AppConfigImpl @Inject() (val servicesConfig: ServicesConfig, configuration: Configuration) extends AppConfig {
 
-  lazy val desUrl: String                         = servicesConfig.baseUrl("des")
-  lazy val desAuthorisationToken: String          =
+  lazy val desUrl: String                   = servicesConfig.baseUrl("des")
+  lazy val desAuthorisationToken: String    =
     s"Bearer ${servicesConfig.getString("microservice.services.des.authorisation-token")}"
-  lazy val desEnvironmentHeader: (String, String) =
+  lazy val desEnvironment: (String, String) =
     "Environment" -> servicesConfig.getString("microservice.services.des.environment")
-  lazy val appName: String = servicesConfig.getString("appName")
 
   lazy val nrsEnabled: Boolean                   = configuration.getOptional[Boolean]("microservice.services.nrs.enabled") match {
     case Some(true) => true
@@ -60,11 +58,11 @@ class AppConfigImpl @Inject() (val servicesConfig: ServicesConfig, configuration
     }
   lazy val nrsAuthorisationToken: Option[String] = configuration.getOptional[String]("microservice.services.nrs.apikey")
 
-  val apiGatewayContext: String = servicesConfig.getString("api.gateway.context")
+  lazy val apiGatewayContext: String = servicesConfig.getString("api.gateway.context")
 
   def apiStatus(version: String): String = servicesConfig.getString(s"api.$version.status")
 
   def featureSwitch: Option[Configuration] = configuration.getOptional[Configuration](s"feature-switch")
 
-  val endpointsEnabled: Boolean = servicesConfig.getBoolean("api-definitions.endpoints.enabled")
+  lazy val endpointsEnabled: Boolean = servicesConfig.getBoolean("api-definitions.endpoints.enabled")
 }

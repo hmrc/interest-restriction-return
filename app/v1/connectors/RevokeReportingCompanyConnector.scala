@@ -44,7 +44,7 @@ class RevokeReportingCompanyConnector @Inject() (httpClient: HttpClientV2, impli
 
     httpClient
       .post(url"$revokeUrl")
-      .setHeader(desHeaders: _*)
+      .setHeader(desHeaders(): _*)
       .withBody(Json.toJson(revokeReportingCompanyModel))
       .execute[SubmissionResponse]
   }

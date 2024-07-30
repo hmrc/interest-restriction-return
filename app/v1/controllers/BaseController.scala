@@ -69,16 +69,18 @@ trait BaseController extends BackendBaseController with Logging {
     appConfig: AppConfig
   )(implicit hc: HeaderCarrier, identifierRequest: IdentifierRequest[JsValue]): Future[Result] =
     handleValidation(validationModel) { model =>
-      service.submit(model).map {
-        case Left(err: UnexpectedFailure) => Status(err.status)(err.body)
-        case Right(response)              =>
-          (maybeNrsService, model) match {
-            case (Some(nrsService), returnModel: ReturnModel) if appConfig.nrsEnabled =>
-              nrsService.send(returnModel.reportingCompany.ctutr)
-              Ok(Json.toJson(response))
-            case _                                                                    =>
-              Ok(Json.toJson(response))
-          }
+      service.submit(model).map { result =>
+        (result: @unchecked) match {
+          case Left(err: UnexpectedFailure) => Status(err.status)(err.body)
+          case Right(response)              =>
+            (maybeNrsService, model) match {
+              case (Some(nrsService), returnModel: ReturnModel) if appConfig.nrsEnabled =>
+                nrsService.send(returnModel.reportingCompany.ctutr)
+                Ok(Json.toJson(response))
+              case _                                                                    =>
+                Ok(Json.toJson(response))
+            }
+        }
       }
     }
 

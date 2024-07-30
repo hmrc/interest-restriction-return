@@ -25,7 +25,7 @@ import v1.models.nrs.NrSubmissionId
 
 object NrsResponseHttpParser extends Logging {
 
-  implicit object RevokeReportingCompanyReads extends HttpReads[NrsResponse] {
+  implicit object NrsResponseReads extends HttpReads[NrsResponse] {
 
     override def read(method: String, url: String, response: HttpResponse): NrsResponse =
       response.status match {

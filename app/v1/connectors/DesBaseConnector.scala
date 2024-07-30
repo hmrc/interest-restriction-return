@@ -36,7 +36,7 @@ trait DesBaseConnector extends Logging {
   ): Seq[(String, String)] = {
     val correlationId = correlationIdGenerator(hc)
     Seq(
-      appConfig.desEnvironmentHeader,
+      appConfig.desEnvironment,
       "providerId"    -> request.identifier,
       "correlationId" -> correlationId,
       "Authorization" -> appConfig.desAuthorisationToken
