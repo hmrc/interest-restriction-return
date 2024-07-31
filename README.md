@@ -21,7 +21,7 @@ To compile and run all tests locally run:
     ```
      http://localhost:9261/api/conf/1.0/application.yaml
     ```
-- Ensure to uncomment the lines [here](https://github.com/hmrc/interest-restriction-return/blob/main/conf/application.conf#L48-L51) in application.conf, in case of CORS errors
+- Ensure to uncomment the lines [here](https://github.com/hmrc/interest-restriction-return/blob/main/conf/application.conf#L49-L52) in application.conf, in case of CORS errors
 
 ### On Developer Hub
 Full documentation can be found on the [Developer Hub](https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/interest-restriction-return).
