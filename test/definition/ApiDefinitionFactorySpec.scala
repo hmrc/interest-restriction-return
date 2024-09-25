@@ -32,19 +32,10 @@ class ApiDefinitionFactorySpec extends BaseSpec {
   "ApiDefinitionFactory" when {
     ".definition" should {
       "return a valid Definition case class" in {
-        val writeScope: String   = "write:interest-restriction-return"
-        val confidenceLevel: Int = 50
 
         apiDefinitionFactory.definition shouldBe
           Definition(
-            scopes = Seq(
-              Scope(
-                key = writeScope,
-                name = "Create and Update your Interest Restriction Return information",
-                description = "Allow write access to Interest Restriction Return data",
-                confidenceLevel
-              )
-            ),
+            scopes = Seq.empty,
             api = APIDefinition(
               name = "Interest Restriction Return (IRR)",
               description = "An API for providing Interest Restriction Return data",
