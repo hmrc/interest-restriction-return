@@ -24,19 +24,9 @@ import play.api.Logging
 @Singleton
 class ApiDefinitionFactory @Inject() (appConfig: AppConfig) extends Logging {
 
-  private val writeScope      = "write:interest-restriction-return"
-  private val confidenceLevel = 50
-
   lazy val definition: Definition =
     Definition(
-      scopes = Seq(
-        Scope(
-          key = writeScope,
-          name = "Create and Update your Interest Restriction Return information",
-          description = "Allow write access to Interest Restriction Return data",
-          confidenceLevel = confidenceLevel
-        )
-      ),
+      scopes = Seq.empty,
       api = APIDefinition(
         name = "Interest Restriction Return (IRR)",
         description = "An API for providing Interest Restriction Return data",
