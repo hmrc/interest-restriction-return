@@ -784,7 +784,8 @@ components:
           authorizationUrl: https://api.service.hmrc.gov.uk/oauth/authorize
           tokenUrl: https://api.service.hmrc.gov.uk/oauth/token
           refreshUrl: https://api.service.hmrc.gov.uk/oauth/refresh
-          scopes: { }
+          scopes:
+            write:interest-restriction-return: Allow write access to Interest Restriction Return data
   schemas:
     abbreviatedReturnSchema:
       additionalProperties: false
