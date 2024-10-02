@@ -35,7 +35,6 @@ class ApiDefinitionFactorySpec extends BaseSpec {
 
         apiDefinitionFactory.definition shouldBe
           Definition(
-            scopes = Seq.empty,
             api = APIDefinition(
               name = "Interest Restriction Return (IRR)",
               description = "An API for providing Interest Restriction Return data",
