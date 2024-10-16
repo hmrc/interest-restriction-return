@@ -35,7 +35,7 @@ class FullReturnService @Inject() (fullReturnConnector: FullReturnConnector)
     fullReturn: FullReturnModel
   )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] =
     fullReturnConnector.submit(fullReturn).map { resp =>
-      logger.info("Successfully sent a full return payload")
+      logger.info("[FullReturnService][submit] Successfully sent a full return payload")
       resp
     }
 

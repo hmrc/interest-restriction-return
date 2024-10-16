@@ -37,10 +37,10 @@ class AppointReportingCompanyConnector @Inject() (httpClient: HttpClientV2, impl
   def appoint(
     appointReportingCompanyModel: AppointReportingCompanyModel
   )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
-    logger.debug(s"URL: $appointUrl")
+    logger.debug(s"[AppointReportingCompanyConnector][appoint] URL: $appointUrl")
     val receivedSize = request.headers.get(HeaderNames.CONTENT_LENGTH)
     val jsonSize     = Json.stringify(Json.toJson(appointReportingCompanyModel)(AppointReportingCompanyModel.format)).length
-    logger.debug(s"Size of content received: $receivedSize sent: $jsonSize")
+    logger.debug(s"[AppointReportingCompanyConnector][appoint] Size of content received: $receivedSize sent: $jsonSize")
 
     httpClient
       .post(url"$appointUrl")
