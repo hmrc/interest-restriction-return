@@ -35,7 +35,7 @@ class AppointReportingCompanyService @Inject() (appointReportingCompanyConnector
     appointReportingCompany: AppointReportingCompanyModel
   )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] =
     appointReportingCompanyConnector.appoint(appointReportingCompany).map { resp =>
-      logger.info("Successfully sent a appoint reporting company payload")
+      logger.info("[AppointReportingCompanyService][submit] Successfully sent a appoint reporting company payload")
       resp
     }
 

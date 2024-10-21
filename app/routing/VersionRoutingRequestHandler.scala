@@ -61,13 +61,13 @@ class VersionRoutingRequestHandler @Inject() (
       case Some(version) =>
         versionRoutingMap.versionRouter(version) match {
           case Some(versionRouter) if featureSwitch.isVersionEnabled(version) =>
-            logger.debug(s"Routing with version: $version")
+            logger.debug(s"[VersionRoutingRequestHandler][apiHandler] Routing with version: $version")
             routeWith(versionRouter)(request)
           case Some(_)                                                        =>
-            logger.debug(s"Version: $version is not enabled")
+            logger.debug(s"[VersionRoutingRequestHandler][apiHandler] Version: $version is not enabled")
             Some(unsupportedVersionAction)
           case None                                                           =>
-            logger.debug(s"No mapping found in router for version: $version")
+            logger.debug(s"[VersionRoutingRequestHandler][apiHandler] No mapping found in router for version: $version")
             Some(unsupportedVersionAction)
         }
       case None          => Some(invalidAcceptHeaderError)

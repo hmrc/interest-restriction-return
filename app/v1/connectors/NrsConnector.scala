@@ -46,7 +46,7 @@ class NrsConnectorImpl @Inject() (httpClient: HttpClientV2, implicit val appConf
 
     val fullNrsUrl = url + "/submission"
 
-    logger.info(s"Sending request to NRS service. Url: $fullNrsUrl")
+    logger.info(s"[NrsConnectorImpl][post] Sending request to NRS service. Url: $fullNrsUrl")
 
     httpClient
       .post(url"$fullNrsUrl")

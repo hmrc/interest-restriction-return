@@ -35,7 +35,7 @@ class AbbreviatedReturnService @Inject() (abbreviatedReturnConnector: Abbreviate
     abbreviatedReturn: AbbreviatedReturnModel
   )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] =
     abbreviatedReturnConnector.submitAbbreviatedReturn(abbreviatedReturn).map { resp =>
-      logger.info("Successfully sent a abbreviated return payload")
+      logger.info("[AbbreviatedReturnService][submit] Successfully sent a abbreviated return payload")
       resp
     }
 

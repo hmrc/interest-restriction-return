@@ -49,7 +49,7 @@ class ErrorHandler @Inject() (
     implicit val headerCarrier: HeaderCarrier = HeaderCarrierConverter.fromRequest(request)
 
     logger.error(
-      s"Error in version 1, for (${request.method}) [${request.uri}] with status:" +
+      s"[ErrorHandler][onClientError] Error in version 1, for (${request.method}) [${request.uri}] with status:" +
         s" $statusCode and message: $message"
     )
     statusCode match {
@@ -82,7 +82,10 @@ class ErrorHandler @Inject() (
   override def onServerError(request: RequestHeader, ex: Throwable): Future[Result] = {
     implicit val headerCarrier: HeaderCarrier = HeaderCarrierConverter.fromRequest(request)
 
-    logger.error(s"Internal server error in version 1, for (${request.method}) [${request.uri}] -> ", ex)
+    logger.error(
+      s"[ErrorHandler][onServerError] Internal server error in version 1, for (${request.method}) [${request.uri}] -> ",
+      ex
+    )
 
     val (status, errorCode, eventType) = ex match {
       case _: NotFoundException                                                                       =>

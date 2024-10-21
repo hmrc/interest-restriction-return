@@ -63,7 +63,7 @@ class AuthAction @Inject() (
           .copy(authorization = Some(Authorization(authHeader)))
         retrievalData(request, block)
       case _                =>
-        logger.warn("An error occurred during auth action: No Authorization header provided")
+        logger.warn("[AuthAction][invokeBlock] An error occurred during auth action: No Authorization header provided")
         Future.successful(Unauthorized)
     }
 
@@ -74,7 +74,7 @@ class AuthAction @Inject() (
                        } else {
                          defaultRetrievalData(request, block)
                        }).recover { case e =>
-    logger.error(s"An error occurred during auth action: ${e.getMessage}", e)
+    logger.error(s"[AuthAction][retrievalData] An error occurred during auth action: ${e.getMessage}", e)
     Unauthorized
   }
 
@@ -90,17 +90,17 @@ class AuthAction @Inject() (
         credentials
           .map(credential => block(IdentifierRequest(request, credential.providerId, retrievalData)))
           .getOrElse {
-            logger.warn("No Active Session")
+            logger.warn("[AuthAction][credentialMap] No Active Session")
             Future.successful(Unauthorized)
           }
       case Some(Individual)                 => forbiddenIndividuals
       case _                                =>
-        logger.warn("User did not provide affinity group")
+        logger.warn("[AuthAction][credentialMap] User did not provide affinity group")
         Future.successful(Unauthorized)
     }
 
   private def forbiddenIndividuals: Future[Result] = Future.successful {
-    logger.warn("User with an affinity group type of Individual tried to access IRR")
+    logger.warn("[AuthAction][forbiddenIndividuals] User with an affinity group type of Individual tried to access IRR")
     Forbidden(Json.toJson(ForbiddenIndividualsError()))
   }
 

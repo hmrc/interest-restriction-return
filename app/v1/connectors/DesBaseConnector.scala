@@ -64,19 +64,21 @@ trait DesBaseConnector extends Logging {
   ): SubmissionResponse =
     response.status match {
       case CREATED =>
-        logger.info(s"Successfully created with response $response")
-        logger.debug(s"Json Response: ${response.json}")
+        logger.info(s"[DesBaseConnector][handleHttpResponse] Successfully created with response $response")
+        logger.debug(s"[DesBaseConnector][handleHttpResponse] Json Response: ${response.json}")
         response.json
           .validate[DesSuccessResponse](DesSuccessResponse.fmt)
           .fold(
             invalid => {
-              logger.error(s"Invalid Success Response Json - $invalid")
+              logger.error(s"[DesBaseConnector][handleHttpResponse] Invalid Success Response Json - $invalid")
               Left(InvalidSuccessResponse())
             },
             valid => Right(valid)
           )
       case status  =>
-        logger.error(s"Unexpected response, status $status returned with body ${response.body}")
+        logger.error(
+          s"[DesBaseConnector][handleHttpResponse] Unexpected response, status $status returned with body ${response.body}"
+        )
         Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, s"Status $INTERNAL_SERVER_ERROR $unexpectedErrorMessage"))
     }
 }
