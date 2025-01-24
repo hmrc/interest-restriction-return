@@ -16,7 +16,6 @@
 
 package v1.models.appointReportingCompany
 
-import data.AuthorisingCompanyConstants.authorisingCompanyModelWithoutConsenting
 import data.appointReportingCompany.AppointReportingCompanyConstants.*
 import play.api.libs.json.Json
 import utils.BaseSpec

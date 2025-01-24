@@ -19,10 +19,8 @@ package v1.models.nrs
 import play.api.libs.json.*
 import uk.gov.hmrc.auth.core.retrieve.*
 import uk.gov.hmrc.auth.core.{AffinityGroup, ConfidenceLevel, CredentialRole}
-import play.api.mvc.PathBindable
 import java.time.LocalDate
 import java.util.UUID
-import play.api.libs.functional.syntax._
 
 case class NrsRetrievalData(
   internalId: Option[String],

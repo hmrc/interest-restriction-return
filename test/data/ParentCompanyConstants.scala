@@ -43,11 +43,6 @@ object ParentCompanyConstants {
     deemedParent = None
   )
 
-  val parentCompanyModelUltNonUkCompany: ParentCompanyModel = ParentCompanyModel(
-    ultimateParent = Some(ultimateParentModelNonUkCompany),
-    deemedParent = None
-  )
-
   val parentCompanyModelUltUkPartnership: ParentCompanyModel = ParentCompanyModel(
     ultimateParent = Some(ultimateParentModelUkPartnership),
     deemedParent = None

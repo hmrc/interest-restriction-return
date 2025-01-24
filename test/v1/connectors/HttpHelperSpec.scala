@@ -14,26 +14,23 @@
  * limitations under the License.
  */
 
-package v1.models.nrs
+package v1.connectors
 
-import data.UnitNrsConstants.nrsRetrievalData
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpecLike
-import play.api.libs.json.{JsError, JsSuccess, Json}
+import play.api.libs.json.{JsSuccess, Json}
+import utils.BaseSpec
 
-class NrsRetrievalDataSpec extends AnyWordSpecLike with Matchers {
-  "NrsRetrievalData" should {
-    "support round-trip serialization/deserialization" when {
-      "all the fields are available and valid" in {
-        Json.toJson(nrsRetrievalData(None)).validate[NrsRetrievalData] shouldBe JsSuccess(nrsRetrievalData(None))
-      }
+class HttpHelperSpec extends BaseSpec {
+  "DesSuccessResponse" should {
+    "support round trip serialization" in {
+      val value = DesSuccessResponse("")
+      Json.toJson(value).validate[DesSuccessResponse] shouldBe JsSuccess(value)
     }
     "fail to read from json" when {
       "there is type mismatch" in {
-        Json.arr("a" -> "b").validate[NrsRetrievalData] isError
+        Json.arr("a" -> "b").validate[DesSuccessResponse] isError
       }
       "empty json" in {
-        Json.obj().validate[NrsRetrievalData] isError
+        Json.obj().validate[DesSuccessResponse] isError
       }
     }
   }

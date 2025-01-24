@@ -39,5 +39,13 @@ class AllocatedReactivationsModelSpec extends BaseSpec {
 
       actualValue shouldBe expectedValue
     }
+    "fail to read from json" when {
+      "there is type mismatch" in {
+        Json.arr("a" -> "b").validate[AllocatedReactivationsModel] isError
+      }
+      "empty json" in {
+        Json.obj().validate[AllocatedReactivationsModel] isError
+      }
+    }
   }
 }

@@ -19,11 +19,9 @@ package v1.models.abbreviatedReturn
 import data.abbreviatedReturn.AbbreviatedReturnConstants.*
 import data.AgentDetailsConstants.*
 import data.GroupCompanyDetailsConstants.*
-import data.GroupLevelElectionsConstants.groupLevelElectionsModelMax
-import data.ParentCompanyConstants.parentCompanyModelDeemedMax
 import data.ReportingCompanyConstants.*
 import play.api.libs.json.{JsObject, Json, Writes}
-import v1.models.{Original, Revised, RevisedReturnDetailsModel, SubmissionType}
+import v1.models.{Original, RevisedReturnDetailsModel, SubmissionType}
 import data.abbreviatedReturn.UkCompanyConstants.*
 import utils.{BaseSpec, JsonFormatters}
 

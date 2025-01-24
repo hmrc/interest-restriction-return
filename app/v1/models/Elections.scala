@@ -16,14 +16,12 @@
 
 package v1.models
 
-import play.api.libs.json.Format
 import play.api.libs.json.*
 import scala.reflect.ClassTag
 import v1.models.Elections.*
 import scala.language.implicitConversions
 
 enum Elections(name: String) {
-  // type Elections = WithName
   case GroupRatioBlended extends Elections("groupRatioBlended")
   case GroupEBITDA extends Elections("groupEBITDA")
   case InterestAllowanceAlternativeCalculation extends Elections("interestAllowanceAlternativeCalculation")
@@ -31,7 +29,6 @@ enum Elections(name: String) {
   case InterestAllowanceConsolidatedPartnership extends Elections("interestAllowanceConsolidatedPartnership")
 
   override implicit def toString: String = this.name
-  // implicit def format: Format[Elections] = Json.formatEnum[Elections](GroupLevelElectionsModel)
 }
 object Elections {
 
@@ -50,10 +47,8 @@ object Elections {
   )
 
   implicit val format: Format[Elections] = new Format[Elections] {
-    // Convert enum value to string (for JSON)
     def writes(election: Elections): JsValue = JsString(election.toString)
 
-    // Convert string to enum value (for JSON -> enum conversion)
     def reads(json: JsValue): JsResult[Elections] = json match {
       case JsString(s) =>
         try
@@ -76,36 +71,4 @@ object Elections {
       case _ => JsError("String value expected")
     }
   }
-
-  // implicit val format: Format[Elections] = Json.formatEnum[Elections]()
-
-  /* def electionsMatch(name : String) : Elections = {
-    allValues.map(e => Show.show(_.toString).show(e) -> e).find((str: String, election) => name.equalsIgnoreCase(str)).map((str, election) => election).get
-  }
-
-  implicit def enumReads[Elections]: Reads[Elections] = new Reads[Elections] {
-    def reads(json: JsValue): JsResult[Elections] = json match {
-      case JsString(s) =>
-        try {
-          JsError()
-          //JsSuccess(Elections.InterestAllowanceAlternativeCalculation)
-          //JsSuccess(electionsMatch(s))
-        }
-        catch {
-          case _: NoSuchElementException =>
-            JsError(s"Invalid MatchFilterType Elections")
-        }
-      case _ => JsError("String value expected")
-    }
-  }
-
-  implicit def enumWrites[Elections]: Writes[Elections] = {
-    new Writes[Elections] {
-      def writes(v: Elections): JsValue = JsString(v.toString)
-    }
-  }
-
- // implicit def electionsFormat: Format[Elections] = Json.formatEnum[Elections](Elections) //Format(enumReads, enumWrites)
-}
-   */
 }

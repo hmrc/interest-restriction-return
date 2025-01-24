@@ -145,6 +145,15 @@ class FullReturnModelSpec extends BaseSpec with JsonFormatters {
 
         actualValue shouldBe expectedValue
       }
+
+      "fail to read from json" when {
+        "there is type mismatch" in {
+          Json.arr("a" -> "b").validate[FullReturnModel] isError
+        }
+        "empty json" in {
+          Json.obj().validate[FullReturnModel] isError
+        }
+      }
     }
 
     "deriving the aggregateNetTaxInterest" when {

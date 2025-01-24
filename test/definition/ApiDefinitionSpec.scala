@@ -19,7 +19,6 @@ package definition
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 import play.api.libs.json.{JsSuccess, Json}
-import utils.BaseSpec
 
 class ApiDefinitionSpec extends AnyWordSpecLike with Matchers {
 
