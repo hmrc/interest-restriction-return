@@ -22,9 +22,9 @@ import play.api.http.Status.INTERNAL_SERVER_ERROR
 import uk.gov.hmrc.http.HttpReads
 import utils.BaseSpec
 import v1.connectors.HttpHelper.NrsResponse
-import v1.connectors.constants.NrsConstants._
+import v1.connectors.constants.NrsConstants.*
 import v1.connectors.mocks.MockHttpClient
-import v1.models.nrs._
+import v1.models.nrs.*
 
 import scala.concurrent.Future
 
@@ -106,8 +106,8 @@ class NrsConnectorSpec extends MockHttpClient with BaseSpec {
           when(mockAppConfig.nrsAuthorisationToken)
             .thenReturn(Some("fake token"))
 
-          when(mockRequestBuilder.execute(any[HttpReads[NrsResponse]], any()))
-            .thenReturn(Right(NrSubmissionId(submissionId)))
+          when(mockRequestBuilder.execute(using any[HttpReads[NrsResponse]], any()))
+            .thenReturn(Future(Right(NrSubmissionId(submissionId))))
 
           val result: Future[NrsResponse] = connector.send(nrsPayload)
           await(result) shouldBe Right(NrSubmissionId(submissionId))
@@ -122,8 +122,8 @@ class NrsConnectorSpec extends MockHttpClient with BaseSpec {
           when(mockAppConfig.nrsAuthorisationToken)
             .thenReturn(Some("fake token"))
 
-          when(mockRequestBuilder.execute(any[HttpReads[NrsResponse]], any()))
-            .thenReturn(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
+          when(mockRequestBuilder.execute(using any[HttpReads[NrsResponse]], any()))
+            .thenReturn(Future(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))))
 
           val result: Future[NrsResponse] = connector.send(nrsPayload)
 

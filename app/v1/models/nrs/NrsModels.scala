@@ -16,12 +16,13 @@
 
 package v1.models.nrs
 
-import play.api.libs.json._
-import uk.gov.hmrc.auth.core.retrieve._
+import play.api.libs.json.*
+import uk.gov.hmrc.auth.core.retrieve.*
 import uk.gov.hmrc.auth.core.{AffinityGroup, ConfidenceLevel, CredentialRole}
-
+import play.api.mvc.PathBindable
 import java.time.LocalDate
 import java.util.UUID
+import play.api.libs.functional.syntax._
 
 case class NrsRetrievalData(
   internalId: Option[String],
@@ -58,11 +59,31 @@ object NrsRetrievalData {
 }
 
 case class NrSubmissionId(nrSubmissionId: UUID) extends AnyVal {
-  override def toString: String = nrSubmissionId.toString
+  implicit override def toString: String = nrSubmissionId.toString
 }
 
 object NrSubmissionId {
-  implicit val format: OFormat[NrSubmissionId] = Json.format[NrSubmissionId]
+  implicit val format: OFormat[NrSubmissionId] = new OFormat[NrSubmissionId] {
+    def reads(json: JsValue): JsResult[NrSubmissionId] = json match {
+      case JsObject(fields) =>
+        fields.get("nrSubmissionId") match {
+          case Some(JsString(s)) =>
+            try
+              JsSuccess(NrSubmissionId(UUID.fromString(s)))
+            catch {
+              case _: IllegalArgumentException => JsError("Invalid UUID string")
+            }
+          case _                 => JsError("Missing or invalid 'id' field")
+        }
+      case _                => JsError("Expected a JSON object")
+    }
+    def writes(id: NrSubmissionId): JsObject           =
+      JsObject(
+        Seq(
+          "id" -> JsString(id.nrSubmissionId.toString) // Convert UUID to string for serialization
+        )
+      )
+  }
 }
 
 case class NrsMetadata(

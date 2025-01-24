@@ -16,9 +16,8 @@
 
 package v1.models.fullReturn
 
-import data.fullReturn.GroupLevelAmountConstants._
+import data.fullReturn.GroupLevelAmountConstants.*
 import play.api.libs.json.Json
-import v1.models.fullReturn.GroupLevelAmountModel
 import utils.BaseSpec
 
 class GroupLevelAmountModelSpec extends BaseSpec {
@@ -39,6 +38,14 @@ class GroupLevelAmountModelSpec extends BaseSpec {
       val actualValue   = groupLevelAmountJson.as[GroupLevelAmountModel]
 
       actualValue shouldBe expectedValue
+    }
+    "fail to read from json" when {
+      "there is type mismatch" in {
+        Json.arr("a" -> "b").validate[GroupLevelAmountModel] isError
+      }
+      "empty json" in {
+        Json.obj().validate[GroupLevelAmountModel] isError
+      }
     }
   }
 }

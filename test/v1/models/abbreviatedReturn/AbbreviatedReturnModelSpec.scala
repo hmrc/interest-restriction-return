@@ -16,14 +16,15 @@
 
 package v1.models.abbreviatedReturn
 
-import data.abbreviatedReturn.AbbreviatedReturnConstants._
-import data.AgentDetailsConstants._
-import data.GroupCompanyDetailsConstants._
-import data.ReportingCompanyConstants._
+import data.abbreviatedReturn.AbbreviatedReturnConstants.*
+import data.AgentDetailsConstants.*
+import data.GroupCompanyDetailsConstants.*
+import data.GroupLevelElectionsConstants.groupLevelElectionsModelMax
+import data.ParentCompanyConstants.parentCompanyModelDeemedMax
+import data.ReportingCompanyConstants.*
 import play.api.libs.json.{JsObject, Json, Writes}
-import v1.models.abbreviatedReturn.AbbreviatedReturnModel
-import v1.models.{Original, SubmissionType}
-import data.abbreviatedReturn.UkCompanyConstants._
+import v1.models.{Original, Revised, RevisedReturnDetailsModel, SubmissionType}
+import data.abbreviatedReturn.UkCompanyConstants.*
 import utils.{BaseSpec, JsonFormatters}
 
 class AbbreviatedReturnModelSpec extends BaseSpec with JsonFormatters {
@@ -51,7 +52,8 @@ class AbbreviatedReturnModelSpec extends BaseSpec with JsonFormatters {
       }
 
       "All data is included in the Json.toJson" in {
-        val expectedValue = Json.obj(
+        val expectedValue = withoutAppointedReportingCompany(abbreviatedReturnJsonMin)
+        val actualValue   = Json.obj(
           "declaration"          -> true,
           "agentDetails"         -> agentDetailsJsonMin,
           "reportingCompany"     -> reportingCompanyJson,
@@ -61,7 +63,6 @@ class AbbreviatedReturnModelSpec extends BaseSpec with JsonFormatters {
           "ukCompanies"          -> Seq(ukCompanyJson),
           "numberOfUkCompanies"  -> 1
         )
-        val actualValue   = Json.toJson(abbreviatedReturnModelMin)
         actualValue shouldBe expectedValue
       }
     }
@@ -93,6 +94,15 @@ class AbbreviatedReturnModelSpec extends BaseSpec with JsonFormatters {
       }
     }
 
+    "fail to read from Json" when {
+
+      "empty json" in {
+        Json.obj().validate[AbbreviatedReturnModel] isError
+      }
+      "there is a type mismatch" in {
+        Json.arr(abbreviatedReturnUltimateParentJson).validate[AbbreviatedReturnModel] isError
+      }
+    }
     "deriving the publicInfrastructure" when {
 
       "there is a single company with qic set to true" in {

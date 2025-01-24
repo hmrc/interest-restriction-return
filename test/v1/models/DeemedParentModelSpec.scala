@@ -16,9 +16,8 @@
 
 package v1.models
 
-import data.DeemedParentConstants._
+import data.DeemedParentConstants.*
 import play.api.libs.json.Json
-import v1.models.DeemedParentModel
 import utils.BaseSpec
 
 class DeemedParentModelSpec extends BaseSpec {
@@ -60,6 +59,14 @@ class DeemedParentModelSpec extends BaseSpec {
         val actualValue   = deemedParentJsonMin.as[DeemedParentModel]
 
         actualValue shouldBe expectedValue
+      }
+    }
+    "fail to read from json" when {
+      "there is type mismatch" in {
+        Json.arr("a" -> "b").validate[DeemedParentModel] isError
+      }
+      "empty json" in {
+        Json.obj().validate[DeemedParentModel] isError
       }
     }
   }

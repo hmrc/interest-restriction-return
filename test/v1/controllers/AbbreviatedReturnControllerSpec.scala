@@ -40,15 +40,15 @@ class AbbreviatedReturnControllerSpec extends MockAbbreviatedReturnService with 
     path = "/interest-restriction-return/return/abbreviated/validate"
   )
 
-  private lazy val validJsonFakeRequest: FakeRequest[JsObject]              = fakeRequest
+  private lazy val validJsonFakeRequest: FakeRequest[JsObject] = fakeRequest
     .withBody(abbreviatedReturnUltimateParentJson)
     .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
 
-  private lazy val validJsonFakeRequestForValidate: FakeRequest[JsObject]   = fakeRequestForValidate
+  private lazy val validJsonFakeRequestForValidate: FakeRequest[JsObject] = fakeRequestForValidate
     .withBody(abbreviatedReturnUltimateParentJson)
     .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
 
-  private lazy val invalidJsonFakeRequest: FakeRequest[JsObject]            = fakeRequest
+  private lazy val invalidJsonFakeRequest: FakeRequest[JsObject] = fakeRequest
     .withBody(Json.obj())
     .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
 

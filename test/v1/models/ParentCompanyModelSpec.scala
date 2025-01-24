@@ -16,9 +16,8 @@
 
 package v1.models
 
-import data.ParentCompanyConstants._
-import play.api.libs.json.Json
-import v1.models.ParentCompanyModel
+import data.ParentCompanyConstants.*
+import play.api.libs.json.{JsSuccess, Json}
 import utils.BaseSpec
 
 class ParentCompanyModelSpec extends BaseSpec {
@@ -42,6 +41,14 @@ class ParentCompanyModelSpec extends BaseSpec {
 
         actualValue shouldBe expectedValue
       }
+      "both values are none" in {
+        val value = ParentCompanyModel(None, None)
+        Json.toJson(value).validate[ParentCompanyModel] shouldBe JsSuccess(value)
+      }
+      "deemedParent is an empty Sequence" in {
+        val value = ParentCompanyModel(None, Some(Seq.empty))
+        Json.toJson(value).validate[ParentCompanyModel] shouldBe JsSuccess(value)
+      }
     }
 
     "correctly read from Json" when {
@@ -60,6 +67,14 @@ class ParentCompanyModelSpec extends BaseSpec {
         val actualValue   = parentCompanyJsonDeemedMin.as[ParentCompanyModel]
 
         actualValue shouldBe expectedValue
+      }
+    }
+    "fail to read from json" when {
+      "there is type mismatch" in {
+        Json.arr("a" -> "b").validate[ParentCompanyModel] isError
+      }
+      "empty json" in {
+        Json.obj().validate[ParentCompanyModel] isError
       }
     }
   }

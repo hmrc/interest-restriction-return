@@ -26,6 +26,7 @@ import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.httpParsers.AbbreviatedReturnHttpParser.AbbreviatedReturnReads
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
 import v1.models.requests.IdentifierRequest
+import play.api.libs.ws.writeableOf_JsValue
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -39,7 +40,7 @@ class AbbreviatedReturnConnector @Inject() (httpClient: HttpClientV2, implicit v
 
   def submitAbbreviatedReturn(
     abbreviatedReturnModel: AbbreviatedReturnModel
-  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
+  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] = {
     logger.debug(s"[AbbreviatedReturnConnector][submitAbbreviatedReturn] URL: $abbreviatedReturnUrl")
     val receivedSize = request.headers.get(HeaderNames.CONTENT_LENGTH)
     val jsonSize     = Json.stringify(Json.toJson(abbreviatedReturnModel)).length
@@ -49,7 +50,7 @@ class AbbreviatedReturnConnector @Inject() (httpClient: HttpClientV2, implicit v
 
     httpClient
       .post(url"$abbreviatedReturnUrl")
-      .setHeader(desHeaders(): _*)
+      .setHeader(desHeaders()*)
       .withBody(Json.toJson(abbreviatedReturnModel))
       .execute[SubmissionResponse]
   }

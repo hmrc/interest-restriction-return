@@ -24,6 +24,7 @@ import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
 import v1.connectors.HttpHelper.NrsResponse
 import v1.connectors.httpParsers.NrsResponseHttpParser.NrsResponseReads
 import v1.models.nrs._
+import play.api.libs.ws.writeableOf_JsValue
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}

@@ -16,9 +16,8 @@
 
 package v1.models
 
-import data.AgentDetailsConstants._
+import data.AgentDetailsConstants.*
 import play.api.libs.json.Json
-import v1.models.AgentDetailsModel
 import utils.BaseSpec
 
 class AgentDetailsModelSpec extends BaseSpec {
@@ -72,6 +71,14 @@ class AgentDetailsModelSpec extends BaseSpec {
         val actualValue   = agentDetailsJsonWhitespaceName.as[AgentDetailsModel]
 
         actualValue shouldBe expectedValue
+      }
+    }
+    "fail to read from json" when {
+      "there is type mismatch" in {
+        Json.arr("a" -> "b").validate[AgentDetailsModel] isError
+      }
+      "empty json" in {
+        Json.obj().validate[AgentDetailsModel] isError
       }
     }
   }

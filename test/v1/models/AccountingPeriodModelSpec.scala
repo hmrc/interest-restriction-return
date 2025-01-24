@@ -16,9 +16,8 @@
 
 package v1.models
 
-import data.AccountingPeriodConstants._
+import data.AccountingPeriodConstants.*
 import play.api.libs.json.{JsError, JsPath, Json}
-import v1.models.AccountingPeriodModel
 import utils.BaseSpec
 
 class AccountingPeriodModelSpec extends BaseSpec {

@@ -56,5 +56,13 @@ class GroupRatioModelSpec extends BaseSpec {
         actualValue shouldBe expectedValue
       }
     }
+    "fail to read from json" when {
+      "there is type mismatch" in {
+        Json.arr("a" -> "b").validate[GroupRatioModel] isError
+      }
+      "empty json" in {
+        Json.obj().validate[GroupRatioModel] isError
+      }
+    }
   }
 }

@@ -16,9 +16,9 @@
 
 package v1.models.appointReportingCompany
 
-import data.appointReportingCompany.AppointReportingCompanyConstants._
+import data.AuthorisingCompanyConstants.authorisingCompanyModelWithoutConsenting
+import data.appointReportingCompany.AppointReportingCompanyConstants.*
 import play.api.libs.json.Json
-import v1.models.appointReportingCompany.AppointReportingCompanyModel
 import utils.BaseSpec
 
 class AppointReportingCompanyModelSpec extends BaseSpec {
@@ -60,6 +60,9 @@ class AppointReportingCompanyModelSpec extends BaseSpec {
         val actualValue   = appointReportingCompanyJsonMin.as[AppointReportingCompanyModel]
 
         actualValue shouldBe expectedValue
+      }
+      "fail to read from empty json" in {
+        Json.obj().validate[AppointReportingCompanyModel] isError
       }
     }
   }

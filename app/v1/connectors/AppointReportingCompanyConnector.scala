@@ -25,6 +25,7 @@ import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.httpParsers.AppointReportingCompanyHttpParser.AppointReportingCompanyReads
 import v1.models.appointReportingCompany.AppointReportingCompanyModel
 import v1.models.requests.IdentifierRequest
+import play.api.libs.ws.writeableOf_JsValue
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -36,7 +37,7 @@ class AppointReportingCompanyConnector @Inject() (httpClient: HttpClientV2, impl
 
   def appoint(
     appointReportingCompanyModel: AppointReportingCompanyModel
-  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
+  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] = {
     logger.debug(s"[AppointReportingCompanyConnector][appoint] URL: $appointUrl")
     val receivedSize = request.headers.get(HeaderNames.CONTENT_LENGTH)
     val jsonSize     = Json.stringify(Json.toJson(appointReportingCompanyModel)(AppointReportingCompanyModel.format)).length
@@ -44,7 +45,7 @@ class AppointReportingCompanyConnector @Inject() (httpClient: HttpClientV2, impl
 
     httpClient
       .post(url"$appointUrl")
-      .setHeader(desHeaders(): _*)
+      .setHeader(desHeaders()*)
       .withBody(Json.toJson(appointReportingCompanyModel))
       .execute[SubmissionResponse]
   }

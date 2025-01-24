@@ -58,7 +58,7 @@ trait ParentCompanyValidator extends BaseValidation {
       } else {
         combineValidations(deemedParents.zipWithIndex.map { case (x, i) =>
           x.validate(path \ s"deemedParent[$i]")
-        }: _*)
+        }*)
       }
     )
 

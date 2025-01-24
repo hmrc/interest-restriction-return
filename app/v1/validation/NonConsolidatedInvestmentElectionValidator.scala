@@ -48,7 +48,7 @@ trait NonConsolidatedInvestmentElectionValidator extends BaseValidation {
           } else {
             combineValidations(nonConsolidatedInvestments.zipWithIndex.map { case (a, i) =>
               a.validate(JsPath \ s"nonConsolidatedInvestments[$i]")
-            }: _*)
+            }*)
           }
         )
       )

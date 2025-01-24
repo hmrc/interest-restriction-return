@@ -77,7 +77,7 @@ trait AppointReportingCompanyValidator extends BaseValidation {
       } else {
         combineValidations(appointReportingCompanyModel.authorisingCompanies.zipWithIndex.map { case (a, i) =>
           a.validate(JsPath \ s"authorisingCompanies[$i]")
-        }: _*)
+        }*)
       }
 
     combineValidations[Any](

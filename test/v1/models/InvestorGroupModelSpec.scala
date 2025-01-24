@@ -77,5 +77,13 @@ class InvestorGroupModelSpec extends BaseSpec {
         actualValue shouldBe expectedValue
       }
     }
+    "fail to read from json" when {
+      "there is type mismatch" in {
+        Json.arr("a" -> "b").validate[InvestorGroupModel] isError
+      }
+      "empty json" in {
+        Json.obj().validate[InvestorGroupModel] isError
+      }
+    }
   }
 }

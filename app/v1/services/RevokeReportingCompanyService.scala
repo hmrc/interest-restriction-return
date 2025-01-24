@@ -33,7 +33,7 @@ class RevokeReportingCompanyService @Inject() (revokeReportingCompanyConnector: 
 
   override def submit(
     revokeReportingCompany: RevokeReportingCompanyModel
-  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] =
+  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] =
     revokeReportingCompanyConnector.revoke(revokeReportingCompany).map { resp =>
       logger.info("[RevokeReportingCompanyService][submit] Successfully sent a revoke reporting company payload")
       resp

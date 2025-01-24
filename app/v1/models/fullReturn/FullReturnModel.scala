@@ -53,7 +53,7 @@ case class FullReturnModel(
   val aggregateAllocatedRestrictions: BigDecimal  =
     ukCompanies.flatMap(_.allocatedRestrictions.map(_.totalDisallowances)).sum
   val aggregateAllocatedReactivations: BigDecimal = totalReactivation
-  val aggregateTaxEBITDA: BigDecimal = {
+  val aggregateTaxEBITDA: BigDecimal              = {
     val totalTaxEBITDA = ukCompanies.map(_.taxEBITDA).sum
     if (totalTaxEBITDA < 0) {
       0

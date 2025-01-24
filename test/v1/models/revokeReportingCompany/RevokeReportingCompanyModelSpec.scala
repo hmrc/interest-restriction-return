@@ -16,9 +16,8 @@
 
 package v1.models.revokeReportingCompany
 
-import data.revokeReportingCompany.RevokeReportingCompanyConstants._
+import data.revokeReportingCompany.RevokeReportingCompanyConstants.*
 import play.api.libs.json.Json
-import v1.models.revokeReportingCompany.RevokeReportingCompanyModel
 import utils.BaseSpec
 
 class RevokeReportingCompanyModelSpec extends BaseSpec {
@@ -60,6 +59,9 @@ class RevokeReportingCompanyModelSpec extends BaseSpec {
         val actualValue   = revokeReportingCompanyJsonMin.as[RevokeReportingCompanyModel]
 
         actualValue shouldBe expectedValue
+      }
+      "fail to read from empty json" in {
+        Json.obj().validate[RevokeReportingCompanyModel] isError
       }
     }
   }

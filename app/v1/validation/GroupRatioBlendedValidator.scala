@@ -42,7 +42,7 @@ trait GroupRatioBlendedValidator extends BaseValidation {
           } else {
             combineValidations(investors.zipWithIndex.map { case (a, i) =>
               a.validate(JsPath \ s"investorGroups[$i]")
-            }: _*)
+            }*)
           }
         )
       )

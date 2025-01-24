@@ -23,15 +23,15 @@ import play.api.Configuration
 import play.api.libs.json.Json
 import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import uk.gov.hmrc.auth.core.InsufficientEnrolments
-import uk.gov.hmrc.http.{JsValidationException, NotFoundException}
+import uk.gov.hmrc.http.{HttpException, JsValidationException, NotFoundException, UpstreamErrorResponse}
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import uk.gov.hmrc.play.audit.http.connector.AuditResult.Success
 import uk.gov.hmrc.play.audit.model.DataEvent
 import uk.gov.hmrc.play.bootstrap.config.HttpAuditEvent
 import v1.models.errors.ErrorResponseModel
-import v1.models.errors.ErrorResponses._
+import v1.models.errors.ErrorResponses.*
 
 import java.time.Instant
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -162,6 +162,29 @@ class ErrorHandlerSpec extends UnitSpec {
           status(result) shouldBe INTERNAL_SERVER_ERROR
 
           contentAsJson(result) shouldBe Json.toJson(DownstreamError)
+        }
+      }
+
+      "return code with error body" when {
+        "HttpException thrown" in new Test {
+          private val result = handler.onServerError(requestHeader, new HttpException("test", 23) with NoStackTrace)
+          status(result) shouldBe 23
+        }
+      }
+      "return 4xx with error body" when {
+        "HttpException thrown" in new Test {
+          private val result =
+            handler.onServerError(requestHeader, new UpstreamErrorResponse("message", 400, 400, Map.empty))
+          status(result) shouldBe 400
+
+        }
+      }
+      "return 5xx with error body" when {
+        "HttpException thrown" in new Test {
+          private val result =
+            handler.onServerError(requestHeader, new UpstreamErrorResponse("message", 500, 500, Map.empty))
+          status(result) shouldBe 500
+
         }
       }
     }

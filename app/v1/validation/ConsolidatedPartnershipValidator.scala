@@ -48,7 +48,7 @@ trait ConsolidatedPartnershipValidator extends BaseValidation {
           } else {
             combineValidations(consolidatedPartnerships.zipWithIndex.map { case (a, i) =>
               a.validate(JsPath \ s"consolidatedPartnerships[$i]")
-            }: _*)
+            }*)
           }
         )
       )

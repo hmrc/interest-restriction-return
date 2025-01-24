@@ -16,9 +16,8 @@
 
 package v1.models.fullReturn
 
-import data.fullReturn.UkCompanyConstants._
+import data.fullReturn.UkCompanyConstants.*
 import play.api.libs.json.Json
-import v1.models.fullReturn.UkCompanyModel
 import utils.BaseSpec
 
 class UkCompanyModelSpec extends BaseSpec {
@@ -60,6 +59,14 @@ class UkCompanyModelSpec extends BaseSpec {
         val actualValue   = ukCompanyJsonMin.as[UkCompanyModel]
 
         actualValue shouldBe expectedValue
+      }
+    }
+    "fail to read from json" when {
+      "there is type mismatch" in {
+        Json.arr("a" -> "b").validate[UkCompanyModel] isError
+      }
+      "empty json" in {
+        Json.obj().validate[UkCompanyModel] isError
       }
     }
   }

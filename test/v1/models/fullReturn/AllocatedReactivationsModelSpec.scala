@@ -16,9 +16,8 @@
 
 package v1.models.fullReturn
 
-import data.fullReturn.AllocatedReactivationsConstants._
+import data.fullReturn.AllocatedReactivationsConstants.*
 import play.api.libs.json.Json
-import v1.models.fullReturn.AllocatedReactivationsModel
 import utils.BaseSpec
 
 class AllocatedReactivationsModelSpec extends BaseSpec {

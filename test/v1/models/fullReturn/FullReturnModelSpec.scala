@@ -17,14 +17,13 @@
 package v1.models.fullReturn
 
 import play.api.libs.json.{JsObject, Json, Writes}
-import v1.models.fullReturn.FullReturnModel
-import data.fullReturn.FullReturnConstants._
-import data.AgentDetailsConstants._
-import data.GroupCompanyDetailsConstants._
-import data.ReportingCompanyConstants._
-import data.fullReturn.GroupLevelAmountConstants._
-import data.fullReturn.UkCompanyConstants._
-import data.NonConsolidatedInvestmentElectionConstants._
+import data.fullReturn.FullReturnConstants.*
+import data.AgentDetailsConstants.*
+import data.GroupCompanyDetailsConstants.*
+import data.ReportingCompanyConstants.*
+import data.fullReturn.GroupLevelAmountConstants.*
+import data.fullReturn.UkCompanyConstants.*
+import data.NonConsolidatedInvestmentElectionConstants.*
 import v1.models.{Original, SubmissionType}
 import utils.{BaseSpec, JsonFormatters}
 

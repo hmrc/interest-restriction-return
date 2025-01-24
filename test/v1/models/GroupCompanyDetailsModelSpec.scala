@@ -16,9 +16,8 @@
 
 package v1.models
 
-import data.GroupCompanyDetailsConstants._
+import data.GroupCompanyDetailsConstants.*
 import play.api.libs.json.Json
-import v1.models.GroupCompanyDetailsModel
 import utils.BaseSpec
 
 class GroupCompanyDetailsModelSpec extends BaseSpec {
@@ -39,6 +38,14 @@ class GroupCompanyDetailsModelSpec extends BaseSpec {
       val actualValue   = groupCompanyDetailsJson.as[GroupCompanyDetailsModel]
 
       actualValue shouldBe expectedValue
+    }
+    "fail to read from json" when {
+      "there is type mismatch" in {
+        Json.arr("a" -> "b").validate[GroupCompanyDetailsModel] isError
+      }
+      "empty json" in {
+        Json.obj().validate[GroupCompanyDetailsModel] isError
+      }
     }
   }
 }

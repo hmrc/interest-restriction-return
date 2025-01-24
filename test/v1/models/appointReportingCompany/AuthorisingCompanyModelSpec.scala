@@ -17,7 +17,7 @@
 package v1.models.appointReportingCompany
 
 import play.api.libs.json.Json
-import data.AuthorisingCompanyConstants._
+import data.AuthorisingCompanyConstants.*
 import v1.models.AuthorisingCompanyModel
 import utils.BaseSpec
 
@@ -39,6 +39,9 @@ class AuthorisingCompanyModelSpec extends BaseSpec {
       val actualValue   = authorisingCompanyJson.as[AuthorisingCompanyModel]
 
       actualValue shouldBe expectedValue
+    }
+    "fail to read from empty json" in {
+      Json.obj().validate[AuthorisingCompanyModel] isError
     }
   }
 }

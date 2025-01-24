@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,20 @@
  * limitations under the License.
  */
 
-package v1.validation
+package v1.models
 
-import play.api.libs.json.JsPath
-import v1.models.Validation.ValidationResult
-import v1.models.GroupCompanyDetailsModel
+import play.api.libs.json.Json
+import utils.BaseSpec
 
-trait GroupCompanyDetailsValidator extends BaseValidation {
-
-  val groupCompanyDetails: GroupCompanyDetailsModel
-
-  def validate(implicit path: JsPath): ValidationResult[?] =
-    groupCompanyDetails.accountingPeriod.validate(path \ "accountingPeriod")
+class PartnershipModelSpec extends BaseSpec {
+  "PartnershipModel" should {
+    "fail to read from json" when {
+      "there is type mismatch" in {
+        Json.arr("a" -> "b").validate[PartnershipModel] isError
+      }
+      "empty json" in {
+        Json.obj().validate[PartnershipModel] isError
+      }
+    }
+  }
 }

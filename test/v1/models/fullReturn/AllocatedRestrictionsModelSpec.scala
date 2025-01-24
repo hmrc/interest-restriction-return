@@ -16,9 +16,8 @@
 
 package v1.models.fullReturn
 
-import data.fullReturn.AllocatedRestrictionsConstants._
+import data.fullReturn.AllocatedRestrictionsConstants.*
 import play.api.libs.json.Json
-import v1.models.fullReturn.AllocatedRestrictionsModel
 import utils.BaseSpec
 
 class AllocatedRestrictionsModelSpec extends BaseSpec {
@@ -39,6 +38,14 @@ class AllocatedRestrictionsModelSpec extends BaseSpec {
       val actualValue   = allocatedRestrictionsJson.as[AllocatedRestrictionsModel]
 
       actualValue shouldBe expectedValue
+    }
+    "fail to read from json" when {
+      "there is type mismatch" in {
+        Json.arr("a" -> "b").validate[AllocatedRestrictionsModel] isError
+      }
+      "empty json" in {
+        Json.obj().validate[AllocatedRestrictionsModel] isError
+      }
     }
   }
 }

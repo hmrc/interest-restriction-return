@@ -38,7 +38,7 @@ object AccountingPeriodModel {
     .map(LocalDate.parse)
 
   implicit val reads: Reads[AccountingPeriodModel] =
-    (readDate("startDate") and readDate("endDate"))(AccountingPeriodModel.apply _)
+    (readDate("startDate") and readDate("endDate"))(AccountingPeriodModel.apply)
 
   implicit val writes: OWrites[AccountingPeriodModel] = Json.writes[AccountingPeriodModel]
 }

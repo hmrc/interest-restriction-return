@@ -16,9 +16,8 @@
 
 package v1.models.abbreviatedReturn
 
-import data.abbreviatedReturn.UkCompanyConstants._
+import data.abbreviatedReturn.UkCompanyConstants.*
 import play.api.libs.json.Json
-import v1.models.abbreviatedReturn.UkCompanyModel
 import utils.BaseSpec
 
 class UkCompanyModelSpec extends BaseSpec {
@@ -39,6 +38,29 @@ class UkCompanyModelSpec extends BaseSpec {
       val actualValue   = ukCompanyJson.as[UkCompanyModel]
 
       actualValue shouldBe expectedValue
+    }
+    "should not deserialize wrong type" in {
+      Json.arr("a" -> "b").validate[UkCompanyModel] isError
+    }
+    "should not deserialize empty countryName" in {
+      Json
+        .obj(
+          "companyName" -> Json.obj(),
+          "utr"         -> ctutr,
+          "consenting"  -> true,
+          "qicElection" -> true
+        )
+        .validate[UkCompanyModel] isError
+    }
+    "should not deserialize empty utr" in {
+      Json
+        .obj(
+          "companyName" -> companyName,
+          "utr"         -> Json.obj(),
+          "consenting"  -> true,
+          "qicElection" -> true
+        )
+        .validate[UkCompanyModel] isError
     }
   }
 }

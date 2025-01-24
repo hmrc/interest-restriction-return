@@ -164,7 +164,7 @@ class FullReturnValidatorSpec extends BaseSpec {
               groupSubjectToInterestReactivation = false,
               groupSubjectToInterestRestrictions = true,
               totalRestrictions = 1.111,
-              ukCompanies = Seq(ukCompanyModelRestrictionMax, ukCompanyModelRestrictionMax) //4.44
+              ukCompanies = Seq(ukCompanyModelRestrictionMax, ukCompanyModelRestrictionMax) // 4.44
             )
             .validate
         ).errorMessage shouldBe TotalRestrictionsDecimalError(incorrectDisallowances).errorMessage

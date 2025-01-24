@@ -26,5 +26,5 @@ trait Submission[T] {
 
   def submit(
     submission: T
-  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse]
+  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse]
 }

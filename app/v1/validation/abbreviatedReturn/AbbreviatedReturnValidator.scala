@@ -29,7 +29,7 @@ trait AbbreviatedReturnValidator extends BaseValidation {
 
   val abbreviatedReturnModel: AbbreviatedReturnModel
 
-  private def validateRevisedReturnDetails: ValidationResult[_] =
+  private def validateRevisedReturnDetails: ValidationResult[?] =
     (abbreviatedReturnModel.submissionType, abbreviatedReturnModel.revisedReturnDetails) match {
       case (Original, Some(details)) => RevisedReturnDetailsSupplied(details).invalidNec
       case (Revised, None)           => RevisedReturnDetailsNotSupplied.invalidNec
@@ -66,7 +66,7 @@ trait AbbreviatedReturnValidator extends BaseValidation {
       } else {
         combineValidations(abbreviatedReturnModel.ukCompanies.zipWithIndex.map { case (a, i) =>
           a.validate(JsPath \ s"ukCompanies[$i]")
-        }: _*)
+        }*)
       }
 
     combineValidations(

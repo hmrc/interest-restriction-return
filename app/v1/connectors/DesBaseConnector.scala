@@ -32,9 +32,9 @@ trait DesBaseConnector extends Logging {
   def desHeaders()(implicit
     hc: HeaderCarrier,
     appConfig: AppConfig,
-    request: IdentifierRequest[_]
+    request: IdentifierRequest[?]
   ): Seq[(String, String)] = {
-    val correlationId = correlationIdGenerator(hc)
+    val correlationId    = correlationIdGenerator(hc)
     Seq(
       appConfig.desEnvironment,
       "providerId"    -> request.identifier,

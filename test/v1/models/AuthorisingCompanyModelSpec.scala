@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,16 @@
 
 package v1.models
 
-class WithName(string: String) {
-  override val toString: String = string
+import play.api.libs.json.Json
+import utils.BaseSpec
+
+class AuthorisingCompanyModelSpec extends BaseSpec {
+  "fail to read from json" when {
+    "there is type mismatch" in {
+      Json.arr("a" -> "b").validate[AuthorisingCompanyModel] isError
+    }
+    "empty json" in {
+      Json.obj().validate[AuthorisingCompanyModel] isError
+    }
+  }
 }

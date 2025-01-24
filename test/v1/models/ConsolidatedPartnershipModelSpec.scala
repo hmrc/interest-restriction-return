@@ -16,9 +16,8 @@
 
 package v1.models
 
-import data.ConsolidatedPartnershipConstants._
+import data.ConsolidatedPartnershipConstants.*
 import play.api.libs.json.Json
-import v1.models.ConsolidatedPartnershipModel
 import utils.BaseSpec
 
 class ConsolidatedPartnershipModelSpec extends BaseSpec {
@@ -71,6 +70,15 @@ class ConsolidatedPartnershipModelSpec extends BaseSpec {
         val actualValue   = consolidatedPartnershipsJsonMin.as[ConsolidatedPartnershipModel]
 
         actualValue shouldBe expectedValue
+      }
+    }
+
+    "fail to read from json" when {
+      "there is type mismatch" in {
+        Json.arr("a" -> "b").validate[ConsolidatedPartnershipModel] isError
+      }
+      "empty json" in {
+        Json.obj().validate[ConsolidatedPartnershipModel] isError
       }
     }
   }

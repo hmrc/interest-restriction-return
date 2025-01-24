@@ -77,7 +77,7 @@ trait RevokeReportingCompanyValidator extends BaseValidation {
       } else {
         combineValidations(revokeReportingCompanyModel.authorisingCompanies.zipWithIndex.map { case (a, i) =>
           a.validate(JsPath \ s"authorisingCompanies[$i]")
-        }: _*)
+        }*)
       }
 
     combineValidations[Any](

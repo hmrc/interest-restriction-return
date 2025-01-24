@@ -18,7 +18,7 @@ package v1.connectors.httpParsers
 
 import java.util.UUID
 
-import play.api.http.Status._
+import play.api.http.Status.*
 import play.api.libs.json.{JsObject, Json}
 import uk.gov.hmrc.http.HttpResponse
 import utils.BaseSpec

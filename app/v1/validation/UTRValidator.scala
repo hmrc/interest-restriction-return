@@ -28,7 +28,7 @@ trait UTRValidator extends BaseValidation {
 
   def validate(implicit path: JsPath): ValidationResult[UTRModel] = {
 
-    val utrInts = utrModel.utr.map(_.asDigit)
+    val utrInts       = utrModel.utr.map(_.asDigit)
     def checkSum: Int = {
 
       val utrSum = (utrInts(1) * 6) + (utrInts(2) * 7) + (utrInts(3) * 8) + (utrInts(4) * 9) + (utrInts(5) * 10) +

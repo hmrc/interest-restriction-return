@@ -16,9 +16,12 @@
 
 package definition
 
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
+import play.api.libs.json.{JsSuccess, Json}
 import utils.BaseSpec
 
-class ApiDefinitionSpec extends BaseSpec {
+class ApiDefinitionSpec extends AnyWordSpecLike with Matchers {
 
   private val apiVersion: APIVersion = APIVersion(
     version = "a",
@@ -35,6 +38,9 @@ class ApiDefinitionSpec extends BaseSpec {
   )
 
   "APIVersion" should {
+    "support round-trip serialization/deserialization" in {
+      Json.toJson(apiVersion).validate[APIVersion] shouldBe JsSuccess(apiVersion)
+    }
     "version is an empty string" should {
       "throw an IllegalArgumentException" in {
         assertThrows[IllegalArgumentException](
@@ -42,13 +48,24 @@ class ApiDefinitionSpec extends BaseSpec {
         )
       }
     }
+    "fail to read from json when" when {
+      "there is type mismatch" in {
+        Json.arr("a" -> "b").validate[APIVersion] isError
+      }
+      "there is an empty json" in {
+        Json.obj().validate[APIVersion] isError
+      }
+    }
   }
 
-  "APIDefinition" when {
+  "Definition" when {
+    "support round-trip serialization/deserialization" in {
+      Json.toJson(Definition(apiDefinition)).validate[Definition] shouldBe JsSuccess(Definition(apiDefinition))
+    }
     "name is an empty string" should {
       "throw an IllegalArgumentException" in {
         assertThrows[IllegalArgumentException](
-          apiDefinition.copy(name = "")
+          Definition(apiDefinition.copy(name = ""))
         )
       }
     }
@@ -56,7 +73,7 @@ class ApiDefinitionSpec extends BaseSpec {
     "description is an empty string" should {
       "throw an IllegalArgumentException" in {
         assertThrows[IllegalArgumentException](
-          apiDefinition.copy(description = "")
+          Definition(apiDefinition.copy(description = ""))
         )
       }
     }
@@ -64,7 +81,7 @@ class ApiDefinitionSpec extends BaseSpec {
     "context is an empty string" should {
       "throw an IllegalArgumentException" in {
         assertThrows[IllegalArgumentException](
-          apiDefinition.copy(context = "")
+          Definition(apiDefinition.copy(context = ""))
         )
       }
     }
@@ -72,7 +89,7 @@ class ApiDefinitionSpec extends BaseSpec {
     "versions is an empty list" should {
       "throw an IllegalArgumentException" in {
         assertThrows[IllegalArgumentException](
-          apiDefinition.copy(versions = Seq.empty)
+          Definition(apiDefinition.copy(versions = Seq.empty))
         )
       }
     }
@@ -80,8 +97,26 @@ class ApiDefinitionSpec extends BaseSpec {
     "version numbers for versions is not unique" should {
       "throw an IllegalArgumentException" in {
         assertThrows[IllegalArgumentException](
-          apiDefinition.copy(versions = Seq(apiVersion, apiVersion))
+          Definition(apiDefinition.copy(versions = Seq(apiVersion, apiVersion)))
         )
+      }
+    }
+    "fail to read from json when" when {
+      "there is type mismatch" in {
+        Json.arr("a" -> "b").validate[Definition] isError
+      }
+      "there is an empty json" in {
+        Json.obj().validate[Definition] isError
+      }
+    }
+  }
+  "APIDefinition" should {
+    "fail to read from json when" when {
+      "there is type mismatch" in {
+        Json.arr("a" -> "b").validate[APIDefinition] isError
+      }
+      "there is an empty json" in {
+        Json.obj().validate[APIDefinition] isError
       }
     }
   }

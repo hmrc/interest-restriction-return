@@ -40,15 +40,15 @@ class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
     path = "/interest-restriction-return/return/full/validate"
   )
 
-  private lazy val validJsonFakeRequest: FakeRequest[JsObject]              = fakeRequest
+  private lazy val validJsonFakeRequest: FakeRequest[JsObject] = fakeRequest
     .withBody(fullReturnUltimateParentJson)
     .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
 
-  private lazy val validJsonFakeRequestForValidate: FakeRequest[JsObject]   = fakeRequestForValidate
+  private lazy val validJsonFakeRequestForValidate: FakeRequest[JsObject] = fakeRequestForValidate
     .withBody(fullReturnUltimateParentJson)
     .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
 
-  private lazy val invalidJsonFakeRequest: FakeRequest[JsObject]            = fakeRequest
+  private lazy val invalidJsonFakeRequest: FakeRequest[JsObject] = fakeRequest
     .withBody(Json.obj())
     .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
 
