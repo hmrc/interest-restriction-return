@@ -17,7 +17,7 @@
 package v1.models
 
 import data.UltimateParentConstants.*
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, Json}
 import utils.BaseSpec
 
 class UltimateParentModelSpec extends BaseSpec {
@@ -64,10 +64,10 @@ class UltimateParentModelSpec extends BaseSpec {
 
     "fail to read from json" when {
       "there is type mismatch" in {
-        Json.arr("a" -> "b").validate[UltimateParentModel] isError
+        Json.arr("a" -> "b").validate[UltimateParentModel] shouldBe a[JsError]
       }
       "empty json" in {
-        Json.obj().validate[UltimateParentModel] isError
+        Json.obj().validate[UltimateParentModel] shouldBe a[JsError]
       }
     }
   }

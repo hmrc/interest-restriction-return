@@ -19,7 +19,7 @@ package v1.models.nrs
 import data.UnitNrsConstants.payload
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
-import play.api.libs.json.{JsSuccess, Json}
+import play.api.libs.json.{JsError, JsSuccess, Json}
 
 class NrsPayloadSpec extends AnyWordSpecLike with Matchers {
   "NrsPayload" when {
@@ -29,10 +29,10 @@ class NrsPayloadSpec extends AnyWordSpecLike with Matchers {
     }
     "fail to read from json" when {
       "there is type mismatch" in {
-        Json.arr("a" -> "b").validate[NrsPayload] isError
+        Json.arr("a" -> "b").validate[NrsPayload] shouldBe a[JsError]
       }
       "empty json" in {
-        Json.obj().validate[NrsPayload] isError
+        Json.obj().validate[NrsPayload] shouldBe a[JsError]
       }
     }
   }

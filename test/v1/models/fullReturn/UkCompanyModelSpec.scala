@@ -17,7 +17,7 @@
 package v1.models.fullReturn
 
 import data.fullReturn.UkCompanyConstants.*
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, Json}
 import utils.BaseSpec
 
 class UkCompanyModelSpec extends BaseSpec {
@@ -63,10 +63,10 @@ class UkCompanyModelSpec extends BaseSpec {
     }
     "fail to read from json" when {
       "there is type mismatch" in {
-        Json.arr("a" -> "b").validate[UkCompanyModel] isError
+        Json.arr("a" -> "b").validate[UkCompanyModel] shouldBe a[JsError]
       }
       "empty json" in {
-        Json.obj().validate[UkCompanyModel] isError
+        Json.obj().validate[UkCompanyModel] shouldBe a[JsError]
       }
     }
   }

@@ -16,7 +16,7 @@
 
 package v1.connectors
 
-import play.api.libs.json.{JsSuccess, Json}
+import play.api.libs.json.{JsError, JsSuccess, Json}
 import utils.BaseSpec
 
 class HttpHelperSpec extends BaseSpec {
@@ -27,10 +27,10 @@ class HttpHelperSpec extends BaseSpec {
     }
     "fail to read from json" when {
       "there is type mismatch" in {
-        Json.arr("a" -> "b").validate[DesSuccessResponse] isError
+        Json.arr("a" -> "b").validate[DesSuccessResponse] shouldBe a[JsError]
       }
       "empty json" in {
-        Json.obj().validate[DesSuccessResponse] isError
+        Json.obj().validate[DesSuccessResponse] shouldBe a[JsError]
       }
     }
   }

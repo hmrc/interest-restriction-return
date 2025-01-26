@@ -18,29 +18,34 @@ package v1.models.authAction
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
-import play.api.libs.json.{JsSuccess, Json}
+import play.api.libs.json.{JsError, JsSuccess, Json}
 
 class ForbiddenIndividualsErrorSpec extends AnyWordSpecLike with Matchers {
   private val message =
     "You are unable to access this service as an individual. This service is only available to individual companies or groups of companies."
   "ForbiddenIndividualsError" should {
     "support round-trip serialization/deserialization" in {
-      Json.toJson(new ForbiddenIndividualsError).validate[ForbiddenIndividualsError] shouldBe JsSuccess(
-        new ForbiddenIndividualsError()
+      Json.toJson(ForbiddenIndividualsError()).validate[ForbiddenIndividualsError] shouldBe JsSuccess(
+        ForbiddenIndividualsError()
+      )
+    }
+    "support round-trip serialization/deserialization when values" in {
+      Json.toJson(ForbiddenIndividualsError(2, "test")).validate[ForbiddenIndividualsError] shouldBe JsSuccess(
+        ForbiddenIndividualsError(2, "test")
       )
     }
   }
   "deserialization" when {
     "the object is empty" in {
       val json = Json.obj()
-      json.validate[ForbiddenIndividualsError] shouldBe JsSuccess(new ForbiddenIndividualsError)
+      json.validate[ForbiddenIndividualsError] shouldBe JsSuccess(ForbiddenIndividualsError())
     }
     "invalid code" in {
       val json = Json.obj(
         "code"    -> message,
-        "message" -> message
+        "message" -> 2
       )
-      json.validate[ForbiddenIndividualsError] isError
+      json.validate[ForbiddenIndividualsError] shouldBe a[JsError]
     }
   }
 }

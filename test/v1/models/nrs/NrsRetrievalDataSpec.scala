@@ -20,6 +20,8 @@ import data.UnitNrsConstants.nrsRetrievalData
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 import play.api.libs.json.{JsError, JsSuccess, Json}
+import uk.gov.hmrc.auth.core.retrieve.{AgentInformation, Credentials, ItmpName, MdtpInformation, Name}
+import v1.models.nrs.NrsRetrievalData.*
 
 class NrsRetrievalDataSpec extends AnyWordSpecLike with Matchers {
   "NrsRetrievalData" should {
@@ -30,10 +32,97 @@ class NrsRetrievalDataSpec extends AnyWordSpecLike with Matchers {
     }
     "fail to read from json" when {
       "there is type mismatch" in {
-        Json.arr("a" -> "b").validate[NrsRetrievalData] isError
+        Json.arr("a" -> "b").validate[NrsRetrievalData] shouldBe a[JsError]
       }
       "empty json" in {
-        Json.obj().validate[NrsRetrievalData] isError
+        Json.obj().validate[NrsRetrievalData] shouldBe a[JsError]
+      }
+    }
+  }
+  "Credentials"      should {
+    "support round-trip serialization/deserialization" when {
+      "all the fields are available and valid" in {
+        Json.toJson(Credentials("wqs", "dw")).validate[Credentials] shouldBe JsSuccess(Credentials("wqs", "dw"))
+      }
+    }
+    "fail to read from json" when {
+      "there is type mismatch" in {
+        Json.arr("a" -> "b").validate[Credentials] shouldBe a[JsError]
+      }
+      "empty json" in {
+        Json.obj().validate[Credentials] shouldBe a[JsError]
+      }
+    }
+  }
+  "Name"             should {
+    "support round-trip serialization/deserialization" when {
+      "all the fields are available and valid" in {
+        Json.toJson(Name(Some("first"), Some("last"))).validate[Name] shouldBe JsSuccess(
+          Name(Some("first"), Some("last"))
+        )
+      }
+      "all the optional fields are none" in {
+        Json.toJson(Name(None, None)).validate[Name] shouldBe JsSuccess(
+          Name(None, None)
+        )
+      }
+    }
+    "fail to read from json" when {
+      "there is type mismatch" in {
+        Json.arr("a" -> "b").validate[Name] shouldBe a[JsError]
+      }
+    }
+  }
+  "MdtpInformation"  should {
+    "support round-trip serialization/deserialization" when {
+      "all the fields are available and valid" in {
+        Json.toJson(MdtpInformation("deviceId", "sessionId")).validate[MdtpInformation] shouldBe JsSuccess(
+          MdtpInformation("deviceId", "sessionId")
+        )
+      }
+    }
+    "fail to read from json" when {
+      "there is type mismatch" in {
+        Json.arr("a" -> "b").validate[MdtpInformation] shouldBe a[JsError]
+      }
+      "empty json" in {
+        Json.obj().validate[MdtpInformation] shouldBe a[JsError]
+      }
+    }
+  }
+  "AgentInformation" should {
+    "support round-trip serialization/deserialization" when {
+      "all the fields are available and valid" in {
+        Json
+          .toJson(AgentInformation(Some("agentId"), Option("agentCode"), Some("agentFriendlyName")))
+          .validate[AgentInformation] shouldBe JsSuccess(
+          AgentInformation(Some("agentId"), Option("agentCode"), Some("agentFriendlyName"))
+        )
+      }
+    }
+    "fail to read from json" when {
+      "there is type mismatch" in {
+        Json.arr("a" -> "b").validate[AgentInformation] shouldBe a[JsError]
+      }
+      "empty json" in {
+        Json.obj().validate[AgentInformation] shouldBe JsSuccess(AgentInformation(None, None, None))
+      }
+    }
+  }
+  "ItmpName"         should {
+    "support round-trip serialization/deserialization" when {
+      "all the fields are available and valid" in {
+        Json.toJson(ItmpName(Some("given"), Option("middle"), Some("family"))).validate[ItmpName] shouldBe JsSuccess(
+          ItmpName(Some("given"), Option("middle"), Some("family"))
+        )
+      }
+    }
+    "fail to read from json" when {
+      "there is type mismatch" in {
+        Json.arr("a" -> "b").validate[ItmpName] shouldBe a[JsError]
+      }
+      "empty json" in {
+        Json.obj().validate[ItmpName] shouldBe JsSuccess(ItmpName(None, None, None))
       }
     }
   }

@@ -16,7 +16,7 @@
 
 package v1.models
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, Json}
 import data.IdentityOfCompanySubmittingConstants.*
 import utils.BaseSpec
 
@@ -63,10 +63,10 @@ class IdentityOfCompanySubmittingModelSpec extends BaseSpec {
     }
     "fail to read from json" when {
       "there is type mismatch" in {
-        Json.arr("a" -> "b").validate[IdentityOfCompanySubmittingModel] isError
+        Json.arr("a" -> "b").validate[IdentityOfCompanySubmittingModel] shouldBe a[JsError]
       }
       "empty json" in {
-        Json.obj().validate[IdentityOfCompanySubmittingModel] isError
+        Json.obj().validate[IdentityOfCompanySubmittingModel] shouldBe a[JsError]
       }
     }
   }

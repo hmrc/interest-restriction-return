@@ -17,7 +17,7 @@
 package v1.models
 
 import data.GroupLevelElectionsConstants._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, Json}
 import data.NonConsolidatedInvestmentElectionConstants._
 import utils.BaseSpec
 
@@ -69,10 +69,10 @@ class GroupLevelElectionsModelSpec extends BaseSpec {
     }
     "fail to read from json" when {
       "there is type mismatch" in {
-        Json.arr("a" -> "b").validate[GroupLevelElectionsModel] isError
+        Json.arr("a" -> "b").validate[GroupLevelElectionsModel] shouldBe a[JsError]
       }
       "empty json" in {
-        Json.obj().validate[GroupLevelElectionsModel] isError
+        Json.obj().validate[GroupLevelElectionsModel] shouldBe a[JsError]
       }
     }
   }

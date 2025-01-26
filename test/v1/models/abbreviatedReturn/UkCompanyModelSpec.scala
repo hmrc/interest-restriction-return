@@ -17,7 +17,7 @@
 package v1.models.abbreviatedReturn
 
 import data.abbreviatedReturn.UkCompanyConstants.*
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, Json}
 import utils.BaseSpec
 
 class UkCompanyModelSpec extends BaseSpec {
@@ -40,7 +40,7 @@ class UkCompanyModelSpec extends BaseSpec {
       actualValue shouldBe expectedValue
     }
     "should not deserialize wrong type" in {
-      Json.arr("a" -> "b").validate[UkCompanyModel] isError
+      Json.arr("a" -> "b").validate[UkCompanyModel] shouldBe a[JsError]
     }
     "should not deserialize empty countryName" in {
       Json
@@ -50,7 +50,7 @@ class UkCompanyModelSpec extends BaseSpec {
           "consenting"  -> true,
           "qicElection" -> true
         )
-        .validate[UkCompanyModel] isError
+        .validate[UkCompanyModel] shouldBe a[JsError]
     }
     "should not deserialize empty utr" in {
       Json
@@ -60,7 +60,7 @@ class UkCompanyModelSpec extends BaseSpec {
           "consenting"  -> true,
           "qicElection" -> true
         )
-        .validate[UkCompanyModel] isError
+        .validate[UkCompanyModel] shouldBe a[JsError]
     }
   }
 }

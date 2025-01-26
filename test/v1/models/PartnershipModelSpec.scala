@@ -16,17 +16,17 @@
 
 package v1.models
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, Json}
 import utils.BaseSpec
 
 class PartnershipModelSpec extends BaseSpec {
   "PartnershipModel" should {
     "fail to read from json" when {
       "there is type mismatch" in {
-        Json.arr("a" -> "b").validate[PartnershipModel] isError
+        Json.arr("a" -> "b").validate[PartnershipModel] shouldBe a[JsError]
       }
       "empty json" in {
-        Json.obj().validate[PartnershipModel] isError
+        Json.obj().validate[PartnershipModel] shouldBe a[JsError]
       }
     }
   }

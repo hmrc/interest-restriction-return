@@ -16,7 +16,7 @@
 
 package v1.models.fullReturn
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, Json}
 import data.fullReturn.AdjustedGroupInterestConstants.*
 import utils.BaseSpec
 
@@ -49,10 +49,10 @@ class AdjustedGroupInterestModelSpec extends BaseSpec {
     }
     "fail to read from json" when {
       "there is type mismatch" in {
-        Json.arr("a" -> "b").validate[AdjustedGroupInterestModel] isError
+        Json.arr("a" -> "b").validate[AdjustedGroupInterestModel] shouldBe a[JsError]
       }
       "empty json" in {
-        Json.obj().validate[AdjustedGroupInterestModel] isError
+        Json.obj().validate[AdjustedGroupInterestModel] shouldBe a[JsError]
       }
     }
   }

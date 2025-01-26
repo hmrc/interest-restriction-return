@@ -71,14 +71,14 @@ object NrSubmissionId {
             catch {
               case _: IllegalArgumentException => JsError("Invalid UUID string")
             }
-          case _                 => JsError("Missing or invalid 'id' field")
+          case _                 => JsError("Missing or invalid 'nrSubmissionId' field")
         }
       case _                => JsError("Expected a JSON object")
     }
     def writes(id: NrSubmissionId): JsObject           =
       JsObject(
         Seq(
-          "id" -> JsString(id.nrSubmissionId.toString) // Convert UUID to string for serialization
+          "nrSubmissionId" -> JsString(id.nrSubmissionId.toString)
         )
       )
   }

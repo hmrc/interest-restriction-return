@@ -17,7 +17,7 @@
 package v1.models
 
 import data.DeemedParentConstants.*
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, Json}
 import utils.BaseSpec
 
 class DeemedParentModelSpec extends BaseSpec {
@@ -63,10 +63,10 @@ class DeemedParentModelSpec extends BaseSpec {
     }
     "fail to read from json" when {
       "there is type mismatch" in {
-        Json.arr("a" -> "b").validate[DeemedParentModel] isError
+        Json.arr("a" -> "b").validate[DeemedParentModel] shouldBe a[JsError]
       }
       "empty json" in {
-        Json.obj().validate[DeemedParentModel] isError
+        Json.obj().validate[DeemedParentModel] shouldBe a[JsError]
       }
     }
   }

@@ -20,7 +20,7 @@ import data.abbreviatedReturn.AbbreviatedReturnConstants.*
 import data.AgentDetailsConstants.*
 import data.GroupCompanyDetailsConstants.*
 import data.ReportingCompanyConstants.*
-import play.api.libs.json.{JsObject, Json, Writes}
+import play.api.libs.json.{JsError, JsObject, Json, Writes}
 import v1.models.{Original, RevisedReturnDetailsModel, SubmissionType}
 import data.abbreviatedReturn.UkCompanyConstants.*
 import utils.{BaseSpec, JsonFormatters}
@@ -95,10 +95,10 @@ class AbbreviatedReturnModelSpec extends BaseSpec with JsonFormatters {
     "fail to read from Json" when {
 
       "empty json" in {
-        Json.obj().validate[AbbreviatedReturnModel] isError
+        Json.obj().validate[AbbreviatedReturnModel] shouldBe a[JsError]
       }
       "there is a type mismatch" in {
-        Json.arr(abbreviatedReturnUltimateParentJson).validate[AbbreviatedReturnModel] isError
+        Json.arr(abbreviatedReturnUltimateParentJson).validate[AbbreviatedReturnModel] shouldBe a[JsError]
       }
     }
     "deriving the publicInfrastructure" when {

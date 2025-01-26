@@ -17,7 +17,7 @@
 package v1.models
 
 import data.ParentCompanyConstants.*
-import play.api.libs.json.{JsSuccess, Json}
+import play.api.libs.json.{JsError, JsSuccess, Json}
 import utils.BaseSpec
 
 class ParentCompanyModelSpec extends BaseSpec {
@@ -71,10 +71,10 @@ class ParentCompanyModelSpec extends BaseSpec {
     }
     "fail to read from json" when {
       "there is type mismatch" in {
-        Json.arr("a" -> "b").validate[ParentCompanyModel] isError
+        Json.arr("a" -> "b").validate[ParentCompanyModel] shouldBe a[JsError]
       }
       "empty json" in {
-        Json.obj().validate[ParentCompanyModel] isError
+        Json.obj().validate[ParentCompanyModel] shouldBe JsSuccess(ParentCompanyModel(None, None))
       }
     }
   }

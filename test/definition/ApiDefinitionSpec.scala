@@ -18,7 +18,7 @@ package definition
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
-import play.api.libs.json.{JsSuccess, Json}
+import play.api.libs.json.{JsError, JsSuccess, Json}
 
 class ApiDefinitionSpec extends AnyWordSpecLike with Matchers {
 
@@ -49,10 +49,10 @@ class ApiDefinitionSpec extends AnyWordSpecLike with Matchers {
     }
     "fail to read from json when" when {
       "there is type mismatch" in {
-        Json.arr("a" -> "b").validate[APIVersion] isError
+        Json.arr("a" -> "b").validate[APIVersion] shouldBe a[JsError]
       }
       "there is an empty json" in {
-        Json.obj().validate[APIVersion] isError
+        Json.obj().validate[APIVersion] shouldBe a[JsError]
       }
     }
   }
@@ -102,20 +102,20 @@ class ApiDefinitionSpec extends AnyWordSpecLike with Matchers {
     }
     "fail to read from json when" when {
       "there is type mismatch" in {
-        Json.arr("a" -> "b").validate[Definition] isError
+        Json.arr("a" -> "b").validate[Definition] shouldBe a[JsError]
       }
       "there is an empty json" in {
-        Json.obj().validate[Definition] isError
+        Json.obj().validate[Definition] shouldBe a[JsError]
       }
     }
   }
   "APIDefinition" should {
     "fail to read from json when" when {
       "there is type mismatch" in {
-        Json.arr("a" -> "b").validate[APIDefinition] isError
+        Json.arr("a" -> "b").validate[APIDefinition] shouldBe a[JsError]
       }
       "there is an empty json" in {
-        Json.obj().validate[APIDefinition] isError
+        Json.obj().validate[APIDefinition] shouldBe a[JsError]
       }
     }
   }

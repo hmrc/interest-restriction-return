@@ -17,7 +17,7 @@
 package v1.models.fullReturn
 
 import data.fullReturn.AllocatedReactivationsConstants.*
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, Json}
 import utils.BaseSpec
 
 class AllocatedReactivationsModelSpec extends BaseSpec {
@@ -41,10 +41,10 @@ class AllocatedReactivationsModelSpec extends BaseSpec {
     }
     "fail to read from json" when {
       "there is type mismatch" in {
-        Json.arr("a" -> "b").validate[AllocatedReactivationsModel] isError
+        Json.arr("a" -> "b").validate[AllocatedReactivationsModel] shouldBe a[JsError]
       }
       "empty json" in {
-        Json.obj().validate[AllocatedReactivationsModel] isError
+        Json.obj().validate[AllocatedReactivationsModel] shouldBe a[JsError]
       }
     }
   }

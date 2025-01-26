@@ -17,7 +17,7 @@
 package v1.models
 
 import data.GroupRatioConstants._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, Json}
 import utils.BaseSpec
 
 class GroupRatioModelSpec extends BaseSpec {
@@ -58,10 +58,10 @@ class GroupRatioModelSpec extends BaseSpec {
     }
     "fail to read from json" when {
       "there is type mismatch" in {
-        Json.arr("a" -> "b").validate[GroupRatioModel] isError
+        Json.arr("a" -> "b").validate[GroupRatioModel] shouldBe a[JsError]
       }
       "empty json" in {
-        Json.obj().validate[GroupRatioModel] isError
+        Json.obj().validate[GroupRatioModel] shouldBe a[JsError]
       }
     }
   }

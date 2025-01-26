@@ -17,7 +17,7 @@
 package v1.models.fullReturn
 
 import data.fullReturn.GroupLevelAmountConstants.*
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, Json}
 import utils.BaseSpec
 
 class GroupLevelAmountModelSpec extends BaseSpec {
@@ -41,10 +41,10 @@ class GroupLevelAmountModelSpec extends BaseSpec {
     }
     "fail to read from json" when {
       "there is type mismatch" in {
-        Json.arr("a" -> "b").validate[GroupLevelAmountModel] isError
+        Json.arr("a" -> "b").validate[GroupLevelAmountModel] shouldBe a[JsError]
       }
       "empty json" in {
-        Json.obj().validate[GroupLevelAmountModel] isError
+        Json.obj().validate[GroupLevelAmountModel] shouldBe a[JsError]
       }
     }
   }

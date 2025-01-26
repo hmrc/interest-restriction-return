@@ -16,8 +16,9 @@
 
 package v1.models.appointReportingCompany
 
+import data.AuthorisingCompanyConstants.authorisingCompanyJson
 import data.appointReportingCompany.AppointReportingCompanyConstants.*
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, JsObject, Json}
 import utils.BaseSpec
 
 class AppointReportingCompanyModelSpec extends BaseSpec {
@@ -61,7 +62,20 @@ class AppointReportingCompanyModelSpec extends BaseSpec {
         actualValue shouldBe expectedValue
       }
       "fail to read from empty json" in {
-        Json.obj().validate[AppointReportingCompanyModel] isError
+        Json.obj().validate[AppointReportingCompanyModel] shouldBe a[JsError]
+      }
+      "fail to read when there is type mismatch" in {
+        val mismatched: JsObject = Json.obj(
+          "agentDetails"                       -> "agentDetailsJsonMax",
+          "reportingCompany"                   -> "reportingCompanyJson",
+          "authorisingCompanies"               -> 1,
+          "isReportingCompanyAppointingItself" -> "kjll",
+          "identityOfAppointingCompany"        -> "identityOfCompanySubmittingJsonMax",
+          "ultimateParentCompany"              -> "ultimateParentJsonUkCompany",
+          "accountingPeriod"                   -> "accountingPeriodJson",
+          "declaration"                        -> "ljn"
+        )
+        mismatched.validate[AppointReportingCompanyModel] shouldBe a[JsError]
       }
     }
   }

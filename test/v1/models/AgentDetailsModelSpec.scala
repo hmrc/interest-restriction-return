@@ -17,7 +17,7 @@
 package v1.models
 
 import data.AgentDetailsConstants.*
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, Json}
 import utils.BaseSpec
 
 class AgentDetailsModelSpec extends BaseSpec {
@@ -75,10 +75,10 @@ class AgentDetailsModelSpec extends BaseSpec {
     }
     "fail to read from json" when {
       "there is type mismatch" in {
-        Json.arr("a" -> "b").validate[AgentDetailsModel] isError
+        Json.arr("a" -> "b").validate[AgentDetailsModel] shouldBe a[JsError]
       }
       "empty json" in {
-        Json.obj().validate[AgentDetailsModel] isError
+        Json.obj().validate[AgentDetailsModel] shouldBe a[JsError]
       }
     }
   }

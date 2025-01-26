@@ -17,7 +17,7 @@
 package v1.models
 
 import data.NonConsolidatedInvestmentElectionConstants.*
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, Json}
 import utils.BaseSpec
 
 class NonConsolidatedInvestmentElectionModelSpec extends BaseSpec {
@@ -61,10 +61,10 @@ class NonConsolidatedInvestmentElectionModelSpec extends BaseSpec {
     }
     "fail to read from json" when {
       "there is type mismatch" in {
-        Json.arr("a" -> "b").validate[NonConsolidatedInvestmentElectionModel] isError
+        Json.arr("a" -> "b").validate[NonConsolidatedInvestmentElectionModel] shouldBe a[JsError]
       }
       "empty json" in {
-        Json.obj().validate[NonConsolidatedInvestmentElectionModel] isError
+        Json.obj().validate[NonConsolidatedInvestmentElectionModel] shouldBe a[JsError]
       }
     }
   }

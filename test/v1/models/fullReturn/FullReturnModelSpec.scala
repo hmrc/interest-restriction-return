@@ -16,7 +16,7 @@
 
 package v1.models.fullReturn
 
-import play.api.libs.json.{JsObject, Json, Writes}
+import play.api.libs.json.{JsError, JsObject, Json, Writes}
 import data.fullReturn.FullReturnConstants.*
 import data.AgentDetailsConstants.*
 import data.GroupCompanyDetailsConstants.*
@@ -148,10 +148,10 @@ class FullReturnModelSpec extends BaseSpec with JsonFormatters {
 
       "fail to read from json" when {
         "there is type mismatch" in {
-          Json.arr("a" -> "b").validate[FullReturnModel] isError
+          Json.arr("a" -> "b").validate[FullReturnModel] shouldBe a[JsError]
         }
         "empty json" in {
-          Json.obj().validate[FullReturnModel] isError
+          Json.obj().validate[FullReturnModel] shouldBe a[JsError]
         }
       }
     }

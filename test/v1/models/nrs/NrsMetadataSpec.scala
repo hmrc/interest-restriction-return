@@ -19,7 +19,7 @@ package v1.models.nrs
 import data.UnitNrsConstants.metadata
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
-import play.api.libs.json.{JsSuccess, Json}
+import play.api.libs.json.{JsError, JsSuccess, Json}
 
 class NrsMetadataSpec extends AnyWordSpecLike with Matchers {
   "NrsMetadata" when {
@@ -29,10 +29,10 @@ class NrsMetadataSpec extends AnyWordSpecLike with Matchers {
     }
     "fail to read from json" when {
       "there is type mismatch" in {
-        Json.arr("a" -> "b").validate[NrsMetadata] isError
+        Json.arr("a" -> "b").validate[NrsMetadata] shouldBe a[JsError]
       }
       "empty json" in {
-        Json.obj().validate[NrsMetadata] isError
+        Json.obj().validate[NrsMetadata] shouldBe a[JsError]
       }
     }
   }

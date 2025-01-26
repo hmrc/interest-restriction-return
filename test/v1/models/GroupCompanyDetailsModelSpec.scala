@@ -17,7 +17,7 @@
 package v1.models
 
 import data.GroupCompanyDetailsConstants.*
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, Json}
 import utils.BaseSpec
 
 class GroupCompanyDetailsModelSpec extends BaseSpec {
@@ -41,10 +41,10 @@ class GroupCompanyDetailsModelSpec extends BaseSpec {
     }
     "fail to read from json" when {
       "there is type mismatch" in {
-        Json.arr("a" -> "b").validate[GroupCompanyDetailsModel] isError
+        Json.arr("a" -> "b").validate[GroupCompanyDetailsModel] shouldBe a[JsError]
       }
       "empty json" in {
-        Json.obj().validate[GroupCompanyDetailsModel] isError
+        Json.obj().validate[GroupCompanyDetailsModel] shouldBe a[JsError]
       }
     }
   }

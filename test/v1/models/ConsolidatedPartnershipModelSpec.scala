@@ -17,7 +17,7 @@
 package v1.models
 
 import data.ConsolidatedPartnershipConstants.*
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, Json}
 import utils.BaseSpec
 
 class ConsolidatedPartnershipModelSpec extends BaseSpec {
@@ -75,10 +75,10 @@ class ConsolidatedPartnershipModelSpec extends BaseSpec {
 
     "fail to read from json" when {
       "there is type mismatch" in {
-        Json.arr("a" -> "b").validate[ConsolidatedPartnershipModel] isError
+        Json.arr("a" -> "b").validate[ConsolidatedPartnershipModel] shouldBe a[JsError]
       }
       "empty json" in {
-        Json.obj().validate[ConsolidatedPartnershipModel] isError
+        Json.obj().validate[ConsolidatedPartnershipModel] shouldBe a[JsError]
       }
     }
   }

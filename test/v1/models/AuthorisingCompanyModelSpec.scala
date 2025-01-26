@@ -16,16 +16,16 @@
 
 package v1.models
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, Json}
 import utils.BaseSpec
 
 class AuthorisingCompanyModelSpec extends BaseSpec {
   "fail to read from json" when {
     "there is type mismatch" in {
-      Json.arr("a" -> "b").validate[AuthorisingCompanyModel] isError
+      Json.arr("a" -> "b").validate[AuthorisingCompanyModel] shouldBe a[JsError]
     }
     "empty json" in {
-      Json.obj().validate[AuthorisingCompanyModel] isError
+      Json.obj().validate[AuthorisingCompanyModel] shouldBe a[JsError]
     }
   }
 }
