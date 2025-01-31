@@ -16,8 +16,8 @@
 
 package v1.controllers
 
-import data.fullReturn.FullReturnConstants._
-import play.api.http.Status._
+import data.fullReturn.FullReturnConstants.*
+import play.api.http.Status.*
 import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.{AnyContentAsEmpty, Result}
 import play.api.test.{FakeRequest, Helpers}

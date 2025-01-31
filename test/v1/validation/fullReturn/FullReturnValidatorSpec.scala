@@ -16,23 +16,23 @@
 
 package v1.validation.fullReturn
 
-import data.AgentDetailsConstants._
-import data.GroupLevelElectionsConstants._
-import data.GroupRatioConstants._
-import data.ParentCompanyConstants._
-import data.ReportingCompanyConstants._
-import data.GroupRatioBlendedConstants._
-import data.fullReturn.AdjustedGroupInterestConstants._
-import data.fullReturn.AllocatedReactivationsConstants._
-import data.fullReturn.AllocatedRestrictionsConstants._
-import data.fullReturn.FullReturnConstants._
-import data.fullReturn.GroupLevelAmountConstants._
-import data.fullReturn.UkCompanyConstants._
+import data.AgentDetailsConstants.*
+import data.GroupLevelElectionsConstants.*
+import data.GroupRatioConstants.*
+import data.ParentCompanyConstants.*
+import data.ReportingCompanyConstants.*
+import data.GroupRatioBlendedConstants.*
+import data.fullReturn.AdjustedGroupInterestConstants.*
+import data.fullReturn.AllocatedReactivationsConstants.*
+import data.fullReturn.AllocatedRestrictionsConstants.*
+import data.fullReturn.FullReturnConstants.*
+import data.fullReturn.GroupLevelAmountConstants.*
+import data.fullReturn.UkCompanyConstants.*
 import play.api.libs.json.JsPath
 import utils.BaseSpec
 import v1.models.{Original, Revised, RevisedReturnDetailsModel}
-import v1.validation._
-import v1.validation.errors._
+import v1.validation.*
+import v1.validation.errors.*
 
 class FullReturnValidatorSpec extends BaseSpec {
 

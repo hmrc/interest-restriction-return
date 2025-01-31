@@ -16,9 +16,9 @@
 
 package v1.models
 
-import play.api.libs.json._
+import play.api.libs.json.*
 import v1.models.errors.{ErrorResponseModel, ValidationErrorResponseModel}
-import v1.validation.fullReturn._
+import v1.validation.fullReturn.*
 import cats.data.{Chain, NonEmptyChain}
 import utils.BaseSpec
 

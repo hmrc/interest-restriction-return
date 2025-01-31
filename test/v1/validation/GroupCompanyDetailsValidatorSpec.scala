@@ -18,7 +18,7 @@ package v1.validation
 
 import java.time.LocalDate
 
-import data.GroupCompanyDetailsConstants._
+import data.GroupCompanyDetailsConstants.*
 import play.api.libs.json.JsPath
 import utils.BaseSpec
 import v1.models.AccountingPeriodModel

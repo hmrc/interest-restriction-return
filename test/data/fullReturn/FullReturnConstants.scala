@@ -16,14 +16,14 @@
 
 package data.fullReturn
 
-import data.AgentDetailsConstants._
-import data.GroupCompanyDetailsConstants._
-import data.GroupLevelElectionsConstants._
-import data.ParentCompanyConstants._
-import data.ReportingCompanyConstants._
-import data.fullReturn.AdjustedGroupInterestConstants._
-import data.fullReturn.GroupLevelAmountConstants._
-import data.fullReturn.UkCompanyConstants._
+import data.AgentDetailsConstants.*
+import data.GroupCompanyDetailsConstants.*
+import data.GroupLevelElectionsConstants.*
+import data.ParentCompanyConstants.*
+import data.ReportingCompanyConstants.*
+import data.fullReturn.AdjustedGroupInterestConstants.*
+import data.fullReturn.GroupLevelAmountConstants.*
+import data.fullReturn.UkCompanyConstants.*
 import play.api.libs.json.{JsObject, Json}
 import v1.models.fullReturn.FullReturnModel
 import v1.models.{Original, Revised, RevisedReturnDetailsModel, SubmissionType}

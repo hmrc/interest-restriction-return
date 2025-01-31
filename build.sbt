@@ -3,7 +3,7 @@ import uk.gov.hmrc.DefaultBuildSettings
 val appName = "interest-restriction-return"
 
 ThisBuild / majorVersion := 0
-ThisBuild / scalaVersion := "3.6.3"
+ThisBuild / scalaVersion := "3.5.2"
 
 lazy val microservice = Project(appName, file("."))
   .enablePlugins(PlayScala, SbtDistributablesPlugin)

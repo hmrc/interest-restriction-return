@@ -22,7 +22,7 @@ import v1.models.Validation.ValidationResult
 
 trait GroupLevelElectionValidation extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val groupLevelElectionsModel: GroupLevelElectionsModel
 

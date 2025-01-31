@@ -16,9 +16,9 @@
 
 package controllers
 
-import data.FullReturnITConstants._
-import data.IntegrationNrsConstants._
-import play.api.http.Status._
+import data.FullReturnITConstants.*
+import data.IntegrationNrsConstants.*
+import play.api.http.Status.*
 import stubs.{AuthStub, DESStub, NRSStub}
 import utils.IntegrationSpecBase
 

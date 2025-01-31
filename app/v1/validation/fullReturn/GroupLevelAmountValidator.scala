@@ -24,7 +24,7 @@ import v1.validation.BaseValidation
 
 trait GroupLevelAmountValidator extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val groupLevelAmount: GroupLevelAmountModel
 

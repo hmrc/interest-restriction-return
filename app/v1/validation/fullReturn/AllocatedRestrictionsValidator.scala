@@ -25,7 +25,7 @@ import java.time.LocalDate
 
 trait AllocatedRestrictionsValidator extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val allocatedRestrictionsModel: AllocatedRestrictionsModel
 

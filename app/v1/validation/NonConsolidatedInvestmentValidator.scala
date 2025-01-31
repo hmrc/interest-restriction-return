@@ -22,7 +22,7 @@ import v1.models.{NonConsolidatedInvestmentModel, Validation}
 
 trait NonConsolidatedInvestmentValidator extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val nonConsolidatedInvestmentModel: NonConsolidatedInvestmentModel
 

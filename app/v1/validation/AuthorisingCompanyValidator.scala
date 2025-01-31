@@ -22,7 +22,7 @@ import v1.models.Validation.ValidationResult
 
 trait AuthorisingCompanyValidator extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val authorisingCompanyModel: AuthorisingCompanyModel
 

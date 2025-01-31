@@ -24,7 +24,7 @@ import v1.validation.BaseValidation
 
 trait AllocatedReactivationsValidator extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val allocatedReactivationsModel: AllocatedReactivationsModel
 

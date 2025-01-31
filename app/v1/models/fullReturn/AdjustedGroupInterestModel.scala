@@ -16,7 +16,7 @@
 
 package v1.models.fullReturn
 
-import play.api.libs.json._
+import play.api.libs.json.*
 import v1.validation.fullReturn.AdjustedGroupInterestValidator
 
 case class AdjustedGroupInterestModel(qngie: BigDecimal, groupEBITDA: Option[BigDecimal], groupRatio: BigDecimal)

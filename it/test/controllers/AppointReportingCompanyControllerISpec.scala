@@ -16,8 +16,8 @@
 
 package controllers
 
-import data.AppointReportingCompanyITConstants._
-import play.api.http.Status._
+import data.AppointReportingCompanyITConstants.*
+import play.api.http.Status.*
 import stubs.{AuthStub, DESStub}
 import utils.IntegrationSpecBase
 

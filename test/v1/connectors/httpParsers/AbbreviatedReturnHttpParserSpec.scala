@@ -19,7 +19,7 @@ package v1.connectors.httpParsers
 import data.abbreviatedReturn.AbbreviatedReturnConstants.ackRef
 import v1.connectors.httpParsers.AbbreviatedReturnHttpParser.AbbreviatedReturnReads
 import v1.connectors.{DesSuccessResponse, InvalidSuccessResponse, UnexpectedFailure}
-import play.api.http.Status._
+import play.api.http.Status.*
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.http.HttpResponse
 import utils.BaseSpec

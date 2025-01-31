@@ -22,7 +22,7 @@ import v1.models.{IdentityOfCompanySubmittingModel, Validation}
 
 trait IdentityOfCompanySubmittingValidator extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val identityOfCompanySubmitting: IdentityOfCompanySubmittingModel
 

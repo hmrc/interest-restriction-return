@@ -165,14 +165,14 @@ class ErrorHandlerSpec extends UnitSpec {
         }
       }
 
-      "return code with error body" when {
+      "return correct status code with error body" when {
         "HttpException thrown" in new Test {
           private val result = handler.onServerError(requestHeader, new HttpException("test", 23) with NoStackTrace)
           status(result) shouldBe 23
         }
       }
       "return 4xx with error body" when {
-        "HttpException thrown" in new Test {
+        "4xx UpstreamErrorResponse is thrown" in new Test {
           private val result =
             handler.onServerError(requestHeader, new UpstreamErrorResponse("message", 400, 400, Map.empty))
           status(result) shouldBe 400
@@ -180,7 +180,7 @@ class ErrorHandlerSpec extends UnitSpec {
         }
       }
       "return 5xx with error body" when {
-        "HttpException thrown" in new Test {
+        "5xx UpstreamErrorResponse is thrown" in new Test {
           private val result =
             handler.onServerError(requestHeader, new UpstreamErrorResponse("message", 500, 500, Map.empty))
           status(result) shouldBe 500

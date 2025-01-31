@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import data.IdentityOfCompanySubmittingConstants._
+import data.IdentityOfCompanySubmittingConstants.*
 import play.api.libs.json.JsPath
 import utils.BaseSpec
 import v1.models.{CompanyNameModel, LegalEntityIdentifierModel, UTRModel}

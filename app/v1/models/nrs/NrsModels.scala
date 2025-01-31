@@ -57,7 +57,7 @@ object NrsRetrievalData {
 }
 
 case class NrSubmissionId(nrSubmissionId: UUID) extends AnyVal {
-  implicit override def toString: String = nrSubmissionId.toString
+  override def toString: String = nrSubmissionId.toString
 }
 
 object NrSubmissionId {

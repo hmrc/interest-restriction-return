@@ -16,7 +16,7 @@
 
 package utils
 
-import play.api.libs.json._
+import play.api.libs.json.*
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
 import v1.models.fullReturn.FullReturnModel
 

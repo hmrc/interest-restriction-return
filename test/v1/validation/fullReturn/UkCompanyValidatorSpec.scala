@@ -16,13 +16,13 @@
 
 package v1.validation.fullReturn
 
-import data.fullReturn.AllocatedRestrictionsConstants._
-import data.fullReturn.UkCompanyConstants._
+import data.fullReturn.AllocatedRestrictionsConstants.*
+import data.fullReturn.UkCompanyConstants.*
 import play.api.libs.json.JsPath
 import v1.models.fullReturn.AllocatedRestrictionsModel
 import v1.models.{AccountingPeriodModel, CompanyNameModel, UTRModel}
 import v1.validation
-import v1.validation._
+import v1.validation.*
 
 class UkCompanyValidatorSpec extends BaseValidationSpec {
 

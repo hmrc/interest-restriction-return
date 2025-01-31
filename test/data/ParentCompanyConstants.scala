@@ -16,8 +16,8 @@
 
 package data
 
-import data.DeemedParentConstants._
-import data.UltimateParentConstants._
+import data.DeemedParentConstants.*
+import data.UltimateParentConstants.*
 import play.api.libs.json.{JsObject, Json}
 import v1.models.ParentCompanyModel
 

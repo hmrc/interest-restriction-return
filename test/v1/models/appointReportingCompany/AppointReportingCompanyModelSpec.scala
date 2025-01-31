@@ -16,7 +16,6 @@
 
 package v1.models.appointReportingCompany
 
-import data.AuthorisingCompanyConstants.authorisingCompanyJson
 import data.appointReportingCompany.AppointReportingCompanyConstants.*
 import play.api.libs.json.{JsError, JsObject, Json}
 import utils.BaseSpec

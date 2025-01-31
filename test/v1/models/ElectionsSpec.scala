@@ -16,7 +16,7 @@
 
 package v1.models
 
-import org.scalatest.TryValues._
+import org.scalatest.TryValues.*
 import play.api.libs.json.{JsPath, JsResultException, JsString, JsonValidationError}
 
 import scala.util.Try

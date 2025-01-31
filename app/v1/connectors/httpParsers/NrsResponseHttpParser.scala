@@ -22,8 +22,6 @@ import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 import v1.connectors.HttpHelper.NrsResponse
 import v1.connectors.{HttpErrorMessages, InvalidSuccessResponse, UnexpectedFailure}
 import v1.models.nrs.NrSubmissionId
-//import play.api.libs.json.OFormat.oFormatFromReadsAndOWrites
-//import play.api.libs.json.Format.GenericFormat
 
 object NrsResponseHttpParser extends Logging {
 

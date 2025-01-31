@@ -19,7 +19,7 @@ package v1.validation
 import play.api.libs.json.JsPath
 import v1.models.Validation.ValidationResult
 import v1.models.PartnershipModel
-import cats.implicits._
+import cats.implicits.*
 
 trait PartnershipValidator extends BaseValidation {
 

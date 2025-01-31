@@ -16,7 +16,7 @@
 
 package v1.validation.fullReturn
 
-import data.fullReturn.GroupLevelAmountConstants._
+import data.fullReturn.GroupLevelAmountConstants.*
 import play.api.libs.json.JsPath
 import utils.BaseSpec
 

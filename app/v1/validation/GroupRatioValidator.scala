@@ -22,7 +22,7 @@ import v1.models.{GroupRatioModel, Validation}
 
 trait GroupRatioValidator extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val groupRatioModel: GroupRatioModel
 

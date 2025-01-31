@@ -21,11 +21,11 @@ import v1.models.Validation.ValidationResult
 import v1.models.fullReturn.{AdjustedGroupInterestModel, FullReturnModel, UkCompanyModel}
 import v1.models.{Original, Revised, Validation}
 import v1.validation.BaseValidation
-import v1.validation.errors._
+import v1.validation.errors.*
 
 trait FullReturnValidator extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val fullReturnModel: FullReturnModel
 

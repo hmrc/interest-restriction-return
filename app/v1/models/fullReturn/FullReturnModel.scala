@@ -17,8 +17,8 @@
 package v1.models.fullReturn
 
 import play.api.Logging
-import play.api.libs.json._
-import v1.models._
+import play.api.libs.json.*
+import v1.models.*
 import v1.validation.fullReturn.FullReturnValidator
 
 case class FullReturnModel(

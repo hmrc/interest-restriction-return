@@ -16,7 +16,7 @@
 
 package v1.validation
 
-import data.PartnershipsConstants._
+import data.PartnershipsConstants.*
 import play.api.libs.json.JsPath
 import v1.models.{CompanyNameModel, UTRModel}
 

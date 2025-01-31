@@ -16,11 +16,11 @@
 
 package v1.services
 
-import data.appointReportingCompany.AppointReportingCompanyConstants._
+import data.appointReportingCompany.AppointReportingCompanyConstants.*
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.{DesSuccessResponse, UnexpectedFailure}
 import v1.connectors.mocks.MockAppointReportingCompanyConnector
-import play.api.http.Status._
+import play.api.http.Status.*
 import utils.BaseSpec
 
 import scala.concurrent.Future

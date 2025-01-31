@@ -22,7 +22,7 @@ import v1.models.{ParentCompanyModel, Validation}
 
 trait ParentCompanyValidator extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val parentCompanyModel: ParentCompanyModel
 

@@ -23,7 +23,7 @@ import v1.validation.BaseValidation
 
 trait UkCompanyValidator extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val ukCompany: UkCompanyModel
 

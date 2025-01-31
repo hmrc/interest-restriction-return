@@ -16,12 +16,12 @@
 
 package data.appointReportingCompany
 
-import data.AccountingPeriodConstants._
-import data.AgentDetailsConstants._
-import data.AuthorisingCompanyConstants._
-import data.IdentityOfCompanySubmittingConstants._
-import data.ReportingCompanyConstants._
-import data.UltimateParentConstants._
+import data.AccountingPeriodConstants.*
+import data.AgentDetailsConstants.*
+import data.AuthorisingCompanyConstants.*
+import data.IdentityOfCompanySubmittingConstants.*
+import data.ReportingCompanyConstants.*
+import data.UltimateParentConstants.*
 import play.api.libs.json.{JsObject, Json}
 import v1.models.appointReportingCompany.AppointReportingCompanyModel
 

@@ -16,9 +16,9 @@
 
 package data
 
-import data.ConsolidatedPartnershipConstants._
-import data.GroupRatioConstants._
-import data.NonConsolidatedInvestmentElectionConstants._
+import data.ConsolidatedPartnershipConstants.*
+import data.GroupRatioConstants.*
+import data.NonConsolidatedInvestmentElectionConstants.*
 import play.api.libs.json.{JsObject, Json}
 import v1.models.GroupLevelElectionsModel
 

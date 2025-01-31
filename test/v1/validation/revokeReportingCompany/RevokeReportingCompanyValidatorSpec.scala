@@ -20,9 +20,9 @@ import data.IdentityOfCompanySubmittingConstants.identityOfCompanySubmittingMode
 import data.revokeReportingCompany.RevokeReportingCompanyConstants.revokeReportingCompanyModelMax
 import play.api.libs.json.JsPath
 import utils.BaseSpec
-import data.AuthorisingCompanyConstants._
+import data.AuthorisingCompanyConstants.*
 import v1.models.{CompanyNameModel, CountryCodeModel, UTRModel}
-import v1.validation.errors._
+import v1.validation.errors.*
 
 class RevokeReportingCompanyValidatorSpec extends BaseSpec {
 

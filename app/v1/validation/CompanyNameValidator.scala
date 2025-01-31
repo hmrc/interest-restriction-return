@@ -22,7 +22,7 @@ import v1.models.{CompanyNameModel, Validation}
 
 trait CompanyNameValidator extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val companyNameModel: CompanyNameModel
 

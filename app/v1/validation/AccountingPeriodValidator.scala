@@ -24,7 +24,7 @@ import v1.models.{AccountingPeriodModel, Validation}
 
 trait AccountingPeriodValidator extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val accountingPeriodModel: AccountingPeriodModel
 

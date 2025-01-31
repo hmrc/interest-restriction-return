@@ -22,12 +22,12 @@ import data.fullReturn.FullReturnConstants
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AsyncWordSpec
 import play.api.http.Status.{BAD_REQUEST, INTERNAL_SERVER_ERROR}
-import play.api.libs.json._
+import play.api.libs.json.*
 import play.api.test.{FakeHeaders, FakeRequest}
 import uk.gov.hmrc.auth.core.AffinityGroup
 import v1.connectors.HttpHelper.NrsResponse
 import v1.connectors.{NrsConnector, UnexpectedFailure}
-import v1.models.nrs._
+import v1.models.nrs.*
 import v1.models.requests.IdentifierRequest
 import v1.services.mocks.MockNrsConnector
 

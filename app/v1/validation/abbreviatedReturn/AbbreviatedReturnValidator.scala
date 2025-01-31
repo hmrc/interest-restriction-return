@@ -21,11 +21,11 @@ import v1.models.Validation.ValidationResult
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
 import v1.models.{Original, Revised}
 import v1.validation.BaseValidation
-import v1.validation.errors._
+import v1.validation.errors.*
 
 trait AbbreviatedReturnValidator extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val abbreviatedReturnModel: AbbreviatedReturnModel
 

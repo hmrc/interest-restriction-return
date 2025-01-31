@@ -20,7 +20,7 @@ import org.mockito.Mockito.when
 import org.mockito.{ArgumentMatchers, Mockito}
 import v1.connectors.HttpHelper.NrsResponse
 import v1.connectors.NrsConnector
-import v1.models.nrs._
+import v1.models.nrs.*
 
 import scala.concurrent.Future
 

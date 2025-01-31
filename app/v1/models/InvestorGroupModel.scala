@@ -16,7 +16,7 @@
 
 package v1.models
 
-import play.api.libs.json._
+import play.api.libs.json.*
 import v1.validation.InvestorGroupValidator
 
 case class InvestorGroupModel(groupName: CompanyNameModel, elections: Option[List[Elections]])

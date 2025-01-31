@@ -18,8 +18,8 @@ package v1.controllers.actions
 
 import data.UnitNrsConstants
 import play.api.mvc.{Action, AnyContent, Results}
-import play.api.test.Helpers._
-import uk.gov.hmrc.auth.core._
+import play.api.test.Helpers.*
+import uk.gov.hmrc.auth.core.*
 import utils.BaseSpec
 import v1.connectors.mocks.{FakeFailingAuthConnector, FakeSuccessAuthConnector}
 

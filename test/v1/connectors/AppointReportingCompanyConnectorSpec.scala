@@ -16,7 +16,7 @@
 
 package v1.connectors
 
-import data.appointReportingCompany.AppointReportingCompanyConstants._
+import data.appointReportingCompany.AppointReportingCompanyConstants.*
 import data.fullReturn.FullReturnConstants.ackRef
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when

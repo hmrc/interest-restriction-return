@@ -17,8 +17,8 @@
 package data.fullReturn
 
 import data.BaseConstants
-import data.fullReturn.AllocatedReactivationsConstants._
-import data.fullReturn.AllocatedRestrictionsConstants._
+import data.fullReturn.AllocatedReactivationsConstants.*
+import data.fullReturn.AllocatedRestrictionsConstants.*
 import play.api.libs.json.{JsObject, Json}
 import v1.models.fullReturn.UkCompanyModel
 

@@ -21,7 +21,6 @@ import org.mockito.Mockito.when
 import org.mockito.{ArgumentMatchers, Mockito}
 import org.scalatest.Inside
 import play.api.Configuration
-import play.api.http.HeaderNames.ACCEPT
 import play.api.http.{HttpConfiguration, HttpFilters}
 import play.api.libs.json.Json
 import play.api.mvc.*

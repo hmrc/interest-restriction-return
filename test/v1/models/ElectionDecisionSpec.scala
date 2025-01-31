@@ -16,8 +16,8 @@
 
 package v1.models
 
-import org.scalatest.TryValues._
-import play.api.libs.json._
+import org.scalatest.TryValues.*
+import play.api.libs.json.*
 
 import scala.util.Try
 import utils.BaseSpec

@@ -22,7 +22,7 @@ import v1.models.{UTRModel, Validation}
 
 trait UTRValidator extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val utrModel: UTRModel
 

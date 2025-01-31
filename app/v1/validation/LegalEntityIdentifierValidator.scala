@@ -22,7 +22,7 @@ import v1.models.{LegalEntityIdentifierModel, Validation}
 
 trait LegalEntityIdentifierValidator extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val legalEntityIdentifierModel: LegalEntityIdentifierModel
 

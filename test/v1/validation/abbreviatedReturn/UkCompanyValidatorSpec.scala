@@ -16,7 +16,7 @@
 
 package v1.validation.abbreviatedReturn
 
-import data.abbreviatedReturn.UkCompanyConstants._
+import data.abbreviatedReturn.UkCompanyConstants.*
 import play.api.libs.json.JsPath
 import v1.validation.{BaseValidationSpec, CompanyNameLengthError, UTRChecksumError}
 

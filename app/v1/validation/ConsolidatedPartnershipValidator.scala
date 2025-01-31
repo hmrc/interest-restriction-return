@@ -22,7 +22,7 @@ import v1.models.{ConsolidatedPartnershipModel, PartnershipModel, Validation}
 
 trait ConsolidatedPartnershipValidator extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val consolidatedPartnershipModel: ConsolidatedPartnershipModel
 

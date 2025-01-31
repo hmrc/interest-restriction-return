@@ -16,10 +16,10 @@
 
 package data
 
-import data.AgentDetailsITConstants._
+import data.AgentDetailsITConstants.*
 import data.GroupCompanyDetailsITConstants.groupCompanyDetailsJson
 import data.GroupLevelElectionsITConstants.groupLevelElectionsJson
-import data.ReportingCompanyITConstants._
+import data.ReportingCompanyITConstants.*
 import data.UkCompanyITConstants.ukCompanyJson
 import play.api.libs.json.{JsObject, Json}
 

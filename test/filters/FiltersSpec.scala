@@ -17,7 +17,7 @@
 package filters
 
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import utils.BaseSpec
 
 class FiltersSpec extends BaseSpec {

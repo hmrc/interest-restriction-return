@@ -16,8 +16,8 @@
 
 package v1.models.abbreviatedReturn
 
-import play.api.libs.json._
-import v1.models._
+import play.api.libs.json.*
+import v1.models.*
 import v1.validation.abbreviatedReturn.AbbreviatedReturnValidator
 
 case class AbbreviatedReturnModel(

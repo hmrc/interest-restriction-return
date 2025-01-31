@@ -22,11 +22,11 @@ import v1.models.appointReportingCompany.AppointReportingCompanyModel
 import v1.models.{IdentityOfCompanySubmittingModel, UltimateParentModel, Validation}
 import v1.models.AuthorisingCompanyModel
 import v1.validation.BaseValidation
-import v1.validation.errors._
+import v1.validation.errors.*
 
 trait AppointReportingCompanyValidator extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val appointReportingCompanyModel: AppointReportingCompanyModel
 

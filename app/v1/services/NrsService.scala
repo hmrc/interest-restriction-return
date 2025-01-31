@@ -19,11 +19,11 @@ package v1.services
 import com.google.common.io.BaseEncoding.base64
 import play.api.Logging
 import play.api.libs.json.{JsObject, JsString, JsValue}
-import uk.gov.hmrc.http._
+import uk.gov.hmrc.http.*
 import v1.connectors.HttpHelper.NrsResponse
 import v1.connectors.{NrsConnector, UnexpectedFailure}
 import v1.models.UTRModel
-import v1.models.nrs._
+import v1.models.nrs.*
 import v1.models.requests.IdentifierRequest
 
 import java.lang.String.format

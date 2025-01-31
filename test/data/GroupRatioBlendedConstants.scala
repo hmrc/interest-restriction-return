@@ -16,7 +16,7 @@
 
 package data
 
-import data.InvestorGroupConstants._
+import data.InvestorGroupConstants.*
 import play.api.libs.json.{JsObject, Json}
 import v1.models.GroupRatioBlendedModel
 

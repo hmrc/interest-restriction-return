@@ -16,16 +16,16 @@
 
 package data.abbreviatedReturn
 
-import data.AgentDetailsConstants._
-import data.GroupCompanyDetailsConstants._
-import data.GroupLevelElectionsConstants._
-import data.ParentCompanyConstants._
-import data.ReportingCompanyConstants._
-import data.abbreviatedReturn.UkCompanyConstants._
+import data.AgentDetailsConstants.*
+import data.GroupCompanyDetailsConstants.*
+import data.GroupLevelElectionsConstants.*
+import data.ParentCompanyConstants.*
+import data.ReportingCompanyConstants.*
+import data.abbreviatedReturn.UkCompanyConstants.*
 import play.api.libs.json.{JsObject, Json}
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
 import v1.models.{Original, Revised, RevisedReturnDetailsModel, SubmissionType}
-import v1.models.SubmissionType._
+import v1.models.SubmissionType.*
 
 object AbbreviatedReturnConstants {
 

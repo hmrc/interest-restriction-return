@@ -16,7 +16,7 @@
 
 package data
 
-import data.PartnershipsITConstants._
+import data.PartnershipsITConstants.*
 import play.api.libs.json.{JsObject, Json}
 
 object ConsolidatedPartnershipITConstants {

@@ -23,7 +23,7 @@ import v1.models.{CountryCodeModel, Validation}
 
 trait CountryCodeValidator extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val countryCodeModel: CountryCodeModel
 
