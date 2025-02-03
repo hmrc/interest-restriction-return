@@ -22,7 +22,7 @@ import v1.models.{DeemedParentModel, Validation}
 
 trait DeemedParentValidator extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val deemedParentModel: DeemedParentModel
 

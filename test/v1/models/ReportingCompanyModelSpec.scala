@@ -16,9 +16,8 @@
 
 package v1.models
 
-import data.ReportingCompanyConstants._
-import play.api.libs.json.Json
-import v1.models.ReportingCompanyModel
+import data.ReportingCompanyConstants.*
+import play.api.libs.json.{JsError, Json}
 import utils.BaseSpec
 
 class ReportingCompanyModelSpec extends BaseSpec {
@@ -39,6 +38,15 @@ class ReportingCompanyModelSpec extends BaseSpec {
       val actualValue   = reportingCompanyJson.as[ReportingCompanyModel]
 
       actualValue shouldBe expectedValue
+    }
+
+    "fail to read from json" when {
+      "there is type mismatch" in {
+        Json.arr("a" -> "b").validate[ReportingCompanyModel] shouldBe a[JsError]
+      }
+      "empty json" in {
+        Json.obj().validate[ReportingCompanyModel] shouldBe a[JsError]
+      }
     }
   }
 }

@@ -17,7 +17,7 @@
 package v1.models.appointReportingCompany
 
 import play.api.libs.json.{Json, OFormat}
-import v1.models._
+import v1.models.*
 import v1.validation.appointReportingCompany.AppointReportingCompanyValidator
 
 case class AppointReportingCompanyModel(

@@ -22,7 +22,7 @@ import v1.models.{GroupRatioBlendedModel, InvestorGroupModel, Validation}
 
 trait GroupRatioBlendedValidator extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val groupRatioBlendedModel: GroupRatioBlendedModel
 
@@ -42,7 +42,7 @@ trait GroupRatioBlendedValidator extends BaseValidation {
           } else {
             combineValidations(investors.zipWithIndex.map { case (a, i) =>
               a.validate(JsPath \ s"investorGroups[$i]")
-            }: _*)
+            }*)
           }
         )
       )

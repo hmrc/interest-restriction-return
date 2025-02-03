@@ -18,7 +18,7 @@ package data.fullReturn
 
 import java.time.LocalDate
 
-import data.AccountingPeriodConstants._
+import data.AccountingPeriodConstants.*
 import play.api.libs.json.{JsObject, Json}
 import v1.models.fullReturn.AllocatedRestrictionsModel
 

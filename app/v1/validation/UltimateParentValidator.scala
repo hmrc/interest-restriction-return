@@ -22,7 +22,7 @@ import v1.models.{UltimateParentModel, Validation}
 
 trait UltimateParentValidator extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val ultimateParentModel: UltimateParentModel
 

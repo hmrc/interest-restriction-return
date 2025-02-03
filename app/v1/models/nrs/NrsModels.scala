@@ -16,10 +16,9 @@
 
 package v1.models.nrs
 
-import play.api.libs.json._
-import uk.gov.hmrc.auth.core.retrieve._
+import play.api.libs.json.*
+import uk.gov.hmrc.auth.core.retrieve.*
 import uk.gov.hmrc.auth.core.{AffinityGroup, ConfidenceLevel, CredentialRole}
-
 import java.time.LocalDate
 import java.util.UUID
 
@@ -62,7 +61,27 @@ case class NrSubmissionId(nrSubmissionId: UUID) extends AnyVal {
 }
 
 object NrSubmissionId {
-  implicit val format: OFormat[NrSubmissionId] = Json.format[NrSubmissionId]
+  implicit val format: OFormat[NrSubmissionId] = new OFormat[NrSubmissionId] {
+    def reads(json: JsValue): JsResult[NrSubmissionId] = json match {
+      case JsObject(fields) =>
+        fields.get("nrSubmissionId") match {
+          case Some(JsString(s)) =>
+            try
+              JsSuccess(NrSubmissionId(UUID.fromString(s)))
+            catch {
+              case _: IllegalArgumentException => JsError("Invalid UUID string")
+            }
+          case _                 => JsError("Missing or invalid 'nrSubmissionId' field")
+        }
+      case _                => JsError("Expected a JSON object")
+    }
+    def writes(id: NrSubmissionId): JsObject           =
+      JsObject(
+        Seq(
+          "nrSubmissionId" -> JsString(id.nrSubmissionId.toString)
+        )
+      )
+  }
 }
 
 case class NrsMetadata(

@@ -16,9 +16,9 @@
 
 package data
 
-import play.api.libs.json._
-import uk.gov.hmrc.auth.core._
-import uk.gov.hmrc.auth.core.retrieve._
+import play.api.libs.json.*
+import uk.gov.hmrc.auth.core.*
+import uk.gov.hmrc.auth.core.retrieve.*
 import v1.models.nrs.{NrsMetadata, NrsPayload, NrsRetrievalData}
 
 import java.lang.String.format

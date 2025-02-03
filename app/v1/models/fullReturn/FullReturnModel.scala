@@ -17,8 +17,8 @@
 package v1.models.fullReturn
 
 import play.api.Logging
-import play.api.libs.json._
-import v1.models._
+import play.api.libs.json.*
+import v1.models.*
 import v1.validation.fullReturn.FullReturnValidator
 
 case class FullReturnModel(
@@ -53,7 +53,7 @@ case class FullReturnModel(
   val aggregateAllocatedRestrictions: BigDecimal  =
     ukCompanies.flatMap(_.allocatedRestrictions.map(_.totalDisallowances)).sum
   val aggregateAllocatedReactivations: BigDecimal = totalReactivation
-  val aggregateTaxEBITDA: BigDecimal = {
+  val aggregateTaxEBITDA: BigDecimal              = {
     val totalTaxEBITDA = ukCompanies.map(_.taxEBITDA).sum
     if (totalTaxEBITDA < 0) {
       0

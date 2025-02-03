@@ -33,7 +33,7 @@ class FullReturnService @Inject() (fullReturnConnector: FullReturnConnector)
 
   override def submit(
     fullReturn: FullReturnModel
-  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] =
+  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] =
     fullReturnConnector.submit(fullReturn).map { resp =>
       logger.info("[FullReturnService][submit] Successfully sent a full return payload")
       resp

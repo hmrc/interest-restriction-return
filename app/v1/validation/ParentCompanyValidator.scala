@@ -22,7 +22,7 @@ import v1.models.{ParentCompanyModel, Validation}
 
 trait ParentCompanyValidator extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val parentCompanyModel: ParentCompanyModel
 
@@ -58,7 +58,7 @@ trait ParentCompanyValidator extends BaseValidation {
       } else {
         combineValidations(deemedParents.zipWithIndex.map { case (x, i) =>
           x.validate(path \ s"deemedParent[$i]")
-        }: _*)
+        }*)
       }
     )
 

@@ -24,7 +24,7 @@ import v1.models.Validation.ValidationResult
 import scala.annotation.tailrec
 
 trait BaseValidation {
-  import cats.implicits._
+  import cats.implicits.*
 
   def combineValidations[T](validations: ValidationResult[T]*): ValidationResult[T] = {
     val invalids = validations.collect { case Invalid(invalid) => invalid }

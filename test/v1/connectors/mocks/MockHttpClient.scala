@@ -35,7 +35,7 @@ trait MockHttpClient {
 
   def mockPostCall(fullURL: String): Unit = {
     when(mockRequestBuilder.setHeader(any())).thenReturn(mockRequestBuilder)
-    when(mockRequestBuilder.withBody(any())(any(), any(), any())).thenReturn(mockRequestBuilder)
+    when(mockRequestBuilder.withBody(any())(using any(), any(), any())).thenReturn(mockRequestBuilder)
     when(mockHttpClient.post(ArgumentMatchers.eq(url"$fullURL"))(any[HeaderCarrier]())).thenReturn(mockRequestBuilder)
   }
 

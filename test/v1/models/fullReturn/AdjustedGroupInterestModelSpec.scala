@@ -16,9 +16,8 @@
 
 package v1.models.fullReturn
 
-import play.api.libs.json.Json
-import data.fullReturn.AdjustedGroupInterestConstants._
-import v1.models.fullReturn.AdjustedGroupInterestModel
+import play.api.libs.json.{JsError, Json}
+import data.fullReturn.AdjustedGroupInterestConstants.*
 import utils.BaseSpec
 
 class AdjustedGroupInterestModelSpec extends BaseSpec {
@@ -47,6 +46,14 @@ class AdjustedGroupInterestModelSpec extends BaseSpec {
       val actualValue   = adjustedGroupInterestJson.as[AdjustedGroupInterestModel]
 
       actualValue shouldBe expectedValue
+    }
+    "fail to read from json" when {
+      "there is type mismatch" in {
+        Json.arr("a" -> "b").validate[AdjustedGroupInterestModel] shouldBe a[JsError]
+      }
+      "empty json" in {
+        Json.obj().validate[AdjustedGroupInterestModel] shouldBe a[JsError]
+      }
     }
   }
 }

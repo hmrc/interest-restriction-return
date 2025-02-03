@@ -16,7 +16,7 @@
 
 package utils
 
-import org.scalatest.matchers._
+import org.scalatest.matchers.*
 import play.api.libs.json.Reads
 import play.api.libs.ws.WSResponse
 

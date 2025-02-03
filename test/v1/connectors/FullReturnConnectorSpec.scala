@@ -16,10 +16,10 @@
 
 package v1.connectors
 
-import data.fullReturn.FullReturnConstants._
+import data.fullReturn.FullReturnConstants.*
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
-import play.api.http.Status._
+import play.api.http.Status.*
 import uk.gov.hmrc.http.HttpReads
 import utils.BaseSpec
 import v1.connectors.HttpHelper.SubmissionResponse
@@ -51,8 +51,8 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
 
         "return a Right(SuccessResponse)" in new ConnectorTestSetup {
 
-          when(mockRequestBuilder.execute(any[HttpReads[SubmissionResponse]], any()))
-            .thenReturn(Right(response))
+          when(mockRequestBuilder.execute(using any[HttpReads[SubmissionResponse]], any()))
+            .thenReturn(Future(Right(response)))
 
           val result: Future[SubmissionResponse] = connector.submit(fullReturnUltimateParentModel)
           await(result) shouldBe Right(response)
@@ -63,8 +63,8 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
 
         "return a Left(UnexpectedFailure)" in new ConnectorTestSetup {
 
-          when(mockRequestBuilder.execute(any[HttpReads[SubmissionResponse]], any()))
-            .thenReturn(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
+          when(mockRequestBuilder.execute(using any[HttpReads[SubmissionResponse]], any()))
+            .thenReturn(Future(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))))
 
           val result: Future[SubmissionResponse] = connector.submit(fullReturnUltimateParentModel)
           await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
@@ -78,8 +78,8 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
 
         "return a Right(SuccessResponse)" in new ConnectorTestSetup {
 
-          when(mockRequestBuilder.execute(any[HttpReads[SubmissionResponse]], any()))
-            .thenReturn(Right(response))
+          when(mockRequestBuilder.execute(using any[HttpReads[SubmissionResponse]], any()))
+            .thenReturn(Future(Right(response)))
 
           val result: Future[SubmissionResponse] = connector.submit(fullReturnModelMin)
           await(result) shouldBe Right(response)
@@ -90,8 +90,8 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
 
         "return a Left(UnexpectedFailure)" in new ConnectorTestSetup {
 
-          when(mockRequestBuilder.execute(any[HttpReads[SubmissionResponse]], any()))
-            .thenReturn(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
+          when(mockRequestBuilder.execute(using any[HttpReads[SubmissionResponse]], any()))
+            .thenReturn(Future(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))))
 
           val result: Future[SubmissionResponse] = connector.submit(fullReturnModelMin)
           await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))

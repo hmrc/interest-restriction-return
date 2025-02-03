@@ -32,4 +32,15 @@ object AuthorisingCompanyConstants extends BaseConstants {
     utr = ctutr,
     consenting = Some(true)
   )
+
+  val authorisingCompanyModelWithoutConsenting: AuthorisingCompanyModel = AuthorisingCompanyModel(
+    companyName = companyName,
+    utr = ctutr,
+    consenting = None
+  )
+
+  val authorisingCompanyJsonWithoutConsenting: JsObject = Json.obj(
+    "companyName" -> companyName,
+    "utr"         -> ctutr
+  )
 }

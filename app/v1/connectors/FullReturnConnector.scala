@@ -26,6 +26,7 @@ import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.httpParsers.FullReturnHttpParser.FullReturnReads
 import v1.models.fullReturn.FullReturnModel
 import v1.models.requests.IdentifierRequest
+import play.api.libs.ws.writeableOf_JsValue
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -38,7 +39,7 @@ class FullReturnConnector @Inject() (httpClient: HttpClientV2, implicit val appC
 
   def submit(
     fullReturnModel: FullReturnModel
-  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
+  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] = {
 
     logger.debug(s"[FullReturnConnector][submit] URL: $fullReturnUrl")
     val receivedSize = request.headers.get(HeaderNames.CONTENT_LENGTH)
@@ -47,7 +48,7 @@ class FullReturnConnector @Inject() (httpClient: HttpClientV2, implicit val appC
 
     httpClient
       .post(url"$fullReturnUrl")
-      .setHeader(desHeaders(): _*)
+      .setHeader(desHeaders()*)
       .withBody(Json.toJson(fullReturnModel))
       .execute[SubmissionResponse]
   }

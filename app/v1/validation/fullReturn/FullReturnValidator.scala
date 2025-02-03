@@ -21,15 +21,15 @@ import v1.models.Validation.ValidationResult
 import v1.models.fullReturn.{AdjustedGroupInterestModel, FullReturnModel, UkCompanyModel}
 import v1.models.{Original, Revised, Validation}
 import v1.validation.BaseValidation
-import v1.validation.errors._
+import v1.validation.errors.*
 
 trait FullReturnValidator extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val fullReturnModel: FullReturnModel
 
-  private def validateRevisedReturnDetails: ValidationResult[_] =
+  private def validateRevisedReturnDetails: ValidationResult[?] =
     (fullReturnModel.submissionType, fullReturnModel.revisedReturnDetails) match {
       case (Original, Some(details)) => RevisedReturnDetailsSupplied(details).invalidNec
       case (Revised, None)           => RevisedReturnDetailsNotSupplied.invalidNec
@@ -73,7 +73,7 @@ trait FullReturnValidator extends BaseValidation {
         combineValidations(companies.collect {
           case (company, i) if company.allocatedRestrictions.nonEmpty =>
             CompaniesContainedAllocatedRestrictions(company, i).invalidNec
-        }: _*)
+        }*)
       case _                                                                              => fullReturnModel.groupSubjectToInterestRestrictions.validNec
     }
 
@@ -87,7 +87,7 @@ trait FullReturnValidator extends BaseValidation {
         combineValidations(companies.collect {
           case (company, i) if company.allocatedReactivations.nonEmpty =>
             CompaniesContainedAllocatedReactivations(company, i).invalidNec
-        }: _*)
+        }*)
       case _                                                                               => fullReturnModel.groupSubjectToInterestReactivation.validNec
     }
 
@@ -156,7 +156,7 @@ trait FullReturnValidator extends BaseValidation {
       case _                                                                      => fullReturnModel.groupEstimateReason.validNec
     }
 
-  private def validateCompanyEstimateReasons: ValidationResult[_] =
+  private def validateCompanyEstimateReasons: ValidationResult[?] =
     (fullReturnModel.returnContainsEstimates, fullReturnModel.ukCompanies.zipWithIndex) match {
       case (false, companies) if companies.exists(_._1.companyEstimateReason.nonEmpty) =>
         combineValidations(companies.collect { case (company, i) =>
@@ -164,11 +164,11 @@ trait FullReturnValidator extends BaseValidation {
             case Some(reason) => CompaniesContainedEstimateReason(reason, i).invalidNec
             case None         => company.companyEstimateReason.validNec
           }
-        }: _*)
+        }*)
       case _                                                                           => fullReturnModel.returnContainsEstimates.validNec
     }
 
-  private def validateReturnContainsEstimates: ValidationResult[_] = {
+  private def validateReturnContainsEstimates: ValidationResult[?] = {
     val companyContainsAnEstimateReason = fullReturnModel.ukCompanies.exists(_.companyEstimateReason.nonEmpty)
     val groupEstimateReasonPopulated    = fullReturnModel.groupEstimateReason.isDefined
 
@@ -185,7 +185,7 @@ trait FullReturnValidator extends BaseValidation {
       ReturnDeclarationError(fullReturnModel.declaration).invalidNec
     }
 
-  private def validateNetTaxInterest: ValidationResult[_] =
+  private def validateNetTaxInterest: ValidationResult[?] =
     if (
       fullReturnModel.groupSubjectToInterestReactivation &&
       fullReturnModel.aggregateNetTaxInterest > fullReturnModel.groupLevelAmount.interestReactivationCap
@@ -195,7 +195,7 @@ trait FullReturnValidator extends BaseValidation {
       fullReturnModel.aggregateNetTaxInterest.validNec
     }
 
-  private def validateTotalRestrictionsDoesntExceedAggNetTaxInterestExpense: ValidationResult[_] = {
+  private def validateTotalRestrictionsDoesntExceedAggNetTaxInterestExpense: ValidationResult[?] = {
     val aggregateNetTaxInterestExpense: Option[BigDecimal] =
       if (fullReturnModel.aggregateNetTaxInterest < 0) Some(fullReturnModel.aggregateNetTaxInterest * -1) else None
 
@@ -207,7 +207,7 @@ trait FullReturnValidator extends BaseValidation {
 
   }
 
-  private def validateGroupEbitda: ValidationResult[_] = {
+  private def validateGroupEbitda: ValidationResult[?] = {
     val groupInterest       = fullReturnModel.adjustedGroupInterest
     val groupRatioIsElected = fullReturnModel.groupLevelElections.groupRatio.isElected
     val blendedIsElected    = fullReturnModel.groupLevelElections.groupRatio.groupRatioBlended.map(_.isElected) match {
@@ -224,7 +224,7 @@ trait FullReturnValidator extends BaseValidation {
 
   }
 
-  def validateReactivationCapSubjectToReactivations: ValidationResult[_] =
+  def validateReactivationCapSubjectToReactivations: ValidationResult[?] =
     if (
       !fullReturnModel.groupSubjectToInterestReactivation && fullReturnModel.groupLevelAmount.interestReactivationCap > 0
     ) {
@@ -241,7 +241,7 @@ trait FullReturnValidator extends BaseValidation {
       } else {
         combineValidations(fullReturnModel.ukCompanies.zipWithIndex.map { case (a, i) =>
           a.validate(fullReturnModel.groupCompanyDetails.accountingPeriod)(JsPath \ s"ukCompanies[$i]")
-        }: _*)
+        }*)
       }
 
     combineValidations(

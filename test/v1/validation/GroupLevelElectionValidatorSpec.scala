@@ -16,10 +16,10 @@
 
 package v1.validation
 
-import data.ConsolidatedPartnershipConstants._
-import data.GroupLevelElectionsConstants._
-import data.GroupRatioConstants._
-import data.NonConsolidatedInvestmentElectionConstants._
+import data.ConsolidatedPartnershipConstants.*
+import data.GroupLevelElectionsConstants.*
+import data.GroupRatioConstants.*
+import data.NonConsolidatedInvestmentElectionConstants.*
 import play.api.libs.json.JsPath
 import v1.models.{CompanyNameModel, NonConsolidatedInvestmentModel, PartnershipModel, UTRModel}
 

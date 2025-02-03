@@ -33,7 +33,7 @@ class AbbreviatedReturnService @Inject() (abbreviatedReturnConnector: Abbreviate
 
   override def submit(
     abbreviatedReturn: AbbreviatedReturnModel
-  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] =
+  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] =
     abbreviatedReturnConnector.submitAbbreviatedReturn(abbreviatedReturn).map { resp =>
       logger.info("[AbbreviatedReturnService][submit] Successfully sent a abbreviated return payload")
       resp

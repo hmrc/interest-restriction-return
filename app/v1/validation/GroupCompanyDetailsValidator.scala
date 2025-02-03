@@ -24,6 +24,6 @@ trait GroupCompanyDetailsValidator extends BaseValidation {
 
   val groupCompanyDetails: GroupCompanyDetailsModel
 
-  def validate(implicit path: JsPath): ValidationResult[_] =
+  def validate(implicit path: JsPath): ValidationResult[?] =
     groupCompanyDetails.accountingPeriod.validate(path \ "accountingPeriod")
 }

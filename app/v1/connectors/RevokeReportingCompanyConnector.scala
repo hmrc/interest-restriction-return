@@ -25,6 +25,7 @@ import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.httpParsers.RevokeReportingCompanyHttpParser.RevokeReportingCompanyReads
 import v1.models.requests.IdentifierRequest
 import v1.models.revokeReportingCompany.RevokeReportingCompanyModel
+import play.api.libs.ws.writeableOf_JsValue
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -36,7 +37,7 @@ class RevokeReportingCompanyConnector @Inject() (httpClient: HttpClientV2, impli
 
   def revoke(
     revokeReportingCompanyModel: RevokeReportingCompanyModel
-  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] = {
+  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] = {
     logger.debug(s"[RevokeReportingCompanyConnector][revoke] URL: $revokeUrl")
     val receivedSize = request.headers.get(HeaderNames.CONTENT_LENGTH)
     val jsonSize     = Json.stringify(Json.toJson(revokeReportingCompanyModel)(RevokeReportingCompanyModel.format)).length
@@ -44,7 +45,7 @@ class RevokeReportingCompanyConnector @Inject() (httpClient: HttpClientV2, impli
 
     httpClient
       .post(url"$revokeUrl")
-      .setHeader(desHeaders(): _*)
+      .setHeader(desHeaders()*)
       .withBody(Json.toJson(revokeReportingCompanyModel))
       .execute[SubmissionResponse]
   }

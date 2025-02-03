@@ -16,11 +16,11 @@
 
 package data
 
-import data.AccountingPeriodITConstants._
-import data.AgentDetailsITConstants._
-import data.AuthorisingCompanyITConstants._
-import data.IdentityOfCompanySubmittingITConstants._
-import data.ReportingCompanyITConstants._
+import data.AccountingPeriodITConstants.*
+import data.AgentDetailsITConstants.*
+import data.AuthorisingCompanyITConstants.*
+import data.IdentityOfCompanySubmittingITConstants.*
+import data.ReportingCompanyITConstants.*
 import play.api.libs.json.{JsObject, Json}
 
 object AppointReportingCompanyITConstants {

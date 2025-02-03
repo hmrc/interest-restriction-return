@@ -16,6 +16,7 @@
 
 package v1.models
 
+import play.api.libs.json.{JsError, Json}
 import utils.BaseSpec
 import v1.models.nrs.NrSubmissionId
 
@@ -36,6 +37,17 @@ class NrSubmissionIdModelSpec extends BaseSpec {
         val expected = randomId.toString
 
         actual shouldBe expected
+      }
+    }
+    "fail to read from json" when {
+      "there is type mismatch" in {
+        Json.arr("a" -> "b").validate[NrSubmissionId] shouldBe JsError("Expected a JSON object")
+      }
+      "empty json" in {
+        Json.obj().validate[NrSubmissionId] shouldBe a[JsError]
+      }
+      "there is an invalid UUID" in {
+        Json.obj("nrSubmissionId" -> "b").validate[NrSubmissionId] shouldBe JsError("Invalid UUID string")
       }
     }
   }

@@ -22,11 +22,11 @@ import v1.models.revokeReportingCompany.RevokeReportingCompanyModel
 import v1.models.{IdentityOfCompanySubmittingModel, UltimateParentModel, Validation}
 import v1.validation.BaseValidation
 import v1.models.AuthorisingCompanyModel
-import v1.validation.errors._
+import v1.validation.errors.*
 
 trait RevokeReportingCompanyValidator extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val revokeReportingCompanyModel: RevokeReportingCompanyModel
 
@@ -77,7 +77,7 @@ trait RevokeReportingCompanyValidator extends BaseValidation {
       } else {
         combineValidations(revokeReportingCompanyModel.authorisingCompanies.zipWithIndex.map { case (a, i) =>
           a.validate(JsPath \ s"authorisingCompanies[$i]")
-        }: _*)
+        }*)
       }
 
     combineValidations[Any](

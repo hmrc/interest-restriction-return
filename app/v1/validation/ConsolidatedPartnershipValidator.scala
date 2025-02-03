@@ -22,7 +22,7 @@ import v1.models.{ConsolidatedPartnershipModel, PartnershipModel, Validation}
 
 trait ConsolidatedPartnershipValidator extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val consolidatedPartnershipModel: ConsolidatedPartnershipModel
 
@@ -48,7 +48,7 @@ trait ConsolidatedPartnershipValidator extends BaseValidation {
           } else {
             combineValidations(consolidatedPartnerships.zipWithIndex.map { case (a, i) =>
               a.validate(JsPath \ s"consolidatedPartnerships[$i]")
-            }: _*)
+            }*)
           }
         )
       )

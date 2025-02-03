@@ -16,8 +16,8 @@
 
 package data
 
-import data.DeemedParentConstants._
-import data.UltimateParentConstants._
+import data.DeemedParentConstants.*
+import data.UltimateParentConstants.*
 import play.api.libs.json.{JsObject, Json}
 import v1.models.ParentCompanyModel
 
@@ -40,11 +40,6 @@ object ParentCompanyConstants {
 
   val parentCompanyModelUltUkCompany: ParentCompanyModel = ParentCompanyModel(
     ultimateParent = Some(ultimateParentModelUkCompany),
-    deemedParent = None
-  )
-
-  val parentCompanyModelUltNonUkCompany: ParentCompanyModel = ParentCompanyModel(
-    ultimateParent = Some(ultimateParentModelNonUkCompany),
     deemedParent = None
   )
 

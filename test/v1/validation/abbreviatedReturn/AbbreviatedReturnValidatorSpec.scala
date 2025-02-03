@@ -16,17 +16,17 @@
 
 package v1.validation.abbreviatedReturn
 
-import data.AgentDetailsConstants._
-import data.ParentCompanyConstants._
-import data.ReportingCompanyConstants._
-import data.abbreviatedReturn.AbbreviatedReturnConstants._
-import data.abbreviatedReturn.UkCompanyConstants._
+import data.AgentDetailsConstants.*
+import data.ParentCompanyConstants.*
+import data.ReportingCompanyConstants.*
+import data.abbreviatedReturn.AbbreviatedReturnConstants.*
+import data.abbreviatedReturn.UkCompanyConstants.*
 import play.api.libs.json.JsPath
 import utils.BaseSpec
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
 import v1.models.{Original, Revised, RevisedReturnDetailsModel}
-import v1.validation._
-import v1.validation.errors._
+import v1.validation.*
+import v1.validation.errors.*
 
 class AbbreviatedReturnValidatorSpec extends BaseSpec {
 

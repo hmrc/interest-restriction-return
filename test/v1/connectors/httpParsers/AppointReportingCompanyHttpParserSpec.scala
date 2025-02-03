@@ -16,10 +16,10 @@
 
 package v1.connectors.httpParsers
 
-import data.appointReportingCompany.AppointReportingCompanyConstants._
+import data.appointReportingCompany.AppointReportingCompanyConstants.*
 import v1.connectors.httpParsers.AppointReportingCompanyHttpParser.AppointReportingCompanyReads
 import v1.connectors.{DesSuccessResponse, InvalidSuccessResponse, UnexpectedFailure}
-import play.api.http.Status._
+import play.api.http.Status.*
 import play.api.libs.json.{JsObject, Json}
 import uk.gov.hmrc.http.HttpResponse
 import utils.BaseSpec

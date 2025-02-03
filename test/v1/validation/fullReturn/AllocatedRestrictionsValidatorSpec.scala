@@ -16,7 +16,7 @@
 
 package v1.validation.fullReturn
 
-import data.fullReturn.AllocatedRestrictionsConstants._
+import data.fullReturn.AllocatedRestrictionsConstants.*
 import play.api.libs.json.JsPath
 import utils.BaseSpec
 import v1.models.AccountingPeriodModel

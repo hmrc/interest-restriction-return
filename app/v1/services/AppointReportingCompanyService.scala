@@ -33,7 +33,7 @@ class AppointReportingCompanyService @Inject() (appointReportingCompanyConnector
 
   override def submit(
     appointReportingCompany: AppointReportingCompanyModel
-  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[_]): Future[SubmissionResponse] =
+  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] =
     appointReportingCompanyConnector.appoint(appointReportingCompany).map { resp =>
       logger.info("[AppointReportingCompanyService][submit] Successfully sent a appoint reporting company payload")
       resp

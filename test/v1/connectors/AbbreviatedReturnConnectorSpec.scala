@@ -16,11 +16,11 @@
 
 package v1.connectors
 
-import data.abbreviatedReturn.AbbreviatedReturnConstants._
+import data.abbreviatedReturn.AbbreviatedReturnConstants.*
 import data.fullReturn.FullReturnConstants.ackRef
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
-import play.api.http.Status._
+import play.api.http.Status.*
 import uk.gov.hmrc.http.HttpReads
 import utils.BaseSpec
 import v1.connectors.HttpHelper.SubmissionResponse
@@ -52,8 +52,8 @@ class AbbreviatedReturnConnectorSpec extends BaseSpec with MockHttpClient {
       "submission is successful" should {
         "return a Right(SuccessResponse)" in new ConnectorTestSetup {
 
-          when(mockRequestBuilder.execute(any[HttpReads[SubmissionResponse]], any()))
-            .thenReturn(Right(response))
+          when(mockRequestBuilder.execute(using any[HttpReads[SubmissionResponse]], any()))
+            .thenReturn(Future(Right(response)))
 
           val result: Future[SubmissionResponse] =
             connector.submitAbbreviatedReturn(abbreviatedReturnUltimateParentModel)
@@ -64,8 +64,8 @@ class AbbreviatedReturnConnectorSpec extends BaseSpec with MockHttpClient {
       "submission is unsuccessful" should {
         "return a Left(UnexpectedFailure)" in new ConnectorTestSetup {
 
-          when(mockRequestBuilder.execute(any[HttpReads[SubmissionResponse]], any()))
-            .thenReturn(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
+          when(mockRequestBuilder.execute(using any[HttpReads[SubmissionResponse]], any()))
+            .thenReturn(Future(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))))
 
           val result: Future[SubmissionResponse] =
             connector.submitAbbreviatedReturn(abbreviatedReturnUltimateParentModel)

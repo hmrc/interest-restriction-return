@@ -16,9 +16,9 @@
 
 package v1.models
 
-import data.GroupLevelElectionsConstants._
-import play.api.libs.json.Json
-import data.NonConsolidatedInvestmentElectionConstants._
+import data.GroupLevelElectionsConstants.*
+import play.api.libs.json.{JsError, Json}
+import data.NonConsolidatedInvestmentElectionConstants.*
 import utils.BaseSpec
 
 class GroupLevelElectionsModelSpec extends BaseSpec {
@@ -65,6 +65,14 @@ class GroupLevelElectionsModelSpec extends BaseSpec {
         val actualValue   = groupLevelElectionsJsonMax.as[GroupLevelElectionsModel]
 
         actualValue shouldBe expectedValue
+      }
+    }
+    "fail to read from json" when {
+      "there is type mismatch" in {
+        Json.arr("a" -> "b").validate[GroupLevelElectionsModel] shouldBe a[JsError]
+      }
+      "empty json" in {
+        Json.obj().validate[GroupLevelElectionsModel] shouldBe a[JsError]
       }
     }
   }

@@ -16,14 +16,14 @@
 
 package v1.validation.appointReportingCompany
 
-import data.IdentityOfCompanySubmittingConstants._
-import data.ReportingCompanyConstants._
-import data.UltimateParentConstants._
-import data.appointReportingCompany.AppointReportingCompanyConstants._
+import data.IdentityOfCompanySubmittingConstants.*
+import data.ReportingCompanyConstants.*
+import data.UltimateParentConstants.*
+import data.appointReportingCompany.AppointReportingCompanyConstants.*
 import utils.BaseSpec
-import data.AuthorisingCompanyConstants._
+import data.AuthorisingCompanyConstants.*
 import v1.models.CompanyNameModel
-import v1.validation.errors._
+import v1.validation.errors.*
 
 class AppointReportingCompanyValidatorSpec extends BaseSpec {
 

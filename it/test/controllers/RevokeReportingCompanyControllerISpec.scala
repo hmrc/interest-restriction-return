@@ -16,8 +16,8 @@
 
 package controllers
 
-import data.RevokeReportingCompanyITConstants._
-import play.api.http.Status._
+import data.RevokeReportingCompanyITConstants.*
+import play.api.http.Status.*
 import stubs.{AuthStub, DESStub}
 import utils.IntegrationSpecBase
 

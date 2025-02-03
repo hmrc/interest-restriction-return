@@ -17,7 +17,7 @@
 package v1.models.revokeReportingCompany
 
 import play.api.libs.json.{Json, OFormat}
-import v1.models._
+import v1.models.*
 import v1.validation.revokeReportingCompany.RevokeReportingCompanyValidator
 
 case class RevokeReportingCompanyModel(

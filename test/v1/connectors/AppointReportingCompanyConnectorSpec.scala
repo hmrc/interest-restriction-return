@@ -16,7 +16,7 @@
 
 package v1.connectors
 
-import data.appointReportingCompany.AppointReportingCompanyConstants._
+import data.appointReportingCompany.AppointReportingCompanyConstants.*
 import data.fullReturn.FullReturnConstants.ackRef
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -51,8 +51,8 @@ class AppointReportingCompanyConnectorSpec extends BaseSpec {
 
         "return a Right(DesSuccessResponse)" in new ConnectorTestSetup() {
 
-          when(mockRequestBuilder.execute(any[HttpReads[SubmissionResponse]], any()))
-            .thenReturn(Right(response))
+          when(mockRequestBuilder.execute(using any[HttpReads[SubmissionResponse]], any()))
+            .thenReturn(Future(Right(response)))
 
           val result: Future[SubmissionResponse] = connector.appoint(appointReportingCompanyModelMax)
           await(result) shouldBe Right(DesSuccessResponse(ackRef))
@@ -63,8 +63,8 @@ class AppointReportingCompanyConnectorSpec extends BaseSpec {
 
         "return a Left(UnexpectedFailure)" in new ConnectorTestSetup() {
 
-          when(mockRequestBuilder.execute(any[HttpReads[SubmissionResponse]], any()))
-            .thenReturn(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error")))
+          when(mockRequestBuilder.execute(using any[HttpReads[SubmissionResponse]], any()))
+            .thenReturn(Future(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))))
 
           val result: Future[SubmissionResponse] = connector.appoint(appointReportingCompanyModelMax)
           await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))

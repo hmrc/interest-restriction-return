@@ -16,7 +16,8 @@
 
 package v1.models
 
-import data.NonConsolidatedInvestmentConstants._
+import data.NonConsolidatedInvestmentConstants.*
+import play.api.libs.json.{JsError, JsSuccess, Json}
 import utils.BaseSpec
 
 class NonConsolidatedInvestmentModelSpec extends BaseSpec {
@@ -28,6 +29,19 @@ class NonConsolidatedInvestmentModelSpec extends BaseSpec {
       val actualValue   = nonConsolidatedJsonWhitespace.as[NonConsolidatedInvestmentModel]
 
       actualValue shouldBe expectedValue
+    }
+    "support round trip serialization and deserialization" in {
+      Json.toJson(nonConsolidatedModel).validate[NonConsolidatedInvestmentModel] shouldBe JsSuccess(
+        nonConsolidatedModel
+      )
+    }
+    "fail to read from json" when {
+      "there is type mismatch" in {
+        Json.arr("a" -> "b").validate[NonConsolidatedInvestmentModel] shouldBe a[JsError]
+      }
+      "empty json" in {
+        Json.obj().validate[NonConsolidatedInvestmentModel] shouldBe a[JsError]
+      }
     }
   }
 }

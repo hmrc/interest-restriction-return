@@ -16,7 +16,7 @@
 
 package data
 
-import data.GroupRatioBlendedConstants._
+import data.GroupRatioBlendedConstants.*
 import play.api.libs.json.{JsObject, Json}
 import v1.models.GroupRatioModel
 

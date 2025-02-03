@@ -22,7 +22,7 @@ import v1.models.Validation.ValidationResult
 
 trait ReportingCompanyValidator extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val reportingCompanyModel: ReportingCompanyModel
 

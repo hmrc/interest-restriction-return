@@ -16,7 +16,7 @@
 
 package data
 
-import data.AllocatedReactivationsITConstants._
+import data.AllocatedReactivationsITConstants.*
 import play.api.libs.json.{JsObject, Json}
 
 object UkCompanyITConstants extends BaseITConstants {

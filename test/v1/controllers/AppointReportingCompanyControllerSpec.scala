@@ -16,9 +16,9 @@
 
 package v1.controllers
 
-import data.appointReportingCompany.AppointReportingCompanyConstants._
+import data.appointReportingCompany.AppointReportingCompanyConstants.*
 import v1.connectors.{DesSuccessResponse, UnexpectedFailure}
-import play.api.http.Status._
+import play.api.http.Status.*
 import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.{AnyContentAsEmpty, Result}
 import play.api.test.{FakeRequest, Helpers}
@@ -40,15 +40,15 @@ class AppointReportingCompanyControllerSpec extends MockAppointReportingCompanyS
     path = "/interest-restriction-return/reporting-company/appoint/validate"
   )
 
-  private lazy val validJsonFakeRequest: FakeRequest[JsObject]              = fakeRequest
+  private lazy val validJsonFakeRequest: FakeRequest[JsObject] = fakeRequest
     .withBody(appointReportingCompanyJsonMax)
     .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
 
-  private lazy val validJsonFakeRequestForValidate: FakeRequest[JsObject]   = fakeRequestForValidate
+  private lazy val validJsonFakeRequestForValidate: FakeRequest[JsObject] = fakeRequestForValidate
     .withBody(appointReportingCompanyJsonMax)
     .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
 
-  private lazy val invalidJsonFakeRequest: FakeRequest[JsObject]            = fakeRequest
+  private lazy val invalidJsonFakeRequest: FakeRequest[JsObject] = fakeRequest
     .withBody(Json.obj())
     .withHeaders("Content-Type" -> "application/json", "Authorization" -> "test")
 

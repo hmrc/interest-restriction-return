@@ -16,9 +16,8 @@
 
 package v1.models
 
-import data.NonConsolidatedInvestmentElectionConstants._
-import play.api.libs.json.Json
-import v1.models.NonConsolidatedInvestmentElectionModel
+import data.NonConsolidatedInvestmentElectionConstants.*
+import play.api.libs.json.{JsError, Json}
 import utils.BaseSpec
 
 class NonConsolidatedInvestmentElectionModelSpec extends BaseSpec {
@@ -58,6 +57,14 @@ class NonConsolidatedInvestmentElectionModelSpec extends BaseSpec {
         val actualValue   = nonConsolidatedInvestmentJsonMin.as[NonConsolidatedInvestmentElectionModel]
 
         actualValue shouldBe expectedValue
+      }
+    }
+    "fail to read from json" when {
+      "there is type mismatch" in {
+        Json.arr("a" -> "b").validate[NonConsolidatedInvestmentElectionModel] shouldBe a[JsError]
+      }
+      "empty json" in {
+        Json.obj().validate[NonConsolidatedInvestmentElectionModel] shouldBe a[JsError]
       }
     }
   }

@@ -22,7 +22,7 @@ import v1.models.{RevisedReturnDetailsModel, Validation}
 
 trait RevisedReturnDetailsValidator extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val revisedReturnDetailsModel: RevisedReturnDetailsModel
 

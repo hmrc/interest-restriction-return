@@ -16,9 +16,8 @@
 
 package v1.models
 
-import data.UltimateParentConstants._
-import play.api.libs.json.Json
-import v1.models.UltimateParentModel
+import data.UltimateParentConstants.*
+import play.api.libs.json.{JsError, Json}
 import utils.BaseSpec
 
 class UltimateParentModelSpec extends BaseSpec {
@@ -60,6 +59,15 @@ class UltimateParentModelSpec extends BaseSpec {
         val actualValue   = ultimateParentJsonMin.as[UltimateParentModel]
 
         actualValue shouldBe expectedValue
+      }
+    }
+
+    "fail to read from json" when {
+      "there is type mismatch" in {
+        Json.arr("a" -> "b").validate[UltimateParentModel] shouldBe a[JsError]
+      }
+      "empty json" in {
+        Json.obj().validate[UltimateParentModel] shouldBe a[JsError]
       }
     }
   }

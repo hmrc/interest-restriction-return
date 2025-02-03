@@ -17,7 +17,7 @@
 package data
 
 import play.api.libs.json.{JsArray, JsObject, JsString, Json}
-import v1.models.Elections._
+import v1.models.Elections.*
 import v1.models.{CompanyNameModel, Elections, InvestorGroupModel}
 
 object InvestorGroupConstants {

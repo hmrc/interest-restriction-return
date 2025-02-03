@@ -16,7 +16,7 @@
 
 package data
 
-import data.NonConsolidatedInvestmentITConstants._
+import data.NonConsolidatedInvestmentITConstants.*
 import play.api.libs.json.{JsObject, Json}
 
 object NonConsolidatedInvestmentElectionITConstants {

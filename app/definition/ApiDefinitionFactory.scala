@@ -17,7 +17,7 @@
 package definition
 
 import config.AppConfig
-import definition.Versions._
+import definition.Versions.*
 import javax.inject.{Inject, Singleton}
 import play.api.Logging
 

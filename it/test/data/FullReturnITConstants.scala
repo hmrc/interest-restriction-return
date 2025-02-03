@@ -17,11 +17,11 @@
 package data
 
 import data.AdjustedGroupInterestITConstants.adjustedGroupInterestJson
-import data.AgentDetailsITConstants._
+import data.AgentDetailsITConstants.*
 import data.GroupCompanyDetailsITConstants.groupCompanyDetailsJson
 import data.GroupLevelAmountITConstants.groupLevelAmountJson
 import data.GroupLevelElectionsITConstants.groupLevelElectionsJson
-import data.ReportingCompanyITConstants._
+import data.ReportingCompanyITConstants.*
 import data.UkCompanyITConstants.ukCompanyFullJson
 import play.api.libs.json.{JsObject, Json}
 

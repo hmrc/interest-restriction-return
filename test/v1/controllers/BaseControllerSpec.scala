@@ -16,11 +16,11 @@
 
 package v1.controllers
 
-import data.appointReportingCompany.AppointReportingCompanyConstants._
-import play.api.http.Status._
+import data.appointReportingCompany.AppointReportingCompanyConstants.*
+import play.api.http.Status.*
 import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.Results.Ok
-import play.api.mvc._
+import play.api.mvc.*
 import play.api.test.{FakeRequest, Helpers}
 import utils.BaseSpec
 import v1.controllers.BaseController

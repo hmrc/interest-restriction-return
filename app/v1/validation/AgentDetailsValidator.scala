@@ -21,7 +21,7 @@ import v1.models.Validation.ValidationResult
 import v1.models.{AgentDetailsModel, Validation}
 
 trait AgentDetailsValidator extends BaseValidation {
-  import cats.implicits._
+  import cats.implicits.*
 
   val agentDetailsModel: AgentDetailsModel
 

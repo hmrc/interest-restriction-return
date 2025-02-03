@@ -23,15 +23,15 @@ import play.api.Configuration
 import play.api.libs.json.Json
 import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import uk.gov.hmrc.auth.core.InsufficientEnrolments
-import uk.gov.hmrc.http.{JsValidationException, NotFoundException}
+import uk.gov.hmrc.http.{HttpException, JsValidationException, NotFoundException, UpstreamErrorResponse}
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import uk.gov.hmrc.play.audit.http.connector.AuditResult.Success
 import uk.gov.hmrc.play.audit.model.DataEvent
 import uk.gov.hmrc.play.bootstrap.config.HttpAuditEvent
 import v1.models.errors.ErrorResponseModel
-import v1.models.errors.ErrorResponses._
+import v1.models.errors.ErrorResponses.*
 
 import java.time.Instant
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -162,6 +162,29 @@ class ErrorHandlerSpec extends UnitSpec {
           status(result) shouldBe INTERNAL_SERVER_ERROR
 
           contentAsJson(result) shouldBe Json.toJson(DownstreamError)
+        }
+      }
+
+      "return correct status code with error body" when {
+        "HttpException thrown" in new Test {
+          private val result = handler.onServerError(requestHeader, new HttpException("test", HTTP_VERSION_NOT_SUPPORTED) with NoStackTrace)
+          status(result) shouldBe HTTP_VERSION_NOT_SUPPORTED
+        }
+      }
+      "return 4xx with error body" when {
+        "4xx UpstreamErrorResponse is thrown" in new Test {
+          private val result =
+            handler.onServerError(requestHeader, new UpstreamErrorResponse("message", BAD_REQUEST, BAD_REQUEST, Map.empty))
+          status(result) shouldBe BAD_REQUEST
+
+        }
+      }
+      "return 5xx with error body" when {
+        "5xx UpstreamErrorResponse is thrown" in new Test {
+          private val result =
+            handler.onServerError(requestHeader, new UpstreamErrorResponse("message", INTERNAL_SERVER_ERROR, INTERNAL_SERVER_ERROR, Map.empty))
+          status(result) shouldBe INTERNAL_SERVER_ERROR
+
         }
       }
     }

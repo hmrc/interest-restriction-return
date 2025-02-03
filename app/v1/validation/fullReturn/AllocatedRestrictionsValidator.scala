@@ -25,7 +25,7 @@ import java.time.LocalDate
 
 trait AllocatedRestrictionsValidator extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val allocatedRestrictionsModel: AllocatedRestrictionsModel
 
@@ -33,39 +33,38 @@ trait AllocatedRestrictionsValidator extends BaseValidation {
   val MAXIMUM_DATE: LocalDate = LocalDate.parse("2099-12-31")
   val aYearInMonths           = 12
 
-  def validate(groupAccountingPeriod: AccountingPeriodModel)(implicit path: JsPath): ValidationResult[_] =
-    (
-      combineValidations(
-        apRestrictionValidator(
-          Some(allocatedRestrictionsModel.ap1EndDate),
-          Some(allocatedRestrictionsModel.disallowanceAp1),
-          1,
-          "ap1EndDate"
-        ),
-        apRestrictionValidator(
-          allocatedRestrictionsModel.ap2EndDate,
-          allocatedRestrictionsModel.disallowanceAp2,
-          2,
-          "ap2EndDate"
-        ),
-        apRestrictionValidator(
-          allocatedRestrictionsModel.ap3EndDate,
-          allocatedRestrictionsModel.disallowanceAp3,
-          3,
-          "ap3EndDate"
-        ),
-        validateAp1(groupAccountingPeriod.startDate),
-        validateAp2(groupAccountingPeriod.endDate),
-        validateAp3(groupAccountingPeriod.endDate)
-      )
-    ).map(_ => allocatedRestrictionsModel)
+  def validate(groupAccountingPeriod: AccountingPeriodModel)(implicit path: JsPath): ValidationResult[?] =
+    combineValidations(
+      apRestrictionValidator(
+        Some(allocatedRestrictionsModel.ap1EndDate),
+        Some(allocatedRestrictionsModel.disallowanceAp1),
+        1,
+        "ap1EndDate"
+      ),
+      apRestrictionValidator(
+        allocatedRestrictionsModel.ap2EndDate,
+        allocatedRestrictionsModel.disallowanceAp2,
+        2,
+        "ap2EndDate"
+      ),
+      apRestrictionValidator(
+        allocatedRestrictionsModel.ap3EndDate,
+        allocatedRestrictionsModel.disallowanceAp3,
+        3,
+        "ap3EndDate"
+      ),
+      validateAp1(groupAccountingPeriod.startDate),
+      validateAp2(groupAccountingPeriod.endDate),
+      validateAp3(groupAccountingPeriod.endDate)
+    )
+      .map(_ => allocatedRestrictionsModel)
 
   private def apRestrictionValidator(
     endDate: Option[LocalDate],
     amount: Option[BigDecimal],
     i: Int,
     endDateJsonAttribute: String
-  )(implicit path: JsPath): ValidationResult[_] = {
+  )(implicit path: JsPath): ValidationResult[?] = {
     val period = (endDate, amount)
     period match {
       case (Some(_), None)                 => AllocatedRestrictionNotSupplied(i).invalidNec

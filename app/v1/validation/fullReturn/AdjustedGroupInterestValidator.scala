@@ -26,7 +26,7 @@ import scala.math.BigDecimal
 
 trait AdjustedGroupInterestValidator extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val adjustedGroupInterestModel: AdjustedGroupInterestModel
 

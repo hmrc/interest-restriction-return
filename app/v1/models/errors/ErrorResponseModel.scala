@@ -34,7 +34,7 @@ object ErrorResponseModel {
 
 object ErrorResponses {
 
-  //Standard Errors
+  // Standard Errors
   val NotFoundError: ErrorResponseModel        =
     ErrorResponseModel("MATCHING_RESOURCE_NOT_FOUND", "Matching resource not found")
   val DownstreamError: ErrorResponseModel      =
@@ -43,7 +43,7 @@ object ErrorResponses {
   val InvalidBodyTypeError: ErrorResponseModel =
     ErrorResponseModel("INVALID_BODY_TYPE", "Expecting text/json or application/json body")
 
-  //Authorisation Errors
+  // Authorisation Errors
   val UnauthorisedError: ErrorResponseModel =
     ErrorResponseModel("CLIENT_OR_AGENT_NOT_AUTHORISED", "The client and/or agent is not authorised")
 

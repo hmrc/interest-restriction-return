@@ -16,8 +16,8 @@
 
 package v1.models.abbreviatedReturn
 
-import play.api.libs.json._
-import v1.models._
+import play.api.libs.json.*
+import v1.models.*
 import v1.validation.abbreviatedReturn.AbbreviatedReturnValidator
 
 case class AbbreviatedReturnModel(
@@ -40,6 +40,5 @@ case class AbbreviatedReturnModel(
 }
 
 object AbbreviatedReturnModel {
-  implicit val abbreviatedReturnReads: Reads[AbbreviatedReturnModel]   = Json.reads[AbbreviatedReturnModel]
-  implicit val abbreviatedReturnWrites: Writes[AbbreviatedReturnModel] = Json.writes[AbbreviatedReturnModel]
+  implicit val abbreviatedReturnReads: Reads[AbbreviatedReturnModel] = Json.reads[AbbreviatedReturnModel]
 }

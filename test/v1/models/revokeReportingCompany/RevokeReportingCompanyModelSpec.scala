@@ -16,9 +16,8 @@
 
 package v1.models.revokeReportingCompany
 
-import data.revokeReportingCompany.RevokeReportingCompanyConstants._
-import play.api.libs.json.Json
-import v1.models.revokeReportingCompany.RevokeReportingCompanyModel
+import data.revokeReportingCompany.RevokeReportingCompanyConstants.*
+import play.api.libs.json.{JsError, JsObject, Json}
 import utils.BaseSpec
 
 class RevokeReportingCompanyModelSpec extends BaseSpec {
@@ -60,6 +59,21 @@ class RevokeReportingCompanyModelSpec extends BaseSpec {
         val actualValue   = revokeReportingCompanyJsonMin.as[RevokeReportingCompanyModel]
 
         actualValue shouldBe expectedValue
+      }
+      "fail to read from empty json" in {
+        Json.obj().validate[RevokeReportingCompanyModel] shouldBe a[JsError]
+      }
+      "fail to read when there is type mismatch" in {
+        val mismatched: JsObject = Json.obj(
+          "agentDetails"                     -> "agentDetailsJsonMax",
+          "reportingCompany"                 -> "reportingCompanyJson",
+          "isReportingCompanyRevokingItself" -> "hkjn",
+          "ultimateParentCompany"            -> "ultimateParentJsonUkCompany",
+          "accountingPeriod"                 -> "accountingPeriodJson",
+          "authorisingCompanies"             -> 1,
+          "declaration"                      -> "wd"
+        )
+        mismatched.validate[RevokeReportingCompanyModel] shouldBe a[JsError]
       }
     }
   }

@@ -16,7 +16,7 @@
 
 package data
 
-import data.PartnershipsConstants._
+import data.PartnershipsConstants.*
 import play.api.libs.json.{JsObject, Json}
 import v1.models.ConsolidatedPartnershipModel
 

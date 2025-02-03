@@ -21,15 +21,15 @@ import v1.models.Validation.ValidationResult
 import v1.models.abbreviatedReturn.AbbreviatedReturnModel
 import v1.models.{Original, Revised}
 import v1.validation.BaseValidation
-import v1.validation.errors._
+import v1.validation.errors.*
 
 trait AbbreviatedReturnValidator extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val abbreviatedReturnModel: AbbreviatedReturnModel
 
-  private def validateRevisedReturnDetails: ValidationResult[_] =
+  private def validateRevisedReturnDetails: ValidationResult[?] =
     (abbreviatedReturnModel.submissionType, abbreviatedReturnModel.revisedReturnDetails) match {
       case (Original, Some(details)) => RevisedReturnDetailsSupplied(details).invalidNec
       case (Revised, None)           => RevisedReturnDetailsNotSupplied.invalidNec
@@ -66,7 +66,7 @@ trait AbbreviatedReturnValidator extends BaseValidation {
       } else {
         combineValidations(abbreviatedReturnModel.ukCompanies.zipWithIndex.map { case (a, i) =>
           a.validate(JsPath \ s"ukCompanies[$i]")
-        }: _*)
+        }*)
       }
 
     combineValidations(

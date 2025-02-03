@@ -18,9 +18,9 @@ package v1.models
 
 import java.time.LocalDate
 
-import play.api.libs.functional.syntax._
-import play.api.libs.json.Reads._
-import play.api.libs.json._
+import play.api.libs.functional.syntax.*
+import play.api.libs.json.Reads.*
+import play.api.libs.json.*
 import v1.validation.AccountingPeriodValidator
 
 import scala.util.Try
@@ -38,7 +38,7 @@ object AccountingPeriodModel {
     .map(LocalDate.parse)
 
   implicit val reads: Reads[AccountingPeriodModel] =
-    (readDate("startDate") and readDate("endDate"))(AccountingPeriodModel.apply _)
+    (readDate("startDate") and readDate("endDate"))(AccountingPeriodModel.apply)
 
   implicit val writes: OWrites[AccountingPeriodModel] = Json.writes[AccountingPeriodModel]
 }

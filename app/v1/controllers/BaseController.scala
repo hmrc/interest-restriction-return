@@ -19,7 +19,7 @@ package v1.controllers
 import cats.data.Validated.{Invalid, Valid}
 import config.AppConfig
 import play.api.Logging
-import play.api.libs.json._
+import play.api.libs.json.*
 import play.api.mvc.{Request, Result}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendBaseController

@@ -19,13 +19,13 @@ package v1.validation
 import play.api.libs.json.JsPath
 import v1.models.Validation.ValidationResult
 import v1.models.PartnershipModel
-import cats.implicits._
+import cats.implicits.*
 
 trait PartnershipValidator extends BaseValidation {
 
   val partnershipModel: PartnershipModel
 
-  def validateSautr(implicit path: JsPath): ValidationResult[_] =
+  def validateSautr(implicit path: JsPath): ValidationResult[?] =
     partnershipModel.sautr match {
       case Some(utr) => utr.validate(path \ "sautr")
       case None      => partnershipModel.validNec

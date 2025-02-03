@@ -21,6 +21,7 @@ import org.scalatestplus.play.ServerProvider
 import play.api.http.HeaderNames.ACCEPT
 import play.api.libs.json.JsValue
 import play.api.libs.ws.{DefaultWSCookie, WSClient, WSResponse}
+import play.api.libs.ws.writeableOf_JsValue
 
 trait CreateRequestHelper extends ServerProvider with ScalaFutures {
 

@@ -16,9 +16,8 @@
 
 package v1.models
 
-import play.api.libs.json.Json
-import data.IdentityOfCompanySubmittingConstants._
-import v1.models.IdentityOfCompanySubmittingModel
+import play.api.libs.json.{JsError, Json}
+import data.IdentityOfCompanySubmittingConstants.*
 import utils.BaseSpec
 
 class IdentityOfCompanySubmittingModelSpec extends BaseSpec {
@@ -60,6 +59,14 @@ class IdentityOfCompanySubmittingModelSpec extends BaseSpec {
         val actualValue   = identityOfCompanySubmittingJsonMin.as[IdentityOfCompanySubmittingModel]
 
         actualValue shouldBe expectedValue
+      }
+    }
+    "fail to read from json" when {
+      "there is type mismatch" in {
+        Json.arr("a" -> "b").validate[IdentityOfCompanySubmittingModel] shouldBe a[JsError]
+      }
+      "empty json" in {
+        Json.obj().validate[IdentityOfCompanySubmittingModel] shouldBe a[JsError]
       }
     }
   }

@@ -17,7 +17,7 @@
 package v1.models.errors
 
 import cats.data.NonEmptyChain
-import play.api.libs.json._
+import play.api.libs.json.*
 import v1.models.Validation
 
 case class ValidationErrorResponseModel(

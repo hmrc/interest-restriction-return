@@ -17,7 +17,7 @@
 package v1.validation
 
 import cats.data.Validated.Valid
-import cats.implicits._
+import cats.implicits.*
 import play.api.libs.json.{JsPath, JsString}
 import utils.BaseSpec
 import v1.models.Validation

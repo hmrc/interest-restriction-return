@@ -24,7 +24,7 @@ import v1.validation.BaseValidation
 
 trait GroupLevelAmountValidator extends BaseValidation {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   val groupLevelAmount: GroupLevelAmountModel
 
@@ -34,7 +34,7 @@ trait GroupLevelAmountValidator extends BaseValidation {
   private def validateDecimalPlaces(amt: BigDecimal, validation: Validation): ValidationResult[BigDecimal] =
     if (amt % 0.01 != 0) validation.invalidNec else amt.validNec
 
-  def validate(implicit path: JsPath): ValidationResult[GroupLevelAmountModel]                             =
+  def validate(implicit path: JsPath): ValidationResult[GroupLevelAmountModel] =
     (
       validatePositive(
         groupLevelAmount.interestReactivationCap,

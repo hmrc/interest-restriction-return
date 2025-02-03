@@ -16,7 +16,7 @@
 
 package v1.models
 
-import play.api.libs.json._
+import play.api.libs.json.*
 
 sealed trait ElectionDecision
 

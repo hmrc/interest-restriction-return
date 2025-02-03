@@ -21,22 +21,21 @@ import org.mockito.Mockito.when
 import org.mockito.{ArgumentMatchers, Mockito}
 import org.scalatest.Inside
 import play.api.Configuration
-import play.api.http.HeaderNames.ACCEPT
 import play.api.http.{HttpConfiguration, HttpFilters}
 import play.api.libs.json.Json
-import play.api.mvc._
+import play.api.mvc.*
 import play.api.routing.Router
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import uk.gov.hmrc.play.bootstrap.config.HttpAuditEvent
 import utils.{BaseSpec, ErrorHandler}
-import v1.models.errors.ErrorResponses._
+import v1.models.errors.ErrorResponses.*
 
 class VersionRoutingRequestHandlerSpec extends BaseSpec with Inside {
 
   import play.api.mvc.Handler
-  import play.api.routing.sird._
+  import play.api.routing.sird.*
 
   object DefaultHandler extends Handler
 
