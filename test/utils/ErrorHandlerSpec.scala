@@ -167,14 +167,20 @@ class ErrorHandlerSpec extends UnitSpec {
 
       "return correct status code with error body" when {
         "HttpException thrown" in new Test {
-          private val result = handler.onServerError(requestHeader, new HttpException("test", HTTP_VERSION_NOT_SUPPORTED) with NoStackTrace)
+          private val result = handler.onServerError(
+            requestHeader,
+            new HttpException("test", HTTP_VERSION_NOT_SUPPORTED) with NoStackTrace
+          )
           status(result) shouldBe HTTP_VERSION_NOT_SUPPORTED
         }
       }
       "return 4xx with error body" when {
         "4xx UpstreamErrorResponse is thrown" in new Test {
           private val result =
-            handler.onServerError(requestHeader, new UpstreamErrorResponse("message", BAD_REQUEST, BAD_REQUEST, Map.empty))
+            handler.onServerError(
+              requestHeader,
+              new UpstreamErrorResponse("message", BAD_REQUEST, BAD_REQUEST, Map.empty)
+            )
           status(result) shouldBe BAD_REQUEST
 
         }
@@ -182,7 +188,10 @@ class ErrorHandlerSpec extends UnitSpec {
       "return 5xx with error body" when {
         "5xx UpstreamErrorResponse is thrown" in new Test {
           private val result =
-            handler.onServerError(requestHeader, new UpstreamErrorResponse("message", INTERNAL_SERVER_ERROR, INTERNAL_SERVER_ERROR, Map.empty))
+            handler.onServerError(
+              requestHeader,
+              new UpstreamErrorResponse("message", INTERNAL_SERVER_ERROR, INTERNAL_SERVER_ERROR, Map.empty)
+            )
           status(result) shouldBe INTERNAL_SERVER_ERROR
 
         }

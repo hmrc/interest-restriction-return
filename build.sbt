@@ -1,11 +1,9 @@
 import uk.gov.hmrc.DefaultBuildSettings
 
-val appName = "interest-restriction-return"
-
 ThisBuild / majorVersion := 0
 ThisBuild / scalaVersion := "3.5.2"
 
-lazy val microservice = Project(appName, file("."))
+lazy val microservice = Project("interest-restriction-return", file("."))
   .enablePlugins(PlayScala, SbtDistributablesPlugin)
   .disablePlugins(JUnitXmlReportPlugin) // Required to prevent https://github.com/scalatest/scalatest/issues/1427
   .settings(
@@ -13,7 +11,7 @@ lazy val microservice = Project(appName, file("."))
     libraryDependencies ++= AppDependencies(),
     PlayKeys.playDefaultPort := 9261
   )
-  .settings(CodeCoverageSettings.settings)
+  .settings(CodeCoverageSettings())
 
 lazy val it = project
   .enablePlugins(PlayScala)
