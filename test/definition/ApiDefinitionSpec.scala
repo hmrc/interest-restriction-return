@@ -41,11 +41,10 @@ class ApiDefinitionSpec extends AnyWordSpecLike with Matchers {
       Json.toJson(apiVersion).validate[APIVersion] shouldBe JsSuccess(apiVersion)
     }
     "version is an empty string" should {
-      "throw an IllegalArgumentException" in {
+      "throw an IllegalArgumentException" in
         assertThrows[IllegalArgumentException](
           apiVersion.copy(version = "")
         )
-      }
     }
     "fail to read from json when" when {
       "there is type mismatch" in {
@@ -62,43 +61,38 @@ class ApiDefinitionSpec extends AnyWordSpecLike with Matchers {
       Json.toJson(Definition(apiDefinition)).validate[Definition] shouldBe JsSuccess(Definition(apiDefinition))
     }
     "name is an empty string" should {
-      "throw an IllegalArgumentException" in {
+      "throw an IllegalArgumentException" in
         assertThrows[IllegalArgumentException](
           Definition(apiDefinition.copy(name = ""))
         )
-      }
     }
 
     "description is an empty string" should {
-      "throw an IllegalArgumentException" in {
+      "throw an IllegalArgumentException" in
         assertThrows[IllegalArgumentException](
           Definition(apiDefinition.copy(description = ""))
         )
-      }
     }
 
     "context is an empty string" should {
-      "throw an IllegalArgumentException" in {
+      "throw an IllegalArgumentException" in
         assertThrows[IllegalArgumentException](
           Definition(apiDefinition.copy(context = ""))
         )
-      }
     }
 
     "versions is an empty list" should {
-      "throw an IllegalArgumentException" in {
+      "throw an IllegalArgumentException" in
         assertThrows[IllegalArgumentException](
           Definition(apiDefinition.copy(versions = Seq.empty))
         )
-      }
     }
 
     "version numbers for versions is not unique" should {
-      "throw an IllegalArgumentException" in {
+      "throw an IllegalArgumentException" in
         assertThrows[IllegalArgumentException](
           Definition(apiDefinition.copy(versions = Seq(apiVersion, apiVersion)))
         )
-      }
     }
     "fail to read from json when" when {
       "there is type mismatch" in {
