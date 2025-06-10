@@ -20,6 +20,7 @@ import play.api.http.Status.INTERNAL_SERVER_ERROR
 import play.api.libs.json.{Json, OFormat}
 import v1.models.nrs.NrSubmissionId
 
+//TODO rename to HipSuccessResponse once CR is completed and old code deleted
 case class DesSuccessResponse(acknowledgementReference: String)
 
 object DesSuccessResponse {

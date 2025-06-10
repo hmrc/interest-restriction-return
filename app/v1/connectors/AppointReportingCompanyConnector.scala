@@ -33,7 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class AppointReportingCompanyConnector @Inject() (httpClient: HttpClientV2, implicit val appConfig: AppConfig)
     extends DesBaseConnector {
 
-  private[connectors] lazy val appointUrl = s"${appConfig.desUrl}/organisations/interest-restrictions-return/appoint"
+  private val appointUrl = s"${appConfig.desUrl}/organisations/interest-restrictions-return/appoint"
 
   def appoint(
     appointReportingCompanyModel: AppointReportingCompanyModel
@@ -46,6 +46,24 @@ class AppointReportingCompanyConnector @Inject() (httpClient: HttpClientV2, impl
     httpClient
       .post(url"$appointUrl")
       .setHeader(desHeaders()*)
+      .withBody(Json.toJson(appointReportingCompanyModel))
+      .execute[SubmissionResponse]
+  }
+
+  def appointHip(
+    appointReportingCompanyModel: AppointReportingCompanyModel
+  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] = {
+    val fullUrl      = appConfig.hipAppointReportingCompanyUrl
+    logger.debug(s"[AppointReportingCompanyConnector][appointHip] URL: $fullUrl")
+    val receivedSize = request.headers.get(HeaderNames.CONTENT_LENGTH)
+    val jsonSize     = Json.stringify(Json.toJson(appointReportingCompanyModel)(AppointReportingCompanyModel.format)).length
+    logger.debug(
+      s"[AppointReportingCompanyConnector][appointHip] Size of content received: $receivedSize sent: $jsonSize"
+    )
+
+    httpClient
+      .post(url"$fullUrl")
+      .setHeader(hipHeaders(appConfig)(hc)*)
       .withBody(Json.toJson(appointReportingCompanyModel))
       .execute[SubmissionResponse]
   }

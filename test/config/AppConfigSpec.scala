@@ -27,7 +27,7 @@ class AppConfigSpec extends BaseSpec {
     val mockServicesConfig: ServicesConfig = mock(classOf[ServicesConfig])
     val mockConfiguration: Configuration   = mock(classOf[Configuration])
 
-    val appConfigImpl: AppConfigImpl = new AppConfigImpl(mockServicesConfig, mockConfiguration)
+    val appConfig: AppConfig = new AppConfig(mockServicesConfig, mockConfiguration)
   }
 
   "AppConfigImpl" when {
@@ -35,7 +35,7 @@ class AppConfigSpec extends BaseSpec {
       "return DES URL" in new Test {
         when(mockServicesConfig.baseUrl("des")).thenReturn("http://localhost:9262")
 
-        appConfigImpl.desUrl shouldBe "http://localhost:9262"
+        appConfig.desUrl shouldBe "http://localhost:9262"
       }
     }
 
@@ -43,7 +43,7 @@ class AppConfigSpec extends BaseSpec {
       "return DES Environment" in new Test {
         when(mockServicesConfig.getString("microservice.services.des.environment")).thenReturn("dev")
 
-        appConfigImpl.desEnvironment shouldBe ("Environment", "dev")
+        appConfig.desEnvironment shouldBe ("Environment", "dev")
       }
     }
 
@@ -51,7 +51,7 @@ class AppConfigSpec extends BaseSpec {
       "return DES authorisation token" in new Test {
         when(mockServicesConfig.getString("microservice.services.des.authorisation-token")).thenReturn("des token")
 
-        appConfigImpl.desAuthorisationToken shouldBe "Bearer des token"
+        appConfig.desAuthorisationToken shouldBe "Bearer des token"
       }
     }
 
@@ -59,7 +59,7 @@ class AppConfigSpec extends BaseSpec {
       "return API gateway context" in new Test {
         when(mockServicesConfig.getString("api.gateway.context")).thenReturn("organisations/interest-restriction")
 
-        appConfigImpl.apiGatewayContext shouldBe "organisations/interest-restriction"
+        appConfig.apiGatewayContext shouldBe "organisations/interest-restriction"
       }
     }
 
@@ -67,7 +67,7 @@ class AppConfigSpec extends BaseSpec {
       "return API status" in new Test {
         when(mockServicesConfig.getString("api.1.0.status")).thenReturn("BETA")
 
-        appConfigImpl.apiStatus("1.0") shouldBe "BETA"
+        appConfig.apiStatus("1.0") shouldBe "BETA"
       }
     }
 
@@ -76,14 +76,14 @@ class AppConfigSpec extends BaseSpec {
         "nrs is disabled" in new Test {
           when(mockConfiguration.getOptional[Boolean]("microservice.services.nrs.enabled")).thenReturn(Some(false))
 
-          appConfigImpl.nrsUrl shouldBe None
+          appConfig.nrsUrl shouldBe None
         }
 
         "nrs is enabled but no nrsUrl config value is added" in new Test {
           when(mockConfiguration.getOptional[Boolean]("microservice.services.nrs.enabled")).thenReturn(Some(true))
           when(mockConfiguration.getOptional[Configuration]("microservice.services.nrs")).thenReturn(None)
 
-          appConfigImpl.nrsUrl shouldBe None
+          appConfig.nrsUrl shouldBe None
         }
       }
 
@@ -93,7 +93,7 @@ class AppConfigSpec extends BaseSpec {
           .thenReturn(Some(mockConfiguration))
         when(mockServicesConfig.baseUrl("nrs")).thenReturn("http://localhost:1111")
 
-        appConfigImpl.nrsUrl shouldBe Some("http://localhost:1111")
+        appConfig.nrsUrl shouldBe Some("http://localhost:1111")
       }
     }
 
@@ -101,13 +101,13 @@ class AppConfigSpec extends BaseSpec {
       "return None when no nrsAuthorisationToken config value is added" in new Test {
         when(mockConfiguration.getOptional[String]("microservice.services.nrs.apikey")).thenReturn(None)
 
-        appConfigImpl.nrsAuthorisationToken shouldBe None
+        appConfig.nrsAuthorisationToken shouldBe None
       }
 
       "return NRS authorisation token when a nrsAuthorisationToken config value is added" in new Test {
         when(mockConfiguration.getOptional[String]("microservice.services.nrs.apikey")).thenReturn(Some("nrs token"))
 
-        appConfigImpl.nrsAuthorisationToken shouldBe Some("nrs token")
+        appConfig.nrsAuthorisationToken shouldBe Some("nrs token")
       }
     }
 
@@ -116,20 +116,20 @@ class AppConfigSpec extends BaseSpec {
         "no nrsEnabled config value is added" in new Test {
           when(mockConfiguration.getOptional[Boolean]("microservice.services.nrs.enabled")).thenReturn(None)
 
-          appConfigImpl.nrsEnabled shouldBe false
+          appConfig.nrsEnabled shouldBe false
         }
 
         "a nrsEnabled config value 'false' is added" in new Test {
           when(mockConfiguration.getOptional[Boolean]("microservice.services.nrs.enabled")).thenReturn(Some(false))
 
-          appConfigImpl.nrsEnabled shouldBe false
+          appConfig.nrsEnabled shouldBe false
         }
       }
 
       "return true when a nrsEnabled config value 'true' is added" in new Test {
         when(mockConfiguration.getOptional[Boolean]("microservice.services.nrs.enabled")).thenReturn(Some(true))
 
-        appConfigImpl.nrsEnabled shouldBe true
+        appConfig.nrsEnabled shouldBe true
       }
     }
 
@@ -137,13 +137,13 @@ class AppConfigSpec extends BaseSpec {
       "return false" in new Test {
         when(mockServicesConfig.getBoolean("api-definitions.endpoints.enabled")).thenReturn(false)
 
-        appConfigImpl.endpointsEnabled shouldBe false
+        appConfig.endpointsEnabled shouldBe false
       }
 
       "return true" in new Test {
         when(mockServicesConfig.getBoolean("api-definitions.endpoints.enabled")).thenReturn(true)
 
-        appConfigImpl.endpointsEnabled shouldBe true
+        appConfig.endpointsEnabled shouldBe true
       }
     }
   }

@@ -20,7 +20,7 @@ import data.UnitNrsConstants.nrsRetrievalData
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 import play.api.libs.json.{JsError, JsSuccess, Json}
-import uk.gov.hmrc.auth.core.retrieve.{AgentInformation, Credentials, ItmpName, MdtpInformation, Name}
+import uk.gov.hmrc.auth.core.retrieve.{AgentInformation, Credentials, ItmpName, MdtpInformation}
 import v1.models.nrs.NrsRetrievalData.*
 
 class NrsRetrievalDataSpec extends AnyWordSpecLike with Matchers {
@@ -51,25 +51,6 @@ class NrsRetrievalDataSpec extends AnyWordSpecLike with Matchers {
       }
       "empty json" in {
         Json.obj().validate[Credentials] shouldBe a[JsError]
-      }
-    }
-  }
-  "Name"             should {
-    "support round-trip serialization/deserialization" when {
-      "all the fields are available and valid" in {
-        Json.toJson(Name(Some("first"), Some("last"))).validate[Name] shouldBe JsSuccess(
-          Name(Some("first"), Some("last"))
-        )
-      }
-      "all the optional fields are none" in {
-        Json.toJson(Name(None, None)).validate[Name] shouldBe JsSuccess(
-          Name(None, None)
-        )
-      }
-    }
-    "fail to read from json" when {
-      "there is type mismatch" in {
-        Json.arr("a" -> "b").validate[Name] shouldBe a[JsError]
       }
     }
   }

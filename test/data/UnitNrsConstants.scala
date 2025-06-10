@@ -83,7 +83,6 @@ object UnitNrsConstants {
       confidenceLevel = nrsConfidenceLevel,
       nino = Some(nrsNinoValue),
       saUtr = Some(nrsSaUtrValue),
-      optionalName = nrsNameValue,
       dateOfBirth = nrsDateOfBirth,
       email = nrsEmailValue,
       agentInformation = nrsAgentInformationValue,

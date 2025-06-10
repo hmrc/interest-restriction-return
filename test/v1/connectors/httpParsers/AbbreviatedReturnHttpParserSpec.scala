@@ -42,6 +42,16 @@ class AbbreviatedReturnHttpParserSpec extends BaseSpec {
 
           actualResult shouldBe expectedResult
         }
+        "receiving an 200 OK with a valid ackRef response" in {
+          val expectedResult: SubmissionResponse = Right(DesSuccessResponse(ackRef))
+          val actualResult: SubmissionResponse   = AbbreviatedReturnReads.read(
+            "",
+            "",
+            HttpResponse(OK, ackRefResponse, Map.empty[String, Seq[String]])
+          )
+
+          actualResult shouldBe expectedResult
+        }
       }
 
       "return a Left InvalidSuccessResponse" when {
@@ -71,12 +81,6 @@ class AbbreviatedReturnHttpParserSpec extends BaseSpec {
           actualResult shouldBe expectedResult
         }
 
-        "receiving a 200 OK with a valid ackRef response" in {
-          val actualResult: SubmissionResponse =
-            AbbreviatedReturnReads.read("", "", HttpResponse(OK, ackRefResponse, Map.empty[String, Seq[String]]))
-
-          actualResult shouldBe expectedResult
-        }
       }
     }
   }

@@ -46,7 +46,7 @@ class AuthAction @Inject() (
 
   private val nrsRetrievals =
     Retrievals.internalId and Retrievals.externalId and Retrievals.agentCode and Retrievals.credentials and
-      Retrievals.confidenceLevel and Retrievals.nino and Retrievals.saUtr and Retrievals.name and
+      Retrievals.confidenceLevel and Retrievals.nino and Retrievals.saUtr and
       Retrievals.dateOfBirth and Retrievals.email and Retrievals.agentInformation and Retrievals.groupIdentifier and
       Retrievals.credentialRole and Retrievals.mdtpInformation and Retrievals.itmpName and Retrievals.itmpDateOfBirth and
       Retrievals.itmpAddress and Retrievals.affinityGroup and Retrievals.credentialStrength and Retrievals.loginTimes
@@ -108,7 +108,7 @@ class AuthAction @Inject() (
     hc: HeaderCarrier
   ): Future[Result] =
     authorised().retrieve(nrsRetrievals) {
-      case internalId ~ externalId ~ agentCode ~ credentials ~ confidenceLevel ~ nino ~ saUtr ~ name ~
+      case internalId ~ externalId ~ agentCode ~ credentials ~ confidenceLevel ~ nino ~ saUtr ~
           dateOfBirth ~ email ~ agentInformation ~ groupIdentifier ~ credentialRole ~ mdtpInformation ~
           itmpName ~ itmpDateOfBirth ~ itmpAddress ~ affinityGroup ~ credentialStrength ~ loginTimes =>
         val data = NrsRetrievalData(
@@ -119,7 +119,6 @@ class AuthAction @Inject() (
           confidenceLevel,
           nino,
           saUtr,
-          name,
           dateOfBirth,
           email,
           agentInformation,
@@ -147,7 +146,6 @@ class AuthAction @Inject() (
           None,
           credentials,
           confidenceLevel,
-          None,
           None,
           None,
           None,
