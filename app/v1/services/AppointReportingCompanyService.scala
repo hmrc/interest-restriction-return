@@ -16,27 +16,42 @@
 
 package v1.services
 
+import config.AppConfig
 import play.api.Logging
-
-import javax.inject.Inject
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.connectors.AppointReportingCompanyConnector
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.models.appointReportingCompany.AppointReportingCompanyModel
 import v1.models.requests.IdentifierRequest
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class AppointReportingCompanyService @Inject() (appointReportingCompanyConnector: AppointReportingCompanyConnector)
-    extends Submission[AppointReportingCompanyModel]
+class AppointReportingCompanyService @Inject() (
+  appointReportingCompanyConnector: AppointReportingCompanyConnector,
+  appConfig: AppConfig
+) extends Submission[AppointReportingCompanyModel]
     with Logging {
 
   override def submit(
     appointReportingCompany: AppointReportingCompanyModel
   )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] =
-    appointReportingCompanyConnector.appoint(appointReportingCompany).map { resp =>
-      logger.info("[AppointReportingCompanyService][submit] Successfully sent a appoint reporting company payload")
-      resp
+    if (appConfig.isHipEnabled) {
+      logger.info("[AppointReportingCompanyService][submit] Submitting to HIP")
+      appointReportingCompanyConnector.appointHip(appointReportingCompany).map { resp =>
+        logger.info(
+          "[AppointReportingCompanyService][submit] Successfully sent a appoint reporting company payload to HIP"
+        )
+        resp
+      }
+    } else {
+      logger.info("[AppointReportingCompanyService][submit] Submitting to DES")
+      appointReportingCompanyConnector.appoint(appointReportingCompany).map { resp =>
+        logger.info(
+          "[AppointReportingCompanyService][submit] Successfully sent a appoint reporting company payload to DES"
+        )
+        resp
+      }
     }
 
 }

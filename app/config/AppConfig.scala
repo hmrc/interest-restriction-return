@@ -16,27 +16,14 @@
 
 package config
 
-import javax.inject.{Inject, Singleton}
 import play.api.Configuration
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
-trait AppConfig {
-
-  def desUrl: String
-  def desEnvironment: (String, String)
-  def desAuthorisationToken: String
-  def apiGatewayContext: String
-  def apiStatus(version: String): String
-  def featureSwitch: Option[Configuration]
-  def endpointsEnabled: Boolean
-  def nrsEnabled: Boolean
-  def nrsUrl: Option[String]
-  def nrsAuthorisationToken: Option[String]
-
-}
+import java.util.Base64
+import javax.inject.{Inject, Singleton}
 
 @Singleton
-class AppConfigImpl @Inject() (val servicesConfig: ServicesConfig, configuration: Configuration) extends AppConfig {
+class AppConfig @Inject() (servicesConfig: ServicesConfig, configuration: Configuration) {
 
   lazy val desUrl: String                   = servicesConfig.baseUrl("des")
   lazy val desAuthorisationToken: String    =
@@ -44,10 +31,9 @@ class AppConfigImpl @Inject() (val servicesConfig: ServicesConfig, configuration
   lazy val desEnvironment: (String, String) =
     "Environment" -> servicesConfig.getString("microservice.services.des.environment")
 
-  lazy val nrsEnabled: Boolean                   = configuration.getOptional[Boolean]("microservice.services.nrs.enabled") match {
-    case Some(true) => true
-    case _          => false
-  }
+  lazy val nrsEnabled: Boolean =
+    configuration.getOptional[Boolean]("microservice.services.nrs.enabled").getOrElse(false)
+
   lazy val nrsUrl: Option[String]                =
     if (nrsEnabled) {
       configuration
@@ -62,7 +48,19 @@ class AppConfigImpl @Inject() (val servicesConfig: ServicesConfig, configuration
 
   def apiStatus(version: String): String = servicesConfig.getString(s"api.$version.status")
 
-  def featureSwitch: Option[Configuration] = configuration.getOptional[Configuration](s"feature-switch")
+  def featureSwitch: Option[Configuration] = configuration.getOptional[Configuration]("feature-switch")
 
   lazy val endpointsEnabled: Boolean = servicesConfig.getBoolean("api-definitions.endpoints.enabled")
+
+  // HIP
+  private lazy val hipUrl: String     = servicesConfig.baseUrl("hip")
+  private lazy val baseHipUrl: String = s"$hipUrl/cir"
+
+  lazy val isHipEnabled: Boolean =
+    configuration.getOptional[Boolean]("microservice.services.hip.enabled").getOrElse(false)
+
+  private val clientId: String                   = servicesConfig.getString("microservice.services.hip.clientId")
+  private val secret: String                     = servicesConfig.getString("microservice.services.hip.secret")
+  def hipAuthorizationToken: String              = Base64.getEncoder.encodeToString(s"$clientId:$secret".getBytes("UTF-8"))
+  lazy val hipAppointReportingCompanyUrl: String = s"$baseHipUrl/appoint"
 }

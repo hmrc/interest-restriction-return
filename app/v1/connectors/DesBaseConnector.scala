@@ -18,7 +18,7 @@ package v1.connectors
 
 import config.AppConfig
 import play.api.Logging
-import play.api.http.Status.{CREATED, INTERNAL_SERVER_ERROR}
+import play.api.http.Status.{CREATED, INTERNAL_SERVER_ERROR, OK}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.models.requests.IdentifierRequest
@@ -43,6 +43,12 @@ trait DesBaseConnector extends Logging {
     )
   }
 
+  def hipHeaders(appConfig: AppConfig)(implicit hc: HeaderCarrier): Seq[(String, String)] =
+    Seq(
+      "correlationId" -> correlationIdGenerator(hc),
+      "Authorization" -> appConfig.hipAuthorizationToken
+    )
+
   def generateNewUUID: String = randomUUID.toString
 
   def correlationIdGenerator(hc: HeaderCarrier): String = {
@@ -63,7 +69,7 @@ trait DesBaseConnector extends Logging {
     unexpectedErrorMessage: String
   ): SubmissionResponse =
     response.status match {
-      case CREATED =>
+      case CREATED | OK =>
         logger.info(s"[DesBaseConnector][handleHttpResponse] Successfully created with response $response")
         logger.debug(s"[DesBaseConnector][handleHttpResponse] Json Response: ${response.json}")
         response.json
@@ -75,7 +81,7 @@ trait DesBaseConnector extends Logging {
             },
             valid => Right(valid)
           )
-      case status  =>
+      case status       =>
         logger.error(
           s"[DesBaseConnector][handleHttpResponse] Unexpected response, status $status returned with body ${response.body}"
         )
