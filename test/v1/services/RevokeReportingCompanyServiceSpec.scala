@@ -30,7 +30,7 @@ class RevokeReportingCompanyServiceSpec extends MockRevokeReportingCompanyConnec
   "RevokeReportingCompanyService.submit" when {
     def setup(response: SubmissionResponse): RevokeReportingCompanyService = {
       mockRevokeReportingCompany(revokeReportingCompanyModelMax)(response)
-      new RevokeReportingCompanyService(mockRevokeReportingCompanyConnector)
+      new RevokeReportingCompanyService(mockRevokeReportingCompanyConnector, appConfig)
     }
 
     "submission is successful" should {

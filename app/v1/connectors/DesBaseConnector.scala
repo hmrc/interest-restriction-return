@@ -24,44 +24,47 @@ import v1.connectors.HttpHelper.SubmissionResponse
 import v1.models.requests.IdentifierRequest
 
 import java.util.UUID.randomUUID
+import scala.util.matching.Regex
 
 trait DesBaseConnector extends Logging {
 
-  val uuidIdBeginIndex: Int = 24
+  private val requestIdPattern: Regex = """.*([A-Za-z0-9]{8}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}).*""".r
 
   def desHeaders()(implicit
     hc: HeaderCarrier,
     appConfig: AppConfig,
     request: IdentifierRequest[?]
-  ): Seq[(String, String)] = {
-    val correlationId    = correlationIdGenerator(hc)
+  ): Seq[(String, String)]    =
     Seq(
       appConfig.desEnvironment,
       "providerId"    -> request.identifier,
-      "correlationId" -> correlationId,
+      "correlationId" -> getCorrelationId(hc),
       "Authorization" -> appConfig.desAuthorisationToken
     )
-  }
 
   def hipHeaders(appConfig: AppConfig)(implicit hc: HeaderCarrier): Seq[(String, String)] =
     Seq(
-      "correlationId" -> correlationIdGenerator(hc),
+      "correlationId" -> getCorrelationId(hc),
       "Authorization" -> appConfig.hipAuthorizationToken
     )
 
   def generateNewUUID: String = randomUUID.toString
 
-  def correlationIdGenerator(hc: HeaderCarrier): String = {
-    val CorrelationIdPattern = """.*([A-Za-z0-9]{8}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}).*""".r
-    hc.requestId match {
-      case Some(requestId) =>
-        requestId.value match {
-          case CorrelationIdPattern(prefix) => prefix + "-" + generateNewUUID.substring(uuidIdBeginIndex)
-          case _                            => generateNewUUID
-        }
-      case _               => generateNewUUID
+  def getCorrelationId(hc: HeaderCarrier): String =
+    try {
+      val candidateUUID = hc.requestId
+        .map(_.value)
+        .flatMap(rid => requestIdPattern.findFirstMatchIn(rid).map(_.group(1)))
+        .map(prefix => s"$prefix-${generateNewUUID.takeRight(12)}")
+        .getOrElse(generateNewUUID)
+
+      // Validate the UUID by attempting to parse it
+      // happened once that prefix had not uuid type format so generated cid was invalid
+      java.util.UUID.fromString(candidateUUID)
+      candidateUUID
+    } catch {
+      case _: Exception => generateNewUUID
     }
-  }
 
   def handleHttpResponse(
     response: HttpResponse,
