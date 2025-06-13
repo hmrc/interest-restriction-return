@@ -16,20 +16,22 @@
 
 package v1.connectors
 
+import com.google.inject.Singleton
 import config.AppConfig
 import play.api.http.HeaderNames
 import play.api.libs.json.Json
+import play.api.libs.ws.writeableOf_JsValue
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.httpParsers.AppointReportingCompanyHttpParser.AppointReportingCompanyReads
 import v1.models.appointReportingCompany.AppointReportingCompanyModel
 import v1.models.requests.IdentifierRequest
-import play.api.libs.ws.writeableOf_JsValue
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
+@Singleton
 class AppointReportingCompanyConnector @Inject() (httpClient: HttpClientV2, implicit val appConfig: AppConfig)
     extends DesBaseConnector {
 

@@ -16,6 +16,7 @@
 
 package v1.connectors
 
+import com.google.inject.Singleton
 import config.AppConfig
 import play.api.http.HeaderNames
 import play.api.libs.json.Json
@@ -30,6 +31,7 @@ import play.api.libs.ws.writeableOf_JsValue
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
+@Singleton
 class RevokeReportingCompanyConnector @Inject() (httpClient: HttpClientV2, implicit val appConfig: AppConfig)
     extends DesBaseConnector {
 
@@ -49,4 +51,23 @@ class RevokeReportingCompanyConnector @Inject() (httpClient: HttpClientV2, impli
       .withBody(Json.toJson(revokeReportingCompanyModel))
       .execute[SubmissionResponse]
   }
+
+  def revokeHip(
+    revokeReportingCompanyModel: RevokeReportingCompanyModel
+  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] = {
+    val fullUrl      = appConfig.hipRevokeReportingCompanyUrl
+    logger.debug(s"[RevokeReportingCompanyConnector][revokeHip] URL: $fullUrl")
+    val receivedSize = request.headers.get(HeaderNames.CONTENT_LENGTH)
+    val jsonSize     = Json.stringify(Json.toJson(revokeReportingCompanyModel)(RevokeReportingCompanyModel.format)).length
+    logger.debug(
+      s"[RevokeReportingCompanyConnector][revokeHip] Size of content received: $receivedSize sent: $jsonSize"
+    )
+
+    httpClient
+      .post(url"$fullUrl")
+      .setHeader(hipHeaders(appConfig)*)
+      .withBody(Json.toJson(revokeReportingCompanyModel))
+      .execute[SubmissionResponse]
+  }
+
 }

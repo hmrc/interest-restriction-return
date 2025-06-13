@@ -50,6 +50,8 @@ trait IntegrationSpecBase
     "microservice.services.auth.port"   -> mockPort,
     "microservice.services.des.host"    -> mockHost,
     "microservice.services.des.port"    -> mockPort,
+    "microservice.services.hip.port"    -> mockPort,
+    "microservice.services.hip.enabled" -> true,
     "microservice.services.nrs.host"    -> mockHost,
     "microservice.services.nrs.port"    -> mockPort,
     "microservice.services.nrs.enabled" -> true,

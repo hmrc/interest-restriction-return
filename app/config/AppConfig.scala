@@ -63,4 +63,5 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, configuration: Config
   private val secret: String                     = servicesConfig.getString("microservice.services.hip.secret")
   def hipAuthorizationToken: String              = Base64.getEncoder.encodeToString(s"$clientId:$secret".getBytes("UTF-8"))
   lazy val hipAppointReportingCompanyUrl: String = s"$baseHipUrl/appoint"
+  lazy val hipRevokeReportingCompanyUrl: String  = s"$baseHipUrl/revoke"
 }

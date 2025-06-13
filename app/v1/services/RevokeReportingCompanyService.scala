@@ -16,27 +16,44 @@
 
 package v1.services
 
+import com.google.inject.Singleton
+import config.AppConfig
 import play.api.Logging
-
-import javax.inject.Inject
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.connectors.HttpHelper.SubmissionResponse
 import v1.connectors.RevokeReportingCompanyConnector
 import v1.models.requests.IdentifierRequest
 import v1.models.revokeReportingCompany.RevokeReportingCompanyModel
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class RevokeReportingCompanyService @Inject() (revokeReportingCompanyConnector: RevokeReportingCompanyConnector)
-    extends Submission[RevokeReportingCompanyModel]
+@Singleton
+class RevokeReportingCompanyService @Inject() (
+  connector: RevokeReportingCompanyConnector,
+  appConfig: AppConfig
+) extends Submission[RevokeReportingCompanyModel]
     with Logging {
 
   override def submit(
     revokeReportingCompany: RevokeReportingCompanyModel
   )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] =
-    revokeReportingCompanyConnector.revoke(revokeReportingCompany).map { resp =>
-      logger.info("[RevokeReportingCompanyService][submit] Successfully sent a revoke reporting company payload")
-      resp
+    if (appConfig.isHipEnabled) {
+      logger.info("[RevokeReportingCompanyService][submit] Submitting to HIP")
+      connector.revokeHip(revokeReportingCompany).map { resp =>
+        logger.info(
+          "[RevokeReportingCompanyService][submit] Successfully sent a revoke reporting company payload to HIP"
+        )
+        resp
+      }
+    } else {
+      logger.info("[RevokeReportingCompanyService][submit] Submitting to DES")
+      connector.revoke(revokeReportingCompany).map { resp =>
+        logger.info(
+          "[RevokeReportingCompanyService][submit] Successfully sent a revoke reporting company payload to DES"
+        )
+        resp
+      }
     }
 
 }
