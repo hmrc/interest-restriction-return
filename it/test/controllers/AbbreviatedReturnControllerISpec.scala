@@ -19,7 +19,7 @@ package controllers
 import data.AbbreviatedReturnITConstants.*
 import data.IntegrationNrsConstants.*
 import play.api.http.Status.*
-import stubs.{AuthStub, DESStub, NRSStub}
+import stubs.{AuthStub, HIPStub, NRSStub}
 import utils.IntegrationSpecBase
 
 class AbbreviatedReturnControllerISpec extends IntegrationSpecBase {
@@ -30,14 +30,14 @@ class AbbreviatedReturnControllerISpec extends IntegrationSpecBase {
         "nrs is successful" should {
           "return OK (200) with the correct body" in {
             AuthStub.authorised()
-            DESStub.abbreviatedReturnSuccess(abbreviatedReturnDesSuccessJson)
+            HIPStub.abbreviatedReturnSuccess(abbreviatedReturnSuccessJson)
             NRSStub.success(responsePayload)
 
             val result = postRequest("/return/abbreviated", abbreviatedReturnJson)
 
             result should have(
               httpStatus(OK),
-              jsonBodyAs(abbreviatedReturnDesSuccessJson)
+              jsonBodyAs(abbreviatedReturnSuccessJson)
             )
           }
         }
@@ -45,14 +45,14 @@ class AbbreviatedReturnControllerISpec extends IntegrationSpecBase {
         "nrs errors" should {
           "return OK (200) with the correct body" in {
             AuthStub.authorised()
-            DESStub.abbreviatedReturnSuccess(abbreviatedReturnDesSuccessJson)
+            HIPStub.abbreviatedReturnSuccess(abbreviatedReturnSuccessJson)
             NRSStub.error
 
             val result = postRequest("/return/abbreviated", abbreviatedReturnJson)
 
             result should have(
               httpStatus(OK),
-              jsonBodyAs(abbreviatedReturnDesSuccessJson)
+              jsonBodyAs(abbreviatedReturnSuccessJson)
             )
           }
         }
@@ -61,7 +61,7 @@ class AbbreviatedReturnControllerISpec extends IntegrationSpecBase {
       "error is returned from DES" should {
         "return the error" in {
           AuthStub.authorised()
-          DESStub.abbreviatedReturnError
+          HIPStub.abbreviatedReturnError
 
           val result = postRequest("/return/abbreviated", abbreviatedReturnJson)
 
@@ -89,7 +89,7 @@ class AbbreviatedReturnControllerISpec extends IntegrationSpecBase {
     "user is authenticated" should {
       "return NO_CONTENT (204)" in {
         AuthStub.authorised()
-        DESStub.abbreviatedReturnSuccess(abbreviatedReturnDesSuccessJson)
+        HIPStub.abbreviatedReturnSuccess(abbreviatedReturnSuccessJson)
         NRSStub.success(responsePayload)
 
         val result = postRequest("/return/abbreviated/validate", abbreviatedReturnJson)

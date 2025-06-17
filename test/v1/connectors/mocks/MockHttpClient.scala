@@ -33,6 +33,14 @@ trait MockHttpClient {
   def mockDesURL(url: String): Unit =
     when(mockAppConfig.desUrl).thenReturn(url)
 
+  def mockHipURL(): Unit = {
+    when(mockAppConfig.isHipEnabled).thenReturn(true)
+
+    when(mockAppConfig.hipAppointReportingCompanyUrl).thenReturn("http://localhost:9262/cir/appoint")
+    when(mockAppConfig.hipRevokeReportingCompanyUrl).thenReturn("http://localhost:9262/cir/revoke")
+    when(mockAppConfig.hipFullReturnUrl).thenReturn("http://localhost:9262/cir/return")
+  }
+
   def mockPostCall(fullURL: String): Unit = {
     when(mockRequestBuilder.setHeader(any())).thenReturn(mockRequestBuilder)
     when(mockRequestBuilder.withBody(any())(using any(), any(), any())).thenReturn(mockRequestBuilder)

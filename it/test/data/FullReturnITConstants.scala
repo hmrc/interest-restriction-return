@@ -29,7 +29,7 @@ object FullReturnITConstants {
 
   val ackRef: String = "ackRef"
 
-  val fullReturnDesSuccessJson: JsObject = Json.obj(
+  val fullReturnSuccessJson: JsObject = Json.obj(
     "acknowledgementReference" -> ackRef
   )
 

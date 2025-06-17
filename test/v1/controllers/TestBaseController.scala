@@ -14,17 +14,11 @@
  * limitations under the License.
  */
 
-package v1.connectors.httpParsers
+package v1.controllers
 
-import v1.connectors.HttpHelper.SubmissionResponse
-import v1.connectors.{BaseConnector, HttpErrorMessages}
-import uk.gov.hmrc.http.{HttpReads, HttpResponse}
+import play.api.mvc.ControllerComponents
+import play.api.test.Helpers
 
-object AppointReportingCompanyHttpParser extends BaseConnector {
+class TestBaseController(override val controllerComponents: ControllerComponents) extends BaseController
 
-  implicit object AppointReportingCompanyReads extends HttpReads[SubmissionResponse] {
-
-    override def read(method: String, url: String, response: HttpResponse): SubmissionResponse =
-      handleHttpResponse(response, "AppointReportingCompanyHttpParser", HttpErrorMessages.APPOINT_ERROR)
-  }
-}
+object TestBaseController extends TestBaseController(Helpers.stubControllerComponents())

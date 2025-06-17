@@ -22,12 +22,12 @@ import play.api.libs.json.JsValue
 import utils.WireMockMethods
 
 //TODO rename DES to HIP after final refactor/migration
-object DESStub extends WireMockMethods {
+object HIPStub extends WireMockMethods {
 
   private val appointReportingCompanyDesUrl: String = "/cir/appoint"
   private val revokeReportingCompanyDesUrl: String  = "/cir/revoke"
   private val abbreviatedReturnDesUrl: String       = "/organisations/interest-restrictions-return/abbreviated"
-  private val fullReturnDesUrl: String              = "/organisations/interest-restrictions-return/full"
+  private val fullReturnDesUrl: String              = "/cir/return"
 
   private val headers: Map[String, String] = Map(
     "Authorization" -> "Bearer dev",
@@ -41,7 +41,7 @@ object DESStub extends WireMockMethods {
 
   def appointReportingCompanySuccess(response: JsValue): StubMapping =
     when(method = POST, uri = appointReportingCompanyDesUrl, headers = headersHip)
-      .thenReturn(status = CREATED, body = response)
+      .thenReturn(status = OK, body = response)
 
   def appointReportingCompanyError: StubMapping =
     when(method = POST, uri = appointReportingCompanyDesUrl, headers = headersHip)
@@ -49,7 +49,7 @@ object DESStub extends WireMockMethods {
 
   def revokeReportingCompanySuccess(response: JsValue): StubMapping =
     when(method = POST, uri = revokeReportingCompanyDesUrl, headers = headersHip)
-      .thenReturn(status = CREATED, body = response)
+      .thenReturn(status = OK, body = response)
 
   def revokeReportingCompanyError: StubMapping =
     when(method = POST, uri = revokeReportingCompanyDesUrl, headers = headersHip)
@@ -62,9 +62,9 @@ object DESStub extends WireMockMethods {
     when(method = POST, uri = abbreviatedReturnDesUrl, headers = headers).thenReturn(status = INTERNAL_SERVER_ERROR)
 
   def fullReturnSuccess(response: JsValue): StubMapping =
-    when(method = POST, uri = fullReturnDesUrl, headers = headers).thenReturn(status = CREATED, body = response)
+    when(method = POST, uri = fullReturnDesUrl, headers = headersHip).thenReturn(status = OK, body = response)
 
   def fullReturnError: StubMapping =
-    when(method = POST, uri = fullReturnDesUrl, headers = headers).thenReturn(status = INTERNAL_SERVER_ERROR)
+    when(method = POST, uri = fullReturnDesUrl, headers = headersHip).thenReturn(status = INTERNAL_SERVER_ERROR)
 
 }

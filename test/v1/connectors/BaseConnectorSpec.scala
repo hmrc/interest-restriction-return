@@ -19,11 +19,11 @@ package v1.connectors
 import uk.gov.hmrc.http.{HeaderCarrier, RequestId}
 import utils.BaseSpec
 
-class DesBaseConnectorSpec extends BaseSpec {
+class BaseConnectorSpec extends BaseSpec {
 
   private trait Setup {
     val uuid: String                = "5847df7f-751a-9046-be4e-ffecf1bbac25"
-    val connector: DesBaseConnector = new DesBaseConnector {
+    val connector: BaseConnector = new BaseConnector {
       override def generateNewUUID: String = uuid
     }
   }

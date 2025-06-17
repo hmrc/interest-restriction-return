@@ -30,9 +30,9 @@ import scala.concurrent.Future
 
 class RevokeReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec {
 
-  val desBaseUrl: String = "http://localhost:9262"
-  val apiRelativeUrl     = "/organisations/interest-restrictions-return/revoke"
-  val fullURL            = s"$desBaseUrl$apiRelativeUrl"
+  val desBaseUrl: String     = "http://localhost:9262/cir"
+  val apiRelativeUrl: String = "/revoke"
+  val fullURL: String        = s"$desBaseUrl$apiRelativeUrl"
 
   private trait ConnectorTestSetup {
 
@@ -41,11 +41,11 @@ class RevokeReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec {
     lazy val connector: RevokeReportingCompanyConnector =
       new RevokeReportingCompanyConnector(mockHttpClient, mockAppConfig)
 
-    mockDesURL(desBaseUrl)
+    mockHipURL()
     mockPostCall(fullURL)
   }
 
-  "RevokeReportingCompanyConnector.revoke" when {
+  "RevokeReportingCompanyConnector.revokeHip" when {
 
     "revoke is successful" should {
       "return a Right(SuccessResponse)" in new ConnectorTestSetup {
@@ -53,7 +53,7 @@ class RevokeReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec {
         when(mockRequestBuilder.execute(using any[HttpReads[SubmissionResponse]], any()))
           .thenReturn(Future(Right(response)))
 
-        val result: Future[SubmissionResponse] = connector.revoke(revokeReportingCompanyModelMax)
+        val result: Future[SubmissionResponse] = connector.revokeHip(revokeReportingCompanyModelMax)
         await(result) shouldBe Right(DesSuccessResponse(ackRef))
       }
     }
@@ -64,7 +64,7 @@ class RevokeReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec {
         when(mockRequestBuilder.execute(using any[HttpReads[SubmissionResponse]], any()))
           .thenReturn(Future(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))))
 
-        val result: Future[SubmissionResponse] = connector.revoke(revokeReportingCompanyModelMax)
+        val result: Future[SubmissionResponse] = connector.revokeHip(revokeReportingCompanyModelMax)
         await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
       }
     }

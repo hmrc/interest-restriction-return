@@ -18,31 +18,31 @@ package controllers
 
 import data.AppointReportingCompanyITConstants.*
 import play.api.http.Status.*
-import stubs.{AuthStub, DESStub}
+import stubs.{AuthStub, HIPStub}
 import utils.IntegrationSpecBase
 
 class AppointReportingCompanyControllerISpec extends IntegrationSpecBase {
 
   "POST /reporting-company/appoint" when {
     "user is authenticated" when {
-      "request is successfully processed by DES" should {
+      "request is successfully processed by HIP" should {
         "return OK (200) with the correct body" in {
           AuthStub.authorised()
-          DESStub.appointReportingCompanySuccess(appointReportingCompanyDesSuccessJson)
+          HIPStub.appointReportingCompanySuccess(appointReportingCompanySuccessJson)
 
           val result = postRequest("/reporting-company/appoint", appointReportingCompanyJson)
 
           result should have(
             httpStatus(OK),
-            jsonBodyAs(appointReportingCompanyDesSuccessJson)
+            jsonBodyAs(appointReportingCompanySuccessJson)
           )
         }
       }
 
-      "error is returned from DES" should {
+      "error is returned from HIP" should {
         "return the error" in {
           AuthStub.authorised()
-          DESStub.appointReportingCompanyError
+          HIPStub.appointReportingCompanyError
 
           val result = postRequest("/reporting-company/appoint", appointReportingCompanyJson)
 

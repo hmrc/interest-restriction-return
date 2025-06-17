@@ -29,9 +29,9 @@ import scala.concurrent.Future
 
 class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
 
-  val desBaseUrl: String = "http://localhost:9262"
-  val apiRelativeUrl     = "/organisations/interest-restrictions-return/full"
-  val fullURL            = s"$desBaseUrl$apiRelativeUrl"
+  val desBaseUrl: String     = "http://localhost:9262/cir"
+  val apiRelativeUrl: String = "/return"
+  val fullURL: String        = s"$desBaseUrl$apiRelativeUrl"
 
   private trait ConnectorTestSetup {
     val response: DesSuccessResponse = DesSuccessResponse(ackRef)
@@ -39,11 +39,11 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
     lazy val connector: FullReturnConnector =
       new FullReturnConnector(mockHttpClient, mockAppConfig)
 
-    mockDesURL(desBaseUrl)
+    mockHipURL()
     mockPostCall(fullURL)
   }
 
-  "FullReturnConnector.submit" which {
+  "FullReturnConnector.submitHip" which {
 
     "uses fullReturnModelMax" when {
 
@@ -54,7 +54,7 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
           when(mockRequestBuilder.execute(using any[HttpReads[SubmissionResponse]], any()))
             .thenReturn(Future(Right(response)))
 
-          val result: Future[SubmissionResponse] = connector.submit(fullReturnUltimateParentModel)
+          val result: Future[SubmissionResponse] = connector.submitHip(fullReturnUltimateParentModel)
           await(result) shouldBe Right(response)
         }
       }
@@ -66,7 +66,7 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
           when(mockRequestBuilder.execute(using any[HttpReads[SubmissionResponse]], any()))
             .thenReturn(Future(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))))
 
-          val result: Future[SubmissionResponse] = connector.submit(fullReturnUltimateParentModel)
+          val result: Future[SubmissionResponse] = connector.submitHip(fullReturnUltimateParentModel)
           await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
         }
       }
@@ -81,7 +81,7 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
           when(mockRequestBuilder.execute(using any[HttpReads[SubmissionResponse]], any()))
             .thenReturn(Future(Right(response)))
 
-          val result: Future[SubmissionResponse] = connector.submit(fullReturnModelMin)
+          val result: Future[SubmissionResponse] = connector.submitHip(fullReturnModelMin)
           await(result) shouldBe Right(response)
         }
       }
@@ -93,7 +93,7 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
           when(mockRequestBuilder.execute(using any[HttpReads[SubmissionResponse]], any()))
             .thenReturn(Future(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))))
 
-          val result: Future[SubmissionResponse] = connector.submit(fullReturnModelMin)
+          val result: Future[SubmissionResponse] = connector.submitHip(fullReturnModelMin)
           await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
         }
       }

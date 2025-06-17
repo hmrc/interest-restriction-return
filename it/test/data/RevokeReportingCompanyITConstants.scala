@@ -35,7 +35,7 @@ object RevokeReportingCompanyITConstants {
     "declaration"                      -> true
   )
 
-  val revokeReportingCompanyDesSuccessJson: JsObject = Json.obj(
+  val revokeReportingCompanySuccessJson: JsObject = Json.obj(
     "acknowledgementReference" -> ackRef
   )
 }

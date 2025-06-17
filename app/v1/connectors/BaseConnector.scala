@@ -26,7 +26,7 @@ import v1.models.requests.IdentifierRequest
 import java.util.UUID.randomUUID
 import scala.util.matching.Regex
 
-trait DesBaseConnector extends Logging {
+trait BaseConnector extends Logging {
 
   private val requestIdPattern: Regex = """.*([A-Za-z0-9]{8}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}).*""".r
 

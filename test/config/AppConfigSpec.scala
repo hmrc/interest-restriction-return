@@ -27,10 +27,11 @@ class AppConfigSpec extends BaseSpec {
     val mockServicesConfig: ServicesConfig = mock(classOf[ServicesConfig])
     val mockConfiguration: Configuration   = mock(classOf[Configuration])
 
+    when(mockConfiguration.getOptional[Boolean]("microservice.services.hip.enabled")).thenReturn(None)
     val appConfig: AppConfig = new AppConfig(mockServicesConfig, mockConfiguration)
   }
 
-  "AppConfigImpl" when {
+  "AppConfig" when {
     ".desUrl" should {
       "return DES URL" in new Test {
         when(mockServicesConfig.baseUrl("des")).thenReturn("http://localhost:9262")
