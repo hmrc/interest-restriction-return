@@ -18,31 +18,31 @@ package controllers
 
 import data.RevokeReportingCompanyITConstants.*
 import play.api.http.Status.*
-import stubs.{AuthStub, DESStub}
+import stubs.{AuthStub, HIPStub}
 import utils.IntegrationSpecBase
 
 class RevokeReportingCompanyControllerISpec extends IntegrationSpecBase {
 
   "POST /reporting-company/revoke" when {
     "user is authenticated" when {
-      "request is successfully processed by DES" should {
+      "request is successfully processed by HIP" should {
         "return OK (200) with the correct body" in {
           AuthStub.authorised()
-          DESStub.revokeReportingCompanySuccess(revokeReportingCompanyDesSuccessJson)
+          HIPStub.revokeReportingCompanySuccess(revokeReportingCompanySuccessJson)
 
           val result = postRequest("/reporting-company/revoke", revokeReportingCompanyJson)
 
           result should have(
             httpStatus(OK),
-            jsonBodyAs(revokeReportingCompanyDesSuccessJson)
+            jsonBodyAs(revokeReportingCompanySuccessJson)
           )
         }
       }
 
-      "error is returned from DES" should {
+      "error is returned from HIP" should {
         "return the error" in {
           AuthStub.authorised()
-          DESStub.revokeReportingCompanyError
+          HIPStub.revokeReportingCompanyError
 
           val result = postRequest("/reporting-company/revoke", revokeReportingCompanyJson)
 

@@ -37,7 +37,7 @@ object AppointReportingCompanyITConstants {
     "declaration"                        -> true
   )
 
-  val appointReportingCompanyDesSuccessJson: JsObject = Json.obj(
+  val appointReportingCompanySuccessJson: JsObject = Json.obj(
     "acknowledgementReference" -> ackRef
   )
 }

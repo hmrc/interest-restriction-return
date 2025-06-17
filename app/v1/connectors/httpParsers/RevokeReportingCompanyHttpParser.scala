@@ -17,10 +17,10 @@
 package v1.connectors.httpParsers
 
 import v1.connectors.HttpHelper.SubmissionResponse
-import v1.connectors.{DesBaseConnector, HttpErrorMessages}
+import v1.connectors.{BaseConnector, HttpErrorMessages}
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
-object RevokeReportingCompanyHttpParser extends DesBaseConnector {
+object RevokeReportingCompanyHttpParser extends BaseConnector {
 
   implicit object RevokeReportingCompanyReads extends HttpReads[SubmissionResponse] {
 

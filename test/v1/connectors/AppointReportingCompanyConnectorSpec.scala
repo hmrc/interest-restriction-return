@@ -29,14 +29,14 @@ import scala.concurrent.Future
 
 class AppointReportingCompanyConnectorSpec extends BaseSpec {
 
-  val desBaseUrl: String = "http://localhost:9262"
-  val apiRelativeUrl     = "/organisations/interest-restrictions-return/appoint"
-  val fullURL            = s"$desBaseUrl$apiRelativeUrl"
+  val desBaseUrl: String     = "http://localhost:9262/cir"
+  val apiRelativeUrl: String = "/appoint"
+  val fullURL: String        = s"$desBaseUrl$apiRelativeUrl"
 
   val response: DesSuccessResponse = DesSuccessResponse(ackRef)
 
   private trait ConnectorTestSetup {
-    mockDesURL(desBaseUrl)
+    mockHipURL()
     mockPostCall(fullURL)
 
     lazy val connector: AppointReportingCompanyConnector =
@@ -45,7 +45,7 @@ class AppointReportingCompanyConnectorSpec extends BaseSpec {
 
   "AppointReportingCompanyConnector" when {
 
-    ".appoint()" when {
+    ".appointHip()" when {
 
       "appointment is successful" should {
 
@@ -54,7 +54,7 @@ class AppointReportingCompanyConnectorSpec extends BaseSpec {
           when(mockRequestBuilder.execute(using any[HttpReads[SubmissionResponse]], any()))
             .thenReturn(Future(Right(response)))
 
-          val result: Future[SubmissionResponse] = connector.appoint(appointReportingCompanyModelMax)
+          val result: Future[SubmissionResponse] = connector.appointHip(appointReportingCompanyModelMax)
           await(result) shouldBe Right(DesSuccessResponse(ackRef))
         }
       }
@@ -66,7 +66,7 @@ class AppointReportingCompanyConnectorSpec extends BaseSpec {
           when(mockRequestBuilder.execute(using any[HttpReads[SubmissionResponse]], any()))
             .thenReturn(Future(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))))
 
-          val result: Future[SubmissionResponse] = connector.appoint(appointReportingCompanyModelMax)
+          val result: Future[SubmissionResponse] = connector.appointHip(appointReportingCompanyModelMax)
           await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
         }
       }

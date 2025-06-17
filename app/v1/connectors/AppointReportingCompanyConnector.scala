@@ -33,7 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class AppointReportingCompanyConnector @Inject() (httpClient: HttpClientV2, implicit val appConfig: AppConfig)
-    extends DesBaseConnector {
+    extends BaseConnector {
 
   private val appointUrl = s"${appConfig.desUrl}/organisations/interest-restrictions-return/appoint"
 

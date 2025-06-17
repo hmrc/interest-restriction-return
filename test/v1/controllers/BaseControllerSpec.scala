@@ -19,20 +19,16 @@ package v1.controllers
 import data.appointReportingCompany.AppointReportingCompanyConstants.*
 import play.api.http.Status.*
 import play.api.libs.json.{JsObject, Json}
-import play.api.mvc.Results.Ok
 import play.api.mvc.*
-import play.api.test.{FakeRequest, Helpers}
+import play.api.mvc.Results.Ok
+import play.api.test.FakeRequest
 import utils.BaseSpec
-import v1.controllers.BaseController
 import v1.models.appointReportingCompany.AppointReportingCompanyModel
 
-import javax.inject.Inject
 import scala.concurrent.Future
+import scala.reflect.ClassTag
 
 class BaseControllerSpec extends BaseSpec {
-
-  class DummyController @Inject() (override val controllerComponents: ControllerComponents) extends BaseController
-  object TestBaseController extends DummyController(Helpers.stubControllerComponents())
 
   class WithJsonBodyTest(json: JsObject) {
     val request: FakeRequest[JsObject] = fakeRequest.withBody(json)
@@ -40,7 +36,7 @@ class BaseControllerSpec extends BaseSpec {
     val result: Future[Result] = TestBaseController
       .withJsonBody[AppointReportingCompanyModel](_ => Future.successful(Ok("Success")))(
         request,
-        implicitly[Manifest[AppointReportingCompanyModel]],
+        implicitly[ClassTag[AppointReportingCompanyModel]],
         AppointReportingCompanyModel.format
       )
   }

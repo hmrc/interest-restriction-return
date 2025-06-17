@@ -16,6 +16,7 @@
 
 package v1.connectors
 
+import com.google.inject.Singleton
 import config.AppConfig
 import play.api.http.HeaderNames
 import play.api.libs.json.Json
@@ -31,8 +32,9 @@ import play.api.libs.ws.writeableOf_JsValue
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
+@Singleton
 class FullReturnConnector @Inject() (httpClient: HttpClientV2, implicit val appConfig: AppConfig)
-    extends DesBaseConnector
+    extends BaseConnector
     with JsonFormatters {
 
   private[connectors] lazy val fullReturnUrl = s"${appConfig.desUrl}/organisations/interest-restrictions-return/full"
@@ -49,6 +51,22 @@ class FullReturnConnector @Inject() (httpClient: HttpClientV2, implicit val appC
     httpClient
       .post(url"$fullReturnUrl")
       .setHeader(desHeaders()*)
+      .withBody(Json.toJson(fullReturnModel))
+      .execute[SubmissionResponse]
+  }
+
+  def submitHip(
+    fullReturnModel: FullReturnModel
+  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] = {
+    val fullUrl      = appConfig.hipFullReturnUrl
+    logger.debug(s"[FullReturnConnector][submitHip] URL: $fullUrl")
+    val receivedSize = request.headers.get(HeaderNames.CONTENT_LENGTH)
+    val jsonSize     = Json.stringify(Json.toJson(fullReturnModel)).length
+    logger.debug(s"[FullReturnConnector][submitHip] Size of content received: $receivedSize sent: $jsonSize")
+
+    httpClient
+      .post(url"$fullUrl")
+      .setHeader(hipHeaders(appConfig)*)
       .withBody(Json.toJson(fullReturnModel))
       .execute[SubmissionResponse]
   }

@@ -27,7 +27,7 @@ object AbbreviatedReturnITConstants {
 
   val ackRef: String = "ackRef"
 
-  val abbreviatedReturnDesSuccessJson: JsObject =
+  val abbreviatedReturnSuccessJson: JsObject =
     Json.obj(
       "acknowledgementReference" -> ackRef
     )

@@ -32,7 +32,7 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class AbbreviatedReturnConnector @Inject() (httpClient: HttpClientV2, implicit val appConfig: AppConfig)
-    extends DesBaseConnector
+    extends BaseConnector
     with JsonFormatters {
 
   private[connectors] lazy val abbreviatedReturnUrl =

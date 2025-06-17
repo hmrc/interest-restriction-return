@@ -31,7 +31,7 @@ class FullReturnServiceSpec extends MockFullReturnConnector with BaseSpec {
     "uses fullReturnModelMax" when {
       def setup(response: SubmissionResponse): FullReturnService = {
         mockFullReturn(fullReturnUltimateParentModel)(response)
-        new FullReturnService(mockFullReturnConnector)
+        new FullReturnService(mockFullReturnConnector, appConfig)
       }
 
       "submission is successful" should {
@@ -56,7 +56,7 @@ class FullReturnServiceSpec extends MockFullReturnConnector with BaseSpec {
     "uses fullReturnModelMin" when {
       def setup(response: SubmissionResponse): FullReturnService = {
         mockFullReturn(fullReturnModelMin)(response)
-        new FullReturnService(mockFullReturnConnector)
+        new FullReturnService(mockFullReturnConnector, appConfig)
       }
 
       "submission is successful" should {

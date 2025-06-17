@@ -19,27 +19,27 @@ package controllers
 import data.FullReturnITConstants.*
 import data.IntegrationNrsConstants.*
 import play.api.http.Status.*
-import stubs.{AuthStub, DESStub, NRSStub}
+import stubs.{AuthStub, HIPStub, NRSStub}
 import utils.IntegrationSpecBase
 
 class FullReturnControllerISpec extends IntegrationSpecBase {
 
   "POST /return/full" when {
     "user is authenticated" when {
-      "request is successfully processed by DES" when {
+      "request is successfully processed by HIP" when {
         "nrs is successful" should {
           "return OK (200) with the correct body" in {
 
             AuthStub.authorised()
-            DESStub.fullReturnSuccess(fullReturnDesSuccessJson)
+            HIPStub.fullReturnSuccess(fullReturnSuccessJson)
             NRSStub.success(responsePayload)
 
             val result = postRequest("/return/full", fullReturnJson)
 
-            verifyCalls("/submission", 1)
+            verifyCalls("/cir/return", 1)
             result should have(
               httpStatus(OK),
-              jsonBodyAs(fullReturnDesSuccessJson)
+              jsonBodyAs(fullReturnSuccessJson)
             )
           }
         }
@@ -48,29 +48,29 @@ class FullReturnControllerISpec extends IntegrationSpecBase {
 
           "return OK (200) with the correct body" in {
             AuthStub.authorised()
-            DESStub.fullReturnSuccess(fullReturnDesSuccessJson)
+            HIPStub.fullReturnSuccess(fullReturnSuccessJson)
             NRSStub.error
 
             val result = postRequest("/return/full", fullReturnJson)
 
-            verifyCalls("/submission", 1)
+            verifyCalls("/cir/return", 1)
             result should have(
               httpStatus(OK),
-              jsonBodyAs(fullReturnDesSuccessJson)
+              jsonBodyAs(fullReturnSuccessJson)
             )
           }
         }
       }
 
-      "error is returned from DES" should {
+      "error is returned from HIP" should {
         "return the error" in {
           AuthStub.authorised()
-          DESStub.fullReturnError
+          HIPStub.fullReturnError
           NRSStub.error
 
           val result = postRequest("/return/full", fullReturnJson)
 
-          verifyNoCall("/submission")
+          verifyCalls("/cir/return", 1)
           result should have(
             httpStatus(INTERNAL_SERVER_ERROR)
           )
@@ -99,7 +99,7 @@ class FullReturnControllerISpec extends IntegrationSpecBase {
 
         val result = postRequest("/return/full/validate", fullReturnJson)
 
-        verifyNoCall("/submission")
+        verifyNoCall("/cir/return")
         result should have(
           httpStatus(NO_CONTENT)
         )

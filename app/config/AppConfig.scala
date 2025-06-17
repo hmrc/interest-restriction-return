@@ -21,6 +21,7 @@ import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import java.util.Base64
 import javax.inject.{Inject, Singleton}
+import scala.util.{Failure, Success, Try}
 
 @Singleton
 class AppConfig @Inject() (servicesConfig: ServicesConfig, configuration: Configuration) {
@@ -53,15 +54,27 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, configuration: Config
   lazy val endpointsEnabled: Boolean = servicesConfig.getBoolean("api-definitions.endpoints.enabled")
 
   // HIP
-  private lazy val hipUrl: String     = servicesConfig.baseUrl("hip")
-  private lazy val baseHipUrl: String = s"$hipUrl/cir"
-
   lazy val isHipEnabled: Boolean =
     configuration.getOptional[Boolean]("microservice.services.hip.enabled").getOrElse(false)
+
+  private lazy val hipUrl: Try[String] = Try(servicesConfig.baseUrl("hip"))
+  def baseHipUrl: String               = if (isHipEnabled) {
+    val finalUrl = hipUrl match {
+      case Failure(exception) =>
+        throw new RuntimeException(
+          s"Failed to retrieve HIP base URL from configuration: ${exception.getMessage}"
+        )
+      case Success(value)     => value
+    }
+    s"$finalUrl/cir"
+  } else {
+    throw new RuntimeException("HIP is not enabled, cannot retrieve base URL.")
+  }
 
   private val clientId: String                   = servicesConfig.getString("microservice.services.hip.clientId")
   private val secret: String                     = servicesConfig.getString("microservice.services.hip.secret")
   def hipAuthorizationToken: String              = Base64.getEncoder.encodeToString(s"$clientId:$secret".getBytes("UTF-8"))
   lazy val hipAppointReportingCompanyUrl: String = s"$baseHipUrl/appoint"
   lazy val hipRevokeReportingCompanyUrl: String  = s"$baseHipUrl/revoke"
+  lazy val hipFullReturnUrl: String              = s"$baseHipUrl/return"
 }
