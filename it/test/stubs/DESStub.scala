@@ -21,10 +21,11 @@ import play.api.http.Status.*
 import play.api.libs.json.JsValue
 import utils.WireMockMethods
 
+//TODO rename DES to HIP after final refactor/migration
 object DESStub extends WireMockMethods {
 
-  private val appointReportingCompanyDesUrl: String = "/organisations/interest-restrictions-return/appoint"
-  private val revokeReportingCompanyDesUrl: String  = "/organisations/interest-restrictions-return/revoke"
+  private val appointReportingCompanyDesUrl: String = "/cir/appoint"
+  private val revokeReportingCompanyDesUrl: String  = "/cir/revoke"
   private val abbreviatedReturnDesUrl: String       = "/organisations/interest-restrictions-return/abbreviated"
   private val fullReturnDesUrl: String              = "/organisations/interest-restrictions-return/full"
 
@@ -34,20 +35,24 @@ object DESStub extends WireMockMethods {
     "providerId"    -> "providerId"
   )
 
+  private val headersHip: Map[String, String] = Map(
+    "Authorization" -> "YXBpLWNsaWVudC1pZDphcGktY2xpZW50LXNlY3JldA=="
+  )
+
   def appointReportingCompanySuccess(response: JsValue): StubMapping =
-    when(method = POST, uri = appointReportingCompanyDesUrl, headers = headers)
+    when(method = POST, uri = appointReportingCompanyDesUrl, headers = headersHip)
       .thenReturn(status = CREATED, body = response)
 
   def appointReportingCompanyError: StubMapping =
-    when(method = POST, uri = appointReportingCompanyDesUrl, headers = headers)
+    when(method = POST, uri = appointReportingCompanyDesUrl, headers = headersHip)
       .thenReturn(status = INTERNAL_SERVER_ERROR)
 
   def revokeReportingCompanySuccess(response: JsValue): StubMapping =
-    when(method = POST, uri = revokeReportingCompanyDesUrl, headers = headers)
+    when(method = POST, uri = revokeReportingCompanyDesUrl, headers = headersHip)
       .thenReturn(status = CREATED, body = response)
 
   def revokeReportingCompanyError: StubMapping =
-    when(method = POST, uri = revokeReportingCompanyDesUrl, headers = headers)
+    when(method = POST, uri = revokeReportingCompanyDesUrl, headers = headersHip)
       .thenReturn(status = INTERNAL_SERVER_ERROR)
 
   def abbreviatedReturnSuccess(response: JsValue): StubMapping =

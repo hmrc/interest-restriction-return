@@ -30,8 +30,12 @@ trait MockRevokeReportingCompanyConnector {
   lazy val mockRevokeReportingCompanyConnector: RevokeReportingCompanyConnector =
     Mockito.mock(classOf[RevokeReportingCompanyConnector])
 
-  def mockRevokeReportingCompany(model: RevokeReportingCompanyModel)(response: SubmissionResponse): Unit =
+  def mockRevokeReportingCompany(model: RevokeReportingCompanyModel)(response: SubmissionResponse): Unit = {
     when(mockRevokeReportingCompanyConnector.revoke(ArgumentMatchers.eq(model))(any(), any(), any()))
       .thenReturn(Future.successful(response))
+
+    when(mockRevokeReportingCompanyConnector.revokeHip(any[RevokeReportingCompanyModel]())(any(), any(), any()))
+      .thenReturn(Future.successful(response))
+  }
 
 }

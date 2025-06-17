@@ -16,6 +16,7 @@
 
 package v1.services
 
+import com.google.inject.Singleton
 import config.AppConfig
 import play.api.Logging
 import uk.gov.hmrc.http.HeaderCarrier
@@ -27,8 +28,9 @@ import v1.models.requests.IdentifierRequest
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
+@Singleton
 class AppointReportingCompanyService @Inject() (
-  appointReportingCompanyConnector: AppointReportingCompanyConnector,
+  connector: AppointReportingCompanyConnector,
   appConfig: AppConfig
 ) extends Submission[AppointReportingCompanyModel]
     with Logging {
@@ -38,7 +40,7 @@ class AppointReportingCompanyService @Inject() (
   )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] =
     if (appConfig.isHipEnabled) {
       logger.info("[AppointReportingCompanyService][submit] Submitting to HIP")
-      appointReportingCompanyConnector.appointHip(appointReportingCompany).map { resp =>
+      connector.appointHip(appointReportingCompany).map { resp =>
         logger.info(
           "[AppointReportingCompanyService][submit] Successfully sent a appoint reporting company payload to HIP"
         )
@@ -46,7 +48,7 @@ class AppointReportingCompanyService @Inject() (
       }
     } else {
       logger.info("[AppointReportingCompanyService][submit] Submitting to DES")
-      appointReportingCompanyConnector.appoint(appointReportingCompany).map { resp =>
+      connector.appoint(appointReportingCompany).map { resp =>
         logger.info(
           "[AppointReportingCompanyService][submit] Successfully sent a appoint reporting company payload to DES"
         )
