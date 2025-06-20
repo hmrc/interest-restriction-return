@@ -30,7 +30,7 @@ class AbbreviatedReturnServiceSpec extends MockAbbreviatedReturnConnector with B
   "AbbreviatedReturnService.submit" when {
     def setup(response: SubmissionResponse): AbbreviatedReturnService = {
       mockAbbreviatedReturn(abbreviatedReturnUltimateParentModel)(response)
-      new AbbreviatedReturnService(mockAbbreviatedReturnConnector)
+      new AbbreviatedReturnService(mockAbbreviatedReturnConnector, appConfig)
     }
 
     "submission is successful" should {

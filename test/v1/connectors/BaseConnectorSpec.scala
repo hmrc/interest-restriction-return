@@ -22,7 +22,7 @@ import utils.BaseSpec
 class BaseConnectorSpec extends BaseSpec {
 
   private trait Setup {
-    val uuid: String                = "5847df7f-751a-9046-be4e-ffecf1bbac25"
+    val uuid: String             = "5847df7f-751a-9046-be4e-ffecf1bbac25"
     val connector: BaseConnector = new BaseConnector {
       override def generateNewUUID: String = uuid
     }
