@@ -30,8 +30,12 @@ trait MockAbbreviatedReturnConnector {
   lazy val mockAbbreviatedReturnConnector: AbbreviatedReturnConnector =
     Mockito.mock(classOf[AbbreviatedReturnConnector])
 
-  def mockAbbreviatedReturn(model: AbbreviatedReturnModel)(response: SubmissionResponse): Unit =
+  def mockAbbreviatedReturn(model: AbbreviatedReturnModel)(response: SubmissionResponse): Unit = {
     when(mockAbbreviatedReturnConnector.submitAbbreviatedReturn(ArgumentMatchers.eq(model))(any(), any(), any()))
       .thenReturn(Future.successful(response))
+
+    when(mockAbbreviatedReturnConnector.submitAbbreviatedReturnHip(ArgumentMatchers.eq(model))(any(), any(), any()))
+      .thenReturn(Future.successful(response))
+  }
 
 }

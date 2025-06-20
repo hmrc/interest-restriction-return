@@ -77,4 +77,6 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, configuration: Config
   lazy val hipAppointReportingCompanyUrl: String = s"$baseHipUrl/appoint"
   lazy val hipRevokeReportingCompanyUrl: String  = s"$baseHipUrl/revoke"
   lazy val hipFullReturnUrl: String              = s"$baseHipUrl/return"
+  lazy val hipAbbreviatedReturnUrl: String       = s"$baseHipUrl/return/abbreviated"
+
 }
