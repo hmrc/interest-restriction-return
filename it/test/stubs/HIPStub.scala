@@ -24,47 +24,42 @@ import utils.WireMockMethods
 //TODO rename DES to HIP after final refactor/migration
 object HIPStub extends WireMockMethods {
 
-  private val appointReportingCompanyDesUrl: String = "/cir/appoint"
-  private val revokeReportingCompanyDesUrl: String  = "/cir/revoke"
-  private val abbreviatedReturnDesUrl: String       = "/organisations/interest-restrictions-return/abbreviated"
-  private val fullReturnDesUrl: String              = "/cir/return"
-
-  private val headers: Map[String, String] = Map(
-    "Authorization" -> "Bearer dev",
-    "Environment"   -> "dev",
-    "providerId"    -> "providerId"
-  )
+  private val appointReportingCompanyUrl: String = "/cir/appoint"
+  private val revokeReportingCompanyUrl: String  = "/cir/revoke"
+  private val abbreviatedReturnUrl: String       = "/cir/return/abbreviated"
+  private val fullReturnUrl: String              = "/cir/return"
 
   private val headersHip: Map[String, String] = Map(
     "Authorization" -> "YXBpLWNsaWVudC1pZDphcGktY2xpZW50LXNlY3JldA=="
   )
 
   def appointReportingCompanySuccess(response: JsValue): StubMapping =
-    when(method = POST, uri = appointReportingCompanyDesUrl, headers = headersHip)
+    when(method = POST, uri = appointReportingCompanyUrl, headers = headersHip)
       .thenReturn(status = OK, body = response)
 
   def appointReportingCompanyError: StubMapping =
-    when(method = POST, uri = appointReportingCompanyDesUrl, headers = headersHip)
+    when(method = POST, uri = appointReportingCompanyUrl, headers = headersHip)
       .thenReturn(status = INTERNAL_SERVER_ERROR)
 
   def revokeReportingCompanySuccess(response: JsValue): StubMapping =
-    when(method = POST, uri = revokeReportingCompanyDesUrl, headers = headersHip)
+    when(method = POST, uri = revokeReportingCompanyUrl, headers = headersHip)
       .thenReturn(status = OK, body = response)
 
   def revokeReportingCompanyError: StubMapping =
-    when(method = POST, uri = revokeReportingCompanyDesUrl, headers = headersHip)
+    when(method = POST, uri = revokeReportingCompanyUrl, headers = headersHip)
       .thenReturn(status = INTERNAL_SERVER_ERROR)
 
   def abbreviatedReturnSuccess(response: JsValue): StubMapping =
-    when(method = POST, uri = abbreviatedReturnDesUrl, headers = headers).thenReturn(status = CREATED, body = response)
+    when(method = POST, uri = abbreviatedReturnUrl, headers = headersHip)
+      .thenReturn(status = OK, body = response)
 
   def abbreviatedReturnError: StubMapping =
-    when(method = POST, uri = abbreviatedReturnDesUrl, headers = headers).thenReturn(status = INTERNAL_SERVER_ERROR)
+    when(method = POST, uri = abbreviatedReturnUrl, headers = headersHip).thenReturn(status = INTERNAL_SERVER_ERROR)
 
   def fullReturnSuccess(response: JsValue): StubMapping =
-    when(method = POST, uri = fullReturnDesUrl, headers = headersHip).thenReturn(status = OK, body = response)
+    when(method = POST, uri = fullReturnUrl, headers = headersHip).thenReturn(status = OK, body = response)
 
   def fullReturnError: StubMapping =
-    when(method = POST, uri = fullReturnDesUrl, headers = headersHip).thenReturn(status = INTERNAL_SERVER_ERROR)
+    when(method = POST, uri = fullReturnUrl, headers = headersHip).thenReturn(status = INTERNAL_SERVER_ERROR)
 
 }
