@@ -26,7 +26,7 @@ import v1.models.requests.IdentifierRequest
 import java.util.UUID.randomUUID
 import scala.util.matching.Regex
 
-trait BaseConnector extends Logging {
+trait BaseConnector extends Logging with HttpConnectorHeaders {
 
   private val requestIdPattern: Regex = """.*([A-Za-z0-9]{8}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}).*""".r
 
@@ -34,18 +34,18 @@ trait BaseConnector extends Logging {
     hc: HeaderCarrier,
     appConfig: AppConfig,
     request: IdentifierRequest[?]
-  ): Seq[(String, String)]    =
+  ): Seq[(String, String)]   =
     Seq(
       appConfig.desEnvironment,
-      "providerId"    -> request.identifier,
-      "correlationId" -> getCorrelationId(hc),
-      "Authorization" -> appConfig.desAuthorisationToken
+      PROVIDER_ID_HEADER   -> request.identifier,
+      CORRELATION_HEADER   -> getCorrelationId(hc),
+      AUTHORIZATION_HEADER -> appConfig.desAuthorisationToken
     )
 
   def hipHeaders(appConfig: AppConfig)(implicit hc: HeaderCarrier): Seq[(String, String)] =
     Seq(
-      "correlationId" -> getCorrelationId(hc),
-      "Authorization" -> appConfig.hipAuthorizationToken
+      CORRELATION_HEADER   -> getCorrelationId(hc),
+      AUTHORIZATION_HEADER -> s"Basic ${appConfig.hipAuthorizationToken}"
     )
 
   def generateNewUUID: String = randomUUID.toString
