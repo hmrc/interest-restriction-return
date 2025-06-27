@@ -20,9 +20,10 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.Status.*
 import play.api.libs.json.JsValue
 import utils.WireMockMethods
+import v1.connectors.HttpConnectorHeaders
 
 //TODO rename DES to HIP after final refactor/migration
-object HIPStub extends WireMockMethods {
+object HIPStub extends WireMockMethods with HttpConnectorHeaders {
 
   private val appointReportingCompanyUrl: String = "/cir/appoint"
   private val revokeReportingCompanyUrl: String  = "/cir/revoke"
@@ -30,7 +31,7 @@ object HIPStub extends WireMockMethods {
   private val fullReturnUrl: String              = "/cir/return"
 
   private val headersHip: Map[String, String] = Map(
-    "Authorization" -> "YXBpLWNsaWVudC1pZDphcGktY2xpZW50LXNlY3JldA=="
+    AUTHORIZATION_HEADER -> "Basic YXBpLWNsaWVudC1pZDphcGktY2xpZW50LXNlY3JldA=="
   )
 
   def appointReportingCompanySuccess(response: JsValue): StubMapping =
