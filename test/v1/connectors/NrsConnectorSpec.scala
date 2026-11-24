@@ -57,7 +57,7 @@ class NrsConnectorSpec extends MockHttpClient with BaseSpec {
 
           await(result) shouldBe Left(
             NrsError(
-              "[NrsConnectorImpl][send] NRS URL and token need to be configured in the application.conf or NRS is disabled"
+              "NRS URL and token need to be configured in the application.conf or NRS is disabled"
             )
           )
         }
@@ -74,7 +74,7 @@ class NrsConnectorSpec extends MockHttpClient with BaseSpec {
 
           await(result) shouldBe Left(
             NrsError(
-              "[NrsConnectorImpl][send] NRS URL and token need to be configured in the application.conf or NRS is disabled"
+              "NRS URL and token need to be configured in the application.conf or NRS is disabled"
             )
           )
         }
@@ -91,7 +91,7 @@ class NrsConnectorSpec extends MockHttpClient with BaseSpec {
 
           await(result) shouldBe Left(
             NrsError(
-              "[NrsConnectorImpl][send] NRS URL and token need to be configured in the application.conf or NRS is disabled"
+              "NRS URL and token need to be configured in the application.conf or NRS is disabled"
             )
           )
         }

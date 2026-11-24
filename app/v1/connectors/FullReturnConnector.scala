@@ -43,10 +43,10 @@ class FullReturnConnector @Inject() (httpClient: HttpClientV2, implicit val appC
     fullReturnModel: FullReturnModel
   )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] = {
 
-    logger.debug(s"[FullReturnConnector][submit] URL: $fullReturnUrl")
+    logger.debug(s"Full return  URL: $fullReturnUrl")
     val receivedSize = request.headers.get(HeaderNames.CONTENT_LENGTH)
     val jsonSize     = Json.stringify(Json.toJson(fullReturnModel)).length
-    logger.debug(s"[FullReturnConnector][submit] Size of content received: $receivedSize sent: $jsonSize")
+    logger.debug(s"Size of Full return content received: $receivedSize sent: $jsonSize")
 
     httpClient
       .post(url"$fullReturnUrl")
@@ -59,10 +59,10 @@ class FullReturnConnector @Inject() (httpClient: HttpClientV2, implicit val appC
     fullReturnModel: FullReturnModel
   )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] = {
     val fullUrl      = appConfig.hipFullReturnUrl
-    logger.debug(s"[FullReturnConnector][submitHip] URL: $fullUrl")
+    logger.debug(s"Ful return URL: $fullUrl")
     val receivedSize = request.headers.get(HeaderNames.CONTENT_LENGTH)
     val jsonSize     = Json.stringify(Json.toJson(fullReturnModel)).length
-    logger.debug(s"[FullReturnConnector][submitHip] Size of content received: $receivedSize sent: $jsonSize")
+    logger.debug(s"Size of Full return content received: $receivedSize sent: $jsonSize")
 
     httpClient
       .post(url"$fullUrl")

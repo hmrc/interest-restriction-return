@@ -49,7 +49,7 @@ class ErrorHandler @Inject() (
     implicit val headerCarrier: HeaderCarrier = HeaderCarrierConverter.fromRequest(request)
 
     logger.error(
-      s"[ErrorHandler][onClientError] Error in version 1, for (${request.method}) [${request.uri}] with status:" +
+      s"Error in version 1, for (${request.method}) [${request.uri}] with status:" +
         s" $statusCode and message: $message"
     )
     statusCode match {
@@ -83,7 +83,7 @@ class ErrorHandler @Inject() (
     implicit val headerCarrier: HeaderCarrier = HeaderCarrierConverter.fromRequest(request)
 
     logger.error(
-      s"[ErrorHandler][onServerError] Internal server error in version 1, for (${request.method}) [${request.uri}] -> ",
+      s"Internal server error in version 1, for (${request.method}) [${request.uri}] -> ",
       ex
     )
 

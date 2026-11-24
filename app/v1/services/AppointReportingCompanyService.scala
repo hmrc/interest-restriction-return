@@ -39,18 +39,18 @@ class AppointReportingCompanyService @Inject() (
     appointReportingCompany: AppointReportingCompanyModel
   )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] =
     if (appConfig.isHipEnabled) {
-      logger.info("[AppointReportingCompanyService][submit] Submitting to HIP")
+      logger.info("Submitting Appoint reporting company")
       connector.appointHip(appointReportingCompany).map { resp =>
         logger.info(
-          "[AppointReportingCompanyService][submit] Successfully sent a appoint reporting company payload to HIP"
+          "Successfully sent a appoint reporting company payload"
         )
         resp
       }
     } else {
-      logger.info("[AppointReportingCompanyService][submit] Submitting to DES")
+      logger.info("Submitting Appoint reporting company")
       connector.appoint(appointReportingCompany).map { resp =>
         logger.info(
-          "[AppointReportingCompanyService][submit] Successfully sent a appoint reporting company payload to DES"
+          "Successfully sent a appoint reporting company payload"
         )
         resp
       }

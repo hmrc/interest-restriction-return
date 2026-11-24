@@ -75,7 +75,7 @@ class NrsService @Inject() (nrsConnector: NrsConnector, dateTimeService: DateTim
 
   private def attemptSubmission(nrsPayload: NrsPayload, delay: Duration, retries: Int): Future[NrsResponse] = {
     logger.info(
-      s"[NrsService][attemptSubmission] Attempting NRS submission ${MaxRetries - retries + 1} retries left: $retries"
+      s"Attempting NRS submission ${MaxRetries - retries + 1} retries left: $retries"
     )
     val result = nrsConnector.send(nrsPayload)
     result.flatMap {
@@ -86,7 +86,7 @@ class NrsService @Inject() (nrsConnector: NrsConnector, dateTimeService: DateTim
         Future.successful(response)
     } recoverWith {
       case e: Exception if retries > 0 =>
-        logger.error(s"[NrsService][attemptSubmission] Error occurred during NRS submission: ${e.getMessage}", e)
+        logger.error(s"Error occurred during NRS submission: ${e.getMessage}", e)
         Thread.sleep(delay.toMillis)
         attemptSubmission(nrsPayload, delay, retries - 1)
     }
