@@ -44,10 +44,10 @@ trait BaseController extends BackendBaseController with Logging {
     Try(request.body.validate[T]) match {
       case Success(JsSuccess(payload, _)) => f(payload)
       case Success(JsError(errs))         =>
-        logger.error(s"[BaseController][withJsonBody] Json failure $errs during request on ${request.uri}")
+        logger.error(s"Json failure $errs during request on ${request.uri}")
         Future.successful(BadRequest(Json.toJson(ValidationErrorResponseModel(errs))))
       case Failure(e)                     =>
-        logger.error(s"[BaseController][withJsonBody] General error occurred during json parsing ${e.getMessage}", e)
+        logger.error(s"General error occurred during json parsing ${e.getMessage}", e)
         Future.successful(BadRequest(s"Could not parse body due to ${e.getMessage}"))
     }
 
@@ -55,13 +55,13 @@ trait BaseController extends BackendBaseController with Logging {
     validationModel match {
       case Invalid(e)   =>
         logger.debug(
-          s"[BaseController][handleValidation] Business Rule Errors: ${Json.toJson(ValidationErrorResponseModel(e))}"
+          s"Business Rule Errors: ${Json.toJson(ValidationErrorResponseModel(e))}"
         )
-        logger.info("[BaseController][handleValidation] Validation failed")
+        logger.info("Validation failed")
         val errors = Json.toJson(ValidationErrorResponseModel(e))
         Future.successful(BadRequest(errors))
       case Valid(model) =>
-        logger.info("[BaseController][handleValidation] Validation successful")
+        logger.info("Validation successful")
         onValidResult(model)
     }
 

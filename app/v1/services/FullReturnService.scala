@@ -38,18 +38,18 @@ class FullReturnService @Inject() (connector: FullReturnConnector, appConfig: Ap
     fullReturn: FullReturnModel
   )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] =
     if (appConfig.isHipEnabled) {
-      logger.info("[FullReturnService][submit] Submitting to HIP")
+      logger.info("Submitting to HIP")
       connector.submitHip(fullReturn).map { resp =>
         logger.info(
-          "[FullReturnService][submit] Successfully sent a full return payload to HIP"
+          "Successfully sent a full return payload to HIP"
         )
         resp
       }
     } else {
-      logger.info("[FullReturnService][submit] Submitting to DES")
+      logger.info("Submitting to DES")
       connector.submit(fullReturn).map { resp =>
         logger.info(
-          "[FullReturnService][submit] Successfully sent a full return payload to DES"
+          "Successfully sent a full return payload to DES"
         )
         resp
       }

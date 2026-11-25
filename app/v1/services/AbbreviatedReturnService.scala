@@ -38,18 +38,18 @@ class AbbreviatedReturnService @Inject() (connector: AbbreviatedReturnConnector,
     abbreviatedReturn: AbbreviatedReturnModel
   )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] =
     if (appConfig.isHipEnabled) {
-      logger.info("[AbbreviatedReturnService][submit] Submitting to HIP")
+      logger.info("Submitting Abbreviated return")
       connector.submitAbbreviatedReturnHip(abbreviatedReturn).map { resp =>
         logger.info(
-          "[AbbreviatedReturnService][submit] Successfully sent a abbreviated return payload to HIP"
+          "Successfully sent a abbreviated return payload"
         )
         resp
       }
     } else {
-      logger.info("[AbbreviatedReturnService][submit] Submitting to DES")
+      logger.info("Submitting Abbreviated return")
       connector.submitAbbreviatedReturn(abbreviatedReturn).map { resp =>
         logger.info(
-          "[AbbreviatedReturnService][submit] Successfully sent a abbreviated return payload to DES"
+          "Successfully sent a abbreviated return payload"
         )
         resp
       }

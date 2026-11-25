@@ -24,6 +24,8 @@ import play.api.mvc.Results.Ok
 import play.api.test.FakeRequest
 import utils.BaseSpec
 import v1.models.appointReportingCompany.AppointReportingCompanyModel
+import play.api.test.Helpers.contentAsString
+import org.apache.pekko.util.Timeout
 
 import scala.concurrent.Future
 import scala.reflect.ClassTag
@@ -73,12 +75,12 @@ class BaseControllerSpec extends BaseSpec {
         "the body cannot be parsed" in new WithJsonBodyTest(None.orNull) {
           status(result) shouldBe BAD_REQUEST
 
-          val exceptionMessage: String = intercept[Exception] {
-            await(jsonBodyOf(result))
-          }.getMessage
+          given Timeout = Timeout(defaultTimeout)
 
-          exceptionMessage should include("Could not parse body due to")
-          exceptionMessage should include("null")
+          val responseBody = contentAsString(result)
+
+          responseBody should include("Could not parse body due to")
+          responseBody should include("null")
         }
       }
     }

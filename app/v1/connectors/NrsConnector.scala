@@ -47,7 +47,7 @@ class NrsConnectorImpl @Inject() (httpClient: HttpClientV2, implicit val appConf
 
     val fullNrsUrl = url + "/submission"
 
-    logger.info(s"[NrsConnectorImpl][post] Sending request to NRS service. Url: $fullNrsUrl")
+    logger.info(s"Sending request to NRS service. Url: $fullNrsUrl")
 
     httpClient
       .post(url"$fullNrsUrl")
@@ -62,12 +62,12 @@ class NrsConnectorImpl @Inject() (httpClient: HttpClientV2, implicit val appConf
         post(nrsPayload, url, token)
       case _                        =>
         logger.error(
-          s"[NrsConnectorImpl][send] NRS config failure: nrsUrl: ${appConfig.nrsUrl} and nrsAuthorisationToken: ${appConfig.nrsAuthorisationToken}"
+          s"NRS config failure: nrsUrl: ${appConfig.nrsUrl} and nrsAuthorisationToken: ${appConfig.nrsAuthorisationToken}"
         )
         Future(
           Left(
             NrsError(
-              "[NrsConnectorImpl][send] NRS URL and token need to be configured in the application.conf or NRS is disabled"
+              "NRS URL and token need to be configured in the application.conf or NRS is disabled"
             )
           )
         )

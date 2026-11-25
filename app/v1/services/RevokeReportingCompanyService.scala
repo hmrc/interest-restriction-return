@@ -39,18 +39,18 @@ class RevokeReportingCompanyService @Inject() (
     revokeReportingCompany: RevokeReportingCompanyModel
   )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] =
     if (appConfig.isHipEnabled) {
-      logger.info("[RevokeReportingCompanyService][submit] Submitting to HIP")
+      logger.info("Submitting Revoke reporting company")
       connector.revokeHip(revokeReportingCompany).map { resp =>
         logger.info(
-          "[RevokeReportingCompanyService][submit] Successfully sent a revoke reporting company payload to HIP"
+          "Successfully sent a revoke reporting company payload"
         )
         resp
       }
     } else {
-      logger.info("[RevokeReportingCompanyService][submit] Submitting to DES")
+      logger.info("Submitting Revoke reporting company")
       connector.revoke(revokeReportingCompany).map { resp =>
         logger.info(
-          "[RevokeReportingCompanyService][submit] Successfully sent a revoke reporting company payload to DES"
+          "Successfully sent a revoke reporting company payload"
         )
         resp
       }

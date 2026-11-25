@@ -40,10 +40,10 @@ class AppointReportingCompanyConnector @Inject() (httpClient: HttpClientV2, impl
   def appoint(
     appointReportingCompanyModel: AppointReportingCompanyModel
   )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] = {
-    logger.debug(s"[AppointReportingCompanyConnector][appoint] URL: $appointUrl")
+    logger.debug(s"Appoint URL: $appointUrl")
     val receivedSize = request.headers.get(HeaderNames.CONTENT_LENGTH)
     val jsonSize     = Json.stringify(Json.toJson(appointReportingCompanyModel)(AppointReportingCompanyModel.format)).length
-    logger.debug(s"[AppointReportingCompanyConnector][appoint] Size of content received: $receivedSize sent: $jsonSize")
+    logger.debug(s"Size of Appoint content received: $receivedSize sent: $jsonSize")
 
     httpClient
       .post(url"$appointUrl")
@@ -56,11 +56,11 @@ class AppointReportingCompanyConnector @Inject() (httpClient: HttpClientV2, impl
     appointReportingCompanyModel: AppointReportingCompanyModel
   )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] = {
     val fullUrl      = appConfig.hipAppointReportingCompanyUrl
-    logger.debug(s"[AppointReportingCompanyConnector][appointHip] URL: $fullUrl")
+    logger.debug(s"Appoint URL: $fullUrl")
     val receivedSize = request.headers.get(HeaderNames.CONTENT_LENGTH)
     val jsonSize     = Json.stringify(Json.toJson(appointReportingCompanyModel)(AppointReportingCompanyModel.format)).length
     logger.debug(
-      s"[AppointReportingCompanyConnector][appointHip] Size of content received: $receivedSize sent: $jsonSize"
+      s"Size of Appoint content received: $receivedSize sent: $jsonSize"
     )
 
     httpClient
