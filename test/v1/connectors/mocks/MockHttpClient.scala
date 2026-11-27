@@ -34,8 +34,6 @@ trait MockHttpClient {
     when(mockAppConfig.desUrl).thenReturn(url)
 
   def mockHipURL(): Unit = {
-    when(mockAppConfig.isHipEnabled).thenReturn(true)
-
     when(mockAppConfig.hipAppointReportingCompanyUrl).thenReturn("http://localhost:9262/cir/appoint")
     when(mockAppConfig.hipRevokeReportingCompanyUrl).thenReturn("http://localhost:9262/cir/revoke")
     when(mockAppConfig.hipFullReturnUrl).thenReturn("http://localhost:9262/cir/return")

@@ -30,7 +30,7 @@ class AppointReportingCompanyServiceSpec extends MockAppointReportingCompanyConn
   "AppointReportingCompanyService.submit" when {
     def setup(response: SubmissionResponse): AppointReportingCompanyService = {
       mockAppointReportingCompany(appointReportingCompanyModelMax)(response)
-      new AppointReportingCompanyService(mockAppointReportingCompanyConnector, mockAppConfig)
+      new AppointReportingCompanyService(mockAppointReportingCompanyConnector)
     }
 
     "submission is successful" should {

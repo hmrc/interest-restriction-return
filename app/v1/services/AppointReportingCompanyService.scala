@@ -17,7 +17,6 @@
 package v1.services
 
 import com.google.inject.Singleton
-import config.AppConfig
 import play.api.Logging
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.connectors.AppointReportingCompanyConnector
@@ -30,30 +29,19 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class AppointReportingCompanyService @Inject() (
-  connector: AppointReportingCompanyConnector,
-  appConfig: AppConfig
+  connector: AppointReportingCompanyConnector
 ) extends Submission[AppointReportingCompanyModel]
     with Logging {
 
   override def submit(
     appointReportingCompany: AppointReportingCompanyModel
-  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] =
-    if (appConfig.isHipEnabled) {
-      logger.info("Submitting Appoint reporting company")
-      connector.appointHip(appointReportingCompany).map { resp =>
-        logger.info(
-          "Successfully sent a appoint reporting company payload"
-        )
-        resp
-      }
-    } else {
-      logger.info("Submitting Appoint reporting company")
-      connector.appoint(appointReportingCompany).map { resp =>
-        logger.info(
-          "Successfully sent a appoint reporting company payload"
-        )
-        resp
-      }
+  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] = {
+    logger.info("Submitting Appoint reporting company")
+    connector.appointHip(appointReportingCompany).map { resp =>
+      logger.info(
+        "Successfully sent a appoint reporting company payload"
+      )
+      resp
     }
-
+  }
 }

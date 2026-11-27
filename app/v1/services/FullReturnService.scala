@@ -17,7 +17,6 @@
 package v1.services
 
 import com.google.inject.Singleton
-import config.AppConfig
 import play.api.Logging
 
 import javax.inject.Inject
@@ -30,29 +29,17 @@ import v1.models.requests.IdentifierRequest
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class FullReturnService @Inject() (connector: FullReturnConnector, appConfig: AppConfig)
-    extends Submission[FullReturnModel]
-    with Logging {
+class FullReturnService @Inject() (connector: FullReturnConnector) extends Submission[FullReturnModel] with Logging {
 
   override def submit(
     fullReturn: FullReturnModel
-  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] =
-    if (appConfig.isHipEnabled) {
-      logger.info("Submitting to HIP")
-      connector.submitHip(fullReturn).map { resp =>
-        logger.info(
-          "Successfully sent a full return payload to HIP"
-        )
-        resp
-      }
-    } else {
-      logger.info("Submitting to DES")
-      connector.submit(fullReturn).map { resp =>
-        logger.info(
-          "Successfully sent a full return payload to DES"
-        )
-        resp
-      }
+  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] = {
+    logger.info("Submitting to HIP")
+    connector.submitHip(fullReturn).map { resp =>
+      logger.info(
+        "Successfully sent a full return payload to HIP"
+      )
+      resp
     }
-
+  }
 }

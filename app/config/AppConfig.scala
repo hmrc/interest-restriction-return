@@ -58,7 +58,7 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, configuration: Config
     configuration.getOptional[Boolean]("microservice.services.hip.enabled").getOrElse(false)
 
   private lazy val hipUrl: Try[String] = Try(servicesConfig.baseUrl("hip"))
-  private def baseHipUrl: String       = if (isHipEnabled) {
+  private def baseHipUrl: String       = {
     val finalUrl = hipUrl match {
       case Failure(exception) =>
         throw new RuntimeException(
@@ -67,8 +67,6 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, configuration: Config
       case Success(value)     => value
     }
     s"$finalUrl/cir"
-  } else {
-    throw new RuntimeException("HIP is not enabled, cannot retrieve base URL.")
   }
 
   private val clientId: String                   = servicesConfig.getString("microservice.services.hip.clientId")
