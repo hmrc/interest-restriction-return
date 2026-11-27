@@ -32,30 +32,6 @@ class AppConfigSpec extends BaseSpec {
   }
 
   "AppConfig" when {
-    ".desUrl" should {
-      "return DES URL" in new Test {
-        when(mockServicesConfig.baseUrl("des")).thenReturn("http://localhost:9262")
-
-        appConfig.desUrl shouldBe "http://localhost:9262"
-      }
-    }
-
-    ".desEnvironment" should {
-      "return DES Environment" in new Test {
-        when(mockServicesConfig.getString("microservice.services.des.environment")).thenReturn("dev")
-
-        appConfig.desEnvironment shouldBe ("Environment", "dev")
-      }
-    }
-
-    ".desAuthorisationToken" should {
-      "return DES authorisation token" in new Test {
-        when(mockServicesConfig.getString("microservice.services.des.authorisation-token")).thenReturn("des token")
-
-        appConfig.desAuthorisationToken shouldBe "Bearer des token"
-      }
-    }
-
     ".apiGatewayContext" should {
       "return API gateway context" in new Test {
         when(mockServicesConfig.getString("api.gateway.context")).thenReturn("organisations/interest-restriction")

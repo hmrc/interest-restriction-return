@@ -35,23 +35,6 @@ import scala.concurrent.{ExecutionContext, Future}
 class AppointReportingCompanyConnector @Inject() (httpClient: HttpClientV2, implicit val appConfig: AppConfig)
     extends BaseConnector {
 
-  private val appointUrl = s"${appConfig.desUrl}/organisations/interest-restrictions-return/appoint"
-
-  def appoint(
-    appointReportingCompanyModel: AppointReportingCompanyModel
-  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] = {
-    logger.debug(s"Appoint URL: $appointUrl")
-    val receivedSize = request.headers.get(HeaderNames.CONTENT_LENGTH)
-    val jsonSize     = Json.stringify(Json.toJson(appointReportingCompanyModel)(AppointReportingCompanyModel.format)).length
-    logger.debug(s"Size of Appoint content received: $receivedSize sent: $jsonSize")
-
-    httpClient
-      .post(url"$appointUrl")
-      .setHeader(desHeaders()*)
-      .withBody(Json.toJson(appointReportingCompanyModel))
-      .execute[SubmissionResponse]
-  }
-
   def appointHip(
     appointReportingCompanyModel: AppointReportingCompanyModel
   )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] = {

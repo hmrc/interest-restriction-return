@@ -26,12 +26,6 @@ import scala.util.{Failure, Success, Try}
 @Singleton
 class AppConfig @Inject() (servicesConfig: ServicesConfig, configuration: Configuration) {
 
-  lazy val desUrl: String                   = servicesConfig.baseUrl("des")
-  lazy val desAuthorisationToken: String    =
-    s"Bearer ${servicesConfig.getString("microservice.services.des.authorisation-token")}"
-  lazy val desEnvironment: (String, String) =
-    "Environment" -> servicesConfig.getString("microservice.services.des.environment")
-
   lazy val nrsEnabled: Boolean =
     configuration.getOptional[Boolean]("microservice.services.nrs.enabled").getOrElse(false)
 
@@ -53,12 +47,8 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, configuration: Config
 
   lazy val endpointsEnabled: Boolean = servicesConfig.getBoolean("api-definitions.endpoints.enabled")
 
-  // HIP
-  lazy val isHipEnabled: Boolean =
-    configuration.getOptional[Boolean]("microservice.services.hip.enabled").getOrElse(false)
-
   private lazy val hipUrl: Try[String] = Try(servicesConfig.baseUrl("hip"))
-  private def baseHipUrl: String       = if (isHipEnabled) {
+  private def baseHipUrl: String       = {
     val finalUrl = hipUrl match {
       case Failure(exception) =>
         throw new RuntimeException(
@@ -67,8 +57,6 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, configuration: Config
       case Success(value)     => value
     }
     s"$finalUrl/cir"
-  } else {
-    throw new RuntimeException("HIP is not enabled, cannot retrieve base URL.")
   }
 
   private val clientId: String                   = servicesConfig.getString("microservice.services.hip.clientId")

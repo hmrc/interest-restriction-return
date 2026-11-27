@@ -18,7 +18,7 @@ package v1.connectors.httpParsers
 
 import data.revokeReportingCompany.RevokeReportingCompanyConstants.*
 import v1.connectors.httpParsers.RevokeReportingCompanyHttpParser.RevokeReportingCompanyReads
-import v1.connectors.{DesSuccessResponse, InvalidSuccessResponse, UnexpectedFailure}
+import v1.connectors.{HipSuccessResponse, InvalidSuccessResponse, UnexpectedFailure}
 import play.api.http.Status.*
 import play.api.libs.json.{JsObject, Json}
 import uk.gov.hmrc.http.HttpResponse
@@ -33,7 +33,7 @@ class RevokeReportingCompanyHttpParserSpec extends BaseSpec {
     "RevokeReportingCompanyRead.read" should {
       "return a Right containing an acknowledgementReference" when {
         "receiving an 201 CREATED with a valid ackRef response" in {
-          val expectedResult: SubmissionResponse = Right(DesSuccessResponse(ackRef))
+          val expectedResult: SubmissionResponse = Right(HipSuccessResponse(ackRef))
           val actualResult: SubmissionResponse   = RevokeReportingCompanyReads.read(
             "",
             "",
@@ -43,7 +43,7 @@ class RevokeReportingCompanyHttpParserSpec extends BaseSpec {
           actualResult shouldBe expectedResult
         }
         "receiving an 200 OK with a valid ackRef response" in {
-          val expectedResult: SubmissionResponse = Right(DesSuccessResponse(ackRef))
+          val expectedResult: SubmissionResponse = Right(HipSuccessResponse(ackRef))
           val actualResult: SubmissionResponse   = RevokeReportingCompanyReads.read(
             "",
             "",

@@ -30,12 +30,8 @@ trait MockFullReturnConnector {
   lazy val mockFullReturnConnector: FullReturnConnector =
     Mockito.mock(classOf[FullReturnConnector])
 
-  def mockFullReturn(model: FullReturnModel)(response: SubmissionResponse): Unit = {
-    when(mockFullReturnConnector.submit(ArgumentMatchers.eq(model))(any(), any(), any()))
-      .thenReturn(Future.successful(response))
-
+  def mockFullReturn(model: FullReturnModel)(response: SubmissionResponse): Unit =
     when(mockFullReturnConnector.submitHip(ArgumentMatchers.eq(model))(any(), any(), any()))
       .thenReturn(Future.successful(response))
-  }
 
 }

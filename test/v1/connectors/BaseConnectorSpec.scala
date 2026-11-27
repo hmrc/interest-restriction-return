@@ -28,7 +28,7 @@ class BaseConnectorSpec extends BaseSpec {
     }
   }
 
-  "DesBaseConnector" when {
+  "HipBaseConnector" when {
     ".getCorrelationId" when {
       "requestID is present in the headerCarrier" should {
         "return new ID pre-appending the requestID when the requestID matches the format(8-4-4-4)" in new Setup {

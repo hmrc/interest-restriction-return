@@ -28,7 +28,7 @@ Full documentation can be found on the [Developer Hub](https://developer.service
 
 ## Running locally
 This API can be run in a local development environment connected to dependent services,
-with [Interest Restriction Return Dynamic Stub](https://github.com/hmrc/interest-restriction-return-dynamic-stub) stubbing the behaviour of DES.
+with [Interest Restriction Return Dynamic Stub](https://github.com/hmrc/interest-restriction-return-dynamic-stub) stubbing the behaviour of HIP.
 
 The `./run_local_with_dependencies.sh` script will use Service Manager 2 to start up
 the dependent services before running Interest Restriction Return on port `9261`.

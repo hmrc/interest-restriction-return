@@ -20,15 +20,14 @@ import play.api.http.Status.INTERNAL_SERVER_ERROR
 import play.api.libs.json.{Json, OFormat}
 import v1.models.nrs.NrSubmissionId
 
-//TODO rename to HipSuccessResponse once CR is completed and old code deleted
-case class DesSuccessResponse(acknowledgementReference: String)
+case class HipSuccessResponse(acknowledgementReference: String)
 
-object DesSuccessResponse {
-  implicit val fmt: OFormat[DesSuccessResponse] = Json.format[DesSuccessResponse]
+object HipSuccessResponse {
+  implicit val fmt: OFormat[HipSuccessResponse] = Json.format[HipSuccessResponse]
 }
 
 object HttpHelper {
-  type SubmissionResponse = Either[ErrorResponse, DesSuccessResponse]
+  type SubmissionResponse = Either[ErrorResponse, HipSuccessResponse]
   type NrsResponse        = Either[ErrorResponse, NrSubmissionId]
 }
 

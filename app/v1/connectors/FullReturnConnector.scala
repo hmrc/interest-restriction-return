@@ -37,24 +37,6 @@ class FullReturnConnector @Inject() (httpClient: HttpClientV2, implicit val appC
     extends BaseConnector
     with JsonFormatters {
 
-  private[connectors] lazy val fullReturnUrl = s"${appConfig.desUrl}/organisations/interest-restrictions-return/full"
-
-  def submit(
-    fullReturnModel: FullReturnModel
-  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] = {
-
-    logger.debug(s"Full return  URL: $fullReturnUrl")
-    val receivedSize = request.headers.get(HeaderNames.CONTENT_LENGTH)
-    val jsonSize     = Json.stringify(Json.toJson(fullReturnModel)).length
-    logger.debug(s"Size of Full return content received: $receivedSize sent: $jsonSize")
-
-    httpClient
-      .post(url"$fullReturnUrl")
-      .setHeader(desHeaders()*)
-      .withBody(Json.toJson(fullReturnModel))
-      .execute[SubmissionResponse]
-  }
-
   def submitHip(
     fullReturnModel: FullReturnModel
   )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] = {
@@ -70,5 +52,4 @@ class FullReturnConnector @Inject() (httpClient: HttpClientV2, implicit val appC
       .withBody(Json.toJson(fullReturnModel))
       .execute[SubmissionResponse]
   }
-
 }

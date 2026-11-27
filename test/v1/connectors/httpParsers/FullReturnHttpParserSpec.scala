@@ -17,7 +17,7 @@
 package v1.connectors.httpParsers
 
 import data.fullReturn.FullReturnConstants.*
-import v1.connectors.{DesSuccessResponse, InvalidSuccessResponse, UnexpectedFailure}
+import v1.connectors.{HipSuccessResponse, InvalidSuccessResponse, UnexpectedFailure}
 import v1.connectors.httpParsers.FullReturnHttpParser.FullReturnReads
 import play.api.http.Status.*
 import play.api.libs.json.{JsObject, Json}
@@ -33,14 +33,14 @@ class FullReturnHttpParserSpec extends BaseSpec {
     "FullReturnReads.read" should {
       "return a Right containing an acknowledgementReference" when {
         "receiving an 201 CREATED with a valid ackRef response" in {
-          val expectedResult: SubmissionResponse = Right(DesSuccessResponse(ackRef))
+          val expectedResult: SubmissionResponse = Right(HipSuccessResponse(ackRef))
           val actualResult: SubmissionResponse   =
             FullReturnReads.read("", "", HttpResponse(CREATED, ackRefResponse, Map.empty[String, Seq[String]]))
 
           actualResult shouldBe expectedResult
         }
         "receiving an 200 OK with a valid ackRef response" in {
-          val expectedResult: SubmissionResponse = Right(DesSuccessResponse(ackRef))
+          val expectedResult: SubmissionResponse = Right(HipSuccessResponse(ackRef))
           val actualResult: SubmissionResponse   =
             FullReturnReads.read("", "", HttpResponse(CREATED, ackRefResponse, Map.empty[String, Seq[String]]))
 

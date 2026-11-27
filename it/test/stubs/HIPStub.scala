@@ -22,7 +22,6 @@ import play.api.libs.json.JsValue
 import utils.WireMockMethods
 import v1.connectors.HttpConnectorHeaders
 
-//TODO rename DES to HIP after final refactor/migration
 object HIPStub extends WireMockMethods with HttpConnectorHeaders {
 
   private val appointReportingCompanyUrl: String = "/cir/appoint"

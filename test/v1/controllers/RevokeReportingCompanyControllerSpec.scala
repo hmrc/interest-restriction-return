@@ -17,7 +17,7 @@
 package v1.controllers
 
 import data.revokeReportingCompany.RevokeReportingCompanyConstants.*
-import v1.connectors.{DesSuccessResponse, UnexpectedFailure}
+import v1.connectors.{HipSuccessResponse, UnexpectedFailure}
 import play.api.http.Status.*
 import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.{AnyContentAsEmpty, Result}
@@ -72,7 +72,7 @@ class RevokeReportingCompanyControllerSpec extends MockRevokeReportingCompanySer
           "a success response is returned from the companies house service with no validation errors" when {
             "a success response is returned from the revoke reporting company service" should {
               "return 200 (OK)" in new Test(AuthorisedAction) {
-                mockRevokeReportingCompany(revokeReportingCompanyModelMax)(Right(DesSuccessResponse(ackRef)))
+                mockRevokeReportingCompany(revokeReportingCompanyModelMax)(Right(HipSuccessResponse(ackRef)))
 
                 val result: Future[Result] = revokeReportingCompanyController.revoke()(validJsonFakeRequest)
                 status(result) shouldBe OK

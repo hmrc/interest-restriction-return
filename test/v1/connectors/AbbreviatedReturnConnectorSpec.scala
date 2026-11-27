@@ -32,22 +32,22 @@ class AbbreviatedReturnConnectorSpec extends BaseSpec with MockHttpClient {
 
   private trait ConnectorTestSetup {
 
-    val desBaseUrl: String = "http://localhost:9262"
-    val apiRelativeUrl     = "/organisations/interest-restrictions-return/abbreviated"
-    val fullURL            = s"$desBaseUrl$apiRelativeUrl"
+    private val hipBaseUrl: String = "http://localhost:9262"
+    private val apiRelativeUrl     = "/cir/return/abbreviated"
+    private val fullURL            = s"$hipBaseUrl$apiRelativeUrl"
 
-    val response: DesSuccessResponse = DesSuccessResponse(ackRef)
+    val response: HipSuccessResponse = HipSuccessResponse(ackRef)
 
     lazy val connector: AbbreviatedReturnConnector =
       new AbbreviatedReturnConnector(mockHttpClient, mockAppConfig)
 
-    mockDesURL(desBaseUrl)
+    mockHipURL()
     mockPostCall(fullURL)
   }
 
   "AbbreviatedReturnConnector" when {
 
-    ".submitAbbreviatedReturn()" when {
+    ".submitAbbreviatedReturnHip()" when {
 
       "submission is successful" should {
         "return a Right(SuccessResponse)" in new ConnectorTestSetup {
@@ -56,8 +56,8 @@ class AbbreviatedReturnConnectorSpec extends BaseSpec with MockHttpClient {
             .thenReturn(Future(Right(response)))
 
           val result: Future[SubmissionResponse] =
-            connector.submitAbbreviatedReturn(abbreviatedReturnUltimateParentModel)
-          await(result) shouldBe Right(DesSuccessResponse(ackRef))
+            connector.submitAbbreviatedReturnHip(abbreviatedReturnUltimateParentModel)
+          await(result) shouldBe Right(HipSuccessResponse(ackRef))
         }
       }
 
@@ -68,7 +68,7 @@ class AbbreviatedReturnConnectorSpec extends BaseSpec with MockHttpClient {
             .thenReturn(Future(Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))))
 
           val result: Future[SubmissionResponse] =
-            connector.submitAbbreviatedReturn(abbreviatedReturnUltimateParentModel)
+            connector.submitAbbreviatedReturnHip(abbreviatedReturnUltimateParentModel)
           await(result) shouldBe Left(UnexpectedFailure(INTERNAL_SERVER_ERROR, "Error"))
         }
       }

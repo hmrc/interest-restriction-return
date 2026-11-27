@@ -17,7 +17,6 @@
 package v1.services
 
 import com.google.inject.Singleton
-import config.AppConfig
 import play.api.Logging
 
 import javax.inject.Inject
@@ -30,29 +29,19 @@ import v1.models.requests.IdentifierRequest
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class AbbreviatedReturnService @Inject() (connector: AbbreviatedReturnConnector, appConfig: AppConfig)
+class AbbreviatedReturnService @Inject() (connector: AbbreviatedReturnConnector)
     extends Submission[AbbreviatedReturnModel]
     with Logging {
 
   override def submit(
     abbreviatedReturn: AbbreviatedReturnModel
-  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] =
-    if (appConfig.isHipEnabled) {
-      logger.info("Submitting Abbreviated return")
-      connector.submitAbbreviatedReturnHip(abbreviatedReturn).map { resp =>
-        logger.info(
-          "Successfully sent a abbreviated return payload"
-        )
-        resp
-      }
-    } else {
-      logger.info("Submitting Abbreviated return")
-      connector.submitAbbreviatedReturn(abbreviatedReturn).map { resp =>
-        logger.info(
-          "Successfully sent a abbreviated return payload"
-        )
-        resp
-      }
+  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] = {
+    logger.info("Submitting Abbreviated return")
+    connector.submitAbbreviatedReturnHip(abbreviatedReturn).map { resp =>
+      logger.info(
+        "Successfully sent a abbreviated return payload"
+      )
+      resp
     }
-
+  }
 }

@@ -37,26 +37,6 @@ class AbbreviatedReturnConnector @Inject() (httpClient: HttpClientV2, implicit v
     extends BaseConnector
     with JsonFormatters {
 
-  private[connectors] lazy val abbreviatedReturnUrl =
-    s"${appConfig.desUrl}/organisations/interest-restrictions-return/abbreviated"
-
-  def submitAbbreviatedReturn(
-    abbreviatedReturnModel: AbbreviatedReturnModel
-  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] = {
-    logger.debug(s"Abbreviated return URL: $abbreviatedReturnUrl")
-    val receivedSize = request.headers.get(HeaderNames.CONTENT_LENGTH)
-    val jsonSize     = Json.stringify(Json.toJson(abbreviatedReturnModel)).length
-    logger.debug(
-      s"Size of Abbreviated return content received: $receivedSize sent: $jsonSize"
-    )
-
-    httpClient
-      .post(url"$abbreviatedReturnUrl")
-      .setHeader(desHeaders()*)
-      .withBody(Json.toJson(abbreviatedReturnModel))
-      .execute[SubmissionResponse]
-  }
-
   def submitAbbreviatedReturnHip(
     abbreviatedReturnModel: AbbreviatedReturnModel
   )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] = {

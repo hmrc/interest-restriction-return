@@ -30,12 +30,7 @@ trait MockAppointReportingCompanyConnector {
   lazy val mockAppointReportingCompanyConnector: AppointReportingCompanyConnector =
     Mockito.mock(classOf[AppointReportingCompanyConnector])
 
-  def mockAppointReportingCompany(model: AppointReportingCompanyModel)(response: SubmissionResponse): Unit = {
-    when(mockAppointReportingCompanyConnector.appoint(ArgumentMatchers.eq(model))(any(), any(), any()))
-      .thenReturn(Future.successful(response))
-
+  def mockAppointReportingCompany(model: AppointReportingCompanyModel)(response: SubmissionResponse): Unit =
     when(mockAppointReportingCompanyConnector.appointHip(any[AppointReportingCompanyModel]())(any(), any(), any()))
       .thenReturn(Future.successful(response))
-  }
-
 }

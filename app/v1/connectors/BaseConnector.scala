@@ -30,18 +30,6 @@ trait BaseConnector extends Logging with HttpConnectorHeaders {
 
   private val requestIdPattern: Regex = """.*([A-Za-z0-9]{8}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}).*""".r
 
-  def desHeaders()(implicit
-    hc: HeaderCarrier,
-    appConfig: AppConfig,
-    request: IdentifierRequest[?]
-  ): Seq[(String, String)]   =
-    Seq(
-      appConfig.desEnvironment,
-      PROVIDER_ID_HEADER   -> request.identifier,
-      CORRELATION_HEADER   -> getCorrelationId(hc),
-      AUTHORIZATION_HEADER -> appConfig.desAuthorisationToken
-    )
-
   def hipHeaders(appConfig: AppConfig)(implicit hc: HeaderCarrier): Seq[(String, String)] =
     Seq(
       CORRELATION_HEADER   -> getCorrelationId(hc),
@@ -76,7 +64,7 @@ trait BaseConnector extends Logging with HttpConnectorHeaders {
         logger.info(s"Successfully created with response $response")
         logger.debug(s"Json Response: ${response.json}")
         response.json
-          .validate[DesSuccessResponse](DesSuccessResponse.fmt)
+          .validate[HipSuccessResponse](HipSuccessResponse.fmt)
           .fold(
             invalid => {
               logger.error(s"Invalid Success Response Json - $invalid")

@@ -17,7 +17,6 @@
 package v1.services
 
 import com.google.inject.Singleton
-import config.AppConfig
 import play.api.Logging
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.connectors.HttpHelper.SubmissionResponse
@@ -30,30 +29,19 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class RevokeReportingCompanyService @Inject() (
-  connector: RevokeReportingCompanyConnector,
-  appConfig: AppConfig
+  connector: RevokeReportingCompanyConnector
 ) extends Submission[RevokeReportingCompanyModel]
     with Logging {
 
   override def submit(
     revokeReportingCompany: RevokeReportingCompanyModel
-  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] =
-    if (appConfig.isHipEnabled) {
-      logger.info("Submitting Revoke reporting company")
-      connector.revokeHip(revokeReportingCompany).map { resp =>
-        logger.info(
-          "Successfully sent a revoke reporting company payload"
-        )
-        resp
-      }
-    } else {
-      logger.info("Submitting Revoke reporting company")
-      connector.revoke(revokeReportingCompany).map { resp =>
-        logger.info(
-          "Successfully sent a revoke reporting company payload"
-        )
-        resp
-      }
+  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] = {
+    logger.info("Submitting Revoke reporting company")
+    connector.revokeHip(revokeReportingCompany).map { resp =>
+      logger.info(
+        "Successfully sent a revoke reporting company payload"
+      )
+      resp
     }
-
+  }
 }
