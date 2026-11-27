@@ -22,7 +22,7 @@ import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.{AnyContentAsEmpty, Result}
 import play.api.test.{FakeRequest, Helpers}
 import utils.BaseSpec
-import v1.connectors.{DesSuccessResponse, UnexpectedFailure}
+import v1.connectors.{HipSuccessResponse, UnexpectedFailure}
 import v1.controllers.actions.AuthAction
 import v1.services.mocks.MockFullReturnService
 
@@ -73,7 +73,7 @@ class FullReturnControllerSpec extends MockFullReturnService with BaseSpec {
           "a success response is returned from the companies house service with no validation errors" when {
             "a success response is returned from the service full return service" should {
               "return 200 (OK)" in new Test(AuthorisedAction) {
-                mockFullReturn(fullReturnUltimateParentModel)(Right(DesSuccessResponse(ackRef)))
+                mockFullReturn(fullReturnUltimateParentModel)(Right(HipSuccessResponse(ackRef)))
 
                 val result: Future[Result] = fullReturnController.submit()(validJsonFakeRequest)
                 status(result) shouldBe OK

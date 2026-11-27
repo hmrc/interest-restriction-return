@@ -22,15 +22,15 @@ import utils.BaseSpec
 class HttpHelperSpec extends BaseSpec {
   "DesSuccessResponse" should {
     "support round trip serialization" in {
-      val value = DesSuccessResponse("")
-      Json.toJson(value).validate[DesSuccessResponse] shouldBe JsSuccess(value)
+      val value = HipSuccessResponse("")
+      Json.toJson(value).validate[HipSuccessResponse] shouldBe JsSuccess(value)
     }
     "fail to read from json" when {
       "there is type mismatch" in {
-        Json.arr("a" -> "b").validate[DesSuccessResponse] shouldBe a[JsError]
+        Json.arr("a" -> "b").validate[HipSuccessResponse] shouldBe a[JsError]
       }
       "empty json" in {
-        Json.obj().validate[DesSuccessResponse] shouldBe a[JsError]
+        Json.obj().validate[HipSuccessResponse] shouldBe a[JsError]
       }
     }
   }

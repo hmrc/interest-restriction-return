@@ -33,7 +33,7 @@ class AppointReportingCompanyConnectorSpec extends BaseSpec {
   val apiRelativeUrl: String = "/appoint"
   val fullURL: String        = s"$desBaseUrl$apiRelativeUrl"
 
-  val response: DesSuccessResponse = DesSuccessResponse(ackRef)
+  val response: HipSuccessResponse = HipSuccessResponse(ackRef)
 
   private trait ConnectorTestSetup {
     mockHipURL()
@@ -55,7 +55,7 @@ class AppointReportingCompanyConnectorSpec extends BaseSpec {
             .thenReturn(Future(Right(response)))
 
           val result: Future[SubmissionResponse] = connector.appointHip(appointReportingCompanyModelMax)
-          await(result) shouldBe Right(DesSuccessResponse(ackRef))
+          await(result) shouldBe Right(HipSuccessResponse(ackRef))
         }
       }
 

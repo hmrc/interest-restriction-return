@@ -26,12 +26,6 @@ import scala.util.{Failure, Success, Try}
 @Singleton
 class AppConfig @Inject() (servicesConfig: ServicesConfig, configuration: Configuration) {
 
-  lazy val desUrl: String                   = servicesConfig.baseUrl("des")
-  lazy val desAuthorisationToken: String    =
-    s"Bearer ${servicesConfig.getString("microservice.services.des.authorisation-token")}"
-  lazy val desEnvironment: (String, String) =
-    "Environment" -> servicesConfig.getString("microservice.services.des.environment")
-
   lazy val nrsEnabled: Boolean =
     configuration.getOptional[Boolean]("microservice.services.nrs.enabled").getOrElse(false)
 
@@ -52,10 +46,6 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, configuration: Config
   def featureSwitch: Option[Configuration] = configuration.getOptional[Configuration]("feature-switch")
 
   lazy val endpointsEnabled: Boolean = servicesConfig.getBoolean("api-definitions.endpoints.enabled")
-
-  // HIP
-  lazy val isHipEnabled: Boolean =
-    configuration.getOptional[Boolean]("microservice.services.hip.enabled").getOrElse(false)
 
   private lazy val hipUrl: Try[String] = Try(servicesConfig.baseUrl("hip"))
   private def baseHipUrl: String       = {

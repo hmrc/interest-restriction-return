@@ -26,7 +26,7 @@ class AbbreviatedReturnControllerISpec extends IntegrationSpecBase {
 
   "POST /return/abbreviated" when {
     "user is authenticated" when {
-      "request is successfully processed by DES" when {
+      "request is successfully processed by HIP" when {
         "nrs is successful" should {
           "return OK (200) with the correct body" in {
             AuthStub.authorised()
@@ -58,7 +58,7 @@ class AbbreviatedReturnControllerISpec extends IntegrationSpecBase {
         }
       }
 
-      "error is returned from DES" should {
+      "error is returned from HIP" should {
         "return the error" in {
           AuthStub.authorised()
           HIPStub.abbreviatedReturnError

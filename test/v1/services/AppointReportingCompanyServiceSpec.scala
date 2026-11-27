@@ -18,7 +18,7 @@ package v1.services
 
 import data.appointReportingCompany.AppointReportingCompanyConstants.*
 import v1.connectors.HttpHelper.SubmissionResponse
-import v1.connectors.{DesSuccessResponse, UnexpectedFailure}
+import v1.connectors.{HipSuccessResponse, UnexpectedFailure}
 import v1.connectors.mocks.MockAppointReportingCompanyConnector
 import play.api.http.Status.*
 import utils.BaseSpec
@@ -35,10 +35,10 @@ class AppointReportingCompanyServiceSpec extends MockAppointReportingCompanyConn
 
     "submission is successful" should {
       "return a Right(SuccessResponse)" in {
-        val service: AppointReportingCompanyService = setup(Right(DesSuccessResponse("ackRef")))
+        val service: AppointReportingCompanyService = setup(Right(HipSuccessResponse("ackRef")))
         val result: Future[SubmissionResponse]      = service.submit(appointReportingCompanyModelMax)
 
-        await(result) shouldBe Right(DesSuccessResponse("ackRef"))
+        await(result) shouldBe Right(HipSuccessResponse("ackRef"))
       }
     }
 

@@ -36,7 +36,7 @@ class RevokeReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec {
 
   private trait ConnectorTestSetup {
 
-    val response: DesSuccessResponse = DesSuccessResponse(ackRef)
+    val response: HipSuccessResponse = HipSuccessResponse(ackRef)
 
     lazy val connector: RevokeReportingCompanyConnector =
       new RevokeReportingCompanyConnector(mockHttpClient, mockAppConfig)
@@ -54,7 +54,7 @@ class RevokeReportingCompanyConnectorSpec extends MockHttpClient with BaseSpec {
           .thenReturn(Future(Right(response)))
 
         val result: Future[SubmissionResponse] = connector.revokeHip(revokeReportingCompanyModelMax)
-        await(result) shouldBe Right(DesSuccessResponse(ackRef))
+        await(result) shouldBe Right(HipSuccessResponse(ackRef))
       }
     }
 

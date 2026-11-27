@@ -34,7 +34,7 @@ class FullReturnConnectorSpec extends MockHttpClient with BaseSpec {
   val fullURL: String        = s"$desBaseUrl$apiRelativeUrl"
 
   private trait ConnectorTestSetup {
-    val response: DesSuccessResponse = DesSuccessResponse(ackRef)
+    val response: HipSuccessResponse = HipSuccessResponse(ackRef)
 
     lazy val connector: FullReturnConnector =
       new FullReturnConnector(mockHttpClient, mockAppConfig)

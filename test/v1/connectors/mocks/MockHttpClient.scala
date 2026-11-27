@@ -30,11 +30,9 @@ trait MockHttpClient {
   val mockRequestBuilder: RequestBuilder = Mockito.mock(classOf[RequestBuilder])
   val mockAppConfig: AppConfig           = Mockito.mock(classOf[AppConfig])
 
-  def mockDesURL(url: String): Unit =
-    when(mockAppConfig.desUrl).thenReturn(url)
-
   def mockHipURL(): Unit = {
     when(mockAppConfig.hipAppointReportingCompanyUrl).thenReturn("http://localhost:9262/cir/appoint")
+    when(mockAppConfig.hipAbbreviatedReturnUrl).thenReturn("http://localhost:9262/cir/return/abbreviated")
     when(mockAppConfig.hipRevokeReportingCompanyUrl).thenReturn("http://localhost:9262/cir/revoke")
     when(mockAppConfig.hipFullReturnUrl).thenReturn("http://localhost:9262/cir/return")
   }

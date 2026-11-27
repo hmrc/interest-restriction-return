@@ -35,23 +35,6 @@ import scala.concurrent.{ExecutionContext, Future}
 class RevokeReportingCompanyConnector @Inject() (httpClient: HttpClientV2, implicit val appConfig: AppConfig)
     extends BaseConnector {
 
-  private[connectors] lazy val revokeUrl = s"${appConfig.desUrl}/organisations/interest-restrictions-return/revoke"
-
-  def revoke(
-    revokeReportingCompanyModel: RevokeReportingCompanyModel
-  )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] = {
-    logger.debug(s"Revoke URL: $revokeUrl")
-    val receivedSize = request.headers.get(HeaderNames.CONTENT_LENGTH)
-    val jsonSize     = Json.stringify(Json.toJson(revokeReportingCompanyModel)(RevokeReportingCompanyModel.format)).length
-    logger.debug(s"Size of Revoke content received: $receivedSize sent: $jsonSize")
-
-    httpClient
-      .post(url"$revokeUrl")
-      .setHeader(desHeaders()*)
-      .withBody(Json.toJson(revokeReportingCompanyModel))
-      .execute[SubmissionResponse]
-  }
-
   def revokeHip(
     revokeReportingCompanyModel: RevokeReportingCompanyModel
   )(implicit hc: HeaderCarrier, ec: ExecutionContext, request: IdentifierRequest[?]): Future[SubmissionResponse] = {

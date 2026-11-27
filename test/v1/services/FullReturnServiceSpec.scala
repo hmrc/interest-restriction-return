@@ -18,7 +18,7 @@ package v1.services
 
 import data.fullReturn.FullReturnConstants.*
 import v1.connectors.HttpHelper.SubmissionResponse
-import v1.connectors.{DesSuccessResponse, UnexpectedFailure}
+import v1.connectors.{HipSuccessResponse, UnexpectedFailure}
 import v1.connectors.mocks.MockFullReturnConnector
 import play.api.http.Status.*
 import utils.BaseSpec
@@ -36,10 +36,10 @@ class FullReturnServiceSpec extends MockFullReturnConnector with BaseSpec {
 
       "submission is successful" should {
         "return a Right(SuccessResponse)" in {
-          val service: FullReturnService         = setup(Right(DesSuccessResponse("ackRef")))
+          val service: FullReturnService         = setup(Right(HipSuccessResponse("ackRef")))
           val result: Future[SubmissionResponse] = service.submit(fullReturnUltimateParentModel)
 
-          await(result) shouldBe Right(DesSuccessResponse("ackRef"))
+          await(result) shouldBe Right(HipSuccessResponse("ackRef"))
         }
       }
 
@@ -61,10 +61,10 @@ class FullReturnServiceSpec extends MockFullReturnConnector with BaseSpec {
 
       "submission is successful" should {
         "return a Right(SuccessResponse)" in {
-          val service: FullReturnService         = setup(Right(DesSuccessResponse("ackRef")))
+          val service: FullReturnService         = setup(Right(HipSuccessResponse("ackRef")))
           val result: Future[SubmissionResponse] = service.submit(fullReturnModelMin)
 
-          await(result) shouldBe Right(DesSuccessResponse("ackRef"))
+          await(result) shouldBe Right(HipSuccessResponse("ackRef"))
         }
       }
 
